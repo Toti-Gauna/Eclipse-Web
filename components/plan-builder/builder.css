@@ -1,0 +1,197 @@
+/*
+ * "Armá tu plan" layout.
+ * Compact (< 1280px): catalog + a summary bar at the bottom that expands upward.
+ * Wide (≥ 1280px): catalog + summary column (drawer at 920px, or the /plan page).
+ * Visual styling lives in Tailwind classes; this file only handles layout per mode.
+ */
+
+.pb {
+  position: relative;
+}
+
+/* ---- Sheet: the dialog panel is the frame; catalog and summary scroll on their own. */
+.pb[data-mode='sheet'] {
+  --pb-top: 84px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.pb[data-mode='sheet'] .pb-main {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+.pb[data-mode='sheet'] .pb-catalog {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.pb[data-mode='sheet'] .pb-summary {
+  position: relative;
+  z-index: 20;
+  flex: none;
+}
+
+/* ---- Page: the bar sticks to the viewport bottom while the builder is on screen. */
+.pb[data-mode='page'] {
+  --pb-top: calc(var(--header-h) + 12px);
+}
+.pb[data-mode='page'] .pb-summary {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  margin-inline: calc(-1 * var(--gutter));
+}
+
+.pb-bar {
+  position: relative;
+  z-index: 2;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: rgb(12 12 20 / 0.92);
+  box-shadow: 0 -24px 48px -28px rgb(0 0 0 / 0.75);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* ---- Compact */
+@media (max-width: 1279.98px) {
+  .pb .pb-wide {
+    display: none;
+  }
+  .pb-summary-body {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 100%;
+    z-index: 1;
+    max-height: calc(100dvh - var(--pb-top) - var(--pb-bar-h, 9rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-top: 1px solid var(--line-strong);
+    border-radius: var(--radius-card-lg) var(--radius-card-lg) 0 0;
+    background: var(--night);
+    box-shadow: 0 -40px 80px -30px rgb(0 0 0 / 0.8);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      transform 0.45s var(--ease-expo),
+      opacity 0.3s ease,
+      visibility 0s linear 0.45s;
+  }
+  .pb-summary-body[data-open] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+  }
+  .pb-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: rgb(5 5 10 / 0.62);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+  .pb-scrim[data-open] {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}
+
+/* ---- Wide */
+@media (min-width: 1280px) {
+  .pb .pb-compact {
+    display: none;
+  }
+  .pb-summary-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .pb-actions {
+    flex: none;
+  }
+
+  .pb[data-mode='sheet'] .pb-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .pb[data-mode='sheet'] .pb-summary {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-left: 1px solid var(--line);
+    background: linear-gradient(180deg, rgb(26 26 36 / 0.5), rgb(5 5 10 / 0.35));
+  }
+
+  .pb[data-mode='page'] .pb-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 3rem;
+    align-items: start;
+  }
+  .pb[data-mode='page'] .pb-summary {
+    top: calc(var(--header-h) + 24px);
+    bottom: auto;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100dvh - var(--header-h) - 48px);
+    margin-inline: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card-lg);
+    background: linear-gradient(180deg, rgb(26 26 36 / 0.72), rgb(12 12 20 / 0.6));
+    box-shadow: 0 40px 90px -50px rgb(0 0 0 / 0.9);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+}
+
+/* ---- Micro-motion (transform/opacity only; reduced motion is handled globally) */
+.pb-check svg {
+  transform: scale(0.4);
+  opacity: 0;
+  transition:
+    transform 0.35s var(--ease-expo),
+    opacity 0.2s ease;
+}
+.pb-card[data-checked] .pb-check svg {
+  transform: none;
+  opacity: 1;
+}
+.pb-card:active:not([data-locked]) {
+  transform: scale(0.99);
+}
+.pb-card {
+  transition-property: border-color, background-color, box-shadow, transform;
+}
+
+.pb-pop {
+  animation: pb-pop 0.5s var(--ease-expo) both;
+}
+.pb-line {
+  animation: pb-in 0.45s var(--ease-expo) both;
+}
+
+@keyframes pb-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+@keyframes pb-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

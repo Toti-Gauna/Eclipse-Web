@@ -1,25 +1,25 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { X } from 'lucide-react';
 import { Sheet } from '@/components/ui/Sheet';
 import { useExperience } from '@/components/providers/ExperienceProvider';
+import { PlanBuilder } from './PlanBuilder';
 
-// Phase 3 shell. The full generator ("Armá tu plan") replaces the body in phase 10.
-export function PlanBuilderSheet() {
-  const t = useTranslations();
+/**
+ * "Armá tu plan" as a drawer (right side from md) / full-screen bottom sheet (mobile).
+ * Lazy-loaded by BuilderHost on first open and kept mounted afterwards.
+ * `suppressed` keeps it closed on /plan, where the page itself is the builder.
+ */
+export function PlanBuilderSheet({ suppressed = false }: { suppressed?: boolean }) {
   const { builder, closeBuilder } = useExperience();
+  const open = builder.open && !suppressed;
   return (
-    <Sheet open={builder.open} onClose={closeBuilder} variant="drawer" labelledBy="builder-title">
-      <div className="theme-dark flex h-full flex-col bg-night p-6">
-        <div className="flex items-center justify-between">
-          <h2 id="builder-title" className="display text-3xl">
-            {t('header.buildPlan')}
-          </h2>
-          <button type="button" onClick={closeBuilder} aria-label={t('common.close')} className="grid size-11 place-items-center rounded-full border border-line">
-            <X aria-hidden className="size-5" />
-          </button>
-        </div>
+    <Sheet open={open} onClose={closeBuilder} variant="drawer" labelledBy="builder-title">
+      <div className="relative h-full overflow-hidden bg-night">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-32 -top-40 size-[26rem] rounded-full bg-[radial-gradient(closest-side,rgb(245_185_66/0.16),transparent)]"
+        />
+        <PlanBuilder mode="sheet" open={open} preset={builder.preset} onClose={closeBuilder} />
       </div>
     </Sheet>
   );
