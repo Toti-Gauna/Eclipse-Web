@@ -118,5 +118,107 @@
     "usdRef": "({amount})",
     "perMonth": "per month",
     "perYear": "per year"
+  },
+  "problem": {
+    "eyebrow": "The problem",
+    "title": "What does <em>not having</em> this cost you?",
+    "sub": "Every unanswered inquiry and every hour spent copying data by hand has a price. Plug in your numbers and see it in your currency.",
+    "inputsTitle": "Your numbers",
+    "verticalLegend": "Your industry",
+    "painLabel": "The usual problem",
+    "painFallback": "Unanswered inquiries and hours of manual work",
+    "hoursLabel": "Hours a week on repetitive tasks",
+    "lostValueText": "{count} per week",
+    "hoursValue": "{count} h",
+    "hoursValueText": "{count, plural, one {# hour} other {# hours}} per week",
+    "approxValueText": "about {amount}",
+    "resultTitle": "Monthly estimate",
+    "resultLead": "You're losing",
+    "resultTail": "a month",
+    "resultAnnounce": "You're losing about {amount} a month.",
+    "breakdown": "Breakdown",
+    "lostRevenue": "Revenue slipping away",
+    "lostDetail": "<n>{count}</n> a month × {ticket}",
+    "timeCost": "Your team's hours",
+    "timeDetail": "<n>{count}</n> h a month × {rate} an hour",
+    "cta": "Win it back — get your demo",
+    "ctaPlan": "Build your plan",
+    "note": "This is an estimate: {weeks} weeks a month and {rate} per hour of work. Your real number may differ.",
+    "whatsapp": "Hi Eclipse. I used the calculator on your site: I'm losing about {amount} a month. I want it back. Can you show me a demo? Industry: {vertical}.",
+    "whatsappNoVertical": "Hi Eclipse. I used the calculator on your site: I'm losing about {amount} a month. I want it back. Can you show me a demo?"
+  },
+  "services": {
+    "eyebrow": "What we do",
+    "title": "What we build so your business <em>never sleeps</em>.",
+    "sub": "Six services. Use one or combine them. Whichever you pick, you see it working with your business first.",
+    "resultLabel": "The result",
+    "from": "From",
+    "add": "Add to your plan",
+    "items": {
+      "webs": {
+        "title": "Websites with motion",
+        "description": "Landing pages and sites that move, load fast and explain your business in seconds.",
+        "result": "People message you on WhatsApp in one tap, right from their phone."
+      },
+      "systems": {
+        "title": "Booking and ordering systems",
+        "description": "Online calendar, automatic confirmations and orders that arrive organized.",
+        "result": "Customers book and order on their own, at any hour."
+      },
+      "voice": {
+        "title": "AI voice agents",
+        "description": "A natural voice that answers the phone, handles the usual questions and books appointments.",
+        "result": "Answers calls 24/7, after hours too."
+      },
+      "chat": {
+        "title": "Chatbots and automations",
+        "description": "Instant replies on WhatsApp and on your website. Reminders and follow-ups that go out on their own.",
+        "result": "Every inquiry gets an answer in seconds, and you get the customer ready to buy."
+      },
+      "commerce": {
+        "title": "E-commerce",
+        "description": "Catalog, cart, payments and shipping, with your brand's identity.",
+        "result": "You sell around the clock, even when the store is closed."
+      },
+      "apps": {
+        "title": "Apps and platforms",
+        "description": "Your service in your own app: bookings, orders and payments, with a dashboard to run it.",
+        "result": "Customers book, order and pay from your own app."
+      }
+    }
+  },
+  "process": {
+    "eyebrow": "How we work",
+    "title": "First you see <em>your demo</em>. Then we talk.",
+    "sub": "That's how we sell: within {hours} hours we build a demo of your business, before any call. If you like it, we keep going.",
+    "durationLabel": "Turnaround",
+    "hoursUnit": "h",
+    "from": "From",
+    "perMonth": "/mo",
+    "steps": {
+      "demo": {
+        "title": "A demo of your business",
+        "body": "With your name, your industry and your services. We send it on WhatsApp and you try it before any call."
+      },
+      "call": {
+        "title": "Call and proposal",
+        "body": "We talk through what you saw and send you a written proposal: scope, price and timeline."
+      },
+      "build": {
+        "title": "Deposit and build",
+        "body": "The deposit gets us started. We build on the demo you already approved, and you see every step.",
+        "meta": "Based on scope"
+      },
+      "launch": {
+        "title": "Launch and training",
+        "body": "We put it live, make sure it works and show you and your team how to use it.",
+        "meta": "With your team"
+      },
+      "care": {
+        "title": "Maintenance and upgrades",
+        "body": "Hosting, backups and changes every month. Your system grows with your business."
+      }
+    },
+    "ctaLead": "Step one is seeing your business working."
   }
 }

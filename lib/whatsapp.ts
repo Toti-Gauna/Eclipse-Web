@@ -16,6 +16,7 @@ export type WhatsAppOrigin =
   | 'founders'
   | 'agent'
   | 'final_cta'
+  | 'process'
   | 'footer';
 
 /** wa.me link with a prefilled, URL-encoded message. */

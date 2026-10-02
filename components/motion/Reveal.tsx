@@ -37,12 +37,14 @@ export function Reveal<T extends ElementType = 'div'>({
       const targets = root.querySelectorAll<HTMLElement>('[data-reveal]');
       if (!targets.length) return;
       gsap.from(targets, {
-        autoAlpha: 0,
+        // opacity (not autoAlpha): visibility:hidden would drop unrevealed content
+        // from the tab order and the accessibility tree.
+        opacity: 0,
         y: 24,
         duration: 0.9,
         ease: 'expo.out',
         stagger,
-        clearProps: 'transform,opacity,visibility',
+        clearProps: 'transform,opacity',
         scrollTrigger: { trigger: root, start, once: true },
       });
     },

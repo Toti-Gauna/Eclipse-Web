@@ -118,5 +118,107 @@
     "usdRef": "({amount})",
     "perMonth": "por mês",
     "perYear": "por ano"
+  },
+  "problem": {
+    "eyebrow": "O problema",
+    "title": "Quanto custa <em>não ter</em> isso?",
+    "sub": "Cada contato sem resposta e cada hora copiando dados à mão têm um preço. Coloque seus números e veja na sua moeda.",
+    "inputsTitle": "Seus números",
+    "verticalLegend": "Seu setor",
+    "painLabel": "O problema típico",
+    "painFallback": "Contatos sem resposta e horas de trabalho manual",
+    "hoursLabel": "Horas por semana em tarefas repetitivas",
+    "lostValueText": "{count} por semana",
+    "hoursValue": "{count} h",
+    "hoursValueText": "{count, plural, one {# hora} other {# horas}} por semana",
+    "approxValueText": "aproximadamente {amount}",
+    "resultTitle": "Estimativa mensal",
+    "resultLead": "Você está perdendo",
+    "resultTail": "por mês",
+    "resultAnnounce": "Você está perdendo aproximadamente {amount} por mês.",
+    "breakdown": "Detalhamento",
+    "lostRevenue": "Receita que escapa",
+    "lostDetail": "<n>{count}</n> por mês × {ticket}",
+    "timeCost": "Horas da sua equipe",
+    "timeDetail": "<n>{count}</n> h por mês × {rate} a hora",
+    "cta": "Recupere isso — peça sua demo",
+    "ctaPlan": "Monte seu plano",
+    "note": "É uma estimativa: {weeks} semanas por mês e {rate} por hora de trabalho. Seu número real pode ser outro.",
+    "whatsapp": "Olá, Eclipse. Usei a calculadora do site: estou perdendo cerca de {amount} por mês. Quero recuperar isso. Podem me mostrar uma demo? Setor: {vertical}.",
+    "whatsappNoVertical": "Olá, Eclipse. Usei a calculadora do site: estou perdendo cerca de {amount} por mês. Quero recuperar isso. Podem me mostrar uma demo?"
+  },
+  "services": {
+    "eyebrow": "O que fazemos",
+    "title": "O que a gente constrói para o seu negócio <em>não dormir no ponto</em>.",
+    "sub": "Seis serviços. Use um só ou combine. Seja qual for, você vê funcionando com o seu negócio antes.",
+    "resultLabel": "Resultado",
+    "from": "A partir de",
+    "add": "Incluir no plano",
+    "items": {
+      "webs": {
+        "title": "Sites com motion",
+        "description": "Landing pages e sites que se movem, carregam rápido e explicam seu negócio em segundos.",
+        "result": "O cliente te chama no WhatsApp com um toque, direto do celular."
+      },
+      "systems": {
+        "title": "Sistemas de agendamento e pedidos",
+        "description": "Agenda online, confirmações automáticas e pedidos que chegam organizados.",
+        "result": "Seus clientes agendam e pedem sozinhos, a qualquer hora."
+      },
+      "voice": {
+        "title": "Agentes de voz com IA",
+        "description": "Uma voz natural que atende o telefone, responde as dúvidas de sempre e agenda.",
+        "result": "Atende ligações 24/7, inclusive fora do horário."
+      },
+      "chat": {
+        "title": "Chatbots e automações",
+        "description": "Respostas na hora no WhatsApp e no site. Lembretes e follow-ups que saem sozinhos.",
+        "result": "Toda mensagem tem resposta em segundos, e o cliente chega pronto pra você."
+      },
+      "commerce": {
+        "title": "E-commerce",
+        "description": "Catálogo, carrinho, pagamentos e frete, com a identidade da sua marca.",
+        "result": "Você vende 24 horas por dia, mesmo com a loja fechada."
+      },
+      "apps": {
+        "title": "Apps e plataformas",
+        "description": "Seu serviço num app próprio: reservas, pedidos e pagamentos, com um painel para gerenciar tudo.",
+        "result": "Seus clientes reservam, pedem e pagam pelo seu próprio app."
+      }
+    }
+  },
+  "process": {
+    "eyebrow": "Como trabalhamos",
+    "title": "Primeiro você vê <em>sua demo</em>. Depois a gente conversa.",
+    "sub": "É assim que a gente vende: em {hours} horas montamos uma demo do seu negócio, antes de qualquer ligação. Se fizer sentido, seguimos.",
+    "durationLabel": "Prazo",
+    "hoursUnit": "h",
+    "from": "A partir de",
+    "perMonth": "/mês",
+    "steps": {
+      "demo": {
+        "title": "Demo do seu negócio",
+        "body": "Com seu nome, seu setor e seus serviços. A gente manda pelo WhatsApp e você testa antes de qualquer ligação."
+      },
+      "call": {
+        "title": "Ligação e proposta",
+        "body": "A gente conversa sobre o que você viu e manda a proposta por escrito: escopo, preço e prazos."
+      },
+      "build": {
+        "title": "Sinal e construção",
+        "body": "Com o sinal, a gente começa. Construímos em cima da demo que você já aprovou, e você acompanha cada avanço.",
+        "meta": "Conforme o escopo"
+      },
+      "launch": {
+        "title": "Entrega e treinamento",
+        "body": "A gente publica, deixa tudo funcionando e ensina você e sua equipe a usar.",
+        "meta": "Com sua equipe"
+      },
+      "care": {
+        "title": "Manutenção e melhorias",
+        "body": "Hospedagem, backups e ajustes todo mês. Seu sistema cresce junto com o seu negócio."
+      }
+    },
+    "ctaLead": "O primeiro passo é ver seu negócio funcionando."
   }
 }

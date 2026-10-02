@@ -1,7 +1,7 @@
 // Screenshot helper for local QA (not part of the build).
 // Usage:
 //   node scripts/shot.mjs <url> <outDir> [--widths=360,1440] [--full] [--wait=1500]
-//        [--scroll=0,800,2000] [--click=<css selector>] [--reduced] [--name=prefix]
+//        [--scroll=0,800,2000] [--click=<css selector>] [--reduced] [--name=prefix] [--walk]
 // Prints the PNG paths and any console errors / page errors.
 import { chromium } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
@@ -25,6 +25,7 @@ const full = !!flag('full', false);
 const click = flag('click', null);
 const reduced = !!flag('reduced', false);
 const name = flag('name', 'shot');
+const walk = !!flag('walk', false); // scroll through the whole page first so ScrollTrigger reveals fire
 mkdirSync(outDir, { recursive: true });
 
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
@@ -46,6 +47,16 @@ for (const width of widths) {
   if (click) {
     await page.locator(String(click)).first().click();
     await page.waitForTimeout(wait);
+  }
+  if (walk) {
+    const total = await page.evaluate(() => document.documentElement.scrollHeight);
+    for (let y = 0; y < total; y += 500) {
+      await page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);
+      await page.waitForTimeout(120);
+    }
+    await page.waitForTimeout(1200);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.waitForTimeout(600);
   }
   for (const y of scrolls) {
     await page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);

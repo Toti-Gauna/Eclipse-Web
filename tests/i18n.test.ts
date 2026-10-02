@@ -30,9 +30,13 @@ function flatten(tree: Tree, prefix = ''): Map<string, string> {
   return out;
 }
 
-/** ICU placeholders and rich-text tags used in a message, e.g. {count} or <em>. */
+/**
+ * ICU arguments and rich-text tags used in a message, e.g. {count}, {count, plural, …} or <em>.
+ * Only `{name}` / `{name,` count as arguments, so words inside plural branches
+ * ("{# turno libre}") are not mistaken for placeholders.
+ */
 function tokens(message: string): string[] {
-  const vars = [...message.matchAll(/\{\s*(\w+)/g)].map((m) => `{${m[1]}}`);
+  const vars = [...message.matchAll(/\{\s*(\w+)\s*[,}]/g)].map((m) => `{${m[1]}}`);
   const tags = [...message.matchAll(/<\/?(\w+)>/g)].map((m) => `<${m[1]}>`);
   return [...new Set([...vars, ...tags])].sort();
 }
