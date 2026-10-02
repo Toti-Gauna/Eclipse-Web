@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "title": "Eclipse — We show you your business already working",
+    "description": "Websites, systems, AI agents, e-commerce and apps for businesses in LatAm and beyond. Before we talk, we show you your business already working.",
+    "planTitle": "Build your plan — Eclipse",
+    "planDescription": "Pick what you need and see an estimated quote instantly, in your currency.",
+    "ogAlt": "Eclipse: a total solar eclipse with its golden corona",
+    "organizationDescription": "Development, AI and automation studio. Websites, systems, AI agents, e-commerce and apps.",
+    "notFoundTitle": "This page went dark",
+    "notFoundBody": "We couldn't find what you were looking for.",
+    "notFoundCta": "Back to home"
+  },
+  "common": {
+    "demo": "Demo",
+    "preview": "Preview",
+    "close": "Close",
+    "open": "Open",
+    "back": "Back",
+    "from": "from",
+    "to": "to",
+    "perMonth": "/mo",
+    "perYear": "/yr",
+    "monthly": "Monthly",
+    "annual": "Yearly",
+    "included": "Included",
+    "none": "None",
+    "copy": "Copy",
+    "copied": "Copied",
+    "play": "Play",
+    "pause": "Pause",
+    "next": "Next",
+    "previous": "Previous",
+    "loading": "Loading…",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "approxPrefix": "≈"
+  },
+  "nav": {
+    "services": "Services",
+    "examples": "Examples",
+    "pricing": "Pricing",
+    "founders": "Founders"
+  },
+  "header": {
+    "home": "Eclipse, go to home",
+    "skip": "Skip to content",
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main navigation",
+    "language": "Language",
+    "currency": "Currency",
+    "progress": "Reading progress: {value}%",
+    "buildPlan": "Build your plan"
+  },
+  "currency": {
+    "ARS": "Argentine pesos",
+    "BRL": "Brazilian reais",
+    "USD": "US dollars",
+    "notice": "Prices in USD. ARS and BRL amounts are estimates based on today's exchange rate.",
+    "source": "Rate as of {date}",
+    "sourceFallback": "Reference rate {date}"
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English",
+    "pt": "Português"
+  },
+  "loader": {
+    "label": "Loading Eclipse"
+  },
+  "hero": {
+    "eyebrow": "Development · AI · Automation",
+    "title": "Before we talk, we show you <em>your business</em> already working.",
+    "subtitle": "Websites, systems and AI agents for businesses that can't wait. Pick your industry and see it.",
+    "pickVertical": "Pick your industry",
+    "ctaDemo": "Get your demo",
+    "ctaPlan": "Build your plan",
+    "seeAnother": "See another industry",
+    "scroll": "Scroll to see more",
+    "visualLabel": "A total eclipse. Pick an industry to see the demo.",
+    "demoLabel": "Interactive demo of {business}",
+    "wantThis": "I want this for my business"
+  },
+  "whatsapp": {
+    "greeting": "Hi Eclipse.",
+    "demo": "Hi Eclipse. I'd like to get my demo. Industry: {vertical}.",
+    "demoNoVertical": "Hi Eclipse. I'd like to get my demo.",
+    "wantThis": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}).",
+    "notListed": "Hi Eclipse. My industry isn't on the list: {vertical}. Can you build me a demo?"
+  },
+  "footer": {
+    "tagline": "Development, AI and automation for businesses that can't wait.",
+    "explore": "Explore",
+    "contact": "Contact",
+    "settings": "Preferences",
+    "teaser": "Eclipse is more than a studio. <em>Coming soon</em>.",
+    "comingSoon": "Coming soon",
+    "rights": "© {year} Eclipse. All rights reserved.",
+    "demoNotice": "The businesses shown in the demos are fictional."
+  }
+}

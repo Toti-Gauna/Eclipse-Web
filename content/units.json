@@ -1,0 +1,18 @@
+{
+  "$comment": "Unidades de Eclipse. 'active' se vende hoy; 'comingSoon' aparece en gris y sin link en el footer. Para activar una unidad: status=active y completar href.",
+  "units": [
+    {
+      "id": "agency",
+      "name": "Eclipse Agency",
+      "status": "active",
+      "href": "/",
+      "tagline": {
+        "es": "Webs, sistemas, agentes de IA, e-commerce y apps.",
+        "en": "Websites, systems, AI agents, e-commerce and apps.",
+        "pt": "Sites, sistemas, agentes de IA, e-commerce e apps."
+      }
+    },
+    { "id": "media", "name": "Eclipse Media", "status": "comingSoon", "href": null, "tagline": null },
+    { "id": "market", "name": "Eclipse Market", "status": "comingSoon", "href": null, "tagline": null }
+  ]
+}

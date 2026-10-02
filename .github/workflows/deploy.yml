@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+  # GitHub Pages serves the project under /<repo>. Leave NEXT_PUBLIC_BASE_PATH empty for a custom domain.
+  NEXT_PUBLIC_BASE_PATH: /Eclipse-Web
+  NEXT_PUBLIC_SITE_URL: https://toti-gauna.github.io/Eclipse-Web
+  # Override these with repository variables (Settings → Secrets and variables → Actions → Variables).
+  NEXT_PUBLIC_WHATSAPP: ${{ vars.NEXT_PUBLIC_WHATSAPP || '5492230000000' }}
+  NEXT_PUBLIC_EMAIL: ${{ vars.NEXT_PUBLIC_EMAIL || 'hola@eclipse.example' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Build (static export → out/)
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

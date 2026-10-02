@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "title": "Eclipse — Mostramos o seu negócio funcionando",
+    "description": "Sites, sistemas, agentes de IA, e-commerce e apps para negócios da América Latina e do mundo. Antes de conversar, mostramos o seu negócio funcionando.",
+    "planTitle": "Monte seu plano — Eclipse",
+    "planDescription": "Escolha o que você precisa e veja um orçamento estimado na hora, na sua moeda.",
+    "ogAlt": "Eclipse: um eclipse total com sua coroa dourada",
+    "organizationDescription": "Estúdio de desenvolvimento, IA e automação. Sites, sistemas, agentes de IA, e-commerce e apps.",
+    "notFoundTitle": "Esta página ficou no escuro",
+    "notFoundBody": "Não encontramos o que você procurava.",
+    "notFoundCta": "Voltar ao início"
+  },
+  "common": {
+    "demo": "Demo",
+    "preview": "Prévia",
+    "close": "Fechar",
+    "open": "Abrir",
+    "back": "Voltar",
+    "from": "a partir de",
+    "to": "até",
+    "perMonth": "/mês",
+    "perYear": "/ano",
+    "monthly": "Mensal",
+    "annual": "Anual",
+    "included": "Incluído",
+    "none": "Nenhum",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "play": "Reproduzir",
+    "pause": "Pausar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "loading": "Carregando…",
+    "whatsapp": "WhatsApp",
+    "email": "E-mail",
+    "approxPrefix": "≈"
+  },
+  "nav": {
+    "services": "Serviços",
+    "examples": "Exemplos",
+    "pricing": "Preços",
+    "founders": "Fundadores"
+  },
+  "header": {
+    "home": "Eclipse, ir para o início",
+    "skip": "Pular para o conteúdo",
+    "menu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "mainNav": "Navegação principal",
+    "language": "Idioma",
+    "currency": "Moeda",
+    "progress": "Progresso de leitura: {value}%",
+    "buildPlan": "Monte seu plano"
+  },
+  "currency": {
+    "ARS": "Pesos argentinos",
+    "BRL": "Reais",
+    "USD": "Dólares",
+    "notice": "Preços em USD. Os valores em ARS e BRL são referenciais, conforme a cotação do dia.",
+    "source": "Cotação de {date}",
+    "sourceFallback": "Cotação de referência {date}"
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English",
+    "pt": "Português"
+  },
+  "loader": {
+    "label": "Carregando Eclipse"
+  },
+  "hero": {
+    "eyebrow": "Desenvolvimento · IA · Automação",
+    "title": "Antes de conversar, mostramos <em>o seu negócio</em> funcionando.",
+    "subtitle": "Sites, sistemas e agentes de IA para negócios que não podem esperar. Escolha seu setor e veja.",
+    "pickVertical": "Escolha seu setor",
+    "ctaDemo": "Peça sua demo",
+    "ctaPlan": "Monte seu plano",
+    "seeAnother": "Ver outro setor",
+    "scroll": "Role para ver mais",
+    "visualLabel": "Um eclipse total. Escolha um setor para ver a demo.",
+    "demoLabel": "Demo navegável de {business}",
+    "wantThis": "Quero isso para o meu negócio"
+  },
+  "whatsapp": {
+    "greeting": "Olá, Eclipse.",
+    "demo": "Olá, Eclipse. Quero pedir minha demo. Setor: {vertical}.",
+    "demoNoVertical": "Olá, Eclipse. Quero pedir minha demo.",
+    "wantThis": "Olá, Eclipse. Vi a demo da {business} e quero algo assim para o meu negócio ({vertical}).",
+    "notListed": "Olá, Eclipse. Meu setor não está na lista: {vertical}. Vocês montam uma demo para mim?"
+  },
+  "footer": {
+    "tagline": "Desenvolvimento, IA e automação para negócios que não podem esperar.",
+    "explore": "Explorar",
+    "contact": "Contato",
+    "settings": "Preferências",
+    "teaser": "A Eclipse é mais que um estúdio. <em>Em breve</em>.",
+    "comingSoon": "Em breve",
+    "rights": "© {year} Eclipse. Todos os direitos reservados.",
+    "demoNotice": "Os negócios que aparecem nas demos são fictícios."
+  }
+}

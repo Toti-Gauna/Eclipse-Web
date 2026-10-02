@@ -1,0 +1,229 @@
+{
+  "$comment": "Catálogo individual para 'Armá tu plan'. Precios en USD. Los planes (plans.json) y add-ons (addons.json) referencian estos ids.",
+  "categories": [
+    { "id": "presencia", "name": { "es": "Presencia", "en": "Presence", "pt": "Presença" } },
+    { "id": "sistemas", "name": { "es": "Sistemas", "en": "Systems", "pt": "Sistemas" } },
+    { "id": "comercio", "name": { "es": "Comercio", "en": "Commerce", "pt": "Comércio" } },
+    { "id": "plataformas", "name": { "es": "Plataformas", "en": "Platforms", "pt": "Plataformas" } },
+    { "id": "ia", "name": { "es": "IA", "en": "AI", "pt": "IA" } },
+    { "id": "estrategia", "name": { "es": "Estrategia", "en": "Strategy", "pt": "Estratégia" } }
+  ],
+  "items": [
+    {
+      "id": "landing",
+      "category": "presencia",
+      "priceUsd": 250,
+      "icon": "MonitorPlay",
+      "name": {
+        "es": "Landing premium con motion graphics",
+        "en": "Premium landing page with motion graphics",
+        "pt": "Landing page premium com motion graphics"
+      },
+      "description": {
+        "es": "Una página que se mueve, carga rápido y convierte.",
+        "en": "One page that moves, loads fast and converts.",
+        "pt": "Uma página que se move, carrega rápido e converte."
+      }
+    },
+    {
+      "id": "web-multi",
+      "category": "presencia",
+      "priceUsd": 450,
+      "icon": "LayoutTemplate",
+      "name": { "es": "Web multipágina", "en": "Multi-page website", "pt": "Site com várias páginas" },
+      "description": {
+        "es": "Servicios, equipo, contacto y blog, cada uno en su página.",
+        "en": "Services, team, contact and blog, each on its own page.",
+        "pt": "Serviços, equipe, contato e blog, cada um na sua página."
+      }
+    },
+    {
+      "id": "seo",
+      "category": "presencia",
+      "priceUsd": 150,
+      "icon": "Search",
+      "name": { "es": "SEO + analytics", "en": "SEO + analytics", "pt": "SEO + analytics" },
+      "description": {
+        "es": "Que te encuentren en Google y saber qué funciona.",
+        "en": "Get found on Google and know what works.",
+        "pt": "Ser encontrado no Google e saber o que funciona."
+      }
+    },
+    {
+      "id": "trailer",
+      "category": "presencia",
+      "priceUsd": 250,
+      "icon": "Clapperboard",
+      "name": {
+        "es": "Trailer en motion graphics",
+        "en": "Motion graphics trailer",
+        "pt": "Trailer em motion graphics"
+      },
+      "description": {
+        "es": "15 segundos que explican tu negocio mejor que un folleto.",
+        "en": "15 seconds that explain your business better than a brochure.",
+        "pt": "15 segundos que explicam seu negócio melhor que um folheto."
+      }
+    },
+    {
+      "id": "turnos",
+      "category": "sistemas",
+      "priceUsd": 400,
+      "icon": "CalendarCheck",
+      "name": { "es": "Sistema de turnos", "en": "Booking system", "pt": "Sistema de agendamentos" },
+      "description": {
+        "es": "Agenda online, confirmaciones y lista de espera.",
+        "en": "Online calendar, confirmations and a waitlist.",
+        "pt": "Agenda online, confirmações e lista de espera."
+      }
+    },
+    {
+      "id": "pedidos",
+      "category": "sistemas",
+      "priceUsd": 400,
+      "icon": "ClipboardList",
+      "name": { "es": "Sistema de pedidos", "en": "Ordering system", "pt": "Sistema de pedidos" },
+      "description": {
+        "es": "Pedidos online que llegan ordenados y sin errores.",
+        "en": "Online orders that arrive organized and error-free.",
+        "pt": "Pedidos online que chegam organizados e sem erros."
+      }
+    },
+    {
+      "id": "automatizacion",
+      "category": "sistemas",
+      "priceUsd": 300,
+      "icon": "Workflow",
+      "name": {
+        "es": "Automatizaciones (recordatorios, mails, seguimiento)",
+        "en": "Automations (reminders, emails, follow-up)",
+        "pt": "Automações (lembretes, e-mails, follow-up)"
+      },
+      "description": {
+        "es": "Lo repetitivo pasa solo, sin que nadie lo empuje.",
+        "en": "The repetitive work runs on its own.",
+        "pt": "O trabalho repetitivo roda sozinho."
+      }
+    },
+    {
+      "id": "dashboard",
+      "category": "sistemas",
+      "priceUsd": 400,
+      "icon": "LayoutDashboard",
+      "name": { "es": "Dashboard interno", "en": "Internal dashboard", "pt": "Dashboard interno" },
+      "description": {
+        "es": "Los números del día en una sola pantalla.",
+        "en": "Today's numbers on a single screen.",
+        "pt": "Os números do dia em uma tela só."
+      }
+    },
+    {
+      "id": "crm",
+      "category": "sistemas",
+      "priceUsd": 600,
+      "icon": "BookUser",
+      "name": {
+        "es": "CRM + documentación interna",
+        "en": "CRM + internal documentation",
+        "pt": "CRM + documentação interna"
+      },
+      "description": {
+        "es": "Clientes, historial y procesos del equipo en un solo lugar.",
+        "en": "Clients, history and team processes in one place.",
+        "pt": "Clientes, histórico e processos da equipe em um só lugar."
+      }
+    },
+    {
+      "id": "gamificacion",
+      "category": "sistemas",
+      "priceUsd": 700,
+      "icon": "Trophy",
+      "name": { "es": "Gamificación y misiones", "en": "Gamification and missions", "pt": "Gamificação e missões" },
+      "description": {
+        "es": "Rachas, misiones y premios que hacen volver a tus clientes.",
+        "en": "Streaks, missions and rewards that bring customers back.",
+        "pt": "Sequências, missões e prêmios que fazem o cliente voltar."
+      }
+    },
+    {
+      "id": "ecommerce",
+      "category": "comercio",
+      "priceUsd": 1200,
+      "icon": "ShoppingCart",
+      "name": { "es": "E-commerce completo", "en": "Full e-commerce", "pt": "E-commerce completo" },
+      "description": {
+        "es": "Catálogo, carrito, pagos y envíos.",
+        "en": "Catalog, cart, payments and shipping.",
+        "pt": "Catálogo, carrinho, pagamentos e frete."
+      }
+    },
+    {
+      "id": "app-ondemand",
+      "category": "plataformas",
+      "priceUsd": 3500,
+      "icon": "Smartphone",
+      "name": { "es": "App on-demand", "en": "On-demand app", "pt": "App on-demand" },
+      "description": {
+        "es": "Tu servicio en una app: pedidos, reservas y pagos.",
+        "en": "Your service in an app: orders, bookings and payments.",
+        "pt": "Seu serviço em um app: pedidos, reservas e pagamentos."
+      }
+    },
+    {
+      "id": "voz",
+      "category": "ia",
+      "priceUsd": 600,
+      "icon": "AudioLines",
+      "name": { "es": "Agente de voz con IA", "en": "AI voice agent", "pt": "Agente de voz com IA" },
+      "description": {
+        "es": "Atiende llamadas, responde y agenda. 24/7.",
+        "en": "Answers calls, replies and books. 24/7.",
+        "pt": "Atende ligações, responde e agenda. 24/7."
+      }
+    },
+    {
+      "id": "chatbot",
+      "category": "ia",
+      "priceUsd": 350,
+      "icon": "Bot",
+      "name": {
+        "es": "Chatbot IA en WhatsApp/web",
+        "en": "AI chatbot on WhatsApp/web",
+        "pt": "Chatbot com IA no WhatsApp/site"
+      },
+      "description": {
+        "es": "Responde al instante y te pasa los clientes listos.",
+        "en": "Replies instantly and hands you ready-to-buy leads.",
+        "pt": "Responde na hora e te passa o cliente pronto."
+      }
+    },
+    {
+      "id": "marketing",
+      "category": "estrategia",
+      "priceUsd": 400,
+      "icon": "Megaphone",
+      "name": {
+        "es": "Marketing + estudio de mercado",
+        "en": "Marketing + market research",
+        "pt": "Marketing + estudo de mercado"
+      },
+      "description": {
+        "es": "Qué hace tu competencia y cómo ganarle.",
+        "en": "What your competitors do and how to beat them.",
+        "pt": "O que a concorrência faz e como vencê-la."
+      }
+    },
+    {
+      "id": "auditoria",
+      "category": "estrategia",
+      "priceUsd": 150,
+      "icon": "ScanSearch",
+      "name": { "es": "Auditoría digital", "en": "Digital audit", "pt": "Auditoria digital" },
+      "description": {
+        "es": "Dónde estás perdiendo clientes hoy, con plan de acción.",
+        "en": "Where you're losing customers today, with an action plan.",
+        "pt": "Onde você está perdendo clientes hoje, com plano de ação."
+      }
+    }
+  ]
+}
