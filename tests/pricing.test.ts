@@ -189,6 +189,12 @@ describe('quote', () => {
     expect(a.periodUsd).toBe(790);
     expect(a.voiceUsageMonthlyUsd).toBe(49);
   });
+  it('annual billing falls back to monthly when the annual offer is off', () => {
+    const off = { ...defaultCatalog, offers: offers.map((o) => (o.kind === 'annualMaintenance' ? { ...o, active: false } : o)) as Offer[] };
+    const m = quote({ planId: 'sistema', itemIds: [], maintenanceId: 'crecimiento', billing: 'annual', now: NOW }, off).maintenance;
+    expect(m.billing).toBe('monthly');
+    expect(m.periodUsd).toBe(79);
+  });
   it('founder discount applies to the one-time total', () => {
     const q = quote({ planId: 'sistema', itemIds: [], founderOptIn: true, foundersLeft: 5, now: NOW });
     expect(q.totalUsd).toBe(800);
@@ -238,8 +244,9 @@ describe('formatMoney', () => {
     expect(clean(formatMoney(25, 'BRL', rates, 'pt'))).toBe('≈ R$ 140');
     expect(clean(formatMoney(1000, 'BRL', rates, 'pt'))).toBe('≈ R$ 5.400');
   });
-  it('locale changes the separators', () => {
-    expect(clean(formatMoney(1000, 'BRL', rates, 'en'))).toBe('≈ R$5,400');
+  it('locale changes the separators, BRL is always R$', () => {
+    expect(clean(formatMoney(1000, 'BRL', rates, 'en'))).toMatch(/^≈ R\$ ?5,400$/);
+    expect(clean(formatMoney(1000, 'BRL', rates, 'es'))).toMatch(/^≈ R\$ ?5\.400$/);
   });
   it('approximation prefix can be disabled', () => {
     expect(clean(formatMoney(1000, 'BRL', rates, 'pt', { approx: false }))).toBe('R$ 5.400');

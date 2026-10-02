@@ -220,5 +220,73 @@
       }
     },
     "ctaLead": "Step one is seeing your business working."
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Clear prices. <em>No fine print.</em>",
+    "subtitle": "Every plan starts at a “from” price, with a range based on scope. Add extras, pick your maintenance and see the total in your currency, instantly.",
+    "featured": "Recommended",
+    "from": "From",
+    "range": "Range by scope: <nums>{from} – {to}</nums>",
+    "separate": "Bought separately: {separate} → <save>you save <count>≈ {pct}%</count></save>",
+    "includes": "What's included",
+    "addons": "Add extras",
+    "add": "Add",
+    "added": "Added",
+    "included": "Included",
+    "includedNote": "Already in the plan",
+    "comboBadge": "Combo",
+    "maintenance": "Maintenance + hosting",
+    "perMonth": "per month",
+    "perYear": "per year",
+    "none": "None",
+    "suggested": "Suggested",
+    "optional": "Optional. {name} is enough to get started.",
+    "voiceUsage": "+ {name}: {price}/mo {note}",
+    "total": "Estimated total",
+    "recurring": "+ {price} {period} for maintenance",
+    "cta": "I want it",
+    "ctaLabel": "I want it: {name} plan, on WhatsApp",
+    "live": "{plan}: estimated total from {total}.",
+    "liveMaintenance": "{plan}: {name} maintenance, {price} {period}.",
+    "liveNoMaintenance": "{plan}: no maintenance.",
+    "billing": {
+      "label": "Maintenance billing",
+      "monthly": "Monthly",
+      "annual": "Yearly",
+      "free": "{months, plural, one {# month free} other {# months free}}"
+    },
+    "founder": {
+      "left": "{left, plural, one {# spot left of {total}} other {# spots left of {total}}}",
+      "cta": "See the founder program"
+    },
+    "offers": {
+      "label": "Current offers",
+      "endsIn": "Ends in {time}",
+      "days": "{days} d {hours} h",
+      "hours": "{hours} h {minutes} min",
+      "minutes": "{minutes} min"
+    },
+    "carousel": {
+      "label": "Plans",
+      "hint": "{count} plans. Swipe to see them all.",
+      "goTo": "Show {name} plan",
+      "goToFeatured": "Jump to most popular",
+      "dots": "Choose a plan to show"
+    },
+    "build": {
+      "title": "Need a different mix?",
+      "text": "Pick item by item and see your estimate instantly.",
+      "cta": "Build your plan",
+      "note": "Prices are “from” prices: the final amount depends on scope. We confirm the final number before we start."
+    },
+    "care": {
+      "eyebrow": "Maintenance + hosting",
+      "title": "Your site doesn't go dark when we're done. <em>We keep it alive.</em>",
+      "subtitle": "Hosting, security, backups and changes for a fixed price. Pick the level that fits what we build together.",
+      "suggestedFor": "Suggested for {plans}",
+      "voiceText": "Only added when your plan has a voice agent: a fixed monthly fee plus the minutes it uses.",
+      "perMonthShort": "/mo"
+    }
   }
 }

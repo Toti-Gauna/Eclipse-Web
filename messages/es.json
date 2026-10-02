@@ -220,5 +220,73 @@
       }
     },
     "ctaLead": "El primer paso es ver tu negocio funcionando."
+  },
+  "pricing": {
+    "eyebrow": "Precios",
+    "title": "Precios claros. <em>Sin letra chica.</em>",
+    "subtitle": "Cada plan arranca en un precio “desde” y tiene un rango según el alcance. Sumá extras, elegí el mantenimiento y mirá el total en tu moneda, al instante.",
+    "featured": "Recomendado",
+    "from": "Desde",
+    "range": "Rango según alcance: <nums>{from} – {to}</nums>",
+    "separate": "Por separado: {separate} → <save>ahorrás <count>≈ {pct}%</count></save>",
+    "includes": "Qué incluye",
+    "addons": "Sumá extras",
+    "add": "Sumar",
+    "added": "Sumado",
+    "included": "Incluido",
+    "includedNote": "Ya viene en el plan",
+    "comboBadge": "Combo",
+    "maintenance": "Mantenimiento + hosting",
+    "perMonth": "por mes",
+    "perYear": "por año",
+    "none": "Ninguno",
+    "suggested": "Sugerido",
+    "optional": "Opcional. Para arrancar, con {name} alcanza.",
+    "voiceUsage": "+ {name}: {price}/mes {note}",
+    "total": "Total estimado",
+    "recurring": "+ {price} {period} de mantenimiento",
+    "cta": "Lo quiero",
+    "ctaLabel": "Lo quiero: plan {name}, por WhatsApp",
+    "live": "{plan}: total estimado desde {total}.",
+    "liveMaintenance": "{plan}: mantenimiento {name}, {price} {period}.",
+    "liveNoMaintenance": "{plan}: sin mantenimiento.",
+    "billing": {
+      "label": "Pago del mantenimiento",
+      "monthly": "Mensual",
+      "annual": "Anual",
+      "free": "{months, plural, one {# mes gratis} other {# meses gratis}}"
+    },
+    "founder": {
+      "left": "{left, plural, one {# lugar libre de {total}} other {# lugares libres de {total}}}",
+      "cta": "Ver programa fundador"
+    },
+    "offers": {
+      "label": "Ofertas vigentes",
+      "endsIn": "Termina en {time}",
+      "days": "{days} d {hours} h",
+      "hours": "{hours} h {minutes} min",
+      "minutes": "{minutes} min"
+    },
+    "carousel": {
+      "label": "Planes",
+      "hint": "{count} planes. Deslizá para verlos.",
+      "goTo": "Ver plan {name}",
+      "goToFeatured": "Ir al más elegido",
+      "dots": "Elegí qué plan ver"
+    },
+    "build": {
+      "title": "¿Necesitás otra combinación?",
+      "text": "Elegí ítem por ítem y mirá el presupuesto al instante.",
+      "cta": "Armá tu plan",
+      "note": "Los precios son “desde”: el valor final depende del alcance. Antes de empezar te pasamos el número final."
+    },
+    "care": {
+      "eyebrow": "Mantenimiento + hosting",
+      "title": "Tu sitio no se apaga cuando terminamos. <em>Lo mantenemos vivo.</em>",
+      "subtitle": "Hosting, seguridad, backups y cambios por un precio fijo. Elegís el nivel según lo que construimos juntos.",
+      "suggestedFor": "Sugerido para {plans}",
+      "voiceText": "Se suma solo cuando tu plan tiene agente de voz: un fijo por mes más los minutos que use.",
+      "perMonthShort": "/mes"
+    }
   }
 }

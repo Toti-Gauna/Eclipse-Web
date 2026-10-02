@@ -351,7 +351,9 @@ export function quote(input: QuoteInput, catalog: Catalog = defaultCatalog): Quo
   const maintenancePlan = input.maintenanceId
     ? (catalog.maintenance.find((m) => m.id === input.maintenanceId) ?? null)
     : null;
-  const billing: Billing = input.billing ?? 'monthly';
+  // Annual billing *is* the annual offer: without it (inactive/expired) everything is monthly.
+  const annualOffer = findOffer(catalog.offers, 'annualMaintenance');
+  const billing: Billing = input.billing === 'annual' && isOfferActive(annualOffer, now) ? 'annual' : 'monthly';
   const monthlyUsd = maintenancePlan?.priceUsd ?? 0;
   const periodUsd = billing === 'annual' ? annualize(monthlyUsd, catalog.annualMonths) : monthlyUsd;
 
@@ -470,7 +472,10 @@ export function formatMoney(
 ): string {
   const tag = (localeTags as Record<string, string>)[locale] ?? locale;
   const value = toCurrency(usd, currency, rates);
-  const formatted = numberFormat(tag, currency).format(value);
+  const formatted = numberFormat(tag, currency)
+    .formatToParts(value)
+    .map((part) => (part.type === 'currency' && currency === 'BRL' ? 'R$' : part.value))
+    .join('');
   const approx = options.approx ?? isApproximate(currency);
   return approx && isApproximate(currency) ? `≈ ${formatted}` : formatted;
 }
