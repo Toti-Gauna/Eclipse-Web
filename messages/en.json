@@ -98,5 +98,25 @@
     "comingSoon": "Coming soon",
     "rights": "© {year} Eclipse. All rights reserved.",
     "demoNotice": "The businesses shown in the demos are fictional."
+  },
+  "planMessage": {
+    "introCard": "Hi Eclipse. I'd like this plan:",
+    "introBuilder": "Hi Eclipse. I built my plan on your website:",
+    "planLine": "{name} plan — from {price}",
+    "itemLine": "{name} — {price}",
+    "comboTag": "(combo)",
+    "total": "Estimated total: {price}",
+    "totalRange": "Estimated total: {from} to {to}",
+    "totalWithOffers": "With offers: {price}",
+    "maintenance": "{name} maintenance: {price} {period}",
+    "maintenanceAnnual": "{name} maintenance: {price} {period} (paid yearly, 2 months free)",
+    "maintenanceNone": "No maintenance for now",
+    "voiceUsage": "Voice agent: {price} per month + minutes based on usage",
+    "offers": "Offers: {list}",
+    "vertical": "Industry: {name}",
+    "localeCurrency": "Language: {language} · Currency: {currency}",
+    "usdRef": "({amount})",
+    "perMonth": "per month",
+    "perYear": "per year"
   }
 }

@@ -24,7 +24,7 @@ export function baseMetadata(opts: {
 }): Metadata {
   const { locale, title, description, ogAlt, path = '/' } = opts;
   const url = absoluteUrl(`/${locale}${path === '/' ? '/' : path}`);
-  const image = { url: absoluteUrl('/og.png'), width: 1200, height: 630, alt: ogAlt };
+  const image = { url: absoluteUrl(`/og-${locale}.jpg`), width: 1200, height: 630, alt: ogAlt };
   return {
     metadataBase: new URL(absoluteUrl('/')),
     title,
@@ -56,7 +56,7 @@ export function jsonLd(locale: Locale, organizationDescription: string) {
         '@id': orgId,
         name: 'Eclipse',
         url: absoluteUrl(`/${locale}/`),
-        logo: absoluteUrl('/og.png'),
+        logo: absoluteUrl('/icon.svg'),
         description: organizationDescription,
         email: CONTACT_EMAIL,
         contactPoint: {
