@@ -10,6 +10,7 @@ import { baseMetadata } from '@/lib/seo';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Loader, LOADER_HEAD_SCRIPT } from '@/components/loader/Loader';
 
 export const dynamicParams = false;
 
@@ -43,8 +44,12 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={localeTags[locale as Locale]} data-scroll-behavior="smooth" className={`${fontSans.variable} ${fontSerif.variable}`}>
+    <html lang={localeTags[locale as Locale]} suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontSans.variable} ${fontSerif.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: LOADER_HEAD_SCRIPT }} />
+      </head>
       <body className="theme-dark bg-void">
+        <Loader />
         <NextIntlClientProvider>
           <AppProviders locale={locale as Locale}>
             <Header />
