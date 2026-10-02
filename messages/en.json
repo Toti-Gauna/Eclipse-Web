@@ -50,7 +50,8 @@
     "language": "Language",
     "currency": "Currency",
     "progress": "Reading progress: {value}%",
-    "buildPlan": "Build your plan"
+    "buildPlan": "Build your plan",
+    "progressLabel": "Reading progress"
   },
   "currency": {
     "ARS": "Argentine pesos",

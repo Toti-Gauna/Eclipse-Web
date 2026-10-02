@@ -156,3 +156,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /.lab-shots/
+
+# dev-only component labs (page.dev.tsx) and local QA
+/app/\[locale\]/lab/

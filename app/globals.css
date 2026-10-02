@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+/* `theme-light:` / `theme-dark:` variants follow the nearest .theme-* ancestor. */
+@custom-variant theme-light (&:where(.theme-light, .theme-light *));
+@custom-variant theme-dark (&:where(.theme-dark, .theme-dark *));
+
 /* ------------------------------------------------------------------ */
 /* Design tokens                                                        */
 /* ------------------------------------------------------------------ */
@@ -27,6 +31,7 @@
   --surface: rgb(26 26 36 / 0.55);
   --surface-strong: rgb(26 26 36 / 0.85);
   --focus: var(--corona);
+  --fg-inverse: var(--void);
 
   --header-h: 64px;
   --gutter: 16px;
@@ -50,6 +55,7 @@
   --surface: rgb(26 26 36 / 0.55);
   --surface-strong: rgb(26 26 36 / 0.85);
   --focus: var(--corona);
+  --fg-inverse: var(--void);
   color: var(--fg);
 }
 
@@ -62,6 +68,7 @@
   --surface: rgb(255 255 255 / 0.62);
   --surface-strong: rgb(255 255 255 / 0.9);
   --focus: var(--corona-deep);
+  --fg-inverse: var(--dawn);
   color: var(--fg);
 }
 
@@ -85,6 +92,7 @@
   --color-line-strong: var(--line-strong);
   --color-surface: var(--surface);
   --color-surface-strong: var(--surface-strong);
+  --color-fg-inverse: var(--fg-inverse);
 
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-serif: var(--font-instrument), ui-serif, Georgia, 'Times New Roman', serif;
@@ -302,6 +310,147 @@
   .tabular {
     font-variant-numeric: tabular-nums;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Layout chrome: header, sheets, mobile menu, light sweep              */
+/* ------------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+}
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+.site-header {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease;
+  border-bottom: 1px solid transparent;
+}
+.site-header[data-scrolled] {
+  background: rgb(5 5 10 / 0.62);
+  border-bottom-color: var(--line);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+.site-header.theme-light[data-scrolled] {
+  background: rgb(244 239 230 / 0.78);
+}
+
+/* Diagonal amber beam used by <LightSweep> */
+.light-sweep-beam {
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgb(255 232 176 / 0.15) 42%,
+    rgb(255 232 176 / 0.75) 50%,
+    rgb(245 185 66 / 0.25) 58%,
+    transparent 70%
+  );
+  mix-blend-mode: overlay;
+}
+.theme-light .light-sweep-beam {
+  background: linear-gradient(105deg, transparent 30%, rgb(245 185 66 / 0.55) 50%, transparent 70%);
+  mix-blend-mode: multiply;
+}
+
+/* <Sheet> — native dialog with three variants */
+.sheet {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  overflow: hidden;
+}
+.sheet::backdrop {
+  background: rgb(5 5 10 / 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.sheet[data-state='open']::backdrop {
+  opacity: 1;
+}
+.sheet-panel {
+  position: absolute;
+  overflow: auto;
+  overscroll-behavior: contain;
+  transition:
+    transform 0.45s var(--ease-expo),
+    opacity 0.35s ease;
+}
+/* drawer: full-screen bottom sheet on mobile, right drawer from md */
+.sheet[data-variant='drawer'] .sheet-panel {
+  inset: 0;
+  transform: translateY(100%);
+}
+.sheet[data-variant='drawer'][data-state='open'] .sheet-panel {
+  transform: translateY(0);
+}
+@media (min-width: 768px) {
+  .sheet[data-variant='drawer'] .sheet-panel {
+    inset: 0 0 0 auto;
+    width: min(560px, 100vw);
+    transform: translateX(100%);
+    box-shadow: -40px 0 80px -20px rgb(0 0 0 / 0.5);
+  }
+  .sheet[data-variant='drawer'][data-state='open'] .sheet-panel {
+    transform: translateX(0);
+  }
+}
+@media (min-width: 1280px) {
+  .sheet[data-variant='drawer'] .sheet-panel {
+    width: min(920px, 100vw);
+  }
+}
+.sheet[data-variant='fullscreen'] .sheet-panel {
+  inset: 0;
+  opacity: 0;
+  transform: scale(0.98);
+}
+.sheet[data-variant='fullscreen'][data-state='open'] .sheet-panel {
+  opacity: 1;
+  transform: none;
+}
+.sheet[data-variant='center'] .sheet-panel {
+  inset: 50% auto auto 50%;
+  width: min(560px, calc(100vw - 2 * var(--gutter)));
+  max-height: calc(100dvh - 2 * var(--gutter));
+  opacity: 0;
+  transform: translate(-50%, -46%);
+}
+.sheet[data-variant='center'][data-state='open'] .sheet-panel {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+/* Mobile menu (iris clip-path is animated with GSAP) */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  overflow: auto;
+}
+.mobile-menu::backdrop {
+  background: transparent;
 }
 
 /* ------------------------------------------------------------------ */

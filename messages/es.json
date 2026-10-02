@@ -50,7 +50,8 @@
     "language": "Idioma",
     "currency": "Moneda",
     "progress": "Progreso de lectura: {value}%",
-    "buildPlan": "Armá tu plan"
+    "buildPlan": "Armá tu plan",
+    "progressLabel": "Progreso de lectura"
   },
   "currency": {
     "ARS": "Pesos argentinos",

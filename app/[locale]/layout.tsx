@@ -8,6 +8,8 @@ import { routing, localeTags, type Locale } from '@/i18n/routing';
 import { fontSans, fontSerif } from '../fonts';
 import { baseMetadata } from '@/lib/seo';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 
 export const dynamicParams = false;
 
@@ -41,10 +43,14 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={localeTags[locale as Locale]} className={`${fontSans.variable} ${fontSerif.variable}`}>
+    <html lang={localeTags[locale as Locale]} data-scroll-behavior="smooth" className={`${fontSans.variable} ${fontSerif.variable}`}>
       <body className="theme-dark bg-void">
         <NextIntlClientProvider>
-          <AppProviders locale={locale as Locale}>{children}</AppProviders>
+          <AppProviders locale={locale as Locale}>
+            <Header />
+            {children}
+            <Footer />
+          </AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>
