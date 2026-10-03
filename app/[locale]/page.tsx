@@ -12,6 +12,7 @@ import { PricingSection } from '@/components/pricing/PricingSection';
 import { FoundersSection } from '@/components/sections/founders/FoundersSection';
 import { AgentSection } from '@/components/sections/agent/AgentSection';
 import { EphemerisRail } from '@/components/ui/EphemerisRail';
+import { ContentVisibilitySync } from '@/components/motion/ContentVisibilitySync';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -27,29 +28,30 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
       <Hero />
       <SkyTransition from="void" to="night" />
-      <LazyHydrate>
+      <LazyHydrate className="cv-section">
         <ProblemSection />
       </LazyHydrate>
-      <LazyHydrate>
+      <LazyHydrate className="cv-section">
         <ServicesSection />
       </LazyHydrate>
-      <LazyHydrate>
+      <LazyHydrate className="cv-section">
         <ExamplesSection />
       </LazyHydrate>
-      <LazyHydrate>
+      <LazyHydrate className="cv-section">
         <ProcessSection />
       </LazyHydrate>
       <SkyTransition from="night" to="dawn" />
-      <LazyHydrate>
+      <LazyHydrate className="cv-section">
         <PricingSection />
       </LazyHydrate>
-      <LazyHydrate>
+      <LazyHydrate className="cv-section">
         <FoundersSection />
       </LazyHydrate>
-      <LazyHydrate>
+      <LazyHydrate className="cv-section">
         <AgentSection />
       </LazyHydrate>
       <EphemerisRail />
+      <ContentVisibilitySync />
     </main>
   );
 }

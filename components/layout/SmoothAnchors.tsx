@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { CV_OFF_CLASS } from '@/components/motion/ContentVisibilitySync';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 
 /**
@@ -35,6 +36,9 @@ export function SmoothAnchors() {
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
+      // Sections below the fold use content-visibility: auto (estimated heights until they
+      // render). Render them all before measuring so the jump lands exactly.
+      document.documentElement.classList.add(CV_OFF_CLASS);
       target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
       if (window.location.hash !== url.hash) window.history.pushState(window.history.state, '', url.hash);
       const dialog = link.closest('dialog');
