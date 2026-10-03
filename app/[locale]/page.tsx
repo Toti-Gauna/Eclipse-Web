@@ -7,6 +7,8 @@ import { ServicesSection } from '@/components/sections/services/ServicesSection'
 import { ExamplesSection } from '@/components/sections/examples/ExamplesSection';
 import { ProcessSection } from '@/components/sections/process/ProcessSection';
 import { PricingSection } from '@/components/pricing/PricingSection';
+import { FoundersSection } from '@/components/sections/founders/FoundersSection';
+import { AgentSection } from '@/components/sections/agent/AgentSection';
 
 export default function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = use(params);
@@ -21,6 +23,8 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
       <ProcessSection />
       <SkyTransition from="night" to="dawn" />
       <PricingSection />
+      <FoundersSection />
+      <AgentSection />
     </main>
   );
 }

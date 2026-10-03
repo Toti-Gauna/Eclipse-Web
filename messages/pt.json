@@ -1099,5 +1099,101 @@
         "level": "Nível {count}"
       }
     }
+  },
+  "founders": {
+    "eyebrow": "Programa fundador",
+    "title": "Clientes <em>fundadores</em>",
+    "sub": "Estamos escolhendo os {total} primeiros negócios. Preço de fundador, prioridade total e o seu caso contado aqui.",
+    "subNoOffer": "Estamos escolhendo os {total} primeiros negócios para trabalhar lado a lado e contar o caso deles aqui.",
+    "eyebrowClients": "Casos reais",
+    "titleClients": "<em>Clientes</em>",
+    "subClients": "Os primeiros negócios que confiaram na gente. Cada caso, contado com os números dele.",
+    "counter": "{left, plural, one {<v>Resta</v> <n>{left}</n> de {total}} other {<v>Restam</v> <n>{left}</n> de {total}}}",
+    "counterSr": "{left, plural, one {# vaga de fundador livre de {total}} other {# vagas de fundador livres de {total}}}",
+    "slotsLabel": "Vagas do programa fundador",
+    "clientsLabel": "Clientes",
+    "slot": {
+      "number": "Vaga {n}",
+      "free": "Livre",
+      "founder": "Fundador",
+      "emptyTitle": "Seu negócio aqui",
+      "cta": "Quero ser fundador",
+      "ctaLabel": "Quero ser fundador: vaga {n} de {total}, pelo WhatsApp",
+      "case": "Ver caso",
+      "caseOf": "de {name}",
+      "logoAlt": "Logo de {name}"
+    },
+    "deal": {
+      "title": "Uma troca <em>de verdade</em>",
+      "get": "O que você recebe",
+      "give": "O que você oferece",
+      "priceText": "Sobre o valor total do desenvolvimento, enquanto houver vagas.",
+      "maintenanceTitle": "Primeiro mês de manutenção grátis",
+      "maintenanceText": "O plano de manutenção que você escolher, sem custo no primeiro mês.",
+      "priorityTitle": "Prioridade na fila",
+      "priorityText": "Seu projeto começa primeiro e seus pedidos passam na frente.",
+      "testimonialTitle": "Seu depoimento",
+      "testimonialText": "Com as suas palavras: como foi trabalhar com a gente.",
+      "caseTitle": "Permissão para mostrar o seu caso",
+      "caseText": "Seu negócio e seus resultados, contados nesta seção.",
+      "referralTitle": "Uma indicação",
+      "referralText": "Você nos apresenta um negócio que possa precisar da gente."
+    },
+    "next": "Quer ser o próximo caso?",
+    "whatsapp": "Olá, Eclipse. Quero ser cliente fundador.",
+    "whatsappVertical": "Olá, Eclipse. Quero ser cliente fundador. Meu setor: {vertical}."
+  },
+  "agent": {
+    "eyebrow": "Sua vez",
+    "title": "Seu negócio, <em>em plena luz</em>.",
+    "sub": "Peça sua demo e em {hours} horas você vê seu negócio funcionando, antes de qualquer ligação. Prefere ver valores primeiro? Monte seu plano.",
+    "chat": {
+      "label": "Prévia do agente da Eclipse",
+      "name": "Agente Eclipse",
+      "status": "Uma amostra roteirizada do agente que treinamos com o seu negócio na demo.",
+      "log": "Conversa com o agente",
+      "typing": "O agente está digitando",
+      "restart": "Reiniciar",
+      "restartLabel": "Reiniciar a conversa",
+      "restarted": "Conversa reiniciada.",
+      "suggestions": "Respostas sugeridas",
+      "inputLabel": "Sua resposta",
+      "send": "Enviar",
+      "you": "Você",
+      "bot": {
+        "hello": "Oi, eu sou o agente da Eclipse. Isto é uma prévia: na sua demo, eu sou treinado com os dados do seu negócio.",
+        "askVertical": "Para começar, qual é o setor do seu negócio?",
+        "askOther": "Me conta: o que o seu negócio faz?",
+        "knownVertical": "Vi que você escolheu {vertical}. Vamos começar por aí.",
+        "askNeed": "O que você quer resolver primeiro?",
+        "askName": "Perfeito. Última pergunta: qual é o seu nome?",
+        "done": "Obrigado, {name}. Seu resumo está pronto. Seguimos pelo WhatsApp, onde uma pessoa da equipe vai te responder."
+      },
+      "placeholder": {
+        "idle": "O agente já vai escrever…",
+        "vertical": "Ou escreva o seu setor…",
+        "verticalOther": "Escreva o seu setor…",
+        "need": "Ou escreva do seu jeito…",
+        "name": "Seu nome…",
+        "wait": "Só um segundo…"
+      },
+      "mic": "Agente de voz, prévia",
+      "micTip": "Agente de voz — disponível na sua demo",
+      "otherVertical": "Outro",
+      "needs": {
+        "leads": "Mais horários ou contatos",
+        "always": "Responder 24/7",
+        "sell": "Vender online",
+        "ops": "Organizar a operação"
+      },
+      "summary": {
+        "title": "Resumo",
+        "name": "Nome",
+        "vertical": "Setor",
+        "need": "Necessidade"
+      },
+      "whatsappCta": "Continuar no WhatsApp",
+      "message": "Olá, Eclipse. Conversei com o agente do site.\nNome: {name}\nSetor: {vertical}\nPreciso de: {need}\nIdioma: {language}"
+    }
   }
 }

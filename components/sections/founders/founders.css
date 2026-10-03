@@ -1,0 +1,233 @@
+/*
+ * "Clientes fundadores" (components/sections/founders). Light theme over --dawn:
+ * text uses --fg / --fg-muted / --accent (corona-deep); amber fills carry ink text.
+ * Only transform/opacity are animated (the dashed outline and its glow breathe).
+ */
+
+.founders-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 85% 8%, rgb(255 232 176 / 0.75), transparent 70%),
+    radial-gradient(40% 35% at 8% 70%, rgb(245 185 66 / 0.1), transparent 70%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Counter: "Quedan 5 de 5"                                             */
+/* ------------------------------------------------------------------ */
+.founders-counter-line {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 7vw, 2.6rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--fg-muted);
+}
+.founders-counter-line [data-count] {
+  display: inline-block;
+  margin-inline: 0.12em;
+  font-size: clamp(6rem, 30vw, 9.5rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  text-shadow: 0 0 60px rgb(245 185 66 / 0.55);
+}
+.founders-counter-line [data-word] {
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Slots grid: 2 columns on phones (the odd last one spans both),       */
+/* 3 + 2 on tablets, 5 across on desktop.                               */
+/* ------------------------------------------------------------------ */
+.founders-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.founders-grid > li {
+  display: flex;
+  min-width: 0;
+}
+.founders-grid > li:last-child:nth-child(odd) {
+  grid-column: span 2;
+}
+@media (min-width: 768px) {
+  .founders-grid {
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .founders-grid > li:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+  .founders-grid[data-count='5'] {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .founders-grid[data-count='5'] > li {
+    grid-column: span 2;
+  }
+  .founders-grid[data-count='5'] > li:nth-child(n + 4) {
+    grid-column: span 3;
+  }
+}
+@media (min-width: 1280px) {
+  .founders-grid[data-count='5'] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .founders-grid[data-count='5'] > li,
+  .founders-grid[data-count='5'] > li:nth-child(n + 4) {
+    grid-column: auto;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Slot cards                                                           */
+/* ------------------------------------------------------------------ */
+.founder-slot {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 13.5rem;
+  padding: 18px;
+  border-radius: var(--radius-card);
+  transition: transform 0.5s var(--ease-expo);
+}
+@media (min-width: 768px) {
+  .founder-slot {
+    min-height: 17.5rem;
+    padding: 22px;
+  }
+}
+
+.founder-slot-index {
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* Empty: dashed amber outline that breathes, slow. */
+.founder-slot--empty {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.2));
+}
+.founder-slot--empty::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px dashed rgb(196 132 18 / 0.9);
+  pointer-events: none;
+  opacity: 0.55;
+  animation: founder-breathe-line 6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -1.2s);
+}
+.founder-slot-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    0 22px 60px -24px rgb(245 185 66 / 0.85),
+    inset 0 0 46px -12px rgb(245 185 66 / 0.42);
+  opacity: 0;
+  animation: founder-breathe-glow 6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -1.2s);
+}
+.founder-slot--empty:hover,
+.founder-slot--empty:focus-within {
+  transform: translateY(-3px);
+}
+.founder-slot--empty:hover .founder-slot-glow,
+.founder-slot--empty:focus-within .founder-slot-glow {
+  animation-play-state: paused;
+  opacity: 1;
+}
+
+/* The CTA is a real link stretched over the whole card. */
+.founder-slot-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+}
+.founder-slot-cta:focus-visible {
+  outline: none;
+}
+.founder-slot-cta:focus-visible::after {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.founder-slot-arrow {
+  transition: transform 0.4s var(--ease-expo);
+}
+.founder-slot--empty:hover .founder-slot-arrow,
+.founder-slot--empty:focus-within .founder-slot-arrow {
+  transform: translate(2px, -2px) scale(1.06);
+}
+
+/* Filled: solid card. */
+.founder-slot--filled {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.62));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 28px 56px -40px rgb(17 17 20 / 0.35);
+}
+
+@keyframes founder-breathe-line {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes founder-breathe-glow {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.012);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* The deal: what you get / what you give                               */
+/* ------------------------------------------------------------------ */
+.founders-deal {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.78), rgb(255 255 255 / 0.5));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 40px 80px -60px rgb(17 17 20 / 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .founder-slot--empty::before,
+  .founder-slot-glow {
+    animation: none;
+  }
+  .founder-slot--empty::before {
+    opacity: 0.85;
+  }
+  .founder-slot-glow {
+    opacity: 0.45;
+    transform: none;
+  }
+  .founder-slot--empty:hover,
+  .founder-slot--empty:focus-within {
+    transform: none;
+  }
+}
