@@ -1,22 +1,91 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+import { useIsClient } from '@/components/motion/useIsClient';
+import { useReducedMotion } from '@/components/motion/useReducedMotion';
 import { Eclipse } from './Eclipse';
 import { Starfield } from './Starfield';
+import { useHeroState } from './HeroState';
+import { useCorona } from './corona/useCorona';
+import { useStarParallax } from './useStarParallax';
+import { useHeroMotion } from './useHeroMotion';
+import { LIMB_POINT } from './geometry';
 
 /**
- * Full-bleed visual layer of the hero (behind the copy).
- * Phase 4: static eclipse + stars. Phase 5 adds the WebGL corona, parallax,
- * diamond ring, light reveal with the device demo and the pinned scroll.
+ * Full-bleed visual layer of the hero (behind the copy, decorative).
+ *
+ * Layers, back to front: warm sky (scroll) · stars (parallax) · bloom (scroll) ·
+ * eclipse (CSS corona first paint → WebGL corona when supported) · diamond ring
+ * (reveal only). Wrappers keep every motion on its own element:
+ *   [data-hero-eclipse-motion] parallax x/y + scroll scale
+ *   [data-hero-eclipse]        entrance (opacity + scale)
+ *   [data-eclipse-moon-scroll] scroll moon offset · [data-eclipse-moon] reveal moon offset
  */
 export function HeroStage() {
+  const { phase, bus } = useHeroState();
+  const reduced = useReducedMotion();
+  const isClient = useIsClient();
+  const motion = isClient && !reduced;
+  const stage = useRef<HTMLDivElement>(null);
+  const glHost = useRef<HTMLDivElement>(null);
+  const covered = phase === 'open';
+
+  const setCoronaActive = useCorona(glHost, bus);
+  useStarParallax(stage, motion);
+  useHeroMotion(stage, bus, motion);
+
+  // Pause the corona (WebGL loop and CSS animations) when nobody can see it:
+  // hero off-screen, tab hidden or the stage covered by the demo light.
+  const coveredRef = useRef(covered);
+  useEffect(() => {
+    coveredRef.current = covered;
+  }, [covered]);
+  useEffect(() => {
+    const el = stage.current;
+    if (!el) return;
+    let inView = true;
+    const sync = () => {
+      const visible = inView && !document.hidden;
+      el.toggleAttribute('data-paused', !visible || coveredRef.current);
+      setCoronaActive(visible && !coveredRef.current);
+    };
+    const io = new IntersectionObserver((entries) => {
+      const entry = entries[entries.length - 1];
+      inView = entry.isIntersecting;
+      sync();
+    });
+    io.observe(el);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+    return () => {
+      io.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+    };
+  }, [setCoronaActive, covered]);
+
   return (
-    <div data-hero-stage className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div ref={stage} data-hero-stage aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {motion ? <div data-hero-sky className="hero-sky absolute inset-0" /> : null}
       <Starfield />
-      <div
-        data-hero-eclipse-anchor
-        className="absolute left-1/2 top-[calc(var(--header-h)+2svh)] -translate-x-1/2 md:left-[71%] md:top-1/2 md:-translate-y-1/2"
-      >
-        <Eclipse className="[--eclipse-size:var(--hero-eclipse-size)]" />
+      <div data-hero-eclipse-anchor className="hero-eclipse-anchor">
+        <div data-hero-eclipse-motion className="relative">
+          {motion ? <div data-hero-bloom className="hero-bloom" /> : null}
+          <div data-hero-eclipse className="relative">
+            <Eclipse className="[--eclipse-size:var(--hero-eclipse-size)]">
+              <div ref={glHost} data-corona-host className="eclipse-gl-host" />
+            </Eclipse>
+            {phase !== 'closed' && !reduced ? (
+              <div
+                data-diamond
+                className="eclipse-diamond"
+                style={{ left: `${LIMB_POINT.x * 100}%`, top: `${LIMB_POINT.y * 100}%` }}
+              >
+                <span data-diamond-flare className="eclipse-diamond-flare" />
+                <span data-diamond-core className="eclipse-diamond-core" />
+              </div>
+            ) : null}
+          </div>
+        </div>
       </div>
     </div>
   );

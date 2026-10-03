@@ -78,8 +78,6 @@
     "ctaPlan": "Build your plan",
     "seeAnother": "See another industry",
     "scroll": "Scroll to see more",
-    "visualLabel": "A total eclipse. Pick an industry to see the demo.",
-    "demoLabel": "Interactive demo of {business}",
     "wantThis": "I want this for my business"
   },
   "whatsapp": {
@@ -349,5 +347,13 @@
       "voiceText": "Only added when your plan has a voice agent: a fixed monthly fee plus the minutes it uses.",
       "perMonthShort": "/mo"
     }
+  },
+  "heroReveal": {
+    "hint": "Interactive demo: try it as if it were yours.",
+    "loading": "Loading the {business} demo…"
+  },
+  "demoShowcase": {
+    "laptopLabel": "{business}: interactive demo, desktop version",
+    "phoneLabel": "{business}: interactive demo, mobile version"
   }
 }

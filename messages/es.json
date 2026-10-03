@@ -78,8 +78,6 @@
     "ctaPlan": "Armá tu plan",
     "seeAnother": "Ver otro rubro",
     "scroll": "Bajá para ver más",
-    "visualLabel": "Un eclipse total. Elegí un rubro para ver la demo.",
-    "demoLabel": "Demo navegable de {business}",
     "wantThis": "Quiero esto para mi negocio"
   },
   "whatsapp": {
@@ -349,5 +347,13 @@
       "voiceText": "Se suma solo cuando tu plan tiene agente de voz: un fijo por mes más los minutos que use.",
       "perMonthShort": "/mes"
     }
+  },
+  "heroReveal": {
+    "hint": "Demo navegable: probala como si fuera tuya.",
+    "loading": "Cargando la demo de {business}…"
+  },
+  "demoShowcase": {
+    "laptopLabel": "{business}: demo navegable, versión de escritorio",
+    "phoneLabel": "{business}: demo navegable, versión para celular"
   }
 }

@@ -26,12 +26,17 @@ function ScreenSkeleton() {
 /**
  * A demo inside its devices: phone only on mobile; laptop + phone from md up.
  * Used by the hero reveal, the Examples modal and the Examples previews.
+ *
+ * Each device is its own labelled region ("…, desktop version" / "…, mobile
+ * version") so screen-reader users can tell the two instances apart.
+ * Geometry of the "both" layout: height ≈ 0.651 × width (laptop + phone overlap).
  */
 export function DemoShowcase({
   demo,
   business,
   active,
   forceLayout,
+  fit = false,
   className = '',
 }: {
   demo: DemoId;
@@ -39,18 +44,21 @@ export function DemoShowcase({
   active: boolean;
   /** Override the responsive choice (e.g. small previews always show the phone). */
   forceLayout?: 'phone' | 'both';
+  /** Fill the parent's width (the parent sizes it) instead of the default caps. */
+  fit?: boolean;
   className?: string;
 }) {
-  const t = useTranslations('hero');
+  const t = useTranslations('demoShowcase');
   const wide = useMediaQuery('(min-width: 768px)');
   const layout = forceLayout ?? (wide ? 'both' : 'phone');
   const Demo = useMemo(() => lazyDemos[demo], [demo]);
-  const label = t('demoLabel', { business });
+  const phoneLabel = t('phoneLabel', { business });
+  const laptopLabel = t('laptopLabel', { business });
 
   if (layout === 'phone') {
     return (
-      <div className={`mx-auto w-full max-w-[min(320px,78vw)] ${className}`}>
-        <DeviceFrame kind="phone" label={label}>
+      <div className={`mx-auto w-full ${fit ? '' : 'max-w-[min(320px,78vw)]'} ${className}`}>
+        <DeviceFrame kind="phone" label={phoneLabel}>
           <Suspense fallback={<ScreenSkeleton />}>
             <Demo screen="phone" active={active} />
           </Suspense>
@@ -60,14 +68,14 @@ export function DemoShowcase({
   }
 
   return (
-    <div className={`relative mx-auto w-full max-w-[1040px] pb-[6%] pr-[12%] ${className}`}>
-      <DeviceFrame kind="laptop" label={label}>
+    <div className={`relative mx-auto w-full ${fit ? '' : 'max-w-[1040px]'} pb-[6%] pr-[12%] ${className}`}>
+      <DeviceFrame kind="laptop" label={laptopLabel}>
         <Suspense fallback={<ScreenSkeleton />}>
           <Demo screen="laptop" active={active} />
         </Suspense>
       </DeviceFrame>
       <div className="absolute bottom-0 right-0 w-[24%] min-w-[150px]">
-        <DeviceFrame kind="phone" label={label}>
+        <DeviceFrame kind="phone" label={phoneLabel}>
           <Suspense fallback={<ScreenSkeleton />}>
             <Demo screen="phone" active={active} />
           </Suspense>
