@@ -8,7 +8,6 @@ import type { Locale } from '@/i18n/routing';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
-import { ContentIcon } from '@/components/ui/Icon';
 import { MicButton } from './MicButton';
 import {
   EMPTY_ANSWERS,
@@ -307,9 +306,8 @@ export function AgentChat() {
                   key={v.id}
                   type="button"
                   onClick={(e) => chooseVertical(v, e)}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line-strong bg-white/70 px-3.5 text-sm transition-[border-color,box-shadow] hover:border-[color:var(--accent)] hover:shadow-[0_0_20px_-8px_rgb(245_185_66/0.9)]"
+                  className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-white/70 px-3.5 text-sm transition-[border-color,box-shadow] hover:border-[color:var(--accent)] hover:shadow-[0_0_20px_-8px_rgb(245_185_66/0.9)]"
                 >
-                  <ContentIcon name={v.icon} className="size-4 text-accent" />
                   {v.id === 'otro' ? t('otherVertical') : l(v.name, locale)}
                 </button>
               ))

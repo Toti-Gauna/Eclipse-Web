@@ -184,8 +184,7 @@
     }
   },
   "process": {
-    "eyebrow": "Cómo trabajamos",
-    "title": "Primero ves <em>tu demo</em>. Después hablamos.",
+    "title": "Primero ves tu demo. Después hablamos.",
     "sub": "Así vendemos: en {hours} horas armamos una demo de tu negocio, antes de cualquier llamada. Si te convence, seguimos.",
     "durationLabel": "Plazo",
     "hoursUnit": "h",
@@ -194,11 +193,11 @@
     "steps": {
       "demo": {
         "title": "Demo de tu negocio",
-        "body": "Con tu nombre, tu rubro y tus servicios. Te la mandamos por WhatsApp y la probás antes de cualquier llamada."
+        "body": "Con tu nombre, tu rubro y tus servicios. Te llega por WhatsApp y la probás antes de cualquier llamada."
       },
       "call": {
         "title": "Llamada y propuesta",
-        "body": "Charlamos sobre lo que viste y te mandamos la propuesta por escrito: alcance, precio y plazos."
+        "body": "Hablamos de lo que viste y te mandamos la propuesta por escrito: alcance, precio y plazos."
       },
       "build": {
         "title": "Seña y construcción",
@@ -207,7 +206,7 @@
       },
       "launch": {
         "title": "Entrega y capacitación",
-        "body": "Lo publicamos, lo dejamos funcionando y te enseñamos a usarlo, a vos y a tu equipo.",
+        "body": "Lo publicamos, lo dejamos andando y te enseñamos a usarlo, a vos y a tu equipo.",
         "meta": "Con tu equipo"
       },
       "care": {
@@ -1012,9 +1011,8 @@
     }
   },
   "examples": {
-    "eyebrow": "Ejemplos",
-    "title": "Mirá un negocio como el tuyo <em>funcionando</em>.",
-    "sub": "Tres negocios de demo, cada uno con el problema más caro de su rubro. Mirá el trailer de {seconds} segundos o abrí la demo y usala.",
+    "title": "Mirá un negocio como el tuyo funcionando.",
+    "sub": "{count} negocios de demo, cada uno con el problema más caro de su rubro. Elegí uno: mirá su trailer de {seconds} s o abrí la demo y usala.",
     "pain": "El problema",
     "result": "En la demo",
     "openDemo": "Abrir demo",
@@ -1031,7 +1029,8 @@
       "cta": "Escribinos por WhatsApp",
       "message": "Hola Eclipse. Mi rubro no está en los ejemplos de la web. ¿Me arman una demo? Mi negocio es:"
     },
-    "note": "Los negocios de estos ejemplos son ficticios. Sus números son el escenario de cada demo, no resultados de clientes."
+    "note": "Los negocios de estos ejemplos son ficticios. Sus números son el escenario de cada demo, no resultados de clientes.",
+    "tabsLabel": "Negocios de demo"
   },
   "trailers": {
     "title": "{business} — Demo",
@@ -1099,14 +1098,11 @@
     }
   },
   "founders": {
-    "eyebrow": "Programa fundador",
-    "title": "Clientes <em>fundadores</em>",
-    "sub": "Estamos eligiendo los primeros {total} negocios. Precio fundador, prioridad en la cola y tu caso contado acá.",
+    "title": "Clientes fundadores",
+    "sub": "Buscamos los primeros {total} negocios. Precio fundador, prioridad en la cola y su caso contado acá.",
     "subNoOffer": "Estamos eligiendo los primeros {total} negocios para trabajar codo a codo y contar su caso acá.",
-    "eyebrowClients": "Casos reales",
-    "titleClients": "<em>Clientes</em>",
+    "titleClients": "Clientes",
     "subClients": "Los primeros negocios que confiaron en nosotros. Cada caso, contado con sus números.",
-    "counter": "{left, plural, one {<v>Queda</v> <n>{left}</n> de {total}} other {<v>Quedan</v> <n>{left}</n> de {total}}}",
     "counterSr": "{left, plural, one {# lugar de fundador libre de {total}} other {# lugares de fundador libres de {total}}}",
     "slotsLabel": "Lugares del programa fundador",
     "clientsLabel": "Clientes",
@@ -1122,29 +1118,39 @@
       "logoAlt": "Logo de {name}"
     },
     "deal": {
-      "title": "Un trato <em>de ida y vuelta</em>",
+      "title": "Un trato de ida y vuelta",
       "get": "Lo que recibís",
-      "give": "Lo que nos das",
+      "give": "Lo que te pedimos",
       "priceText": "Sobre el total del desarrollo, mientras queden lugares.",
-      "maintenanceTitle": "Primer mes de mantenimiento bonificado",
+      "maintenanceTitle": "Primer mes de mantenimiento",
       "maintenanceText": "El plan de mantenimiento que elijas, sin costo el primer mes.",
       "priorityTitle": "Prioridad en la cola",
       "priorityText": "Tu proyecto arranca primero y tus pedidos pasan adelante.",
       "testimonialTitle": "Tu testimonio",
       "testimonialText": "Con tus palabras: cómo te fue trabajando con nosotros.",
-      "caseTitle": "Permiso para mostrar tu caso",
+      "caseTitle": "Tu caso, contado acá",
       "caseText": "Tu negocio y tus resultados, contados en esta sección.",
       "referralTitle": "Un referido",
-      "referralText": "Nos presentás a un negocio que pueda necesitarnos."
+      "referralText": "Nos presentás a un negocio que pueda necesitarnos.",
+      "priceTitle": "Precio fundador",
+      "priceValue": "−{percent}%",
+      "maintenanceValue": "bonificado",
+      "priorityValue": "arrancás primero",
+      "testimonialValue": "con tus palabras",
+      "caseValue": "con tu permiso",
+      "referralValue": "1 negocio"
     },
     "next": "¿Querés ser el próximo caso?",
     "whatsapp": "Hola Eclipse. Quiero ser cliente fundador.",
-    "whatsappVertical": "Hola Eclipse. Quiero ser cliente fundador. Mi rubro: {vertical}."
+    "whatsappVertical": "Hola Eclipse. Quiero ser cliente fundador. Mi rubro: {vertical}.",
+    "readout": {
+      "left": "{left, plural, one {Queda solo} other {Todavía quedan}}",
+      "of": "de {total} lugares"
+    }
   },
   "agent": {
-    "eyebrow": "Tu turno",
     "title": "Tu negocio, <em>a plena luz</em>.",
-    "sub": "Pedí tu demo y en {hours} horas ves tu negocio funcionando, antes de cualquier llamada. ¿Preferís ver números primero? Armá tu plan.",
+    "sub": "Pedí tu demo: en {hours} horas ves tu negocio funcionando, antes de cualquier llamada. ¿Preferís ver números primero? Armá tu plan.",
     "chat": {
       "label": "Vista previa del agente de Eclipse",
       "name": "Agente Eclipse",
@@ -1193,5 +1199,19 @@
       "whatsappCta": "Seguir por WhatsApp",
       "message": "Hola Eclipse. Hablé con el agente de la web.\nNombre: {name}\nRubro: {vertical}\nNecesito: {need}\nIdioma: {language}"
     }
+  },
+  "sections": {
+    "index": "Índice",
+    "labels": {
+      "hero": "Inicio",
+      "problem": "Lo que perdés",
+      "services": "Qué construimos",
+      "examples": "Demos",
+      "process": "Cómo trabajamos",
+      "pricing": "Precios",
+      "founders": "Fundadores",
+      "agent": "Hablemos"
+    },
+    "clients": "Clientes"
   }
 }

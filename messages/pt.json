@@ -184,8 +184,7 @@
     }
   },
   "process": {
-    "eyebrow": "Como trabalhamos",
-    "title": "Primeiro você vê <em>sua demo</em>. Depois a gente conversa.",
+    "title": "Primeiro você vê sua demo. Depois a gente conversa.",
     "sub": "É assim que a gente vende: em {hours} horas montamos uma demo do seu negócio, antes de qualquer ligação. Se fizer sentido, seguimos.",
     "durationLabel": "Prazo",
     "hoursUnit": "h",
@@ -1012,9 +1011,8 @@
     }
   },
   "examples": {
-    "eyebrow": "Exemplos",
-    "title": "Veja um negócio como o seu <em>funcionando</em>.",
-    "sub": "Três negócios de demo, cada um com o problema mais caro do seu setor. Assista ao trailer de {seconds} segundos ou abra a demo e use.",
+    "title": "Veja um negócio como o seu funcionando.",
+    "sub": "{count} negócios de demo, cada um com o problema mais caro do seu setor. Escolha um: assista ao trailer de {seconds} s ou abra a demo e use.",
     "pain": "O problema",
     "result": "Na demo",
     "openDemo": "Abrir demo",
@@ -1031,7 +1029,8 @@
       "cta": "Fale com a gente no WhatsApp",
       "message": "Olá, Eclipse. Meu setor não está nos exemplos do site. Vocês montam uma demo para mim? Meu negócio é:"
     },
-    "note": "Os negócios destes exemplos são fictícios. Os números mostram o cenário de cada demo, não resultados de clientes."
+    "note": "Os negócios destes exemplos são fictícios. Os números mostram o cenário de cada demo, não resultados de clientes.",
+    "tabsLabel": "Negócios de demo"
   },
   "trailers": {
     "title": "{business} — Demo",
@@ -1099,14 +1098,11 @@
     }
   },
   "founders": {
-    "eyebrow": "Programa fundador",
-    "title": "Clientes <em>fundadores</em>",
+    "title": "Clientes fundadores",
     "sub": "Estamos escolhendo os {total} primeiros negócios. Preço de fundador, prioridade na fila e o seu caso contado aqui.",
     "subNoOffer": "Estamos escolhendo os {total} primeiros negócios para trabalhar lado a lado e contar o caso deles aqui.",
-    "eyebrowClients": "Casos reais",
-    "titleClients": "<em>Clientes</em>",
+    "titleClients": "Clientes",
     "subClients": "Os primeiros negócios que confiaram na gente. Cada caso, contado com os números dele.",
-    "counter": "{left, plural, one {<v>Resta</v> <n>{left}</n> de {total}} other {<v>Restam</v> <n>{left}</n> de {total}}}",
     "counterSr": "{left, plural, one {# vaga de fundador livre de {total}} other {# vagas de fundador livres de {total}}}",
     "slotsLabel": "Vagas do programa fundador",
     "clientsLabel": "Clientes",
@@ -1122,27 +1118,37 @@
       "logoAlt": "Logo de {name}"
     },
     "deal": {
-      "title": "Um acordo <em>de mão dupla</em>",
+      "title": "Um acordo de mão dupla",
       "get": "O que você recebe",
-      "give": "O que você dá em troca",
+      "give": "O que pedimos",
       "priceText": "Sobre o valor total do desenvolvimento, enquanto houver vagas.",
-      "maintenanceTitle": "Primeiro mês de manutenção grátis",
+      "maintenanceTitle": "Primeiro mês de manutenção",
       "maintenanceText": "O plano de manutenção que você escolher, sem custo no primeiro mês.",
       "priorityTitle": "Prioridade na fila",
       "priorityText": "Seu projeto começa primeiro e seus pedidos passam na frente.",
       "testimonialTitle": "Seu depoimento",
       "testimonialText": "Com as suas palavras: como foi trabalhar com a gente.",
-      "caseTitle": "Permissão para mostrar o seu caso",
+      "caseTitle": "Seu caso, contado aqui",
       "caseText": "Seu negócio e seus resultados, contados nesta seção.",
       "referralTitle": "Uma indicação",
-      "referralText": "Você nos apresenta um negócio que possa precisar da gente."
+      "referralText": "Você nos apresenta um negócio que possa precisar da gente.",
+      "priceTitle": "Preço de fundador",
+      "priceValue": "−{percent}%",
+      "maintenanceValue": "grátis",
+      "priorityValue": "você começa primeiro",
+      "testimonialValue": "com suas palavras",
+      "caseValue": "com sua permissão",
+      "referralValue": "1 negócio"
     },
     "next": "Quer ser o próximo caso?",
     "whatsapp": "Olá, Eclipse. Quero ser cliente fundador.",
-    "whatsappVertical": "Olá, Eclipse. Quero ser cliente fundador. Meu setor: {vertical}."
+    "whatsappVertical": "Olá, Eclipse. Quero ser cliente fundador. Meu setor: {vertical}.",
+    "readout": {
+      "left": "{left, plural, one {Resta só} other {Ainda restam}}",
+      "of": "de {total} vagas"
+    }
   },
   "agent": {
-    "eyebrow": "Sua vez",
     "title": "Seu negócio, <em>em plena luz</em>.",
     "sub": "Peça sua demo e em {hours} horas você vê seu negócio funcionando, antes de qualquer ligação. Prefere ver valores primeiro? Monte seu plano.",
     "chat": {
@@ -1193,5 +1199,19 @@
       "whatsappCta": "Continuar no WhatsApp",
       "message": "Olá, Eclipse. Conversei com o agente do site.\nNome: {name}\nSetor: {vertical}\nPreciso de: {need}\nIdioma: {language}"
     }
+  },
+  "sections": {
+    "index": "Índice",
+    "labels": {
+      "hero": "Início",
+      "problem": "O que você perde",
+      "services": "O que construímos",
+      "examples": "Demos",
+      "process": "Como trabalhamos",
+      "pricing": "Preços",
+      "founders": "Fundadores",
+      "agent": "Vamos conversar"
+    },
+    "clients": "Clientes"
   }
 }

@@ -184,8 +184,7 @@
     }
   },
   "process": {
-    "eyebrow": "How we work",
-    "title": "First you see <em>your demo</em>. Then we talk.",
+    "title": "First you see your demo. Then we talk.",
     "sub": "That's how we sell: within {hours} hours we build a demo of your business, before any call. If you like it, we keep going.",
     "durationLabel": "Turnaround",
     "hoursUnit": "h",
@@ -1012,9 +1011,8 @@
     }
   },
   "examples": {
-    "eyebrow": "Examples",
-    "title": "See a business like yours <em>running</em>.",
-    "sub": "Three demo businesses, each facing the costliest problem in its industry. Watch the {seconds}-second trailer or open the demo and use it.",
+    "title": "See a business like yours, running.",
+    "sub": "{count} demo businesses, each facing the costliest problem in its industry. Pick one: watch its {seconds}-second trailer or open the demo and use it.",
     "pain": "The problem",
     "result": "In the demo",
     "openDemo": "Open demo",
@@ -1031,7 +1029,8 @@
       "cta": "Message us on WhatsApp",
       "message": "Hi Eclipse. My industry isn't in your examples. Can you build me a demo? My business is:"
     },
-    "note": "The businesses in these examples are fictional. Their numbers describe each demo's scenario, not client results."
+    "note": "The businesses in these examples are fictional. Their numbers describe each demo's scenario, not client results.",
+    "tabsLabel": "Demo businesses"
   },
   "trailers": {
     "title": "{business} — Demo",
@@ -1099,14 +1098,11 @@
     }
   },
   "founders": {
-    "eyebrow": "Founder program",
-    "title": "Founding <em>clients</em>",
+    "title": "Founding clients",
     "sub": "We're choosing our first {total} businesses. Founder pricing, priority in the queue and your story told right here.",
     "subNoOffer": "We're choosing our first {total} businesses to work with side by side and tell their story here.",
-    "eyebrowClients": "Real cases",
-    "titleClients": "<em>Clients</em>",
+    "titleClients": "Clients",
     "subClients": "The first businesses that trusted us. Every case, told with its numbers.",
-    "counter": "{left, plural, one {<n>{left}</n> of {total} <v>left</v>} other {<n>{left}</n> of {total} <v>left</v>}}",
     "counterSr": "{left, plural, one {# of {total} founder spots left} other {# of {total} founder spots left}}",
     "slotsLabel": "Founder program spots",
     "clientsLabel": "Clients",
@@ -1122,27 +1118,37 @@
       "logoAlt": "{name} logo"
     },
     "deal": {
-      "title": "A deal that <em>goes both ways</em>",
+      "title": "A deal that goes both ways",
       "get": "What you get",
-      "give": "What you give",
+      "give": "What we ask",
       "priceText": "On the full development price, while spots last.",
-      "maintenanceTitle": "First month of maintenance free",
+      "maintenanceTitle": "First month of maintenance",
       "maintenanceText": "Whichever maintenance plan you choose, free for the first month.",
       "priorityTitle": "Priority in the queue",
       "priorityText": "Your project starts first and your requests jump the line.",
       "testimonialTitle": "Your testimonial",
       "testimonialText": "In your own words: what it was like working with us.",
-      "caseTitle": "Permission to show your case",
+      "caseTitle": "Your case, told here",
       "caseText": "Your business and your results, told in this section.",
       "referralTitle": "One referral",
-      "referralText": "You introduce us to a business that could use us."
+      "referralText": "You introduce us to a business that could use us.",
+      "priceTitle": "Founder price",
+      "priceValue": "−{percent}%",
+      "maintenanceValue": "free",
+      "priorityValue": "you start first",
+      "testimonialValue": "in your words",
+      "caseValue": "with your OK",
+      "referralValue": "1 business"
     },
     "next": "Want to be the next case?",
     "whatsapp": "Hi Eclipse. I want to be a founding client.",
-    "whatsappVertical": "Hi Eclipse. I want to be a founding client. My industry: {vertical}."
+    "whatsappVertical": "Hi Eclipse. I want to be a founding client. My industry: {vertical}.",
+    "readout": {
+      "left": "{left, plural, one {Last spot} other {Spots open}}",
+      "of": "of {total}"
+    }
   },
   "agent": {
-    "eyebrow": "Your move",
     "title": "Your business, <em>in full light</em>.",
     "sub": "Get your demo and see your business working within {hours} hours, before any call. Rather see numbers first? Build your plan.",
     "chat": {
@@ -1193,5 +1199,19 @@
       "whatsappCta": "Continue on WhatsApp",
       "message": "Hi Eclipse. I talked to the agent on your website.\nName: {name}\nIndustry: {vertical}\nI need: {need}\nLanguage: {language}"
     }
+  },
+  "sections": {
+    "index": "Index",
+    "labels": {
+      "hero": "Home",
+      "problem": "What you lose",
+      "services": "What we build",
+      "examples": "Demos",
+      "process": "How we work",
+      "pricing": "Pricing",
+      "founders": "Founders",
+      "agent": "Let's talk"
+    },
+    "clients": "Clients"
   }
 }

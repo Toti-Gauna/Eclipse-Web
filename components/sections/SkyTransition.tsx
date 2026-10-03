@@ -1,22 +1,25 @@
+import { DrawLine } from '@/components/motion/DrawLine';
+import './sky-transition.css';
+
 /**
  * Scroll-driven background blend between two sections. The gradient is tall, so
  * scrolling through it reads as the sky slowly changing (never a hard cut).
+ * The sunrise (night → dawn) crosses a ruled horizon: the instrument's scale,
+ * drawn as it comes into view, with the first light coming up behind it.
  */
 export function SkyTransition({ from, to, className = '' }: { from: 'void' | 'night'; to: 'night' | 'dawn'; className?: string }) {
   if (to === 'dawn') {
     return (
-      <div aria-hidden className={`sky-sunrise relative h-[55vh] min-h-72 ${className}`}>
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--night)_0%,#1d1720_32%,#6b4a2a_58%,#d9b98a_80%,var(--dawn)_100%)]" />
-        <div className="absolute inset-x-0 bottom-[18%] mx-auto h-40 w-[min(900px,90vw)] rounded-[50%] bg-[radial-gradient(closest-side,rgb(255_232_176/0.55),transparent)] blur-2xl" />
+      <div aria-hidden className={`sky-sunrise ${className}`}>
+        {/* Already bright: the page index (EphemerisRail) switches to its light theme here. */}
+        <div data-rail-theme="light" className="sky-sunrise-bright" />
+        <div className="sky-sunrise-light" />
+        <div className="sky-sunrise-horizon">
+          <DrawLine origin="center" duration={1.4} className="sky-sunrise-line" />
+          <span className="sky-sunrise-ruler" />
+        </div>
       </div>
     );
   }
-  return (
-    <div
-      aria-hidden
-      className={`h-[30vh] min-h-48 ${className} ${
-        from === 'void' ? 'bg-[linear-gradient(180deg,var(--void),var(--night))]' : 'bg-night'
-      }`}
-    />
-  );
+  return <div aria-hidden className={`sky-fade ${from === 'void' ? 'sky-fade--void' : ''} ${className}`} />;
 }

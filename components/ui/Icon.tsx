@@ -14,11 +14,14 @@ import {
   Plus,
   ScanSearch,
   Search,
+  ShoppingBag,
   ShoppingCart,
   Smartphone,
   Stethoscope,
   Trophy,
+  UtensilsCrossed,
   Workflow,
+  Wrench,
   type LucideIcon,
   type LucideProps,
 } from 'lucide-react';
@@ -40,11 +43,14 @@ export const contentIcons: Record<string, LucideIcon> = {
   Plus,
   ScanSearch,
   Search,
+  ShoppingBag,
   ShoppingCart,
   Smartphone,
   Stethoscope,
   Trophy,
+  UtensilsCrossed,
   Workflow,
+  Wrench,
 };
 
 export function ContentIcon({ name, ...props }: { name: string } & LucideProps) {

@@ -563,3 +563,67 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* v2 · motion signature                                                */
+/* Occultation (components/motion/Occult) and readouts live in JS;      */
+/* here: the drawn hairline (<DrawLine>) and the primary-button glint.  */
+/* In @layer components so utilities (absolute, w-full…) still win.     */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .draw-line {
+    display: block;
+    flex: none;
+    background: var(--line-strong);
+    pointer-events: none;
+  }
+  .draw-line[data-draw='x'] {
+    width: 100%;
+    height: 1px;
+  }
+  .draw-line[data-draw='y'] {
+    width: 1px;
+    height: 100%;
+  }
+
+  /* Glint: a diamond-ring sparkle (bright point + cross flare) runs along the pill's upper
+     rim once on hover / keyboard focus, clear of the label. The pseudo-element is the
+     button's own box with the sparkle painted 18px from its left edge, translated across:
+     transform + opacity only, and invisible outside the run, so it needs no clipping. */
+  .btn-primary {
+    position: relative;
+    isolation: isolate;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background:
+      radial-gradient(circle at 18px 9px, #fff 0 1.3px, rgb(255 251 240 / 0.95) 2.4px, rgb(255 244 214 / 0.55) 4.6px, transparent 9px),
+      linear-gradient(90deg, transparent, rgb(255 255 255 / 0.95) 50%, transparent) 0 8.5px / 36px 1px no-repeat,
+      linear-gradient(180deg, transparent, rgb(255 255 255 / 0.9) 50%, transparent) 17.5px 1px / 1px 16px no-repeat;
+  }
+  .btn-primary:hover::after,
+  .btn-primary:focus-visible::after {
+    animation: btn-glint 0.9s var(--ease-soft) both;
+  }
+}
+
+@keyframes btn-glint {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  18%,
+  72% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(calc(100% - 36px));
+  }
+}

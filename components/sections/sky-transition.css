@@ -1,0 +1,65 @@
+/* <SkyTransition>: void → night (a plain fade) and night → dawn (the sunrise). */
+.sky-fade {
+  height: 30vh;
+  min-height: 12rem;
+  background: var(--night);
+}
+.sky-fade--void {
+  background: linear-gradient(180deg, var(--void), var(--night));
+}
+
+.sky-sunrise {
+  position: relative;
+  height: 60vh;
+  min-height: 20rem;
+  overflow: hidden;
+  /* Night → plum → ember → dawn; no flat brown band in the middle. */
+  background: linear-gradient(
+    180deg,
+    var(--night) 0%,
+    #15111c 20%,
+    #2a1d2b 38%,
+    #57393a 53%,
+    #a8744d 67%,
+    #e2c091 81%,
+    var(--dawn) 100%
+  );
+}
+/* The first light, low and wide, coming up from behind the horizon. */
+.sky-sunrise-light {
+  position: absolute;
+  left: 50%;
+  top: 72%;
+  width: min(1100px, 130vw);
+  aspect-ratio: 3.2;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgb(255 240 205 / 0.75),
+    rgb(255 220 150 / 0.35) 45%,
+    rgb(245 185 66 / 0.08) 75%,
+    transparent 100%
+  );
+}
+.sky-sunrise-horizon {
+  position: absolute;
+  inset-inline: 0;
+  top: 72%;
+}
+.sky-sunrise-line {
+  background: rgb(255 244 220 / 0.55);
+}
+.sky-sunrise-ruler {
+  display: block;
+  height: 7px;
+  background: repeating-linear-gradient(90deg, rgb(255 244 220 / 0.4) 0 1px, transparent 1px 32px);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+}
+
+.sky-sunrise-bright {
+  position: absolute;
+  inset: 66% 0 0;
+  pointer-events: none;
+}

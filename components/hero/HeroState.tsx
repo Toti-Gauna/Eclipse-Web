@@ -1,9 +1,10 @@
 'use client';
 
-import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { VerticalId } from '@/lib/content';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { verticals, type VerticalId } from '@/lib/content';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { track } from '@/lib/analytics';
+import type { DialController } from './useDial';
 
 export type DemoVertical = Exclude<VerticalId, 'otro'>;
 
@@ -38,6 +39,14 @@ interface HeroStateValue {
   /** Vertical whose chip opened the reveal (focus returns there on close). */
   openedFrom: React.RefObject<DemoVertical | null>;
   bus: React.RefObject<HeroMotionBus>;
+  /**
+   * Points the dial at a rubro while its chip is hovered or focused (null releases
+   * that source). Hover wins over focus; with neither, the dial holds the revealed
+   * rubro, or drifts.
+   */
+  aim: (id: VerticalId | null, source: 'hover' | 'focus') => void;
+  /** The stage registers its <Dial> controller here (null on unmount). */
+  registerDial: (controller: DialController | null) => void;
 }
 
 const HeroStateContext = createContext<HeroStateValue | null>(null);
@@ -54,6 +63,40 @@ export function HeroStateProvider({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<RevealPhase>('closed');
   const openedFrom = useRef<DemoVertical | null>(null);
   const bus = useRef<HeroMotionBus>({ scroll: 0, scrollMoon: { x: 0, y: 0 }, revealMoon: { x: 0, y: 0 } });
+  const dial = useRef<DialController | null>(null);
+  const aimed = useRef<{ hover: VerticalId | null; focus: VerticalId | null; revealed: VerticalId | null }>({
+    hover: null,
+    focus: null,
+    revealed: null,
+  });
+
+  const syncDial = useCallback(() => {
+    const a = aimed.current;
+    const id = a.hover ?? a.focus ?? a.revealed;
+    const index = id ? verticals.findIndex((v) => v.id === id) : -1;
+    dial.current?.aimAt(index >= 0 ? index : null);
+  }, []);
+
+  const aim = useCallback(
+    (id: VerticalId | null, source: 'hover' | 'focus') => {
+      aimed.current[source] = id;
+      syncDial();
+    },
+    [syncDial],
+  );
+
+  useEffect(() => {
+    aimed.current.revealed = revealed;
+    syncDial();
+  }, [revealed, syncDial]);
+
+  const registerDial = useCallback(
+    (controller: DialController | null) => {
+      dial.current = controller;
+      syncDial();
+    },
+    [syncDial],
+  );
 
   const choose = useCallback(
     (id: VerticalId) => {
@@ -79,8 +122,8 @@ export function HeroStateProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ revealed, shown, choose, reset, phase, setPhase, openedFrom, bus }),
-    [revealed, shown, choose, reset, phase],
+    () => ({ revealed, shown, choose, reset, phase, setPhase, openedFrom, bus, aim, registerDial }),
+    [revealed, shown, choose, reset, phase, aim, registerDial],
   );
   return <HeroStateContext.Provider value={value}>{children}</HeroStateContext.Provider>;
 }

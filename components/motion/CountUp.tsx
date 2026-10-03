@@ -6,7 +6,9 @@ import { prefersReducedMotion } from './useReducedMotion';
 import { localeTags, type Locale } from '@/i18n/routing';
 
 /**
- * Counts from 0 to `value` the first time it enters the viewport.
+ * Counts from 0 to `value` the first time it enters the viewport (`on="enter"`,
+ * default) or right when it mounts (`on="mount"`: e.g. a readout that changes
+ * with a selection the visitor just made, already on screen).
  * Screen readers get the final value only (the animated digits are aria-hidden).
  */
 export function CountUp({
@@ -16,6 +18,7 @@ export function CountUp({
   decimals = 0,
   duration = 1.6,
   locale = 'es',
+  on = 'enter',
   className = '',
 }: {
   value: number;
@@ -24,6 +27,7 @@ export function CountUp({
   decimals?: number;
   duration?: number;
   locale?: Locale;
+  on?: 'enter' | 'mount';
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -44,7 +48,7 @@ export function CountUp({
         v: value,
         duration,
         ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+        scrollTrigger: on === 'enter' ? { trigger: el, start: 'top 90%', once: true } : undefined,
         onUpdate: () => {
           setText(`${prefix}${fmt.format(state.v)}${suffix}`);
         },
@@ -53,7 +57,7 @@ export function CountUp({
         },
       });
     },
-    { dependencies: [value, prefix, suffix, decimals, locale], revertOnUpdate: true },
+    { dependencies: [value, prefix, suffix, decimals, locale, on], revertOnUpdate: true },
   );
 
   return (

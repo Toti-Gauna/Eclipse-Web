@@ -1,10 +1,9 @@
 /*
- * "Cómo trabajamos" timeline.
- * Vertical below 1024px (rail on the left), horizontal from 1024px.
- * Each step except the last owns the segment that runs from its node's center to
- * the next node's center; <ProcessTimeline> scales the amber fill along it.
- * --lit (0…1) drives the node ignition. It's 1 by default (no JS, reduced motion);
- * once the timeline is armed, a step stays dark until the light reaches it.
+ * 05 · "Cómo trabajamos": the steps as phases of the eclipse on a hairline.
+ * Vertical below 1024px (the line on the left), horizontal from 1024px.
+ * Each step but the last owns the track from its glyph's center to the next
+ * one's; <ProcessTimeline> scales the light along it and sets [data-lit] on a
+ * step when the light reaches its glyph. --lit is 1 without JS / reduced motion.
  */
 
 .process-ambient {
@@ -12,25 +11,69 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  /* A low horizon glow behind the timeline. Kept faint and wide: tighter dim
-     radials show 8-bit banding rings on the flat night sky. */
-  background: radial-gradient(70rem 20rem at 30% 64%, rgb(245 185 66 / 0.045), transparent 72%);
+  /* A low, wide horizon glow on the right, where the light ends up. */
+  background: radial-gradient(70rem 22rem at 78% 70%, rgb(245 185 66 / 0.05), transparent 72%);
 }
 
+/* ---- Header -------------------------------------------------------- */
+.proc-head {
+  display: grid;
+  gap: 1.5rem;
+}
+.proc-h2 {
+  max-width: 12ch;
+  font-size: clamp(2.6rem, 10.5vw, 4.4rem);
+}
+.proc-sub {
+  max-width: 30rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+@media (min-width: 1024px) {
+  .proc-head {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: end;
+    column-gap: 4rem;
+  }
+  .proc-head > :first-child {
+    grid-column: 1 / -1;
+  }
+  .proc-h2 {
+    max-width: 14ch;
+    font-size: clamp(4.2rem, 6.2vw, 5.75rem);
+  }
+  .proc-sub {
+    justify-self: end;
+    padding-bottom: 0.7rem;
+  }
+}
+
+/* ---- Timeline (phones: vertical) ------------------------------------ */
+.proc-timeline {
+  position: relative;
+  margin-top: 3.5rem;
+}
 .proc-list {
-  --node: 3rem;
+  --node: 2.75rem;
   --proc-gap: 2rem;
   position: relative;
   display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-
 .proc-step {
   --lit: 1;
   position: relative;
   display: grid;
   grid-template-columns: var(--node) minmax(0, 1fr);
-  column-gap: 1.25rem;
-  padding-bottom: 3.25rem;
+  grid-template-areas:
+    'node reading'
+    'node body';
+  grid-template-rows: auto 1fr;
+  column-gap: 1.1rem;
+  padding-bottom: 2.75rem;
 }
 .proc-step:last-child {
   padding-bottom: 0;
@@ -42,15 +85,64 @@
   --lit: 1;
 }
 
-/* ---- Track ------------------------------------------------------------ */
-.proc-seg {
+.proc-reading {
+  grid-area: reading;
+  display: flex;
+  min-height: var(--node);
+  align-items: center;
+}
+.proc-node {
+  position: relative;
+  z-index: 1;
+  grid-area: node;
+  align-self: start;
+  display: block;
+  width: var(--node);
+  height: var(--node);
+  border-radius: 50%;
+  background: var(--night);
+}
+.proc-glyph {
+  position: absolute;
+  inset: 0;
+  color: var(--fg-muted);
+  opacity: 0.38;
+}
+.proc-glyph.proc-glyph--lit {
+  color: var(--flare);
+  opacity: var(--lit);
+  transform: scale(calc(0.86 + 0.14 * var(--lit)));
+  transition:
+    opacity 0.6s ease,
+    transform 0.9s var(--ease-expo);
+}
+.proc-node-glow {
+  position: absolute;
+  inset: -70%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgb(255 232 176 / 0.3) 18%,
+    rgb(245 185 66 / 0.14) 44%,
+    rgb(245 185 66 / 0.04) 70%,
+    transparent 100%
+  );
+  opacity: var(--lit);
+  transform: scale(calc(0.5 + 0.5 * var(--lit)));
+  transition:
+    opacity 0.6s ease,
+    transform 1s var(--ease-expo);
+}
+
+/* Track: hairline + the light that fills it. */
+.proc-track {
   position: absolute;
   top: calc(var(--node) / 2);
   bottom: calc(var(--node) / -2);
   left: calc(var(--node) / 2 - 1px);
   width: 2px;
 }
-.proc-seg::before {
+.proc-track::before {
   content: '';
   position: absolute;
   top: 0;
@@ -59,17 +151,16 @@
   width: 1px;
   background: var(--line-strong);
 }
-.proc-seg-fill {
+.proc-track-fill {
   position: absolute;
   inset: 0;
   border-radius: 2px;
   background: linear-gradient(180deg, var(--corona) 0%, var(--flare) 100%);
-  box-shadow: 0 0 14px 1px rgb(245 185 66 / 0.5);
+  box-shadow: 0 0 12px 1px rgb(245 185 66 / 0.45);
   transform-origin: 50% 0;
 }
 
-/* Spark riding the light front (positioned by <ProcessTimeline>). Hidden until
-   armed; it passes behind the nodes (z-index 0 < 1), as if light entered them. */
+/* The spark riding the light front (positioned by <ProcessTimeline>). */
 .proc-spark {
   position: absolute;
   top: 0;
@@ -93,125 +184,99 @@
   box-shadow: 0 0 22px 7px rgb(245 185 66 / 0.45);
 }
 
-/* ---- Node: a small eclipse that ignites -------------------------------- */
-.proc-node {
-  position: relative;
-  z-index: 1;
-  display: block;
-  grid-column: 1;
-  grid-row: 1;
-  width: var(--node);
-  height: var(--node);
+/* Readouts: time-boxed steps read as big mono numbers, the rest as a caption. */
+.proc-meta {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
 }
-.proc-node-glow {
-  position: absolute;
-  inset: -80%;
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    rgb(255 232 176 / 0.42) 22%,
-    rgb(245 185 66 / 0.2) 46%,
-    rgb(245 185 66 / 0.05) 72%,
-    transparent 100%
-  );
-  opacity: var(--lit);
-  transform: scale(calc(0.45 + 0.55 * var(--lit)));
-  transition:
-    opacity 0.6s ease,
-    transform 1s var(--ease-expo);
+.proc-meta--time {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--fg);
+  opacity: calc(0.5 + 0.5 * var(--lit));
+  transition: opacity 0.6s ease;
 }
-.proc-node-ring {
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 1px rgb(255 232 176 / 0.95),
-    0 0 0 3px rgb(245 185 66 / 0.18),
-    0 0 26px 2px rgb(245 185 66 / 0.55);
-  opacity: var(--lit);
-  transition: opacity 0.5s ease;
+.proc-meta-value {
+  font-size: 2.1rem;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums slashed-zero;
 }
-.proc-node-disc {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  background: radial-gradient(circle at 36% 30%, #181821 0%, #0a0a10 62%, #050509 100%);
-}
-.proc-node-num {
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  color: var(--flare);
-  opacity: calc(0.45 + 0.55 * var(--lit));
-  transition: opacity 0.5s ease;
+.proc-meta-unit {
+  font-size: 0.85rem;
+  color: var(--accent);
 }
 
-/* ---- Copy ------------------------------------------------------------- */
 .proc-body {
-  grid-column: 2;
-  grid-row: 1;
-  display: flex;
-  flex-direction: column;
+  grid-area: body;
   padding-top: 0.6rem;
 }
 .proc-title {
-  font-size: 1.85rem;
-  line-height: 1.04;
-  opacity: calc(0.55 + 0.45 * var(--lit));
-  transition: opacity 0.6s ease;
-}
-/* Visually above the title, after it in the DOM (heading first for screen readers). */
-.proc-meta {
-  order: -1;
-  display: inline-flex;
-  align-self: flex-start;
-  align-items: center;
-  gap: 0.4rem;
-  height: 1.75rem;
-  margin-bottom: 0.9rem;
-  padding: 0 0.7rem;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  font-size: 0.78rem;
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--fg-muted);
-}
-.proc-meta-time {
-  border-color: rgb(245 185 66 / 0.38);
-  color: var(--accent);
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   opacity: calc(0.6 + 0.4 * var(--lit));
   transition: opacity 0.6s ease;
 }
+.proc-index {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: var(--accent);
+}
 .proc-text {
-  margin-top: 0.75rem;
-  max-width: 34rem;
+  max-width: 30rem;
+  margin-top: 0.55rem;
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--fg-muted);
 }
 
-/* ---- Desktop: horizontal ---------------------------------------------- */
+/* ---- Desktop: horizontal ------------------------------------------- */
 @media (min-width: 1024px) {
+  .proc-timeline {
+    margin-top: 5rem;
+  }
   .proc-list {
+    --node: 3.25rem;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     column-gap: var(--proc-gap);
   }
   .proc-step {
-    display: block;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 3.4rem var(--node) auto;
+    grid-template-areas:
+      'reading'
+      'node'
+      'body';
     padding-bottom: 0;
   }
-  .proc-seg {
-    top: calc(var(--node) / 2 - 1px);
+  .proc-reading {
+    min-height: 0;
+    align-items: flex-end;
+    padding-bottom: 1.1rem;
+  }
+  .proc-track {
+    top: calc(3.4rem + var(--node) / 2 - 1px);
     bottom: auto;
     left: calc(var(--node) / 2);
-    right: calc(-1 * var(--proc-gap) - var(--node) / 2);
-    width: auto;
+    width: calc(100% + var(--proc-gap));
     height: 2px;
   }
-  .proc-seg::before {
+  .proc-track::before {
     top: 0.5px;
     bottom: auto;
     left: 0;
@@ -219,29 +284,53 @@
     width: auto;
     height: 1px;
   }
-  .proc-seg-fill {
+  .proc-track-fill {
     background: linear-gradient(90deg, var(--corona) 0%, var(--flare) 100%);
     transform-origin: 0 50%;
   }
   .proc-body {
-    margin-top: 2rem;
-    padding-top: 0;
+    padding-top: 1.6rem;
   }
-  .proc-title {
-    font-size: 1.7rem;
+  .proc-meta-value {
+    font-size: 2.6rem;
   }
 }
 @media (min-width: 1280px) {
   .proc-list {
     --proc-gap: 2.5rem;
   }
-  .proc-title {
-    font-size: 1.9rem;
+}
+
+/* ---- Closing line + CTA -------------------------------------------- */
+.proc-cta {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+.proc-cta-lead {
+  max-width: 22ch;
+  font-size: clamp(1.9rem, 6.5vw, 2.5rem);
+  line-height: 1.04;
+}
+@media (min-width: 640px) {
+  .proc-cta {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    column-gap: 2rem;
+  }
+  .proc-cta-rule {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 1024px) {
+  .proc-cta {
+    margin-top: 6rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .proc-node-glow {
+  .proc-node-glow,
+  .proc-glyph--lit {
     transform: none;
   }
 }

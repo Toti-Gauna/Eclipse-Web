@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
 import { DemoCta } from '@/components/ui/DemoCta';
+import { SectionMark } from '@/components/ui/SectionMark';
 import { HeroStateProvider } from './HeroState';
 import { HeroStage } from './HeroStage';
 import { HeroCopy } from './HeroCopy';
@@ -43,17 +44,17 @@ export function Hero() {
           <HeroCopy className="relative z-10 [grid-area:1/1]">
             <div className="hero-copy-cell container-x">
               <div data-hero-copy-inner className="max-w-xl lg:max-w-2xl">
-                <p className="eyebrow">{t('eyebrow')}</p>
+                <SectionMark section="hero" label={t('eyebrow')} />
                 <h1 id="hero-title" className="display mt-4 text-[2.55rem] sm:text-6xl lg:text-[min(5.4rem,11.5svh,7.6vw)]">
                   {t.rich('title', { em })}
                 </h1>
-                <p className="mt-5 max-w-lg text-base text-fg-muted sm:text-lg">{t('subtitle')}</p>
+                <p className="hero-sub mt-5 max-w-lg text-base text-fg-muted sm:text-lg">{t('subtitle')}</p>
 
-                <div className="mt-7">
+                <div className="hero-pick-wrap mt-7">
                   <VerticalChips />
                 </div>
 
-                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <div className="hero-ctas mt-7 flex flex-col gap-3 sm:flex-row">
                   <div data-hero-enter className="flex">
                     <DemoCta origin="hero" className="btn btn-primary w-full sm:w-auto" />
                   </div>
@@ -71,7 +72,7 @@ export function Hero() {
               data-hero-scroll-hint
               className="hero-scroll-hint absolute inset-x-0 bottom-6 flex-col items-center gap-3"
             >
-              <span data-hero-enter className="text-[0.65rem] uppercase tracking-[0.24em] text-fg-muted">
+              <span data-hero-enter className="label">
                 {t('scroll')}
               </span>
               <span data-hero-enter className="scroll-hint-line" />

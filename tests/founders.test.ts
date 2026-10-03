@@ -149,19 +149,17 @@ describe('agent preview script', () => {
   });
 });
 
-describe('founders counter message', () => {
+describe('founders readout message', () => {
   it.each(['es', 'en', 'pt'] as const)('%s: singular and plural', (locale) => {
     const t = createTranslator({ locale, messages: { founders: messages[locale].founders }, namespace: 'founders' });
-    const text = (left: number) => t.markup('counter', { left, total: 5, n: (c: string) => c, v: (c: string) => c });
-    expect(text(1)).toMatch(/1/);
-    expect(text(3)).toMatch(/3/);
-    expect(text(3)).toMatch(/5/);
+    expect(t('readout.left', { left: 1 })).not.toBe(t('readout.left', { left: 3 }));
+    expect(t('readout.of', { total: 5 })).toMatch(/5/);
   });
 
-  it('es reads "Quedan X de 5" / "Queda 1 de 5"', () => {
+  it('es reads "Todavía quedan · 5 · de 5 lugares" / "Queda solo · 1"', () => {
     const t = createTranslator({ locale: 'es', messages: { founders: es.founders }, namespace: 'founders' });
-    const text = (left: number) => t.markup('counter', { left, total: 5, n: (c: string) => c, v: (c: string) => c });
-    expect(text(5)).toBe('Quedan 5 de 5');
-    expect(text(1)).toBe('Queda 1 de 5');
+    expect(t('readout.left', { left: 5 })).toBe('Todavía quedan');
+    expect(t('readout.left', { left: 1 })).toBe('Queda solo');
+    expect(t('readout.of', { total: 5 })).toBe('de 5 lugares');
   });
 });

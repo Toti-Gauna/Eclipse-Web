@@ -1,0 +1,188 @@
+/*
+ * <EphemerisRail>: the page index as a thin instrument scale in the left margin
+ * (≥ 1280px only; the content starts 52px from the edge there, the rail ends at ~44px).
+ * Colors follow .theme-dark / .theme-light (switched by the rail itself).
+ */
+.eph-rail {
+  --eph-x: 22px; /* x of the spine */
+  --eph-step: clamp(30px, 5vh, 44px);
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 40;
+  display: flex;
+  width: 50px;
+  flex-direction: column;
+  align-items: flex-start;
+  translate: 0 -50%;
+  pointer-events: none;
+  color: var(--fg);
+  animation: eph-in 0.9s var(--ease-expo) both;
+}
+@keyframes eph-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+}
+
+/* Scale: spine + ticks, and the playhead — a small eclipse whose moon scrubs off
+   as the page goes from totality (01) to the full sun (08). */
+.eph-scale {
+  position: relative;
+}
+.eph-spine {
+  position: absolute;
+  top: calc(var(--eph-step) / -2);
+  bottom: calc(var(--eph-step) / -2);
+  left: var(--eph-x);
+  width: 1px;
+  background: var(--line-strong);
+}
+.eph-head {
+  position: absolute;
+  top: calc(var(--eph-step) / 2 - 9px);
+  left: calc(var(--eph-x) - 8.5px);
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  will-change: transform;
+}
+.eph-rail.theme-dark {
+  --eph-plate: var(--night);
+}
+.eph-rail.theme-light {
+  --eph-plate: var(--dawn);
+}
+.eph-glyph {
+  display: block;
+  overflow: visible;
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px rgb(245 185 66 / 0.45));
+}
+.eph-glyph-plate {
+  fill: var(--eph-plate);
+}
+.eph-glyph-orbit {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.45;
+  stroke-width: 1.2;
+}
+.eph-glyph-sun {
+  fill: currentColor;
+}
+.eph-glyph-corona circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.7;
+  stroke-width: 1.2;
+}
+.eph-glyph-corona .eph-glyph-diamond {
+  fill: currentColor;
+  stroke: none;
+}
+.eph-ticks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.eph-ticks > li {
+  height: var(--eph-step);
+}
+.eph-tick {
+  position: relative;
+  display: block;
+  width: 48px;
+  height: 100%;
+  border-radius: 4px;
+  pointer-events: auto;
+}
+.eph-tick:focus-visible {
+  outline-offset: -1px;
+}
+.eph-tick-mark {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--eph-x) - 4px);
+  width: 9px;
+  height: 1px;
+  background: var(--fg-muted);
+  opacity: 0.55;
+  transform-origin: 0 50%;
+  transition:
+    transform 0.4s var(--ease-expo),
+    opacity 0.3s ease,
+    background-color 0.3s ease;
+}
+.eph-tick-index {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--eph-x) + 9px);
+  translate: 0 -50%;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  line-height: 1;
+  font-weight: 450;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  opacity: 0.6;
+  transition:
+    color 0.3s ease,
+    opacity 0.3s ease;
+}
+.eph-tick:hover .eph-tick-mark,
+.eph-tick:focus-visible .eph-tick-mark {
+  opacity: 1;
+  transform: scaleX(1.4);
+}
+.eph-tick:hover .eph-tick-index,
+.eph-tick:focus-visible .eph-tick-index {
+  color: var(--fg);
+  opacity: 1;
+}
+.eph-tick[aria-current] .eph-tick-mark {
+  background: var(--accent);
+  opacity: 1;
+  transform: scaleX(1.4);
+}
+.eph-tick[aria-current] .eph-tick-index {
+  color: var(--fg);
+  opacity: 1;
+}
+
+/* The current (or hovered) section's name, written along the spine, bottom → top. */
+.eph-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 0 calc(var(--eph-x) - 7px);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.eph-label-index {
+  color: var(--accent);
+}
+.eph-label-rule {
+  width: 1px;
+  height: 14px;
+  background: var(--line-strong);
+}
+.eph-label[data-hover] {
+  color: var(--fg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eph-rail {
+    animation: none;
+  }
+}

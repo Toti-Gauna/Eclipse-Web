@@ -7,6 +7,7 @@ import { gsap, ScrollTrigger } from '@/components/motion/gsap';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useMediaQuery } from '@/components/motion/useMediaQuery';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
+import { useSound } from '@/components/sound/SoundContext';
 import { l, verticalById } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
 import { useHeroState, type DemoVertical, type RevealPhase } from './HeroState';
@@ -110,6 +111,12 @@ function RevealLayer({
   const halo = useRef<HTMLDivElement>(null);
   const running = useRef<Running | null>(null);
   const [inView, setInView] = useState(false);
+  // Sound cues of the reveal (no-ops until the visitor turns sound on).
+  const { play } = useSound();
+  const playRef = useRef(play);
+  useEffect(() => {
+    playRef.current = play;
+  });
 
   const v = verticalById(vertical);
   const business = v?.business ?? '';
@@ -192,7 +199,10 @@ function RevealLayer({
 
     if (reduced) {
       el.style.clipPath = 'none';
-      if (target === 'opening') setHeaderLight(true);
+      if (target === 'opening') {
+        setHeaderLight(true);
+        playRef.current('whoosh');
+      }
       start(gsap.timeline().fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power1.out' }), 'opening');
       if (target === 'closing') running.current?.tl.progress(1, true).reverse();
       return;
@@ -241,7 +251,12 @@ function RevealLayer({
         { x: MOON_DIR.x * REVEAL_MOON_DIAMOND, y: MOON_DIR.y * REVEAL_MOON_DIAMOND, duration: 0.62, ease: 'power2.inOut' },
         0,
       );
-      // 2 · diamond ring: an intense point + a 400 ms horizontal flare
+      // 2 · diamond ring: an intense point + a 400 ms horizontal flare (+ its glint),
+      //     then the light's whoosh. Cues only fire playing forward.
+      const cue = (name: 'glint' | 'whoosh') => () => {
+        if (!t1.reversed()) playRef.current(name);
+      };
+      t1.call(cue('glint'), undefined, 0.36).call(cue('whoosh'), undefined, 0.74);
       if (core)
         t1.fromTo(core, { autoAlpha: 0, scale: 0.15 }, { autoAlpha: 1, scale: 1, duration: 0.32, ease: 'expo.out' }, 0.34);
       if (flare)
