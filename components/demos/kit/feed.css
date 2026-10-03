@@ -1,0 +1,195 @@
+/* Demo kit — ActivityFeed, ToastStack, PushBanner */
+.demo-feed-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.86em;
+  font-weight: 600;
+}
+.demo-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  margin-top: 0.7em;
+}
+.demo-feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+}
+.demo-feed-item[data-fresh] {
+  animation: demo-pop 0.55s var(--demo-ease) both;
+}
+.demo-feed-item .demo-icon-chip {
+  width: 1.85em;
+  height: 1.85em;
+}
+.demo-feed-text {
+  min-width: 0;
+  flex: 1;
+  padding-top: 0.2em;
+  font-size: 0.72em;
+  line-height: 1.38;
+}
+.demo-feed-now {
+  display: inline-block;
+  margin-left: 0.45em;
+  padding: 0 0.45em;
+  border-radius: 999px;
+  background: var(--demo-accent-soft);
+  color: var(--demo-accent-text);
+  font-size: 0.86em;
+  font-weight: 650;
+  vertical-align: 0.05em;
+}
+.demo-feed-time {
+  flex: none;
+  padding-top: 0.35em;
+  color: var(--demo-muted);
+  font-size: 0.62em;
+}
+.demo-feed-empty {
+  margin-top: 0.5em;
+  color: var(--demo-muted);
+  font-size: 0.72em;
+}
+
+/* Toasts */
+.demo-toasts {
+  position: absolute;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+  pointer-events: none;
+}
+.demo-toasts[data-placement='top'] {
+  position: sticky;
+  top: 0.4em;
+  height: 0;
+  overflow: visible;
+}
+.demo-toasts[data-placement='bottom-right'] {
+  right: max(1.2em, var(--demo-safe-right, 0em));
+  bottom: 1.2em;
+  width: 21em;
+}
+.demo-toast {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.6em 0.75em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+  box-shadow: var(--demo-shadow-lg);
+  animation: demo-toast-in 0.55s var(--demo-ease) both;
+}
+.demo-toast[data-leaving] {
+  animation: demo-toast-out 0.4s ease-in both;
+}
+.demo-toast-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.9em;
+  height: 1.9em;
+  border-radius: 999px;
+  background: var(--tone-solid);
+  color: var(--tone-on);
+}
+.demo-toast-icon svg {
+  width: 1em;
+  height: 1em;
+}
+.demo-toast-body {
+  color: color-mix(in oklab, var(--demo-bg) 78%, transparent);
+}
+@keyframes demo-toast-in {
+  from {
+    transform: translateY(-0.8em) scale(0.96);
+    opacity: 0;
+  }
+}
+@keyframes demo-toast-out {
+  to {
+    transform: translateY(-0.5em) scale(0.97);
+    opacity: 0;
+  }
+}
+.demo-toasts[data-placement='bottom-right'] .demo-toast {
+  animation-name: demo-toast-up;
+}
+@keyframes demo-toast-up {
+  from {
+    transform: translateY(0.8em) scale(0.96);
+    opacity: 0;
+  }
+}
+
+/* Push banner */
+.demo-push {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 0.6em;
+  padding: 0.65em 0.75em;
+  border-radius: 1.2em;
+  background: var(--demo-surface);
+  color: var(--demo-ink);
+  box-shadow:
+    0 0 0 1px var(--demo-line),
+    var(--demo-shadow-lg);
+  animation: demo-push-in 0.6s var(--demo-ease) both;
+}
+.demo-push[data-leaving] {
+  animation: demo-push-out 0.45s ease-in both;
+}
+.demo-push-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.3em;
+  height: 2.3em;
+  overflow: hidden;
+  border-radius: 0.6em;
+}
+.demo-push-app {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6em;
+  color: var(--demo-muted);
+  font-size: 0.62em;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.demo-push-body {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--demo-ink);
+  font-size: 0.72em;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+@keyframes demo-push-in {
+  from {
+    transform: translateY(-130%);
+  }
+}
+@keyframes demo-push-out {
+  to {
+    transform: translateY(-130%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-feed-item[data-fresh],
+  .demo-toast,
+  .demo-toast[data-leaving],
+  .demo-push,
+  .demo-push[data-leaving] {
+    animation: none;
+  }
+}

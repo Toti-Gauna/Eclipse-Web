@@ -1,0 +1,206 @@
+/* Demo kit — Calendar (CSS grid: rows = time steps, columns = people/days) */
+.demo-cal {
+  --cal-gap: 0.22em;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.demo-cal-head {
+  display: grid;
+  grid-template-columns: var(--cal-gutter) repeat(var(--cal-cols), minmax(0, 1fr));
+  column-gap: var(--cal-gap);
+  padding-bottom: 0.55em;
+}
+.demo-cal-colhead {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0 0.2em;
+}
+.demo-cal-colhead:first-child {
+  grid-column: 2;
+}
+.demo-cal-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--cal-gutter) repeat(var(--cal-cols), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--cal-rows), var(--cal-row));
+  column-gap: var(--cal-gap);
+}
+.demo-cal-lines {
+  grid-row: 1 / -1;
+  grid-column: 2 / -1;
+  border-bottom: 1px solid var(--demo-line);
+  background-image: repeating-linear-gradient(to bottom, var(--demo-line) 0 1px, transparent 1px var(--cal-row));
+}
+.demo-cal-time {
+  grid-column: 1;
+  align-self: start;
+  padding-right: 0.55em;
+  color: var(--demo-muted);
+  font-size: 0.62em;
+  font-weight: 500;
+  line-height: 1;
+  text-align: right;
+  transform: translateY(-0.45em);
+}
+.demo-cal-event {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 0.3em;
+  margin: var(--cal-gap) 0;
+  padding: 0.38em 0.4em 0.3em 0.62em;
+  overflow: hidden;
+  border-radius: var(--demo-radius-sm);
+  background: var(--tone-soft);
+  color: var(--demo-ink);
+}
+.demo-cal-event::before {
+  content: '';
+  position: absolute;
+  inset: 0.32em auto 0.32em 0.22em;
+  width: 0.2em;
+  border-radius: 999px;
+  background: var(--tone-solid);
+}
+.demo-cal-event[data-short] {
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.demo-cal-event[data-new] {
+  animation: demo-pop 0.6s var(--demo-ease) both;
+}
+.demo-cal-event[data-state='done'] {
+  opacity: 0.58;
+}
+.demo-cal-event[data-state='ghost'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--tone-solid);
+  color: var(--tone-fg);
+  border-style: dashed;
+}
+.demo-cal-event[data-state='ghost']::before {
+  opacity: 0.35;
+}
+.demo-cal-event[data-state='mine'] {
+  background: var(--demo-accent-2-soft);
+  box-shadow: inset 0 0 0 0.12em var(--demo-accent-2);
+}
+.demo-cal-event[data-state='mine']::before {
+  background: var(--demo-accent-2);
+}
+.demo-cal-event-text {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.demo-cal-event-title {
+  overflow: hidden;
+  font-size: 0.7em;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.demo-cal-event-sub {
+  overflow: hidden;
+  color: var(--demo-muted);
+  font-size: 0.6em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.demo-cal-event[data-short] .demo-cal-event-sub {
+  display: none;
+}
+.demo-cal-event-status {
+  display: grid;
+  flex: none;
+  place-items: center;
+  color: var(--tone-fg);
+}
+.demo-cal-event-status svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+.demo-cal-free {
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.35em;
+  margin: var(--cal-gap) 0;
+  padding: 0 0.55em;
+  border-radius: var(--demo-radius-sm);
+  color: var(--demo-accent-text);
+  font-size: 0.68em;
+  font-weight: 600;
+  opacity: 0.0001;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-accent) 45%, transparent);
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
+}
+.demo-cal-free svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+}
+.demo-cal-free span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.demo-cal[data-free='visible'] .demo-cal-free,
+.demo-cal-free:hover,
+.demo-cal-free:focus-visible,
+.demo-cal-free[aria-pressed='true'] {
+  opacity: 1;
+}
+.demo-cal-free:hover,
+.demo-cal-free[aria-pressed='true'] {
+  background: var(--demo-accent-soft);
+}
+.demo-cal-now {
+  position: absolute;
+  top: calc(var(--now) * var(--cal-row));
+  left: calc(var(--cal-gutter) - 0.25em);
+  right: 0;
+  z-index: 2;
+  height: 0;
+  border-top: 0.12em solid var(--cal-now, var(--demo-bad));
+  pointer-events: none;
+}
+.demo-cal-now::before {
+  content: '';
+  position: absolute;
+  top: -0.32em;
+  left: -0.2em;
+  width: 0.52em;
+  height: 0.52em;
+  border-radius: 999px;
+  background: var(--cal-now, var(--demo-bad));
+}
+.demo-cal-now-time {
+  position: absolute;
+  top: -0.62em;
+  right: calc(100% + 0.55em);
+  padding: 0.1em 0.3em;
+  border-radius: 0.4em;
+  background: var(--cal-now, var(--demo-bad));
+  color: var(--demo-on-status);
+  font-size: 0.58em;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-cal-event[data-new] {
+    animation: none;
+  }
+}

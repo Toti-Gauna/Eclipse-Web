@@ -29,6 +29,23 @@ const ROWS: Row[] = [
   { hour: 12, minute: 0, before: ['muted', 'unconfirmed'], after: ['ok', 'confirmed'] },
 ];
 
+/** Clínica Aurora's palette (same as the demo: porcelain · ink · teal · blush). */
+const CLINIC_MOCK = {
+  '--mk-accent': '#127C74',
+  '--mk-accent-soft': '#DDEDEA',
+  '--mk-ink': '#1D2A2B',
+  '--mk-muted': '#55615F',
+  '--mk-muted-bg': '#EFEAE2',
+  '--mk-line': 'rgb(29 42 43 / 0.12)',
+  '--mk-ok': '#1C6B4A',
+  '--mk-ok-bg': '#E2EFE8',
+  '--mk-bad': '#8E4A35',
+  '--mk-bad-bg': '#F8E2D9',
+  '--mk-card': '#FFFFFF',
+  background: '#F7F4EF',
+  color: '#1D2A2B',
+} as CSSProperties;
+
 /** Agenda: reminders confirm, the waitlist fills the cancelled and open slots. */
 const animateMock: MockAnimator = (tl, q, at) => {
   const rows = q('[data-trl="row"]');
@@ -55,7 +72,7 @@ function ClinicScreen({ business }: { business: string }) {
   const time = new Intl.DateTimeFormat(localeTags[locale], { hour: 'numeric', minute: '2-digit', hour12: locale === 'en' });
 
   return (
-    <div className="mk" style={{ '--mk-accent': '#2f8f83' } as CSSProperties}>
+    <div className="mk" style={CLINIC_MOCK}>
       <div className="mk-bar">
         <span className="mk-logo" />
         <span>{business}</span>

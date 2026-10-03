@@ -1,270 +1,1034 @@
 /*
- * Clínica Aurora demo. Sizes in em (the device screen sets the root font-size).
- * Only transform / opacity are animated; everything is static with reduced motion.
+ * Clínica Aurora — Demo. Palette in data.ts (CLINIC_THEME): porcelain · ink · teal · blush.
+ * Calm, rounded, airy; the signature is a sunrise (horizon + rising disc).
+ * Sizes in em; only transform / opacity (+ clip-path) animate; static with reduced motion.
  */
 .clinic {
-  --clinic-ok: #166534;
-  --clinic-ok-bg: #e3f3e8;
-  --clinic-warn: #8a5a00;
-  --clinic-warn-bg: #fdf1d8;
-  --clinic-new: #1d4ed8;
-  --clinic-new-bg: #e6effd;
-  --clinic-wait: #4c3fb5;
-  --clinic-wait-bg: #eeebfb;
-  --clinic-bad: #a1253b;
-  --clinic-bad-bg: #fde8ea;
-  --clinic-done-bg: #eeebe5;
-  --clinic-accent-ink: #0a5961;
-  --clinic-amber: #f5b942;
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
 }
 
-/*
- * demo.css resets `.demo-root button { font: inherit; color: inherit }` outside any
- * cascade layer, which beats Tailwind's (layered) utilities on every button.
- * Hand those two properties back to the layers inside this demo.
- */
-.demo-root:has(.clinic) button {
-  font: revert-layer;
-  color: revert-layer;
+/* Section head: serif title, one quiet line */
+.clinic-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1em;
+}
+.clinic-title {
+  font-size: 1.85em;
+  line-height: 1;
+}
+.clinic[data-screen='phone'] .clinic-title {
+  font-size: 1.75em;
+}
+.clinic-sub {
+  margin-top: 0.3em;
+  color: var(--demo-muted);
+  font-size: 0.74em;
+}
+.clinic-head-aside {
+  flex: none;
 }
 
-/* Entrances ---------------------------------------------------------- */
-@keyframes clinic-pop {
-  from {
-    transform: translateY(0.35em) scale(0.97);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
+/* Laptop top bar */
+.clinic-toptitle {
+  font-size: 0.95em;
+  font-weight: 600;
 }
-.clinic-pop {
-  animation: clinic-pop 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+.clinic-topdate {
+  color: var(--demo-muted);
+  font-size: 0.68em;
+  font-weight: 400;
 }
-
-@keyframes clinic-view-in {
-  from {
-    transform: translateY(0.6em);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
+.clinic-toppill,
+.clinic-livecall {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5em;
+  height: 2.1em;
+  padding: 0 0.8em;
+  border-radius: 999px;
+  font-size: 0.72em;
+  font-weight: 600;
+  white-space: nowrap;
 }
-.clinic-view {
-  animation: clinic-view-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+.clinic-toppill {
+  background: var(--demo-ok-soft);
+  color: var(--demo-ok);
 }
-
-@keyframes clinic-bubble-in {
-  from {
-    transform: translateY(0.4em) scale(0.92);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
+.clinic-livecall {
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+  font-variant-numeric: tabular-nums;
+  animation: demo-pop 0.5s var(--demo-ease) both;
 }
-.clinic-bubble {
-  animation: clinic-bubble-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-  transform-origin: bottom left;
+.clinic-user-av {
+  display: grid;
+  width: 2.3em;
+  height: 2.3em;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-accent-2);
+  color: var(--demo-accent-2-ink);
+  font-size: 0.72em;
+  font-weight: 700;
 }
-.clinic-bubble[data-from='patient'] {
-  transform-origin: bottom right;
+.clinic-sitebtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  height: 2.2em;
+  padding: 0 0.75em;
+  border-radius: 999px;
+  background: var(--demo-surface);
+  color: var(--demo-accent-text);
+  font-size: 0.72em;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--demo-line);
 }
-.clinic-bubble[data-from='agenda'] {
-  transform-origin: center;
-}
-
-@keyframes clinic-toast-in {
-  from {
-    transform: translateY(-0.8em) scale(0.96);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-.clinic-toast {
-  animation: clinic-toast-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+.clinic-sitebtn svg {
+  width: 1.15em;
+  height: 1.15em;
 }
 
-/* A soft halo on something that just changed */
-.clinic-fresh {
+/* Sidebar footer: the AI receptionist is on duty */
+.clinic-sidefoot {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.65em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-bg);
+  white-space: nowrap;
+}
+.clinic-sidefoot-ai {
+  display: grid;
+  width: 2.1em;
+  height: 2.1em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-ink);
+  color: var(--demo-accent-2);
+}
+.clinic-sidefoot[data-off] .clinic-sidefoot-ai {
+  background: var(--demo-sunken);
+  color: var(--demo-muted);
+}
+.clinic-missed {
+  padding: 0.75em 0.85em;
+  border-radius: var(--demo-radius-sm);
+  background: color-mix(in oklab, var(--demo-bad) 22%, transparent);
+  font-size: 0.78em;
+  line-height: 1.45;
+}
+.clinic-sidefoot-ai svg {
+  width: 1.3em;
+  height: 1.3em;
+}
+
+.clinic-now-dot {
   position: relative;
-}
-.clinic-fresh::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  box-shadow: 0 0 0 0.22em color-mix(in oklab, var(--demo-accent) 30%, transparent);
-  opacity: 0;
-  animation: clinic-halo 2.2s ease-out both;
-  pointer-events: none;
-}
-@keyframes clinic-halo {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-/* Live dot ----------------------------------------------------------- */
-.clinic-live-dot {
-  position: relative;
-  display: inline-block;
+  display: block;
   width: 0.5em;
   height: 0.5em;
   border-radius: 999px;
-  background: #16a34a;
+  background: var(--demo-accent);
 }
-.clinic-live-dot::after {
+.clinic-now-dot::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background: inherit;
-  animation: clinic-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation: demo-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
-@keyframes clinic-ping {
-  0% {
-    transform: scale(1);
-    opacity: 0.55;
-  }
-  80%,
-  100% {
-    transform: scale(2.6);
+
+/* Recovered this week — the key number, lit like a sunrise */
+.clinic-recovered {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2em;
+  overflow: hidden;
+  padding: 0.9em 1em 0.8em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+  text-align: left;
+  isolation: isolate;
+}
+.clinic-recovered-sun {
+  position: absolute;
+  right: -0.9em;
+  bottom: -3.3em;
+  z-index: -1;
+  width: 6.2em;
+  height: 6.2em;
+  border-radius: 999px;
+  background: var(--demo-accent-2);
+  box-shadow:
+    0 0 0 0.75em color-mix(in oklab, var(--demo-accent-2) 24%, transparent),
+    0 0 0 1.6em color-mix(in oklab, var(--demo-accent-2) 11%, transparent);
+  animation: clinic-rise 1.4s var(--demo-ease) 0.15s both;
+}
+@keyframes clinic-rise {
+  from {
+    transform: translateY(2.2em);
     opacity: 0;
   }
 }
-
-/* Progress / bars ---------------------------------------------------- */
-.clinic-meter > span {
-  display: block;
-  height: 100%;
-  transform-origin: left center;
-  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+.clinic-recovered-label {
+  max-width: 70%;
+  font-size: 0.7em;
+  font-weight: 600;
+  opacity: 0.92;
 }
-.clinic-bar {
-  transform-origin: bottom center;
+.clinic-recovered-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25em;
+  font-size: 3.1em;
+  line-height: 0.95;
 }
-
-/* Free slot (dashed) */
-.clinic-free {
-  border: 1px dashed color-mix(in oklab, var(--demo-accent) 45%, transparent);
-  background: color-mix(in oklab, var(--demo-accent) 4%, white);
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.clinic-recovered-of {
+  font-family: var(--demo-font-body);
+  font-size: 0.24em;
+  font-weight: 500;
+  letter-spacing: 0;
+  opacity: 0.85;
 }
-.clinic-free:hover {
-  background: var(--demo-accent-soft);
-  border-color: var(--demo-accent);
+.clinic-recovered-money {
+  max-width: 72%;
+  font-size: 0.66em;
+  line-height: 1.35;
+  opacity: 0.92;
 }
-.clinic-free:active {
-  transform: scale(0.98);
+.clinic-recovered-spark {
+  width: 52%;
+  height: 1.6em;
+  margin-top: 0.35em;
+  --tone-solid: var(--demo-accent-ink);
 }
-
-/* WhatsApp-like chat ----------------------------------------------- */
-.clinic-wa {
-  background-color: #efeae2;
-  background-image: radial-gradient(rgb(17 17 20 / 0.05) 1px, transparent 1.2px);
-  background-size: 1.1em 1.1em;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-}
-.clinic-wa::-webkit-scrollbar {
-  display: none;
-}
-.clinic-bubble-tail-in {
-  border-top-left-radius: 0.2em;
-}
-.clinic-bubble-tail-out {
-  border-top-right-radius: 0.2em;
-}
-
-.clinic-reply {
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.2s ease;
-}
-.clinic-reply:not(:disabled):hover {
-  background: #f5f7f6;
-}
-.clinic-reply:not(:disabled):active {
-  transform: scale(0.98);
-}
-
-/* Switch */
-.clinic-switch {
-  position: relative;
-  width: 2.3em;
-  height: 1.3em;
-  border-radius: 999px;
-  background: #cfcac2;
-  transition: background-color 0.25s ease;
-  flex-shrink: 0;
-}
-.clinic-switch::after {
-  content: '';
+.clinic-recovered-open {
   position: absolute;
-  top: 0.15em;
-  left: 0.15em;
+  top: 0.75em;
+  right: 0.75em;
+  display: grid;
+  width: 1.9em;
+  height: 1.9em;
+  place-items: center;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--demo-accent-ink) 16%, transparent);
+  transition: transform 0.3s var(--demo-ease);
+}
+.clinic-recovered-open svg {
   width: 1em;
   height: 1em;
-  border-radius: 999px;
-  background: white;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.clinic-switch[aria-checked='true'] {
-  background: var(--demo-accent);
+button.clinic-recovered:hover .clinic-recovered-open {
+  transform: translate(0.1em, -0.1em);
 }
-.clinic-switch[aria-checked='true']::after {
-  transform: translateX(1em);
+.clinic-recovered[data-compact] .clinic-recovered-value {
+  font-size: 3.4em;
 }
 
-/* Eclipse CTA inside the fictional app (amber = Eclipse layer, like the Demo badge) */
-.clinic-cta {
-  background: #f5b942;
-  color: #05050a;
-  box-shadow: 0 0.6em 1.6em -0.6em rgb(138 90 0 / 0.55);
+/* Cards and bits */
+.clinic-link {
+  color: var(--demo-accent-text);
+  font-size: 0.7em;
+  font-weight: 600;
+}
+.clinic-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.clinic-sitecard {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.75em 0.85em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-accent-2-soft);
+  color: var(--demo-ink);
+}
+.clinic-sitecard-icon {
+  display: grid;
+  width: 2.2em;
+  height: 2.2em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-surface);
+  color: var(--demo-accent-2-text);
+}
+.clinic-sitecard-icon svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.clinic-outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.7em;
+  border-radius: var(--demo-radius-sm);
+  background: var(--demo-surface);
+  color: var(--demo-ink);
+}
+.clinic-outcome-compact {
+  border: 1px solid var(--demo-line);
+  animation: demo-pop 0.55s var(--demo-ease) both;
+}
+.clinic-outcome-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  color: var(--demo-accent-text);
+  font-size: 0.72em;
+  font-weight: 650;
+}
+.clinic-outcome-title svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.clinic-outcome-sent {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--demo-ok);
+  font-size: 0.66em;
+  font-weight: 600;
+}
+.clinic-outcome-sent svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.clinic-livecall-card {
+  min-height: 24em;
+}
+.clinic[data-screen='phone'] .clinic-livecall-card {
+  min-height: 21em;
+}
+
+.clinic-switchrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+}
+.clinic-footnote {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  color: var(--demo-muted);
+  font-size: 0.64em;
+}
+.clinic-footnote svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+/* Appointment card (inside chats / call outcome) */
+.clinic-apptcard {
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+  padding: 0.5em 0.6em;
+  border-radius: 0.7em;
+  background: var(--demo-accent-soft);
+  color: var(--demo-ink);
+  line-height: 1.3;
+}
+.clinic-apptcard[data-tone='blush'] {
+  background: var(--demo-accent-2-soft);
+}
+.clinic-apptcard-date {
+  display: flex;
+  width: 2.6em;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.25em 0 0.3em;
+  border-radius: 0.55em;
+  background: var(--demo-surface);
+  box-shadow: 0 1px 0 var(--demo-line);
+}
+.clinic-apptcard-wd {
+  color: var(--demo-accent-text);
+  font-size: 0.62em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.clinic-apptcard-d {
+  font-family: var(--demo-font-display);
+  font-size: 1.35em;
+  line-height: 1;
+}
+.clinic-mapcard {
+  position: relative;
+  display: grid;
+  height: 5.5em;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 0.6em;
+  /* A tiny street map: two streets and a diagonal avenue. */
+  background-color: color-mix(in oklab, var(--demo-accent) 7%, var(--demo-sunken));
+  background-image:
+    linear-gradient(90deg, transparent 47%, var(--demo-surface) 47% 53%, transparent 53%),
+    linear-gradient(0deg, transparent 38%, var(--demo-surface) 38% 46%, transparent 46%),
+    linear-gradient(118deg, transparent 63%, var(--demo-line-strong) 63% 66%, transparent 66%);
+  color: var(--demo-bad);
+}
+.clinic-mapcard svg {
+  width: 1.6em;
+  height: 1.6em;
+  filter: drop-shadow(0 0.15em 0.2em rgb(0 0 0 / 0.2));
+}
+.clinic-slotchips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+}
+.clinic-slotchips span {
+  padding: 0.3em 0.6em;
+  border-radius: 999px;
+  background: var(--demo-accent-soft);
+  color: var(--demo-accent-text);
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+/* WhatsApp stats + automation flow */
+.clinic-stat {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.2em;
+  padding: 0.6em 0.75em;
+  border: 1px solid var(--demo-line);
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+}
+.clinic-stat-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  overflow: hidden;
+  color: var(--demo-muted);
+  font-size: 0.64em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.clinic-stat-dot {
+  width: 0.6em;
+  height: 0.6em;
+  flex: none;
+  border-radius: 999px;
+  background: var(--tone-solid);
+}
+.clinic-stat-value {
+  font-size: 1.7em;
+}
+.clinic-flow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+.clinic-flow::before {
+  content: '';
+  position: absolute;
+  top: 1.2em;
+  bottom: 1.2em;
+  left: 0.85em;
+  border-left: 1px dashed var(--demo-line-strong);
+}
+.clinic-flow-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.45em 0;
+}
+.clinic-flow-index {
+  display: grid;
+  width: 1.7em;
+  height: 1.7em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-sunken);
+  color: var(--demo-muted);
+  font-size: 0.72em;
+  font-weight: 700;
+  transition: background-color 0.25s ease;
+}
+.clinic-flow-step[data-on] .clinic-flow-index {
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.clinic-hint {
+  color: var(--demo-accent-text);
+  font-size: 0.7em;
+  font-weight: 500;
+}
+.clinic-hint-quiet {
+  color: var(--demo-muted);
+  font-weight: 400;
+}
+
+/* Chips (filters, booking options) */
+.clinic-chip {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.4em;
+  min-height: 2.2em;
+  padding: 0.3em 0.8em;
+  border-radius: 999px;
+  background: var(--demo-surface);
+  color: var(--demo-ink);
+  font-size: 0.72em;
+  font-weight: 550;
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
   transition:
-    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.3s ease;
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s var(--demo-ease);
 }
-.clinic-cta:hover {
+.clinic-chip:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--demo-accent);
+}
+.clinic-chip:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.clinic-chip[aria-pressed='true'] {
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+  box-shadow: none;
+}
+.clinic-chip:disabled {
+  opacity: 0.45;
+}
+
+/* Calendar tweaks */
+.clinic-cal-narrow .demo-cal-colhead {
+  justify-content: center;
+}
+.clinic-cal-narrow .demo-cal-event-sub {
+  display: none;
+}
+.clinic-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  font-size: 0.7em;
+}
+.clinic-legend-mark {
+  display: grid;
+  width: 1.7em;
+  height: 1.7em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--tone-soft);
+  color: var(--tone-fg);
+}
+.clinic-legend-mark svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+.clinic-sheet {
+  padding: 0.9em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
   box-shadow:
-    0 0 0 0.3em rgb(245 185 66 / 0.25),
-    0 0.6em 1.6em -0.6em rgb(138 90 0 / 0.6);
+    0 0 0 1px var(--demo-accent),
+    var(--demo-shadow-lg);
+  animation: demo-pop 0.45s var(--demo-ease) both;
 }
-.clinic-cta:active {
-  transform: scale(0.98);
+
+/* Ausencias: hero + week arc */
+.clinic-hero {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.4em;
+  overflow: hidden;
+  padding: 1em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+}
+.clinic-hero-label {
+  color: var(--demo-accent-2);
+  font-size: 0.68em;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.clinic-hero-value {
+  margin-top: 0.1em;
+  font-size: 4.2em;
+  line-height: 0.9;
+}
+.clinic-hero-goal {
+  font-size: 0.72em;
+  opacity: 0.8;
+}
+.clinic-hero-money {
+  margin-top: 0.2em;
+  font-size: 0.76em;
+}
+.clinic-arc {
+  margin-top: auto;
+  padding-top: 0.4em;
+}
+.clinic-arc svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+.clinic-arc-track {
+  fill: none;
+  stroke: color-mix(in oklab, var(--demo-bg) 22%, transparent);
+  stroke-width: 0.6;
+  stroke-dasharray: 1.2 1.6;
+}
+.clinic-arc-fill {
+  fill: none;
+  stroke: var(--demo-accent-2);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  animation: demo-draw 1.4s var(--demo-ease) 0.2s both;
+}
+.clinic-arc-horizon {
+  stroke: color-mix(in oklab, var(--demo-bg) 30%, transparent);
+  stroke-width: 0.4;
+}
+.clinic-arc-dot {
+  fill: var(--demo-accent-2);
+}
+.clinic-arc-dot-off {
+  fill: color-mix(in oklab, var(--demo-bg) 30%, transparent);
+}
+.clinic-arc-num {
+  fill: var(--demo-bg);
+  font-family: var(--demo-font-display);
+  font-size: 5px;
+}
+.clinic-arc-day {
+  fill: color-mix(in oklab, var(--demo-bg) 70%, transparent);
+  font-size: 3.6px;
+  text-transform: uppercase;
+}
+.clinic-sources {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+}
+.clinic[data-screen='laptop'] .clinic-sources {
+  flex-direction: column;
+  align-items: stretch;
+}
+.clinic[data-screen='laptop'] .clinic-sources .demo-donut {
+  align-self: center;
+}
+.clinic-arc-sun {
+  fill: var(--demo-accent-2);
+  stroke: color-mix(in oklab, var(--demo-accent-2) 35%, transparent);
+  stroke-width: 2.4;
+  paint-order: stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: clinic-sun 1.2s var(--demo-ease) 0.6s both;
+}
+@keyframes clinic-sun {
+  from {
+    transform: scale(0);
+  }
+}
+.clinic-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+.clinic-key::before {
+  content: '';
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 0.2em;
+  background: var(--demo-accent);
+}
+.clinic-key[data-tone='neutral']::before {
+  background: var(--demo-muted);
+}
+
+/* Public site ------------------------------------------------------------ */
+.clinic-site {
+  background: var(--demo-bg);
+}
+.clinic-site .demo-site-title em {
+  color: var(--demo-accent-text);
+  font-style: italic;
+}
+.clinic-site .demo-site-hero {
+  align-items: start;
+  background-image: linear-gradient(to top, transparent 0 calc(100% - 1px), var(--demo-line) calc(100% - 1px));
+}
+/* Desktop: the copy sits high; the chat peek docks in the calm space under it. */
+.clinic-site:not([data-compact]) .demo-site-hero-copy {
+  padding-top: 1.6em;
+}
+.clinic-site-mark {
+  display: grid;
+  width: 1.9em;
+  height: 1.9em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.clinic-site-mark svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.clinic-site-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6em;
+  margin-top: 0.8em;
+}
+.demo-site[data-compact] .clinic-site-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.clinic-site-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  padding: 0.8em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+}
+.clinic-site-card svg {
+  width: 1.4em;
+  height: 1.4em;
+  margin-bottom: 0.4em;
+  color: var(--demo-accent-text);
+}
+.clinic-site-team {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6em;
+  margin-top: 0.8em;
+}
+.demo-site[data-compact] .clinic-site-team {
+  grid-template-columns: minmax(0, 1fr);
+}
+.clinic-site-team li {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.clinic-site-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.6em;
+  font-size: 0.78em;
+}
+.clinic-site-line svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  color: var(--demo-accent-text);
+}
+
+/* Booking widget */
+.clinic-booking {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  padding: 1.1em;
+  border-radius: var(--demo-radius-lg);
+  background: var(--demo-surface);
+  box-shadow:
+    0 0 0 1px var(--demo-line),
+    var(--demo-shadow-lg);
+}
+.clinic-booking[data-compact] {
+  padding: 1em;
+}
+.clinic-booking-title {
+  font-size: 1.45em;
+}
+.clinic-booking-step {
+  min-width: 0;
+  transition: opacity 0.3s ease;
+}
+.clinic-booking-step:disabled {
+  opacity: 0.4;
+}
+.clinic-booking-step legend {
+  margin-bottom: 0.4em;
+  color: var(--demo-muted);
+  font-size: 0.64em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.clinic-booking-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+.clinic-booking-go {
+  width: 100%;
+  min-height: 2.8em;
+  font-size: 0.82em;
+}
+.clinic-booking-note {
+  color: var(--demo-muted);
+  font-size: 0.62em;
+  text-align: center;
+}
+.clinic-booking[data-state='booked'] {
+  align-items: flex-start;
+  gap: 0.55em;
+  animation: demo-pop 0.6s var(--demo-ease) both;
+}
+.clinic-booking-check {
+  display: grid;
+  width: 2.4em;
+  height: 2.4em;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+  animation: clinic-check 0.7s var(--demo-ease) 0.1s both;
+}
+.clinic-booking-check svg {
+  width: 1.3em;
+  height: 1.3em;
+}
+@keyframes clinic-check {
+  from {
+    transform: scale(0.3) rotate(-25deg);
+    opacity: 0;
+  }
+}
+.clinic-booking-wa {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--demo-ok);
+  font-size: 0.7em;
+  font-weight: 600;
+}
+.clinic-booking-wa svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+/* A tap of the (invisible) patient: a ripple on what they touched */
+.clinic-tap::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.4em;
+  height: 2.4em;
+  margin: -1.2em 0 0 -1.2em;
+  border-radius: 999px;
+  background: var(--demo-accent);
+  opacity: 0;
+  pointer-events: none;
+  animation: clinic-tap 0.65s ease-out both;
+}
+.clinic-booking-go.clinic-tap {
+  position: relative;
+}
+@keyframes clinic-tap {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+.clinic-pressing {
+  transform: scale(0.97);
+}
+
+/* Site chatbot */
+.clinic-sitechat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.clinic-sitechat .demo-chat {
+  box-shadow:
+    0 0 0 1px var(--demo-line),
+    var(--demo-shadow-lg);
+}
+.clinic-sitechat .demo-chat-head {
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.clinic-sitechat .demo-chat-status {
+  color: color-mix(in oklab, var(--demo-accent-ink) 80%, transparent);
+}
+.clinic-sitechat .demo-chat-avatar {
+  background: var(--demo-accent-ink);
+  color: var(--demo-accent);
+}
+.clinic-sitechat-docked {
+  position: absolute;
+  left: 1em;
+  bottom: 0.9em;
+  z-index: 3;
+  width: 15em;
+}
+.clinic-sitechat.clinic-sitechat-docked {
+  width: 17em;
+  height: 24em;
+}
+.clinic-sitechat-mobile {
+  position: absolute;
+  inset: auto 0.6em 1.3em;
+  z-index: 3;
+  height: 74%;
+  animation: demo-pop 0.45s var(--demo-ease) both;
+}
+.clinic-sitechat-close {
+  position: absolute;
+  top: 0.55em;
+  right: 0.55em;
+  display: grid;
+  width: 2em;
+  height: 2em;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--demo-accent-ink);
+}
+.clinic-sitechat-close svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.clinic-site-chatbtn {
+  position: absolute;
+  right: 0.8em;
+  bottom: 1.5em;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  height: 2.6em;
+  padding: 0 1em;
+  border-radius: 999px;
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+  font-size: 0.74em;
+  font-weight: 600;
+  box-shadow: var(--demo-shadow-lg);
+}
+.clinic-site-chatbtn svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+/* Patient phone */
+.clinic-patient {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  background: var(--demo-bg);
+}
+.clinic-patient-bar {
+  display: flex;
+  align-items: center;
+  padding: 0.3em 0.7em;
+}
+.clinic-back,
+.clinic-backtoapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 2.2em;
+  padding: 0 0.7em;
+  border-radius: 999px;
+  color: var(--demo-accent-text);
+  font-size: 0.72em;
+  font-weight: 600;
+}
+.clinic-back svg,
+.clinic-backtoapp svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+.clinic-backtoapp {
+  position: absolute;
+  bottom: 1.5em;
+  left: 50%;
+  z-index: 4;
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+  box-shadow: var(--demo-shadow-lg);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.clinic-patient[data-view='whatsapp'] .clinic-backtoapp {
+  bottom: 4.6em;
+}
+.clinic-patient-chat {
+  min-height: 0;
+  flex: 1;
+  border-radius: 0;
+}
+.clinic-push {
+  position: absolute;
+  top: 0.35em;
+  left: 0.5em;
+  right: 0.5em;
+  z-index: 5;
+}
+.clinic-push-icon {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  background: #1f8a5b;
+  color: #ffffff;
+}
+.clinic-push-icon svg {
+  width: 1.2em;
+  height: 1.2em;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .clinic-pop,
-  .clinic-view,
-  .clinic-bubble,
-  .clinic-toast,
-  .clinic-fresh::after,
-  .clinic-live-dot::after {
+  .clinic-now-dot::after,
+  .clinic-recovered-sun,
+  .clinic-livecall,
+  .clinic-outcome-compact,
+  .clinic-sheet,
+  .clinic-arc-fill,
+  .clinic-arc-sun,
+  .clinic-booking[data-state='booked'],
+  .clinic-booking-check,
+  .clinic-tap::after,
+  .clinic-sitechat-mobile {
     animation: none;
-  }
-  .clinic-wa {
-    scroll-behavior: auto;
-  }
-  .clinic-meter > span,
-  .clinic-switch,
-  .clinic-switch::after {
-    transition: none;
   }
 }

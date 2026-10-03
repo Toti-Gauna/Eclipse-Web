@@ -1,160 +1,204 @@
 'use client';
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { CalendarDays, ChartColumn, MessageCircle } from 'lucide-react';
-import { useReducedMotion } from '@/components/motion/useReducedMotion';
+import { CalendarDays, ChartNoAxesColumn, Globe, House, MessageCircle, PhoneCall } from 'lucide-react';
+import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { DemoShell, useDemoClock, type DemoTab } from '../kit';
+import { AppShell, LiveDot, usePairedStore, useStory, type NavItem } from '../kit';
 import type { DemoProps } from '../types';
-import { ACCENT, MAX_TICK, TICK_MS, TODAY } from './data';
-import { createClinicStore, deriveAgenda, deriveChat, deriveKpis, pairedPhoneOf, pairedStoreFor, type ClinicStore } from './sim';
-import { ClinicProvider, useFmt, type ClinicCtx } from './context';
-import { AuroraLogo, LiveBadge, WantThis } from './ui';
-import { Announcer } from './activity';
-import { LaptopAgenda, PhoneAgenda } from './Agenda';
-import { LaptopReminders, PhoneReminders } from './Reminders';
-import { LaptopAbsences, PhoneAbsences } from './Absences';
+import { CLINIC_THEME, TODAY } from './data';
+import { createClinicStore, deriveClinic, isOffNow } from './story';
+import { ClinicProvider, type ClinicCtx, type ClinicTab } from './context';
+import { useClinicScripts } from './scripts';
+import { Announcer, AuroraMark, useClinicText } from './ui';
+import { ClinicToasts, LaptopToday, PhoneToday } from './views/Today';
+import { LaptopAgenda, PhoneAgenda } from './views/Agenda';
+import { LaptopCalls, PhoneCalls } from './views/Calls';
+import { LaptopWhatsApp, PhoneWhatsApp } from './views/WhatsApp';
+import { LaptopSite, PatientPhone } from './views/Site';
+import { LaptopRecovered, PhoneRecovered } from './views/Recovered';
 import './clinic.css';
 
-type TabId = 'agenda' | 'reminders' | 'absences';
-
-const VIEWS: Record<TabId, Record<DemoProps['screen'], () => React.ReactNode>> = {
+const VIEWS: Record<ClinicTab, Record<DemoProps['screen'], () => ReactNode>> = {
+  today: { phone: PhoneToday, laptop: LaptopToday },
   agenda: { phone: PhoneAgenda, laptop: LaptopAgenda },
-  reminders: { phone: PhoneReminders, laptop: LaptopReminders },
-  absences: { phone: PhoneAbsences, laptop: LaptopAbsences },
+  calls: { phone: PhoneCalls, laptop: LaptopCalls },
+  whatsapp: { phone: PhoneWhatsApp, laptop: LaptopWhatsApp },
+  site: { phone: PhoneToday, laptop: LaptopSite },
+  recovered: { phone: PhoneRecovered, laptop: LaptopRecovered },
 };
 
-function LaptopTopBar() {
-  const t = useTranslations('demoClinic');
-  const fmt = useFmt();
-  return (
-    <>
-      <div className="mr-auto flex min-w-0 items-center gap-[0.7em]">
-        <span className="text-[0.85em] font-semibold">{t('reception')}</span>
-        <span aria-hidden className="h-[1em] w-px bg-[var(--demo-line)]" />
-        <span className="truncate text-[0.8em] text-[var(--demo-muted)]">{fmt.long(TODAY)}</span>
-        <LiveBadge />
-      </div>
-      <WantThis variant="header" />
-    </>
-  );
-}
-
 /**
- * Clínica Aurora (vertical "clinicas"): live appointment book, WhatsApp
- * reminders that free and refill slots, and a no-show dashboard.
+ * Clínica Aurora (vertical "clinicas", dental & aesthetics).
+ * - laptop: the clinic's workspace (collapsible sidebar): today, agenda, AI voice
+ *   receptionist, WhatsApp automations, public site, no-shows recovered.
+ * - phone alone: the same product as a mobile app (5 tabs + the public site).
+ * - phone next to the laptop: the PATIENT's phone (books online, gets WhatsApp).
+ * One story (~31 s loop, see story.ts) drives both screens.
  */
 export default function ClinicDemo({ screen, active }: DemoProps) {
-  const t = useTranslations('demoClinic');
   const vertical = verticalById('clinicas')!;
   const business = vertical.business ?? '';
   const keyNumber = vertical.keyNumber?.value ?? 0;
   const ticketUsd = vertical.calculator.ticketUsd;
-  const reduced = useReducedMotion();
+  const t = useTranslations('demoClinic');
+  const { fmt, day } = useClinicText();
+  const { play } = useSound();
 
-  // Own store until we find the laptop/phone sibling of the same showcase.
-  const [ownStore] = useState(() => createClinicStore(false));
-  const [sharedStore, setSharedStore] = useState<ClinicStore | null>(null);
-  const store = sharedStore ?? ownStore;
-  const root = useRef<HTMLDivElement | null>(null);
-  const attach = useCallback((el: HTMLDivElement | null) => {
-    root.current = el;
-    if (!el) return;
-    const shared = pairedStoreFor(el);
-    if (shared) setSharedStore(shared);
-  }, []);
+  const { store, paired, ref } = usePairedStore('clinic', createClinicStore);
+  const snap = useStory(store, active);
+  const scripts = useClinicScripts();
+  const view = useMemo(
+    () => deriveClinic(snap.state, snap.t, snap.reduced, scripts.martina, scripts.voiceTexts),
+    [snap.state, snap.t, snap.reduced, scripts],
+  );
 
-  const tick = useDemoClock(active, TICK_MS, MAX_TICK);
+  const [tab, setTab] = useState<ClinicTab>('today');
+  const [siteOpen, setSiteOpen] = useState(false);
+  const patientPhone = screen === 'phone' && paired;
+  const announce = screen === 'laptop' || !paired;
+
+  // Sound: a booking landing (one instance per pair, only while visible).
+  const lastEvent = view.events[view.events.length - 1];
+  const heard = useRef<string | null>(null);
   useEffect(() => {
-    store.report(tick);
-  }, [store, tick]);
-  const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
+    const id = lastEvent?.id ?? null;
+    const first = heard.current === null;
+    heard.current = id ?? '';
+    if (first || !active || !announce || !lastEvent || lastEvent.at < 0) return;
+    if (['online', 'waitlist', 'voice', 'you'].includes(lastEvent.kind)) play('success');
+  }, [lastEvent, active, announce, play]);
 
-  const chat = useMemo(() => deriveChat(state, reduced), [state, reduced]);
-  const agenda = useMemo(() => deriveAgenda(state, chat), [state, chat]);
-  const kpis = useMemo(() => deriveKpis(agenda, keyNumber), [agenda, keyNumber]);
-  const paired = store.paired;
+  const live = view.call.phase === 'ringing' || view.call.phase === 'live';
+  const nav: NavItem[] = [
+    { id: 'today', label: t('nav.today'), icon: House },
+    { id: 'agenda', label: t('nav.agenda'), icon: CalendarDays },
+    { id: 'calls', label: t(screen === 'phone' ? 'nav.callsShort' : 'nav.calls'), icon: PhoneCall, badge: live ? 'live' : undefined, group: screen === 'laptop' ? t('nav.group') : undefined },
+    { id: 'whatsapp', label: t('nav.whatsapp'), icon: MessageCircle },
+    ...(screen === 'laptop' ? [{ id: 'site', label: t('nav.site'), icon: Globe }] : []),
+    { id: 'recovered', label: t(screen === 'phone' ? 'nav.recoveredShort' : 'nav.recovered'), icon: ChartNoAxesColumn },
+  ];
 
   const ctx: ClinicCtx = {
     screen,
+    paired,
     store,
-    state,
-    chat,
-    agenda,
-    kpis,
+    state: snap.state,
+    view,
+    t: snap.t,
+    loop: snap.loop,
+    reduced: snap.reduced,
+    active,
+    announce,
     business,
     keyNumber,
     ticketUsd,
-    reduced,
-    announce: screen === 'laptop' || !paired,
-    paired,
+    go: (id) => setTab(id),
+    openSite: () => {
+      setSiteOpen(true);
+      if (active) play('open');
+    },
   };
 
-  // The showcase's phone covers the laptop's right edge: measure how much (as a
-  // fraction of the screen, so the hero's scale animations don't matter) and keep
-  // the dashboards clear of it through --clinic-safe.
-  useLayoutEffect(() => {
-    const el = root.current;
-    const screenEl = el?.closest('.device-screen');
-    const phone = el ? pairedPhoneOf(el) : null;
-    if (screen !== 'laptop' || !paired || !el || !screenEl || !phone) return;
-    const measure = () => {
-      const s = screenEl.getBoundingClientRect();
-      const p = phone.getBoundingClientRect();
-      if (!s.width) return;
-      const fontSize = parseFloat(getComputedStyle(el).fontSize) || 1;
-      const covered = Math.max(0, (s.right - p.left) / s.width) * screenEl.clientWidth;
-      const safe = `${(covered / fontSize + 0.8).toFixed(2)}em`;
-      const phoneTop = (((p.top - s.top) / s.height) * screenEl.clientHeight) / fontSize;
-      el.style.setProperty('--clinic-safe', safe);
-      // Small showcases: the phone also rises over the title row.
-      el.style.setProperty('--clinic-safe-top', phoneTop < 9 ? safe : '0em');
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(screenEl);
-    ro.observe(phone);
-    return () => ro.disconnect();
-  }, [screen, paired]);
+  const clock = fmt.time(view.clock);
 
-  // Next to the laptop, the phone opens on the patient's WhatsApp.
-  const [tab, setTab] = useState<TabId | null>(null);
-  const current: TabId = tab ?? (paired && screen === 'phone' ? 'reminders' : 'agenda');
-  const tabs: DemoTab[] = [
-    { id: 'agenda', label: t('tabs.agenda'), icon: CalendarDays },
-    { id: 'reminders', label: t('tabs.reminders'), icon: MessageCircle },
-    { id: 'absences', label: t('tabs.absences'), icon: ChartColumn },
-  ];
-  const View = VIEWS[current][screen];
+  if (patientPhone) {
+    return (
+      <ClinicProvider value={ctx}>
+        <AppShell screen="phone" chrome="bare" theme={CLINIC_THEME} business={business} logo={<AuroraMark />} active={active} rootRef={ref} statusTime={clock}>
+          <PatientPhone key={snap.loop} />
+        </AppShell>
+      </ClinicProvider>
+    );
+  }
+
+  const View = VIEWS[tab][screen];
+  const headerRight =
+    screen === 'laptop' ? (
+      <>
+        {live ? (
+          <button type="button" className="clinic-livecall" onClick={() => setTab('calls')}>
+            <LiveDot color="var(--demo-accent-2)" />
+            {view.call.phase === 'ringing' ? t('top.ringing') : t('top.liveCall', { time: fmt.duration(view.call.talkMs) })}
+          </button>
+        ) : (
+          <span className="clinic-toppill">
+            <LiveDot />
+            {t('top.live')}
+          </span>
+        )}
+        <span className="clinic-user" aria-hidden>
+          <span className="clinic-user-av">RA</span>
+        </span>
+      </>
+    ) : (
+      <button type="button" className="clinic-sitebtn" onClick={ctx.openSite} aria-haspopup="dialog">
+        <Globe aria-hidden strokeWidth={1.8} />
+        {t('top.site')}
+      </button>
+    );
 
   return (
-    <DemoShell
-      screen={screen}
-      business={business}
-      accent={ACCENT}
-      logo={<AuroraLogo />}
-      tabs={tabs}
-      activeTab={current}
-      onTab={(id) => {
-        setTab(id as TabId);
-        root.current?.closest('.demo-scroll')?.scrollTo({ top: 0 });
-      }}
-      headerRight={screen === 'laptop' ? <LaptopTopBar /> : <LiveBadge />}
-    >
-      <ClinicProvider value={ctx}>
-        <div ref={attach} className="clinic flex min-h-full flex-col">
-          <div key={current} className="clinic-view pt-[0.25em]">
+    <ClinicProvider value={ctx}>
+      <AppShell
+        screen={screen}
+        theme={CLINIC_THEME}
+        business={business}
+        logo={<AuroraMark />}
+        nav={nav}
+        current={tab}
+        onNavigate={(id) => setTab(id as ClinicTab)}
+        title={
+          screen === 'laptop' ? (
+            <>
+              <p className="clinic-toptitle">{nav.find((n) => n.id === tab)?.label}</p>
+              <p className="clinic-topdate">{day(TODAY, 'long')}</p>
+            </>
+          ) : undefined
+        }
+        headerRight={headerRight}
+        sidebarFooter={<SidebarFooter on={!isOffNow(snap.state.off.voice)} />}
+        active={active}
+        rootRef={ref}
+        statusTime={clock}
+        overlay={
+          screen === 'phone' ? (
+            <PatientPhone
+              key={snap.loop}
+              onClose={() => {
+                setSiteOpen(false);
+                if (active) play('close');
+              }}
+            />
+          ) : undefined
+        }
+        overlayOpen={siteOpen}
+        overlayOrigin={['78%', '4%']}
+      >
+        <div className="clinic" data-screen={screen}>
+          <ClinicToasts placement={screen === 'phone' ? 'top' : 'bottom-right'} />
+          <div key={tab} className="demo-view">
             <View />
           </div>
-          {screen === 'phone' && !paired ? (
-            <div className="sticky bottom-[-1em] z-20 -mx-[1em] mt-auto bg-gradient-to-t from-[var(--demo-bg)] from-55% to-transparent px-[1em] pb-[0.8em] pt-[1.6em]">
-              <WantThis variant="floating" />
-            </div>
-          ) : null}
           <Announcer />
         </div>
-      </ClinicProvider>
-    </DemoShell>
+      </AppShell>
+    </ClinicProvider>
+  );
+}
+
+function SidebarFooter({ on }: { on: boolean }) {
+  const t = useTranslations('demoClinic');
+  return (
+    <div className="clinic-sidefoot" data-off={on ? undefined : ''}>
+      <span className="clinic-sidefoot-ai" aria-hidden>
+        <AuroraMark />
+      </span>
+      <span className="min-w-0 leading-[1.25]">
+        <span className="block truncate text-[0.74em] font-semibold">{t('side.aiTitle')}</span>
+        <span className="block truncate text-[0.64em] text-[var(--demo-muted)]">{on ? t('side.aiBody') : t('side.aiOff')}</span>
+      </span>
+    </div>
   );
 }

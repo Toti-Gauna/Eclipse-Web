@@ -1,16 +1,57 @@
 /**
- * Fictional data for the "Clínica Aurora" demo. Names and treatments are message
- * keys (namespace `demoClinic`), so every locale can use its own names.
- * Time is measured in demo "ticks" (useDemoClock); "now" is 9:41 on a fixed day.
+ * Fictional data for "Clínica Aurora — Demo" (dental & aesthetics). People and
+ * treatments are message keys (namespace `demoClinic`) so each locale names them.
+ * Time: minutes from midnight on a fixed Thursday; "now" is 9:41 when the story starts.
  */
+import type { DemoTheme, Tone } from '../kit';
 
-export const ACCENT = '#0d6b74';
-export const TICK_MS = 1700;
-/** Effectively endless (the chat can be replayed); reduced motion jumps here. */
-export const MAX_TICK = 100_000;
+/** Palette: porcelain · ink · teal · blush. Calm, rounded, airy. */
+export const CLINIC_THEME: DemoTheme = {
+  mode: 'light',
+  bg: '#F7F4EF',
+  surface: '#FFFFFF',
+  sunken: '#EFEAE2',
+  ink: '#1D2A2B',
+  muted: '#55615F',
+  line: 'rgb(29 42 43 / 0.1)',
+  accent: '#127C74',
+  accentInk: '#FFFFFF',
+  accentText: '#0F6B64',
+  accent2: '#F2C4B3',
+  accent2Ink: '#1D2A2B',
+  accent2Text: '#8E4A35',
+  ok: '#1C6B4A',
+  warn: '#8A5A12',
+  bad: '#A33A3A',
+  info: '#2B5F86',
+  radius: '1.15em',
+  display: { family: 'serif', weight: 400, tracking: '-0.01em' },
+};
 
+/* ------------------------------------------------------------------ */
+/* People                                                               */
+/* ------------------------------------------------------------------ */
 export type ProId = 'lucia' | 'tomas' | 'sofia';
 export type Specialty = 'dental' | 'ortho' | 'aesthetic';
+
+export interface Pro {
+  id: ProId;
+  specialty: Specialty;
+  initials: string;
+  /** Calendar tone of the pro's appointments. */
+  tone: Tone;
+  /** Avatar colors. */
+  color: string;
+  ink: string;
+}
+
+export const PROS: Pro[] = [
+  { id: 'lucia', specialty: 'dental', initials: 'LM', tone: 'accent', color: '#127C74', ink: '#FFFFFF' },
+  { id: 'tomas', specialty: 'ortho', initials: 'TR', tone: 'ink', color: '#1D2A2B', ink: '#F7F4EF' },
+  { id: 'sofia', specialty: 'aesthetic', initials: 'SP', tone: 'accent2', color: '#F2C4B3', ink: '#1D2A2B' },
+];
+export const proById = (id: ProId) => PROS.find((p) => p.id === id)!;
+
 export type TreatmentId =
   | 'cleaning'
   | 'checkup'
@@ -23,185 +64,148 @@ export type TreatmentId =
   | 'peeling'
   | 'aestheticConsult';
 
+/** Duration in minutes. */
+export const TREATMENTS: Record<TreatmentId, { specialty: Specialty; minutes: number }> = {
+  cleaning: { specialty: 'dental', minutes: 30 },
+  checkup: { specialty: 'dental', minutes: 30 },
+  filling: { specialty: 'dental', minutes: 60 },
+  whitening: { specialty: 'dental', minutes: 60 },
+  orthoConsult: { specialty: 'ortho', minutes: 30 },
+  braces: { specialty: 'ortho', minutes: 30 },
+  aligners: { specialty: 'ortho', minutes: 30 },
+  facial: { specialty: 'aesthetic', minutes: 60 },
+  peeling: { specialty: 'aesthetic', minutes: 30 },
+  aestheticConsult: { specialty: 'aesthetic', minutes: 30 },
+};
+/** What the public site offers to book (one per specialty first). */
+export const SITE_TREATMENTS: TreatmentId[] = ['cleaning', 'facial', 'orthoConsult', 'whitening'];
+export const proFor = (treatment: TreatmentId): ProId => PROS.find((p) => p.specialty === TREATMENTS[treatment].specialty)!.id;
+
 export type PatientId =
   | 'ana'
   | 'diego'
   | 'carla'
-  | 'camila'
-  | 'pedro'
   | 'martina'
+  | 'pedro'
   | 'lucas'
-  | 'paula'
   | 'bruno'
   | 'elena'
+  | 'joaquin'
   | 'sebastian'
+  | 'valentina'
   | 'nicolas'
   | 'renata'
-  | 'joaquin'
-  | 'valentina'
   | 'lola'
   | 'irene'
   | 'florencia'
   | 'micaela'
-  | 'julieta'
   | 'rocio'
-  | 'gabriela'
-  | 'julian'
-  | 'agustina'
-  | 'mateo'
-  | 'emilia'
-  | 'santiago'
-  | 'clara'
-  | 'facundo';
+  | 'camila'
+  | 'paula'
+  | 'julian';
 
-export const PATIENT_POOL: PatientId[] = [
-  'ana', 'diego', 'carla', 'pedro', 'lucas', 'bruno', 'elena', 'joaquin', 'lola', 'irene', 'florencia',
-  'micaela', 'rocio', 'gabriela', 'agustina', 'mateo', 'emilia', 'santiago', 'clara', 'facundo', 'renata', 'camila',
-];
+/* ------------------------------------------------------------------ */
+/* The day                                                              */
+/* ------------------------------------------------------------------ */
+/** Visible agenda: 9:00 → 14:00 in 30-minute rows. */
+export const DAY_START = 540;
+export const DAY_END = 840;
+export const STEP = 30;
+/** 9:41 when the story starts; the story clock advances ~1 minute every 2.5 s. */
+export const NOW_START = 581;
+export const storyClock = (t: number) => NOW_START + Math.floor(Math.max(0, t) / 2500);
 
-export interface Pro {
-  id: ProId;
-  specialty: Specialty;
-  /** Identity color (marks only, never text). */
-  color: string;
-  initials: string;
-}
-
-export const PROS: Pro[] = [
-  { id: 'lucia', specialty: 'dental', color: ACCENT, initials: 'L' },
-  { id: 'tomas', specialty: 'ortho', color: '#5a4fc4', initials: 'T' },
-  { id: 'sofia', specialty: 'aesthetic', color: '#c0477f', initials: 'S' },
-];
-export const proById = (id: ProId) => PROS.find((p) => p.id === id)!;
-
-export const TREATMENTS: Record<Specialty, TreatmentId[]> = {
-  dental: ['cleaning', 'checkup', 'filling', 'whitening'],
-  ortho: ['orthoConsult', 'braces', 'aligners'],
-  aesthetic: ['facial', 'peeling', 'aestheticConsult'],
-};
-
-/** Slot start times in minutes from midnight (30-minute slots). */
-export const TIMES = [540, 570, 600, 630, 660, 690, 720, 750];
-/** 9:41 — the demo's "now" (matches the phone status bar). */
-export const NOW_MIN = 581;
-
-/** Monday of the demo week (UTC). Days: 0 = Monday … 5 = Saturday. */
+/** Monday of the demo week (UTC); today is Thursday. */
 export const WEEK_START = Date.UTC(2026, 9, 5);
-export const DAYS = [0, 1, 2, 3, 4, 5];
 export const TODAY = 3;
-export const dayDate = (day: number, minutes = 0) => new Date(WEEK_START + day * 86_400_000 + minutes * 60_000);
+export const dayDate = (day: number) => new Date(WEEK_START + day * 86_400_000);
 
-export type SlotStatus = 'done' | 'now' | 'confirmed' | 'reminded' | 'new' | 'waitlist' | 'you' | 'freed' | 'noshow';
+export type Status = 'done' | 'now' | 'confirmed' | 'reminded' | 'new' | 'freed' | 'waitlist' | 'voice' | 'you';
 
-export interface Booking {
-  patient: PatientId | 'you';
+export interface BaseAppt {
+  pro: ProId;
+  start: number;
+  patient: PatientId;
   treatment: TreatmentId;
-  status: SlotStatus;
+  status: Status;
 }
 
-/** `${day}:${pro}:${timeIndex}` */
-export type SlotKey = string;
-export const slotKey = (day: number, pro: ProId, idx: number): SlotKey => `${day}:${pro}:${idx}`;
-export function parseSlotKey(key: SlotKey): { day: number; pro: ProId; idx: number } {
-  const [day, pro, idx] = key.split(':');
-  return { day: Number(day), pro: pro as ProId, idx: Number(idx) };
-}
+const a = (pro: ProId, start: number, patient: PatientId, treatment: TreatmentId, status: Status): BaseAppt => ({ pro, start, patient, treatment, status });
 
-const b = (patient: PatientId, treatment: TreatmentId, status: SlotStatus): Booking => ({ patient, treatment, status });
-
-/** Today's agenda at 9:41, before the live story starts. Missing keys are free slots. */
-export const TODAY_BASE: Record<string, Booking> = {
-  'lucia:0': b('ana', 'checkup', 'done'),
-  'lucia:1': b('diego', 'cleaning', 'now'),
-  'lucia:2': b('carla', 'filling', 'confirmed'),
-  'lucia:4': b('pedro', 'checkup', 'confirmed'),
-  'lucia:5': b('martina', 'cleaning', 'reminded'),
-  'lucia:7': b('lucas', 'whitening', 'confirmed'),
-  'tomas:0': b('bruno', 'braces', 'done'),
-  'tomas:1': b('elena', 'braces', 'now'),
-  'tomas:3': b('sebastian', 'orthoConsult', 'reminded'),
-  'tomas:5': b('joaquin', 'aligners', 'confirmed'),
-  'tomas:6': b('valentina', 'braces', 'reminded'),
-  'sofia:0': b('lola', 'facial', 'done'),
-  'sofia:1': b('irene', 'peeling', 'now'),
-  'sofia:2': b('florencia', 'facial', 'confirmed'),
-  'sofia:4': b('micaela', 'aestheticConsult', 'confirmed'),
-  'sofia:6': b('rocio', 'peeling', 'reminded'),
-  'sofia:7': b('gabriela', 'facial', 'confirmed'),
-};
-
-export type StoryKind = 'new' | 'confirm' | 'cancel' | 'reschedule' | 'refill';
-export interface StoryStep {
-  at: number;
-  slot: string; // `${pro}:${idx}` (today)
-  kind: StoryKind;
-  patient?: PatientId;
-  treatment?: TreatmentId;
-}
-
-/** What happens live today (besides the WhatsApp conversation). */
-export const STORY: StoryStep[] = [
-  { at: 2, slot: 'lucia:3', kind: 'new', patient: 'camila', treatment: 'cleaning' },
-  { at: 4, slot: 'tomas:6', kind: 'confirm' },
-  { at: 6, slot: 'tomas:4', kind: 'new', patient: 'renata', treatment: 'orthoConsult' },
-  { at: 8, slot: 'lucia:7', kind: 'cancel' },
-  { at: 9, slot: 'lucia:7', kind: 'refill', patient: 'paula', treatment: 'checkup' },
-  { at: 11, slot: 'sofia:5', kind: 'new', patient: 'julieta', treatment: 'peeling' },
-  { at: 13, slot: 'tomas:3', kind: 'reschedule' },
-  { at: 14, slot: 'tomas:3', kind: 'refill', patient: 'nicolas', treatment: 'braces' },
+/** Today at 9:41, before the story. Missing ranges are free. */
+export const BASE_DAY: BaseAppt[] = [
+  a('lucia', 540, 'ana', 'checkup', 'done'),
+  a('lucia', 570, 'diego', 'cleaning', 'now'),
+  a('lucia', 630, 'carla', 'filling', 'confirmed'),
+  a('lucia', 690, 'martina', 'cleaning', 'reminded'),
+  a('lucia', 720, 'pedro', 'checkup', 'confirmed'),
+  a('lucia', 780, 'lucas', 'whitening', 'confirmed'),
+  a('tomas', 540, 'bruno', 'braces', 'done'),
+  a('tomas', 570, 'elena', 'braces', 'now'),
+  a('tomas', 600, 'joaquin', 'aligners', 'confirmed'),
+  a('tomas', 660, 'sebastian', 'orthoConsult', 'confirmed'),
+  a('tomas', 690, 'valentina', 'braces', 'reminded'),
+  a('tomas', 720, 'nicolas', 'braces', 'confirmed'),
+  a('tomas', 780, 'renata', 'aligners', 'confirmed'),
+  a('sofia', 540, 'lola', 'peeling', 'done'),
+  a('sofia', 570, 'irene', 'facial', 'now'),
+  a('sofia', 690, 'florencia', 'aestheticConsult', 'confirmed'),
+  a('sofia', 750, 'micaela', 'facial', 'confirmed'),
+  a('sofia', 810, 'rocio', 'peeling', 'reminded'),
 ];
 
-/** The patient in the WhatsApp reminder, and who takes her slot from the waitlist. */
-export const CHAT = {
-  patient: 'martina' as PatientId,
-  slot: 'lucia:5',
-  treatment: 'cleaning' as TreatmentId,
-  waitlistPatient: 'julian' as PatientId,
-  /** Alternatives offered when she reschedules (all free in the generated agenda). */
-  options: [slotKey(4, 'lucia', 2), slotKey(4, 'lucia', 7), slotKey(5, 'lucia', 1)],
-};
+/* ------------------------------------------------------------------ */
+/* The story (ms on a ~31 s loop)                                       */
+/* ------------------------------------------------------------------ */
+export const LOOP_MS = 31_000;
 
-/** Waitlist size at 9:41; every refill takes one patient from it. */
+export const STORY = {
+  /** Camila books online (the patient phone's widget plays it). */
+  site: { pick: 900, day: 1800, time: 2700, confirm: 3500, booked: 4000, push: 4800, open: 7600, faq: 16_500 },
+  camila: { pro: 'sofia' as ProId, start: 630, treatment: 'facial' as TreatmentId },
+  /** Valentina confirms her reminder. */
+  valentina: { at: 6800, pro: 'tomas' as ProId, start: 690 },
+  /** Nicolás cancels → the waitlist refills it with Paula. */
+  nicolas: { cancel: 8000, offer: 9000, refill: 11_000, pro: 'tomas' as ProId, start: 720, refillTreatment: 'braces' as TreatmentId },
+  /** Martina's WhatsApp reminder conversation. */
+  chatStart: 5200,
+  martina: { pro: 'lucia' as ProId, start: 690, treatment: 'cleaning' as TreatmentId },
+  /** Julián calls; the AI receptionist books him. */
+  callStart: 14_000,
+} as const;
+
+/** Rescheduling options offered to Martina (day index + minutes). */
+export const MARTINA_OPTIONS = [
+  { day: 4, start: 600 },
+  { day: 4, start: 750 },
+  { day: 7, start: 570 },
+] as const;
+
+/** Waitlist at 9:41 (Paula takes one). */
 export const WAITLIST_START = 6;
-/**
- * Recoveries that happen live today (Paula, Nicolás and the WhatsApp reminder).
- * The weekly counter starts at keyNumber − this and reaches the vertical's key number.
- */
-export const LIVE_RECOVERIES = 3;
-/** Of the recoveries before today: how many came from the waitlist (the rest: confirmed by reminder). */
-export const BASE_WAITLIST_RECOVERIES = 4;
+/** Waitlist people the cancelled slot is offered to. */
+export const WAITLIST_OFFERED = 3;
 
-/** No-shows per week before/after the reminders (last bar = this week = before − key number). */
-export const NO_SHOWS_BEFORE = [15, 14, 16];
-export const NO_SHOWS_AFTER_TREND = [7, 5];
-/** Average ticket (USD) comes from content/verticals.json (calculator.ticketUsd). */
+/** Recovered this week before the story starts, by source (sums to keyNumber − live recoveries). */
+export const RECOVERED_BASE = { reminder: 4, waitlist: 3, voice: 2 } as const;
+/** No-shows per week: 3 weeks before the automations, then with them (last = this week so far). */
+export const NO_SHOWS = [15, 14, 16, 7, 5, 3];
+export const NO_SHOWS_BEFORE_WEEKS = 3;
+/** Recovered per weekday this week (Mon → today) at the end of the story. */
+export const RECOVERED_BY_DAY = [3, 2, 4] as const;
 
-/** Past days: the only no-shows of the week (matches the dashboard). */
-const NO_SHOWS: Record<string, true> = {
-  [slotKey(0, 'lucia', 4)]: true,
-  [slotKey(1, 'sofia', 2)]: true,
-  [slotKey(2, 'tomas', 6)]: true,
-};
-const FORCE_FREE = new Set(CHAT.options);
+/** Reminders sent this morning for today's appointments. */
+export const REMINDERS_TODAY = { sent: 18, confirmed: 14, rescheduled: 0, cancelled: 0, noReply: 4 } as const;
 
-function hash(n: number): number {
-  let x = (n ^ 0x9e3779b9) >>> 0;
-  x = Math.imul(x ^ (x >>> 16), 0x85ebca6b) >>> 0;
-  x = Math.imul(x ^ (x >>> 13), 0xc2b2ae35) >>> 0;
-  return (x ^ (x >>> 16)) >>> 0;
-}
+/** Earlier calls today (for the AI receptionist log). Newest first. */
+export const CALL_LOG = [
+  { id: 'c4', time: 552, caller: 'unknown1', topic: 'priceWhitening', outcome: 'answered' },
+  { id: 'c3', time: 527, caller: 'lola', topic: 'moveCheckup', outcome: 'rescheduled' },
+  { id: 'c2', time: 485, caller: 'unknown2', topic: 'afterHoursOrtho', outcome: 'booked' },
+  { id: 'c1', time: 478, caller: 'unknown3', topic: 'toothache', outcome: 'handoff' },
+] as const;
+export const CALLS_BEFORE = { total: 22, booked: 8, afterHours: 7, avgSec: 102 } as const;
 
-/** Deterministic agenda for the other days of the week. */
-export function generatedBooking(day: number, pro: ProId, idx: number): Booking | null {
-  const key = slotKey(day, pro, idx);
-  if (FORCE_FREE.has(key)) return null;
-  const p = PROS.findIndex((x) => x.id === pro);
-  const h = hash(day * 97 + p * 31 + idx * 7 + 3);
-  const fill = day < TODAY ? 84 : day === TODAY + 1 ? 72 : 58;
-  if (!NO_SHOWS[key] && h % 100 >= fill) return null;
-  const patient = PATIENT_POOL[(h >>> 8) % PATIENT_POOL.length];
-  const list = TREATMENTS[PROS[p].specialty];
-  const treatment = list[(h >>> 4) % list.length];
-  if (day < TODAY) return { patient, treatment, status: NO_SHOWS[key] ? 'noshow' : 'done' };
-  return { patient, treatment, status: (h >>> 12) % 3 === 0 ? 'reminded' : 'confirmed' };
-}
+/** Phone numbers are masked and fictional. */
+export const CALLER_NUMBER = '+54 11 5•••-2817';
+export const SITE_URL = 'clinicaaurora.demo';

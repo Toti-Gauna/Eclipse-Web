@@ -577,30 +577,22 @@
     "phoneLabel": "{business}: demo navegável, versão para celular"
   },
   "demoClinic": {
-    "tabs": {
-      "agenda": "Agenda",
-      "reminders": "Lembretes",
-      "absences": "Faltas"
-    },
-    "live": "Ao vivo",
-    "reception": "Recepção",
     "pros": {
       "lucia": {
-        "name": "Dra. Luana M.",
-        "short": "Luana"
+        "name": "Dra. Luana Moraes",
+        "short": "Dra. Luana"
       },
       "tomas": {
-        "name": "Dr. Rodrigo R.",
-        "short": "Rodrigo"
+        "name": "Dr. Rodrigo Reis",
+        "short": "Dr. Rodrigo"
       },
       "sofia": {
-        "name": "Dra. Bruna P.",
-        "short": "Bruna"
+        "name": "Dra. Bruna Prado",
+        "short": "Dra. Bruna"
       }
     },
     "specialties": {
-      "all": "Todos",
-      "dental": "Odontologia",
+      "dental": "Clínica geral",
       "ortho": "Ortodontia",
       "aesthetic": "Estética"
     },
@@ -637,154 +629,386 @@
       "irene": "Isabela Q.",
       "florencia": "Beatriz H.",
       "micaela": "Letícia O.",
-      "julieta": "Júlia A.",
       "rocio": "Aline E.",
-      "gabriela": "Gabriela Z.",
-      "julian": "Thiago P.",
-      "agustina": "Bianca R.",
-      "mateo": "Mateus L.",
-      "emilia": "Luiza C.",
-      "santiago": "Felipe B.",
-      "clara": "Clara M.",
-      "facundo": "Caio V."
+      "julian": "Thiago P."
     },
     "firstNames": {
-      "martina": "Mariana"
+      "martina": "Mariana",
+      "camila": "Camila",
+      "julian": "Thiago"
     },
     "status": {
       "done": "Atendido",
       "now": "Em atendimento",
       "confirmed": "Confirmado",
       "reminded": "Lembrete enviado",
-      "new": "Novo · online",
+      "new": "Agendou online",
       "waitlist": "Lista de espera",
       "you": "Agendado por você",
       "freed": "Liberado",
-      "noshow": "Faltou"
+      "voice": "Agendado pela IA"
     },
     "agenda": {
       "title": "Agenda",
-      "days": "Dias da semana",
-      "filter": "Filtrar por especialidade",
-      "occupancy": "{booked} de {total} horários ocupados",
-      "freeLeft": "{count, plural, one {# horário livre} other {# horários livres}}",
+      "filter": "Filtrar por profissional",
       "free": "Livre",
-      "freeHint": "Toque para agendar",
-      "pastFree": "Sem agendamento",
-      "showPast": "Ver horários anteriores ({count})",
-      "hidePast": "Ocultar horários anteriores",
       "bookTitle": "Agendar horário",
-      "bookWhen": "{day} · {time} · {pro}",
-      "treatment": "Procedimento",
+      "treatment": "Tratamento",
       "confirm": "Confirmar agendamento",
       "cancel": "Cancelar",
-      "pickSlot": "Escolha um horário livre na grade para agendar.",
-      "now": "Agora",
-      "freeSlot": "{time}, {pro}: livre. Agendar",
-      "busySlot": "{time}, {pro}: {patient}, {treatment}, {status}",
-      "emptySlot": "{time}, {pro}: sem agendamento"
-    },
-    "kpis": {
-      "today": "Horários hoje",
-      "confirmed": "Confirmados",
-      "confirmedOf": "de {count} agendados",
-      "recovered": "Recuperados na semana",
-      "recoveredHint": "com lembretes e lista de espera",
-      "waitlist": "Na lista de espera",
-      "waitlistHint": "prontos para ocupar um horário livre"
-    },
-    "activity": {
-      "title": "Atividade ao vivo",
-      "justNow": "Agora",
-      "sent": "{count} lembretes enviados pelo WhatsApp para hoje",
-      "new": "Novo agendamento online: {patient}, {time} com {pro}",
-      "confirm": "{patient} confirmou pelo WhatsApp o horário das {time}",
-      "cancel": "{patient} cancelou o horário das {time}",
-      "reschedule": "{patient} remarcou pelo WhatsApp. O horário das {time} ficou livre",
-      "refill": "{patient} ficou com o horário das {time} pela lista de espera",
-      "you": "Você agendou o horário das {time} com {pro}"
+      "freeSlot": "{time} · {pro}: livre, agendar",
+      "summary": "{day} · {count} horários · {pct}% ocupada",
+      "label": "Agenda de hoje por profissional",
+      "all": "Todos",
+      "freedTitle": "Liberado",
+      "freedSub": "{name} · sendo oferecido",
+      "minutes": "{n} min",
+      "waitlist": "Lista de espera",
+      "took": "Pegou um horário",
+      "waiters": {
+        "ivan": "Ivo R.",
+        "sol": "Sol M."
+      },
+      "wants": {
+        "paula": "Ortodontia",
+        "ivan": "Limpeza",
+        "sol": "Limpeza de pele"
+      },
+      "hintPhone": "Toque num horário livre para agendar.",
+      "hintLaptop": "Escolha um horário livre na grade para agendar."
     },
     "chat": {
-      "heading": "É assim que chega para o seu paciente",
-      "hint": "Responda como se você fosse a {name}.",
-      "online": "online",
-      "typing": "digitando…",
-      "typingLabel": "{business} está digitando",
-      "log": "Conversa simulada de WhatsApp entre {business} e {name}",
-      "auto": "Mensagem automática",
-      "reminder": "Oi, {name}! Aqui é da {business}. Passando para lembrar do seu horário de hoje: {treatment}, às {time} com {pro}.",
-      "ask": "Você confirma presença?",
-      "choices": {
-        "confirm": "Confirmo",
-        "reschedule": "Remarcar",
-        "cancel": "Cancelar"
+      "composer": "Mensagem",
+      "martina": {
+        "log": "Conversa simulada de WhatsApp entre {business} e {name}",
+        "reminder": "Oi, {name}! Lembrete do seu horário de hoje às {time} com a {pro}: {treatment}.",
+        "ask": "Pode confirmar se vem?",
+        "replies": {
+          "confirm": "Confirmo",
+          "reschedule": "Remarcar",
+          "cancel": "Cancelar"
+        },
+        "thanks": "Obrigada, {name}! Te esperamos às {time}.",
+        "noteConfirmed": "Horário confirmado na agenda",
+        "offer": "Sem problema. Estes são os próximos horários com a {pro}:",
+        "moved": "Pronto, ficou para {slot}. A gente te avisa um dia antes.",
+        "cancelled": "Pronto, cancelamos seu horário. Quando quiser, é só chamar que achamos outro.",
+        "noteFreed": "Hoje às {time} ficou livre: oferecido à lista de espera e a quem ligar"
       },
-      "confirmed": "Obrigado, {name}! Te esperamos às {time}. Se puder, chegue 10 minutos antes.",
-      "offer": "Sem problema. Estes são os próximos horários livres com {pro}:",
-      "rescheduled": "Pronto, remarcamos para {slot}. Mandamos um lembrete na véspera.",
-      "cancelled": "Pronto, cancelamos seu horário. Quando quiser, é só chamar que a gente encontra outro.",
-      "agenda": "Na agenda",
-      "sysConfirmed": "{name} confirmou. O horário das {time} está garantido.",
-      "sysFreed": "O horário das {time} ficou livre. Oferecendo para a lista de espera.",
-      "sysFreedOff": "O horário das {time} ficou livre. A lista de espera está pausada.",
-      "sysRefilled": "{name} ficou com o horário das {time} pela lista de espera.",
-      "replay": "Ver de novo",
-      "read": "Lida"
+      "patient": {
+        "conf": "Oi, {name}! Seu horário está confirmado.",
+        "confYou": "Oi! Seu horário está confirmado.",
+        "remind": "Vamos te lembrar 2 h antes. Precisa de mais alguma coisa?",
+        "replies": {
+          "map": "Como chego",
+          "change": "Mudar horário",
+          "bye": "Só isso, obrigado"
+        },
+        "map": "Estamos na Calle del Alba 1250, a 3 quadras do metrô.",
+        "change": "Sem problema. Me diz qual dia é melhor e te mando os horários.",
+        "bye": "Até já, {name}!",
+        "byeYou": "Até já!"
+      },
+      "faq": {
+        "hi": "Oi, sou a assistente da clínica. Como posso ajudar?",
+        "replies": {
+          "whitening": "Quanto dura um clareamento?",
+          "insurance": "Vocês aceitam convênio?",
+          "book": "Quero agendar",
+          "yes": "Sim, nesta semana",
+          "later": "Mais pra frente"
+        },
+        "whitening": "Uma sessão de 60 minutos. Se você não fez limpeza nos últimos 6 meses, o ideal é fazer antes.",
+        "insurance": "Sim, os principais. Me conta qual é o seu que eu confirmo a cobertura.",
+        "offer": "Quer que eu procure um horário?",
+        "slots": "Tenho estes horários com a {pro}:",
+        "note": "É só escolher um e ele entra direto na agenda",
+        "later": "Combinado. Quando quiser, me chama aqui ou no WhatsApp."
+      }
     },
-    "reminders": {
-      "title": "Lembretes",
-      "subtitle": "Horários de hoje pelo WhatsApp",
-      "stats": {
-        "sent": "Enviados",
-        "confirmed": "Confirmados",
-        "changed": "Com alteração",
-        "pending": "Sem resposta"
+    "nav": {
+      "today": "Hoje",
+      "agenda": "Agenda",
+      "calls": "Recepção IA",
+      "callsShort": "Ligações",
+      "group": "Automações",
+      "whatsapp": "WhatsApp",
+      "site": "Site",
+      "recovered": "Faltas",
+      "recoveredShort": "Faltas"
+    },
+    "top": {
+      "liveCall": "IA em ligação · {time}",
+      "live": "Ao vivo",
+      "site": "Site",
+      "ringing": "Ligação recebida…"
+    },
+    "side": {
+      "aiTitle": "Recepcionista IA",
+      "aiBody": "Ativa · atende 24/7",
+      "aiOff": "Desligada · não atende"
+    },
+    "fullNames": {
+      "julian": "Thiago Pereira"
+    },
+    "feed": {
+      "sent": "Saíram {count} lembretes no WhatsApp para hoje",
+      "online": "{patient} agendou online: {treatment}, {time}",
+      "confirm": "{patient} confirmou no WhatsApp o horário das {time}",
+      "cancel": "{patient} cancelou no WhatsApp. {time} ficou livre",
+      "offer": "Horário das {time} oferecido a {count} pacientes da lista de espera",
+      "waitlist": "{patient} pegou o horário das {time} pela lista de espera",
+      "reschedule": "{patient} remarcou para {slot}. {time} ficou livre",
+      "call": "Ligação recebida: a recepcionista IA atende",
+      "voice": "A recepcionista IA agendou {patient} às {time}",
+      "missed": "Ligação perdida: a recepcionista IA estava desligada",
+      "you": "Você agendou {treatment}: {time} · {pro}",
+      "afterHours": "Fora do horário: a recepcionista IA agendou uma consulta de ortodontia"
+    },
+    "toast": {
+      "online": "Novo agendamento online",
+      "waitlist": "Horário recuperado",
+      "voice": "A IA agendou um horário",
+      "you": "Você agendou um horário",
+      "missed": "Ligação perdida"
+    },
+    "today": {
+      "greeting": "Bom dia",
+      "recovered": "Horários recuperados nesta semana",
+      "recoveredToday": "{count, plural, =0 {ao vivo} other {+# hoje}}",
+      "recoveredMoney": "que não se perderam",
+      "recoveredTrend": "Recuperados na semana até agora: {count}",
+      "next": "Próximos horários",
+      "appointments": "Horários hoje",
+      "occupancy": "{pct}% da agenda ocupada",
+      "occupancyShort": "{pct}% ocupada",
+      "confirmed": "Confirmados",
+      "pending": "{count, plural, =0 {Ninguém pendente} one {# sem resposta} other {# sem resposta}}",
+      "activity": "Atividade ao vivo",
+      "siteTitle": "Seu site de agendamento",
+      "calls": "Ligações hoje",
+      "callsHint": "Todas atendidas · 7 fora do horário",
+      "agendaTitle": "Agenda de hoje",
+      "openAgenda": "Abrir agenda"
+    },
+    "call": {
+      "agent": "Recepcionista IA",
+      "agentTag": "Recepcionista IA",
+      "callerTag": "Paciente",
+      "newPatient": "Paciente novo",
+      "label": "Ligação atendida pela recepcionista IA",
+      "open": "Ver ligação",
+      "openIdle": "Abrir recepção IA",
+      "sent": "Confirmação enviada no WhatsApp",
+      "outcome": "Horário agendado para {name}",
+      "lines": {
+        "hello": "Clínica Aurora, bom dia. Sou a recepcionista virtual, como posso ajudar?",
+        "ask": "Oi, vocês têm algum horário hoje para limpeza?",
+        "check": "Agenda · limpeza · hoje → {time} livre",
+        "checkNone": "Agenda · limpeza · hoje → lotada",
+        "offerFreed": "Tenho sim: acabou de vagar um horário hoje às {time} com a {pro}. Posso reservar?",
+        "offer": "Tenho sim: hoje às {time} com a {pro}. Posso reservar?",
+        "offerNone": "Hoje está lotado. Amanhã às 9h30 serve?",
+        "accept": "Pode sim, perfeito. É {name}.",
+        "booked": "Reservado · hoje {time} · {name}",
+        "bookedNone": "Reservado · amanhã 9h30",
+        "bye": "Pronto, {name}. Mandei a confirmação no WhatsApp. Até já!"
       },
-      "patients": "Pacientes de hoje",
-      "patientView": "Visão do paciente",
-      "state": {
-        "waiting": "Aguardando resposta",
-        "confirmed": "Confirmou",
+      "missedNote": "Ninguém atendeu. Com a recepcionista IA ligada, essa ligação virava um horário agendado."
+    },
+    "calls": {
+      "title": "Recepção IA",
+      "subtitle": "Atende todas as ligações, agenda e confirma no WhatsApp.",
+      "switch": "Recepcionista IA",
+      "switchOn": "Atende 24/7, inclusive fora do horário",
+      "switchOff": "Desligada: as ligações tocam sem resposta",
+      "logTitle": "Ligações de hoje",
+      "footnote": "Cada ligação fica transcrita na ficha do paciente.",
+      "topics": {
+        "cleaningToday": "Quer uma limpeza hoje",
+        "priceWhitening": "Perguntou o preço do clareamento",
+        "moveCheckup": "Passou a consulta para segunda",
+        "afterHoursOrtho": "Fora do horário: pediu consulta de ortodontia",
+        "toothache": "Dor de dente: urgência"
+      },
+      "callers": {
+        "unknown1": "+54 11 4•••-1180",
+        "unknown2": "+54 11 6•••-5521",
+        "unknown3": "+54 9 11 •••-0412"
+      },
+      "outcomes": {
+        "answered": "Respondida",
         "rescheduled": "Remarcou",
-        "cancelled": "Cancelou"
+        "booked": "Agendou",
+        "handoff": "Encaminhada para {pro}",
+        "live": "Em andamento",
+        "missed": "Perdida"
       },
-      "rulesTitle": "Automações",
-      "rules": {
-        "day": {
-          "title": "24 h antes",
-          "body": "Mensagem com botões para confirmar, remarcar ou cancelar."
+      "agentCard": {
+        "title": "Como atende",
+        "voice": {
+          "label": "Voz",
+          "value": "Calorosa e natural, no idioma do paciente"
         },
         "hours": {
-          "title": "2 h antes",
-          "body": "Último aviso no mesmo dia, com o endereço."
+          "label": "Horário",
+          "value": "24/7, inclusive feriados"
         },
-        "waitlist": {
-          "title": "Lista de espera",
-          "body": "Se alguém cancela, o horário é oferecido na hora ao próximo da fila."
+        "can": {
+          "label": "Pode",
+          "value": "Agendar, remarcar, cancelar e tirar dúvidas"
+        },
+        "handoff": {
+          "label": "Passa para uma pessoa",
+          "value": "Urgências, ou quando o paciente pede"
         }
       },
-      "on": "Ativo",
-      "off": "Pausado"
+      "kpis": {
+        "total": "Ligações hoje",
+        "totalHint": "Nenhuma sem atender",
+        "booked": "Agendados por voz",
+        "bookedHint": "Hoje, sem ninguém atender o telefone",
+        "afterHours": "Fora do horário",
+        "afterHoursHint": "Antes das 9h ou depois das 20h",
+        "avg": "Duração média",
+        "avgHint": "Por ligação"
+      }
     },
-    "absences": {
+    "whatsapp": {
+      "title": "WhatsApp",
+      "subtitle": "Lembretes e confirmações que saem sozinhos.",
+      "hint": "Responda como se fosse a {name}: toque um botão.",
+      "stats": {
+        "sent": "Enviados hoje",
+        "confirmed": "Confirmaram",
+        "changed": "Mudanças",
+        "noReply": "Sem resposta"
+      },
+      "rules": {
+        "title": "Automações",
+        "booked": {
+          "title": "Confirmação ao agendar",
+          "body": "Assim que agendam, pelo site, telefone ou WhatsApp."
+        },
+        "day": {
+          "title": "Lembrete 24 h antes",
+          "body": "Com botões para confirmar, remarcar ou cancelar."
+        },
+        "hours": {
+          "title": "Aviso 2 h antes",
+          "body": "Com o endereço e como chegar."
+        },
+        "waitlist": {
+          "title": "Lista de espera automática",
+          "body": "Se alguém cancela, o horário é oferecido sozinho."
+        }
+      },
+      "repliesTitle": "Respostas de hoje",
+      "state": {
+        "confirmed": "Confirmou",
+        "waiting": "Sem resposta",
+        "cancelled": "Cancelou",
+        "talking": "Respondendo…",
+        "rescheduled": "Remarcou"
+      },
+      "patientView": "É assim que chega para o seu paciente."
+    },
+    "recovered": {
       "title": "Faltas",
-      "subtitle": "Esta semana",
-      "recovered": "Horários recuperados na semana",
-      "revenue": "Receita que não se perdeu",
-      "fromWaitlist": "Pela lista de espera",
-      "fromReminders": "Confirmados pelo lembrete",
-      "noShows": "Faltas nesta semana",
-      "before": "Antes: {count} por semana",
-      "change": "{value} de faltas",
-      "chartTitle": "Faltas por semana",
-      "chartBefore": "Sem lembretes",
-      "chartAfter": "Com lembretes",
+      "subtitle": "Horários que iam se perder e foram recuperados.",
+      "heroLabel": "Recuperados nesta semana",
+      "heroToday": "{count, plural, =0 {Nada ainda hoje} other {+# hoje, ao vivo}}",
+      "money": "que não se perderam",
+      "arcLabel": "Recuperados por dia: {days}",
+      "sourcesTitle": "De onde vieram",
+      "sources": {
+        "reminder": "Lembrete no WhatsApp",
+        "waitlist": "Lista de espera",
+        "voice": "Recepcionista IA"
+      },
+      "noShowsTitle": "Faltas por semana",
+      "noShowsDelta": "{value} faltas",
+      "thisWeek": "Esta",
       "week": "S{n}",
-      "thisWeek": "Atual",
-      "barLabel": "{week}: {count} faltas",
-      "todayTitle": "Recuperados hoje",
-      "todayEmpty": "Nenhum horário recuperado hoje, por enquanto.",
-      "waitlist": "Na lista de espera"
+      "before": "Antes",
+      "after": "Com automações",
+      "boardTitle": "Recuperação ao vivo",
+      "empty": "Nada por enquanto",
+      "today": "Hoje",
+      "columns": {
+        "freed": "Liberado",
+        "offered": "Oferecido",
+        "won": "Recuperado"
+      },
+      "notes": {
+        "cancelled": "{patient} cancelou",
+        "rescheduled": "{patient} remarcou",
+        "offerWaitlist": "Oferecido a {count} na lista de espera",
+        "offerBoth": "Lista de espera + recepção IA",
+        "byWaitlist": "{patient} · lista de espera",
+        "byVoice": "{patient} · ligação com a IA",
+        "byYou": "Você pegou"
+      }
+    },
+    "site": {
+      "nav": {
+        "treatments": "Tratamentos",
+        "team": "Equipe",
+        "visit": "Como chegar",
+        "book": "Agendar"
+      },
+      "kicker": "Odontologia e estética",
+      "title": "Seu sorriso, <em>sem pressa</em>.",
+      "body": "Agende online em 30 segundos. A gente confirma no WhatsApp e lembra você antes da consulta.",
+      "treatmentsKicker": "Tratamentos",
+      "treatmentsTitle": "O que fazemos",
+      "minutes": "{n} min",
+      "teamKicker": "Equipe",
+      "teamTitle": "Quem vai te atender",
+      "visitKicker": "Visite",
+      "visitTitle": "Como chegar",
+      "address": "Calle del Alba 1250 · a 3 quadras do metrô",
+      "hours": "Segunda a sábado, das 9h às 20h",
+      "viewTitle": "Site",
+      "viewSub": "{url} · agendamento online 24 h",
+      "kpis": {
+        "online": "Agendamentos online hoje",
+        "visits": "Visitas hoje",
+        "chat": "Perguntas no chat"
+      },
+      "booking": {
+        "title": "Agende sua consulta",
+        "treatment": "Tratamento",
+        "day": "Dia",
+        "today": "Hoje",
+        "time": "Horário",
+        "none": "Sem horários nesse dia",
+        "confirm": "Agendar",
+        "note": "Sem ligar, sem esperar. A gente confirma no WhatsApp.",
+        "booked": "Pronto! Horário agendado",
+        "bookedCamila": "Pronto, {name}! Horário agendado",
+        "sentWhatsApp": "Confirmação enviada no WhatsApp",
+        "again": "Agendar outro"
+      },
+      "chat": {
+        "title": "Assistente virtual",
+        "subtitle": "Responde na hora",
+        "label": "Chat do site da {business}",
+        "composer": "Escreva sua dúvida",
+        "close": "Fechar chat",
+        "open": "Dúvidas?",
+        "expand": "Abrir o chat do site"
+      }
+    },
+    "patient": {
+      "backToSite": "Site",
+      "threadLabel": "Conversa simulada de WhatsApp com {business}",
+      "app": "WhatsApp",
+      "now": "agora",
+      "push": "Pronto, {name}! Seu horário está confirmado: hoje {time}, {treatment}.",
+      "pushYou": "Pronto! Seu horário está confirmado: {time} · {pro}.",
+      "openPush": "Abrir a confirmação no WhatsApp",
+      "backToApp": "Voltar ao app da clínica"
     }
   },
   "demoGym": {
@@ -1469,5 +1693,52 @@
     "toggle": "Som",
     "turnOn": "Ativar som e música",
     "turnOff": "Silenciar"
+  },
+  "demoKit": {
+    "shell": {
+      "collapse": "Recolher menu",
+      "expand": "Expandir menu",
+      "more": "Mais",
+      "menu": "Menu",
+      "close": "Fechar"
+    },
+    "chat": {
+      "typing": "digitando…",
+      "online": "online",
+      "read": "Lida",
+      "replies": "Respostas rápidas",
+      "typingLabel": "{name} está digitando",
+      "composer": "Digite uma mensagem"
+    },
+    "voice": {
+      "incoming": "Chamada recebida",
+      "answering": "{agent} vai atender",
+      "answeredBy": "{agent} na linha",
+      "working": "{agent} está consultando a agenda",
+      "ended": "Chamada encerrada",
+      "waiting": "Nenhuma chamada agora",
+      "caller": "Quem liga",
+      "action": "Ação",
+      "duration": "Duração {time}",
+      "transcript": "Transcrição ao vivo",
+      "open": "Ver chamada",
+      "missed": "Chamada perdida"
+    },
+    "browser": {
+      "address": "Endereço"
+    },
+    "feed": {
+      "now": "Agora"
+    },
+    "game": {
+      "level": "Nível {n}",
+      "toNext": "Progresso até o nível {n}",
+      "streak": "{count, plural, one {dia de sequência} other {dias de sequência}}",
+      "done": "feito",
+      "pending": "pendente",
+      "earned": "Conquistada",
+      "progress": "{pct}% concluída",
+      "rank": "Posição {n}"
+    }
   }
 }
