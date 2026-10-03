@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { lockScroll } from '@/lib/scroll-lock';
 
 export type SheetVariant = 'drawer' | 'fullscreen' | 'center';
 
@@ -10,7 +11,7 @@ export type SheetVariant = 'drawer' | 'fullscreen' | 'center';
  * - drawer: full-screen bottom sheet on mobile, right-side drawer from md up
  * - fullscreen: covers the viewport (demo modal)
  * - center: centered card
- * Page scroll is locked while open (see `html:has(dialog[open])` in globals.css).
+ * Page scroll is locked while open (lib/scroll-lock.ts).
  */
 export function Sheet({
   open,
@@ -51,6 +52,8 @@ export function Sheet({
     const timer = window.setTimeout(() => dialog.close(), 380);
     return () => window.clearTimeout(timer);
   }, [open]);
+
+  useEffect(() => (open ? lockScroll() : undefined), [open]);
 
   useEffect(() => {
     const dialog = ref.current;

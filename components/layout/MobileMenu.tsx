@@ -11,6 +11,7 @@ import { DemoCta } from '@/components/ui/DemoCta';
 import { LocaleSwitcher } from './LocaleSwitcher';
 import { CurrencySwitcher } from './CurrencySwitcher';
 import { NAV_LINKS } from './navLinks';
+import { lockScroll } from '@/lib/scroll-lock';
 
 /** Full-screen menu that opens as an iris from the hamburger button. */
 export function MobileMenu({ className = '' }: { className?: string }) {
@@ -62,6 +63,8 @@ export function MobileMenu({ className = '' }: { className?: string }) {
     d.addEventListener('cancel', onCancel);
     return () => d.removeEventListener('cancel', onCancel);
   }, []);
+
+  useEffect(() => (open ? lockScroll() : undefined), [open]);
 
   const close = () => setOpen(false);
 

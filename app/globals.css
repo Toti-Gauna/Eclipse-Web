@@ -315,12 +315,8 @@
 /* ------------------------------------------------------------------ */
 /* Layout chrome: header, sheets, mobile menu, light sweep              */
 /* ------------------------------------------------------------------ */
-html {
-  scroll-behavior: smooth;
-}
-html:has(dialog[open]) {
-  overflow: hidden;
-}
+/* No `scroll-behavior: smooth` and no `html:has(...)` rules on the root: both made Chrome
+   re-style the whole document repeatedly (see <SmoothAnchors> and lib/scroll-lock.ts). */
 
 .site-header {
   transition:

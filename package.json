@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "i18n:merge": "node scripts/merge-message-drafts.mjs --delete"
+    "i18n:merge": "node scripts/merge-message-drafts.mjs --delete",
+    "test:e2e": "node tests/e2e/smoke.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import type { DemoId } from '@/lib/content';
 import { useMediaQuery } from '@/components/motion/useMediaQuery';
 import { DeviceFrame } from './DeviceFrame';
+import { DemoMessages } from './DemoMessages';
 import { demoLoaders } from './registry';
 import type { DemoProps } from './types';
 
@@ -60,7 +61,9 @@ export function DemoShowcase({
       <div className={`mx-auto w-full ${fit ? '' : 'max-w-[min(320px,78vw)]'} ${className}`}>
         <DeviceFrame kind="phone" label={phoneLabel}>
           <Suspense fallback={<ScreenSkeleton />}>
-            <Demo screen="phone" active={active} />
+            <DemoMessages>
+              <Demo screen="phone" active={active} />
+            </DemoMessages>
           </Suspense>
         </DeviceFrame>
       </div>
@@ -71,13 +74,17 @@ export function DemoShowcase({
     <div className={`relative mx-auto w-full ${fit ? '' : 'max-w-[1040px]'} pb-[6%] pr-[12%] ${className}`}>
       <DeviceFrame kind="laptop" label={laptopLabel}>
         <Suspense fallback={<ScreenSkeleton />}>
-          <Demo screen="laptop" active={active} />
+          <DemoMessages>
+              <Demo screen="laptop" active={active} />
+            </DemoMessages>
         </Suspense>
       </DeviceFrame>
       <div className="absolute bottom-0 right-0 w-[24%] min-w-[150px]">
         <DeviceFrame kind="phone" label={phoneLabel}>
           <Suspense fallback={<ScreenSkeleton />}>
-            <Demo screen="phone" active={active} />
+            <DemoMessages>
+              <Demo screen="phone" active={active} />
+            </DemoMessages>
           </Suspense>
         </DeviceFrame>
       </div>

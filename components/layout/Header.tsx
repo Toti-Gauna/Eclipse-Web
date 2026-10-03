@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ScrollTrigger, useGSAP } from '@/components/motion/gsap';
@@ -10,6 +10,7 @@ import { LocaleSwitcher } from './LocaleSwitcher';
 import { CurrencySwitcher } from './CurrencySwitcher';
 import { MobileMenu } from './MobileMenu';
 import { NAV_LINKS } from './navLinks';
+import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
 
 /**
  * Fixed header. Transparent over the hero, glass once scrolled, and it flips to
@@ -21,6 +22,13 @@ export function Header() {
   const ref = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [light, setLight] = useState(false);
+  // Deferred sections re-create their DOM when they hydrate: rebuild the light zones then.
+  const [domVersion, setDomVersion] = useState(0);
+  useEffect(() => {
+    const bump = () => setDomVersion((v) => v + 1);
+    window.addEventListener(HYDRATED_EVENT, bump);
+    return () => window.removeEventListener(HYDRATED_EVENT, bump);
+  }, []);
 
   useGSAP(() => {
     const triggers: ScrollTrigger[] = [];
@@ -48,7 +56,7 @@ export function Header() {
       );
     });
     return () => triggers.forEach((st) => st.kill());
-  });
+  }, { dependencies: [domVersion], revertOnUpdate: true });
 
   return (
     <>

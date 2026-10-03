@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/routing';
 import { CurrencyProvider } from './CurrencyProvider';
 import { ExperienceProvider } from './ExperienceProvider';
 import { BuilderHost } from '@/components/plan-builder/BuilderHost';
+import { SmoothAnchors } from '@/components/layout/SmoothAnchors';
 
 export function AppProviders({ locale, children }: { locale: Locale; children: ReactNode }) {
   return (
@@ -10,6 +11,7 @@ export function AppProviders({ locale, children }: { locale: Locale; children: R
       <ExperienceProvider>
         {children}
         <BuilderHost />
+        <SmoothAnchors />
       </ExperienceProvider>
     </CurrencyProvider>
   );

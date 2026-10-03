@@ -10,7 +10,11 @@ import {
   typingDelay,
   type AgentTranslate,
 } from '@/components/sections/agent/script';
-import drafts from '@/messages/drafts/founders-agent.json';
+import es from '@/messages/es.json';
+import en from '@/messages/en.json';
+import pt from '@/messages/pt.json';
+
+const messages = { es, en, pt };
 
 const filled = (i: number): FounderSlot => ({
   id: `fundador-${i}`,
@@ -137,7 +141,7 @@ describe('agent preview script', () => {
 
   it('builds the WhatsApp summary from the real messages', () => {
     const answers = { verticalId: 'clinicas' as const, vertical: 'Clínicas', need: 'Responder 24/7', name: 'Ana' };
-    const t = createTranslator({ locale: 'es', messages: { agent: drafts.agent.es }, namespace: 'agent.chat' });
+    const t = createTranslator({ locale: 'es', messages: { agent: es.agent }, namespace: 'agent.chat' });
     const translate: AgentTranslate = (key, values) => t(key as never, values as never);
     expect(buildAgentMessage(answers, 'Español', translate)).toBe(
       'Hola Eclipse. Hablé con el agente de la web.\nNombre: Ana\nRubro: Clínicas\nNecesito: Responder 24/7\nIdioma: Español',
@@ -147,16 +151,16 @@ describe('agent preview script', () => {
 
 describe('founders counter message', () => {
   it.each(['es', 'en', 'pt'] as const)('%s: singular and plural', (locale) => {
-    const t = createTranslator({ locale, messages: { founders: drafts.founders[locale] }, namespace: 'founders' });
-    const text = (left: number) => t.markup('counter', { left, total: 5, n: (c) => c, v: (c) => c });
+    const t = createTranslator({ locale, messages: { founders: messages[locale].founders }, namespace: 'founders' });
+    const text = (left: number) => t.markup('counter', { left, total: 5, n: (c: string) => c, v: (c: string) => c });
     expect(text(1)).toMatch(/1/);
     expect(text(3)).toMatch(/3/);
     expect(text(3)).toMatch(/5/);
   });
 
   it('es reads "Quedan X de 5" / "Queda 1 de 5"', () => {
-    const t = createTranslator({ locale: 'es', messages: { founders: drafts.founders.es }, namespace: 'founders' });
-    const text = (left: number) => t.markup('counter', { left, total: 5, n: (c) => c, v: (c) => c });
+    const t = createTranslator({ locale: 'es', messages: { founders: es.founders }, namespace: 'founders' });
+    const text = (left: number) => t.markup('counter', { left, total: 5, n: (c: string) => c, v: (c: string) => c });
     expect(text(5)).toBe('Quedan 5 de 5');
     expect(text(1)).toBe('Queda 1 de 5');
   });

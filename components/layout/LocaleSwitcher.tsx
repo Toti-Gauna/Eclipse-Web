@@ -3,7 +3,8 @@
 import { Suspense } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { Link, usePathname } from '@/i18n/navigation';
+import { getPathname, usePathname } from '@/i18n/navigation';
+import { BASE_PATH } from '@/lib/env';
 import { routing, localeTags, type Locale } from '@/i18n/routing';
 import { track } from '@/lib/analytics';
 
@@ -27,9 +28,10 @@ function Links({ query, tone }: { query?: Record<string, string>; tone: 'pill' |
         const active = locale === current;
         return (
           <li key={locale}>
-            <Link
-              href={{ pathname, query }}
-              locale={locale}
+            {/* A real document navigation (not a client transition): the whole <html> changes
+                language, and the loader's head script is never re-rendered by React. */}
+            <a
+              href={`${BASE_PATH}${getPathname({ href: { pathname, query }, locale })}`}
               hrefLang={localeTags[locale]}
               lang={localeTags[locale]}
               aria-current={active ? 'true' : undefined}
@@ -43,7 +45,7 @@ function Links({ query, tone }: { query?: Record<string, string>; tone: 'pill' |
               }`}
             >
               {locale}
-            </Link>
+            </a>
           </li>
         );
       })}

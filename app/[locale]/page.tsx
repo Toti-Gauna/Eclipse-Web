@@ -1,5 +1,7 @@
-import { setRequestLocale } from 'next-intl/server';
-import { use } from 'react';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { jsonLd } from '@/lib/seo';
+import type { Locale } from '@/i18n/routing';
+import { LazyHydrate } from '@/components/motion/LazyHydrate';
 import { Hero } from '@/components/hero/Hero';
 import { SkyTransition } from '@/components/sections/SkyTransition';
 import { ProblemSection } from '@/components/sections/problem/ProblemSection';
@@ -10,21 +12,41 @@ import { PricingSection } from '@/components/pricing/PricingSection';
 import { FoundersSection } from '@/components/sections/founders/FoundersSection';
 import { AgentSection } from '@/components/sections/agent/AgentSection';
 
-export default function HomePage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = use(params);
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  // Organization + one Service per plan (schema.org). '<' escaped as recommended by Next.
+  const structuredData = JSON.stringify(jsonLd(locale as Locale, t('organizationDescription'))).replace(/</g, '\\u003c');
+  // Below the fold, each section hydrates only when it gets close to the viewport
+  // (or receives focus / a tap): its server HTML is visible and usable before that.
   return (
     <main id="main">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
       <Hero />
       <SkyTransition from="void" to="night" />
-      <ProblemSection />
-      <ServicesSection />
-      <ExamplesSection />
-      <ProcessSection />
+      <LazyHydrate>
+        <ProblemSection />
+      </LazyHydrate>
+      <LazyHydrate>
+        <ServicesSection />
+      </LazyHydrate>
+      <LazyHydrate>
+        <ExamplesSection />
+      </LazyHydrate>
+      <LazyHydrate>
+        <ProcessSection />
+      </LazyHydrate>
       <SkyTransition from="night" to="dawn" />
-      <PricingSection />
-      <FoundersSection />
-      <AgentSection />
+      <LazyHydrate>
+        <PricingSection />
+      </LazyHydrate>
+      <LazyHydrate>
+        <FoundersSection />
+      </LazyHydrate>
+      <LazyHydrate>
+        <AgentSection />
+      </LazyHydrate>
     </main>
   );
 }
