@@ -46,6 +46,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   // The demos' copy (~40% of all messages) ships with the demo code, not with every page.
   const messages = await getMessages();
+  const tLoader = await getTranslations('loader');
   // Demo copy is loaded with the demo code (<DemoMessages>). In development it stays in the
   // payload so drafts (messages/drafts, overlaid server-side only) reach the demos too.
   const clientMessages =
@@ -61,7 +62,7 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{ __html: LOADER_HEAD_SCRIPT }} />
       </head>
       <body className="theme-dark bg-void">
-        <Loader />
+        <Loader endLine={tLoader('endLine')} />
         <NextIntlClientProvider messages={clientMessages}>
           <AppProviders locale={locale as Locale}>
             <Header />

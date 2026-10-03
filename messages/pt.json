@@ -50,7 +50,8 @@
     "currency": "Moeda",
     "progress": "Progresso de leitura: {value}%",
     "buildPlan": "Monte seu plano",
-    "progressLabel": "Progresso de leitura"
+    "progressLabel": "Progresso de leitura",
+    "prefsTrigger": "Idioma e moeda"
   },
   "currency": {
     "ARS": "Pesos argentinos",
@@ -66,7 +67,8 @@
     "pt": "Português"
   },
   "loader": {
-    "label": "Carregando Eclipse"
+    "label": "Carregando Eclipse",
+    "endLine": "Feito sob medida para o seu negócio."
   },
   "hero": {
     "eyebrow": "Desenvolvimento · IA · Automação",
@@ -1213,5 +1215,39 @@
       "agent": "Vamos conversar"
     },
     "clients": "Clientes"
+  },
+  "prefs": {
+    "title": "Idioma, moeda e som",
+    "language": "Idioma",
+    "currency": "Moeda",
+    "sound": "Som",
+    "languages": {
+      "es": "Español (Argentina)",
+      "en": "English",
+      "pt": "Português (Brasil)"
+    },
+    "currencies": {
+      "USD": "Dólar americano",
+      "ARS": "Peso argentino",
+      "BRL": "Real brasileiro"
+    },
+    "base": "Moeda de referência",
+    "rate": "1 USD ≈ {amount} · {source}",
+    "rateSource": {
+      "ARS": "dólar MEP",
+      "BRL": "ref. BCE"
+    },
+    "live": "Cotação de hoje · {date}",
+    "fallback": "Cotação estimada · {date}",
+    "note": "Os preços são definidos em dólares. Em pesos e reais você vê um valor aproximado (≈) pela cotação do dia.",
+    "effects": "Efeitos sonoros",
+    "effectsHint": "Cliques suaves ao escolher e confirmar",
+    "music": "Música ambiente",
+    "musicHint": "Gerada ao vivo, nunca se repete"
+  },
+  "sound": {
+    "toggle": "Som",
+    "turnOn": "Ativar som e música",
+    "turnOff": "Silenciar"
   }
 }

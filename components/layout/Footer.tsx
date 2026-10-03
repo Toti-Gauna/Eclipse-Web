@@ -7,8 +7,7 @@ import type { Locale } from '@/i18n/routing';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { DemoCta } from '@/components/ui/DemoCta';
 import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
-import { LocaleSwitcher } from './LocaleSwitcher';
-import { CurrencySwitcher } from './CurrencySwitcher';
+import { PrefsPanel } from './PrefsPanel';
 import { NAV_LINKS, navLabelKey } from './navLinks';
 
 const BUILD_YEAR = new Date().getFullYear();
@@ -23,7 +22,7 @@ export function Footer() {
   return (
     <footer data-header-theme="light" className="theme-light relative overflow-hidden bg-dawn pb-10 pt-20 md:pt-28">
       <div className="container-x">
-        <div className="grid gap-12 border-b border-line pb-14 md:grid-cols-2 md:gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="grid gap-12 border-b border-line pb-14 md:grid-cols-2 md:gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div className="max-w-sm">
             <p className="flex items-center gap-3 text-sm font-medium tracking-[0.32em]">
               <span aria-hidden className="inline-block size-5 rounded-full bg-corona shadow-[0_0_24px_4px_rgb(245_185_66/0.45)]" />
@@ -76,15 +75,15 @@ export function Footer() {
               </li>
             </ul>
           </div>
-
-          <div>
-            <h2 className="eyebrow mb-4">{t('footer.settings')}</h2>
-            <div className="flex flex-col items-start gap-3">
-              <LocaleSwitcher landmark={false} />
-              <CurrencySwitcher />
-            </div>
-          </div>
         </div>
+
+        {/* Same content as the header popover and the mobile menu. */}
+        <section aria-labelledby="footer-prefs" className="border-b border-line py-12">
+          <h2 id="footer-prefs" className="eyebrow mb-7">
+            {t('footer.settings')}
+          </h2>
+          <PrefsPanel layout="band" />
+        </section>
 
         <div className="grid gap-8 border-b border-line py-12 md:grid-cols-2 md:items-end">
           <p className="display text-3xl md:text-4xl">{t.rich('footer.teaser', { em })}</p>

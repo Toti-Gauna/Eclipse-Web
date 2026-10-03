@@ -50,7 +50,8 @@
     "currency": "Currency",
     "progress": "Reading progress: {value}%",
     "buildPlan": "Build your plan",
-    "progressLabel": "Reading progress"
+    "progressLabel": "Reading progress",
+    "prefsTrigger": "Language & currency"
   },
   "currency": {
     "ARS": "Argentine pesos",
@@ -66,7 +67,8 @@
     "pt": "Português"
   },
   "loader": {
-    "label": "Loading Eclipse"
+    "label": "Loading Eclipse",
+    "endLine": "Built around your business."
   },
   "hero": {
     "eyebrow": "Development · AI · Automation",
@@ -1213,5 +1215,39 @@
       "agent": "Let's talk"
     },
     "clients": "Clients"
+  },
+  "prefs": {
+    "title": "Language, currency and sound",
+    "language": "Language",
+    "currency": "Currency",
+    "sound": "Sound",
+    "languages": {
+      "es": "Español (Argentina)",
+      "en": "English",
+      "pt": "Português (Brasil)"
+    },
+    "currencies": {
+      "USD": "US dollar",
+      "ARS": "Argentine peso",
+      "BRL": "Brazilian real"
+    },
+    "base": "Reference currency",
+    "rate": "1 USD ≈ {amount} · {source}",
+    "rateSource": {
+      "ARS": "MEP dollar",
+      "BRL": "ECB ref."
+    },
+    "live": "Today's rate · {date}",
+    "fallback": "Estimated rate · {date}",
+    "note": "Prices are set in US dollars. Pesos and reais show an approximate equivalent (≈) at today's rate.",
+    "effects": "Sound effects",
+    "effectsHint": "Soft clicks when you choose and confirm",
+    "music": "Ambient music",
+    "musicHint": "Generated live, never repeats"
+  },
+  "sound": {
+    "toggle": "Sound",
+    "turnOn": "Turn on sound and music",
+    "turnOff": "Mute"
   }
 }

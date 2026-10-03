@@ -1,6 +1,7 @@
 /**
  * Sound design contract (v2). Every UI sound is synthesized with Web Audio (no audio
- * files) and only plays after the visitor turns sound on: it is off by default.
+ * files; lib/sound/engine.ts, a lazy chunk) and only plays after the visitor turns
+ * sound on: it is off by default. Implemented by components/sound/SoundProvider.tsx.
  *
  * When to use which (keep it sparse — meaningful moments only, never on hover):
  * - tick     → a value changes by one step (stepper +/−, slider detent, carousel snap)
@@ -34,10 +35,14 @@ export interface PlayOptions {
 }
 
 export interface SoundApi {
-  /** The visitor turned sound on (persisted across visits). */
+  /** The visitor turned UI sound effects on (persisted across visits). Gates `play()`. */
   enabled: boolean;
-  /** Generative ambient music is playing (only possible while `enabled`). */
+  /**
+   * Generative ambient music is on (persisted). Independent of `enabled`: the header
+   * toggle turns both on/off together, the preferences panel has a switch for each.
+   */
   music: boolean;
+  /** Call from a click / key handler: the first time, audio is unlocked inside that gesture. */
   setEnabled(on: boolean): void;
   setMusic(on: boolean): void;
   /** Plays a UI sound when enabled; a silent no-op otherwise. Safe to call anywhere. */

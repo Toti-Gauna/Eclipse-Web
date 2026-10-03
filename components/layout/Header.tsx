@@ -5,9 +5,9 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ScrollTrigger, useGSAP } from '@/components/motion/gsap';
 import { useExperience } from '@/components/providers/ExperienceProvider';
+import { SoundToggle } from '@/components/sound/SoundToggle';
 import { MiniEclipse } from './MiniEclipse';
-import { LocaleSwitcher } from './LocaleSwitcher';
-import { CurrencySwitcher } from './CurrencySwitcher';
+import { PrefsMenu } from './PrefsMenu';
 import { MobileMenu } from './MobileMenu';
 import { NAV_LINKS, navLabelKey } from './navLinks';
 import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
@@ -15,6 +15,9 @@ import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
 /**
  * Fixed header. Transparent over the hero, glass once scrolled, and it flips to
  * the light theme while it sits over any element marked [data-header-theme="light"].
+ *
+ * Right side: language/currency/sound preferences (popover) and the sound toggle from
+ * 640px; on phones both live in the menu so the plan CTA keeps its room.
  */
 export function Header() {
   const t = useTranslations();
@@ -73,7 +76,8 @@ export function Header() {
         data-scrolled={scrolled || undefined}
         className={`site-header fixed inset-x-0 top-0 z-50 ${light ? 'theme-light' : 'theme-dark'}`}
       >
-        <div className="container-x flex h-[var(--header-h)] items-center justify-between gap-3">
+        {/* `relative`: the preferences popover anchors to this row. */}
+        <div className="container-x relative flex h-[var(--header-h)] items-center justify-between gap-3">
           <Link href="/" aria-label={t('header.home')} className="-ml-1 flex min-h-11 items-center gap-2.5 rounded-full px-1">
             <MiniEclipse />
             <span className="text-[0.8rem] font-medium tracking-[0.32em] text-fg">ECLIPSE</span>
@@ -95,10 +99,8 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-2 xl:flex">
-              <LocaleSwitcher />
-              <CurrencySwitcher />
-            </div>
+            <PrefsMenu className="hidden sm:flex" />
+            <SoundToggle className="hidden sm:grid" />
             <button
               type="button"
               aria-haspopup="dialog"
@@ -107,7 +109,7 @@ export function Header() {
             >
               {t('header.buildPlan')}
             </button>
-            <MobileMenu className="xl:hidden" />
+            <MobileMenu className="lg:hidden" />
           </div>
         </div>
       </header>
