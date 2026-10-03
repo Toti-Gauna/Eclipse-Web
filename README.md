@@ -27,7 +27,7 @@ nos escriba por WhatsApp.
   Mantenimiento → Resumen).
 - **Demos v2** sobre un kit propio (`components/demos/kit`, guía en `components/demos/README.md`): sidebar
   colapsable, chatbots, agentes de voz, gamificación, sitios públicos y paneles, cada demo con su marca y paleta.
-  Rubros: clínica, inmobiliaria, gimnasio, **tienda online**, **restaurante** y **servicios a domicilio** (app on-demand).
+  Rubros: clínica, inmobiliaria, gimnasio, **tienda online**, **restaurante** y **academias y cursos** (plataforma propia).
 
 ---
 
@@ -112,7 +112,7 @@ después de editar.
 | `content/addons.json` | Extras que se suman a un paquete en el armador. Si el paquete ya incluye el `itemId`, se muestra como "Incluido" (`whenIncluded: show`) o se oculta (`hide`). `offer` lo conecta con el combo de voz. |
 | `content/maintenance.json` | Planes mensuales, uso del agente de voz (49 + minutos) y `annualMonthsCharged` (10 = 2 meses gratis). |
 | `content/offers.json` | Ofertas reales. `active` las prende/apaga; `endsAt` (ISO, opcional) muestra un contador y las apaga sola. |
-| `content/verticals.json` | Rubros (7: clínicas, inmobiliarias, gimnasios, tiendas online, restaurantes, servicios a domicilio, otro): negocio ficticio, demo, dolor, número clave y valores por defecto de la calculadora. Un rubro nuevo con demo necesita además su carpeta en `components/demos/<id>/` (ver `components/demos/README.md`), su trailer en `components/trailers/` y las entradas en los dos `registry.ts`. |
+| `content/verticals.json` | Rubros (7: clínicas, inmobiliarias, gimnasios, tiendas online, restaurantes, academias y cursos, otro): negocio ficticio, demo, dolor, número clave y valores por defecto de la calculadora. Un rubro nuevo con demo necesita además su carpeta en `components/demos/<id>/` (ver `components/demos/README.md`), su trailer en `components/trailers/` y las entradas en los dos `registry.ts`. |
 | `content/founders.json` | Slots de clientes fundadores (ver abajo). |
 | `content/units.json` | Unidades de Eclipse (Agency activa; Media y Market "Próximamente"). |
 | `content/rates.fallback.json` | Cotizaciones de respaldo si fallan las APIs. |
@@ -238,20 +238,29 @@ ya reenvía a `window.plausible` o `window.gtag` si cargás alguno de esos scrip
 
 ## Métricas (Lighthouse mobile, export servido con gzip como GitHub Pages)
 
-| Página | Performance | Accesibilidad | Best practices | SEO | LCP | TBT | CLS |
+Medido sobre la v2 completa (6 demos, sonido, loader en cada carga). Lighthouse varía bastante entre corridas en esta
+página (el LCP simulado depende de si el H1 se pinta antes o después de que corra el JS), así que se informan rangos:
+
+| Página | Performance | Accesibilidad | Best practices | SEO | LCP (simulado) | TBT | CLS |
 |---|---|---|---|---|---|---|---|
-| `/es/` | 88–92 | 100 | 96* | 100 | 3,0 s | ~150 ms | 0 |
-| `/en/` | 91–92 | 100 | 96* | 100 | 3,0 s | ~150 ms | 0 |
-| `/pt/` | 92 | 100 | 96* | 100 | 3,0 s | ~150 ms | 0 |
-| `/es/plan/` | 89–90 | 100 | 96* | 100 | 3,3 s | ~180 ms | 0 |
+| `/es/`, `/en/`, `/pt/` | 79–89 | 100 | 96* | 100 | 3,0–4,0 s | 200–360 ms | 0 |
+| `/es/plan/` | 88–89 | 100 | 96* | 100 | 3,5 s | 130–160 ms | 0 |
 
 \* Los 4 puntos que faltan son errores de consola de las APIs de cotización, bloqueadas en el entorno donde se midió.
-El LCP real (sin throttling) es ~0,2 s; el simulado queda arriba de 2,5 s porque Lighthouse suma todo el JS que se pide
-antes del LCP (React, runtime de Next y GSAP).
+El **LCP real** (sin throttling, export local) es **~0,2 s en mobile y ~0,4 s en escritorio**, siempre sobre el H1 del
+hero (el loader no lo tapa). axe-core: 0 problemas en la página completa (360 y 1440), el armador, el panel de idioma y
+moneda, el menú mobile y las 6 demos.
+
+Las secciones bajo el pliegue usan `content-visibility: auto` (`.cv-section`): el navegador no calcula su estilo ni su
+layout hasta que se acercan al viewport, lo que bajó entre 20 y 35 % el trabajo de "Style & Layout" de la carga.
+`<ContentVisibilitySync>` vuelve a medir ScrollTrigger cuando cambian de alto y los anchors las renderizan todas antes
+de saltar, para aterrizar exacto.
 
 ## Pendientes conocidos / próximos pasos
 
-- **LCP simulado < 2,5 s**: cargar GSAP de forma diferida (hoy entra en el bundle inicial, ~45 KB gzip).
-- **Demos escaladas en tablet**: dentro del reveal del hero, entre 768 y ~1280 px, algunos controles de las demos quedan
-  por debajo de 24 px porque el dispositivo se dibuja escalado. En mobile y en el modal de Ejemplos están bien.
+- **Performance mobile ≥ 90 estable**: el trabajo de script inicial (React, Next, GSAP y el dial del hero) es lo que
+  más pesa en el LCP simulado y el TBT. Siguiente paso: cargar GSAP y el dial de forma diferida (el hero ya se ve
+  completo sin ellos) y bajar el DOM inicial de Precios y Servicios (~700 y ~500 elementos).
+- **Kit de demos**: las demos dejaron anotadas mejoras para el kit (opciones de `runChat`, `VoiceCall`, `AppShell`,
+  `Streak`, `Leaderboard`, `Kpi`) que hoy resuelven localmente; consolidarlas en `components/demos/kit`.
 - Reemplazar los placeholders de `PLACEHOLDERS.md` (WhatsApp, email, dominio, trailers en video, logos).

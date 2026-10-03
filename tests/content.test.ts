@@ -120,7 +120,7 @@ describe('content integrity', () => {
       'gimnasios',
       'tiendas',
       'restaurantes',
-      'servicios',
+      'academias',
       'otro',
     ]);
     // Every demo id is used by exactly one vertical.

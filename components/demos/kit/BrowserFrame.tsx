@@ -49,7 +49,8 @@ export function BrowserFrame({
         </p>
         <RotateCw aria-hidden className="demo-browser-reload" strokeWidth={1.8} />
       </div>
-      <div ref={bodyRef} className="demo-browser-body">
+      {/* The page scrolls inside the frame: focusable so keyboard users can scroll it too. */}
+      <div ref={bodyRef} className="demo-browser-body" role="region" aria-label={url} tabIndex={0}>
         {children}
       </div>
     </div>

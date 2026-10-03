@@ -141,7 +141,7 @@
       "gimnasios": "Toda semana perco <lost></lost>, com mensalidade de <ticket></ticket>.",
       "tiendas": "Toda semana perco <lost></lost>, com ticket médio de <ticket></ticket>.",
       "restaurantes": "Toda semana perco <lost></lost>, de <ticket></ticket> em média.",
-      "servicios": "Toda semana perco <lost></lost>, e cada um vale <ticket></ticket>.",
+      "academias": "Toda semana perco <lost></lost>, com mensalidade de <ticket></ticket>.",
       "otro": "Toda semana perco <lost></lost>, de <ticket></ticket> em média."
     },
     "hours": "Minha equipe gasta <hours></hours> por semana em tarefas que poderiam rodar sozinhas.",
@@ -166,9 +166,9 @@
         "one": "pedido ou reserva",
         "other": "pedidos ou reservas"
       },
-      "servicios": {
-        "one": "serviço",
-        "other": "serviços"
+      "academias": {
+        "one": "aluno",
+        "other": "alunos"
       },
       "otro": {
         "one": "contato ou venda",
@@ -185,7 +185,7 @@
       "gimnasios": "uma academia",
       "tiendas": "uma loja online",
       "restaurantes": "um restaurante",
-      "servicios": "um serviço a domicílio",
+      "academias": "uma escola ou curso",
       "otro": "outro tipo de negócio"
     },
     "ticketValueText": "{amount} cada",
@@ -1012,263 +1012,509 @@
     }
   },
   "demoGym": {
-    "live": "Ao vivo",
-    "pts": "pts",
-    "pointsLabel": "{count, plural, one {# ponto} other {# pontos}}",
-    "me": "Bia",
-    "memberView": "O que seu aluno vê",
-    "ownerView": "O que você vê",
-    "ownerPanel": "Painel da academia",
-    "replay": "Ver de novo",
-    "tabs": {
-      "home": "Início",
-      "missions": "Missões",
-      "ranking": "Ranking",
-      "panel": "Painel",
-      "retention": "Retenção",
-      "members": "Alunos"
-    },
     "members": {
-      "sol": "Bia R.",
-      "ana": "Ana L.",
-      "bruno": "Bruno C.",
-      "carla": "Carla B.",
-      "lucas": "Lucas D.",
-      "elena": "Helena V.",
-      "tomas": "Thiago R.",
-      "julia": "Júlia M.",
-      "mateo": "Mateus F.",
-      "diego": "Diogo S.",
-      "paula": "Paula N.",
-      "martin": "Marcelo G.",
-      "renata": "Renata P.",
-      "sebastian": "Gustavo T.",
-      "julian": "Rafael A."
-    },
-    "home": {
-      "hello": "Oi, {name}",
-      "missionsValue": "{done} de {total} missões concluídas",
-      "bonus": "Conclua todas e ganhe +{points} pts",
-      "bonusDone": "Semana completa",
-      "weekPoints": "{points} pts nesta semana",
-      "nextMission": "Sua próxima missão",
-      "weekDone": "Sua semana",
-      "allMissions": "Ver todas"
-    },
-    "streak": {
-      "title": "Sua sequência",
-      "days": "{count, plural, one {dia seguido} other {dias seguidos}}",
-      "next": "{count, plural, one {Falta # dia} other {Faltam # dias}} para o selo de {goal} dias",
-      "week": "Esta semana",
-      "dayDone": "{day}: treinou",
-      "todayDone": "{day}, hoje: treinou",
-      "todayPending": "{day}, hoje: falta seu check-in"
-    },
-    "checkin": {
-      "cta": "Fazer check-in",
-      "hint": "Toque quando chegar na academia",
-      "done": "Check-in feito",
-      "doneHint": "Hoje, {time} · sequência de {count, plural, one {# dia} other {# dias}}"
-    },
-    "missionsView": {
-      "title": "Missões da semana",
-      "subtitle": "{count, plural, one {Falta # dia} other {Faltam # dias}} · novas missões na segunda",
-      "progress": "{done} de {total} concluídas",
-      "bonus": "Conclua todas e ganhe +{points} pts de bônus.",
-      "bonusDone": "Semana completa! Você ganhou +{points} pts de bônus."
-    },
-    "missions": {
-      "completed": "Concluída",
-      "days": {
-        "title": "Treine {goal} dias nesta semana",
-        "detail": "Cada check-in conta um dia.",
-        "short": "{goal} dias de treino",
-        "progress": "{value} de {goal} dias",
-        "action": "Fazer check-in"
-      },
-      "cardio": {
-        "title": "Faça {goal} minutos de cardio",
-        "detail": "Esteira, bike ou remo: registrado direto do aparelho.",
-        "short": "{goal} min de cardio",
-        "progress": "{value} de {goal} min",
-        "action": "Registrar {minutes} min de esteira"
-      },
-      "class": {
-        "title": "Experimente uma aula nova",
-        "detail": "Funcional, spinning ou yoga: uma que você ainda não fez.",
-        "short": "Uma aula nova",
-        "progress": "{value} de {goal}"
-      },
-      "friend": {
-        "title": "Traga um amigo",
-        "detail": "Com um passe de convidado de um dia.",
-        "short": "Trazer um amigo",
-        "progress": "{value} de {goal}",
-        "action": "Enviar passe de convidado",
-        "waiting": "Esperando seu amigo"
-      }
-    },
-    "stats": {
-      "title": "Missões nesta semana",
-      "total": "<n>{count}</n> concluídas",
-      "participation": "{value} dos alunos já concluíram pelo menos uma missão nesta semana."
-    },
-    "ranking": {
-      "title": "Ranking",
-      "ownerSubtitle": "Pontos por check-ins, missões e bônus semanal. Zera toda segunda.",
-      "period": "Período do ranking",
-      "week": "Semana",
-      "month": "Mês",
-      "yourPlace": "Sua posição",
-      "position": "Posição {rank}",
-      "climbedShort": "{count, plural, one {# posição} other {# posições}}",
-      "up": "{count, plural, one {subiu # posição} other {subiu # posições}}",
-      "down": "{count, plural, one {caiu # posição} other {caiu # posições}}",
-      "youUp": "{count, plural, one {Você subiu # posição} other {Você subiu # posições}}",
-      "rowLabel": "{rank}º {name}, {points} pontos",
-      "streak": "{count, plural, one {# dia} other {# dias}}",
-      "noStreak": "Sem sequência",
-      "toPass": "Faltam {points} pts para ultrapassar {name}.",
-      "first": "Você está em primeiro. Mantenha a sequência para continuar no topo.",
-      "howPoints": "Cada check-in vale {checkin} pts, cada missão soma os seus e fechar a semana dá {bonus} de bônus.",
-      "colMember": "Aluno",
-      "colStreak": "Sequência",
-      "colChange": "Variação",
-      "colPoints": "Pontos"
-    },
-    "rules": {
-      "title": "Como os pontos somam",
-      "checkin": "Check-in",
-      "bonus": "Semana completa"
-    },
-    "you": {
-      "tag": "Você",
-      "checkin": "Check-in feito: sequência de {count, plural, one {# dia} other {# dias}} · +{points} pts",
-      "mission": "Missão concluída: {mission} · +{points} pts",
-      "bonus": "Semana completa! +{points} pts de bônus",
-      "invite": "Passe enviado. Avisamos quando seu amigo chegar.",
-      "friend": "Seu amigo fez check-in: missão concluída · +{points} pts",
-      "rankUp": "Você subiu para a posição {rank} do ranking",
-      "rankDown": "{by} ultrapassou você: agora você está na posição {rank}"
-    },
-    "activity": {
-      "title": "Atividade ao vivo",
-      "justNow": "Agora",
-      "onPhone": "No celular",
-      "auto": "O app enviou {count} missões de retorno para alunos em risco",
-      "checkin": "{name} fez check-in · sequência de {count, plural, one {# dia} other {# dias}}",
-      "return": "{name} voltou depois de {count} dias sem vir",
-      "mission": "{name} concluiu “{mission}” · +{points} pts",
-      "bonus": "{name} concluiu todas as missões da semana · +{points} pts",
-      "invite": "{name} enviou um passe de convidado para um amigo",
-      "friend": "O convidado de {name} fez check-in: um possível aluno novo",
-      "sent": "Missão de retorno enviada para {name}",
-      "rankUp": "{name} subiu para a posição {rank} do ranking",
-      "rankDown": "{by} ultrapassou {name} no ranking"
-    },
-    "churn": {
-      "title": "Cancelamentos por mês",
-      "inMonth": "cancelamentos em {month}",
-      "change": "{value} de cancelamentos",
-      "before": "Antes: {count} por mês",
-      "chart": "Cancelamentos por mês nos últimos seis meses",
-      "barLabel": "{month}: {count} cancelamentos",
-      "legendBefore": "Sem missões",
-      "legendAfter": "Com missões e sequências",
-      "kept": "{count, plural, one {# aluno a mais ficou} other {# alunos a mais ficaram}} neste mês. Mensalidades que continuam entrando:"
-    },
-    "kpis": {
-      "active": "Alunos ativos",
-      "activeHint": "com a mensalidade em dia",
-      "atRisk": "Em risco",
-      "atRiskHint": "{days} dias ou mais sem vir",
-      "returned": "{count, plural, one {# voltou hoje} other {# voltaram hoje}}",
-      "checkins": "Check-ins hoje",
-      "checkinsHint": "desde que a academia abriu",
-      "missions": "Missões feitas",
-      "missionsHint": "nesta semana · {value} dos alunos participam"
-    },
-    "risk": {
-      "title": "Alunos em risco",
-      "subtitle": "{days} dias ou mais sem vir. O app manda uma missão de retorno.",
-      "high": "risco alto",
-      "sent": "Missão enviada",
-      "back": "Voltou hoje",
-      "sendNow": "Enviar agora",
-      "sentNow": "Enviada",
-      "sendTo": "Enviar agora a missão de retorno para {name}",
-      "sentTo": "Missão de retorno enviada para {name}",
-      "away": "{count} dias sem vir",
-      "backAfter": "Voltou hoje, depois de {count} dias",
-      "queuedAt": "sai sozinha às {time}",
-      "more": "{count, plural, one {mais # aluno em acompanhamento} other {mais # alunos em acompanhamento}}"
-    },
-    "retention": {
-      "title": "Retenção",
-      "subtitle": "Quem fica, quem está prestes a sair e o que o app faz para trazer de volta."
-    },
-    "membersView": {
+      "index": "Alunos",
       "title": "Alunos",
-      "subtitle": "{count} alunos ativos · primeiro quem precisa de atenção",
+      "sub": "{count} ativos · primeiro quem precisa de atenção",
       "filter": "Filtrar alunos",
       "filters": {
         "all": "Todos",
         "risk": "Em risco",
         "streak": "Em sequência",
-        "back": "Voltaram hoje"
+        "new": "Experimental"
       },
+      "never": "Ainda não veio",
+      "today": "Hoje",
+      "daysAgo": "{count, plural, one {há # dia} other {há # dias}}",
       "caption": "Alunos: {filter}",
       "colMember": "Aluno",
+      "colLevel": "Nível",
       "colStreak": "Sequência",
       "colLast": "Última visita",
-      "colMissions": "Missões",
+      "colLeague": "Liga",
       "colStatus": "Status",
-      "today": "Hoje",
-      "yesterday": "Ontem",
-      "daysAgo": "{count, plural, one {Há # dia} other {Há # dias}}",
-      "missionsOf": "{done} de {total} missões",
-      "empty": "Nenhum aluno com este filtro.",
       "status": {
-        "high": "Risco alto",
-        "medium": "Risco médio",
-        "back": "Voltou hoje",
+        "risk": "Em risco",
+        "back": "Voltou",
         "streak": "Em sequência",
-        "active": "Ativo"
+        "ok": "Em dia",
+        "trial": "Experimental",
+        "churned": "Cancelou"
       },
-      "note": {
-        "sent": "Missão de retorno enviada ontem",
-        "queued": "Missão de retorno: sai às {time}",
-        "sentNow": "Missão de retorno enviada agora",
-        "back": "Voltou com a missão de retorno"
+      "line": "Nível {level} · {last}"
+    },
+    "missions": {
+      "friend": {
+        "title": "Traga alguém com seu passe de convidado"
+      },
+      "comeback": {
+        "kicker": "Missão de volta",
+        "title": "{count} aulas nesta semana"
+      },
+      "streak3": {
+        "title": "Faça {count} dias de sequência"
+      },
+      "newClass": {
+        "title": "Experimente uma aula nova"
       }
+    },
+    "churn": {
+      "title": "Cancelamentos por mês",
+      "before": "Sem missões",
+      "chart": "Cancelamentos por mês: de {before} para {after} desde que as missões começaram",
+      "caption": "Antes das missões e sequências: {before} por mês. Agora: {after}.",
+      "october": "{count, plural, one {Outubro até agora: # cancelamento} other {Outubro até agora: # cancelamentos}}",
+      "after": "Com missões e sequências"
+    },
+    "risk": {
+      "title": "Em risco agora",
+      "sentNow": "Enviada agora",
+      "sendTo": "Enviar agora a missão de volta para {name}",
+      "count": "{count, plural, one {# aluno} other {# alunos}}",
+      "days": "{count, plural, one {# dia} other {# dias}}",
+      "today": "hoje",
+      "hero": {
+        "risk": "Em risco",
+        "contacted": "Missão enviada",
+        "booked": "Reservou",
+        "back": "Voltou",
+        "done": "Recuperada",
+        "paused": "Volta na segunda",
+        "churned": "Cancelou"
+      },
+      "heroBooked": "Reservou {class}",
+      "state": {
+        "sent": "Missão enviada",
+        "booked": "Já reservou",
+        "high": "Risco alto",
+        "queued": "Na fila"
+      },
+      "send": "Enviar já"
+    },
+    "retention": {
+      "title": "Quem está sumindo",
+      "index": "Retenção",
+      "sub": "{days} dias sem vir e o app escreve com uma missão pessoal. Acompanhe {name}."
+    },
+    "people": {
+      "lucia": {
+        "name": "Luíza Moraes",
+        "short": "Luíza"
+      },
+      "ramiro": {
+        "name": "Rafael Gomes",
+        "short": "Rafa"
+      },
+      "agus": {
+        "name": "Ana Pires",
+        "short": "Ana"
+      },
+      "fede": {
+        "name": "Fernando Rocha",
+        "short": "Fernando"
+      },
+      "caro": {
+        "name": "Carolina Borges",
+        "short": "Carol"
+      },
+      "juli": {
+        "name": "Júlio Dias",
+        "short": "Júlio"
+      },
+      "mica": {
+        "name": "Mariana Souza",
+        "short": "Mari"
+      },
+      "santi": {
+        "name": "Samuel Vieira",
+        "short": "Samuel"
+      },
+      "nacho": {
+        "name": "Nelson Farias",
+        "short": "Nelson"
+      },
+      "belen": {
+        "name": "Bruna Queiroz",
+        "short": "Bruna"
+      },
+      "gonza": {
+        "name": "Gustavo Teixeira",
+        "short": "Gustavo"
+      },
+      "rocio": {
+        "name": "Renata Alves",
+        "short": "Renata"
+      },
+      "mateo": {
+        "name": "Mateus Costa",
+        "short": "Mateus"
+      },
+      "tomas": {
+        "name": "Thiago Lima",
+        "short": "Thiago"
+      }
+    },
+    "classes": {
+      "functional": "Funcional",
+      "spinning": "Bike",
+      "hiit": "HIIT",
+      "yoga": "Yoga",
+      "strength": "Força"
+    },
+    "coaches": {
+      "nico": "Prof. Nico",
+      "vale": "Prof. Bia",
+      "juli": "Prof. Duda",
+      "caro": "Prof. Kika"
+    },
+    "class": {
+      "spots": "{count, plural, one {resta # vaga} other {restam # vagas}}",
+      "full": "Lotada"
+    },
+    "app": {
+      "player": "Perfil de {name}",
+      "lvl": "NV",
+      "tabs": {
+        "home": "Início",
+        "classes": "Aulas",
+        "league": "Liga"
+      },
+      "checkin": "Check-in",
+      "churnedKicker": "Matrícula",
+      "churnedTitle": "Cancelada",
+      "churnedBody": "Você cancelou. Seu nível e suas medalhas ficam guardados se quiser voltar.",
+      "missionDone": "Missão cumprida",
+      "atTheDoor": "{class} · começa agora",
+      "oneMore": "Falta uma: {class}",
+      "book": "Reservar",
+      "next": "Próxima:",
+      "pausedKicker": "Missão pausada",
+      "pausedTitle": "Te esperamos na segunda",
+      "pausedBody": "Sua sequência fica congelada até lá.",
+      "awayKicker": "Sequência apagada",
+      "awayTitle": "{count} dias sem vir",
+      "awayBody": "Seu recorde é de {best} dias. Volta que a gente acende de novo.",
+      "missions": "Missões da semana",
+      "passSent": "Passe enviado",
+      "sendPass": "Enviar passe",
+      "streakRule": "Descansar até 2 dias seguidos não quebra a sequência.",
+      "pickDay": "Escolha o dia",
+      "checkedIn": "Presente",
+      "booked": "Reservada",
+      "bookLabel": "Reservar {kind} de {day} às {time}",
+      "badges": "Medalhas"
+    },
+    "league": {
+      "name": "Liga Prata",
+      "label": "Liga Prata: tabela da semana",
+      "up": "Zona de acesso",
+      "down": "Zona de rebaixamento",
+      "ends": "Fecha no domingo · os 3 primeiros sobem para o Ouro",
+      "silver": "Prata",
+      "gold": "Ouro",
+      "bronze": "Bronze"
+    },
+    "badges": {
+      "comeback": "Volta",
+      "streak14": "Sequência 14",
+      "level5": "Nível 5",
+      "early": "Madrugada",
+      "classes50": "50 aulas",
+      "gold": "Liga Ouro"
+    },
+    "wa": {
+      "hello": "Oi, {name}! Faz {days} dias que você não aparece. Tudo bem?",
+      "mission": "Montamos uma missão pra você voltar: {count} aulas nesta semana.",
+      "card": {
+        "kicker": "Missão de volta",
+        "title": "{count} aulas · nesta semana",
+        "badge": "Medalha Volta"
+      },
+      "replies": {
+        "book": "Reservar aula",
+        "later": "Essa semana não dá"
+      },
+      "slots": "Esses horários de terça têm vaga:",
+      "booked": "Pronto, reservada: {kind} com {coach}. Te aviso uma hora antes.",
+      "noteBooked": "Missão ativada no app",
+      "later": "Tranquilo. Guardo a missão pra semana que vem e congelo sua sequência.",
+      "notePaused": "Acompanhamento automático na segunda",
+      "back": "Voltar ao app",
+      "empty": "Ainda não há mensagens.",
+      "today": "Hoje",
+      "label": "WhatsApp da academia com {name}"
+    },
+    "lead": {
+      "title": "Assistente",
+      "subtitle": "responde na hora",
+      "hi": "Oi! A primeira aula é por nossa conta. Quer experimentar?",
+      "replies": {
+        "try": "Quero experimentar",
+        "classes": "Que aulas vocês têm?",
+        "strength": "Força",
+        "cardio": "Cardio",
+        "unsure": "Não sei, me indica"
+      },
+      "classes": "Funcional, bike, HIIT, yoga e força. De segunda a sábado, das 7h às 21h.",
+      "goal": "O que você quer treinar?",
+      "pick": {
+        "strength": "Pra força, comece pelo Funcional: pesos livres e turmas de até 14. Tem vaga em:",
+        "cardio": "Pra cardio, o Funcional mistura intervalos e força. Tem vaga em:",
+        "unsure": "Pra começar, Funcional: todos os níveis e o professor adapta cada exercício. Tem vaga em:"
+      },
+      "name": "Boa! Em nome de quem eu reservo?",
+      "done": "Pronto, {name}: sua aula experimental está confirmada. Mandei o endereço e um lembrete no WhatsApp.",
+      "noteLead": "Lead salvo no painel · se não vier, a gente escreve",
+      "trialTag": "Aula experimental · grátis",
+      "label": "Chat do site da academia",
+      "open": "Abrir o chat",
+      "minimize": "Minimizar o chat",
+      "composer": "Digite sua dúvida"
+    },
+    "levelUp": {
+      "kicker": "Subiu de nível",
+      "sr": "Você chegou ao nível {level}",
+      "gain": {
+        "comeback": "Missão de volta",
+        "streak3": "Sequência de 3 dias",
+        "friend": "Passe de convidado"
+      },
+      "badge": "Medalha nova: Volta",
+      "reward": "Você desbloqueou um shake pós-treino",
+      "cta": "Ver minha liga"
+    },
+    "top": {
+      "timelapse": "Câmera rápida",
+      "winOn": "Retorno automático ligado",
+      "winOff": "Retorno automático desligado",
+      "ownerInitials": "MR"
+    },
+    "push": {
+      "whatsapp": "WhatsApp",
+      "churnTitle": "Cancelamento confirmado",
+      "churnBody": "Sua matrícula termina hoje. Seu progresso fica salvo.",
+      "open": "Abrir o WhatsApp"
+    },
+    "feed": {
+      "flag": "{name} está há {count} dias sem vir: em risco",
+      "sent": "Retorno automático: WhatsApp para {name} com a missão dela",
+      "off": "Retorno automático desligado",
+      "on": "Retorno automático ligado",
+      "booked": {
+        "wa": "{name} reservou {class} pelo WhatsApp",
+        "app": "{name} reservou {class} pelo app"
+      },
+      "declined": "{name} respondeu: volta na semana que vem",
+      "trial": "{name} reservou uma aula experimental pelo chat do site: {class}",
+      "back": "{name} voltou depois de {count} dias",
+      "book2": {
+        "wa": "{name} reservou {class} pelo WhatsApp",
+        "app": "{name} reservou {class} pelo app"
+      },
+      "checkin2": "{name} fez check-in: {class}",
+      "mission": "{name} cumpriu a missão de volta",
+      "levelup": "{name} subiu para o nível {level}",
+      "league": "{name} subiu para o {rank}º lugar da Liga Prata",
+      "trialIn": "{name} veio à aula experimental",
+      "churn": "{name} cancelou. Ninguém escreveu pra ela.",
+      "manual": "Missão de volta enviada para {name}",
+      "friend": "O convidado de {name} veio: missão cumprida",
+      "aCheckin": "{name} fez check-in · sequência de {count} dias",
+      "aMission": "{name} cumpriu “3 aulas nesta semana”",
+      "aBadge": "{name} ganhou a medalha Madrugada"
+    },
+    "toast": {
+      "booked": "Aula reservada",
+      "trial": "Aula experimental",
+      "back": "Voltou",
+      "levelup": "Subiu de nível",
+      "league": "Subindo na liga",
+      "churn": "Cancelamento"
+    },
+    "win": {
+      "on": "Ligado",
+      "off": "Desligado",
+      "kicker": "Automação · WhatsApp",
+      "title": "Retorno automático",
+      "offWarn": "Desligado: ninguém escreve pra {name}. Veja o que acontece.",
+      "flow": {
+        "trigger": "{days} dias sem check-in",
+        "message": "WhatsApp com uma missão pessoal e XP extra",
+        "reminder": "Se reservar: lembrete uma hora antes",
+        "coach": "Se não voltar em 5 dias: aviso ao professor"
+      },
+      "lastSent": "Último envio · {name}",
+      "nextSend": "Próximo envio · {name}",
+      "notSent": "Nada sai enquanto estiver desligado",
+      "stats": "Este mês: {sent} enviados · {back} voltaram ({pct})"
+    },
+    "today": {
+      "index": "Hoje",
+      "title": "A academia hoje",
+      "active": "Alunos ativos",
+      "activeHint": "com a mensalidade em dia",
+      "activeLost": "−1 por um cancelamento",
+      "atRisk": "Em risco",
+      "atRiskHint": "{days}+ dias sem vir",
+      "atRiskDrop": "−1: uma aluna voltou",
+      "back": "Voltaram",
+      "backHint": "{pct} de quem recebeu missão",
+      "churn": "Cancelamentos/mês",
+      "churnHint": "{after} por mês, antes {before}",
+      "classes": "Aulas · {day}",
+      "classesAll": "Ver a semana",
+      "live": "Ao vivo"
+    },
+    "journey": {
+      "title": "A volta de {name}",
+      "sub": "Nível {level} · {rank}º lugar na liga",
+      "risk": "Em risco",
+      "riskDetail": "{count} dias sem vir",
+      "wa": "WhatsApp + missão",
+      "waSoon": "sai em minutos",
+      "booked": "Reservou",
+      "back": "Voltou",
+      "done": "Missão cumprida",
+      "doneDetail": "subiu para o nível {level}",
+      "doneProgress": "{count, plural, one {# aula feita} other {# aulas feitas}}",
+      "paused": "Respondeu",
+      "pausedDetail": "volta na semana que vem",
+      "follow": "Acompanhamento",
+      "followDetail": "na segunda, automático",
+      "none": "Sem contato",
+      "noneDetail": "automação desligada",
+      "churn": "Cancelou",
+      "churnSoon": "se ninguém escrever",
+      "status": {
+        "away": "Ausente",
+        "risk": "Em risco",
+        "contacted": "Contatada",
+        "booked": "Reservou",
+        "back": "Voltou",
+        "done": "Recuperada",
+        "paused": "Pausada",
+        "churned": "Cancelou"
+      },
+      "state": {
+        "done": "feito",
+        "now": "em andamento",
+        "todo": "pendente",
+        "bad": "perdida",
+        "warn": "atenção"
+      },
+      "open": "Ver retenção"
+    },
+    "classesView": {
+      "index": "Aulas",
+      "title": "A semana",
+      "sub": "Vagas ao vivo: o que se reserva pelo app, WhatsApp ou chat do site aparece aqui.",
+      "caption": "Grade de aulas da semana com vagas",
+      "trial": "Aula experimental",
+      "live": "Acontecendo",
+      "trialOf": "Experimental de {name}",
+      "pickDay": "Escolha o dia"
+    },
+    "leagueView": {
+      "index": "Jogo",
+      "title": "Ligas e missões",
+      "sub": "Cada check-in e cada missão vale XP. {count} alunos jogam; a tabela zera toda segunda.",
+      "missions": "Missões desta semana",
+      "mission": {
+        "comeback": "Missão de volta (pessoal)",
+        "threeClasses": "3 aulas nesta semana",
+        "streak3": "Sequência de 3 dias",
+        "friend": "Traga alguém"
+      },
+      "rewards": "Recompensas",
+      "reward": {
+        "level5": {
+          "k": "Nível 5",
+          "v": "Garrafa da academia"
+        },
+        "level7": {
+          "k": "Nível 7",
+          "v": "Shake pós-treino"
+        },
+        "level10": {
+          "k": "Nível 10",
+          "v": "Camiseta da casa"
+        },
+        "gold": {
+          "k": "Liga Ouro",
+          "v": "Aula individual com um professor"
+        }
+      },
+      "unlocked": "{name} desbloqueou"
+    },
+    "site": {
+      "artStreak": "Sequência 12",
+      "artLevel": "Nível 7",
+      "links": {
+        "classes": "Aulas",
+        "schedule": "Horários"
+      },
+      "cta": "Aula grátis",
+      "kicker": "Aula experimental grátis",
+      "title": "Sua primeira aula é por nossa conta",
+      "body": "Funcional, bike, HIIT, yoga e força em turmas de até 14. Você reserva pelo chat em 30 segundos.",
+      "action": "Reservar minha aula",
+      "todayKicker": "Hoje",
+      "todayTitle": "Aulas com vaga",
+      "spots": "{count, plural, one {# vaga} other {# vagas}}",
+      "appKicker": "O app",
+      "appTitle": "Treinar vale ponto",
+      "app1": "Missões semanais com XP",
+      "app2": "Sequências que você não vai querer quebrar",
+      "app3": "Ligas com prêmios"
+    },
+    "leads": {
+      "title": "Leads da semana",
+      "caption": "aulas experimentais reservadas",
+      "via": "pelo chat do site",
+      "step1": "Lembrete no WhatsApp 2 h antes",
+      "step2": "Endereço e o que levar",
+      "step3": "Se não vier: a gente escreve no dia seguinte",
+      "step3done": "Veio à aula experimental",
+      "waiting": "Esperando a próxima conversa…",
+      "rate": "Experimental → aluno: 38% neste trimestre"
+    },
+    "siteView": {
+      "index": "Site e leads",
+      "title": "Aula experimental grátis",
+      "sub": "A landing da academia e o chatbot dela: responde, indica e reserva sem ninguém no balcão."
+    },
+    "nav": {
+      "today": "Hoje",
+      "todayShort": "Hoje",
+      "retention": "Retenção",
+      "retentionShort": "Retenção",
+      "members": "Alunos",
+      "classes": "Aulas",
+      "league": "Ligas e missões",
+      "site": "Site e leads",
+      "siteShort": "Site",
+      "groupMembers": "Alunos",
+      "groupGrowth": "Jogo e vendas"
+    },
+    "mode": {
+      "label": "Ver como",
+      "member": "Aluna",
+      "owner": "Dono"
+    },
+    "side": {
+      "title": "Retorno automático",
+      "on": "Ligado · 7+ dias sem vir",
+      "off": "Desligado: ninguém recebe a missão"
     }
   },
   "demoRealEstate": {
-    "tabs": {
-      "chat": "Chat",
-      "inbox": "Contatos",
-      "listings": "Imóveis",
-      "leads": "Leads"
-    },
-    "aiOn": "IA ativa",
-    "office": "Escritório",
-    "closed": "Fechado até segunda às 10h",
-    "slotLong": "{day}, dia {date}, às {time}",
-    "ops": {
-      "sale": "Comprar",
-      "rent": "Alugar"
-    },
-    "types": {
-      "all": "Todos",
-      "apartment": "Apartamento",
-      "house": "Casa",
-      "duplex": "Duplex"
-    },
+    "slotLong": "{day} às {time}",
     "zones": {
       "centro": "Centro",
-      "arboleda": "Jardim Arvoredo",
-      "ribera": "Beira-Rio",
-      "colinas": "Alto das Colinas"
+      "arboleda": "La Arboleda",
+      "ribera": "La Ribera",
+      "colinas": "Las Colinas",
+      "parque": "Parque Norte"
     },
     "features": {
       "balcony": "Sacada",
@@ -1276,184 +1522,417 @@
       "garden": "Jardim",
       "pool": "Piscina",
       "river": "Vista para o rio",
-      "pets": "Aceita pets",
-      "amenities": "Lazer completo",
-      "terrace": "Terraço"
+      "terrace": "Terraço",
+      "credit": "Aceita financiamento",
+      "light": "Bem iluminado",
+      "patio": "Quintal"
     },
     "listing": {
-      "price": "USD {amount}",
-      "rent": "USD {amount}/mês",
-      "beds": "{count, plural, one {# quarto} other {# quartos}}",
+      "price": "US$ {amount}",
       "baths": "{count, plural, one {# banheiro} other {# banheiros}}",
       "area": "{count} m²",
-      "title": "{type} · {zone}",
+      "title": "{kind} em {zone}",
       "inquiries": "{count, plural, one {# contato} other {# contatos}}",
-      "recommended": "Indicado para {name}",
-      "new": "Novo",
-      "recommendedShort": "Indicado"
-    },
-    "filters": {
-      "op": "Operação",
-      "type": "Tipo de imóvel",
-      "beds": "Quartos",
-      "any": "Todos",
-      "bedsMin": "{count}+",
-      "price": "Preço máximo",
-      "upTo": "Até {price}",
-      "noLimit": "Sem limite",
-      "results": "{count, plural, =0 {Nenhum resultado} one {# imóvel} other {# imóveis}}",
-      "clear": "Limpar",
-      "empty": "Nenhum imóvel com esses filtros."
+      "rooms": "{rooms, select, other {{beds} quartos}}",
+      "roomsShort": "{rooms, select, other {{beds} qts}}",
+      "fees": "Condomínio US$ {amount}",
+      "noFees": "Sem condomínio",
+      "visits": "{count, plural, one {# visita} other {# visitas}}",
+      "days": "{count} dias anunciado",
+      "available": "Disponível",
+      "reserved": "Reservado",
+      "photo": "Fachada da {street}, ilustração"
     },
     "listings": {
       "title": "Imóveis",
-      "subtitle": "{count} anunciados",
-      "inquiriesWeek": "contatos nesta semana"
+      "sub": "{count} anunciados no site",
+      "caption": "Imóveis anunciados",
+      "cols": {
+        "property": "Imóvel",
+        "price": "Preço",
+        "area": "Área",
+        "inquiries": "Contatos",
+        "visits": "Visitas",
+        "status": "Status"
+      }
     },
     "people": {
-      "live": "Fernanda M.",
-      "liveFirst": "Fernanda",
-      "advisor": "Juliana R.",
-      "advisorFirst": "Juliana",
-      "tomas": "Thiago B.",
-      "lucia": "Larissa F.",
-      "martin": "Rafael G.",
-      "valeria": "Beatriz S.",
-      "diego": "Gustavo P."
-    },
-    "channels": {
-      "whatsapp": "WhatsApp",
-      "web": "Site",
-      "instagram": "Instagram"
+      "tomas": "Thiago Bauer",
+      "lucia": "Larissa Ferraz",
+      "martin": "Gustavo Gil",
+      "valeria": "Fernanda Lima",
+      "diego": "Diego Ramos",
+      "carolina": "Mariana Costa",
+      "carolinaFirst": "Mariana",
+      "julia": "Júlia Rocha",
+      "juliaFirst": "Júlia",
+      "marcos": "Marcos Vidal",
+      "andres": "Rafael Souza",
+      "pablo": "Paulo Nunes",
+      "sofia": "Sofia Arce",
+      "you": "Você"
     },
     "stages": {
-      "live": "Qualificando",
       "new": "Novo",
       "qualified": "Qualificado",
-      "visit": "Visita agendada"
+      "visit": "Visita",
+      "reserve": "Reserva"
     },
     "chat": {
-      "heading": "Assim a IA responde o seu cliente",
-      "hint": "Responda como se você fosse {name}.",
-      "aiTag": "IA",
-      "online": "online · responde na hora",
-      "typing": "digitando…",
-      "typingLabel": "{business} está digitando",
-      "log": "Conversa simulada de WhatsApp entre {name} e {business}",
-      "closed": "Fora do horário: quem responde é a Lumi, assistente virtual da {business}. Um corretor continua a conversa na segunda.",
-      "inquiry": "Oi! Vocês atendem hoje? Procuro um apê de {beds} quartos no bairro {zone}.",
-      "greet": "Oi, {name}! Sou a Lumi, assistente virtual da {business}. O escritório abre na segunda, mas já te ajudo agora. Você quer comprar ou alugar?",
-      "ops": {
-        "sale": "Quero comprar",
-        "rent": "Quero alugar"
+      "subtitle": "Lumi · responde na hora",
+      "subtitleOff": "Fora do horário",
+      "label": "Chat do site da {business} com {name}",
+      "composer": "Escreva sua pergunta",
+      "open": "Conversar",
+      "close": "Fechar o chat",
+      "expand": "Abrir o chat do site",
+      "as": "Você é a {name}: escolha as respostas dela.",
+      "answeredIn": "{seconds} s",
+      "ai": "IA",
+      "steps": {
+        "ask": "Oi! O apê de 2 quartos da {street} ainda está disponível? Dá pra visitar esta semana?",
+        "hi": "Oi, {name}! Está disponível, sim. Te faço duas perguntas e já te passo os horários de visita.",
+        "pay": "Como você pretende pagar?",
+        "budget": "Até quanto você quer investir?",
+        "fits_cash": "Cabe certinho: está US$ {price}, e à vista dá pra negociar.",
+        "fits_credit": "Cabe certinho: está US$ {price} e aceita financiamento.",
+        "fits_sell": "Cabe certinho: está US$ {price}. Se quiser, avaliamos o seu apê sem custo.",
+        "alt": "Esse está US$ {price}. A quatro quadras tenho um bem parecido por US$ {altPrice}:",
+        "slots": "A {advisor}, nossa corretora, pode te mostrar. Qual horário fica melhor?",
+        "booked": "Pronto, {name}: visita {slot} com a {advisor}. Te mando a localização pelo WhatsApp.",
+        "crm": "Lead qualificado · ficha e visita salvas no CRM",
+        "wait": "Escritório fechado · ninguém responde",
+        "opens": "Sexta 9:00 · o escritório abre",
+        "human": "Oi, {name}! Desculpa a demora, acabamos de abrir. Ainda está disponível, sim. Quando você quer ver?",
+        "lost": "Obrigada, mas já marquei uma visita com outra imobiliária.",
+        "lostNote": "Lead perdido · primeira resposta {late} depois"
       },
-      "budgetAskSale": "Ótimo. Até quanto você pensa em investir?",
-      "budgetAskRent": "Ótimo. Quanto você quer pagar por mês, no máximo?",
-      "budgetReply": "Até {price}",
-      "matches": "{count, plural, one {Tenho # opção que combina com o que você procura:} other {Tenho # opções que combinam com o que você procura:}}",
-      "visitAsk": "Quer visitar? A {advisor}, nossa corretora, tem estes horários:",
-      "booked": "Pronto, {name}! Visita agendada para {slot} com a {advisor}. Te mando a localização por aqui e um lembrete na véspera.",
-      "crmTag": "CRM",
-      "crm": "Lead qualificado: {name} já está no CRM com orçamento, bairro e visita agendada.",
-      "responded": "Respondeu em {seconds} s",
-      "viewListing": "Ver",
-      "replay": "Ver de novo",
-      "read": "Lida"
-    },
-    "stats": {
-      "thisChat": "Esta conversa",
-      "avgWeekend": "Média",
-      "underMinute": "Em < 1 min",
-      "seconds": "{seconds} s"
-    },
-    "kpis": {
-      "inquiries": "Contatos recebidos",
-      "inquiriesHint": "De sexta às 19h até agora",
-      "fast": "Respondidos em < 1 min",
-      "fastHint": "{count} de {count}, inclusive à noite e no fim de semana.",
-      "avg": "Tempo médio de resposta",
-      "avgHint": "Sem esperar até segunda",
-      "secondsUnit": "s",
-      "visits": "Visitas agendadas",
-      "visitsHint": "Para esta semana, na agenda da equipe"
+      "replies": {
+        "cash": "À vista",
+        "credit": "Com financiamento",
+        "sell": "Vendendo meu apê",
+        "low": "Até US$ 150.000",
+        "mid": "US$ 150.000 a 200.000",
+        "high": "Mais de US$ 200.000"
+      }
     },
     "inbox": {
       "title": "Contatos",
-      "subtitle": "Escritório fechado: o agente de IA responde por você.",
-      "list": "Conversas recentes",
-      "now": "Agora",
-      "agentTyping": "Lumi está digitando…",
-      "agentSays": "Lumi: {text}",
-      "responded": "{seconds} s",
+      "list": "Conversas",
       "previews": {
-        "tomas": "Posso ver a casa no Alto das Colinas no sábado de manhã?",
-        "lucia": "O apê do Centro aceita pets?",
-        "martin": "O duplex da Beira-Rio tem garagem?",
-        "valeria": "Quanto é o condomínio do apê com vista para o rio?",
-        "diego": "Oi, vocês têm algo no Jardim Arvoredo?"
-      }
+        "lucia": "Dá pra visitar a casa de vila no sábado?",
+        "valeria": "O duplex tem garagem pra dois carros?",
+        "diego": "Vi a placa na Los Aromos. Qual o preço?",
+        "andres": "O loft da Mitre aceita financiamento?"
+      },
+      "transcript": "Transcrição",
+      "simulate": "Escolha a resposta da {name}",
+      "extract": {
+        "pay": "Pagamento → {value}",
+        "budget": "Orçamento → {value}",
+        "visit": "Visita → {value}",
+        "crm": "Etapa → {value}"
+      },
+      "botLabel": "Lumi · IA",
+      "humanLabel": "{name} · equipe",
+      "noReply": "Sem resposta",
+      "channel": "Canal da conversa"
     },
     "lead": {
-      "title": "Lead qualificado",
-      "qualifying": "Qualificando ao vivo",
+      "title": "Ficha do lead",
       "pending": "Pendente",
-      "unknown": "Não informado",
       "score": "Intenção",
-      "intent": {
-        "high": "Alta",
-        "medium": "Média",
-        "low": "Baixa"
-      },
-      "seeksLabel": "Procura",
-      "seeks": "{op} · {type} · {beds}",
-      "zone": "Bairro",
+      "seeks": "Procura",
       "budget": "Orçamento",
-      "budgetUpTo": "Até {price}",
-      "channel": "Canal",
       "next": "Próximo passo",
-      "nextVisit": "Visita {slot} com {advisor}",
-      "nextCall": "Ligação da {advisor} na segunda às 10h",
-      "nextFollowup": "Follow-up automático na segunda",
-      "listings": "Imóveis sugeridos",
-      "noListings": "Nenhum ainda",
-      "summaryLabel": "Resumo da IA",
-      "responded": "{seconds} s",
-      "intentVerb": {
-        "sale": "Quer comprar",
-        "rent": "Quer alugar"
+      "scoreOf": "/ 100",
+      "seeksValue": "{kind} · {rooms} · {zone}",
+      "pay": "Pagamento",
+      "visit": "Visita",
+      "source": "Origem",
+      "nextSteps": {
+        "qualify": "A Lumi está qualificando",
+        "book": "Oferecer horários de visita",
+        "visit": "Visita com a {advisor}",
+        "follow": "Follow-up pelo WhatsApp",
+        "reserve": "Sinal com a {advisor} amanhã 10:00",
+        "similar": "Aguardar resposta às opções",
+        "think": "Lembrete na terça",
+        "call": "Ligar logo cedo",
+        "lost": "Perdido: respondemos tarde"
       },
-      "summary": {
-        "live": "{intent} um apê de {beds} quartos no bairro {zone}, até {budget}. Recebeu {count} opções e agendou visita para {slot}.",
-        "tomas": "Família de quatro. Quer casa com jardim no Alto das Colinas e está vendendo o apê atual. Visita no sábado às 10h.",
-        "lucia": "Procura apê de 1 quarto no Centro para se mudar em novembro. Tem um gato: pediu para confirmar se aceitam pets.",
-        "martin": "Investidor. Quer o duplex da Beira-Rio com garagem; pediu planta e valor do condomínio. Visita na segunda às 11h.",
-        "valeria": "Quer alugar com vista para o rio e lazer completo. Perguntou do condomínio; prefere ligação depois das 18h.",
-        "diego": "Perguntou pelo Jardim Arvoredo e não respondeu mais. A Lumi volta a escrever na segunda com 3 opções."
-      }
+      "stageTrack": "Etapa do lead: {stage}"
     },
-    "leads": {
-      "title": "Leads",
-      "subtitle": "Qualificados pelo agente de IA enquanto o escritório estava fechado.",
-      "liveTitle": "Agora mesmo",
-      "othersTitle": "Do fim de semana",
-      "openChat": "Ver a conversa",
-      "waiting": "Esperando o próximo contato…",
-      "tableCaption": "Leads do fim de semana",
-      "cols": {
-        "lead": "Lead",
-        "seeks": "Procura",
-        "budget": "Orçamento",
-        "score": "Intenção",
-        "stage": "Etapa"
+    "nav": {
+      "today": "Hoje",
+      "inbox": "Contatos",
+      "pipeline": "Funil",
+      "visits": "Visitas",
+      "followups": "Follow-ups",
+      "listings": "Imóveis",
+      "site": "Site",
+      "groupAuto": "Automações",
+      "groupShop": "Vitrine"
+    },
+    "top": {
+      "closed": "Escritório fechado · Lumi atende",
+      "open": "Escritório aberto",
+      "off": "Assistente desligada",
+      "buyer": "Comprador",
+      "buyerLabel": "Ver o que o comprador vê no celular",
+      "date": "{date} · {time}"
+    },
+    "bot": {
+      "name": "Lumi",
+      "title": "Lumi · assistente de IA",
+      "on": "Atende 24/7 no site e no WhatsApp",
+      "offShort": "Desligada: os contatos esperam",
+      "switch": "Assistente 24/7",
+      "hint": "Desligue e veja o que acontece com o contato das 23:40.",
+      "hintOff": "Ligue de novo e o contato é respondido em segundos."
+    },
+    "kinds": {
+      "apartment": "Apartamento",
+      "duplex": "Duplex",
+      "house": "Casa",
+      "loft": "Loft",
+      "ph": "Casa de vila"
+    },
+    "sources": {
+      "web": "Site",
+      "whatsapp": "WhatsApp",
+      "portal": "Portais",
+      "sign": "Placa",
+      "site": "Agenda online"
+    },
+    "pay": {
+      "cash": "À vista",
+      "credit": "Financiamento",
+      "sell": "Vende o apê"
+    },
+    "budget": {
+      "low": "Até US$ 150 mil",
+      "mid": "US$ 150–200 mil",
+      "high": "Mais de US$ 200 mil"
+    },
+    "slot": "{day} · {time}",
+    "follow": {
+      "steps": {
+        "how": "Oi, {name}. O que achou do apê da {street}? Se gostou, eu seguro ele pra você por 72 h, sem custo.",
+        "reserved": "Feito: está reservado até segunda às 19h. A {advisor} te liga amanhã às 10 pra combinar o sinal.",
+        "reservedNote": "Reserva registrada · {street} agora está Reservado",
+        "similarList": "Te mando dois parecidos na região:",
+        "similarNote": "Follow-up: 2 opções enviadas",
+        "later": "Claro, sem pressa. Na terça te escrevo com novidades e duas opções parecidas.",
+        "laterNote": "Lembrete agendado · terça, 13"
       },
-      "hints": {
-        "new": "A Lumi faz o follow-up sozinha",
-        "qualified": "Prontos para a equipe ligar",
-        "visit": "Já estão na agenda"
-      }
+      "replies": {
+        "reserve": "Quero reservar",
+        "similar": "Ver parecidos",
+        "think": "Vou pensar"
+      },
+      "label": "WhatsApp da {business} com {name}",
+      "composer": "Mensagem"
     },
-    "announce": {
-      "lead": "Novo lead qualificado: {name}, intenção {score} de 100. Visita agendada para {slot}."
+    "buyer": {
+      "app": "WhatsApp",
+      "now": "agora",
+      "push": "O que achou do apê da {street}?",
+      "openPush": "Abrir a mensagem do WhatsApp",
+      "backToSite": "Site",
+      "backToApp": "Voltar ao app",
+      "jump": "{date} · depois da visita"
+    },
+    "time": {
+      "late": "{hours} h {minutes} min",
+      "seconds": "{seconds} s",
+      "minutes": "{minutes} min"
+    },
+    "notes": {
+      "base": "{listing}",
+      "waiting": "Sem resposta · {wait}",
+      "lost": "Perdido · {wait} sem resposta",
+      "answered": "Respondido em 4 s · qualificando",
+      "qualified": "{budget} · {pay}",
+      "booked": "Visita {slot}",
+      "visited": "Visita feita · follow-up",
+      "reserved": "Reservou {street}",
+      "similar": "Recebeu 2 opções parecidas",
+      "think": "Vai pensar · lembrete na terça",
+      "you": "Sua visita · {slot}"
+    },
+    "today": {
+      "kicker": "Hoje · {date}",
+      "headline": "Escritório fechado. <em>A Lumi atende.</em>",
+      "headlineOff": "Escritório fechado. Ninguém atende.",
+      "headlineJump": "A visita já foi. A Lumi faz o follow-up.",
+      "key": "dos contatos respondidos em menos de 1 minuto",
+      "keyOf": "{fast} de {total} nesta semana",
+      "keyWaiting": "1 contato esperando · {wait}",
+      "avg": "Primeira resposta",
+      "avgHint": "Média da semana",
+      "visits": "Visitas agendadas",
+      "visitsHint": "Nesta semana",
+      "afterHours": "Fora do horário",
+      "afterHoursHint": "{count} de {total} contatos",
+      "reserves": "Reservas",
+      "reservesHint": "Nesta semana",
+      "now": "Agora",
+      "nowEmpty": "Esperando o próximo contato…",
+      "pipeline": "Funil",
+      "openPipeline": "Ver funil",
+      "openInbox": "Ver conversa",
+      "sources": "Contatos por origem",
+      "sourcesLabel": "O site traz mais contatos: {count} de {total} nesta semana.",
+      "activity": "Atividade",
+      "headlineReserved": "Reservado. <em>Sem abrir o escritório.</em>",
+      "headlineOpens": "9:00: o escritório abre. O contato esperou a noite toda.",
+      "headlineLost": "{late} depois, <em>o lead já tinha ido.</em>"
+    },
+    "pipeline": {
+      "title": "Funil",
+      "label": "Funil de vendas: {count} leads",
+      "value": "US$ {amount}",
+      "empty": "Sem leads",
+      "note": "A Lumi move os cards sozinha: qualifica, agenda a visita e faz o follow-up."
+    },
+    "visits": {
+      "title": "Visitas",
+      "label": "Agenda de visitas, sexta 9 a segunda 12",
+      "free": "Livre",
+      "freeLabel": "Agendar uma visita {day} às {time}",
+      "next": "Próxima visita",
+      "nextEmpty": "Nenhuma visita nova esta noite",
+      "reminder": "Lembrete pelo WhatsApp 2 h antes",
+      "withAdvisor": "com {advisor}",
+      "hint": "Toque num horário livre para agendar uma visita.",
+      "what": {
+        "visit": "Visita",
+        "appraisal": "Avaliação",
+        "openHouse": "Open house",
+        "signing": "Assinatura da reserva"
+      },
+      "you": "Sua visita",
+      "done": "Feita",
+      "booked": "Visita agendada: {slot}",
+      "legendLive": "Agendada pela Lumi"
+    },
+    "followups": {
+      "title": "Follow-ups",
+      "sequence": "Depois de cada visita",
+      "sequenceSub": "Pelo WhatsApp, com o nome de quem visitou e o imóvel.",
+      "for": "Agora com {name}",
+      "steps": {
+        "confirm": {
+          "when": "Ao agendar",
+          "what": "Confirmação e localização"
+        },
+        "remind": {
+          "when": "2 h antes",
+          "what": "Lembrete da visita"
+        },
+        "after": {
+          "when": "Ao terminar",
+          "what": "O que achou? + reservar"
+        },
+        "similar": {
+          "when": "+3 dias sem resposta",
+          "what": "Duas opções parecidas"
+        },
+        "news": {
+          "when": "+7 dias",
+          "what": "Novidades de preço"
+        }
+      },
+      "status": {
+        "sent": "Enviado",
+        "scheduled": "Agendado",
+        "skipped": "Não precisa",
+        "waiting": "Em espera"
+      },
+      "preview": "O que o comprador vê",
+      "previewEmpty": "A mensagem sai sozinha quando a visita termina.",
+      "stats": "{sent} follow-ups nesta semana · {pct} respondidos"
+    },
+    "site": {
+      "nav": {
+        "buy": "Comprar",
+        "rent": "Alugar",
+        "sell": "Vender",
+        "contact": "Contato"
+      },
+      "kicker": "Imobiliária · La Arboleda e arredores",
+      "title": "Casas com boa luz, <em>à vista.</em>",
+      "body": "Busque, veja a planta e agende a visita a qualquer hora.",
+      "search": {
+        "op": "Operação",
+        "opValue": "Comprar",
+        "zone": "Região",
+        "zoneAll": "Todas",
+        "rooms": "Cômodos",
+        "roomsAny": "Qualquer",
+        "roomsMin": "{count}+",
+        "go": "Buscar",
+        "results": "{count, plural, one {# imóvel} other {# imóveis}}"
+      },
+      "crumbs": "Comprar · {zone}",
+      "back": "Resultados",
+      "gallery": "Foto {n} de {total}",
+      "features": "Características",
+      "map": "Localização aproximada",
+      "plan": "Planta",
+      "planRooms": {
+        "living": "Sala",
+        "bed": "Quarto",
+        "kitchen": "Cozinha",
+        "bath": "Banheiro",
+        "balcony": "Sacada"
+      },
+      "ask": "Perguntar",
+      "book": "Agendar visita",
+      "booking": {
+        "title": "Agende sua visita",
+        "day": "Dia",
+        "time": "Horário",
+        "none": "Sem horários livres",
+        "confirm": "Confirmar visita",
+        "booked": "Visita agendada",
+        "bookedBody": "{slot} · {street}. A confirmação chega pelo WhatsApp.",
+        "again": "Agendar outra"
+      },
+      "url": "Endereço do site"
+    },
+    "toast": {
+      "inquiry": "Contato novo · 23:40",
+      "answered": "Respondido em 4 s",
+      "qualified": "Lead qualificado",
+      "booked": "Visita agendada",
+      "followSent": "Follow-up enviado",
+      "reserved": "Reserva",
+      "similar": "Opções enviadas",
+      "think": "Lembrete agendado",
+      "waiting": "Contato sem resposta",
+      "lost": "Lead perdido",
+      "you": "Sua visita"
+    },
+    "feed": {
+      "pastPortal": "{name} chegou por um portal · respondido em 7 s",
+      "pastWhatsApp": "{name} perguntou pelo WhatsApp · respondido em 5 s",
+      "pastFollow": "Lembrete de visita enviado para {name}",
+      "inquiry": "{name} perguntou pela {street} no site",
+      "answered": "A Lumi respondeu em 4 s",
+      "qualified": "{name} qualificada: {budget}, {pay}",
+      "booked": "Visita agendada: {slot} com a {advisor}",
+      "visited": "Visita feita na {street}",
+      "followSent": "Follow-up pelo WhatsApp para {name}",
+      "reserved": "{name} reservou a {street}",
+      "similar": "{name} recebeu duas opções parecidas",
+      "think": "{name} vai pensar: lembrete na terça",
+      "waiting": "Ninguém respondeu: o escritório está fechado",
+      "opens": "O escritório abre",
+      "human": "A {advisor} respondeu {late} depois",
+      "lost": "{name} fechou com outra imobiliária",
+      "you": "Você agendou uma visita: {slot}"
     }
   },
   "examples": {
@@ -1517,12 +1996,12 @@
       "feature": "Um agente responde na hora, a qualquer momento.",
       "screen": {
         "online": "Online",
-        "question": "Oi, o quarto e sala ainda está disponível?",
-        "answer": "Sim! Te mando fotos e horários. Amanhã às 18h fica bom para visitar?",
-        "listing": "Quarto e sala com varanda",
-        "listingMeta": "Disponível · Visitas nesta semana",
+        "question": "Oi, o apê de 2 quartos da Olmos 1420 ainda está disponível?",
+        "answer": "Está, sim! Horários de visita: sexta 18:30 ou sábado 11:00?",
+        "listing": "2 quartos com sacada",
+        "listingMeta": "Olmos 1420 · US$ 168.000",
         "cta": "Agendar visita",
-        "replied": "Respondido em 40 s"
+        "replied": "Respondido em 4 s"
       }
     },
     "gym": {
@@ -1535,11 +2014,74 @@
         "streak": "Sequência",
         "days": "{count, plural, one {# dia} other {# dias}}",
         "missions": "Missões",
-        "m1": "3 aulas nesta semana",
-        "m2": "Experimente uma aula nova",
-        "m3": "Traga um amigo",
+        "m1": "Missão de volta: 2 aulas",
+        "m2": "Traga alguém com seu passe",
+        "m3": "Experimente uma aula nova",
         "levelUp": "Subiu de nível!",
         "level": "Nível {count}"
+      }
+    },
+    "restaurant": {
+      "problem1": "Sexta, 21:30.",
+      "problem2": "O telefone não para.",
+      "pain": "pedidos ou reservas perdidos por semana",
+      "feature": "Um agente de voz com IA que atende todas as linhas ao mesmo tempo.",
+      "screen": {
+        "title": "Telefone IA",
+        "tonight": "Sex · 21:30",
+        "line": "Linha {n}",
+        "order": "Pedido · delivery",
+        "booking": "Reserva · 4 pessoas",
+        "gf": "Dúvida · sem glúten",
+        "ringing": "Tocando",
+        "answered": "IA atendendo",
+        "kitchen": "Cozinha",
+        "ticketOrder": "2 napolitanas · flan",
+        "ticketGf": "Bife · sem glúten",
+        "toast": "Mesa {table} reservada · WhatsApp enviado"
+      }
+    },
+    "shop": {
+      "problem1": "Encheu o carrinho.",
+      "problem2": "E saiu sem pagar.",
+      "pain": "carrinhos abandonados por semana",
+      "feature": "Um WhatsApp com cupom, meia hora depois. Sozinho.",
+      "screen": {
+        "title": "Carrinhos de hoje",
+        "today": "Hoje",
+        "abandoned": "Abandonado",
+        "sent": "WhatsApp enviado",
+        "recovered": "Recuperado",
+        "toastSent": "WhatsApp com cupom {code} enviado",
+        "toastPaid": "Carrinho recuperado · pagou",
+        "counter": "Recuperados na semana",
+        "names": {
+          "ines": "Bia",
+          "martin": "Marcelo",
+          "lautaro": "Rafael"
+        },
+        "items": "{count, plural, one {# produto} other {# produtos}}",
+        "of": "{count} de {total}"
+      }
+    },
+    "academy": {
+      "problem1": "Eles se matriculam animados.",
+      "problem2": "Na terceira semana, desistem.",
+      "pain": "alunos que desistem por semana",
+      "feature": "Sequências, uma tutora IA e um WhatsApp quando alguém se afasta.",
+      "screen": {
+        "title": "Alunos de hoje",
+        "today": "Qui · 20:12",
+        "valentina": "Valentina R.",
+        "valentinaSub": "Inglês A2 · lição 6.3",
+        "martin": "Mateus S.",
+        "martinSub": "5 dias sem entrar",
+        "streak": "{count, plural, one {# dia} other {# dias}}",
+        "risk": "Em risco",
+        "back": "Voltou",
+        "nudge": "WhatsApp para o Mateus: lição de 5 min",
+        "levelUp": "Valentina subiu para B1",
+        "completion": "Concluem o curso"
       }
     }
   },
@@ -1739,6 +2281,1609 @@
       "earned": "Conquistada",
       "progress": "{pct}% concluída",
       "rank": "Posição {n}"
+    }
+  },
+  "demoRestaurant": {
+    "nav": {
+      "service": "Serviço",
+      "groupTonight": "Hoje à noite",
+      "phone": "Telefone IA",
+      "phoneShort": "Telefone",
+      "kitchen": "Cozinha",
+      "floor": "Salão e reservas",
+      "floorShort": "Salão",
+      "groupRoom": "O salão",
+      "menu": "Cardápio",
+      "numbers": "Números",
+      "groupBiz": "Negócio"
+    },
+    "top": {
+      "live": "{count, plural, one {# ligação em andamento} other {# ligações em andamento}}",
+      "aiOn": "Telefone IA ligado",
+      "aiOff": "Telefone IA desligado",
+      "customer": "Cliente",
+      "tonight": "{day} · turno da noite"
+    },
+    "side": {
+      "aiTitle": "Telefone IA",
+      "aiOn": "{count, plural, =0 {Esperando ligações} one {Atendendo # ligação} other {Atendendo # ligações}}",
+      "aiOff": "Desligado: toca no balcão"
+    },
+    "people": {
+      "you": "Você",
+      "marta": {
+        "name": "Márcia Ribeiro",
+        "first": "Márcia",
+        "address": "Rua Augusta, 840"
+      },
+      "ramiro": {
+        "name": "Rodrigo Souza",
+        "first": "Rodrigo",
+        "phone": "+55 11 9••••-4410"
+      },
+      "lucia": {
+        "name": "Luíza Ferreira",
+        "first": "Luíza",
+        "phone": "+55 11 9••••-9052"
+      },
+      "sofia": {
+        "name": "Sofia Mendes",
+        "first": "Sofia"
+      },
+      "gomez": {
+        "name": "Família Gomes",
+        "first": "Gomes"
+      },
+      "ledesma": {
+        "name": "André Lemos",
+        "first": "André"
+      },
+      "paz": {
+        "name": "Clara Paz",
+        "first": "Clara"
+      },
+      "rios": {
+        "name": "Júlia Rios",
+        "first": "Júlia"
+      },
+      "rider": {
+        "name": "Tiago"
+      }
+    },
+    "dishes": {
+      "provoleta": {
+        "name": "Provoleta na brasa",
+        "short": "Provoleta",
+        "a": "uma provoleta",
+        "n": "{count, plural, one {# provoleta} other {# provoletas}}",
+        "desc": "Com orégano e azeite."
+      },
+      "empanadas": {
+        "name": "Empanadas de carne",
+        "short": "Empanadas ×2",
+        "a": "um par de empanadas",
+        "n": "{count, plural, one {# par de empanadas} other {# pares de empanadas}}",
+        "desc": "Carne na ponta da faca, forno de barro. Vêm em dupla."
+      },
+      "napolitana": {
+        "name": "Milanesa à napolitana",
+        "short": "Napolitana",
+        "a": "uma milanesa à napolitana",
+        "n": "{count, plural, one {# napolitana} other {# napolitanas}}",
+        "desc": "Com presunto, muçarela e molho. Com fritas."
+      },
+      "suprema": {
+        "name": "Frango à napolitana",
+        "short": "Frango nap.",
+        "a": "um frango à napolitana",
+        "n": "{count, plural, one {# frango à napolitana} other {# frangos à napolitana}}",
+        "desc": "Peito empanado, presunto e muçarela. Com purê."
+      },
+      "bife": {
+        "name": "Bife de chorizo",
+        "short": "Bife chorizo",
+        "a": "um bife de chorizo",
+        "n": "{count, plural, one {# bife de chorizo} other {# bifes de chorizo}}",
+        "desc": "400 g, com batatas assadas. Sem glúten."
+      },
+      "ravioles": {
+        "name": "Ravióli ao sugo",
+        "short": "Ravióli",
+        "a": "um ravióli ao sugo",
+        "n": "{count, plural, one {# ravióli} other {# raviólis}}",
+        "desc": "De ricota e nozes, com o molho da casa."
+      },
+      "flan": {
+        "name": "Flan misto",
+        "short": "Flan misto",
+        "a": "um flan misto",
+        "n": "{count, plural, one {# flan misto} other {# flans mistos}}",
+        "desc": "Com doce de leite e chantilly. Sem glúten."
+      },
+      "panqueque": {
+        "name": "Panqueca de doce de leite",
+        "short": "Panqueca",
+        "a": "uma panqueca de doce de leite",
+        "n": "{count, plural, one {# panqueca} other {# panquecas}}",
+        "desc": "Caramelizada por cima, do jeito antigo."
+      },
+      "pinguino": {
+        "name": "Tinto da casa no pinguim",
+        "short": "Pinguim tinto",
+        "a": "um pinguim de tinto",
+        "n": "{count, plural, one {# pinguim} other {# pinguins}}",
+        "desc": "O vinho da casa na clássica jarra de pinguim."
+      },
+      "vermu": {
+        "name": "Vermute com soda",
+        "short": "Vermute",
+        "a": "um vermute",
+        "n": "{count, plural, one {# vermute} other {# vermutes}}",
+        "desc": "Com sifão, gelo e uma rodela de laranja."
+      }
+    },
+    "cats": {
+      "starters": "Entradas",
+      "mains": "Pratos",
+      "desserts": "Sobremesas",
+      "drinks": "Para beber"
+    },
+    "channel": {
+      "salon": "Salão",
+      "delivery": "Delivery",
+      "pickup": "Retirada"
+    },
+    "stage": {
+      "new": "Novo",
+      "cooking": "Na cozinha",
+      "ready": "Pronto",
+      "out": "A caminho",
+      "done": "Entregue"
+    },
+    "table": {
+      "label": "Mesa {n}",
+      "short": "M{n}",
+      "status": {
+        "free": "Livre",
+        "seated": "Ocupada",
+        "bill": "Pediu a conta",
+        "reserved": "Reservada"
+      }
+    },
+    "calls": {
+      "agent": "Lucero IA",
+      "agentTag": "IA",
+      "callerTag": "Cliente",
+      "line": "Linha {n}",
+      "lineShort": "L{n}",
+      "idle": "Livre",
+      "waiting": "Linha livre",
+      "label": "Ligação na linha {n}",
+      "open": "Ver ligação",
+      "frequent": "Cliente frequente",
+      "newCaller": "Número novo",
+      "unknownNumber": "+55 11 9••••-7731",
+      "lampLabel": "Linha {n}: {state}",
+      "state": {
+        "idle": "livre",
+        "ringing": "tocando",
+        "live": "em andamento",
+        "ended": "atendida",
+        "missed": "perdida"
+      },
+      "topic": {
+        "order": "Pedido · delivery",
+        "booking": "Reserva · 4 pessoas",
+        "gf": "Dúvida · sem glúten",
+        "alt": "Pedido · retirada",
+        "info": "Dúvida · horário"
+      },
+      "order": {
+        "hello": "Bodegón Lucero, boa noite. Pedido ou reserva?",
+        "ask": "Oi, um pedido pra delivery: duas napolitanas com fritas e um flan misto.",
+        "check": "Cardápio → {items}: tem",
+        "checkSub": "Cardápio → {missing}: esgotado · alternativa: {alts}",
+        "offer": "Anotado: {items}. Dá {total}. Mando pra {address}, como sempre?",
+        "offerSub": "Hoje acabou {missing}; posso mandar {alts}, sai tão rápido quanto. Fica {items}, {total}. Pra {address}?",
+        "yes": "Isso, pode mandar. Obrigada.",
+        "ticket": "Comanda #{num} → cozinha · delivery",
+        "bye": "Pronto, {first}: chega em 40 minutos. Te mando o resumo no WhatsApp."
+      },
+      "none": {
+        "offer": "Isso acabou hoje. Posso te sugerir outro prato?",
+        "yes": "Não, obrigado. Fica pra outro dia.",
+        "ticket": "Sem pedido",
+        "bye": "Desculpa por isso. Boa noite!"
+      },
+      "booking": {
+        "hello": "Bodegón Lucero, boa noite.",
+        "ask": "Oi, queria reservar pra quatro, hoje às {time}.",
+        "check": "Salão → {time} · 4 pessoas → mesa {table}",
+        "checkNone": "Salão → {time} · 4 pessoas → sem mesa",
+        "offerWindow": "Tenho a mesa {table}, do lado da janela. Em nome de quem?",
+        "offer": "Tenho a mesa {table}. Em nome de quem eu anoto?",
+        "offerNone": "Às {time} não tenho mesa pra quatro. Quer entrar na lista de espera?",
+        "name": "Em nome de {name}.",
+        "waitlist": "Lista de espera · WhatsApp ✓",
+        "book": "Reserva · mesa {table} · {time} · WhatsApp ✓",
+        "bye": "Fechado, {first}. A confirmação chega no seu WhatsApp.",
+        "byeNone": "Fechado, {first}. Se vagar uma mesa, te aviso no WhatsApp."
+      },
+      "gf": {
+        "hello": "Bodegón Lucero, boa noite.",
+        "ask": "Oi, vocês têm alguma coisa sem glúten? Sou celíaca.",
+        "check": "Cardápio → sem glúten: {count, plural, one {# prato} other {# pratos}}",
+        "offer": "Temos: {list}. Feitos à parte, com utensílios separados.",
+        "offerNone": "Hoje não sobrou nada sem glúten, desculpa.",
+        "order": "Ótimo. Então {dish} pra retirar.",
+        "ticket": "Comanda #{num} · sem glúten → cozinha",
+        "bye": "Feito. Passa às {time}; te aviso no WhatsApp quando estiver pronto."
+      },
+      "alt": {
+        "hello": "Bodegón Lucero, boa noite.",
+        "ask": "Oi, me faz {dishA} pra retirar?",
+        "check": "Cardápio → {dish}: tem",
+        "checkSub": "Cardápio → {dish}: esgotado · alternativa: {alt}",
+        "checkNone": "Cardápio → {dish}: esgotado · sem alternativa",
+        "offer": "Claro! Fica pronto em 20 minutos.",
+        "offerSub": "Acabou agora há pouco. Posso fazer {altA}: fica pronto em 20 minutos. Pode ser?",
+        "yes": "Pode ser, manda esse.",
+        "ticket": "Comanda #{num} → cozinha · retirada",
+        "bye": "Pronto. Te aviso no WhatsApp quando estiver pronto."
+      },
+      "info": {
+        "hello": "Bodegón Lucero, boa noite.",
+        "ask": "Oi, até que horas vocês aceitam pedido?",
+        "answer": "A cozinha fica aberta até {time}. Quer pedir agora?",
+        "no": "Agora não, mais tarde. Obrigado.",
+        "bye": "Combinado. Boa noite!"
+      },
+      "outcome": {
+        "missed": "Ligação perdida",
+        "lost": {
+          "order": "Um pedido de delivery que não entrou.",
+          "booking": "Uma reserva pra 4 que não aconteceu.",
+          "gf": "Uma dúvida (e um pedido) sem resposta.",
+          "alt": "Um pedido pra retirar que não entrou.",
+          "info": "Uma dúvida sem resposta."
+        },
+        "booking": "Mesa {table} · {time} · {people} pessoas",
+        "waitlist": "Na lista de espera",
+        "info": "Dúvida respondida",
+        "none": "Sem pedido",
+        "delivery": "Pedido #{num} · delivery · chega {time}",
+        "pickup": "Pedido #{num} · retirada {time}"
+      },
+      "sent": {
+        "order": "Resumo enviado no WhatsApp",
+        "booking": "Confirmação enviada no WhatsApp",
+        "gf": "Aviso no WhatsApp quando estiver pronto",
+        "alt": "Aviso no WhatsApp quando estiver pronto"
+      },
+      "ringingNow": "Tocando… a Lucero IA atende",
+      "counter": "Balcão",
+      "ringingCounter": "Tocando no balcão… ninguém atende"
+    },
+    "phone": {
+      "rubric": "Agente de voz",
+      "title": "Telefone IA",
+      "subtitle": "Atende todas as linhas ao mesmo tempo, com o cardápio e o salão em tempo real: anota pedidos, reserva mesas e confirma no WhatsApp.",
+      "switch": "Telefone IA",
+      "switchOn": "Atende as 3 linhas",
+      "switchOff": "Desligado: o telefone toca no balcão",
+      "pick": "Escolha uma linha",
+      "liveNow": "{count, plural, =0 {Nenhuma ligação agora} one {# ligação em andamento} other {# ligações em andamento}}",
+      "logTitle": "Ligações de hoje à noite",
+      "earlier": {
+        "ea": "Pedido · retirada",
+        "eb": "Reserva · 2 pessoas",
+        "ec": "Dúvida · estacionamento"
+      },
+      "kpis": {
+        "live": "Na linha agora",
+        "liveHint": "Sem sinal de ocupado",
+        "calls": "Atendidas hoje",
+        "callsHint": "Desde as 20:00",
+        "peak": "Pico da noite",
+        "peakSuffix": "ao mesmo tempo",
+        "peakHint": "Ligações simultâneas",
+        "missed": "Perdidas",
+        "missedHint": "Nenhuma sem atender",
+        "missedHintOff": "Com a IA desligada"
+      },
+      "footnote": "Cada ligação tem sua própria linha: no horário de pico ninguém ouve sinal de ocupado."
+    },
+    "service": {
+      "rubric": "{day} · turno da noite",
+      "rubricShort": "{day} · horário de pico",
+      "title": "Horário de pico,",
+      "live": "{count, plural, one {ligação na linha} other {ligações na linha}}",
+      "rail": "Comandas chegando",
+      "toKitchen": "Cozinha",
+      "kitchen": "Cozinha agora",
+      "salon": "Salão",
+      "toFloor": "Salão",
+      "tables": "{seated}/{total} mesas",
+      "people": "{count, plural, one {# pessoa sentada} other {# pessoas sentadas}}",
+      "ledger": {
+        "covers": "Couverts",
+        "avg": "Ticket médio",
+        "direct": "Pedidos diretos",
+        "missed": "Ligações perdidas"
+      },
+      "customer": "O que o cliente vê",
+      "customerSub": "Cardápio QR, pedido online e reservas"
+    },
+    "kitchen": {
+      "rubric": "Tela da cozinha",
+      "title": "Cozinha ao vivo",
+      "subtitle": "Cada pedido entra sozinho, venha do salão, do site ou do telefone. Sem papelzinho, sem grito.",
+      "ticketLabel": "Comanda {num}, {channel}, {stage}: {items}",
+      "age": "{min} min",
+      "gf": "Sem glúten",
+      "yours": "Seu pedido",
+      "arrives": "Chega {time}",
+      "pickupAt": "Retirada {time}",
+      "empty": "Nada por aqui",
+      "stats": {
+        "cooking": "Na cozinha",
+        "orders": "Pedidos hoje",
+        "late": "Atrasados"
+      },
+      "footnote": "O que o telefone IA anota e o que chega pelo site vai direto pra tela, com observações como “sem glúten”."
+    },
+    "floor": {
+      "rubric": "Salão e reservas",
+      "title": "O salão, ao vivo",
+      "titleShort": "O salão",
+      "subtitle": "{seated} de {total} mesas ocupadas · {people} pessoas sentadas.",
+      "mapLabel": "Planta do salão",
+      "zones": {
+        "kitchen": "Cozinha",
+        "bar": "Balcão",
+        "window": "Janela para a rua",
+        "door": "Entrada"
+      },
+      "free": "livre",
+      "billShort": "conta",
+      "seatedShort": "{people} p.",
+      "seats": "{count, plural, one {# lugar} other {# lugares}}",
+      "people": "{count, plural, one {# pessoa} other {# pessoas}}",
+      "byWindow": "Do lado da janela",
+      "form": {
+        "people": "Pessoas",
+        "time": "Horário",
+        "book": "Reservar mesa {n}",
+        "cancel": "Cancelar"
+      },
+      "pending": "Confirmando…",
+      "via": {
+        "ai": "Telefone IA",
+        "web": "Site",
+        "phone": "Telefone",
+        "you": "Você"
+      },
+      "wa": {
+        "title": "WhatsApp",
+        "empty": "Cada reserva nova recebe a confirmação no WhatsApp, sozinha.",
+        "conf": "Oi, {name}. Sua mesa está confirmada: hoje às {time}, {people} pessoas, mesa {table}. Se mudar alguma coisa, é só responder aqui.",
+        "confYou": "Pronto! Sua mesa está confirmada: hoje às {time}, {people} pessoas, mesa {table}. Se mudar alguma coisa, é só responder aqui.",
+        "note": "Lembrete automático 2 horas antes",
+        "label": "Confirmação de reserva no WhatsApp"
+      },
+      "hint": "Toque numa mesa livre para reservar: a confirmação sai sozinha no WhatsApp.",
+      "hintPhone": "Toque numa mesa livre para reservar.",
+      "listTitle": "Reservas de hoje à noite"
+    },
+    "menu": {
+      "rubric": "Cardápio e estoque",
+      "title": "O cardápio",
+      "subtitle": "Um só cardápio para o QR do salão, o site e o telefone IA. Se algo acaba, sai de todos os lugares.",
+      "subtitleShort": "Um só cardápio para o QR, o site e o telefone IA.",
+      "in": "Tem",
+      "out": "Esgotado",
+      "stockLabel": "Tem {dish}",
+      "house": "Clássico da casa",
+      "gf": "Sem glúten",
+      "effect": {
+        "title": "Quando algo acaba",
+        "idle": "Teste: marque um prato como esgotado. O próximo que pedir por telefone ouve uma alternativa.",
+        "body": "{dish} esgotado. A IA oferece {alt} no lugar.",
+        "soon": "Entrando uma ligação na linha {n}…",
+        "ringing": "Linha {n}: tocando",
+        "live": "Linha {n}: a IA está oferecendo a alternativa",
+        "ended": "Linha {n}: pedido anotado com a alternativa",
+        "missed": "Linha {n}: ligação perdida (a IA está desligada)",
+        "line1": "A linha {n} já está oferecendo",
+        "listen": "Ouvir a linha {n}"
+      },
+      "qr": {
+        "title": "QR em cada mesa",
+        "body": "Escaneiam, pedem e o pedido vai direto pra cozinha."
+      }
+    },
+    "numbers": {
+      "rubric": "Para o dono",
+      "title": "Números da noite",
+      "titleShort": "Números",
+      "subtitle": "Sexta desde as 20:00. Sai dos pedidos, do salão e do telefone: ninguém digita nada.",
+      "kpis": {
+        "covers": "Couverts",
+        "coversHint": "No salão, desde as 20:00",
+        "avg": "Ticket médio",
+        "avgHint": "Por pedido, todos os canais",
+        "direct": "Pedidos diretos",
+        "directHint": "Site e telefone, sem comissão de app",
+        "peak": "Pico de ligações",
+        "peakSuffix": "ao mesmo tempo",
+        "peakHint": "{missed, plural, =0 {Nenhuma perdida} one {# perdida} other {# perdidas}}"
+      },
+      "byHour": {
+        "title": "Pedidos a cada meia hora · {time} em andamento",
+        "label": "O pico começou às 21:00 e nenhum pedido ficou de fora"
+      },
+      "lost": {
+        "title": "Pedidos e reservas perdidos por semana",
+        "week": "S{n}",
+        "label": "Antes do agente de voz se perdiam uns {before} por semana; agora, quase nenhum",
+        "before": "Antes: sinal de ocupado",
+        "after": "Com o agente de voz IA"
+      },
+      "channels": {
+        "title": "Pedidos de hoje por canal",
+        "label": "Pedidos de hoje por canal"
+      }
+    },
+    "customer": {
+      "backToStaff": "Voltar ao restaurante",
+      "tabsLabel": "Pedir ou reservar",
+      "tabs": {
+        "order": "Pedir",
+        "book": "Reservar mesa"
+      },
+      "backToMenu": "Voltar ao cardápio",
+      "menu": {
+        "hello": "O que vai ser hoje?"
+      },
+      "add": "Adicionar {dish}",
+      "less": "Um a menos de {dish}",
+      "more": "Mais um de {dish}",
+      "viewCart": "Ver seu pedido",
+      "total": "Total",
+      "cart": {
+        "title": "Seu pedido",
+        "how": "Como você quer?",
+        "delivery": "Delivery",
+        "pickup": "Retirar no local",
+        "deliveryEta": "40 min",
+        "pickupEta": "25 min",
+        "direct": "Pedido direto com o bodegón: sem comissão de app no meio.",
+        "confirm": "Confirmar pedido · {total}"
+      },
+      "status": {
+        "sending": "Enviando seu pedido…",
+        "title": "Seu pedido",
+        "arrives": "Chega às",
+        "ready": "Pronto às",
+        "progress": "Status do pedido",
+        "steps": {
+          "received": "Recebido",
+          "cooking": "Na cozinha",
+          "ready": "Pronto",
+          "out": "A caminho",
+          "picked": "Pode retirar"
+        },
+        "whatsapp": "Avisamos no WhatsApp a cada etapa.",
+        "again": "Fazer outro pedido",
+        "route": {
+          "from": "Bodegón",
+          "to": "Sua casa",
+          "rider": "{name} está a caminho",
+          "riderWait": "O motoboy sai quando estiver pronto"
+        }
+      },
+      "book": {
+        "title": "Reserve sua mesa",
+        "tonight": "{day}, hoje à noite",
+        "fewer": "Uma pessoa a menos",
+        "more": "Uma pessoa a mais",
+        "table": "A mesa {n} é sua.",
+        "full": "Não há mesas livres para essa quantidade.",
+        "confirm": "Reservar",
+        "doneTitle": "Mesa reservada!",
+        "whatsapp": "A confirmação está chegando no seu WhatsApp."
+      },
+      "push": {
+        "app": "WhatsApp",
+        "now": "agora",
+        "out": "Seu pedido #{num} saiu: chega às {time}.",
+        "ready": "Seu pedido #{num} está pronto para retirar ({time})."
+      }
+    },
+    "feed": {
+      "ring": "Linha {line}: entrando uma ligação",
+      "aiOrder": "Pedido #{num} por telefone: {who}, delivery",
+      "aiBooking": "Mesa {table} reservada para {people} às {time} ({who})",
+      "aiGf": "Pedido sem glúten #{num} pra retirar ({who})",
+      "web": "Pedido pelo site #{num}: delivery",
+      "qr": "Mesa {table} pediu pelo QR: #{num}",
+      "walkIn": "Mesa {table}: sentaram {people}",
+      "out": "#{num} saiu, a caminho",
+      "bill": "Mesa {table} pediu a conta",
+      "missed": "Linha {line}: ligação perdida",
+      "alt": "Linha {line}: a IA ofereceu {alt} no lugar de {dish}",
+      "altSame": "Linha {line}: {dish} pra retirar",
+      "youOrder": "Seu pedido #{num} entrou na cozinha",
+      "youBooking": "Você reservou a mesa {table} às {time}",
+      "webBooking": "Reserva pelo site: mesa {table} às {time}"
+    },
+    "toast": {
+      "aiOrder": "Pedido por telefone",
+      "aiBooking": "Reserva por telefone",
+      "aiGf": "Pedido sem glúten",
+      "web": "Pedido pelo site",
+      "missed": "Ligação perdida",
+      "alt": "Alternativa oferecida",
+      "youOrder": "Seu pedido",
+      "youBooking": "Sua reserva",
+      "webBooking": "Reserva pelo site",
+      "out": "A caminho"
+    }
+  },
+  "demoShop": {
+    "nav": {
+      "today": "Hoje",
+      "orders": "Pedidos",
+      "carts": "Carrinhos",
+      "chat": "Chat do site",
+      "chatShort": "Chat",
+      "club": "Clube",
+      "site": "Loja online",
+      "groupAuto": "Automático",
+      "groupClients": "Clientes",
+      "groupChannel": "Canal"
+    },
+    "top": {
+      "live": "{count} pessoas na loja",
+      "store": "Loja"
+    },
+    "side": {
+      "title": "Carrinhos",
+      "on": "Recuperação ligada",
+      "off": "Recuperação desligada"
+    },
+    "products": {
+      "niebla": {
+        "name": "Niebla",
+        "notes": "Chocolate ao leite · avelã",
+        "origin": "BLEND · BRASIL + COLÔMBIA",
+        "process": "Natural + lavado",
+        "about": "O blend da casa: doce, redondo, para todo dia."
+      },
+      "huila": {
+        "name": "Huila",
+        "notes": "Rapadura · tangerina",
+        "origin": "COLÔMBIA · HUILA · 1.700 M",
+        "process": "Lavado",
+        "about": "Limpo e doce, com final cítrico. Brilha no coado."
+      },
+      "sidamo": {
+        "name": "Sidamo",
+        "notes": "Mirtilo · jasmim",
+        "origin": "ETIÓPIA · SIDAMO · 2.000 M",
+        "process": "Natural",
+        "about": "Frutado e floral, de corpo leve. Para coado ou prensa."
+      },
+      "cerrado": {
+        "name": "Cerrado",
+        "notes": "Chocolate amargo · amendoim",
+        "origin": "BRASIL · CERRADO · 1.100 M",
+        "process": "Natural",
+        "about": "Muito corpo, pouca acidez: feito para moka e espresso."
+      },
+      "medianoche": {
+        "name": "Medianoche",
+        "notes": "Cacau · tâmara · descafeinado",
+        "origin": "COLÔMBIA · DESCAFEINADO",
+        "process": "Descafeinado com água",
+        "about": "Todo o sabor, sem cafeína. O café depois do jantar."
+      },
+      "moka": {
+        "name": "Cafeteira italiana 3 xícaras",
+        "short": "Alumínio · 150 ml",
+        "notes": "Alumínio · 3 xícaras",
+        "origin": "ACESSÓRIOS",
+        "process": "Alumínio fundido",
+        "about": "A cafeteira italiana de sempre. Moagem média-fina e fogo baixo."
+      }
+    },
+    "sizes": {
+      "s250": "250 g",
+      "s500": "500 g",
+      "s1000": "1 kg"
+    },
+    "grinds": {
+      "beans": "Em grão",
+      "espresso": "Espresso",
+      "moka": "Moka",
+      "filter": "Coado",
+      "press": "Prensa"
+    },
+    "pays": {
+      "card": "Cartão",
+      "transfer": "Transferência",
+      "cash": "Dinheiro"
+    },
+    "via": {
+      "recovered": "Recuperado",
+      "club": "Clube",
+      "you": "Você"
+    },
+    "levels": {
+      "light": "Torra clara",
+      "medium": "Torra média",
+      "dark": "Torra escura"
+    },
+    "people": {
+      "ines": "Bia",
+      "tomas": "Thiago",
+      "carla": "Carla",
+      "diego": "Diogo",
+      "ana": "Ana",
+      "bruno": "Bruno",
+      "sol": "Luana",
+      "pedro": "Pedro",
+      "lara": "Lara",
+      "nico": "Caio",
+      "valeria": "Valéria",
+      "joaquin": "Joaquim",
+      "martin": "Marcelo",
+      "sofia": "Sofia",
+      "lautaro": "Rafael",
+      "you": "Você"
+    },
+    "feed": {
+      "order": "Pedido #{id} de {name} · {total}",
+      "chat": "{name} está falando com o bot da loja",
+      "checkout": "{name} está no checkout",
+      "abandon": "{name} deixou o carrinho no checkout",
+      "sent": "WhatsApp com cupom para {name}",
+      "unsent": "Sem recuperação: ninguém escreveu para {name}",
+      "read": "{name} abriu a mensagem",
+      "back": "{name} voltou ao carrinho com o cupom",
+      "recovered": "Carrinho recuperado: {name} pagou {total}",
+      "lost": "Carrinho perdido: {name} não voltou",
+      "stock": "Estoque baixo: restam {left} pacotes de {product}",
+      "restock": "Torra de segunda agendada: {product}",
+      "levelup": "{name} completou 6 meses no clube e subiu de nível",
+      "faq": "O bot respondeu sozinho uma dúvida de frete",
+      "mineAbandon": "Você deixou o carrinho: sem recuperação, nenhuma mensagem saiu",
+      "mineSent": "Escrevemos para você no WhatsApp com um cupom",
+      "mineOrder": "Seu pedido #{id} chegou ao painel · {total}"
+    },
+    "toast": {
+      "order": "Pedido novo",
+      "abandon": "Carrinho abandonado",
+      "sent": "Recuperação enviada",
+      "recovered": "Carrinho recuperado",
+      "levelup": "Subiu de nível",
+      "stock": "Estoque baixo",
+      "mineOrder": "Seu pedido",
+      "mineSent": "Recuperação enviada",
+      "lost": "Carrinho perdido"
+    },
+    "today": {
+      "title": "Hoje",
+      "sub": "O que a loja vende enquanto você torra.",
+      "revenue": "Vendas de hoje",
+      "vsLastWeek": "vs. terça passada neste horário",
+      "curve": "As vendas de hoje, hora a hora, acima da semana passada",
+      "orders": "Pedidos",
+      "conversion": "Conversão",
+      "visits": "{count} visitas",
+      "ticket": "Ticket médio",
+      "shelf": "Gôndola de hoje",
+      "lowPill": "{name}: restam {count}",
+      "restocked": "+{count} pacotes na torra de segunda",
+      "stock": "{count} em estoque",
+      "stockSr": "{count} pacotes em estoque",
+      "restock": "Agendar torra de {name} (+{count})",
+      "live": "Pedidos ao vivo",
+      "recovered": "Carrinhos recuperados na semana",
+      "of": "de",
+      "open": "Ver carrinhos",
+      "botLine": "O bot do site vende enquanto você torra"
+    },
+    "orders": {
+      "title": "Pedidos",
+      "sub": "{count, plural, one {# pedido para torrar e enviar} other {# pedidos para torrar e enviar}}",
+      "board": "Pedidos por etapa",
+      "stages": {
+        "new": "Novos",
+        "roasting": "Torrando",
+        "shipping": "A caminho",
+        "delivered": "Entregues"
+      },
+      "empty": "Nada por aqui",
+      "filter": "Filtrar pedidos",
+      "filters": {
+        "all": "Todos",
+        "club": "Clube",
+        "recovered": "Recuperados"
+      },
+      "items": "{count, plural, one {# produto} other {# produtos}}"
+    },
+    "carts": {
+      "title": "Carrinhos abandonados",
+      "sub": "Meia hora depois, um WhatsApp com cupom traz o cliente de volta.",
+      "switch": "Recuperação por WhatsApp",
+      "switchOn": "Ligada · escreve 30 min depois",
+      "switchOff": "Desligada · os carrinhos se perdem",
+      "funnel": {
+        "abandoned": "Abandonados",
+        "sent": "Mensagem enviada",
+        "read": "Lida",
+        "back": "Voltaram",
+        "paid": "Pagaram",
+        "caption": "{paid} de {total} voltaram e pagaram",
+        "offNote": "Desligada: cada carrinho que sai se perde"
+      },
+      "list": "Nesta semana",
+      "yesterday": "ontem",
+      "status": {
+        "browsing": "Olhando",
+        "checkout": "No checkout",
+        "abandoned": "Abandonado",
+        "sent": "WhatsApp enviado",
+        "unsent": "Sem mensagem",
+        "read": "Lida",
+        "back": "Voltou",
+        "recovered": "Recuperado",
+        "lost": "Perdido"
+      },
+      "thread": "Conversa com {name}",
+      "customer": "Cliente",
+      "threadLabel": "Mensagens de {business} para {name}",
+      "template": "A mensagem que sai",
+      "templateOff": "Recuperação desligada: esta mensagem não sai",
+      "templateText": "Oi, guardamos seu carrinho. Com o código {code} você tem {pct}% off até as 22h.",
+      "rule": {
+        "when": "Quando",
+        "whenValue": "30 min depois",
+        "coupon": "Cupom",
+        "couponValue": "{code} · {pct}% off",
+        "channel": "Canal",
+        "channelValue": "WhatsApp · 1 mensagem"
+      }
+    },
+    "club": {
+      "title": "Clube Bruma",
+      "sub": "Assinaturas com grãos, níveis e sequências.",
+      "members": "Assinantes",
+      "mrr": "Assinaturas por mês",
+      "avgStreak": "Sequência média",
+      "months": "meses",
+      "levels": "Assinantes por nível",
+      "from": "a partir de {count}",
+      "membersSr": "{count} de {total} assinantes",
+      "streakMonths": "{count, plural, one {# mês seguido} other {# meses seguidos}}",
+      "streakShort": "{count, plural, one {# mês} other {# meses}}",
+      "levelUp": "{name} completou mais um mês: +{bonus} grãos e subiu para {level}.",
+      "almost": "Faltam {count} grãos para {name} chegar à Torra escura. Renova este mês.",
+      "perkUnlocked": "Desbloqueou um pacote de presente",
+      "perkNext": "Ao subir, desbloqueia um pacote de presente",
+      "ranking": "Ranking de grãos",
+      "granos": "grãos",
+      "how": {
+        "title": "Como se ganham grãos",
+        "buy": "Cada compra soma grãos",
+        "streak": "Cada mês seguido no clube: +{bonus}",
+        "gift": "Com 600 grãos: um pacote de presente"
+      }
+    },
+    "chat": {
+      "title": "Chat do site",
+      "sub": "Responde na hora, recomenda e vende. O que não sabe, passa para você.",
+      "kpis": {
+        "total": "Conversas hoje",
+        "byBot": "Resolvidas pelo bot",
+        "sales": "Viraram compra",
+        "human": "Passou para você"
+      },
+      "list": "Conversas",
+      "visitor": "Visitante",
+      "onSite": "na loja online",
+      "transcriptLabel": "Conversa de {name} com o assistente da {business}",
+      "top": "O que mais perguntam",
+      "topq": {
+        "moka": "Qual café vai bem na minha moka?",
+        "roastDay": "Que dia vocês torram?",
+        "shipping": "Vocês entregam na minha cidade?"
+      },
+      "states": {
+        "live": "Ao vivo",
+        "bot": "Bot",
+        "sale": "Comprou",
+        "human": "Para você"
+      },
+      "lines": {
+        "you": "Testando o bot",
+        "inesAsk": "Pergunta qual café vai bem na moka",
+        "inesPick": "O bot recomendou {product}",
+        "inesAdded": "Colocou {product} no carrinho",
+        "inesPaid": "Comprou · voltou pelo WhatsApp"
+      },
+      "convs": {
+        "faq": {
+          "q": "Vocês entregam em Curitiba?",
+          "a": "Sim: chega em 48 a 72 h, e a partir de {amount} o frete é grátis."
+        },
+        "martin": {
+          "q": "Que dia vocês torram?",
+          "a": "Torramos às segundas e enviamos terça e quarta. Sempre fresco."
+        },
+        "sofia": {
+          "q": "Dá para trocar a moagem do meu pedido?",
+          "a": "Claro. Vou passar você para alguém da equipe trocar agora.",
+          "note": "Passado para a equipe"
+        },
+        "joaquin": {
+          "q": "Quero um café para dar de presente",
+          "a": "Huila 500 g: doce, fácil de beber e vai bem em qualquer cafeteira.",
+          "note": "Comprou · Huila 500 g"
+        }
+      }
+    },
+    "site": {
+      "title": "Sua loja online",
+      "sub": "{url} · como seus clientes veem",
+      "visits": "Visitas hoje",
+      "orders": "Pedidos",
+      "carts": "Carrinhos ativos"
+    },
+    "bot": {
+      "hi": "Oi, sou o assistente da Bruma. Quer ajuda para escolher?",
+      "moka": "Para moka, vai bem uma torra média-escura, encorpada e com pouca acidez: o Cerrado. A gente mói para moka.",
+      "fruity": "Se você gosta de frutado, o Sidamo: natural da Etiópia, mirtilo e jasmim. Fica ótimo no coado.",
+      "gift": "Para presente, Huila 500 g: doce, fácil de beber e vai bem em qualquer cafeteira.",
+      "alt_moka": "Outra opção: Niebla, o blend da casa. Mais doce, chocolate ao leite.",
+      "alt_fruity": "Outra opção: Huila, lavado da Colômbia. Rapadura e tangerina.",
+      "alt_gift": "Outra opção: Niebla 500 g, o blend da casa.",
+      "added": "Pronto, já está no seu carrinho. Torramos na segunda e chega na quarta.",
+      "replies": {
+        "moka": "Qual café vai bem na minha moka?",
+        "fruity": "Quero algo frutado",
+        "gift": "É para presente",
+        "add": "Colocar no carrinho",
+        "other": "Ver outra opção"
+      }
+    },
+    "wa": {
+      "msg": "Oi, {name}! Guardamos seu carrinho. Com o código {code} você tem {pct}% off até as 22h.",
+      "msgYou": "Oi! Guardamos seu carrinho. Com o código {code} você tem {pct}% off até as 22h.",
+      "doubt": "Pode falar. Se for o frete: chega na quarta e é grátis.",
+      "opening": "Abrindo seu carrinho com o cupom…",
+      "replies": {
+        "back": "Voltar ao carrinho",
+        "doubt": "Tenho uma dúvida"
+      },
+      "cartItems": "{count, plural, one {# produto} other {# produtos}}",
+      "withCoupon": "Com {code}:"
+    },
+    "front": {
+      "hero": {
+        "kicker": "LOTE 41 · TORRADO NA SEGUNDA",
+        "title": "Café especial, <em>torrado esta semana</em>.",
+        "body": "Torramos às segundas e enviamos terça e quarta."
+      },
+      "cats": {
+        "label": "Categorias",
+        "all": "Tudo",
+        "coffee": "Cafés",
+        "gear": "Acessórios"
+      },
+      "from": "a partir de",
+      "left": "Restam {count}",
+      "addNamed": "Colocar {name} no carrinho",
+      "clubStrip": {
+        "title": "Clube Bruma",
+        "body": "Seu café a cada 2 semanas, com grãos e presentes."
+      },
+      "back": "Voltar",
+      "product": {
+        "grind": "Moagem",
+        "size": "Tamanho",
+        "roast": "Torra",
+        "roasts": {
+          "1": "Clara",
+          "2": "Média",
+          "3": "Escura"
+        },
+        "process": "Processo",
+        "material": "Material",
+        "bestFor": "Ideal para",
+        "add": "Colocar no carrinho",
+        "stampTop": "TORRADO NA",
+        "stampDay": "segunda"
+      },
+      "brew": {
+        "espresso": "espresso",
+        "moka": "moka",
+        "filter": "coado",
+        "press": "prensa"
+      },
+      "nav": {
+        "label": "Seções da loja",
+        "store": "Loja",
+        "club": "Clube",
+        "order": "Meu pedido"
+      },
+      "panel": "Painel",
+      "cart": {
+        "open": "{count, plural, =0 {Carrinho vazio} one {Carrinho com # produto} other {Carrinho com # produtos}}",
+        "title": "Seu carrinho",
+        "close": "Fechar o carrinho",
+        "qty": "Quantidade de {name}",
+        "less": "Um a menos",
+        "more": "Um a mais",
+        "empty": "Seu carrinho está vazio. Pergunte ao bot: ele recomenda um.",
+        "freeDone": "Frete grátis liberado",
+        "freeLeft": "Faltam {amount} para o frete grátis",
+        "subtotal": "Subtotal",
+        "checkout": "Ir para o pagamento"
+      },
+      "checkout": {
+        "backToCart": "Carrinho",
+        "title": "Finalizar compra",
+        "delivery": "Entrega",
+        "addressInes": "Bia · Rua das Acácias 1240, ap. 3B",
+        "addressYou": "Seu endereço · você cadastra uma vez só",
+        "deliveries": {
+          "home": "Em casa",
+          "homeWhen": "Chega na quarta",
+          "pickup": "Retirar na torrefação",
+          "pickupWhen": "A partir de terça, das 9h às 18h"
+        },
+        "payment": "Pagamento",
+        "pays": {
+          "card": "Cartão",
+          "transfer": "Transferência",
+          "cash": "Dinheiro na retirada"
+        },
+        "summary": "Resumo",
+        "couponOn": "{pct}% off aplicado",
+        "couponOff": "Tem um cupom?",
+        "subtotal": "Subtotal",
+        "discount": "Desconto",
+        "shipping": "Frete",
+        "free": "Grátis",
+        "total": "Total",
+        "pay": "Pagar {total}",
+        "secure": "Pagamento protegido · Demo: nada é cobrado"
+      },
+      "done": {
+        "title": "Pronto! Seu café está a caminho",
+        "titleName": "Pronto, {name}!",
+        "body": "Pedido #{id}. Torramos na segunda e chega na quarta.",
+        "stages": {
+          "received": "Recebido",
+          "roasted": "Torrado",
+          "shipped": "A caminho",
+          "delivered": "Entregue"
+        },
+        "monday": "segunda",
+        "wednesday": "quarta",
+        "doneSr": "feito",
+        "pendingSr": "pendente",
+        "granos": "+{count} grãos no Clube Bruma",
+        "whatsapp": "Avisamos cada etapa pelo WhatsApp.",
+        "more": "Continuar comprando",
+        "emptyTitle": "Você ainda não pediu nada",
+        "emptyBody": "Quando comprar, aqui você vê o pedido e quando chega.",
+        "clubNext": "Você já soma {total} grãos · faltam {count} para {level}",
+        "clubTop": "Você já soma {total} grãos · nível mais alto"
+      },
+      "club": {
+        "kicker": "CLUBE BRUMA",
+        "title": "Seu café a cada duas semanas. E grãos por cada pacote.",
+        "yourLevel": "Seu nível",
+        "granos": "grãos",
+        "toNext": "Faltam {count} para {level}",
+        "top": "Você chegou ao nível mais alto",
+        "streak": "{count, plural, one {mês seguido} other {meses seguidos}}",
+        "monthDone": "cumprido",
+        "monthNow": "este mês",
+        "streakNote": "Cada mês seguido soma {bonus} grãos.",
+        "perks": {
+          "presale": "Pré-venda de microlotes",
+          "shipping": "Frete grátis sempre",
+          "gift": "Um pacote de presente a cada 600 grãos"
+        },
+        "perkOpen": "Você já tem",
+        "perkFrom": "A partir de {level}",
+        "every": "Frequência",
+        "plans": {
+          "2w": "A cada 2 semanas",
+          "4w": "A cada 4 semanas"
+        },
+        "join": "Entrar no clube",
+        "joined": "Você já faz parte",
+        "joinNote": "Pause ou cancele quando quiser.",
+        "joinedNote": "+50 grãos de boas-vindas. Seu primeiro pacote sai na segunda."
+      },
+      "chat": {
+        "title": "Assistente Bruma",
+        "subtitle": "responde na hora",
+        "label": "Chat com o assistente da {business}",
+        "composer": "Pergunte o que quiser",
+        "close": "Fechar o chat",
+        "open": "Abrir o chat com o assistente",
+        "ask": "Quer ajuda para escolher?"
+      },
+      "lock": {
+        "now": "agora",
+        "push": "{name}, guardamos seu carrinho: {pct}% off com {code} até as 22h.",
+        "pushYou": "Guardamos seu carrinho: {pct}% off com {code} até as 22h.",
+        "openPush": "Abrir a mensagem do WhatsApp",
+        "jump": "30 minutos depois",
+        "off": "Recuperação desligada: ninguém escreveu para {name}. O carrinho se perde.",
+        "toStore": "Ir para a loja",
+        "desktop": "Mandamos seu carrinho pelo WhatsApp, com um cupom.",
+        "back": "Voltar ao carrinho",
+        "business": "Conta comercial",
+        "threadLabel": "Mensagens de {business}",
+        "today": "Hoje",
+        "composer": "Mensagem",
+        "left": "{name} deixou {count, plural, one {# produto} other {# produtos}} no carrinho"
+      }
+    }
+  },
+  "demoAcademy": {
+    "people": {
+      "valentina": "Valentina Rocha",
+      "camila": "Camila M.",
+      "bruno": "Bruno A.",
+      "sofia": "Sofia L.",
+      "lucas": "Lucas D.",
+      "martin": "Mateus Souza",
+      "julieta": "Júlia P.",
+      "tomas": "Thiago G.",
+      "renata": "Renata V.",
+      "joaquin": "João M.",
+      "you": "Você",
+      "youInitials": "VC"
+    },
+    "first": {
+      "valentina": "Valentina",
+      "camila": "Camila",
+      "bruno": "Bruno",
+      "sofia": "Sofia",
+      "lucas": "Lucas",
+      "martin": "Mateus",
+      "julieta": "Júlia",
+      "tomas": "Thiago",
+      "renata": "Renata",
+      "joaquin": "João",
+      "you": "Você"
+    },
+    "langs": {
+      "en": "Inglês",
+      "pt": "Espanhol"
+    },
+    "courseName": "{lang} {level}",
+    "teachers": {
+      "carla": "Prof.ª Carla F.",
+      "diego": "Prof. Diego R.",
+      "ana": "Prof.ª Ana V."
+    },
+    "pay": {
+      "card": "cartão",
+      "transfer": "Pix"
+    },
+    "feed": {
+      "reminders": "Lembrete de mensalidade enviado para {count} alunos",
+      "lesson": "{name} abriu a lição de hoje",
+      "speaking": "{name} terminou o speaking: {score}/100",
+      "complete": "{name} concluiu a lição 6.3",
+      "levelUp": "{name} subiu para o {level}",
+      "review": "{name} tem 1 exercício para revisar amanhã",
+      "booked": "{name} reservou o Conversation Club B1",
+      "test": "{name} começou o teste de nível no site",
+      "level": "{name} fez o teste: nível {level}",
+      "levelYou": "Você fez o teste: nível {level}",
+      "enrolled": "{name} se matriculou em {course} e pagou com {pay}",
+      "enrolledYou": "Você se matriculou em {course} e pagou com {pay}",
+      "flagged": "{name} está há 5 dias sem entrar: em risco",
+      "nudge": "WhatsApp para {name} com uma lição de 5 minutos",
+      "replied": "{name} respondeu: vai fazer a lição agora",
+      "later": "{name} deixou para amanhã às 19h",
+      "back": "{name} fez a lição expressa e voltou",
+      "dropped": "{name} cancelou o curso",
+      "paid": "{name} pagou a mensalidade de outubro com {pay}"
+    },
+    "toast": {
+      "enrolled": "Nova matrícula",
+      "levelUp": "Subiu de nível",
+      "back": "Um aluno voltou",
+      "dropped": "Cancelamento",
+      "review": "Lição concluída"
+    },
+    "nav": {
+      "today": "Hoje",
+      "students": "Alunos",
+      "courses": "Cursos",
+      "live": "Aulas ao vivo",
+      "tutor": "Tutor IA",
+      "site": "Matrículas",
+      "groupSchool": "Escola",
+      "groupGrowth": "IA e crescimento",
+      "todayShort": "Hoje",
+      "studentsShort": "Alunos",
+      "siteShort": "Site"
+    },
+    "top": {
+      "online": "{count} alunos online",
+      "coordInitials": "LM"
+    },
+    "side": {
+      "title": "Acompanhamento",
+      "on": "Ativo · {count} em risco",
+      "off": "Desligado"
+    },
+    "mode": {
+      "label": "Ver como",
+      "student": "Aluna",
+      "school": "Escola"
+    },
+    "student": {
+      "tabs": {
+        "home": "Hoje",
+        "course": "Curso",
+        "speak": "Falar",
+        "tutor": "Tutor",
+        "class": "Turma"
+      },
+      "done": "feito",
+      "now": "agora",
+      "pending": "pendente",
+      "hello": "Boa noite, {name}.",
+      "yourLevel": "Seu nível",
+      "levelLeft": "Faltam {pct}% para o B1",
+      "levelPending": "B1: 1 revisão pendente",
+      "levelNew": "Novo nível: B1",
+      "rulerLabel": "Nível {level}, {pct}% concluído",
+      "lessonKicker": "Lição de hoje · 12 min",
+      "lessonSteps": "Lição 6.3, passo a passo",
+      "step1": "Speaking",
+      "step2": "Escrita",
+      "step3": "Exercício",
+      "lessonTitle": "Passado simples: os verbos irregulares",
+      "act1": "Speaking com sua tutora IA",
+      "act2": "Escrita com correção",
+      "act3": "Exercício rápido",
+      "start": "Começar",
+      "continue": "Continuar",
+      "complete": "Lição concluída",
+      "completeB1": "Lição concluída · A2 fechado",
+      "streakLabel": "{count, plural, one {# dia de sequência} other {# dias de sequência}}",
+      "goal": "Meta da semana",
+      "goalLabel": "{value} de {goal} minutos nesta semana",
+      "goalDone": "Batida. Mandou bem.",
+      "goalLeft": "{count, plural, one {Falta # minuto} other {Faltam # minutos}}",
+      "nextClass": "Próxima aula ao vivo",
+      "today": "Hoje",
+      "booked": "Reservado",
+      "book": "Reservar",
+      "seats": "{count, plural, one {Resta # vaga} other {Restam # vagas}}",
+      "classes": {
+        "en-a2": "Inglês A2 · ter e qui",
+        "club-b1": "Conversation Club B1",
+        "en-b1": "Inglês B1 · ter e qui",
+        "en-b2": "Inglês B2",
+        "pt-a1": "Espanhol A1",
+        "en-a1": "Inglês A1",
+        "pt-a2": "Espanhol A2"
+      }
+    },
+    "course": {
+      "kicker": "Inglês · nível {level}",
+      "title": "Seu curso",
+      "syllabus": "Unidades do curso",
+      "unit": "U{n}",
+      "units": {
+        "u1": "Apresentações",
+        "u2": "Rotina e horários",
+        "u3": "Comida e compras",
+        "u4": "Viagens",
+        "u5": "Experiências",
+        "u6": "Passado simples"
+      },
+      "nextOpen": "B1 liberado",
+      "nextLocked": "B1 · libera quando fechar o A2",
+      "b1": {
+        "u1": "Planos e previsões",
+        "u2": "Trabalho e estudo"
+      },
+      "live": "Suas aulas ao vivo",
+      "bookClub": "Reservar o clube das {time}",
+      "calendarLabel": "Suas aulas ao vivo desta semana e da próxima"
+    },
+    "speak": {
+      "kicker": "Atividade 1 de 3 · Speaking",
+      "title": "Fale 2 minutos com sua tutora",
+      "pick": "Escolha o assunto",
+      "topic": "Tema",
+      "topicLabel": "Tema da sessão",
+      "question": {
+        "weekend": "What did you do last weekend?",
+        "series": "Tell me about the last series you watched."
+      },
+      "again": "Praticar de novo",
+      "prompts": {
+        "weekend": "Seu último fim de semana",
+        "series": "A última série que você viu"
+      },
+      "tutor": "Tutora IA · speaking",
+      "tutorTag": "Tutora",
+      "status": {
+        "idle": "Pronta quando você quiser",
+        "connecting": "Conectando…",
+        "talking": "Sua tutora está falando",
+        "listening": "Ouvindo {name}",
+        "analyzing": "Analisando a pronúncia",
+        "ended": "Sessão encerrada"
+      },
+      "connecting": "Sua tutora está se conectando…",
+      "label": "Prática de speaking de {name} com a tutora IA",
+      "duration": "Duração {time}",
+      "transcript": "Transcrição ao vivo",
+      "score": "Nota",
+      "scores": {
+        "pron": "Pronúncia",
+        "fluency": "Fluência",
+        "grammar": "Gramática"
+      },
+      "improved": "Você corrigiu o som /θ/ na primeira tentativa.",
+      "badWord": "sink",
+      "goodWord": "think",
+      "weekend": {
+        "l0": "Hi Valentina! What did you do last weekend?",
+        "l1": "I sink I went to the cinema with my brother.",
+        "l2": "«sink» → «think» · som /θ/",
+        "l3": "Nice past tense! Now «think»: tongue between your teeth.",
+        "l4": "I think… I think it was great!",
+        "l5": "/θ/ certo · nota 92"
+      },
+      "series": {
+        "l0": "Hi Valentina! Tell me about the last series you watched.",
+        "l1": "I sink it was a Korean series. I watched three episodes.",
+        "l2": "«sink» → «think» · som /θ/",
+        "l3": "Good! Careful with «think»: tongue between your teeth.",
+        "l4": "I think… I think I loved it!",
+        "l5": "/θ/ certo · nota 90"
+      }
+    },
+    "tutor": {
+      "kicker": "Atividade 2 de 3 · Escrita",
+      "title": "Tutora IA",
+      "subtitle": "Corrige e explica em uma linha",
+      "date": "Hoje",
+      "label": "Chat da Valentina com a tutora IA",
+      "composer": "Escreva uma frase em inglês…",
+      "waiting": "Depois do speaking, me escreva uma frase em inglês: eu corrijo e explico o porquê em uma linha.",
+      "msg": "Yesterday I buyed a new jacket for the trip.",
+      "fix": "Yesterday I <bad>buyed</bad> <good>bought</good> a new jacket for the trip.",
+      "why": "«Buy» é irregular: buy → bought. Sem -ed.",
+      "quizKicker": "Exercício rápido",
+      "quiz": "Last week she <gap>___</gap> a new phone.",
+      "replies": {
+        "bought": "bought",
+        "buyed": "buyed",
+        "buys": "buys"
+      },
+      "right": "Isso: «bought». +{points} pts e a lição está fechada.",
+      "wrong": "Quase: é «bought» (buy → bought). Guardei para revisar amanhã. +{points} pts."
+    },
+    "site": {
+      "path": "teste-de-nivel",
+      "index": "Site público · teste de nível",
+      "title": "Matrículas",
+      "botName": "Atri · assistente",
+      "botSub": "Teste de nível em 2 minutos",
+      "chatLabel": "Chat do site: teste de nível",
+      "composer": "Digite sua resposta…",
+      "taking": "{name} está fazendo o teste",
+      "takingYou": "Você está fazendo o teste",
+      "tryIt": "Faça o teste você",
+      "again": "Fazer de novo",
+      "hi": "Oi! Eu sou o Atri, assistente da Atrio. Vamos fazer o teste de nível? São 3 perguntas.",
+      "courses": "Temos inglês do A1 ao C1 e espanhol do A1 ao B2. Mensalidade: {price}, com aulas ao vivo e tutora IA. Vamos descobrir seu nível primeiro?",
+      "q1": "1/3 · Complete: She ___ to work by bus.",
+      "q2": "2/3 · Yesterday we ___ a great film.",
+      "q3": "3/3 · I ___ here since 2020.",
+      "result": "Seu nível: <b>{level}</b>. Eu recomendo <b>{course}</b>: 12 semanas, 2 aulas ao vivo por semana e tutora IA a qualquer hora.",
+      "courseMeta": "12 semanas · 2 aulas ao vivo por semana",
+      "perMonth": "{price}/mês",
+      "doubt": "A primeira aula ao vivo é experimental: se não gostar, você não paga. Posso fazer sua matrícula?",
+      "pay": "Como você quer pagar a primeira mensalidade?",
+      "paid": "Pronto, {name}! Pagamento aprovado. Sua primeira aula é terça às 19h. Mandamos tudo pelo WhatsApp.",
+      "paidYou": "Pronto! Pagamento aprovado. Sua primeira aula é terça às 19h. Mandamos tudo pelo WhatsApp.",
+      "approved": "Aprovado",
+      "alias": "Aqui está a chave Pix da escola: atrio.idiomas.demo. Assim que cair, seu acesso é liberado.",
+      "paidTransfer": "Pix recebido · acesso liberado",
+      "replies": {
+        "start": "Começar o teste",
+        "courses": "Ver cursos e preços",
+        "go": "go",
+        "goes": "goes",
+        "going": "going",
+        "see": "see",
+        "saw": "saw",
+        "seen": "seen",
+        "live": "live",
+        "have": "have lived",
+        "am": "am living",
+        "enroll": "Quero me matricular",
+        "doubt": "Tenho uma dúvida",
+        "card": "Cartão",
+        "transfer": "Pix"
+      },
+      "links": {
+        "courses": "Cursos",
+        "live": "Aulas ao vivo",
+        "prices": "Preços"
+      },
+      "cta": "Teste de nível",
+      "kicker": "Inglês e espanhol online",
+      "heroA": "Fale em 12 semanas, com alguém que",
+      "heroB": "sempre te corrige.",
+      "heroBody": "Aulas ao vivo duas vezes por semana, uma tutora IA que corrige a qualquer hora e um plano no seu ritmo.",
+      "testCta": "Faça o teste (2 min)",
+      "seeCourses": "Ver cursos",
+      "coursesKicker": "Cursos",
+      "coursesTitle": "Comece no seu nível",
+      "enrolLine": "Teste {level} → {course}",
+      "payShort": {
+        "card": "Pagou com cartão",
+        "transfer": "Pagou com Pix"
+      },
+      "enrolledToday": "Matrículas de hoje",
+      "enrolledCount": "{count} em outubro",
+      "leads": {
+        "lead1": "Fernanda D.",
+        "lead2": "Rodrigo C."
+      },
+      "funnel": "Teste de nível · outubro",
+      "funnelSteps": {
+        "visits": "Visitas ao site",
+        "tests": "Fizeram o teste",
+        "enrolled": "Se matricularam"
+      }
+    },
+    "wa": {
+      "nudge": "Oi {name}, tudo bem? Faz 5 dias que você não entra. Preparei uma lição expressa de 5 minutos para você retomar de onde parou.",
+      "cardTitle": "Lição expressa · Rotina",
+      "cardMeta": "5 min · 8 frases",
+      "replies": {
+        "yes": "Bora, vou fazer agora",
+        "later": "Hoje não dá"
+      },
+      "go": "Boa! São 8 frases curtas. Te espero lá.",
+      "done": "{name} concluiu a lição expressa · 5 min",
+      "tomorrow": "Sem problema. Guardo para amanhã e te lembro às 19h.",
+      "noteLater": "Lembrete agendado · amanhã 19h",
+      "waiting": "Mensagem agendada para {name}",
+      "noNudge": "Sem acompanhamento: ninguém escreve para {name}",
+      "dropped": "{name} cancelou. Ninguém escreveu para ele.",
+      "label": "WhatsApp de {name} com a escola",
+      "date": "Hoje"
+    },
+    "class": {
+      "kicker": "Inglês A2 · turma ter e qui",
+      "title": "Sua turma · semana",
+      "you": "você",
+      "martinBack": "Voltou hoje",
+      "rankLabel": "Posição {rank} de {count}",
+      "pts": "pts",
+      "climbed": "{count, plural, one {Subiu # posição hoje} other {Subiu # posições hoje}}",
+      "keepGoing": "Mais uma lição e você sobe",
+      "boardLabel": "Ranking semanal da sua turma",
+      "stickers": "Adesivos"
+    },
+    "badges": {
+      "levelB1": "Nível B1",
+      "speak10": "10 speakings",
+      "streak7": "7 dias seguidos",
+      "firstLive": "Primeira aula ao vivo",
+      "words": "100 palavras",
+      "streak30": "30 dias seguidos"
+    },
+    "levelUp": {
+      "close": "Fechar",
+      "kicker": "Lição 6.3 · concluída",
+      "titleB1": "A2 fechado. Agora você é B1.",
+      "title": "Lição concluída.",
+      "bodyB1": "Na próxima aula você já entra na turma de Inglês B1. A sequência continua.",
+      "body": "Falta 1 exercício para fechar o A2: amanhã você revisa com sua tutora.",
+      "streak": "Sequência",
+      "days": "{count, plural, one {# dia} other {# dias}}",
+      "points": "Pontos",
+      "speaking": "Speaking",
+      "book": "Reservar o clube das {time}",
+      "booked": "Reservado · clube das {time}",
+      "continue": "Continuar"
+    },
+    "today": {
+      "greeting": "Hoje na escola",
+      "completion": "Concluem o curso · turma de agosto",
+      "completionSub": "<b>{n}</b> de {total} alunos seguem firmes",
+      "completionFell": "Caiu: {name} cancelou e ninguém escreveu para ele.",
+      "withNudges": "Com acompanhamento",
+      "before": "Antes: {pct}",
+      "fees": "Mensalidades · outubro",
+      "feesHint": "{paid} de {total} alunos em dia",
+      "active": "Alunos ativos",
+      "activeHint": "Em 6 cursos",
+      "atRisk": "Em risco",
+      "atRiskHint": "3 dias ou mais sem entrar",
+      "atRiskDelta": "{count, plural, one {# voltou hoje} other {# voltaram hoje}}",
+      "atRiskDropped": "1 cancelou",
+      "enrollments": "Matrículas · outubro",
+      "enrollmentsDelta": "+{count} hoje",
+      "enrollmentsHint": "Vindas do teste de nível",
+      "now": "Agora na Atrio",
+      "openStudents": "Ver alunos",
+      "activity": "Atividade"
+    },
+    "lanes": {
+      "label": "O que está acontecendo agora",
+      "done": "feito",
+      "now": "em andamento",
+      "pending": "pendente",
+      "inProgress": "Em andamento",
+      "valentina": {
+        "context": "Inglês A2 · lição 6.3",
+        "s1": "Abriu a lição",
+        "s2": "Speaking · {score}/100",
+        "s2pending": "Speaking",
+        "s3": "Escrita corrigida",
+        "s3wrong": "Errou o exercício",
+        "s4": "Lição concluída",
+        "outB1": "Subiu para B1",
+        "outReview": "Revisa amanhã"
+      },
+      "lead": {
+        "context": "Teste de nível no site",
+        "s1": "Abriu o chat",
+        "s2": "Nível {level}",
+        "s2pending": "Teste em andamento",
+        "s3": "Escolheu o curso",
+        "s4": "Pagou com {pay}",
+        "s4pending": "Pagamento",
+        "out": "Matriculada",
+        "outYou": "Matrícula feita"
+      },
+      "martin": {
+        "context": "5 dias sem entrar",
+        "s1": "Marcado em risco",
+        "s2": "WhatsApp + lição de 5 min",
+        "s2off": "Sem acompanhamento",
+        "s3": "Respondeu",
+        "s3later": "Deixou para amanhã",
+        "s3off": "Ninguém escreveu",
+        "s4": "Voltou",
+        "s4off": "Cancelou",
+        "outBack": "Voltou",
+        "outDropped": "Cancelou",
+        "outLater": "Amanhã 19h"
+      }
+    },
+    "students": {
+      "index": "Alunos · {count} ativos",
+      "title": "Alunos",
+      "sub": "Quem se afasta recebe uma lição de 5 minutos pelo WhatsApp. Sem ninguém precisar correr atrás.",
+      "roster": "Acompanhamento de hoje",
+      "rosterCount": "{shown} de {total}",
+      "cols": {
+        "student": "Aluno",
+        "progress": "Progresso do nível",
+        "status": "Status"
+      },
+      "lastToday": "Hoje",
+      "lastDays": "{count, plural, one {Há # dia} other {Há # dias}}",
+      "status": {
+        "ok": "Em dia",
+        "risk": "Em risco",
+        "sent": "WhatsApp enviado",
+        "back": "Voltou",
+        "later": "Amanhã",
+        "dropped": "Cancelou",
+        "lesson": "Em lição",
+        "b1": "Subiu para B1"
+      },
+      "nudge": {
+        "title": "Resgate pelo WhatsApp",
+        "rule": "3 dias sem entrar → WhatsApp com uma lição de 5 minutos.",
+        "off": "Desligado: quem se afasta não recebe nada.",
+        "sentWeek": "Enviados na semana",
+        "backWeek": "Voltaram",
+        "avg": "Voltam em",
+        "avgValue": "38 min"
+      },
+      "fees": {
+        "title": "Lembrete de mensalidade",
+        "rule": "Vence dia 10 · hoje saíram {count} lembretes",
+        "of": "{paid} de {total} pagaram",
+        "firstFee": "{name} · primeira mensalidade",
+        "via": {
+          "card": "cartão",
+          "transfer": "Pix"
+        }
+      }
+    },
+    "courses": {
+      "index": "Cursos · {count} ativos",
+      "title": "Cursos",
+      "sub": "Onde os alunos ficam. Neste trimestre, o acompanhamento resgatou {rescued}.",
+      "retention": "Alunos ativos por semana · turma de agosto",
+      "legendNow": "Com acompanhamento",
+      "legendBefore": "Antes (turma de 2025)",
+      "week3": "Semana 3: {now} seguem (antes {before})",
+      "caption": "A semana 3 era o precipício. Hoje <b>{last}</b> de {total} concluem; antes, {before}.",
+      "srSummary": "Com acompanhamento, {pct} da turma conclui; antes, {before}.",
+      "ledger": "Cursos",
+      "ledgerHint": "Alunos por unidade (1–8)",
+      "students": "{count} alunos",
+      "unitsLabel": "Alunos espalhados em 8 unidades; a média está na unidade {unit}"
+    },
+    "live": {
+      "index": "Aulas ao vivo · quinta",
+      "title": "Aulas ao vivo",
+      "sub": "6 aulas hoje, 3 professores. Cada aluno reserva a vaga pelo app.",
+      "seats": "{taken}/{seats} vagas",
+      "onAir": "Ao vivo · {count} conectados",
+      "done": "Encerrada",
+      "upcoming": "Mais tarde",
+      "onAirTitle": "No ar",
+      "connected": "conectados",
+      "nextTitle": "Lotando",
+      "bookedBy": "{name} reservou (acabou de subir para B1)",
+      "clubHint": "Só para alunos do B1 em diante",
+      "attendance": "Presença na semana",
+      "attendanceHint": "Com lembrete no WhatsApp 1 h antes",
+      "calendarLabel": "Aulas ao vivo de hoje por professor",
+      "subjects": {
+        "carla": "Inglês",
+        "diego": "Inglês",
+        "ana": "Espanhol"
+      }
+    },
+    "tutorView": {
+      "index": "Tutor IA · 24/7",
+      "title": "Tutor IA",
+      "sub": "Corrige, explica em uma linha e faz praticar. Os professores veem onde cada turma erra.",
+      "corrections": "Correções hoje",
+      "correctionsHint": "Escritas e faladas",
+      "sessions": "Sessões de speaking",
+      "sessionsHint": "De 2 minutos, com nota",
+      "solved": "Dúvidas resolvidas sem professor",
+      "solvedHint": "O resto vai para o professor com contexto",
+      "errors": "O que mais se corrige hoje",
+      "errorsLabel": "Erros mais frequentes de hoje",
+      "errorNames": {
+        "th": "Som /θ/ (th)",
+        "past": "Passado irregular",
+        "prep": "Preposições",
+        "third": "-s da terceira pessoa"
+      },
+      "errorEx": {
+        "th": "sink → think",
+        "past": "buyed → bought",
+        "prep": "in Monday → on Monday",
+        "third": "she go → she goes"
+      },
+      "liveSpeaking": "Speaking ao vivo · {name}",
+      "liveWriting": "Escrita ao vivo · {name}"
     }
   }
 }

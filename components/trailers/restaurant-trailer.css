@@ -1,0 +1,118 @@
+/*
+ * Bodegón Lucero trailer mock: the AI phone at rush hour, in the demo's palette (dark warm ·
+ * cream · wine · olive). Variables come from RestaurantTrailer.tsx (--mk-*). The CSS state is
+ * the END of the scene (what reduced motion shows); the timeline sets the start.
+ */
+.mk-rl {
+  gap: 0.55em;
+}
+.mk-rl .mk-bar {
+  border-bottom-style: dashed;
+}
+.mk-rl .mk-logo {
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 0.3em color-mix(in oklab, var(--mk-accent) 55%, var(--mk-ink));
+}
+.mk-rl-brand {
+  font-family: var(--font-serif);
+  font-size: 1.12em;
+  font-style: italic;
+  font-weight: 400;
+}
+.mk-rl-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.mk-rl-title {
+  font-size: 1.3em;
+  font-style: italic;
+}
+.mk-rl .mk-label {
+  color: var(--mk-muted);
+}
+.mk-rl-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+.mk-rl-line {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.42em 0.65em;
+  border: 1px solid var(--mk-line);
+  border-radius: 0.7em;
+  background: var(--mk-card);
+}
+.mk-rl-lamp {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 999px;
+  background: var(--mk-wine-text);
+  box-shadow: 0 0 0.6em color-mix(in oklab, var(--mk-accent) 70%, transparent);
+}
+.mk-rl-n {
+  font-size: 0.72em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.mk-rl-topic {
+  overflow: hidden;
+  color: var(--mk-muted);
+  font-size: 0.78em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mk-rl-ring {
+  background: color-mix(in oklab, var(--mk-accent) 30%, transparent);
+  color: var(--mk-ink);
+}
+.mk-rl-live {
+  background: color-mix(in oklab, var(--mk-olive) 26%, transparent);
+  color: var(--mk-olive-text);
+}
+.mk-rl-tickets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5em;
+}
+.mk-rl-ticket {
+  --perf: 0.28em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  padding: 0.5em 0.6em calc(0.5em + var(--perf));
+  border-top: 0.3em solid var(--mk-accent);
+  border-radius: 0.3em 0.3em 0 0;
+  background: var(--mk-ink);
+  color: var(--mk-bg);
+  font-size: 0.74em;
+  -webkit-mask:
+    radial-gradient(circle var(--perf) at 50% 100%, #0000 97%, #000) bottom / calc(var(--perf) * 2.5) 51% repeat-x,
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--perf)) no-repeat;
+  mask:
+    radial-gradient(circle var(--perf) at 50% 100%, #0000 97%, #000) bottom / calc(var(--perf) * 2.5) 51% repeat-x,
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--perf)) no-repeat;
+}
+.mk-rl-ticket span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+.mk-rl-ticket svg {
+  width: 1.1em;
+  height: 1.1em;
+  color: color-mix(in oklab, var(--mk-olive) 55%, var(--mk-bg));
+}
+.mk-rl-ticket:last-child {
+  border-top-color: var(--mk-olive);
+}
+.mk-rl-toast {
+  background: var(--mk-ink);
+  color: var(--mk-bg);
+}
+.mk-rl-toast svg {
+  color: var(--mk-accent);
+}

@@ -11,5 +11,5 @@ export const demoLoaders: Record<DemoId, Loader> = {
   gym: () => import('./gym/GymDemo'),
   shop: () => import('./shop/ShopDemo'),
   restaurant: () => import('./restaurant/RestaurantDemo'),
-  ondemand: () => import('./ondemand/OndemandDemo'),
+  academy: () => import('./academy/AcademyDemo'),
 };

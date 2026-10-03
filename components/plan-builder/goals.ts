@@ -11,7 +11,7 @@ export { GOAL_IDS, type GoalId };
 
 /** Businesses that run on bookings vs. on orders: "ordenar turnos y pedidos" picks the right system. */
 const BOOKING_VERTICALS: ReadonlySet<VerticalId> = new Set(['clinicas', 'gimnasios', 'inmobiliarias']);
-const ORDER_VERTICALS: ReadonlySet<VerticalId> = new Set(['restaurantes', 'tiendas', 'servicios']);
+const ORDER_VERTICALS: ReadonlySet<VerticalId> = new Set(['restaurantes', 'tiendas']);
 
 /** Pieces that solve a goal (catalog order). The vertical only refines "ordenar". */
 export function goalPieces(goal: GoalId, vertical: VerticalId | null = null): ItemId[] {

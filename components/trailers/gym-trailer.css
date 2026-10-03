@@ -1,0 +1,105 @@
+/*
+ * Órbita Fitness — the trailer's mock screen in the demo's palette: night #0B0C0F,
+ * lime #CCFF33 (progress, the action), hot pink #FF3E8A (streak heat). Slanted
+ * condensed caps like the demo. Reads the optional --mk-* variables of trailer.css.
+ */
+.mk.mk-gym {
+  --mk-accent: #ccff33;
+  --mk-accent-soft: rgb(204 255 51 / 0.14);
+  --mk-ink: #f1f3ec;
+  --mk-muted: #9da3ae;
+  --mk-line: rgb(241 243 236 / 0.1);
+  --mk-card: #14161b;
+  --mk-heat: #ff3e8a;
+  background:
+    radial-gradient(120% 70% at 100% 0%, rgb(204 255 51 / 0.12), transparent 60%),
+    #0b0c0f;
+  color: var(--mk-ink);
+}
+.mk-gym .mk-logo {
+  border-radius: 0.3em;
+  background: var(--mk-accent);
+  box-shadow: inset 0 0 0 0.38em #0b0c0f, inset 0 0 0 0.62em var(--mk-accent);
+}
+.mk-gym .mk-bar-end {
+  padding: 0.15em 0.5em;
+  background: var(--mk-accent);
+  color: #0b0c0f;
+  font-weight: 800;
+  font-style: oblique 9deg;
+  text-transform: uppercase;
+}
+.mk-gym .mk-title {
+  font-family: var(--font-sans);
+  font-size: 1.55em;
+  font-weight: 850;
+  font-style: oblique 9deg;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.mk-gym .mk-label {
+  font-family: var(--font-mono);
+  letter-spacing: 0.16em;
+}
+.mk-gym .mk-card {
+  border: 0;
+  border-radius: 0;
+  clip-path: polygon(0.7em 0, 100% 0, 100% calc(100% - 0.7em), calc(100% - 0.7em) 100%, 0 100%, 0 0.7em);
+}
+.mk-gym .mk-streak {
+  box-shadow: inset 0.25em 0 0 var(--mk-heat);
+  background:
+    radial-gradient(110% 140% at 0% 0%, rgb(255 62 138 / 0.18), transparent 60%),
+    var(--mk-card);
+}
+.mk-gym .mk-flame {
+  border-radius: 0;
+  background: var(--mk-heat);
+  color: #0b0c0f;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.mk-gym .mk-streak b {
+  font-size: 1.35em;
+  font-weight: 850;
+  font-style: oblique 9deg;
+  text-transform: uppercase;
+}
+.mk-gym .mk-mission {
+  font-weight: 600;
+}
+.mk-gym .mk-check {
+  border-radius: 0.2em;
+  box-shadow: inset 0 0 0 1.5px rgb(241 243 236 / 0.22);
+  color: #0b0c0f;
+  transform: skewX(-10deg);
+}
+.mk-gym .mk-check-fill {
+  border-radius: 0.2em;
+  background: var(--mk-accent);
+}
+.mk-gym .mk-meter {
+  height: 0.42em;
+  border-radius: 0;
+  background: rgb(241 243 236 / 0.08);
+  transform: skewX(-20deg);
+}
+.mk-gym .mk-meter > span {
+  border-radius: 0;
+}
+.mk-gym .mk-toast {
+  border-radius: 0;
+  background: var(--mk-accent);
+  color: #0b0c0f;
+  font-weight: 800;
+  font-style: oblique 9deg;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  clip-path: polygon(0.7em 0, 100% 0, 100% calc(100% - 0.7em), calc(100% - 0.7em) 100%, 0 100%, 0 0.7em);
+  box-shadow: none;
+}
+.mk-gym .mk-toast svg {
+  width: 1.3em;
+  height: 1.3em;
+  flex: none;
+  color: var(--mk-heat);
+}

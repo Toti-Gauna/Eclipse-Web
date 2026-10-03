@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Eclipse — landing (mockup v1)
+# Eclipse — landing (mockup v2)
 
 Landing for **Eclipse**, a development / AI / automation studio. Demo-first sales: we show
 the visitor *their business working* before talking. Single conversion goal: ask for a demo
@@ -108,7 +108,7 @@ agents, gamification, e-commerce, dashboards, automations, apps.
 | gym | Órbita Fitness | dark | #0B0C0F · lime #CCFF33 · pink #FF3E8A | bold condensed caps, game UI | member app with **gamification** (streaks, missions, XP, ranking, badges), classes, churn panel + win-back |
 | shop | Bruma Tostadores | light | cream #FBF6EE · espresso #2B1B14 · tomato #E4472B · oat #EADFCB | playful retail, pills, product-first | **storefront** (catalog → product → cart → checkout), product chatbot, abandoned-cart recovery, sales panel, subscription club |
 | restaurant | Bodegón Lucero | dark warm | #1A1113 · cream #F3E6D0 · wine #B23A52 · olive #8C9A4B | menu type, serif italics, dotted leaders, tickets | QR menu + online orders, **voice agent** taking phone orders (3 calls at once), kitchen display, reservations |
-| ondemand | Tuerca Hogar | light app | #F3F5F7 · ink #0F2440 · jade #12A45B · sky #3AA0FF | native mobile app, map, big tap targets | customer app (request → live tracking → pay → rate), dispatch board, technician view, WhatsApp/voice intake |
+| academy | Atrio Idiomas | dark "chalkboard" | ink-blue board #172338 · chalk #F3F0E6 · sky #7CC8F5 · salmon #FF9F87 | classroom & notebook: chalk underlines, sticker badges, mono scores; no mascots, no green (must not evoke real language apps) | student platform (lessons, AI tutor chat, **voice speaking practice**, streaks, levels, class ranking), enrollment + payment from the landing, automations for students falling behind, owner panel |
 
 ## Design system (app/globals.css)
 
@@ -146,7 +146,10 @@ agents, gamification, e-commerce, dashboards, automations, apps.
   `lib/whatsapp.ts`. Analytics: `track(event, props)` from `lib/analytics.ts`.
 - Modal: `<Sheet open onClose variant="drawer|fullscreen|center" labelledBy>` (native dialog).
 - Demos: `<DemoShowcase demo business active />`, `<DeviceFrame>`, registry in
-  `components/demos/registry.ts`, contract in `components/demos/types.ts`.
+  `components/demos/registry.ts`, contract in `components/demos/types.ts`, kit v2 in
+  `components/demos/kit*` (guide: `components/demos/README.md`; reference demo: `clinic/`).
+- Sound: `useSound().play(name)` (see Art direction → Sound). Section index: `<SectionMark section>`,
+  `<EphemerisRail>`; motion: `<Occult>`, `<DrawLine>`; brand icon: `<PhaseGlyph phase>`.
 - Section anchors: `SECTION_IDS` / `NAV_LINKS` in `components/layout/navLinks.ts`.
 - basePath: `asset('/file.png')` from `lib/env.ts` for anything in `/public`.
 
@@ -159,8 +162,9 @@ agents, gamification, e-commerce, dashboards, automations, apps.
 - Below-the-fold sections are wrapped in `<LazyHydrate>` (app/[locale]/page.tsx): their DOM is
   re-created when they hydrate, so never keep references to DOM nodes of another section; listen
   to `HYDRATED_EVENT` if you must re-query.
-- Demo copy (`demoClinic`, `demoRealEstate`, `demoGym`) is not in the page payload; it is loaded
-  by `<DemoMessages>` inside `DemoShowcase`.
+- Demo copy (`demoKit` + one namespace per demo, listed in `components/demos/namespaces.ts`) is not in
+  the page payload; it is loaded by `<DemoMessages>` inside `DemoShowcase` (in dev it stays in the payload
+  so drafts reach the demos).
 - `npm run test:e2e` (after `NEXT_PUBLIC_BASE_PATH=/Eclipse-Web npm run build` and serving `out/`
   under `/Eclipse-Web`) must stay green.
 

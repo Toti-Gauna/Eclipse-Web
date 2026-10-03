@@ -1,0 +1,159 @@
+/*
+ * Atrio Idiomas — the trailer's mock screen in the demo's palette: chalkboard #172338,
+ * chalk #F3F0E6, sky #7CC8F5 (progress), salmon #FF9F87 (the sticker, the streak).
+ * Mono readouts like the demo. Reads the optional --mk-* variables of trailer.css.
+ */
+.mk.mk-academy {
+  --mk-accent: #7cc8f5;
+  --mk-accent-soft: rgb(124 200 245 / 0.16);
+  --mk-ink: #f3f0e6;
+  --mk-muted: #9da9be;
+  --mk-line: rgb(243 240 230 / 0.12);
+  --mk-card: #1e2c45;
+  --mk-ok: #f0d98a;
+  --mk-ok-bg: rgb(240 217 138 / 0.14);
+  --mk-bad: #ffb86b;
+  --mk-bad-bg: rgb(255 184 107 / 0.14);
+  --mk-salmon: #ff9f87;
+  background:
+    radial-gradient(110% 70% at 0% 0%, rgb(243 240 230 / 0.06), transparent 62%),
+    repeating-linear-gradient(to bottom, transparent 0 1.6em, rgb(243 240 230 / 0.025) 1.6em calc(1.6em + 1px)),
+    #172338;
+  color: var(--mk-ink);
+}
+.mk-academy .mk-logo {
+  border-radius: 0.75em 0.75em 0.15em 0.15em;
+  background: transparent;
+  box-shadow:
+    inset 0 0 0 0.16em var(--mk-accent),
+    inset 0 -0.5em 0 -0.34em var(--mk-accent);
+}
+.mk-academy .mk-bar-end {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+.mk-academy .mk-title {
+  font-family: var(--font-sans);
+  font-weight: 640;
+  letter-spacing: -0.04em;
+}
+.mk-academy .mk-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+.mk-academy .mk-card {
+  border-radius: 0.7em;
+}
+.mk-academy .mk-pill {
+  border-radius: 0.4em;
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+.mk-ac-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.6em 0.7em;
+}
+.mk-ac-av {
+  display: grid;
+  width: 2em;
+  height: 2em;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--mk-accent);
+  color: #172338;
+  font-size: 0.74em;
+  font-weight: 700;
+}
+.mk-ac-av[data-tone='orange'] {
+  background: #ffb86b;
+}
+.mk-ac-who {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.mk-ac-who b {
+  font-size: 0.86em;
+}
+.mk-ac-who small {
+  overflow: hidden;
+  color: var(--mk-muted);
+  font-size: 0.66em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mk-ac-streak > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  color: var(--mk-salmon);
+  font-family: var(--font-mono);
+  font-size: 0.74em;
+  white-space: nowrap;
+}
+.mk-ac-streak svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.mk-ac-flame {
+  display: inline-grid;
+}
+.mk-ac-level {
+  justify-items: center;
+}
+.mk-ac-lvl {
+  display: grid;
+  width: 2.2em;
+  height: 2.2em;
+  place-items: center;
+  border-radius: 0.5em;
+  box-shadow: inset 0 0 0 1px var(--mk-line);
+  color: var(--mk-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+}
+.mk-ac-sticker {
+  display: grid;
+  width: 2.6em;
+  height: 2.6em;
+  place-items: center;
+  background: var(--mk-salmon);
+  color: #1a1730;
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  font-weight: 600;
+  clip-path: polygon(50% 0, 61% 12%, 77% 6%, 80% 22%, 96% 26%, 89% 41%, 100% 54%, 87% 63%, 91% 80%, 74% 81%, 66% 96%, 52% 87%, 37% 98%, 30% 82%, 13% 84%, 15% 67%, 0 58%, 10% 45%, 3% 29%, 19% 25%, 22% 9%, 38% 13%);
+  transform: rotate(-7deg);
+}
+.mk-ac-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.65em 0.75em 0.75em;
+}
+.mk-ac-track {
+  display: block;
+  height: 0.5em;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(243 240 230 / 0.1);
+}
+.mk-ac-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--mk-accent);
+  transform: scaleX(var(--to, 0.82));
+  transform-origin: left center;
+}
+.mk-academy .mk-toast {
+  background: #f3f0e6;
+  color: #172338;
+}
+.mk-academy .mk-toast svg {
+  color: #c05a40;
+}

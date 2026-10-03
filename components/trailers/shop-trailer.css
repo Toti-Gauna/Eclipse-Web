@@ -1,0 +1,97 @@
+/* Bruma Tostadores trailer mock (reads the shared --mk-* variables; palette in ShopTrailer.tsx). */
+.mk-shop .mk-title {
+  font-family: var(--font-sans);
+  font-weight: 760;
+  letter-spacing: -0.045em;
+}
+.mk-shop .mk-logo {
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 0.35em color-mix(in oklab, var(--mk-accent) 60%, #fff7ee);
+}
+.mk-cart {
+  padding: 0.55em 0.7em;
+}
+.mk-bags {
+  display: inline-flex;
+  padding-left: 0.35em;
+}
+.mk-bagicon {
+  position: relative;
+  width: 1.05em;
+  height: 1.35em;
+  margin-left: -0.35em;
+  border-radius: 0.14em 0.14em 0.22em 0.22em;
+  background: #d9bd94;
+  box-shadow: 0 0 0 0.1em var(--mk-card, #fff);
+}
+.mk-bagicon::before {
+  content: '';
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 38%;
+  bottom: 16%;
+  border-radius: 0.12em;
+  background: var(--label);
+}
+.mk-bagicon::after {
+  content: '';
+  position: absolute;
+  inset: 0 -8% auto;
+  height: 0.2em;
+  border-radius: 999px;
+  background: #8e6b47;
+}
+.mk-cart-who {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.mk-cart-who b {
+  font-size: 0.86em;
+}
+.mk-cart-who small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--mk-muted);
+  font-size: 0.68em;
+}
+.mk-shop .mk-pill--accent {
+  background: var(--mk-accent);
+  color: #fff;
+}
+.mk-shop-counter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.45em 0.6em;
+  padding: 0.7em 0.8em;
+  background: var(--mk-ink);
+  color: #fbf6ee;
+  border-color: transparent;
+}
+.mk-shop-counter .mk-label {
+  color: #d8c7b2;
+}
+.mk-shop-count {
+  font-size: 1.25em;
+  font-weight: 760;
+  letter-spacing: -0.04em;
+}
+.mk-shop-bags {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(15, minmax(0, 1fr));
+  gap: 0.2em;
+}
+.mk-shop-bags > span {
+  height: 1em;
+  border-radius: 0.15em 0.15em 0.22em 0.22em;
+  background: rgb(234 223 203 / 0.2);
+  transform-origin: 50% 100%;
+}
+.mk-shop-bags > span[data-on] {
+  background: #e4472b;
+}

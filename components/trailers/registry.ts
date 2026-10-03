@@ -11,5 +11,5 @@ export const trailerLoaders: Record<DemoId, Loader> = {
   gym: () => import('./GymTrailer'),
   shop: () => import('./ShopTrailer'),
   restaurant: () => import('./RestaurantTrailer'),
-  ondemand: () => import('./OndemandTrailer'),
+  academy: () => import('./AcademyTrailer'),
 };

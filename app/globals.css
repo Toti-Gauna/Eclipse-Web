@@ -631,3 +631,19 @@
     transform: translateX(calc(100% - 36px));
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* v2 · rendering                                                      */
+/* Sections below the fold skip style, layout and paint until they get  */
+/* close to the viewport; their HTML stays in the DOM (anchors, search, */
+/* find-in-page and screen readers still see it). html.cv-off renders   */
+/* them all for good once the visitor jumps through an anchor (exact    */
+/* landing). See components/motion/ContentVisibilitySync.tsx.           */
+/* ------------------------------------------------------------------ */
+.cv-section {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 1200px;
+}
+html.cv-off .cv-section {
+  content-visibility: visible;
+}
