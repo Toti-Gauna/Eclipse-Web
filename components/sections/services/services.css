@@ -13,6 +13,9 @@
   background:
     radial-gradient(42rem 26rem at 88% 30%, rgb(245 185 66 / 0.06), transparent 70%),
     radial-gradient(36rem 30rem at 6% 82%, rgb(255 232 176 / 0.035), transparent 70%);
+  /* Fade out at both section edges so the light never ends in a hard line. */
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 min(20%, 14rem), #000 calc(100% - min(20%, 14rem)), transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 min(20%, 14rem), #000 calc(100% - min(20%, 14rem)), transparent);
 }
 
 /* Glass on dark, without backdrop-filter: the section behind is a flat sky, so a

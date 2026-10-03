@@ -2,9 +2,10 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRight, AudioLines, Gift, Repeat, Users } from 'lucide-react';
-import { founders, foundersRemaining, l, type Offer } from '@/lib/content';
+import { founders, foundersRemaining, l, plans, type Offer } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
 import { SECTION_IDS } from '@/components/layout/navLinks';
+import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { OfferCountdown } from './OfferCountdown';
 
 /**
@@ -64,8 +65,17 @@ const OFFER_ICONS = {
 
 /** A compact real offer: label + description (+ countdown when it has an end date). */
 export function OfferNote({ offer, className = '' }: { offer: Offer; className?: string }) {
+  const t = useTranslations('pricing.offers');
   const locale = useLocale() as Locale;
+  const { format } = useCurrency();
   const Icon = OFFER_ICONS[offer.kind];
+  // The voice combo carries a price: format it in the active currency instead of
+  // showing the literal "USD 300" from the content description.
+  const entryPlan = offer.kind === 'voiceCombo' ? plans.find((p) => offer.plans.includes(p.id)) : undefined;
+  const description =
+    offer.kind === 'voiceCombo' && entryPlan
+      ? t('voiceCombo', { price: format(offer.priceUsd), plan: l(entryPlan.name, locale) })
+      : l(offer.description, locale);
   return (
     <div className={`flex gap-3 ${className}`}>
       <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full border border-line-strong text-accent">
@@ -76,7 +86,7 @@ export function OfferNote({ offer, className = '' }: { offer: Offer; className?:
           <span className="text-sm font-semibold">{l(offer.label, locale)}</span>
           <OfferCountdown endsAt={offer.endsAt} />
         </p>
-        <p className="mt-0.5 text-sm leading-snug text-fg-muted">{l(offer.description, locale)}</p>
+        <p className="mt-0.5 text-sm leading-snug text-fg-muted">{description}</p>
       </div>
     </div>
   );

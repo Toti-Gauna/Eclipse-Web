@@ -18,7 +18,7 @@ const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tab
  * How: during hydration the wrapper renders an empty dangerouslySetInnerHTML,
  * which React leaves untouched (the server markup stays). Once triggered it
  * renders the real children. If focus was inside, it is restored on the same
- * focusable element afterwards.
+ * focusable element (or the same script-focused target, by id) afterwards.
  */
 export function LazyHydrate({
   children,
@@ -32,7 +32,9 @@ export function LazyHydrate({
   const ref = useRef<HTMLDivElement>(null);
   // Server: render the children into the HTML. Client: start dormant.
   const [hydrated, setHydrated] = useState(() => typeof window === 'undefined');
-  const pendingFocus = useRef<number | null>(null);
+  // What had focus inside the dormant markup: its index among the focusables, or
+  // the id of a script-focused target (an in-page anchor focuses its section).
+  const pendingFocus = useRef<{ index: number } | { id: string } | null>(null);
 
   useEffect(() => {
     if (hydrated) return;
@@ -43,7 +45,10 @@ export function LazyHydrate({
     io.observe(el);
     const onFocus = (e: FocusEvent) => {
       const target = e.target as HTMLElement | null;
-      if (target) pendingFocus.current = [...el.querySelectorAll(FOCUSABLE)].indexOf(target);
+      if (target) {
+        const index = [...el.querySelectorAll(FOCUSABLE)].indexOf(target);
+        pendingFocus.current = index >= 0 ? { index } : target.id ? { id: target.id } : null;
+      }
       wake();
     };
     el.addEventListener('focusin', onFocus);
@@ -65,9 +70,15 @@ export function LazyHydrate({
 
   useLayoutEffect(() => {
     if (!hydrated || typeof window === 'undefined') return;
-    const index = pendingFocus.current;
-    if (index !== null && index >= 0) {
-      ref.current?.querySelectorAll<HTMLElement>(FOCUSABLE)[index]?.focus({ preventScroll: true });
+    const pending = pendingFocus.current;
+    if (pending && 'index' in pending) {
+      ref.current?.querySelectorAll<HTMLElement>(FOCUSABLE)[pending.index]?.focus({ preventScroll: true });
+    } else if (pending) {
+      const target = ref.current?.querySelector<HTMLElement>(`[id="${CSS.escape(pending.id)}"]`);
+      if (target) {
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
     }
     pendingFocus.current = null;
     window.dispatchEvent(new Event(HYDRATED_EVENT));

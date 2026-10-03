@@ -9,7 +9,7 @@ import { DemoCta } from '@/components/ui/DemoCta';
 import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
 import { LocaleSwitcher } from './LocaleSwitcher';
 import { CurrencySwitcher } from './CurrencySwitcher';
-import { NAV_LINKS } from './navLinks';
+import { NAV_LINKS, navLabelKey } from './navLinks';
 
 const BUILD_YEAR = new Date().getFullYear();
 
@@ -23,7 +23,7 @@ export function Footer() {
   return (
     <footer data-header-theme="light" className="theme-light relative overflow-hidden bg-dawn pb-10 pt-20 md:pt-28">
       <div className="container-x">
-        <div className="grid gap-12 border-b border-line pb-14 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-10">
+        <div className="grid gap-12 border-b border-line pb-14 md:grid-cols-2 md:gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="max-w-sm">
             <p className="flex items-center gap-3 text-sm font-medium tracking-[0.32em]">
               <span aria-hidden className="inline-block size-5 rounded-full bg-corona shadow-[0_0_24px_4px_rgb(245_185_66/0.45)]" />
@@ -43,7 +43,7 @@ export function Footer() {
               {NAV_LINKS.map((link) => (
                 <li key={link.id}>
                   <Link href={`/#${link.hash}`} className="inline-flex min-h-11 items-center hover:text-[color:var(--accent)]">
-                    {t(`nav.${link.id}`)}
+                    {t(`nav.${navLabelKey(link.id)}`)}
                   </Link>
                 </li>
               ))}
@@ -80,7 +80,7 @@ export function Footer() {
           <div>
             <h2 className="eyebrow mb-4">{t('footer.settings')}</h2>
             <div className="flex flex-col items-start gap-3">
-              <LocaleSwitcher />
+              <LocaleSwitcher landmark={false} />
               <CurrencySwitcher />
             </div>
           </div>

@@ -10,7 +10,7 @@ import { useExperience } from '@/components/providers/ExperienceProvider';
 import { DemoCta } from '@/components/ui/DemoCta';
 import { LocaleSwitcher } from './LocaleSwitcher';
 import { CurrencySwitcher } from './CurrencySwitcher';
-import { NAV_LINKS } from './navLinks';
+import { NAV_LINKS, navLabelKey } from './navLinks';
 import { lockScroll } from '@/lib/scroll-lock';
 
 /** Full-screen menu that opens as an iris from the hamburger button. */
@@ -82,7 +82,7 @@ export function MobileMenu({ className = '' }: { className?: string }) {
         <Menu aria-hidden className="size-5" strokeWidth={1.6} />
       </button>
 
-      <dialog ref={dialog} aria-label={t('header.mainNav')} className="mobile-menu theme-dark">
+      <dialog ref={dialog} aria-label={t('header.menuDialog')} className="mobile-menu theme-dark">
         <div ref={panel} className="grain flex min-h-dvh flex-col bg-void">
           <div className="container-x flex h-[var(--header-h)] items-center justify-between">
             <span className="text-[0.8rem] font-medium tracking-[0.32em]">ECLIPSE</span>
@@ -107,7 +107,7 @@ export function MobileMenu({ className = '' }: { className?: string }) {
                     className="group flex min-h-14 items-baseline gap-4 py-2 font-serif text-5xl leading-none"
                   >
                     <span className="font-sans text-xs tabular text-fg-muted">0{i + 1}</span>
-                    <span className="transition-colors group-hover:text-corona">{t(`nav.${link.id}`)}</span>
+                    <span className="transition-colors group-hover:text-corona">{t(`nav.${navLabelKey(link.id)}`)}</span>
                   </Link>
                 </li>
               ))}
@@ -120,6 +120,11 @@ export function MobileMenu({ className = '' }: { className?: string }) {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
+                  // Close at once, without the iris (the builder covers it anyway): the
+                  // dialog hands focus back to the menu button before the builder opens,
+                  // so closing the builder returns focus there instead of losing it.
+                  tl.current?.kill();
+                  dialog.current?.close();
                   close();
                   openBuilder('menu');
                 }}

@@ -28,7 +28,7 @@ export function AgentSection() {
       id={SECTION_IDS.agent}
       aria-labelledby="agent-title"
       data-header-theme="light"
-      className="agent theme-light relative isolate overflow-hidden bg-dawn pt-20 pb-24 md:pt-32 md:pb-36"
+      className="agent theme-light relative isolate overflow-hidden bg-dawn pt-28 pb-24 md:pt-32 md:pb-36"
     >
       <div aria-hidden className="agent-sky" />
 

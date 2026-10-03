@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Eclipse — Te mostramos tu negocio funcionando",
-    "description": "Webs, sistemas, agentes de IA, e-commerce y apps para negocios de LatAm. Antes de hablar, te mostramos tu negocio funcionando.",
+    "description": "Webs, sistemas, agentes de IA, e-commerce y apps para negocios de Latinoamérica y el mundo. Antes de hablar, te mostramos tu negocio funcionando.",
     "planTitle": "Armá tu plan — Eclipse",
     "planDescription": "Elegí lo que necesitás y mirá el presupuesto estimado al instante, en tu moneda.",
     "ogAlt": "Eclipse: un eclipse total con su corona dorada",
@@ -40,12 +40,14 @@
     "services": "Servicios",
     "examples": "Ejemplos",
     "pricing": "Precios",
-    "founders": "Fundadores"
+    "founders": "Fundadores",
+    "clients": "Clientes"
   },
   "header": {
     "home": "Eclipse, ir al inicio",
     "skip": "Saltar al contenido",
     "menu": "Abrir menú",
+    "menuDialog": "Menú",
     "closeMenu": "Cerrar menú",
     "mainNav": "Navegación principal",
     "language": "Idioma",
@@ -59,8 +61,8 @@
     "BRL": "Reales",
     "USD": "Dólares",
     "notice": "Precios en USD. Los valores en ARS y BRL son referenciales según la cotización del día.",
-    "source": "Cotización {date}",
-    "sourceFallback": "Cotización de referencia {date}"
+    "source": "Cotización del {date}",
+    "sourceFallback": "Cotización de referencia del {date}"
   },
   "languages": {
     "es": "Español",
@@ -108,7 +110,7 @@
     "totalRange": "Total estimado: de {from} a {to}",
     "totalWithOffers": "Con ofertas: {price}",
     "maintenance": "Mantenimiento {name}: {price} {period}",
-    "maintenanceAnnual": "Mantenimiento {name}: {price} {period} (pago anual, 2 meses gratis)",
+    "maintenanceAnnual": "Mantenimiento {name}: {price} {period} (pago anual, {months, plural, one {# mes gratis} other {# meses gratis}})",
     "maintenanceNone": "Sin mantenimiento por ahora",
     "voiceUsage": "Agente de voz: {price} por mes + minutos según uso",
     "offers": "Ofertas: {list}",
@@ -149,7 +151,7 @@
   "services": {
     "eyebrow": "Qué hacemos",
     "title": "Lo que construimos para que tu negocio <em>no se duerma</em>.",
-    "sub": "Seis servicios. Usalos solos o combinalos. Cualquiera sea, primero lo ves funcionando con tu negocio.",
+    "sub": "Seis servicios. Usá uno o combinalos. Sea cual sea, primero lo ves funcionando con tu negocio.",
     "resultLabel": "Resultado",
     "from": "Desde",
     "add": "Sumalo a tu plan",
@@ -236,7 +238,7 @@
     "includedIn": "Incluido en el plan {plan}",
     "hintDashboard": "El dashboard brilla con un sistema detrás: sumá turnos, pedidos o e-commerce.",
     "hintChatbot": "El chatbot rinde más con automatizaciones: responde y además hace el seguimiento.",
-    "detectTitle": "Esto es el plan {plan}: ahorrás ≈ {pct}%",
+    "detectTitle": "Esto ya es el plan {plan}: ahorrás ≈ {pct}%",
     "detectBody": "Pagás {amount} menos que por separado.",
     "detectCta": "Cambiar al plan",
     "switched": "Cambiaste al plan {plan}.",
@@ -269,7 +271,7 @@
     "comboGap": "si el resto de tu plan llega a {min}, el agente de voz queda en {price}. Te faltan {missing}.",
     "annualApplied": "Ahorrás {amount} por año en mantenimiento.",
     "founderApplied": "Ahorrás {amount} en el pago único.",
-    "founderToggle": "Quiero precio fundador (−{pct}%)",
+    "founderToggle": "Quiero el precio fundador (−{pct}%)",
     "founderDeal": "A cambio: tu testimonio, permiso para mostrar el caso y un referido.",
     "founderLeft": "Quedan {left} de {total} lugares.",
     "endsInDays": "Termina en {days, plural, one {# día} other {# días}}",
@@ -325,13 +327,14 @@
       "endsIn": "Termina en {time}",
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
-      "minutes": "{minutes} min"
+      "minutes": "{minutes} min",
+      "voiceCombo": "Agente de voz con IA a {price} en planes desde {plan}."
     },
     "carousel": {
       "label": "Planes",
       "hint": "{count} planes. Deslizá para verlos.",
       "goTo": "Ver plan {name}",
-      "goToFeatured": "Ir al más elegido",
+      "goToFeatured": "Ir al recomendado",
       "dots": "Elegí qué plan ver"
     },
     "build": {
@@ -1028,7 +1031,7 @@
       "wantThis": "Quiero esto para mi negocio"
     },
     "notListed": {
-      "title": "¿No ves tu rubro? <em>Lo armamos en 48 h.</em>",
+      "title": "¿No ves tu rubro? <em>Lo armamos en {hours} h.</em>",
       "body": "Contanos qué hace tu negocio y te mostramos tu demo.",
       "cta": "Escribinos por WhatsApp",
       "message": "Hola Eclipse. Mi rubro no está en los ejemplos de la web. ¿Me arman una demo? Mi negocio es:"
@@ -1103,7 +1106,7 @@
   "founders": {
     "eyebrow": "Programa fundador",
     "title": "Clientes <em>fundadores</em>",
-    "sub": "Estamos eligiendo los primeros {total} negocios. Precio fundador, prioridad total y tu caso contado acá.",
+    "sub": "Estamos eligiendo los primeros {total} negocios. Precio fundador, prioridad en la cola y tu caso contado acá.",
     "subNoOffer": "Estamos eligiendo los primeros {total} negocios para trabajar codo a codo y contar su caso acá.",
     "eyebrowClients": "Casos reales",
     "titleClients": "<em>Clientes</em>",

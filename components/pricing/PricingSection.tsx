@@ -96,7 +96,7 @@ export function PricingSection() {
               <BillingToggle value={effectiveBilling} onChange={setBilling} freeMonths={freeMonths} />
             </div>
           ) : null}
-          <p data-reveal className="max-w-md text-xs leading-relaxed text-fg-muted lg:text-right">
+          <p data-reveal className="max-w-md text-xs leading-relaxed text-pretty text-fg-muted lg:text-right">
             {tc('notice')}
             {currency !== 'USD' ? (
               <span className="block tabular">{tc(rates.source === 'live' ? 'source' : 'sourceFallback', { date: rateDate })}</span>

@@ -245,7 +245,7 @@ export function AgentChat() {
           type="button"
           onClick={restart}
           aria-label={t('restartLabel')}
-          className="-mr-1 inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full px-3 text-sm text-fg-muted transition-colors hover:bg-surface hover:text-fg"
+          className="-mr-1 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1.5 rounded-full px-3 text-sm text-fg-muted transition-colors hover:bg-surface hover:text-fg"
         >
           <RotateCcw aria-hidden className="size-4" strokeWidth={1.5} />
           <span className="hidden sm:inline">{t('restart')}</span>
@@ -259,7 +259,7 @@ export function AgentChat() {
         aria-live="polite"
         aria-label={t('log')}
         tabIndex={0}
-        className="agent-log min-h-0 flex-1 space-y-2.5 overflow-y-auto overscroll-contain px-4 py-5 sm:px-5"
+        className="agent-log min-h-0 flex-1 space-y-2.5 overflow-y-auto overscroll-contain px-4 py-5 focus-visible:-outline-offset-2 sm:px-5"
       >
         {messages.map((m) =>
           m.from === 'summary' ? (
