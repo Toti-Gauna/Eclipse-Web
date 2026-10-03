@@ -593,6 +593,10 @@
   .btn-primary {
     position: relative;
     isolation: isolate;
+    /* The sparkle's box travels across the pill: clip it so it never adds page overflow
+       (a hovered button near the right edge used to widen the page). */
+    overflow: hidden;
+    overflow: clip;
   }
   .btn-primary::after {
     content: '';
@@ -609,7 +613,7 @@
   }
   .btn-primary:hover::after,
   .btn-primary:focus-visible::after {
-    animation: btn-glint 0.9s var(--ease-soft) both;
+    animation: btn-glint 0.9s var(--ease-soft) backwards;
   }
 }
 

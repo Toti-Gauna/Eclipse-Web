@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { ScrollTrigger, useGSAP } from '@/components/motion/gsap';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { SoundToggle } from '@/components/sound/SoundToggle';
@@ -22,6 +22,8 @@ import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
 export function Header() {
   const t = useTranslations();
   const { openBuilder } = useExperience();
+  // On /plan the builder is the page itself (with its own primary action): no second amber CTA.
+  const onPlanPage = usePathname().replace(/\/$/, '') === '/plan';
   const ref = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [light, setLight] = useState(false);
@@ -101,14 +103,16 @@ export function Header() {
           <div className="flex items-center gap-2">
             <PrefsMenu className="hidden sm:flex" />
             <SoundToggle className="hidden sm:grid" />
-            <button
-              type="button"
-              aria-haspopup="dialog"
-              onClick={() => openBuilder('header')}
-              className="btn btn-primary btn-sm !px-4 text-[0.85rem] sm:!px-5"
-            >
-              {t('header.buildPlan')}
-            </button>
+            {onPlanPage ? null : (
+              <button
+                type="button"
+                aria-haspopup="dialog"
+                onClick={() => openBuilder('header')}
+                className="btn btn-primary btn-sm !px-4 text-[0.85rem] sm:!px-5"
+              >
+                {t('header.buildPlan')}
+              </button>
+            )}
             <MobileMenu className="lg:hidden" />
           </div>
         </div>
