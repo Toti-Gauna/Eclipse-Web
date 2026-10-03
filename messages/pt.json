@@ -1012,235 +1012,499 @@
     }
   },
   "demoGym": {
-    "live": "Ao vivo",
-    "pts": "pts",
-    "pointsLabel": "{count, plural, one {# ponto} other {# pontos}}",
-    "me": "Bia",
-    "memberView": "O que seu aluno vê",
-    "ownerView": "O que você vê",
-    "ownerPanel": "Painel da academia",
-    "replay": "Ver de novo",
-    "tabs": {
-      "home": "Início",
-      "missions": "Missões",
-      "ranking": "Ranking",
-      "panel": "Painel",
-      "retention": "Retenção",
-      "members": "Alunos"
-    },
     "members": {
-      "sol": "Bia R.",
-      "ana": "Ana L.",
-      "bruno": "Bruno C.",
-      "carla": "Carla B.",
-      "lucas": "Lucas D.",
-      "elena": "Helena V.",
-      "tomas": "Thiago R.",
-      "julia": "Júlia M.",
-      "mateo": "Mateus F.",
-      "diego": "Diogo S.",
-      "paula": "Paula N.",
-      "martin": "Marcelo G.",
-      "renata": "Renata P.",
-      "sebastian": "Gustavo T.",
-      "julian": "Rafael A."
-    },
-    "home": {
-      "hello": "Oi, {name}",
-      "missionsValue": "{done} de {total} missões concluídas",
-      "bonus": "Conclua todas e ganhe +{points} pts",
-      "bonusDone": "Semana completa",
-      "weekPoints": "{points} pts nesta semana",
-      "nextMission": "Sua próxima missão",
-      "weekDone": "Sua semana",
-      "allMissions": "Ver todas"
-    },
-    "streak": {
-      "title": "Sua sequência",
-      "days": "{count, plural, one {dia seguido} other {dias seguidos}}",
-      "next": "{count, plural, one {Falta # dia} other {Faltam # dias}} para o selo de {goal} dias",
-      "week": "Esta semana",
-      "dayDone": "{day}: treinou",
-      "todayDone": "{day}, hoje: treinou",
-      "todayPending": "{day}, hoje: falta seu check-in"
-    },
-    "checkin": {
-      "cta": "Fazer check-in",
-      "hint": "Toque quando chegar na academia",
-      "done": "Check-in feito",
-      "doneHint": "Hoje, {time} · sequência de {count, plural, one {# dia} other {# dias}}"
-    },
-    "missionsView": {
-      "title": "Missões da semana",
-      "subtitle": "{count, plural, one {Falta # dia} other {Faltam # dias}} · novas missões na segunda",
-      "progress": "{done} de {total} concluídas",
-      "bonus": "Conclua todas e ganhe +{points} pts de bônus.",
-      "bonusDone": "Semana completa! Você ganhou +{points} pts de bônus."
-    },
-    "missions": {
-      "completed": "Concluída",
-      "days": {
-        "title": "Treine {goal} dias nesta semana",
-        "detail": "Cada check-in conta um dia.",
-        "short": "{goal} dias de treino",
-        "progress": "{value} de {goal} dias",
-        "action": "Fazer check-in"
-      },
-      "cardio": {
-        "title": "Faça {goal} minutos de cardio",
-        "detail": "Esteira, bike ou remo: registrado direto do aparelho.",
-        "short": "{goal} min de cardio",
-        "progress": "{value} de {goal} min",
-        "action": "Registrar {minutes} min de esteira"
-      },
-      "class": {
-        "title": "Experimente uma aula nova",
-        "detail": "Funcional, spinning ou yoga: uma que você ainda não fez.",
-        "short": "Uma aula nova",
-        "progress": "{value} de {goal}"
-      },
-      "friend": {
-        "title": "Traga um amigo",
-        "detail": "Com um passe de convidado de um dia.",
-        "short": "Trazer um amigo",
-        "progress": "{value} de {goal}",
-        "action": "Enviar passe de convidado",
-        "waiting": "Esperando seu amigo"
-      }
-    },
-    "stats": {
-      "title": "Missões nesta semana",
-      "total": "<n>{count}</n> concluídas",
-      "participation": "{value} dos alunos já concluíram pelo menos uma missão nesta semana."
-    },
-    "ranking": {
-      "title": "Ranking",
-      "ownerSubtitle": "Pontos por check-ins, missões e bônus semanal. Zera toda segunda.",
-      "period": "Período do ranking",
-      "week": "Semana",
-      "month": "Mês",
-      "yourPlace": "Sua posição",
-      "position": "Posição {rank}",
-      "climbedShort": "{count, plural, one {# posição} other {# posições}}",
-      "up": "{count, plural, one {subiu # posição} other {subiu # posições}}",
-      "down": "{count, plural, one {caiu # posição} other {caiu # posições}}",
-      "youUp": "{count, plural, one {Você subiu # posição} other {Você subiu # posições}}",
-      "rowLabel": "{rank}º {name}, {points} pontos",
-      "streak": "{count, plural, one {# dia} other {# dias}}",
-      "noStreak": "Sem sequência",
-      "toPass": "Faltam {points} pts para ultrapassar {name}.",
-      "first": "Você está em primeiro. Mantenha a sequência para continuar no topo.",
-      "howPoints": "Cada check-in vale {checkin} pts, cada missão soma os seus e fechar a semana dá {bonus} de bônus.",
-      "colMember": "Aluno",
-      "colStreak": "Sequência",
-      "colChange": "Variação",
-      "colPoints": "Pontos"
-    },
-    "rules": {
-      "title": "Como os pontos somam",
-      "checkin": "Check-in",
-      "bonus": "Semana completa"
-    },
-    "you": {
-      "tag": "Você",
-      "checkin": "Check-in feito: sequência de {count, plural, one {# dia} other {# dias}} · +{points} pts",
-      "mission": "Missão concluída: {mission} · +{points} pts",
-      "bonus": "Semana completa! +{points} pts de bônus",
-      "invite": "Passe enviado. Avisamos quando seu amigo chegar.",
-      "friend": "Seu amigo fez check-in: missão concluída · +{points} pts",
-      "rankUp": "Você subiu para a posição {rank} do ranking",
-      "rankDown": "{by} ultrapassou você: agora você está na posição {rank}"
-    },
-    "activity": {
-      "title": "Atividade ao vivo",
-      "justNow": "Agora",
-      "onPhone": "No celular",
-      "auto": "O app enviou {count} missões de retorno para alunos em risco",
-      "checkin": "{name} fez check-in · sequência de {count, plural, one {# dia} other {# dias}}",
-      "return": "{name} voltou depois de {count} dias sem vir",
-      "mission": "{name} concluiu “{mission}” · +{points} pts",
-      "bonus": "{name} concluiu todas as missões da semana · +{points} pts",
-      "invite": "{name} enviou um passe de convidado para um amigo",
-      "friend": "O convidado de {name} fez check-in: um possível aluno novo",
-      "sent": "Missão de retorno enviada para {name}",
-      "rankUp": "{name} subiu para a posição {rank} do ranking",
-      "rankDown": "{by} ultrapassou {name} no ranking"
-    },
-    "churn": {
-      "title": "Cancelamentos por mês",
-      "inMonth": "cancelamentos em {month}",
-      "change": "{value} de cancelamentos",
-      "before": "Antes: {count} por mês",
-      "chart": "Cancelamentos por mês nos últimos seis meses",
-      "barLabel": "{month}: {count} cancelamentos",
-      "legendBefore": "Sem missões",
-      "legendAfter": "Com missões e sequências",
-      "kept": "{count, plural, one {# aluno a mais ficou} other {# alunos a mais ficaram}} neste mês. Mensalidades que continuam entrando:"
-    },
-    "kpis": {
-      "active": "Alunos ativos",
-      "activeHint": "com a mensalidade em dia",
-      "atRisk": "Em risco",
-      "atRiskHint": "{days} dias ou mais sem vir",
-      "returned": "{count, plural, one {# voltou hoje} other {# voltaram hoje}}",
-      "checkins": "Check-ins hoje",
-      "checkinsHint": "desde que a academia abriu",
-      "missions": "Missões feitas",
-      "missionsHint": "nesta semana · {value} dos alunos participam"
-    },
-    "risk": {
-      "title": "Alunos em risco",
-      "subtitle": "{days} dias ou mais sem vir. O app manda uma missão de retorno.",
-      "high": "risco alto",
-      "sent": "Missão enviada",
-      "back": "Voltou hoje",
-      "sendNow": "Enviar agora",
-      "sentNow": "Enviada",
-      "sendTo": "Enviar agora a missão de retorno para {name}",
-      "sentTo": "Missão de retorno enviada para {name}",
-      "away": "{count} dias sem vir",
-      "backAfter": "Voltou hoje, depois de {count} dias",
-      "queuedAt": "sai sozinha às {time}",
-      "more": "{count, plural, one {mais # aluno em acompanhamento} other {mais # alunos em acompanhamento}}"
-    },
-    "retention": {
-      "title": "Retenção",
-      "subtitle": "Quem fica, quem está prestes a sair e o que o app faz para trazer de volta."
-    },
-    "membersView": {
+      "index": "Alunos",
       "title": "Alunos",
-      "subtitle": "{count} alunos ativos · primeiro quem precisa de atenção",
+      "sub": "{count} ativos · primeiro quem precisa de atenção",
       "filter": "Filtrar alunos",
       "filters": {
         "all": "Todos",
         "risk": "Em risco",
         "streak": "Em sequência",
-        "back": "Voltaram hoje"
+        "new": "Experimental"
       },
+      "never": "Ainda não veio",
+      "today": "Hoje",
+      "daysAgo": "{count, plural, one {há # dia} other {há # dias}}",
       "caption": "Alunos: {filter}",
       "colMember": "Aluno",
+      "colLevel": "Nível",
       "colStreak": "Sequência",
       "colLast": "Última visita",
-      "colMissions": "Missões",
+      "colLeague": "Liga",
       "colStatus": "Status",
-      "today": "Hoje",
-      "yesterday": "Ontem",
-      "daysAgo": "{count, plural, one {Há # dia} other {Há # dias}}",
-      "missionsOf": "{done} de {total} missões",
-      "empty": "Nenhum aluno com este filtro.",
       "status": {
-        "high": "Risco alto",
-        "medium": "Risco médio",
-        "back": "Voltou hoje",
+        "risk": "Em risco",
+        "back": "Voltou",
         "streak": "Em sequência",
-        "active": "Ativo"
+        "ok": "Em dia",
+        "trial": "Experimental",
+        "churned": "Cancelou"
       },
-      "note": {
-        "sent": "Missão de retorno enviada ontem",
-        "queued": "Missão de retorno: sai às {time}",
-        "sentNow": "Missão de retorno enviada agora",
-        "back": "Voltou com a missão de retorno"
+      "line": "Nível {level} · {last}"
+    },
+    "missions": {
+      "friend": {
+        "title": "Traga alguém com seu passe de convidado"
+      },
+      "comeback": {
+        "kicker": "Missão de volta",
+        "title": "{count} aulas nesta semana"
+      },
+      "streak3": {
+        "title": "Faça {count} dias de sequência"
+      },
+      "newClass": {
+        "title": "Experimente uma aula nova"
       }
+    },
+    "churn": {
+      "title": "Cancelamentos por mês",
+      "before": "Sem missões",
+      "chart": "Cancelamentos por mês: de {before} para {after} desde que as missões começaram",
+      "caption": "Antes das missões e sequências: {before} por mês. Agora: {after}.",
+      "october": "{count, plural, one {Outubro até agora: # cancelamento} other {Outubro até agora: # cancelamentos}}",
+      "after": "Com missões e sequências"
+    },
+    "risk": {
+      "title": "Em risco agora",
+      "sentNow": "Enviada agora",
+      "sendTo": "Enviar agora a missão de volta para {name}",
+      "count": "{count, plural, one {# aluno} other {# alunos}}",
+      "days": "{count, plural, one {# dia} other {# dias}}",
+      "today": "hoje",
+      "hero": {
+        "risk": "Em risco",
+        "contacted": "Missão enviada",
+        "booked": "Reservou",
+        "back": "Voltou",
+        "done": "Recuperada",
+        "paused": "Volta na segunda",
+        "churned": "Cancelou"
+      },
+      "heroBooked": "Reservou {class}",
+      "state": {
+        "sent": "Missão enviada",
+        "booked": "Já reservou",
+        "high": "Risco alto",
+        "queued": "Na fila"
+      },
+      "send": "Enviar já"
+    },
+    "retention": {
+      "title": "Quem está sumindo",
+      "index": "Retenção",
+      "sub": "{days} dias sem vir e o app escreve com uma missão pessoal. Acompanhe {name}."
+    },
+    "people": {
+      "lucia": {
+        "name": "Luíza Moraes",
+        "short": "Luíza"
+      },
+      "ramiro": {
+        "name": "Rafael Gomes",
+        "short": "Rafa"
+      },
+      "agus": {
+        "name": "Ana Pires",
+        "short": "Ana"
+      },
+      "fede": {
+        "name": "Fernando Rocha",
+        "short": "Fernando"
+      },
+      "caro": {
+        "name": "Carolina Borges",
+        "short": "Carol"
+      },
+      "juli": {
+        "name": "Júlio Dias",
+        "short": "Júlio"
+      },
+      "mica": {
+        "name": "Mariana Souza",
+        "short": "Mari"
+      },
+      "santi": {
+        "name": "Samuel Vieira",
+        "short": "Samuel"
+      },
+      "nacho": {
+        "name": "Nelson Farias",
+        "short": "Nelson"
+      },
+      "belen": {
+        "name": "Bruna Queiroz",
+        "short": "Bruna"
+      },
+      "gonza": {
+        "name": "Gustavo Teixeira",
+        "short": "Gustavo"
+      },
+      "rocio": {
+        "name": "Renata Alves",
+        "short": "Renata"
+      },
+      "mateo": {
+        "name": "Mateus Costa",
+        "short": "Mateus"
+      },
+      "tomas": {
+        "name": "Thiago Lima",
+        "short": "Thiago"
+      }
+    },
+    "classes": {
+      "functional": "Funcional",
+      "spinning": "Bike",
+      "hiit": "HIIT",
+      "yoga": "Yoga",
+      "strength": "Força"
+    },
+    "coaches": {
+      "nico": "Prof. Nico",
+      "vale": "Prof. Bia",
+      "juli": "Prof. Duda",
+      "caro": "Prof. Kika"
+    },
+    "class": {
+      "spots": "{count, plural, one {resta # vaga} other {restam # vagas}}",
+      "full": "Lotada"
+    },
+    "app": {
+      "player": "Perfil de {name}",
+      "lvl": "NV",
+      "tabs": {
+        "home": "Início",
+        "classes": "Aulas",
+        "league": "Liga"
+      },
+      "checkin": "Check-in",
+      "churnedKicker": "Matrícula",
+      "churnedTitle": "Cancelada",
+      "churnedBody": "Você cancelou. Seu nível e suas medalhas ficam guardados se quiser voltar.",
+      "missionDone": "Missão cumprida",
+      "atTheDoor": "{class} · começa agora",
+      "oneMore": "Falta uma: {class}",
+      "book": "Reservar",
+      "next": "Próxima:",
+      "pausedKicker": "Missão pausada",
+      "pausedTitle": "Te esperamos na segunda",
+      "pausedBody": "Sua sequência fica congelada até lá.",
+      "awayKicker": "Sequência apagada",
+      "awayTitle": "{count} dias sem vir",
+      "awayBody": "Seu recorde é de {best} dias. Volta que a gente acende de novo.",
+      "missions": "Missões da semana",
+      "passSent": "Passe enviado",
+      "sendPass": "Enviar passe",
+      "streakRule": "Descansar até 2 dias seguidos não quebra a sequência.",
+      "pickDay": "Escolha o dia",
+      "checkedIn": "Presente",
+      "booked": "Reservada",
+      "bookLabel": "Reservar {kind} de {day} às {time}",
+      "badges": "Medalhas"
+    },
+    "league": {
+      "name": "Liga Prata",
+      "label": "Liga Prata: tabela da semana",
+      "up": "Zona de acesso",
+      "down": "Zona de rebaixamento",
+      "ends": "Fecha no domingo · os 3 primeiros sobem para o Ouro",
+      "silver": "Prata",
+      "gold": "Ouro",
+      "bronze": "Bronze"
+    },
+    "badges": {
+      "comeback": "Volta",
+      "streak14": "Sequência 14",
+      "level5": "Nível 5",
+      "early": "Madrugada",
+      "classes50": "50 aulas",
+      "gold": "Liga Ouro"
+    },
+    "wa": {
+      "hello": "Oi, {name}! Faz {days} dias que você não aparece. Tudo bem?",
+      "mission": "Montamos uma missão pra você voltar: {count} aulas nesta semana.",
+      "card": {
+        "kicker": "Missão de volta",
+        "title": "{count} aulas · nesta semana",
+        "badge": "Medalha Volta"
+      },
+      "replies": {
+        "book": "Reservar aula",
+        "later": "Essa semana não dá"
+      },
+      "slots": "Esses horários de terça têm vaga:",
+      "booked": "Pronto, reservada: {kind} com {coach}. Te aviso uma hora antes.",
+      "noteBooked": "Missão ativada no app",
+      "later": "Tranquilo. Guardo a missão pra semana que vem e congelo sua sequência.",
+      "notePaused": "Acompanhamento automático na segunda",
+      "back": "Voltar ao app",
+      "empty": "Ainda não há mensagens.",
+      "today": "Hoje",
+      "label": "WhatsApp da academia com {name}"
+    },
+    "lead": {
+      "title": "Assistente",
+      "subtitle": "responde na hora",
+      "hi": "Oi! A primeira aula é por nossa conta. Quer experimentar?",
+      "replies": {
+        "try": "Quero experimentar",
+        "classes": "Que aulas vocês têm?",
+        "strength": "Força",
+        "cardio": "Cardio",
+        "unsure": "Não sei, me indica"
+      },
+      "classes": "Funcional, bike, HIIT, yoga e força. De segunda a sábado, das 7h às 21h.",
+      "goal": "O que você quer treinar?",
+      "pick": {
+        "strength": "Pra força, comece pelo Funcional: pesos livres e turmas de até 14. Tem vaga em:",
+        "cardio": "Pra cardio, o Funcional mistura intervalos e força. Tem vaga em:",
+        "unsure": "Pra começar, Funcional: todos os níveis e o professor adapta cada exercício. Tem vaga em:"
+      },
+      "name": "Boa! Em nome de quem eu reservo?",
+      "done": "Pronto, {name}: sua aula experimental está confirmada. Mandei o endereço e um lembrete no WhatsApp.",
+      "noteLead": "Lead salvo no painel · se não vier, a gente escreve",
+      "trialTag": "Aula experimental · grátis",
+      "label": "Chat do site da academia",
+      "open": "Abrir o chat",
+      "minimize": "Minimizar o chat",
+      "composer": "Digite sua dúvida"
+    },
+    "levelUp": {
+      "kicker": "Subiu de nível",
+      "sr": "Você chegou ao nível {level}",
+      "gain": {
+        "comeback": "Missão de volta",
+        "streak3": "Sequência de 3 dias",
+        "friend": "Passe de convidado"
+      },
+      "badge": "Medalha nova: Volta",
+      "reward": "Você desbloqueou um shake pós-treino",
+      "cta": "Ver minha liga"
+    },
+    "top": {
+      "timelapse": "Câmera rápida",
+      "winOn": "Retorno automático ligado",
+      "winOff": "Retorno automático desligado",
+      "ownerInitials": "MR"
+    },
+    "push": {
+      "whatsapp": "WhatsApp",
+      "churnTitle": "Cancelamento confirmado",
+      "churnBody": "Sua matrícula termina hoje. Seu progresso fica salvo.",
+      "open": "Abrir o WhatsApp"
+    },
+    "feed": {
+      "flag": "{name} está há {count} dias sem vir: em risco",
+      "sent": "Retorno automático: WhatsApp para {name} com a missão dela",
+      "off": "Retorno automático desligado",
+      "on": "Retorno automático ligado",
+      "booked": {
+        "wa": "{name} reservou {class} pelo WhatsApp",
+        "app": "{name} reservou {class} pelo app"
+      },
+      "declined": "{name} respondeu: volta na semana que vem",
+      "trial": "{name} reservou uma aula experimental pelo chat do site: {class}",
+      "back": "{name} voltou depois de {count} dias",
+      "book2": {
+        "wa": "{name} reservou {class} pelo WhatsApp",
+        "app": "{name} reservou {class} pelo app"
+      },
+      "checkin2": "{name} fez check-in: {class}",
+      "mission": "{name} cumpriu a missão de volta",
+      "levelup": "{name} subiu para o nível {level}",
+      "league": "{name} subiu para o {rank}º lugar da Liga Prata",
+      "trialIn": "{name} veio à aula experimental",
+      "churn": "{name} cancelou. Ninguém escreveu pra ela.",
+      "manual": "Missão de volta enviada para {name}",
+      "friend": "O convidado de {name} veio: missão cumprida",
+      "aCheckin": "{name} fez check-in · sequência de {count} dias",
+      "aMission": "{name} cumpriu “3 aulas nesta semana”",
+      "aBadge": "{name} ganhou a medalha Madrugada"
+    },
+    "toast": {
+      "booked": "Aula reservada",
+      "trial": "Aula experimental",
+      "back": "Voltou",
+      "levelup": "Subiu de nível",
+      "league": "Subindo na liga",
+      "churn": "Cancelamento"
+    },
+    "win": {
+      "on": "Ligado",
+      "off": "Desligado",
+      "kicker": "Automação · WhatsApp",
+      "title": "Retorno automático",
+      "offWarn": "Desligado: ninguém escreve pra {name}. Veja o que acontece.",
+      "flow": {
+        "trigger": "{days} dias sem check-in",
+        "message": "WhatsApp com uma missão pessoal e XP extra",
+        "reminder": "Se reservar: lembrete uma hora antes",
+        "coach": "Se não voltar em 5 dias: aviso ao professor"
+      },
+      "lastSent": "Último envio · {name}",
+      "nextSend": "Próximo envio · {name}",
+      "notSent": "Nada sai enquanto estiver desligado",
+      "stats": "Este mês: {sent} enviados · {back} voltaram ({pct})"
+    },
+    "today": {
+      "index": "Hoje",
+      "title": "A academia hoje",
+      "active": "Alunos ativos",
+      "activeHint": "com a mensalidade em dia",
+      "activeLost": "−1 por um cancelamento",
+      "atRisk": "Em risco",
+      "atRiskHint": "{days}+ dias sem vir",
+      "atRiskDrop": "−1: uma aluna voltou",
+      "back": "Voltaram",
+      "backHint": "{pct} de quem recebeu missão",
+      "churn": "Cancelamentos/mês",
+      "churnHint": "{after} por mês, antes {before}",
+      "classes": "Aulas · {day}",
+      "classesAll": "Ver a semana",
+      "live": "Ao vivo"
+    },
+    "journey": {
+      "title": "A volta de {name}",
+      "sub": "Nível {level} · {rank}º lugar na liga",
+      "risk": "Em risco",
+      "riskDetail": "{count} dias sem vir",
+      "wa": "WhatsApp + missão",
+      "waSoon": "sai em minutos",
+      "booked": "Reservou",
+      "back": "Voltou",
+      "done": "Missão cumprida",
+      "doneDetail": "subiu para o nível {level}",
+      "doneProgress": "{count, plural, one {# aula feita} other {# aulas feitas}}",
+      "paused": "Respondeu",
+      "pausedDetail": "volta na semana que vem",
+      "follow": "Acompanhamento",
+      "followDetail": "na segunda, automático",
+      "none": "Sem contato",
+      "noneDetail": "automação desligada",
+      "churn": "Cancelou",
+      "churnSoon": "se ninguém escrever",
+      "status": {
+        "away": "Ausente",
+        "risk": "Em risco",
+        "contacted": "Contatada",
+        "booked": "Reservou",
+        "back": "Voltou",
+        "done": "Recuperada",
+        "paused": "Pausada",
+        "churned": "Cancelou"
+      },
+      "state": {
+        "done": "feito",
+        "now": "em andamento",
+        "todo": "pendente",
+        "bad": "perdida",
+        "warn": "atenção"
+      },
+      "open": "Ver retenção"
+    },
+    "classesView": {
+      "index": "Aulas",
+      "title": "A semana",
+      "sub": "Vagas ao vivo: o que se reserva pelo app, WhatsApp ou chat do site aparece aqui.",
+      "caption": "Grade de aulas da semana com vagas",
+      "trial": "Aula experimental",
+      "live": "Acontecendo",
+      "trialOf": "Experimental de {name}",
+      "pickDay": "Escolha o dia"
+    },
+    "leagueView": {
+      "index": "Jogo",
+      "title": "Ligas e missões",
+      "sub": "Cada check-in e cada missão vale XP. {count} alunos jogam; a tabela zera toda segunda.",
+      "missions": "Missões desta semana",
+      "mission": {
+        "comeback": "Missão de volta (pessoal)",
+        "threeClasses": "3 aulas nesta semana",
+        "streak3": "Sequência de 3 dias",
+        "friend": "Traga alguém"
+      },
+      "rewards": "Recompensas",
+      "reward": {
+        "level5": {
+          "k": "Nível 5",
+          "v": "Garrafa da academia"
+        },
+        "level7": {
+          "k": "Nível 7",
+          "v": "Shake pós-treino"
+        },
+        "level10": {
+          "k": "Nível 10",
+          "v": "Camiseta da casa"
+        },
+        "gold": {
+          "k": "Liga Ouro",
+          "v": "Aula individual com um professor"
+        }
+      },
+      "unlocked": "{name} desbloqueou"
+    },
+    "site": {
+      "artStreak": "Sequência 12",
+      "artLevel": "Nível 7",
+      "links": {
+        "classes": "Aulas",
+        "schedule": "Horários"
+      },
+      "cta": "Aula grátis",
+      "kicker": "Aula experimental grátis",
+      "title": "Sua primeira aula é por nossa conta",
+      "body": "Funcional, bike, HIIT, yoga e força em turmas de até 14. Você reserva pelo chat em 30 segundos.",
+      "action": "Reservar minha aula",
+      "todayKicker": "Hoje",
+      "todayTitle": "Aulas com vaga",
+      "spots": "{count, plural, one {# vaga} other {# vagas}}",
+      "appKicker": "O app",
+      "appTitle": "Treinar vale ponto",
+      "app1": "Missões semanais com XP",
+      "app2": "Sequências que você não vai querer quebrar",
+      "app3": "Ligas com prêmios"
+    },
+    "leads": {
+      "title": "Leads da semana",
+      "caption": "aulas experimentais reservadas",
+      "via": "pelo chat do site",
+      "step1": "Lembrete no WhatsApp 2 h antes",
+      "step2": "Endereço e o que levar",
+      "step3": "Se não vier: a gente escreve no dia seguinte",
+      "step3done": "Veio à aula experimental",
+      "waiting": "Esperando a próxima conversa…",
+      "rate": "Experimental → aluno: 38% neste trimestre"
+    },
+    "siteView": {
+      "index": "Site e leads",
+      "title": "Aula experimental grátis",
+      "sub": "A landing da academia e o chatbot dela: responde, indica e reserva sem ninguém no balcão."
+    },
+    "nav": {
+      "today": "Hoje",
+      "todayShort": "Hoje",
+      "retention": "Retenção",
+      "retentionShort": "Retenção",
+      "members": "Alunos",
+      "classes": "Aulas",
+      "league": "Ligas e missões",
+      "site": "Site e leads",
+      "siteShort": "Site",
+      "groupMembers": "Alunos",
+      "groupGrowth": "Jogo e vendas"
+    },
+    "mode": {
+      "label": "Ver como",
+      "member": "Aluna",
+      "owner": "Dono"
+    },
+    "side": {
+      "title": "Retorno automático",
+      "on": "Ligado · 7+ dias sem vir",
+      "off": "Desligado: ninguém recebe a missão"
     }
   },
   "demoRealEstate": {
@@ -1750,9 +2014,9 @@
         "streak": "Sequência",
         "days": "{count, plural, one {# dia} other {# dias}}",
         "missions": "Missões",
-        "m1": "3 aulas nesta semana",
-        "m2": "Experimente uma aula nova",
-        "m3": "Traga um amigo",
+        "m1": "Missão de volta: 2 aulas",
+        "m2": "Traga alguém com seu passe",
+        "m3": "Experimente uma aula nova",
         "levelUp": "Subiu de nível!",
         "level": "Nível {count}"
       }

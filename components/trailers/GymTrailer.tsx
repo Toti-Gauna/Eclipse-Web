@@ -6,17 +6,18 @@ import { Check, Flame, Trophy } from 'lucide-react';
 import { verticalById, type Vertical } from '@/lib/content';
 import { pop, swap, type MockAnimator, type TrailerNumber } from './timeline';
 import { VerticalTrailer, type TrailerComponentProps } from './VerticalTrailer';
+import './gym-trailer.css';
 
 const VERTICAL = verticalById('gimnasios') as Vertical;
 
 /** Demo scenario: members who cancel per week (the rubro's default in /content). */
 const PAIN: TrailerNumber = { value: VERTICAL.calculator.lostPerWeek, prefix: '', suffix: '' };
 
-/** Mock values of the member's week: streak days and level before → after. */
-const STREAK = { from: 9, to: 10 };
-const LEVEL = { from: 4, to: 5 };
+/** Mock values of a member coming back (the demo's story): streak and level before → after. */
+const STREAK = { from: 2, to: 3 };
+const LEVEL = { from: 6, to: 7 };
 const MISSIONS = [
-  { key: 'm1', from: 0.67, to: 1, done: true },
+  { key: 'm1', from: 0.5, to: 1, done: true },
   { key: 'm2', from: 0.2, to: 0.5, done: false },
   { key: 'm3', from: 0.15, to: 0.15, done: false },
 ] as const;
@@ -47,7 +48,7 @@ function GymScreen({ business }: { business: string }) {
   const tc = useTranslations('common');
 
   return (
-    <div className="mk" style={{ '--mk-accent': '#5a48d0' } as CSSProperties}>
+    <div className="mk mk-gym">
       <div className="mk-bar">
         <span className="mk-logo" />
         <span>{business}</span>

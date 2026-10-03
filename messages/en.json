@@ -1012,235 +1012,499 @@
     }
   },
   "demoGym": {
-    "live": "Live",
-    "pts": "pts",
-    "pointsLabel": "{count, plural, one {# point} other {# points}}",
-    "me": "Sol",
-    "memberView": "What your member sees",
-    "ownerView": "What you see",
-    "ownerPanel": "Owner dashboard",
-    "replay": "Replay",
-    "tabs": {
-      "home": "Home",
-      "missions": "Missions",
-      "ranking": "Leaderboard",
-      "panel": "Dashboard",
-      "retention": "Retention",
-      "members": "Members"
-    },
     "members": {
-      "sol": "Sol R.",
-      "ana": "Ana L.",
-      "bruno": "Bruno C.",
-      "carla": "Carla B.",
-      "lucas": "Lucas D.",
-      "elena": "Elena V.",
-      "tomas": "Tomás R.",
-      "julia": "Julia M.",
-      "mateo": "Mateo F.",
-      "diego": "Diego S.",
-      "paula": "Paula N.",
-      "martin": "Martín G.",
-      "renata": "Renata P.",
-      "sebastian": "Sebastián T.",
-      "julian": "Julián A."
-    },
-    "home": {
-      "hello": "Hi, {name}",
-      "missionsValue": "{done} of {total} missions done",
-      "bonus": "Finish them all for +{points} pts",
-      "bonusDone": "Week complete",
-      "weekPoints": "{points} pts this week",
-      "nextMission": "Your next mission",
-      "weekDone": "Your week",
-      "allMissions": "See all"
-    },
-    "streak": {
-      "title": "Your streak",
-      "days": "{count, plural, one {day in a row} other {days in a row}}",
-      "next": "{count, plural, one {# day} other {# days}} to your {goal}-day badge",
-      "week": "This week",
-      "dayDone": "{day}: trained",
-      "todayDone": "{day}, today: trained",
-      "todayPending": "{day}, today: check-in pending"
-    },
-    "checkin": {
-      "cta": "Check in",
-      "hint": "Tap when you get to the gym",
-      "done": "Checked in",
-      "doneHint": "Today, {time} · {count, plural, one {# day} other {# days}} in a row"
-    },
-    "missionsView": {
-      "title": "This week's missions",
-      "subtitle": "{count, plural, one {# day left} other {# days left}} · new ones on Monday",
-      "progress": "{done} of {total} done",
-      "bonus": "Finish them all for a +{points} pts bonus.",
-      "bonusDone": "Week complete! You earned a +{points} pts bonus."
-    },
-    "missions": {
-      "completed": "Done",
-      "days": {
-        "title": "Train {goal} days this week",
-        "detail": "Every check-in counts as a day.",
-        "short": "{goal} training days",
-        "progress": "{value} of {goal} days",
-        "action": "Check in"
-      },
-      "cardio": {
-        "title": "Do {goal} minutes of cardio",
-        "detail": "Treadmill, bike or rower: logged from the machine.",
-        "short": "{goal} min of cardio",
-        "progress": "{value} of {goal} min",
-        "action": "Log {minutes} min on the treadmill"
-      },
-      "class": {
-        "title": "Try a new class",
-        "detail": "Functional, spinning or yoga: one you haven't done yet.",
-        "short": "A new class",
-        "progress": "{value} of {goal}"
-      },
-      "friend": {
-        "title": "Bring a friend",
-        "detail": "With a one-day guest pass.",
-        "short": "Bring a friend",
-        "progress": "{value} of {goal}",
-        "action": "Send a guest pass",
-        "waiting": "Waiting for your friend"
-      }
-    },
-    "stats": {
-      "title": "Missions this week",
-      "total": "<n>{count}</n> completed",
-      "participation": "{value} of members have completed at least one mission this week."
-    },
-    "ranking": {
-      "title": "Leaderboard",
-      "ownerSubtitle": "Points for check-ins, missions and the weekly bonus. Resets every Monday.",
-      "period": "Leaderboard period",
-      "week": "Week",
-      "month": "Month",
-      "yourPlace": "Your place",
-      "position": "Place {rank}",
-      "climbedShort": "{count, plural, one {# place} other {# places}}",
-      "up": "{count, plural, one {up # place} other {up # places}}",
-      "down": "{count, plural, one {down # place} other {down # places}}",
-      "youUp": "{count, plural, one {You moved up # place} other {You moved up # places}}",
-      "rowLabel": "{rank}. {name}, {points} points",
-      "streak": "{count, plural, one {# day} other {# days}}",
-      "noStreak": "No streak",
-      "toPass": "{points} pts to pass {name}.",
-      "first": "You're first. Keep the streak to stay on top.",
-      "howPoints": "Each check-in is worth {checkin} pts, each mission adds its own and finishing the week gives a {bonus} bonus.",
-      "colMember": "Member",
-      "colStreak": "Streak",
-      "colChange": "Change",
-      "colPoints": "Points"
-    },
-    "rules": {
-      "title": "How points add up",
-      "checkin": "Check-in",
-      "bonus": "Full week"
-    },
-    "you": {
-      "tag": "You",
-      "checkin": "Checked in: {count, plural, one {# day} other {# days}} in a row · +{points} pts",
-      "mission": "Mission complete: {mission} · +{points} pts",
-      "bonus": "Week complete! +{points} pts bonus",
-      "invite": "Pass sent. We'll let you know when your friend arrives.",
-      "friend": "Your friend checked in: mission complete · +{points} pts",
-      "rankUp": "You moved up to place {rank}",
-      "rankDown": "{by} passed you: you're in place {rank}"
-    },
-    "activity": {
-      "title": "Live activity",
-      "justNow": "Now",
-      "onPhone": "On the phone",
-      "auto": "The app sent {count} comeback missions to members at risk",
-      "checkin": "{name} checked in · {count, plural, one {# day} other {# days}} in a row",
-      "return": "{name} came back after {count} days away",
-      "mission": "{name} completed “{mission}” · +{points} pts",
-      "bonus": "{name} completed every mission this week · +{points} pts",
-      "invite": "{name} sent a guest pass to a friend",
-      "friend": "{name}'s guest checked in: a potential new member",
-      "sent": "Comeback mission sent to {name}",
-      "rankUp": "{name} moved up to place {rank} on the leaderboard",
-      "rankDown": "{by} passed {name} on the leaderboard"
-    },
-    "churn": {
-      "title": "Cancellations per month",
-      "inMonth": "cancellations in {month}",
-      "change": "{value} churn",
-      "before": "Before: {count} a month",
-      "chart": "Cancellations per month over the last six months",
-      "barLabel": "{month}: {count} cancellations",
-      "legendBefore": "No missions",
-      "legendAfter": "With missions and streaks",
-      "kept": "{count, plural, one {# more member stayed} other {# more members stayed}} this month. Fees still coming in:"
-    },
-    "kpis": {
-      "active": "Active members",
-      "activeHint": "paid up",
-      "atRisk": "At risk",
-      "atRiskHint": "{days}+ days without a visit",
-      "returned": "{count, plural, one {# came back today} other {# came back today}}",
-      "checkins": "Check-ins today",
-      "checkinsHint": "since the gym opened",
-      "missions": "Missions done",
-      "missionsHint": "this week · {value} of members take part"
-    },
-    "risk": {
-      "title": "Members at risk",
-      "subtitle": "{days}+ days without a visit. The app sends them a comeback mission.",
-      "high": "high risk",
-      "sent": "Mission sent",
-      "back": "Back today",
-      "sendNow": "Send now",
-      "sentNow": "Sent",
-      "sendTo": "Send the comeback mission to {name} now",
-      "sentTo": "Comeback mission sent to {name}",
-      "away": "{count} days without a visit",
-      "backAfter": "Back today, after {count} days",
-      "queuedAt": "goes out on its own at {time}",
-      "more": "{count, plural, one {# more member being followed up} other {# more members being followed up}}"
-    },
-    "retention": {
-      "title": "Retention",
-      "subtitle": "Who stays, who's about to leave and what the app does to bring them back."
-    },
-    "membersView": {
+      "index": "Members",
       "title": "Members",
-      "subtitle": "{count} active members · the ones who need attention first",
+      "sub": "{count} active · the ones who need attention first",
       "filter": "Filter members",
       "filters": {
         "all": "All",
         "risk": "At risk",
         "streak": "On a streak",
-        "back": "Back today"
+        "new": "Trial"
       },
+      "never": "Hasn't come yet",
+      "today": "Today",
+      "daysAgo": "{count, plural, one {# day ago} other {# days ago}}",
       "caption": "Members: {filter}",
       "colMember": "Member",
+      "colLevel": "Level",
       "colStreak": "Streak",
       "colLast": "Last visit",
-      "colMissions": "Missions",
+      "colLeague": "League",
       "colStatus": "Status",
-      "today": "Today",
-      "yesterday": "Yesterday",
-      "daysAgo": "{count, plural, one {# day ago} other {# days ago}}",
-      "missionsOf": "{done} of {total} missions",
-      "empty": "No members match this filter.",
       "status": {
-        "high": "High risk",
-        "medium": "Medium risk",
-        "back": "Back today",
+        "risk": "At risk",
+        "back": "Came back",
         "streak": "On a streak",
-        "active": "Active"
+        "ok": "Active",
+        "trial": "Trial",
+        "churned": "Cancelled"
       },
-      "note": {
-        "sent": "Comeback mission sent yesterday",
-        "queued": "Comeback mission goes out at {time}",
-        "sentNow": "Comeback mission just sent",
-        "back": "Came back with the comeback mission"
+      "line": "Level {level} · {last}"
+    },
+    "missions": {
+      "friend": {
+        "title": "Bring someone with your guest pass"
+      },
+      "comeback": {
+        "kicker": "Comeback mission",
+        "title": "{count} classes this week"
+      },
+      "streak3": {
+        "title": "Hit a {count}-day streak"
+      },
+      "newClass": {
+        "title": "Try a new class"
       }
+    },
+    "churn": {
+      "title": "Cancellations per month",
+      "before": "No missions",
+      "chart": "Cancellations per month: from {before} to {after} since missions started",
+      "caption": "Before missions and streaks: {before} a month. Now: {after}.",
+      "october": "{count, plural, one {October so far: # cancellation} other {October so far: # cancellations}}",
+      "after": "With missions and streaks"
+    },
+    "risk": {
+      "title": "At risk now",
+      "sentNow": "Just sent",
+      "sendTo": "Send the comeback mission to {name} now",
+      "count": "{count, plural, one {# member} other {# members}}",
+      "days": "{count, plural, one {# day} other {# days}}",
+      "today": "today",
+      "hero": {
+        "risk": "At risk",
+        "contacted": "Mission sent",
+        "booked": "Booked",
+        "back": "Came back",
+        "done": "Won back",
+        "paused": "Back Monday",
+        "churned": "Cancelled"
+      },
+      "heroBooked": "Booked {class}",
+      "state": {
+        "sent": "Mission sent",
+        "booked": "Already booked",
+        "high": "High risk",
+        "queued": "Queued"
+      },
+      "send": "Send now"
+    },
+    "retention": {
+      "title": "Who's drifting away",
+      "index": "Retention",
+      "sub": "{days} days without coming and the app writes with a personal mission. Follow {name}."
+    },
+    "people": {
+      "lucia": {
+        "name": "Lucy Morgan",
+        "short": "Lucy"
+      },
+      "ramiro": {
+        "name": "Ray Gibson",
+        "short": "Ray"
+      },
+      "agus": {
+        "name": "Abby Price",
+        "short": "Abby"
+      },
+      "fede": {
+        "name": "Fred Reyes",
+        "short": "Fred"
+      },
+      "caro": {
+        "name": "Carol Bennett",
+        "short": "Carol"
+      },
+      "juli": {
+        "name": "Jules Dean",
+        "short": "Jules"
+      },
+      "mica": {
+        "name": "Mia Stone",
+        "short": "Mia"
+      },
+      "santi": {
+        "name": "Sam Vance",
+        "short": "Sam"
+      },
+      "nacho": {
+        "name": "Nate Fisher",
+        "short": "Nate"
+      },
+      "belen": {
+        "name": "Bella Quinn",
+        "short": "Bella"
+      },
+      "gonza": {
+        "name": "Greg Turner",
+        "short": "Greg"
+      },
+      "rocio": {
+        "name": "Rose Adams",
+        "short": "Rose"
+      },
+      "mateo": {
+        "name": "Matt Cole",
+        "short": "Matt"
+      },
+      "tomas": {
+        "name": "Tom Lewis",
+        "short": "Tom"
+      }
+    },
+    "classes": {
+      "functional": "Functional",
+      "spinning": "Cycle",
+      "hiit": "HIIT",
+      "yoga": "Yoga",
+      "strength": "Strength"
+    },
+    "coaches": {
+      "nico": "Coach Nick",
+      "vale": "Coach Val",
+      "juli": "Coach Jo",
+      "caro": "Coach Cass"
+    },
+    "class": {
+      "spots": "{count, plural, one {# spot left} other {# spots left}}",
+      "full": "Full"
+    },
+    "app": {
+      "player": "{name}'s profile",
+      "lvl": "LV",
+      "tabs": {
+        "home": "Home",
+        "classes": "Classes",
+        "league": "League"
+      },
+      "checkin": "Check in",
+      "churnedKicker": "Membership",
+      "churnedTitle": "Cancelled",
+      "churnedBody": "You cancelled. Your level and badges are saved in case you come back.",
+      "missionDone": "Mission complete",
+      "atTheDoor": "{class} · starting now",
+      "oneMore": "One to go: {class}",
+      "book": "Book",
+      "next": "Next:",
+      "pausedKicker": "Mission on hold",
+      "pausedTitle": "See you Monday",
+      "pausedBody": "Your streak is frozen until then.",
+      "awayKicker": "Streak out",
+      "awayTitle": "{count} days away",
+      "awayBody": "Your record is {best} days. Come back and we'll light it again.",
+      "missions": "This week's missions",
+      "passSent": "Pass sent",
+      "sendPass": "Send pass",
+      "streakRule": "Resting up to 2 days in a row doesn't break your streak.",
+      "pickDay": "Pick a day",
+      "checkedIn": "Checked in",
+      "booked": "Booked",
+      "bookLabel": "Book {kind} on {day} at {time}",
+      "badges": "Badges"
+    },
+    "league": {
+      "name": "Silver League",
+      "label": "Silver League: this week's table",
+      "up": "Promotion zone",
+      "down": "Relegation zone",
+      "ends": "Ends Sunday · top 3 move up to Gold",
+      "silver": "Silver",
+      "gold": "Gold",
+      "bronze": "Bronze"
+    },
+    "badges": {
+      "comeback": "Comeback",
+      "streak14": "14 streak",
+      "level5": "Level 5",
+      "early": "Early bird",
+      "classes50": "50 classes",
+      "gold": "Gold League"
+    },
+    "wa": {
+      "hello": "Hi {name}, we haven't seen you in {days} days. All good?",
+      "mission": "We set up a mission to get you back: {count} classes this week.",
+      "card": {
+        "kicker": "Comeback mission",
+        "title": "{count} classes · this week",
+        "badge": "Comeback badge"
+      },
+      "replies": {
+        "book": "Book a class",
+        "later": "Can't this week"
+      },
+      "slots": "These Tuesday classes have room:",
+      "booked": "Done, you're in: {kind} with {coach}. I'll remind you an hour before.",
+      "noteBooked": "Mission activated in the app",
+      "later": "No problem. I'll save the mission for next week and freeze your streak.",
+      "notePaused": "Automatic follow-up on Monday",
+      "back": "Back to the app",
+      "empty": "No messages yet.",
+      "today": "Today",
+      "label": "The gym's WhatsApp with {name}"
+    },
+    "lead": {
+      "title": "Assistant",
+      "subtitle": "replies instantly",
+      "hi": "Hi! Your first class is on us. Want to try one?",
+      "replies": {
+        "try": "I want to try",
+        "classes": "What classes are there?",
+        "strength": "Strength",
+        "cardio": "Cardio",
+        "unsure": "Not sure, suggest one"
+      },
+      "classes": "Functional, cycle, HIIT, yoga and strength. Monday to Saturday, 7 am to 9 pm.",
+      "goal": "What would you like to train?",
+      "pick": {
+        "strength": "For strength, start with Functional: free weights, groups of up to 14. There's room on:",
+        "cardio": "For cardio, Functional mixes intervals and strength. There's room on:",
+        "unsure": "To start, Functional: every level, and the coach adapts each exercise. There's room on:"
+      },
+      "name": "Great! Whose name should I book it under?",
+      "done": "Done, {name}: your trial class is confirmed. I sent you the address and a reminder on WhatsApp.",
+      "noteLead": "Lead saved to the panel · if they don't show, we follow up",
+      "trialTag": "Trial class · free",
+      "label": "Chat on the gym's site",
+      "open": "Open the chat",
+      "minimize": "Minimize the chat",
+      "composer": "Type your question"
+    },
+    "levelUp": {
+      "kicker": "Level up",
+      "sr": "You reached level {level}",
+      "gain": {
+        "comeback": "Comeback mission",
+        "streak3": "3-day streak",
+        "friend": "Guest pass"
+      },
+      "badge": "New badge: Comeback",
+      "reward": "You unlocked a post-workout shake",
+      "cta": "See my league"
+    },
+    "top": {
+      "timelapse": "Time-lapse",
+      "winOn": "Auto win-back on",
+      "winOff": "Auto win-back off",
+      "ownerInitials": "MR"
+    },
+    "push": {
+      "whatsapp": "WhatsApp",
+      "churnTitle": "Cancellation confirmed",
+      "churnBody": "Your membership ends today. Your progress is saved.",
+      "open": "Open WhatsApp"
+    },
+    "feed": {
+      "flag": "{name} hasn't come in {count} days: at risk",
+      "sent": "Auto win-back: WhatsApp to {name} with her mission",
+      "off": "Auto win-back switched off",
+      "on": "Auto win-back switched on",
+      "booked": {
+        "wa": "{name} booked {class} on WhatsApp",
+        "app": "{name} booked {class} in the app"
+      },
+      "declined": "{name} replied: back next week",
+      "trial": "{name} booked a trial class through the site's chat: {class}",
+      "back": "{name} came back after {count} days",
+      "book2": {
+        "wa": "{name} booked {class} on WhatsApp",
+        "app": "{name} booked {class} in the app"
+      },
+      "checkin2": "{name} checked in: {class}",
+      "mission": "{name} completed her comeback mission",
+      "levelup": "{name} reached level {level}",
+      "league": "{name} climbed to #{rank} in the Silver League",
+      "trialIn": "{name} showed up for the trial class",
+      "churn": "{name} cancelled. Nobody wrote to her.",
+      "manual": "Comeback mission sent to {name}",
+      "friend": "{name}'s guest showed up: mission complete",
+      "aCheckin": "{name} checked in · {count}-day streak",
+      "aMission": "{name} completed “3 classes this week”",
+      "aBadge": "{name} earned the Early bird badge"
+    },
+    "toast": {
+      "booked": "Class booked",
+      "trial": "Trial class",
+      "back": "Came back",
+      "levelup": "Level up",
+      "league": "Climbing the league",
+      "churn": "Cancellation"
+    },
+    "win": {
+      "on": "On",
+      "off": "Off",
+      "kicker": "Automation · WhatsApp",
+      "title": "Auto win-back",
+      "offWarn": "Off: nobody writes to {name}. Watch what happens.",
+      "flow": {
+        "trigger": "{days} days without a check-in",
+        "message": "WhatsApp with a personal mission and bonus XP",
+        "reminder": "If they book: reminder an hour before",
+        "coach": "Not back in 5 days: the coach gets a heads-up"
+      },
+      "lastSent": "Last sent · {name}",
+      "nextSend": "Next send · {name}",
+      "notSent": "Nothing goes out while it's off",
+      "stats": "This month: {sent} sent · {back} came back ({pct})"
+    },
+    "today": {
+      "index": "Today",
+      "title": "The gym today",
+      "active": "Active members",
+      "activeHint": "with fees up to date",
+      "activeLost": "−1 after a cancellation",
+      "atRisk": "At risk",
+      "atRiskHint": "{days}+ days away",
+      "atRiskDrop": "−1: a member came back",
+      "back": "Came back",
+      "backHint": "{pct} of those who got a mission",
+      "churn": "Cancellations / month",
+      "churnHint": "{after} a month, down from {before}",
+      "classes": "Classes · {day}",
+      "classesAll": "See the week",
+      "live": "Live"
+    },
+    "journey": {
+      "title": "{name}'s comeback",
+      "sub": "Level {level} · #{rank} in her league",
+      "risk": "At risk",
+      "riskDetail": "{count} days away",
+      "wa": "WhatsApp + mission",
+      "waSoon": "goes out in minutes",
+      "booked": "Booked",
+      "back": "Back",
+      "done": "Mission complete",
+      "doneDetail": "reached level {level}",
+      "doneProgress": "{count, plural, one {# class done} other {# classes done}}",
+      "paused": "Replied",
+      "pausedDetail": "back next week",
+      "follow": "Follow-up",
+      "followDetail": "Monday, automatic",
+      "none": "No contact",
+      "noneDetail": "automation off",
+      "churn": "Cancelled",
+      "churnSoon": "if nobody writes",
+      "status": {
+        "away": "Away",
+        "risk": "At risk",
+        "contacted": "Contacted",
+        "booked": "Booked",
+        "back": "Back",
+        "done": "Won back",
+        "paused": "On hold",
+        "churned": "Cancelled"
+      },
+      "state": {
+        "done": "done",
+        "now": "in progress",
+        "todo": "pending",
+        "bad": "lost",
+        "warn": "needs attention"
+      },
+      "open": "See retention"
+    },
+    "classesView": {
+      "index": "Classes",
+      "title": "The week",
+      "sub": "Live capacity: bookings from the app, WhatsApp or the site's chat show up here.",
+      "caption": "This week's class grid with capacity",
+      "trial": "Trial class",
+      "live": "In progress",
+      "trialOf": "{name}'s trial",
+      "pickDay": "Pick a day"
+    },
+    "leagueView": {
+      "index": "Game",
+      "title": "Leagues and missions",
+      "sub": "Every check-in and mission earns XP. {count} members play; the table resets every Monday.",
+      "missions": "This week's missions",
+      "mission": {
+        "comeback": "Comeback mission (personal)",
+        "threeClasses": "3 classes this week",
+        "streak3": "3-day streak",
+        "friend": "Bring someone"
+      },
+      "rewards": "Rewards",
+      "reward": {
+        "level5": {
+          "k": "Level 5",
+          "v": "Gym water bottle"
+        },
+        "level7": {
+          "k": "Level 7",
+          "v": "Post-workout shake"
+        },
+        "level10": {
+          "k": "Level 10",
+          "v": "House T-shirt"
+        },
+        "gold": {
+          "k": "Gold League",
+          "v": "1-on-1 session with a coach"
+        }
+      },
+      "unlocked": "{name} unlocked it"
+    },
+    "site": {
+      "artStreak": "12 streak",
+      "artLevel": "Level 7",
+      "links": {
+        "classes": "Classes",
+        "schedule": "Schedule"
+      },
+      "cta": "Free class",
+      "kicker": "Free trial class",
+      "title": "Your first class is on us",
+      "body": "Functional, cycle, HIIT, yoga and strength in groups of up to 14. Book from the chat in 30 seconds.",
+      "action": "Book my class",
+      "todayKicker": "Today",
+      "todayTitle": "Classes with room",
+      "spots": "{count, plural, one {# spot} other {# spots}}",
+      "appKicker": "The app",
+      "appTitle": "Training adds up",
+      "app1": "Weekly missions with XP",
+      "app2": "Streaks you won't want to break",
+      "app3": "Leagues with prizes"
+    },
+    "leads": {
+      "title": "Leads this week",
+      "caption": "trial classes booked",
+      "via": "through the site's chat",
+      "step1": "WhatsApp reminder 2 h before",
+      "step2": "Address and what to bring",
+      "step3": "No-show: we write the next day",
+      "step3done": "Came to the trial class",
+      "waiting": "Waiting for the next question…",
+      "rate": "Trial → member: 38% this quarter"
+    },
+    "siteView": {
+      "index": "Site & leads",
+      "title": "Free trial class",
+      "sub": "The gym's landing page and its chatbot: answers, recommends and books with nobody on the desk."
+    },
+    "nav": {
+      "today": "Today",
+      "todayShort": "Today",
+      "retention": "Retention",
+      "retentionShort": "Retention",
+      "members": "Members",
+      "classes": "Classes",
+      "league": "Leagues & missions",
+      "site": "Site & leads",
+      "siteShort": "Site",
+      "groupMembers": "Members",
+      "groupGrowth": "Game & sales"
+    },
+    "mode": {
+      "label": "View as",
+      "member": "Member",
+      "owner": "Owner"
+    },
+    "side": {
+      "title": "Auto win-back",
+      "on": "On · 7+ days away",
+      "off": "Off: nobody gets their mission"
     }
   },
   "demoRealEstate": {
@@ -1750,9 +2014,9 @@
         "streak": "Streak",
         "days": "{count, plural, one {# day} other {# days}}",
         "missions": "Missions",
-        "m1": "3 classes this week",
-        "m2": "Try a new class",
-        "m3": "Bring a friend",
+        "m1": "Comeback mission: 2 classes",
+        "m2": "Bring someone with your pass",
+        "m3": "Try a new class",
         "levelUp": "Level up!",
         "level": "Level {count}"
       }
