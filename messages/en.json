@@ -1012,5 +1012,92 @@
     "announce": {
       "lead": "New qualified lead: {name}, intent {score} out of 100. Visit booked for {slot}."
     }
+  },
+  "examples": {
+    "eyebrow": "Examples",
+    "title": "See a business like yours <em>running</em>.",
+    "sub": "Three demo businesses, each facing the costliest problem in its industry. Watch the {seconds}-second trailer or open the demo and use it.",
+    "pain": "The problem",
+    "result": "In the demo",
+    "openDemo": "Open demo",
+    "openDemoLabel": "Open demo: {business}",
+    "modal": {
+      "close": "Close the demo",
+      "hint": "It's a working demo: tap around and try everything.",
+      "loading": "Loading the {business} demo…",
+      "wantThis": "I want this for my business"
+    },
+    "notListed": {
+      "title": "Don't see your industry? <em>We build it in 48 h.</em>",
+      "body": "Tell us what your business does and we'll show you your demo.",
+      "cta": "Message us on WhatsApp",
+      "message": "Hi Eclipse. My industry isn't in your examples. Can you build me a demo? My business is:"
+    },
+    "note": "The businesses in these examples are fictional. Their numbers describe each demo's scenario, not client results."
+  },
+  "trailers": {
+    "title": "{business} — Demo",
+    "player": {
+      "play": "Play trailer: {title}",
+      "muted": "Muted",
+      "length": "{seconds} s",
+      "summary": "{seconds}-second trailer, no sound."
+    },
+    "summary": "{problem} Demo scenario: {pain}. {feature} Result: {result}.",
+    "scenario": "Demo scenario",
+    "solution": "How the demo solves it",
+    "withEclipse": "With Eclipse",
+    "brand": "Eclipse",
+    "endLine": "Built around your business.",
+    "clinic": {
+      "problem1": "The patient didn't show.",
+      "problem2": "Nobody called.",
+      "pain": "empty appointments a week",
+      "feature": "WhatsApp reminders and an automatic waitlist.",
+      "screen": {
+        "title": "Today's schedule",
+        "today": "Today",
+        "unconfirmed": "Unconfirmed",
+        "confirmed": "Confirmed",
+        "cancelled": "Cancelled",
+        "reassigned": "Rebooked",
+        "free": "Open",
+        "booked": "Booked",
+        "toastReminder": "Reminder sent on WhatsApp",
+        "toastWaitlist": "Waitlist: slot filled"
+      }
+    },
+    "realEstate": {
+      "problem1": "It's 11:40 p.m.",
+      "problem2": "No one answers.",
+      "pain": "unanswered inquiries a week",
+      "feature": "An agent replies instantly, at any hour.",
+      "screen": {
+        "online": "Online",
+        "question": "Hi, is the 2-room apartment still available?",
+        "answer": "Yes! Here are photos and viewing times. Does tomorrow at 6 p.m. work?",
+        "listing": "2 rooms with balcony",
+        "listingMeta": "Available · Viewings this week",
+        "cta": "Book a viewing",
+        "replied": "Answered in 40 s"
+      }
+    },
+    "gym": {
+      "problem1": "Three weeks in.",
+      "problem2": "Then, gone.",
+      "pain": "members who cancel every week",
+      "feature": "Missions and streaks that bring them back.",
+      "screen": {
+        "title": "Your week",
+        "streak": "Streak",
+        "days": "{count, plural, one {# day} other {# days}}",
+        "missions": "Missions",
+        "m1": "3 classes this week",
+        "m2": "Try a new class",
+        "m3": "Bring a friend",
+        "levelUp": "Level up!",
+        "level": "Level {count}"
+      }
+    }
   }
 }

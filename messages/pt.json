@@ -1012,5 +1012,92 @@
     "announce": {
       "lead": "Novo lead qualificado: {name}, intenção {score} de 100. Visita agendada para {slot}."
     }
+  },
+  "examples": {
+    "eyebrow": "Exemplos",
+    "title": "Veja um negócio como o seu <em>funcionando</em>.",
+    "sub": "Três negócios de demonstração, cada um com o problema mais caro do seu setor. Assista ao trailer de {seconds} segundos ou abra a demo e use.",
+    "pain": "O problema",
+    "result": "Na demo",
+    "openDemo": "Abrir demo",
+    "openDemoLabel": "Abrir demo: {business}",
+    "modal": {
+      "close": "Fechar a demo",
+      "hint": "É uma demo navegável: toque e teste tudo.",
+      "loading": "Carregando a demo de {business}…",
+      "wantThis": "Quero isso no meu negócio"
+    },
+    "notListed": {
+      "title": "Não achou o seu setor? <em>A gente monta em 48 h.</em>",
+      "body": "Conte o que o seu negócio faz e mostramos a sua demo.",
+      "cta": "Fale com a gente no WhatsApp",
+      "message": "Olá, Eclipse. Meu setor não está nos exemplos do site. Vocês montam uma demo para mim? Meu negócio é:"
+    },
+    "note": "Os negócios destes exemplos são fictícios. Os números mostram o cenário de cada demo, não resultados de clientes."
+  },
+  "trailers": {
+    "title": "{business} — Demo",
+    "player": {
+      "play": "Reproduzir trailer: {title}",
+      "muted": "Sem som",
+      "length": "{seconds} s",
+      "summary": "Trailer de {seconds} segundos, sem som."
+    },
+    "summary": "{problem} Cenário da demo: {pain}. {feature} Resultado: {result}.",
+    "scenario": "Cenário da demo",
+    "solution": "Como a demo resolve",
+    "withEclipse": "Com a Eclipse",
+    "brand": "Eclipse",
+    "endLine": "Feito sob medida para o seu negócio.",
+    "clinic": {
+      "problem1": "O paciente não veio.",
+      "problem2": "E ninguém avisou.",
+      "pain": "horários vazios por semana",
+      "feature": "Lembretes no WhatsApp e lista de espera automática.",
+      "screen": {
+        "title": "Agenda de hoje",
+        "today": "Hoje",
+        "unconfirmed": "Sem confirmar",
+        "confirmed": "Confirmado",
+        "cancelled": "Cancelou",
+        "reassigned": "Remarcado",
+        "free": "Livre",
+        "booked": "Ocupado",
+        "toastReminder": "Lembrete enviado no WhatsApp",
+        "toastWaitlist": "Lista de espera: horário ocupado"
+      }
+    },
+    "realEstate": {
+      "problem1": "São 23h40.",
+      "problem2": "Ninguém responde.",
+      "pain": "contatos sem resposta por semana",
+      "feature": "Um agente responde na hora, a qualquer momento.",
+      "screen": {
+        "online": "Online",
+        "question": "Oi, o apê de 2 quartos ainda está disponível?",
+        "answer": "Sim! Te mando fotos e horários. Amanhã às 18h fica bom para visitar?",
+        "listing": "2 quartos com varanda",
+        "listingMeta": "Disponível · Visitas nesta semana",
+        "cta": "Agendar visita",
+        "replied": "Respondido em 40 s"
+      }
+    },
+    "gym": {
+      "problem1": "Veio três semanas.",
+      "problem2": "Depois, sumiu.",
+      "pain": "alunos que cancelam por semana",
+      "feature": "Missões e sequências que fazem voltar.",
+      "screen": {
+        "title": "Sua semana",
+        "streak": "Sequência",
+        "days": "{count, plural, one {# dia} other {# dias}}",
+        "missions": "Missões",
+        "m1": "3 aulas nesta semana",
+        "m2": "Experimente uma aula nova",
+        "m3": "Traga um amigo",
+        "levelUp": "Subiu de nível!",
+        "level": "Nível {count}"
+      }
+    }
   }
 }

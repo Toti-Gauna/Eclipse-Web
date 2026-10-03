@@ -4,6 +4,7 @@ import { Hero } from '@/components/hero/Hero';
 import { SkyTransition } from '@/components/sections/SkyTransition';
 import { ProblemSection } from '@/components/sections/problem/ProblemSection';
 import { ServicesSection } from '@/components/sections/services/ServicesSection';
+import { ExamplesSection } from '@/components/sections/examples/ExamplesSection';
 import { ProcessSection } from '@/components/sections/process/ProcessSection';
 import { PricingSection } from '@/components/pricing/PricingSection';
 
@@ -16,6 +17,7 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
       <SkyTransition from="void" to="night" />
       <ProblemSection />
       <ServicesSection />
+      <ExamplesSection />
       <ProcessSection />
       <SkyTransition from="night" to="dawn" />
       <PricingSection />
