@@ -354,15 +354,11 @@ function RevealLayer({
           className="container-x relative flex min-h-full flex-col pb-6 pt-[calc(var(--header-h)+0.5rem)] md:pt-[calc(var(--header-h)+1rem)]"
         >
           <div className="grid items-center gap-x-6 gap-y-2 md:grid-cols-[1fr_auto] md:gap-y-3 lg:grid-cols-[1fr_auto_1fr]">
-            <div data-reveal-item className="justify-self-start">
-              <button type="button" onClick={reset} className="btn btn-ghost btn-sm">
-                <ArrowLeft aria-hidden className="size-4" strokeWidth={1.6} />
-                {t('hero.seeAnother')}
-              </button>
-            </div>
+            {/* The title comes first in the DOM (focus lands on it when the light opens), so
+                Tab reaches "Ver otro rubro" next; the grid still shows the button first. */}
             <div
               data-reveal-item
-              className="md:col-span-2 md:row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:text-center"
+              className="row-start-2 md:col-span-2 md:row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:text-center"
             >
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 lg:justify-center">
                 <span className="badge-demo" aria-hidden>
@@ -379,6 +375,12 @@ function RevealLayer({
                 </h2>
               </div>
               <p className="mt-1.5 hidden text-sm text-fg-muted md:block">{t('heroReveal.hint')}</p>
+            </div>
+            <div data-reveal-item className="col-start-1 row-start-1 justify-self-start">
+              <button type="button" onClick={reset} className="btn btn-ghost btn-sm">
+                <ArrowLeft aria-hidden className="size-4" strokeWidth={1.6} />
+                {t('hero.seeAnother')}
+              </button>
             </div>
             <div data-reveal-item className="hidden justify-self-end md:col-start-2 md:row-start-1 md:block lg:col-start-3">
               {wantThis('btn btn-primary btn-sm')}

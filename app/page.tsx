@@ -7,6 +7,8 @@ import pt from '@/messages/pt.json';
 
 const titles = { es: es.meta.title, en: en.meta.title, pt: pt.meta.title };
 const languageNames = { es: es.languages.es, en: en.languages.en, pt: pt.languages.pt };
+// The visitor's language is still unknown here: name the nav in all three.
+const navLabel = [es.header.language, en.header.language, pt.header.language].join(' · ');
 
 export const metadata: Metadata = {
   title: es.meta.title,
@@ -43,7 +45,7 @@ export default function RootRedirectPage() {
         <meta name="theme-color" content="#05050A" />
       </head>
       <body style={{ margin: 0, minHeight: '100vh', background: '#05050A', color: '#F4EFE6', fontFamily: 'system-ui, sans-serif', display: 'grid', placeItems: 'center' }}>
-        <nav aria-label="Language" style={{ display: 'flex', gap: 24, flexWrap: 'wrap', justifyContent: 'center', padding: 16 }}>
+        <nav aria-label={navLabel} style={{ display: 'flex', gap: 24, flexWrap: 'wrap', justifyContent: 'center', padding: 16 }}>
           {routing.locales.map((l) => (
             <a key={l} href={`${BASE_PATH}/${l}/`} hrefLang={localeTags[l]} lang={localeTags[l]} title={titles[l]} style={{ color: '#F5B942', padding: 12 }}>
               {languageNames[l]}

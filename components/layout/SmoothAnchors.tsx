@@ -8,25 +8,42 @@ import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
  * (ScrollTrigger toggles that inline on every refresh, which invalidates the
  * style of the whole document — expensive on phones). Respects reduced motion,
  * the header offset (scroll-padding-top) and moves focus to the target.
+ *
+ * Listens in the capture phase: next/link (header, footer, menu links) calls
+ * preventDefault in its own click handler and does a plain router navigation,
+ * which scrolls but leaves keyboard focus behind in the header. Handling the
+ * click first (and preventing it) makes next/link skip its navigation.
+ * A link inside an open modal (mobile menu) focuses the target once the dialog
+ * has closed: while it is open the page is inert, and closing it restores focus
+ * to its opener.
  */
 export function SmoothAnchors() {
   useEffect(() => {
+    const focusTarget = (id: string) => {
+      const target = document.getElementById(id);
+      if (!target) return;
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    };
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const link = (e.target as Element | null)?.closest?.('a[href*="#"]') as HTMLAnchorElement | null;
       if (!link || link.target === '_blank') return;
       const url = new URL(link.href, window.location.href);
       if (url.origin !== window.location.origin || url.pathname !== window.location.pathname || !url.hash) return;
-      const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+      const id = decodeURIComponent(url.hash.slice(1));
+      const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
       target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
-      if (window.location.hash !== url.hash) window.history.pushState(null, '', url.hash);
-      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
-      target.focus({ preventScroll: true });
+      if (window.location.hash !== url.hash) window.history.pushState(window.history.state, '', url.hash);
+      const dialog = link.closest('dialog');
+      // Looked up again by id: a deferred section may have re-created its DOM by then.
+      if (dialog?.open) dialog.addEventListener('close', () => focusTarget(id), { once: true });
+      else focusTarget(id);
     };
-    document.addEventListener('click', onClick);
-    return () => document.removeEventListener('click', onClick);
+    document.addEventListener('click', onClick, true);
+    return () => document.removeEventListener('click', onClick, true);
   }, []);
   return null;
 }

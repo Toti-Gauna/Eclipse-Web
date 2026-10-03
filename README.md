@@ -24,6 +24,20 @@ npm run typecheck            # tsc --noEmit
 npm run lint                 # ESLint
 npm run build                # export estático → out/
 npm run start                # sirve out/ en local
+npm run test:e2e             # 28 chequeos e2e con Playwright sobre el export (ver abajo)
+```
+
+### Prueba e2e del export
+
+`tests/e2e/smoke.mjs` recorre el sitio exportado tal como lo sirve GitHub Pages: redirección de idioma, loader solo en
+la primera visita, overflow a 360 px, hidratación diferida, header claro sobre las secciones `--dawn`, cambio de moneda,
+reveal del hero, "Armá tu plan" y su mensaje de WhatsApp, ruta `/plan` desde la URL, foco con teclado, cambio de
+idioma, reduced motion y 404.
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/Eclipse-Web npm run build
+# serví out/ bajo /Eclipse-Web en el puerto 4000 (cualquier servidor estático), y:
+BASE_URL=http://localhost:4000/Eclipse-Web npm run test:e2e
 ```
 
 > `npm run dev` sin `.env.local` usa basePath vacío. Para probar exactamente lo que se publica en Pages:
@@ -188,3 +202,31 @@ ya reenvía a `window.plausible` o `window.gtag` si cargás alguno de esos scrip
   mostrar.
 - **Sin middleware** (export estático): la raíz `/` detecta `navigator.language` y redirige con JS.
 - **Fuentes locales** (Instrument Serif + Geist recortada a latín) con `next/font/local`.
+- **Hidratación diferida** (`components/motion/LazyHydrate.tsx`): las secciones bajo el pliegue muestran su HTML
+  estático (visible y usable) y React las hidrata recién al acercarse al viewport o al recibir foco o un toque. El
+  copy de las demos viaja con el código de cada demo, no en cada página.
+- **Sin `:has()` en `<html>` ni `scroll-behavior: smooth` global**: medido en Chrome, ambos hacían re-estilar el
+  documento completo muchas veces durante la carga. El scroll de los modales se bloquea con `lib/scroll-lock.ts` y el
+  scroll suave de los anchors lo hace `<SmoothAnchors>`.
+- **"Recomendado" en lugar de "Más elegido"** en el plan destacado: sin clientes todavía, "más elegido" sería una
+  afirmación que no podemos respaldar (ver `PLACEHOLDERS.md`).
+
+## Métricas (Lighthouse mobile, export servido con gzip como GitHub Pages)
+
+| Página | Performance | Accesibilidad | Best practices | SEO | LCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|
+| `/es/` | 88–92 | 100 | 96* | 100 | 3,0 s | ~150 ms | 0 |
+| `/en/` | 91–92 | 100 | 96* | 100 | 3,0 s | ~150 ms | 0 |
+| `/pt/` | 92 | 100 | 96* | 100 | 3,0 s | ~150 ms | 0 |
+| `/es/plan/` | 89–90 | 100 | 96* | 100 | 3,3 s | ~180 ms | 0 |
+
+\* Los 4 puntos que faltan son errores de consola de las APIs de cotización, bloqueadas en el entorno donde se midió.
+El LCP real (sin throttling) es ~0,2 s; el simulado queda arriba de 2,5 s porque Lighthouse suma todo el JS que se pide
+antes del LCP (React, runtime de Next y GSAP).
+
+## Pendientes conocidos / próximos pasos
+
+- **LCP simulado < 2,5 s**: cargar GSAP de forma diferida (hoy entra en el bundle inicial, ~45 KB gzip).
+- **Demos escaladas en tablet**: dentro del reveal del hero, entre 768 y ~1280 px, algunos controles de las demos quedan
+  por debajo de 24 px porque el dispositivo se dibuja escalado. En mobile y en el modal de Ejemplos están bien.
+- Reemplazar los placeholders de `PLACEHOLDERS.md` (WhatsApp, email, dominio, trailers en video, logos).

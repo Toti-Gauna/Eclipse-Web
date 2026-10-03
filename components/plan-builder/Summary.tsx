@@ -163,7 +163,7 @@ export function Summary(props: SummaryProps) {
       {founderApplied && props.founder ? (
         <li className="pb-line flex items-center gap-3 py-2.5 text-sm">
           <p className="min-w-0 flex-1 text-corona">{l(props.founder.offer.label, locale)}</p>
-          <span className="tabular shrink-0 text-corona">{format(-founderApplied.savingsUsd)}</span>
+          <span className="tabular shrink-0 text-corona">{format(-founderApplied.savingsUsd).replace('-', '−') /* typographic minus */}</span>
           <span aria-hidden className="size-9 shrink-0" />
         </li>
       ) : null}

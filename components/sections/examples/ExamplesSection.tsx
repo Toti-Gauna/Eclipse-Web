@@ -7,6 +7,7 @@ import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/motion/SectionHeading';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { TRAILER_DURATION } from '@/components/trailers/constants';
+import { DEMO_HOURS } from '@/components/sections/process/steps';
 import { verticals } from '@/lib/content';
 import { ExampleCard } from './ExampleCard';
 
@@ -18,6 +19,8 @@ import { ExampleCard } from './ExampleCard';
 export function ExamplesSection() {
   const t = useTranslations('examples');
   const em = (chunks: ReactNode) => <em>{chunks}</em>;
+  // "Lo armamos en 48 h." wraps as one unit instead of leaving "Lo" alone at a line end.
+  const emUnit = (chunks: ReactNode) => <em className="inline-block">{chunks}</em>;
   const items = verticals.filter((v) => v.id !== 'otro' && v.demo && v.business && v.keyNumber);
 
   return (
@@ -45,7 +48,7 @@ export function ExamplesSection() {
         <Reveal className="ex-more mt-16 md:mt-24" start="top 90%">
           <div data-reveal className="ex-more-inner">
             <div className="max-w-2xl">
-              <p className="display text-[2.1rem] leading-[1.02] sm:text-[2.6rem] md:text-5xl">{t.rich('notListed.title', { em })}</p>
+              <p className="display text-[2.1rem] leading-[1.02] sm:text-[2.6rem] md:text-5xl">{t.rich('notListed.title', { hours: DEMO_HOURS, em: emUnit })}</p>
               <p className="mt-4 text-base text-fg-muted sm:text-lg">{t('notListed.body')}</p>
             </div>
             <WhatsAppLink origin="examples_not_listed" message={t('notListed.message')} className="btn btn-ghost w-full shrink-0 sm:w-auto">

@@ -137,6 +137,12 @@
     outline-offset: 3px;
   }
 
+  /* Script-only focus targets (skip link → main, in-page anchors → section,
+     headings focused when a view opens): no ring around a whole region. */
+  [tabindex='-1']:focus {
+    outline: none;
+  }
+
   button,
   [role='button'],
   summary {

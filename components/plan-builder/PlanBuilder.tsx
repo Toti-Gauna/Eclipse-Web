@@ -226,7 +226,7 @@ export function PlanBuilder({
       icon={<Link2 aria-hidden className="size-4 shrink-0" strokeWidth={1.6} />}
       label={t('copyLink')}
       doneLabel={t('linkCopied')}
-      className="btn btn-ghost btn-sm shrink-0 !px-3 sm:!px-4"
+      className="btn btn-ghost btn-sm min-w-11 shrink-0 !px-3 sm:!px-4"
       labelClassName={mode === 'sheet' ? 'sr-only sm:not-sr-only' : ''}
     />
   );

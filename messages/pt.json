@@ -25,14 +25,10 @@
     "included": "Incluído",
     "none": "Nenhum",
     "copy": "Copiar",
-    "copied": "Copiado",
     "play": "Reproduzir",
     "pause": "Pausar",
     "next": "Próximo",
-    "previous": "Anterior",
-    "loading": "Carregando…",
     "whatsapp": "WhatsApp",
-    "email": "E-mail",
     "approxPrefix": "≈",
     "sections": "seções"
   },
@@ -40,12 +36,14 @@
     "services": "Serviços",
     "examples": "Exemplos",
     "pricing": "Preços",
-    "founders": "Fundadores"
+    "founders": "Fundadores",
+    "clients": "Clientes"
   },
   "header": {
     "home": "Eclipse, ir para o início",
     "skip": "Pular para o conteúdo",
     "menu": "Abrir menu",
+    "menuDialog": "Menu",
     "closeMenu": "Fechar menu",
     "mainNav": "Navegação principal",
     "language": "Idioma",
@@ -59,8 +57,8 @@
     "BRL": "Reais",
     "USD": "Dólares",
     "notice": "Preços em USD. Os valores em ARS e BRL são referenciais, conforme a cotação do dia.",
-    "source": "Cotação de {date}",
-    "sourceFallback": "Cotação de referência {date}"
+    "source": "Cotação do dia {date}",
+    "sourceFallback": "Cotação de referência do dia {date}"
   },
   "languages": {
     "es": "Español",
@@ -79,14 +77,13 @@
     "ctaPlan": "Monte seu plano",
     "seeAnother": "Ver outro setor",
     "scroll": "Role para ver mais",
-    "wantThis": "Quero isso para o meu negócio"
+    "wantThis": "Quero isso no meu negócio"
   },
   "whatsapp": {
     "greeting": "Olá, Eclipse.",
     "demo": "Olá, Eclipse. Quero pedir minha demo. Setor: {vertical}.",
     "demoNoVertical": "Olá, Eclipse. Quero pedir minha demo.",
-    "wantThis": "Olá, Eclipse. Vi a demo da {business} e quero algo assim para o meu negócio ({vertical}).",
-    "notListed": "Olá, Eclipse. Meu setor não está na lista: {vertical}. Vocês montam uma demo para mim?"
+    "wantThis": "Olá, Eclipse. Vi a demo da {business} e quero algo assim para o meu negócio ({vertical})."
   },
   "footer": {
     "tagline": "Desenvolvimento, IA e automação para negócios que não podem esperar.",
@@ -108,7 +105,7 @@
     "totalRange": "Total estimado: de {from} a {to}",
     "totalWithOffers": "Com ofertas: {price}",
     "maintenance": "Manutenção {name}: {price} {period}",
-    "maintenanceAnnual": "Manutenção {name}: {price} {period} (pagamento anual, 2 meses grátis)",
+    "maintenanceAnnual": "Manutenção {name}: {price} {period} (pagamento anual, {months, plural, one {# mês grátis} other {# meses grátis}})",
     "maintenanceNone": "Sem manutenção por enquanto",
     "voiceUsage": "Agente de voz: {price} por mês + minutos conforme o uso",
     "offers": "Ofertas: {list}",
@@ -140,7 +137,7 @@
     "lostDetail": "<n>{count}</n> por mês × {ticket}",
     "timeCost": "Horas da sua equipe",
     "timeDetail": "<n>{count}</n> h por mês × {rate} a hora",
-    "cta": "Recupere isso — peça sua demo",
+    "cta": "Recupere — peça sua demo",
     "ctaPlan": "Monte seu plano",
     "note": "É uma estimativa: {weeks} semanas por mês e {rate} por hora de trabalho. Seu número real pode ser outro.",
     "whatsapp": "Olá, Eclipse. Usei a calculadora do site: estou perdendo cerca de {amount} por mês. Quero recuperar isso. Podem me mostrar uma demo? Setor: {vertical}.",
@@ -152,7 +149,7 @@
     "sub": "Seis serviços. Use um só ou combine. Seja qual for, você vê funcionando com o seu negócio antes.",
     "resultLabel": "Resultado",
     "from": "A partir de",
-    "add": "Incluir no plano",
+    "add": "Adicionar ao plano",
     "items": {
       "webs": {
         "title": "Sites com motion",
@@ -172,7 +169,7 @@
       "chat": {
         "title": "Chatbots e automações",
         "description": "Respostas na hora no WhatsApp e no site. Lembretes e follow-ups que saem sozinhos.",
-        "result": "Toda mensagem tem resposta em segundos, e o cliente chega pronto pra você."
+        "result": "Toda mensagem tem resposta em segundos, e o cliente chega pronto para você."
       },
       "commerce": {
         "title": "E-commerce",
@@ -236,12 +233,12 @@
     "includedIn": "Incluído no plano {plan}",
     "hintDashboard": "O dashboard brilha com um sistema por trás: adicione agendamentos, pedidos ou e-commerce.",
     "hintChatbot": "O chatbot rende mais com automações: responde e ainda faz o follow-up.",
-    "detectTitle": "Isto é o plano {plan}: você economiza ≈ {pct}%",
-    "detectBody": "Você paga {amount} a menos do que comprando separado.",
+    "detectTitle": "Isso já é o plano {plan}: você economiza ≈ {pct}%",
+    "detectBody": "Você paga {amount} a menos do que comprando os itens separados.",
     "detectCta": "Mudar para o plano",
     "switched": "Você mudou para o plano {plan}.",
-    "removePlan": "Tirar plano",
-    "removePlanLabel": "Tirar o plano {plan} e voltar aos itens avulsos",
+    "removePlan": "Remover plano",
+    "removePlanLabel": "Remover o plano {plan} e voltar aos itens avulsos",
     "planRemoved": "De volta aos itens avulsos.",
     "removeItem": "Remover {item}",
     "summaryTitle": "Seu plano",
@@ -256,7 +253,7 @@
     "totalAnnounce": "Total estimado: {amount}",
     "showSummary": "Ver resumo",
     "hideSummary": "Ocultar resumo",
-    "maintenanceLegend": "Manutenção mensal",
+    "maintenanceLegend": "Manutenção + hospedagem",
     "suggested": "Sugerido",
     "noneDetail": "Você cuida",
     "maintenanceIncludes": "Inclui: {list}.",
@@ -325,13 +322,14 @@
       "endsIn": "Termina em {time}",
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
-      "minutes": "{minutes} min"
+      "minutes": "{minutes} min",
+      "voiceCombo": "Agente de voz com IA por {price} nos planos a partir do {plan}."
     },
     "carousel": {
       "label": "Planos",
       "hint": "{count} planos. Deslize para ver todos.",
       "goTo": "Ver plano {name}",
-      "goToFeatured": "Ir para o mais escolhido",
+      "goToFeatured": "Ir para o recomendado",
       "dots": "Escolha qual plano ver"
     },
     "build": {
@@ -342,7 +340,7 @@
     },
     "care": {
       "eyebrow": "Manutenção + hospedagem",
-      "title": "Seu site não se apaga quando a gente termina. <em>A gente mantém ele vivo.</em>",
+      "title": "Seu site não se apaga quando a gente termina. <em>A gente segue cuidando dele.</em>",
       "subtitle": "Hospedagem, segurança, backups e alterações por um preço fixo. Você escolhe o nível conforme o que construímos juntos.",
       "suggestedFor": "Sugerido para {plans}",
       "voiceText": "Só entra quando seu plano tem agente de voz: um valor fixo por mês mais os minutos usados.",
@@ -685,7 +683,7 @@
       "rowLabel": "{rank}º {name}, {points} pontos",
       "streak": "{count, plural, one {# dia} other {# dias}}",
       "noStreak": "Sem sequência",
-      "toPass": "Faltam {points} pts para passar {name}.",
+      "toPass": "Faltam {points} pts para ultrapassar {name}.",
       "first": "Você está em primeiro. Mantenha a sequência para continuar no topo.",
       "howPoints": "Cada check-in vale {checkin} pts, cada missão soma os seus e fechar a semana dá {bonus} de bônus.",
       "colMember": "Aluno",
@@ -706,7 +704,7 @@
       "invite": "Passe enviado. Avisamos quando seu amigo chegar.",
       "friend": "Seu amigo fez check-in: missão concluída · +{points} pts",
       "rankUp": "Você subiu para a posição {rank} do ranking",
-      "rankDown": "{by} passou você: você está na posição {rank}"
+      "rankDown": "{by} ultrapassou você: agora você está na posição {rank}"
     },
     "activity": {
       "title": "Atividade ao vivo",
@@ -721,7 +719,7 @@
       "friend": "O convidado de {name} fez check-in: um possível aluno novo",
       "sent": "Missão de retorno enviada para {name}",
       "rankUp": "{name} subiu para a posição {rank} do ranking",
-      "rankDown": "{by} passou {name} no ranking"
+      "rankDown": "{by} ultrapassou {name} no ranking"
     },
     "churn": {
       "title": "Cancelamentos por mês",
@@ -1016,7 +1014,7 @@
   "examples": {
     "eyebrow": "Exemplos",
     "title": "Veja um negócio como o seu <em>funcionando</em>.",
-    "sub": "Três negócios de demonstração, cada um com o problema mais caro do seu setor. Assista ao trailer de {seconds} segundos ou abra a demo e use.",
+    "sub": "Três negócios de demo, cada um com o problema mais caro do seu setor. Assista ao trailer de {seconds} segundos ou abra a demo e use.",
     "pain": "O problema",
     "result": "Na demo",
     "openDemo": "Abrir demo",
@@ -1028,7 +1026,7 @@
       "wantThis": "Quero isso no meu negócio"
     },
     "notListed": {
-      "title": "Não achou o seu setor? <em>A gente monta em 48 h.</em>",
+      "title": "Não achou o seu setor? <em>A gente monta em {hours} h.</em>",
       "body": "Conte o que o seu negócio faz e mostramos a sua demo.",
       "cta": "Fale com a gente no WhatsApp",
       "message": "Olá, Eclipse. Meu setor não está nos exemplos do site. Vocês montam uma demo para mim? Meu negócio é:"
@@ -1074,16 +1072,16 @@
       "feature": "Um agente responde na hora, a qualquer momento.",
       "screen": {
         "online": "Online",
-        "question": "Oi, o apê de 2 quartos ainda está disponível?",
+        "question": "Oi, o quarto e sala ainda está disponível?",
         "answer": "Sim! Te mando fotos e horários. Amanhã às 18h fica bom para visitar?",
-        "listing": "2 quartos com varanda",
+        "listing": "Quarto e sala com varanda",
         "listingMeta": "Disponível · Visitas nesta semana",
         "cta": "Agendar visita",
         "replied": "Respondido em 40 s"
       }
     },
     "gym": {
-      "problem1": "Veio três semanas.",
+      "problem1": "Treinou três semanas.",
       "problem2": "Depois, sumiu.",
       "pain": "alunos que cancelam por semana",
       "feature": "Missões e sequências que fazem voltar.",
@@ -1103,7 +1101,7 @@
   "founders": {
     "eyebrow": "Programa fundador",
     "title": "Clientes <em>fundadores</em>",
-    "sub": "Estamos escolhendo os {total} primeiros negócios. Preço de fundador, prioridade total e o seu caso contado aqui.",
+    "sub": "Estamos escolhendo os {total} primeiros negócios. Preço de fundador, prioridade na fila e o seu caso contado aqui.",
     "subNoOffer": "Estamos escolhendo os {total} primeiros negócios para trabalhar lado a lado e contar o caso deles aqui.",
     "eyebrowClients": "Casos reais",
     "titleClients": "<em>Clientes</em>",
@@ -1124,9 +1122,9 @@
       "logoAlt": "Logo de {name}"
     },
     "deal": {
-      "title": "Uma troca <em>de verdade</em>",
+      "title": "Um acordo <em>de mão dupla</em>",
       "get": "O que você recebe",
-      "give": "O que você oferece",
+      "give": "O que você dá em troca",
       "priceText": "Sobre o valor total do desenvolvimento, enquanto houver vagas.",
       "maintenanceTitle": "Primeiro mês de manutenção grátis",
       "maintenanceText": "O plano de manutenção que você escolher, sem custo no primeiro mês.",
@@ -1161,7 +1159,7 @@
       "send": "Enviar",
       "you": "Você",
       "bot": {
-        "hello": "Oi, eu sou o agente da Eclipse. Isto é uma prévia: na sua demo, eu sou treinado com os dados do seu negócio.",
+        "hello": "Oi, sou o agente da Eclipse. Isso é uma prévia: na sua demo, eu sou treinado com os dados do seu negócio.",
         "askVertical": "Para começar, qual é o setor do seu negócio?",
         "askOther": "Me conta: o que o seu negócio faz?",
         "knownVertical": "Vi que você escolheu {vertical}. Vamos começar por aí.",

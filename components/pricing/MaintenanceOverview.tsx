@@ -87,8 +87,8 @@ export function MaintenanceOverview({
         })}
       </ul>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-3">
-        <div data-reveal className="care-card flex gap-4 rounded-card border border-line p-6 md:col-span-1">
+      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+        <div data-reveal className="care-card flex gap-4 rounded-card border border-line p-6 lg:col-span-1">
           <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-corona text-ink">
             <AudioLines className="size-4" strokeWidth={1.5} />
           </span>
@@ -103,7 +103,7 @@ export function MaintenanceOverview({
           </div>
         </div>
         {offers.length ? (
-          <div data-reveal className="grid gap-5 rounded-card border border-dashed border-line-strong p-6 sm:grid-cols-2 md:col-span-2">
+          <div data-reveal className="grid gap-5 rounded-card border border-dashed border-line-strong p-6 sm:grid-cols-2 lg:col-span-2">
             {offers.map((offer) => (
               <OfferNote key={offer.id} offer={offer} />
             ))}

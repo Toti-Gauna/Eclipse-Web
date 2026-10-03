@@ -14,7 +14,7 @@
  *   Rubro: Clínicas
  *   Idioma: Español · Moneda: ARS
  */
-import type { Rates } from '@/lib/content';
+import { annualMonthsCharged, type Rates } from '@/lib/content';
 import type { Currency } from '@/lib/currency';
 import { formatMoney, type Billing, type Quote } from '@/lib/pricing';
 import type { Locale } from '@/i18n/routing';
@@ -76,6 +76,7 @@ export function buildPlanMessage(input: PlanMessageInput, t: Translate): string 
         name: input.maintenanceName,
         price: `${money(m.periodUsd)}`,
         period: period(m.billing),
+        months: 12 - annualMonthsCharged,
       }),
     );
   } else {

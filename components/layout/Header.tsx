@@ -9,7 +9,7 @@ import { MiniEclipse } from './MiniEclipse';
 import { LocaleSwitcher } from './LocaleSwitcher';
 import { CurrencySwitcher } from './CurrencySwitcher';
 import { MobileMenu } from './MobileMenu';
-import { NAV_LINKS } from './navLinks';
+import { NAV_LINKS, navLabelKey } from './navLinks';
 import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
 
 /**
@@ -36,7 +36,9 @@ export function Header() {
       ScrollTrigger.create({
         start: 8,
         end: 'max',
-        onToggle: (self) => setScrolled(self.isActive),
+        // Not isActive: it turns false at the very bottom (progress 1), which left the
+        // header transparent over the footer's text.
+        onToggle: (self) => setScrolled(self.progress > 0),
       }),
     );
     const active = new Set<Element>();
@@ -85,7 +87,7 @@ export function Header() {
                     href={`/#${link.hash}`}
                     className="inline-flex min-h-11 items-center rounded-full px-4 text-sm text-fg-muted transition-colors hover:text-fg"
                   >
-                    {t(`nav.${link.id}`)}
+                    {t(`nav.${navLabelKey(link.id)}`)}
                   </Link>
                 </li>
               ))}

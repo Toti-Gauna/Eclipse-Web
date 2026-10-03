@@ -30,7 +30,8 @@ function WeekStrip({ day, onDay, className = '' }: { day: number; onDay: (d: num
             key={d}
             type="button"
             aria-pressed={on}
-            aria-label={`${fmt.long(d)}. ${t('occupancy', occ)}`}
+            // Starts with the visible "LUN 5" so the name matches the label (WCAG 2.5.3).
+            aria-label={`${fmt.shortDay(d)} · ${t('occupancy', occ)}`}
             onClick={() => onDay(d)}
             className={`flex flex-col items-center gap-[0.18em] rounded-[0.75em] border py-[0.45em] transition-[background-color,border-color,box-shadow] duration-300 ${
               on

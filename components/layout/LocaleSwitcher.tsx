@@ -35,12 +35,13 @@ function Links({ query, tone }: { query?: Record<string, string>; tone: 'pill' |
               hrefLang={localeTags[locale]}
               lang={localeTags[locale]}
               aria-current={active ? 'true' : undefined}
-              aria-label={t(`languages.${locale}`)}
+              // Visible text first ("PT"), so voice control users can say what they see (WCAG 2.5.3).
+              aria-label={`${locale.toUpperCase()} — ${t(`languages.${locale}`)}`}
               onClick={() => {
                 remember(locale);
                 if (!active) track('locale_changed', { from: current, to: locale });
               }}
-              className={`grid h-9 min-w-11 place-items-center rounded-full px-2 text-xs font-medium uppercase tracking-wider transition-colors ${
+              className={`relative grid h-9 min-w-11 place-items-center rounded-full px-2 text-xs before:absolute before:inset-x-0 before:-inset-y-1 before:rounded-full font-medium uppercase tracking-wider transition-colors ${
                 active ? 'bg-fg text-fg-inverse' : 'text-fg-muted hover:text-fg'
               }`}
             >
@@ -59,14 +60,34 @@ function WithQuery({ tone }: { tone: 'pill' | 'plain' }) {
   return <Links tone={tone} query={Object.keys(query).length ? query : undefined} />;
 }
 
-/** ES / EN / PT. Keeps the current path and query (shared plans survive). */
-export function LocaleSwitcher({ tone = 'pill', className = '' }: { tone?: 'pill' | 'plain'; className?: string }) {
+/**
+ * ES / EN / PT. Keeps the current path and query (shared plans survive).
+ * `landmark={false}` renders a labelled group instead of a <nav>, for a second
+ * copy on the same page (footer): two "Idioma" navigation landmarks are ambiguous.
+ * The visual pill is 36px tall; a ::before extends each link's hit area to 44px.
+ */
+export function LocaleSwitcher({
+  tone = 'pill',
+  className = '',
+  landmark = true,
+}: {
+  tone?: 'pill' | 'plain';
+  className?: string;
+  landmark?: boolean;
+}) {
   const t = useTranslations('header');
-  return (
+  const links = (
+    <Suspense fallback={<Links tone={tone} />}>
+      <WithQuery tone={tone} />
+    </Suspense>
+  );
+  return landmark ? (
     <nav aria-label={t('language')} className={className}>
-      <Suspense fallback={<Links tone={tone} />}>
-        <WithQuery tone={tone} />
-      </Suspense>
+      {links}
     </nav>
+  ) : (
+    <div role="group" aria-label={t('language')} className={className}>
+      {links}
+    </div>
   );
 }

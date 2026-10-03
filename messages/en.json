@@ -25,14 +25,10 @@
     "included": "Included",
     "none": "None",
     "copy": "Copy",
-    "copied": "Copied",
     "play": "Play",
     "pause": "Pause",
     "next": "Next",
-    "previous": "Previous",
-    "loading": "Loading…",
     "whatsapp": "WhatsApp",
-    "email": "Email",
     "approxPrefix": "≈",
     "sections": "sections"
   },
@@ -40,12 +36,14 @@
     "services": "Services",
     "examples": "Examples",
     "pricing": "Pricing",
-    "founders": "Founders"
+    "founders": "Founders",
+    "clients": "Clients"
   },
   "header": {
     "home": "Eclipse, go to home",
     "skip": "Skip to content",
     "menu": "Open menu",
+    "menuDialog": "Menu",
     "closeMenu": "Close menu",
     "mainNav": "Main navigation",
     "language": "Language",
@@ -60,7 +58,7 @@
     "USD": "US dollars",
     "notice": "Prices in USD. ARS and BRL amounts are estimates based on today's exchange rate.",
     "source": "Rate as of {date}",
-    "sourceFallback": "Reference rate {date}"
+    "sourceFallback": "Reference rate as of {date}"
   },
   "languages": {
     "es": "Español",
@@ -85,8 +83,7 @@
     "greeting": "Hi Eclipse.",
     "demo": "Hi Eclipse. I'd like to get my demo. Industry: {vertical}.",
     "demoNoVertical": "Hi Eclipse. I'd like to get my demo.",
-    "wantThis": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}).",
-    "notListed": "Hi Eclipse. My industry isn't on the list: {vertical}. Can you build me a demo?"
+    "wantThis": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical})."
   },
   "footer": {
     "tagline": "Development, AI and automation for businesses that can't wait.",
@@ -108,7 +105,7 @@
     "totalRange": "Estimated total: {from} to {to}",
     "totalWithOffers": "With offers: {price}",
     "maintenance": "{name} maintenance: {price} {period}",
-    "maintenanceAnnual": "{name} maintenance: {price} {period} (paid yearly, 2 months free)",
+    "maintenanceAnnual": "{name} maintenance: {price} {period} (paid yearly, {months, plural, one {# month free} other {# months free}})",
     "maintenanceNone": "No maintenance for now",
     "voiceUsage": "Voice agent: {price} per month + minutes based on usage",
     "offers": "Offers: {list}",
@@ -172,7 +169,7 @@
       "chat": {
         "title": "Chatbots and automations",
         "description": "Instant replies on WhatsApp and on your website. Reminders and follow-ups that go out on their own.",
-        "result": "Every inquiry gets an answer in seconds, and you get the customer ready to buy."
+        "result": "Every inquiry gets an answer in seconds, and customers reach you already qualified."
       },
       "commerce": {
         "title": "E-commerce",
@@ -224,7 +221,7 @@
     "eyebrow": "Quote builder",
     "title": "Build your plan",
     "pageTitle": "Build your <em>plan</em>",
-    "intro": "Pick what you need. The total adds itself up, in your currency.",
+    "intro": "Pick what you need. The total adds up on its own, in your currency.",
     "pageIntro": "Pick what you need and see the number instantly. If your selection is already a plan, we tell you how much you save.",
     "copyLink": "Copy link",
     "linkCopied": "Link copied",
@@ -236,8 +233,8 @@
     "includedIn": "Included in the {plan} plan",
     "hintDashboard": "A dashboard shines with a system behind it: add bookings, orders or e-commerce.",
     "hintChatbot": "The chatbot does more with automations: it replies and also follows up.",
-    "detectTitle": "This is the {plan} plan: you save ≈ {pct}%",
-    "detectBody": "You pay {amount} less than buying each piece.",
+    "detectTitle": "That's the {plan} plan: you save ≈ {pct}%",
+    "detectBody": "You pay {amount} less than buying each item separately.",
     "detectCta": "Switch to the plan",
     "switched": "Switched to the {plan} plan.",
     "removePlan": "Remove plan",
@@ -245,18 +242,18 @@
     "planRemoved": "Back to individual items.",
     "removeItem": "Remove {item}",
     "summaryTitle": "Your plan",
-    "empty": "Nothing picked yet. Tap what you need and the total adds itself up.",
+    "empty": "Nothing picked yet. Tap what you need and the total adds up on its own.",
     "count": "{count, plural, one {# item} other {# items}}",
     "planLine": "{plan} plan",
     "planIncludes": "Includes {count, plural, one {# item} other {# items}}",
     "total": "Estimated total",
     "oneTime": "One-time payment",
     "range": "Depending on scope, between {from} and {to}.",
-    "rangeNoDiscounts": "Depending on scope, between {from} and {to} without discounts.",
+    "rangeNoDiscounts": "Depending on scope, between {from} and {to} before discounts.",
     "totalAnnounce": "Estimated total: {amount}",
     "showSummary": "View summary",
     "hideSummary": "Hide summary",
-    "maintenanceLegend": "Monthly maintenance",
+    "maintenanceLegend": "Maintenance + hosting",
     "suggested": "Suggested",
     "noneDetail": "You handle it",
     "maintenanceIncludes": "Includes: {list}.",
@@ -325,13 +322,14 @@
       "endsIn": "Ends in {time}",
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
-      "minutes": "{minutes} min"
+      "minutes": "{minutes} min",
+      "voiceCombo": "AI voice agent for {price} on plans from {plan} up."
     },
     "carousel": {
       "label": "Plans",
       "hint": "{count} plans. Swipe to see them all.",
-      "goTo": "Show {name} plan",
-      "goToFeatured": "Jump to most popular",
+      "goTo": "Show the {name} plan",
+      "goToFeatured": "Jump to recommended",
       "dots": "Choose a plan to show"
     },
     "build": {
@@ -409,19 +407,19 @@
       "paula": "Paula N.",
       "bruno": "Bruno C.",
       "elena": "Elena V.",
-      "sebastian": "Sebastian F.",
-      "nicolas": "Nicolas T.",
+      "sebastian": "Sebastián F.",
+      "nicolas": "Nicolás T.",
       "renata": "Renata V.",
-      "joaquin": "Joaquin M.",
+      "joaquin": "Joaquín M.",
       "valentina": "Valentina S.",
       "lola": "Lola K.",
       "irene": "Irene Q.",
-      "florencia": "Florence H.",
+      "florencia": "Florencia H.",
       "micaela": "Micaela O.",
-      "julieta": "Juliet A.",
+      "julieta": "Julieta A.",
       "rocio": "Rocío E.",
       "gabriela": "Gabriela Z.",
-      "julian": "Julian P.",
+      "julian": "Julián P.",
       "agustina": "Agustina R.",
       "mateo": "Mateo L.",
       "emilia": "Emilia C.",
@@ -592,15 +590,15 @@
       "carla": "Carla B.",
       "lucas": "Lucas D.",
       "elena": "Elena V.",
-      "tomas": "Tomas R.",
+      "tomas": "Tomás R.",
       "julia": "Julia M.",
       "mateo": "Mateo F.",
       "diego": "Diego S.",
       "paula": "Paula N.",
-      "martin": "Martin G.",
+      "martin": "Martín G.",
       "renata": "Renata P.",
-      "sebastian": "Sebastian T.",
-      "julian": "Julian A."
+      "sebastian": "Sebastián T.",
+      "julian": "Julián A."
     },
     "home": {
       "hello": "Hi, {name}",
@@ -738,7 +736,7 @@
       "active": "Active members",
       "activeHint": "paid up",
       "atRisk": "At risk",
-      "atRiskHint": "{days}+ days without coming",
+      "atRiskHint": "{days}+ days without a visit",
       "returned": "{count, plural, one {# came back today} other {# came back today}}",
       "checkins": "Check-ins today",
       "checkinsHint": "since the gym opened",
@@ -747,7 +745,7 @@
     },
     "risk": {
       "title": "Members at risk",
-      "subtitle": "{days}+ days without coming. The app sends them a comeback mission.",
+      "subtitle": "{days}+ days without a visit. The app sends them a comeback mission.",
       "high": "high risk",
       "sent": "Mission sent",
       "back": "Back today",
@@ -755,7 +753,7 @@
       "sentNow": "Sent",
       "sendTo": "Send the comeback mission to {name} now",
       "sentTo": "Comeback mission sent to {name}",
-      "away": "{count} days without coming",
+      "away": "{count} days without a visit",
       "backAfter": "Back today, after {count} days",
       "queuedAt": "goes out on its own at {time}",
       "more": "{count, plural, one {# more member being followed up} other {# more members being followed up}}"
@@ -794,7 +792,7 @@
       },
       "note": {
         "sent": "Comeback mission sent yesterday",
-        "queued": "Comeback mission at {time}",
+        "queued": "Comeback mission goes out at {time}",
         "sentNow": "Comeback mission just sent",
         "back": "Came back with the comeback mission"
       }
@@ -810,7 +808,7 @@
     "aiOn": "AI on",
     "office": "Office",
     "closed": "Closed until Monday 10 AM",
-    "slotLong": "{day} the {date}th at {time}",
+    "slotLong": "{day} the {date, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} at {time}",
     "ops": {
       "sale": "Buy",
       "rent": "Rent"
@@ -897,9 +895,9 @@
       "typing": "typing…",
       "typingLabel": "{business} is typing",
       "log": "Simulated WhatsApp conversation between {name} and {business}",
-      "closed": "After hours: Lumi, the virtual assistant of {business}, is answering. An agent picks it up on Monday.",
+      "closed": "After hours: Lumi, the virtual assistant at {business}, is replying. An agent takes over on Monday.",
       "inquiry": "Hi, are you open today? I'm looking for a {beds}-bedroom apartment in {zone}.",
-      "greet": "Hi {name}! I'm Lumi, the virtual assistant of {business}. The office opens on Monday, but I can help you right now. Are you looking to buy or rent?",
+      "greet": "Hi {name}! I'm Lumi, the virtual assistant at {business}. The office opens on Monday, but I can help you right now. Are you looking to buy or rent?",
       "ops": {
         "sale": "I want to buy",
         "rent": "I want to rent"
@@ -1023,12 +1021,12 @@
     "openDemoLabel": "Open demo: {business}",
     "modal": {
       "close": "Close the demo",
-      "hint": "It's a working demo: tap around and try everything.",
+      "hint": "Interactive demo: tap around and try everything.",
       "loading": "Loading the {business} demo…",
       "wantThis": "I want this for my business"
     },
     "notListed": {
-      "title": "Don't see your industry? <em>We build it in 48 h.</em>",
+      "title": "Don't see your industry? <em>We build it in {hours} h.</em>",
       "body": "Tell us what your business does and we'll show you your demo.",
       "cta": "Message us on WhatsApp",
       "message": "Hi Eclipse. My industry isn't in your examples. Can you build me a demo? My business is:"
@@ -1074,9 +1072,9 @@
       "feature": "An agent replies instantly, at any hour.",
       "screen": {
         "online": "Online",
-        "question": "Hi, is the 2-room apartment still available?",
+        "question": "Hi, is the one-bedroom still available?",
         "answer": "Yes! Here are photos and viewing times. Does tomorrow at 6 p.m. work?",
-        "listing": "2 rooms with balcony",
+        "listing": "One-bedroom with balcony",
         "listingMeta": "Available · Viewings this week",
         "cta": "Book a viewing",
         "replied": "Answered in 40 s"
@@ -1103,7 +1101,7 @@
   "founders": {
     "eyebrow": "Founder program",
     "title": "Founding <em>clients</em>",
-    "sub": "We're choosing our first {total} businesses. Founder pricing, top priority and your story told right here.",
+    "sub": "We're choosing our first {total} businesses. Founder pricing, priority in the queue and your story told right here.",
     "subNoOffer": "We're choosing our first {total} businesses to work with side by side and tell their story here.",
     "eyebrowClients": "Real cases",
     "titleClients": "<em>Clients</em>",
@@ -1146,7 +1144,7 @@
   "agent": {
     "eyebrow": "Your move",
     "title": "Your business, <em>in full light</em>.",
-    "sub": "Ask for your demo and see your business working in {hours} hours, before any call. Rather see numbers first? Build your plan.",
+    "sub": "Get your demo and see your business working within {hours} hours, before any call. Rather see numbers first? Build your plan.",
     "chat": {
       "label": "Eclipse agent preview",
       "name": "Eclipse agent",

@@ -64,7 +64,7 @@ export function DemoModal({
               <span className="badge-demo shrink-0">{t('common.demo')}</span>
               <h2 id={titleId} className="display truncate text-[1.7rem] leading-tight md:text-[2.2rem]">
                 {business}
-                <span className="hidden text-fg-muted sm:inline"> — {t('common.demo')}</span>
+                <span className="hidden text-fg-muted lg:inline"> — {t('common.demo')}</span>
               </h2>
             </div>
             <p className="mt-1 text-[0.8rem] leading-snug text-fg-muted sm:text-sm">

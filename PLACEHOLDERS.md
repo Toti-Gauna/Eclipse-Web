@@ -48,4 +48,4 @@ verificar que ningún nombre coincida con una marca registrada en AR/BR.
 
 - Política de privacidad y términos (no hay formularios: todo termina en WhatsApp, pero el chat de vista previa pide nombre).
 - Proveedor de analítica (`lib/analytics.ts` ya reenvía a Plausible o GA4 si se carga su script).
-- Revisión del copy por hablantes nativos de pt-BR y en.
+- Revisión final del copy por hablantes nativos de pt-BR y en (ya pasó una revisión de tono y consistencia).
