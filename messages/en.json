@@ -33,7 +33,8 @@
     "loading": "Loading…",
     "whatsapp": "WhatsApp",
     "email": "Email",
-    "approxPrefix": "≈"
+    "approxPrefix": "≈",
+    "sections": "sections"
   },
   "nav": {
     "services": "Services",
@@ -355,5 +356,661 @@
   "demoShowcase": {
     "laptopLabel": "{business}: interactive demo, desktop version",
     "phoneLabel": "{business}: interactive demo, mobile version"
+  },
+  "demoClinic": {
+    "tabs": {
+      "agenda": "Schedule",
+      "reminders": "Reminders",
+      "absences": "No-shows"
+    },
+    "live": "Live",
+    "reception": "Front desk",
+    "pros": {
+      "lucia": {
+        "name": "Dr. Lucía M.",
+        "short": "Lucía"
+      },
+      "tomas": {
+        "name": "Dr. Tomás R.",
+        "short": "Tomás"
+      },
+      "sofia": {
+        "name": "Sofía P.",
+        "short": "Sofía"
+      }
+    },
+    "specialties": {
+      "all": "All",
+      "dental": "Dental",
+      "ortho": "Orthodontics",
+      "aesthetic": "Aesthetics"
+    },
+    "treatments": {
+      "cleaning": "Dental cleaning",
+      "checkup": "Check-up",
+      "filling": "Filling",
+      "whitening": "Whitening",
+      "orthoConsult": "Orthodontic consult",
+      "braces": "Braces adjustment",
+      "aligners": "Aligner check",
+      "facial": "Facial",
+      "peeling": "Chemical peel",
+      "aestheticConsult": "Aesthetic consult"
+    },
+    "patients": {
+      "you": "You",
+      "ana": "Ana L.",
+      "diego": "Diego S.",
+      "carla": "Carla B.",
+      "camila": "Camila R.",
+      "pedro": "Pedro A.",
+      "martina": "Martina G.",
+      "lucas": "Lucas D.",
+      "paula": "Paula N.",
+      "bruno": "Bruno C.",
+      "elena": "Elena V.",
+      "sebastian": "Sebastian F.",
+      "nicolas": "Nicolas T.",
+      "renata": "Renata V.",
+      "joaquin": "Joaquin M.",
+      "valentina": "Valentina S.",
+      "lola": "Lola K.",
+      "irene": "Irene Q.",
+      "florencia": "Florence H.",
+      "micaela": "Micaela O.",
+      "julieta": "Juliet A.",
+      "rocio": "Rocío E.",
+      "gabriela": "Gabriela Z.",
+      "julian": "Julian P.",
+      "agustina": "Agustina R.",
+      "mateo": "Mateo L.",
+      "emilia": "Emilia C.",
+      "santiago": "Santiago B.",
+      "clara": "Clara M.",
+      "facundo": "Facundo V."
+    },
+    "firstNames": {
+      "martina": "Martina"
+    },
+    "status": {
+      "done": "Seen",
+      "now": "In progress",
+      "confirmed": "Confirmed",
+      "reminded": "Reminder sent",
+      "new": "New · online",
+      "waitlist": "From waitlist",
+      "you": "Booked by you",
+      "freed": "Freed up",
+      "noshow": "No-show"
+    },
+    "agenda": {
+      "title": "Schedule",
+      "days": "Days of the week",
+      "filter": "Filter by specialty",
+      "occupancy": "{booked} of {total} slots booked",
+      "freeLeft": "{count, plural, one {# free slot} other {# free slots}}",
+      "free": "Free",
+      "freeHint": "Tap to book",
+      "pastFree": "Not booked",
+      "showPast": "Show earlier slots ({count})",
+      "hidePast": "Hide earlier slots",
+      "bookTitle": "Book this slot",
+      "bookWhen": "{day} · {time} · {pro}",
+      "treatment": "Treatment",
+      "confirm": "Confirm booking",
+      "cancel": "Cancel",
+      "pickSlot": "Pick a free slot on the grid to book it.",
+      "now": "Now",
+      "freeSlot": "{time}, {pro}: free. Book",
+      "busySlot": "{time}, {pro}: {patient}, {treatment}, {status}",
+      "emptySlot": "{time}, {pro}: not booked"
+    },
+    "kpis": {
+      "today": "Today's appointments",
+      "confirmed": "Confirmed",
+      "confirmedOf": "of {count} booked",
+      "recovered": "Recovered this week",
+      "recoveredHint": "with reminders and the waitlist",
+      "waitlist": "On the waitlist",
+      "waitlistHint": "ready to take a free slot"
+    },
+    "activity": {
+      "title": "Live activity",
+      "justNow": "Now",
+      "sent": "{count} WhatsApp reminders sent for today",
+      "new": "New online booking: {patient}, {time} with {pro}",
+      "confirm": "{patient} confirmed the {time} appointment on WhatsApp",
+      "cancel": "{patient} cancelled the {time} appointment",
+      "reschedule": "{patient} rescheduled on WhatsApp. The {time} slot is free",
+      "refill": "{patient} took the {time} slot from the waitlist",
+      "you": "You booked the {time} slot with {pro}"
+    },
+    "chat": {
+      "heading": "What your patient gets",
+      "hint": "Reply as if you were {name}.",
+      "online": "online",
+      "typing": "typing…",
+      "typingLabel": "{business} is typing",
+      "log": "Simulated WhatsApp conversation between {business} and {name}",
+      "auto": "Automated message",
+      "reminder": "Hi {name}, this is {business}. A reminder of your appointment today: {treatment} at {time} with {pro}.",
+      "ask": "Can you confirm you're coming?",
+      "choices": {
+        "confirm": "I'll be there",
+        "reschedule": "Reschedule",
+        "cancel": "Cancel"
+      },
+      "confirmed": "Thanks, {name}! See you at {time}. If you can, arrive 10 minutes early.",
+      "offer": "No problem. These are the next free slots with {pro}:",
+      "rescheduled": "Done, you're booked for {slot}. We'll remind you the day before.",
+      "cancelled": "Done, your appointment is cancelled. Message us whenever you want a new time.",
+      "agenda": "On the schedule",
+      "sysConfirmed": "{name} confirmed. The {time} slot is locked in.",
+      "sysFreed": "The {time} slot is free. Offering it to the waitlist.",
+      "sysFreedOff": "The {time} slot is free. The waitlist is paused.",
+      "sysRefilled": "{name} took the {time} slot from the waitlist.",
+      "replay": "Play again",
+      "read": "Read"
+    },
+    "reminders": {
+      "title": "Reminders",
+      "subtitle": "Today's appointments on WhatsApp",
+      "stats": {
+        "sent": "Sent",
+        "confirmed": "Confirmed",
+        "changed": "Changed",
+        "pending": "No reply yet"
+      },
+      "patients": "Today's patients",
+      "patientView": "Patient's view",
+      "state": {
+        "waiting": "Waiting for reply",
+        "confirmed": "Confirmed",
+        "rescheduled": "Rescheduled",
+        "cancelled": "Cancelled"
+      },
+      "rulesTitle": "Automations",
+      "rules": {
+        "day": {
+          "title": "24 h before",
+          "body": "Message with buttons to confirm, reschedule or cancel."
+        },
+        "hours": {
+          "title": "2 h before",
+          "body": "Last same-day nudge, with the address."
+        },
+        "waitlist": {
+          "title": "Waitlist",
+          "body": "When someone cancels, the slot goes straight to the next person in line."
+        }
+      },
+      "on": "On",
+      "off": "Paused"
+    },
+    "absences": {
+      "title": "No-shows",
+      "subtitle": "This week",
+      "recovered": "Appointments recovered this week",
+      "revenue": "Revenue you didn't lose",
+      "fromWaitlist": "From the waitlist",
+      "fromReminders": "Confirmed by reminder",
+      "noShows": "No-shows this week",
+      "before": "Before: {count} a week",
+      "change": "{value} no-shows",
+      "chartTitle": "No-shows per week",
+      "chartBefore": "Without reminders",
+      "chartAfter": "With reminders",
+      "week": "W{n}",
+      "thisWeek": "Now",
+      "barLabel": "{week}: {count} no-shows",
+      "todayTitle": "Recovered today",
+      "todayEmpty": "No appointments recovered yet today.",
+      "waitlist": "On the waitlist"
+    }
+  },
+  "demoGym": {
+    "live": "Live",
+    "pts": "pts",
+    "pointsLabel": "{count, plural, one {# point} other {# points}}",
+    "me": "Sol",
+    "memberView": "What your member sees",
+    "ownerView": "What you see",
+    "ownerPanel": "Owner dashboard",
+    "replay": "Replay",
+    "tabs": {
+      "home": "Home",
+      "missions": "Missions",
+      "ranking": "Leaderboard",
+      "panel": "Dashboard",
+      "retention": "Retention",
+      "members": "Members"
+    },
+    "members": {
+      "sol": "Sol R.",
+      "ana": "Ana L.",
+      "bruno": "Bruno C.",
+      "carla": "Carla B.",
+      "lucas": "Lucas D.",
+      "elena": "Elena V.",
+      "tomas": "Tomas R.",
+      "julia": "Julia M.",
+      "mateo": "Mateo F.",
+      "diego": "Diego S.",
+      "paula": "Paula N.",
+      "martin": "Martin G.",
+      "renata": "Renata P.",
+      "sebastian": "Sebastian T.",
+      "julian": "Julian A."
+    },
+    "home": {
+      "hello": "Hi, {name}",
+      "missionsValue": "{done} of {total} missions done",
+      "bonus": "Finish them all for +{points} pts",
+      "bonusDone": "Week complete",
+      "weekPoints": "{points} pts this week",
+      "nextMission": "Your next mission",
+      "weekDone": "Your week",
+      "allMissions": "See all"
+    },
+    "streak": {
+      "title": "Your streak",
+      "days": "{count, plural, one {day in a row} other {days in a row}}",
+      "next": "{count, plural, one {# day} other {# days}} to your {goal}-day badge",
+      "week": "This week",
+      "dayDone": "{day}: trained",
+      "todayDone": "{day}, today: trained",
+      "todayPending": "{day}, today: check-in pending"
+    },
+    "checkin": {
+      "cta": "Check in",
+      "hint": "Tap when you get to the gym",
+      "done": "Checked in",
+      "doneHint": "Today, {time} · {count, plural, one {# day} other {# days}} in a row"
+    },
+    "missionsView": {
+      "title": "This week's missions",
+      "subtitle": "{count, plural, one {# day left} other {# days left}} · new ones on Monday",
+      "progress": "{done} of {total} done",
+      "bonus": "Finish them all for a +{points} pts bonus.",
+      "bonusDone": "Week complete! You earned a +{points} pts bonus."
+    },
+    "missions": {
+      "completed": "Done",
+      "days": {
+        "title": "Train {goal} days this week",
+        "detail": "Every check-in counts as a day.",
+        "short": "{goal} training days",
+        "progress": "{value} of {goal} days",
+        "action": "Check in"
+      },
+      "cardio": {
+        "title": "Do {goal} minutes of cardio",
+        "detail": "Treadmill, bike or rower: logged from the machine.",
+        "short": "{goal} min of cardio",
+        "progress": "{value} of {goal} min",
+        "action": "Log {minutes} min on the treadmill"
+      },
+      "class": {
+        "title": "Try a new class",
+        "detail": "Functional, spinning or yoga: one you haven't done yet.",
+        "short": "A new class",
+        "progress": "{value} of {goal}"
+      },
+      "friend": {
+        "title": "Bring a friend",
+        "detail": "With a one-day guest pass.",
+        "short": "Bring a friend",
+        "progress": "{value} of {goal}",
+        "action": "Send a guest pass",
+        "waiting": "Waiting for your friend"
+      }
+    },
+    "stats": {
+      "title": "Missions this week",
+      "total": "<n>{count}</n> completed",
+      "participation": "{value} of members have completed at least one mission this week."
+    },
+    "ranking": {
+      "title": "Leaderboard",
+      "ownerSubtitle": "Points for check-ins, missions and the weekly bonus. Resets every Monday.",
+      "period": "Leaderboard period",
+      "week": "Week",
+      "month": "Month",
+      "yourPlace": "Your place",
+      "position": "Place {rank}",
+      "climbedShort": "{count, plural, one {# place} other {# places}}",
+      "up": "{count, plural, one {up # place} other {up # places}}",
+      "down": "{count, plural, one {down # place} other {down # places}}",
+      "youUp": "{count, plural, one {You moved up # place} other {You moved up # places}}",
+      "rowLabel": "{rank}. {name}, {points} points",
+      "streak": "{count, plural, one {# day} other {# days}}",
+      "noStreak": "No streak",
+      "toPass": "{points} pts to pass {name}.",
+      "first": "You're first. Keep the streak to stay on top.",
+      "howPoints": "Each check-in is worth {checkin} pts, each mission adds its own and finishing the week gives a {bonus} bonus.",
+      "colMember": "Member",
+      "colStreak": "Streak",
+      "colChange": "Change",
+      "colPoints": "Points"
+    },
+    "rules": {
+      "title": "How points add up",
+      "checkin": "Check-in",
+      "bonus": "Full week"
+    },
+    "you": {
+      "tag": "You",
+      "checkin": "Checked in: {count, plural, one {# day} other {# days}} in a row · +{points} pts",
+      "mission": "Mission complete: {mission} · +{points} pts",
+      "bonus": "Week complete! +{points} pts bonus",
+      "invite": "Pass sent. We'll let you know when your friend arrives.",
+      "friend": "Your friend checked in: mission complete · +{points} pts",
+      "rankUp": "You moved up to place {rank}",
+      "rankDown": "{by} passed you: you're in place {rank}"
+    },
+    "activity": {
+      "title": "Live activity",
+      "justNow": "Now",
+      "onPhone": "On the phone",
+      "auto": "The app sent {count} comeback missions to members at risk",
+      "checkin": "{name} checked in · {count, plural, one {# day} other {# days}} in a row",
+      "return": "{name} came back after {count} days away",
+      "mission": "{name} completed “{mission}” · +{points} pts",
+      "bonus": "{name} completed every mission this week · +{points} pts",
+      "invite": "{name} sent a guest pass to a friend",
+      "friend": "{name}'s guest checked in: a potential new member",
+      "sent": "Comeback mission sent to {name}",
+      "rankUp": "{name} moved up to place {rank} on the leaderboard",
+      "rankDown": "{by} passed {name} on the leaderboard"
+    },
+    "churn": {
+      "title": "Cancellations per month",
+      "inMonth": "cancellations in {month}",
+      "change": "{value} churn",
+      "before": "Before: {count} a month",
+      "chart": "Cancellations per month over the last six months",
+      "barLabel": "{month}: {count} cancellations",
+      "legendBefore": "No missions",
+      "legendAfter": "With missions and streaks",
+      "kept": "{count, plural, one {# more member stayed} other {# more members stayed}} this month. Fees still coming in:"
+    },
+    "kpis": {
+      "active": "Active members",
+      "activeHint": "paid up",
+      "atRisk": "At risk",
+      "atRiskHint": "{days}+ days without coming",
+      "returned": "{count, plural, one {# came back today} other {# came back today}}",
+      "checkins": "Check-ins today",
+      "checkinsHint": "since the gym opened",
+      "missions": "Missions done",
+      "missionsHint": "this week · {value} of members take part"
+    },
+    "risk": {
+      "title": "Members at risk",
+      "subtitle": "{days}+ days without coming. The app sends them a comeback mission.",
+      "high": "high risk",
+      "sent": "Mission sent",
+      "back": "Back today",
+      "sendNow": "Send now",
+      "sentNow": "Sent",
+      "sendTo": "Send the comeback mission to {name} now",
+      "sentTo": "Comeback mission sent to {name}",
+      "away": "{count} days without coming",
+      "backAfter": "Back today, after {count} days",
+      "queuedAt": "goes out on its own at {time}",
+      "more": "{count, plural, one {# more member being followed up} other {# more members being followed up}}"
+    },
+    "retention": {
+      "title": "Retention",
+      "subtitle": "Who stays, who's about to leave and what the app does to bring them back."
+    },
+    "membersView": {
+      "title": "Members",
+      "subtitle": "{count} active members · the ones who need attention first",
+      "filter": "Filter members",
+      "filters": {
+        "all": "All",
+        "risk": "At risk",
+        "streak": "On a streak",
+        "back": "Back today"
+      },
+      "caption": "Members: {filter}",
+      "colMember": "Member",
+      "colStreak": "Streak",
+      "colLast": "Last visit",
+      "colMissions": "Missions",
+      "colStatus": "Status",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{count, plural, one {# day ago} other {# days ago}}",
+      "missionsOf": "{done} of {total} missions",
+      "empty": "No members match this filter.",
+      "status": {
+        "high": "High risk",
+        "medium": "Medium risk",
+        "back": "Back today",
+        "streak": "On a streak",
+        "active": "Active"
+      },
+      "note": {
+        "sent": "Comeback mission sent yesterday",
+        "queued": "Comeback mission at {time}",
+        "sentNow": "Comeback mission just sent",
+        "back": "Came back with the comeback mission"
+      }
+    }
+  },
+  "demoRealEstate": {
+    "tabs": {
+      "chat": "Chat",
+      "inbox": "Inquiries",
+      "listings": "Listings",
+      "leads": "Leads"
+    },
+    "aiOn": "AI on",
+    "office": "Office",
+    "closed": "Closed until Monday 10 AM",
+    "slotLong": "{day} the {date}th at {time}",
+    "ops": {
+      "sale": "Buy",
+      "rent": "Rent"
+    },
+    "types": {
+      "all": "All",
+      "apartment": "Apartment",
+      "house": "House",
+      "duplex": "Duplex"
+    },
+    "zones": {
+      "centro": "Downtown",
+      "arboleda": "The Grove",
+      "ribera": "Riverside",
+      "colinas": "The Hills"
+    },
+    "features": {
+      "balcony": "Balcony",
+      "garage": "Parking",
+      "garden": "Garden",
+      "pool": "Pool",
+      "river": "River view",
+      "pets": "Pet friendly",
+      "amenities": "Amenities",
+      "terrace": "Terrace"
+    },
+    "listing": {
+      "price": "USD {amount}",
+      "rent": "USD {amount}/mo",
+      "beds": "{count, plural, one {# bed} other {# beds}}",
+      "baths": "{count, plural, one {# bath} other {# baths}}",
+      "area": "{count} m²",
+      "title": "{type} in {zone}",
+      "inquiries": "{count, plural, one {# inquiry} other {# inquiries}}",
+      "recommended": "Sent to {name}",
+      "new": "New",
+      "recommendedShort": "Suggested"
+    },
+    "filters": {
+      "op": "Operation",
+      "type": "Property type",
+      "beds": "Bedrooms",
+      "any": "Any",
+      "bedsMin": "{count}+",
+      "price": "Max price",
+      "upTo": "Up to {price}",
+      "noLimit": "No limit",
+      "results": "{count, plural, =0 {No results} one {# listing} other {# listings}}",
+      "clear": "Clear",
+      "empty": "No listings match those filters."
+    },
+    "listings": {
+      "title": "Listings",
+      "subtitle": "{count} active",
+      "inquiriesWeek": "inquiries this week"
+    },
+    "people": {
+      "live": "Carolina M.",
+      "liveFirst": "Carolina",
+      "advisor": "Julia R.",
+      "advisorFirst": "Julia",
+      "tomas": "Tomás B.",
+      "lucia": "Lucía F.",
+      "martin": "Martín G.",
+      "valeria": "Valeria S.",
+      "diego": "Diego P."
+    },
+    "channels": {
+      "whatsapp": "WhatsApp",
+      "web": "Web",
+      "instagram": "Instagram"
+    },
+    "stages": {
+      "live": "Qualifying",
+      "new": "New",
+      "qualified": "Qualified",
+      "visit": "Visit booked"
+    },
+    "chat": {
+      "heading": "How it answers your customer",
+      "hint": "Reply as if you were {name}.",
+      "aiTag": "AI",
+      "online": "online · replies instantly",
+      "typing": "typing…",
+      "typingLabel": "{business} is typing",
+      "log": "Simulated WhatsApp conversation between {name} and {business}",
+      "closed": "After hours: Lumi, the virtual assistant of {business}, is answering. An agent picks it up on Monday.",
+      "inquiry": "Hi, are you open today? I'm looking for a {beds}-bedroom apartment in {zone}.",
+      "greet": "Hi {name}! I'm Lumi, the virtual assistant of {business}. The office opens on Monday, but I can help you right now. Are you looking to buy or rent?",
+      "ops": {
+        "sale": "I want to buy",
+        "rent": "I want to rent"
+      },
+      "budgetAskSale": "Great. What's your budget?",
+      "budgetAskRent": "Great. What's the most you'd pay per month?",
+      "budgetReply": "Up to {price}",
+      "matches": "{count, plural, one {I have # option that fits what you're looking for:} other {I have # options that fit what you're looking for:}}",
+      "visitAsk": "Want to see them? {advisor}, our agent, has these times:",
+      "booked": "Done, {name}! Your visit is booked for {slot} with {advisor}. I'll send you the location here and a reminder the day before.",
+      "crmTag": "CRM",
+      "crm": "Qualified lead: {name} is in the CRM with budget, area and a booked visit.",
+      "responded": "Replied in {seconds} s",
+      "viewListing": "View",
+      "replay": "Watch again",
+      "read": "Read"
+    },
+    "stats": {
+      "thisChat": "This chat",
+      "avgWeekend": "Average",
+      "underMinute": "In < 1 min",
+      "seconds": "{seconds} s"
+    },
+    "kpis": {
+      "inquiries": "Inquiries received",
+      "inquiriesHint": "From Friday 7 PM to now",
+      "fast": "Answered in < 1 min",
+      "fastHint": "{count} of {count}, nights and weekends included.",
+      "avg": "Average response",
+      "avgHint": "No waiting until Monday",
+      "secondsUnit": "s",
+      "visits": "Visits booked",
+      "visitsHint": "This week, in the team's calendar"
+    },
+    "inbox": {
+      "title": "Inquiries",
+      "subtitle": "The office is closed: the AI agent answers for you.",
+      "list": "Recent conversations",
+      "now": "Now",
+      "agentTyping": "Lumi is typing…",
+      "agentSays": "Lumi: {text}",
+      "responded": "{seconds} s",
+      "previews": {
+        "tomas": "Can I see the house in The Hills on Saturday morning?",
+        "lucia": "Does the downtown apartment allow pets?",
+        "martin": "Does the Riverside duplex have parking?",
+        "valeria": "What are the building fees for the river-view apartment?",
+        "diego": "Hi, do you have anything in The Grove?"
+      }
+    },
+    "lead": {
+      "title": "Qualified lead",
+      "qualifying": "Qualifying live",
+      "pending": "Pending",
+      "unknown": "Not set",
+      "score": "Intent",
+      "intent": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "seeksLabel": "Looking to",
+      "seeks": "{op} · {type} · {beds}",
+      "zone": "Area",
+      "budget": "Budget",
+      "budgetUpTo": "Up to {price}",
+      "channel": "Channel",
+      "next": "Next step",
+      "nextVisit": "Visit {slot} with {advisor}",
+      "nextCall": "Call from {advisor}, Monday 10 AM",
+      "nextFollowup": "Automatic follow-up on Monday",
+      "listings": "Suggested listings",
+      "noListings": "None yet",
+      "summaryLabel": "AI summary",
+      "responded": "{seconds} s",
+      "intentVerb": {
+        "sale": "Wants to buy",
+        "rent": "Wants to rent"
+      },
+      "summary": {
+        "live": "{intent} a {beds}-bedroom apartment in {zone}, up to {budget}. Got {count} options and booked a visit for {slot}.",
+        "tomas": "Family of four. Wants a house with a garden in The Hills and is selling their current apartment. Visit on Saturday at 10.",
+        "lucia": "Looking for a 1-bedroom downtown to move in November. Has a cat: asked to confirm pets are allowed.",
+        "martin": "Investor. Wants the Riverside duplex with parking; asked for floor plans and building fees. Visit on Monday at 11.",
+        "valeria": "Wants to rent with a river view and amenities. Asked about building fees; prefers a call after 6 PM.",
+        "diego": "Asked about The Grove and hasn't replied since. Lumi follows up on Monday with 3 options."
+      }
+    },
+    "leads": {
+      "title": "Leads",
+      "subtitle": "Qualified by the AI agent while the office was closed.",
+      "liveTitle": "Right now",
+      "othersTitle": "From the weekend",
+      "openChat": "See the conversation",
+      "waiting": "Waiting for the next inquiry…",
+      "tableCaption": "Weekend leads",
+      "cols": {
+        "lead": "Lead",
+        "seeks": "Looking to",
+        "budget": "Budget",
+        "score": "Intent",
+        "stage": "Stage"
+      },
+      "hints": {
+        "new": "Lumi follows up on its own",
+        "qualified": "Ready for the team to call",
+        "visit": "Already in the calendar"
+      }
+    },
+    "announce": {
+      "lead": "New qualified lead: {name}, intent {score} out of 100. Visit booked for {slot}."
+    }
   }
 }

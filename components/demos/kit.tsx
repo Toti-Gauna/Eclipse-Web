@@ -44,7 +44,7 @@ export function DemoShell({
   const t = useTranslations('common');
   const style = { '--demo-accent': accent } as CSSProperties;
   const name = (
-    <span className="flex min-w-0 items-center gap-[0.5em]">
+    <span className={`flex min-w-0 gap-[0.5em] ${screen === 'laptop' ? 'flex-wrap items-center' : 'items-center'}`}>
       <span className="grid size-[2em] shrink-0 place-items-center rounded-[0.6em] bg-[var(--demo-accent)] text-white">{logo}</span>
       <span className="truncate font-semibold">
         {business}
@@ -59,7 +59,7 @@ export function DemoShell({
   if (screen === 'laptop') {
     return (
       <div className="demo-root" data-screen="laptop" style={style}>
-        <nav className="flex w-[13em] shrink-0 flex-col gap-[0.25em] border-r border-[var(--demo-line)] bg-white p-[1em]">
+        <nav aria-label={`${business} — ${t('sections')}`} className="flex w-[15em] shrink-0 flex-col gap-[0.25em] border-r border-[var(--demo-line)] bg-white p-[1em]">
           <div className="mb-[1.2em]">{name}</div>
           {tabs?.map((tab) => {
             const Icon = tab.icon;
@@ -104,7 +104,7 @@ export function DemoShell({
       </div>
       <div className="demo-scroll px-[1em] pb-[1em]">{children}</div>
       {tabs?.length ? (
-        <nav className="grid border-t border-[var(--demo-line)] bg-white pb-[0.9em] pt-[0.4em]" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
+        <nav aria-label={`${business} — ${t('sections')}`} className="grid border-t border-[var(--demo-line)] bg-white pb-[0.9em] pt-[0.4em]" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const on = tab.id === activeTab;

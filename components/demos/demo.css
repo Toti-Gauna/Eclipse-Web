@@ -29,10 +29,6 @@
   font-size: 1.45cqw;
   flex-direction: row;
 }
-.demo-root button {
-  font: inherit;
-  color: inherit;
-}
 .demo-root :focus-visible {
   outline: 2px solid var(--demo-accent);
   outline-offset: 2px;

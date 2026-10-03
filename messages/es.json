@@ -33,7 +33,8 @@
     "loading": "Cargando…",
     "whatsapp": "WhatsApp",
     "email": "Email",
-    "approxPrefix": "≈"
+    "approxPrefix": "≈",
+    "sections": "secciones"
   },
   "nav": {
     "services": "Servicios",
@@ -355,5 +356,661 @@
   "demoShowcase": {
     "laptopLabel": "{business}: demo navegable, versión de escritorio",
     "phoneLabel": "{business}: demo navegable, versión para celular"
+  },
+  "demoClinic": {
+    "tabs": {
+      "agenda": "Agenda",
+      "reminders": "Recordatorios",
+      "absences": "Ausencias"
+    },
+    "live": "En vivo",
+    "reception": "Recepción",
+    "pros": {
+      "lucia": {
+        "name": "Dra. Lucía M.",
+        "short": "Lucía"
+      },
+      "tomas": {
+        "name": "Dr. Tomás R.",
+        "short": "Tomás"
+      },
+      "sofia": {
+        "name": "Lic. Sofía P.",
+        "short": "Sofía"
+      }
+    },
+    "specialties": {
+      "all": "Todos",
+      "dental": "Odontología",
+      "ortho": "Ortodoncia",
+      "aesthetic": "Estética"
+    },
+    "treatments": {
+      "cleaning": "Limpieza dental",
+      "checkup": "Control",
+      "filling": "Arreglo",
+      "whitening": "Blanqueamiento",
+      "orthoConsult": "Consulta de ortodoncia",
+      "braces": "Ajuste de brackets",
+      "aligners": "Control de alineadores",
+      "facial": "Limpieza facial",
+      "peeling": "Peeling",
+      "aestheticConsult": "Consulta estética"
+    },
+    "patients": {
+      "you": "Vos",
+      "ana": "Ana L.",
+      "diego": "Diego S.",
+      "carla": "Carla B.",
+      "camila": "Camila R.",
+      "pedro": "Pedro A.",
+      "martina": "Martina G.",
+      "lucas": "Lucas D.",
+      "paula": "Paula N.",
+      "bruno": "Bruno C.",
+      "elena": "Elena V.",
+      "sebastian": "Sebastián F.",
+      "nicolas": "Nicolás T.",
+      "renata": "Renata V.",
+      "joaquin": "Joaquín M.",
+      "valentina": "Valentina S.",
+      "lola": "Lola K.",
+      "irene": "Irene Q.",
+      "florencia": "Florencia H.",
+      "micaela": "Micaela O.",
+      "julieta": "Julieta A.",
+      "rocio": "Rocío E.",
+      "gabriela": "Gabriela Z.",
+      "julian": "Julián P.",
+      "agustina": "Agustina R.",
+      "mateo": "Mateo L.",
+      "emilia": "Emilia C.",
+      "santiago": "Santiago B.",
+      "clara": "Clara M.",
+      "facundo": "Facundo V."
+    },
+    "firstNames": {
+      "martina": "Martina"
+    },
+    "status": {
+      "done": "Atendido",
+      "now": "En curso",
+      "confirmed": "Confirmado",
+      "reminded": "Recordatorio enviado",
+      "new": "Nuevo · online",
+      "waitlist": "Lista de espera",
+      "you": "Reservado por vos",
+      "freed": "Liberado",
+      "noshow": "Ausente"
+    },
+    "agenda": {
+      "title": "Agenda",
+      "days": "Días de la semana",
+      "filter": "Filtrar por especialidad",
+      "occupancy": "{booked} de {total} turnos ocupados",
+      "freeLeft": "{count, plural, one {# turno libre} other {# turnos libres}}",
+      "free": "Libre",
+      "freeHint": "Tocá para reservar",
+      "pastFree": "Sin reservar",
+      "showPast": "Ver turnos anteriores ({count})",
+      "hidePast": "Ocultar turnos anteriores",
+      "bookTitle": "Reservar turno",
+      "bookWhen": "{day} · {time} · {pro}",
+      "treatment": "Tratamiento",
+      "confirm": "Confirmar reserva",
+      "cancel": "Cancelar",
+      "pickSlot": "Elegí un horario libre en la grilla para reservarlo.",
+      "now": "Ahora",
+      "freeSlot": "{time}, {pro}: libre. Reservar",
+      "busySlot": "{time}, {pro}: {patient}, {treatment}, {status}",
+      "emptySlot": "{time}, {pro}: sin reservar"
+    },
+    "kpis": {
+      "today": "Turnos hoy",
+      "confirmed": "Confirmados",
+      "confirmedOf": "de {count} reservados",
+      "recovered": "Recuperados esta semana",
+      "recoveredHint": "con recordatorios y lista de espera",
+      "waitlist": "En lista de espera",
+      "waitlistHint": "listos para tomar un turno libre"
+    },
+    "activity": {
+      "title": "Actividad en vivo",
+      "justNow": "Ahora",
+      "sent": "Se enviaron {count} recordatorios por WhatsApp para hoy",
+      "new": "Nuevo turno online: {patient}, {time} con {pro}",
+      "confirm": "{patient} confirmó por WhatsApp el turno de las {time}",
+      "cancel": "{patient} canceló el turno de las {time}",
+      "reschedule": "{patient} reprogramó por WhatsApp. Se liberó el turno de las {time}",
+      "refill": "{patient} tomó el turno de las {time} desde la lista de espera",
+      "you": "Reservaste el turno de las {time} con {pro}"
+    },
+    "chat": {
+      "heading": "Así le llega a tu paciente",
+      "hint": "Respondé como si fueras {name}.",
+      "online": "en línea",
+      "typing": "escribiendo…",
+      "typingLabel": "{business} está escribiendo",
+      "log": "Conversación simulada de WhatsApp entre {business} y {name}",
+      "auto": "Mensaje automático",
+      "reminder": "Hola, {name}. Te escribimos de {business}. Te recordamos tu turno de hoy: {treatment}, a las {time} con {pro}.",
+      "ask": "¿Nos confirmás si venís?",
+      "choices": {
+        "confirm": "Confirmo",
+        "reschedule": "Reprogramar",
+        "cancel": "Cancelar turno"
+      },
+      "confirmed": "¡Gracias, {name}! Te esperamos a las {time}. Si podés, llegá 10 minutos antes.",
+      "offer": "Sin problema. Estos son los próximos turnos libres con {pro}:",
+      "rescheduled": "Listo, quedaste para el {slot}. Te mandamos un recordatorio el día anterior.",
+      "cancelled": "Listo, cancelamos tu turno. Cuando quieras, escribinos y te buscamos otro horario.",
+      "agenda": "En la agenda",
+      "sysConfirmed": "{name} confirmó. El turno de las {time} queda firme.",
+      "sysFreed": "Se liberó el turno de las {time}. Se lo ofrecemos a la lista de espera.",
+      "sysFreedOff": "Se liberó el turno de las {time}. La lista de espera está pausada.",
+      "sysRefilled": "{name} tomó el turno de las {time} desde la lista de espera.",
+      "replay": "Ver de nuevo",
+      "read": "Leído"
+    },
+    "reminders": {
+      "title": "Recordatorios",
+      "subtitle": "Turnos de hoy por WhatsApp",
+      "stats": {
+        "sent": "Enviados",
+        "confirmed": "Confirmados",
+        "changed": "Con cambios",
+        "pending": "Sin respuesta"
+      },
+      "patients": "Pacientes de hoy",
+      "patientView": "Vista del paciente",
+      "state": {
+        "waiting": "Esperando respuesta",
+        "confirmed": "Confirmó",
+        "rescheduled": "Reprogramó",
+        "cancelled": "Canceló"
+      },
+      "rulesTitle": "Automatizaciones",
+      "rules": {
+        "day": {
+          "title": "24 h antes",
+          "body": "Mensaje con botones para confirmar, reprogramar o cancelar."
+        },
+        "hours": {
+          "title": "2 h antes",
+          "body": "Último aviso el mismo día, con la dirección."
+        },
+        "waitlist": {
+          "title": "Lista de espera",
+          "body": "Si alguien cancela, el turno se ofrece solo al primero de la lista."
+        }
+      },
+      "on": "Activo",
+      "off": "Pausado"
+    },
+    "absences": {
+      "title": "Ausencias",
+      "subtitle": "Esta semana",
+      "recovered": "Turnos recuperados esta semana",
+      "revenue": "Ingresos que no se perdieron",
+      "fromWaitlist": "Desde lista de espera",
+      "fromReminders": "Confirmados por recordatorio",
+      "noShows": "Ausencias esta semana",
+      "before": "Antes: {count} por semana",
+      "change": "{value} de ausencias",
+      "chartTitle": "Ausencias por semana",
+      "chartBefore": "Sin recordatorios",
+      "chartAfter": "Con recordatorios",
+      "week": "S{n}",
+      "thisWeek": "Esta",
+      "barLabel": "{week}: {count} ausencias",
+      "todayTitle": "Recuperados hoy",
+      "todayEmpty": "Todavía no se recuperó ningún turno hoy.",
+      "waitlist": "En lista de espera"
+    }
+  },
+  "demoGym": {
+    "live": "En vivo",
+    "pts": "pts",
+    "pointsLabel": "{count, plural, one {# punto} other {# puntos}}",
+    "me": "Sol",
+    "memberView": "Así lo ve tu socio",
+    "ownerView": "Así lo ves vos",
+    "ownerPanel": "Panel del dueño",
+    "replay": "Ver de nuevo",
+    "tabs": {
+      "home": "Inicio",
+      "missions": "Misiones",
+      "ranking": "Ranking",
+      "panel": "Panel",
+      "retention": "Retención",
+      "members": "Socios"
+    },
+    "members": {
+      "sol": "Sol R.",
+      "ana": "Ana L.",
+      "bruno": "Bruno C.",
+      "carla": "Carla B.",
+      "lucas": "Lucas D.",
+      "elena": "Elena V.",
+      "tomas": "Tomás R.",
+      "julia": "Julia M.",
+      "mateo": "Mateo F.",
+      "diego": "Diego S.",
+      "paula": "Paula N.",
+      "martin": "Martín G.",
+      "renata": "Renata P.",
+      "sebastian": "Sebastián T.",
+      "julian": "Julián A."
+    },
+    "home": {
+      "hello": "Hola, {name}",
+      "missionsValue": "{done} de {total} misiones completadas",
+      "bonus": "Completalas y sumá +{points} pts",
+      "bonusDone": "Semana completa",
+      "weekPoints": "{points} pts esta semana",
+      "nextMission": "Tu próxima misión",
+      "weekDone": "Tu semana",
+      "allMissions": "Ver todas"
+    },
+    "streak": {
+      "title": "Tu racha",
+      "days": "{count, plural, one {día seguido} other {días seguidos}}",
+      "next": "{count, plural, one {Falta # día} other {Faltan # días}} para la insignia de {goal} días",
+      "week": "Esta semana",
+      "dayDone": "{day}: entrenaste",
+      "todayDone": "{day}, hoy: entrenaste",
+      "todayPending": "{day}, hoy: falta tu check-in"
+    },
+    "checkin": {
+      "cta": "Hacer check-in",
+      "hint": "Tocá al llegar al gimnasio",
+      "done": "Check-in hecho",
+      "doneHint": "Hoy, {time} · racha de {count, plural, one {# día} other {# días}}"
+    },
+    "missionsView": {
+      "title": "Misiones de la semana",
+      "subtitle": "{count, plural, one {Queda # día} other {Quedan # días}} · se renuevan el lunes",
+      "progress": "{done} de {total} completadas",
+      "bonus": "Completá todas y sumá +{points} pts de bonus.",
+      "bonusDone": "¡Semana completa! Sumaste +{points} pts de bonus."
+    },
+    "missions": {
+      "completed": "Completada",
+      "days": {
+        "title": "Entrená {goal} días esta semana",
+        "detail": "Cada check-in suma un día.",
+        "short": "{goal} días de entrenamiento",
+        "progress": "{value} de {goal} días",
+        "action": "Hacer check-in"
+      },
+      "cardio": {
+        "title": "Sumá {goal} minutos de cardio",
+        "detail": "Cinta, bici o remo: se registra desde la máquina.",
+        "short": "{goal} min de cardio",
+        "progress": "{value} de {goal} min",
+        "action": "Registrar {minutes} min de cinta"
+      },
+      "class": {
+        "title": "Probá una clase nueva",
+        "detail": "Funcional, spinning o yoga: una que todavía no hiciste.",
+        "short": "Una clase nueva",
+        "progress": "{value} de {goal}"
+      },
+      "friend": {
+        "title": "Traé a un amigo",
+        "detail": "Con un pase de invitado por un día.",
+        "short": "Traer a un amigo",
+        "progress": "{value} de {goal}",
+        "action": "Enviar pase de invitado",
+        "waiting": "Esperando a tu amigo"
+      }
+    },
+    "stats": {
+      "title": "Misiones esta semana",
+      "total": "<n>{count}</n> completadas",
+      "participation": "El {value} de los socios ya completó al menos una misión esta semana."
+    },
+    "ranking": {
+      "title": "Ranking",
+      "ownerSubtitle": "Puntos por check-ins, misiones y bonus semanal. Arranca de cero cada lunes.",
+      "period": "Período del ranking",
+      "week": "Semana",
+      "month": "Mes",
+      "yourPlace": "Tu puesto",
+      "position": "Puesto {rank}",
+      "climbedShort": "{count, plural, one {# puesto} other {# puestos}}",
+      "up": "{count, plural, one {subió # puesto} other {subió # puestos}}",
+      "down": "{count, plural, one {bajó # puesto} other {bajó # puestos}}",
+      "youUp": "{count, plural, one {Subiste # puesto} other {Subiste # puestos}}",
+      "rowLabel": "{rank}. {name}, {points} puntos",
+      "streak": "{count, plural, one {# día} other {# días}}",
+      "noStreak": "Sin racha",
+      "toPass": "Te faltan {points} pts para pasar a {name}.",
+      "first": "Vas primero. Mantené la racha para quedarte arriba.",
+      "howPoints": "Cada check-in suma {checkin} pts, cada misión suma lo suyo y completar la semana da {bonus} de bonus.",
+      "colMember": "Socio",
+      "colStreak": "Racha",
+      "colChange": "Cambio",
+      "colPoints": "Puntos"
+    },
+    "rules": {
+      "title": "Cómo se suman puntos",
+      "checkin": "Check-in",
+      "bonus": "Semana completa"
+    },
+    "you": {
+      "tag": "Vos",
+      "checkin": "Check-in hecho: racha de {count, plural, one {# día} other {# días}} · +{points} pts",
+      "mission": "Misión completada: {mission} · +{points} pts",
+      "bonus": "¡Semana completa! +{points} pts de bonus",
+      "invite": "Pase enviado. Te avisamos cuando llegue tu amigo.",
+      "friend": "Tu amigo hizo check-in: misión completada · +{points} pts",
+      "rankUp": "Subiste al puesto {rank} del ranking",
+      "rankDown": "{by} te pasó: estás en el puesto {rank}"
+    },
+    "activity": {
+      "title": "Actividad en vivo",
+      "justNow": "Ahora",
+      "onPhone": "En el teléfono",
+      "auto": "La app mandó {count} misiones de regreso a socios en riesgo",
+      "checkin": "{name} hizo check-in · racha de {count, plural, one {# día} other {# días}}",
+      "return": "{name} volvió después de {count} días sin venir",
+      "mission": "{name} completó «{mission}» · +{points} pts",
+      "bonus": "{name} completó todas las misiones de la semana · +{points} pts",
+      "invite": "{name} mandó un pase de invitado a un amigo",
+      "friend": "Entró el invitado de {name}: un posible socio nuevo",
+      "sent": "Misión de regreso enviada a {name}",
+      "rankUp": "{name} subió al puesto {rank} del ranking",
+      "rankDown": "{by} pasó a {name} en el ranking"
+    },
+    "churn": {
+      "title": "Bajas por mes",
+      "inMonth": "bajas en {month}",
+      "change": "{value} de bajas",
+      "before": "Antes: {count} por mes",
+      "chart": "Bajas por mes en los últimos seis meses",
+      "barLabel": "{month}: {count} bajas",
+      "legendBefore": "Sin misiones",
+      "legendAfter": "Con misiones y rachas",
+      "kept": "{count, plural, one {# socio más se quedó} other {# socios más se quedaron}} este mes. Cuotas que siguen entrando:"
+    },
+    "kpis": {
+      "active": "Socios activos",
+      "activeHint": "con la cuota al día",
+      "atRisk": "En riesgo",
+      "atRiskHint": "{days} días o más sin venir",
+      "returned": "{count, plural, one {# volvió hoy} other {# volvieron hoy}}",
+      "checkins": "Check-ins hoy",
+      "checkinsHint": "desde que abrió el gimnasio",
+      "missions": "Misiones hechas",
+      "missionsHint": "esta semana · participa el {value} de los socios"
+    },
+    "risk": {
+      "title": "Socios en riesgo",
+      "subtitle": "{days} días o más sin venir. La app les manda una misión de regreso.",
+      "high": "riesgo alto",
+      "sent": "Misión enviada",
+      "back": "Volvió hoy",
+      "sendNow": "Enviar ahora",
+      "sentNow": "Enviada",
+      "sendTo": "Enviar ahora la misión de regreso a {name}",
+      "sentTo": "Misión de regreso enviada a {name}",
+      "away": "{count} días sin venir",
+      "backAfter": "Volvió hoy, después de {count} días",
+      "queuedAt": "sale sola a las {time}",
+      "more": "{count, plural, one {# socio más en seguimiento} other {# socios más en seguimiento}}"
+    },
+    "retention": {
+      "title": "Retención",
+      "subtitle": "Quién se queda, quién está por irse y qué hace la app para traerlo de vuelta."
+    },
+    "membersView": {
+      "title": "Socios",
+      "subtitle": "{count} socios activos · primero los que necesitan atención",
+      "filter": "Filtrar socios",
+      "filters": {
+        "all": "Todos",
+        "risk": "En riesgo",
+        "streak": "En racha",
+        "back": "Volvieron hoy"
+      },
+      "caption": "Socios: {filter}",
+      "colMember": "Socio",
+      "colStreak": "Racha",
+      "colLast": "Última visita",
+      "colMissions": "Misiones",
+      "colStatus": "Estado",
+      "today": "Hoy",
+      "yesterday": "Ayer",
+      "daysAgo": "{count, plural, one {Hace # día} other {Hace # días}}",
+      "missionsOf": "{done} de {total} misiones",
+      "empty": "No hay socios con este filtro.",
+      "status": {
+        "high": "Riesgo alto",
+        "medium": "Riesgo medio",
+        "back": "Volvió hoy",
+        "streak": "En racha",
+        "active": "Activo"
+      },
+      "note": {
+        "sent": "Misión de regreso enviada ayer",
+        "queued": "Misión de regreso: sale a las {time}",
+        "sentNow": "Misión de regreso enviada recién",
+        "back": "Volvió con la misión de regreso"
+      }
+    }
+  },
+  "demoRealEstate": {
+    "tabs": {
+      "chat": "Chat",
+      "inbox": "Consultas",
+      "listings": "Propiedades",
+      "leads": "Leads"
+    },
+    "aiOn": "IA activa",
+    "office": "Oficina",
+    "closed": "Cerrada hasta el lunes a las 10 h",
+    "slotLong": "{day} {date} a las {time}",
+    "ops": {
+      "sale": "Comprar",
+      "rent": "Alquilar"
+    },
+    "types": {
+      "all": "Todos",
+      "apartment": "Departamento",
+      "house": "Casa",
+      "duplex": "Dúplex"
+    },
+    "zones": {
+      "centro": "Centro",
+      "arboleda": "La Arboleda",
+      "ribera": "La Ribera",
+      "colinas": "Las Colinas"
+    },
+    "features": {
+      "balcony": "Balcón",
+      "garage": "Cochera",
+      "garden": "Jardín",
+      "pool": "Pileta",
+      "river": "Vista al río",
+      "pets": "Acepta mascotas",
+      "amenities": "Amenities",
+      "terrace": "Terraza"
+    },
+    "listing": {
+      "price": "USD {amount}",
+      "rent": "USD {amount}/mes",
+      "beds": "{count, plural, one {# dorm.} other {# dorm.}}",
+      "baths": "{count, plural, one {# baño} other {# baños}}",
+      "area": "{count} m²",
+      "title": "{type} en {zone}",
+      "inquiries": "{count, plural, one {# consulta} other {# consultas}}",
+      "recommended": "Sugerida a {name}",
+      "new": "Nueva",
+      "recommendedShort": "Sugerida"
+    },
+    "filters": {
+      "op": "Operación",
+      "type": "Tipo de propiedad",
+      "beds": "Dormitorios",
+      "any": "Todos",
+      "bedsMin": "{count}+",
+      "price": "Precio máximo",
+      "upTo": "Hasta {price}",
+      "noLimit": "Sin tope",
+      "results": "{count, plural, =0 {Sin resultados} one {# propiedad} other {# propiedades}}",
+      "clear": "Limpiar",
+      "empty": "No hay propiedades con esos filtros."
+    },
+    "listings": {
+      "title": "Propiedades",
+      "subtitle": "{count} publicadas",
+      "inquiriesWeek": "consultas esta semana"
+    },
+    "people": {
+      "live": "Carolina M.",
+      "liveFirst": "Carolina",
+      "advisor": "Julia R.",
+      "advisorFirst": "Julia",
+      "tomas": "Tomás B.",
+      "lucia": "Lucía F.",
+      "martin": "Martín G.",
+      "valeria": "Valeria S.",
+      "diego": "Diego P."
+    },
+    "channels": {
+      "whatsapp": "WhatsApp",
+      "web": "Web",
+      "instagram": "Instagram"
+    },
+    "stages": {
+      "live": "Calificando",
+      "new": "Nuevo",
+      "qualified": "Calificado",
+      "visit": "Visita agendada"
+    },
+    "chat": {
+      "heading": "Así le responde a tu cliente",
+      "hint": "Respondé como si fueras {name}.",
+      "aiTag": "IA",
+      "online": "en línea · responde al instante",
+      "typing": "escribiendo…",
+      "typingLabel": "{business} está escribiendo",
+      "log": "Conversación simulada de WhatsApp entre {name} y {business}",
+      "closed": "Fuera de horario: te responde Lumi, el asistente virtual de {business}. Un asesor sigue la charla el lunes.",
+      "inquiry": "Hola, ¿atienden hoy? Busco un depto de {beds} dormitorios en {zone}.",
+      "greet": "¡Hola, {name}! Soy Lumi, el asistente virtual de {business}. La oficina abre el lunes, pero te ayudo ahora. ¿Querés comprar o alquilar?",
+      "ops": {
+        "sale": "Quiero comprar",
+        "rent": "Quiero alquilar"
+      },
+      "budgetAskSale": "Genial. ¿Hasta cuánto pensás invertir?",
+      "budgetAskRent": "Genial. ¿Cuánto querés pagar por mes, como máximo?",
+      "budgetReply": "Hasta {price}",
+      "matches": "{count, plural, one {Tengo # opción que encaja con lo que buscás:} other {Tengo # opciones que encajan con lo que buscás:}}",
+      "visitAsk": "¿Querés visitarlas? {advisor}, nuestra asesora, tiene estos horarios:",
+      "booked": "¡Listo, {name}! Visita agendada para el {slot} con {advisor}. Te mando la ubicación por acá y un recordatorio el día anterior.",
+      "crmTag": "CRM",
+      "crm": "Lead calificado: {name} ya está en el CRM con presupuesto, zona y visita agendada.",
+      "responded": "Respondió en {seconds} s",
+      "viewListing": "Ver ficha",
+      "replay": "Ver de nuevo",
+      "read": "Leído"
+    },
+    "stats": {
+      "thisChat": "Esta charla",
+      "avgWeekend": "Promedio",
+      "underMinute": "En < 1 min",
+      "seconds": "{seconds} s"
+    },
+    "kpis": {
+      "inquiries": "Consultas recibidas",
+      "inquiriesHint": "Del viernes a las 19 h a hoy",
+      "fast": "Respondidas en < 1 min",
+      "fastHint": "{count} de {count}, incluso de noche y en fin de semana.",
+      "avg": "Respuesta promedio",
+      "avgHint": "Sin esperar al lunes",
+      "secondsUnit": "s",
+      "visits": "Visitas agendadas",
+      "visitsHint": "Para esta semana, en la agenda del equipo"
+    },
+    "inbox": {
+      "title": "Consultas",
+      "subtitle": "La oficina está cerrada: el agente IA responde por vos.",
+      "list": "Conversaciones recientes",
+      "now": "Ahora",
+      "agentTyping": "Lumi está escribiendo…",
+      "agentSays": "Lumi: {text}",
+      "responded": "{seconds} s",
+      "previews": {
+        "tomas": "¿Puedo ver la casa de Las Colinas el sábado a la mañana?",
+        "lucia": "¿El depto del Centro acepta mascotas?",
+        "martin": "¿El dúplex de La Ribera tiene cochera?",
+        "valeria": "¿Cuánto son las expensas del depto con vista al río?",
+        "diego": "Hola, ¿tienen algo en La Arboleda?"
+      }
+    },
+    "lead": {
+      "title": "Lead calificado",
+      "qualifying": "Calificando en vivo",
+      "pending": "Pendiente",
+      "unknown": "Sin definir",
+      "score": "Intención",
+      "intent": {
+        "high": "Alta",
+        "medium": "Media",
+        "low": "Baja"
+      },
+      "seeksLabel": "Busca",
+      "seeks": "{op} · {type} · {beds}",
+      "zone": "Zona",
+      "budget": "Presupuesto",
+      "budgetUpTo": "Hasta {price}",
+      "channel": "Canal",
+      "next": "Próximo paso",
+      "nextVisit": "Visita {slot} con {advisor}",
+      "nextCall": "Llamada de {advisor} el lunes a las 10 h",
+      "nextFollowup": "Seguimiento automático el lunes",
+      "listings": "Propiedades sugeridas",
+      "noListings": "Todavía ninguna",
+      "summaryLabel": "Resumen de la IA",
+      "responded": "{seconds} s",
+      "intentVerb": {
+        "sale": "Quiere comprar",
+        "rent": "Quiere alquilar"
+      },
+      "summary": {
+        "live": "{intent} un depto de {beds} dormitorios en {zone}, hasta {budget}. Recibió {count} opciones y agendó visita para el {slot}.",
+        "tomas": "Familia de cuatro. Busca casa con jardín en Las Colinas y vende su depto actual. Visita el sábado a las 10.",
+        "lucia": "Busca depto de 1 dormitorio en el Centro para mudarse en noviembre. Tiene un gato: pidió confirmar si aceptan mascotas.",
+        "martin": "Inversor. Quiere el dúplex de La Ribera con cochera; pidió planos y expensas. Visita el lunes a las 11.",
+        "valeria": "Quiere alquilar con vista al río y amenities. Preguntó por las expensas; prefiere que la llamen después de las 18 h.",
+        "diego": "Preguntó por La Arboleda y no volvió a responder. Lumi le escribe de nuevo el lunes con 3 opciones."
+      }
+    },
+    "leads": {
+      "title": "Leads",
+      "subtitle": "Calificados por el agente IA mientras la oficina estaba cerrada.",
+      "liveTitle": "Ahora mismo",
+      "othersTitle": "Del fin de semana",
+      "openChat": "Ver la conversación",
+      "waiting": "Esperando la próxima consulta…",
+      "tableCaption": "Leads del fin de semana",
+      "cols": {
+        "lead": "Lead",
+        "seeks": "Busca",
+        "budget": "Presupuesto",
+        "score": "Intención",
+        "stage": "Etapa"
+      },
+      "hints": {
+        "new": "Lumi les vuelve a escribir solo",
+        "qualified": "Listos para que los llame el equipo",
+        "visit": "Ya están en la agenda"
+      }
+    },
+    "announce": {
+      "lead": "Nuevo lead calificado: {name}, intención {score} de 100. Visita agendada para el {slot}."
+    }
   }
 }

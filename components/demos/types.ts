@@ -9,7 +9,7 @@ import type { DemoId, VerticalId } from '@/lib/content';
  * - `active`: false while hidden/off-screen → pause timers and live simulations.
  * - The demo must render the visible "Demo" badge and the business name with
  *   " — Demo"; never real brands, never real people.
- * - All UI strings come from next-intl (namespace `demos.<demoId>`), all sizes are
+ * - All UI strings come from next-intl (own namespace, e.g. `demoClinic`), all sizes are
  *   relative to the device screen (container query units: cqw/cqh) so it scales.
  */
 export interface DemoProps {
