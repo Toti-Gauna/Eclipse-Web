@@ -1,0 +1,246 @@
+{
+  "$comment": "Planes con rango de precio en USD. 'items' referencia ids de items.json (se usa para detectar planes en 'Armá tu plan' y para la línea 'Por separado'). 'maintenance' es el mantenimiento sugerido por defecto (null = ninguno).",
+  "featured": "sistema",
+  "plans": [
+    {
+      "id": "diagnostico",
+      "priceUsd": { "from": 150, "to": 250 },
+      "items": ["auditoria"],
+      "maintenance": null,
+      "icon": "ScanSearch",
+      "name": { "es": "Diagnóstico", "en": "Diagnosis", "pt": "Diagnóstico" },
+      "audience": {
+        "es": "Para decidir con datos antes de invertir.",
+        "en": "For deciding with data before you invest.",
+        "pt": "Para decidir com dados antes de investir."
+      },
+      "includes": {
+        "es": [
+          "Estudio de mercado de tu rubro y tu zona",
+          "Auditoría digital: web, Google, redes y WhatsApp",
+          "Plan de acción priorizado"
+        ],
+        "en": [
+          "Market research for your industry and area",
+          "Digital audit: website, Google, social and WhatsApp",
+          "Prioritized action plan"
+        ],
+        "pt": [
+          "Estudo de mercado do seu setor e da sua região",
+          "Auditoria digital: site, Google, redes e WhatsApp",
+          "Plano de ação priorizado"
+        ]
+      }
+    },
+    {
+      "id": "presencia",
+      "priceUsd": { "from": 250, "to": 400 },
+      "items": ["landing"],
+      "maintenance": null,
+      "icon": "MonitorPlay",
+      "name": { "es": "Presencia", "en": "Presence", "pt": "Presença" },
+      "audience": {
+        "es": "Para negocios sin web, o con una que no vende.",
+        "en": "For businesses with no website, or one that doesn't sell.",
+        "pt": "Para negócios sem site, ou com um que não vende."
+      },
+      "includes": {
+        "es": [
+          "Landing premium con motion graphics",
+          "Responsive, pensada primero para el celular",
+          "SEO base: velocidad, metadatos e indexación",
+          "Sin mantenimiento incluido (opcional)"
+        ],
+        "en": [
+          "Premium landing page with motion graphics",
+          "Responsive, designed for phones first",
+          "Basic SEO: speed, metadata and indexing",
+          "No maintenance included (optional)"
+        ],
+        "pt": [
+          "Landing page premium com motion graphics",
+          "Responsiva, pensada primeiro para o celular",
+          "SEO básico: velocidade, metadados e indexação",
+          "Sem manutenção incluída (opcional)"
+        ]
+      }
+    },
+    {
+      "id": "voz",
+      "priceUsd": { "from": 500, "to": 700 },
+      "items": ["voz"],
+      "maintenance": "esencial",
+      "icon": "AudioLines",
+      "name": { "es": "Voz", "en": "Voice", "pt": "Voz" },
+      "audience": {
+        "es": "Para quien pierde llamadas mientras atiende.",
+        "en": "For teams that miss calls while they're busy.",
+        "pt": "Para quem perde ligações enquanto atende."
+      },
+      "includes": {
+        "es": [
+          "Agente de voz con IA que atiende llamadas",
+          "Responde con la información de tu negocio",
+          "Agenda turnos en tu calendario",
+          "Configuración y pruebas incluidas"
+        ],
+        "en": [
+          "AI voice agent that answers your calls",
+          "Replies using your business information",
+          "Books appointments in your calendar",
+          "Setup and testing included"
+        ],
+        "pt": [
+          "Agente de voz com IA que atende ligações",
+          "Responde com as informações do seu negócio",
+          "Agenda horários no seu calendário",
+          "Configuração e testes incluídos"
+        ]
+      }
+    },
+    {
+      "id": "automatiza",
+      "priceUsd": { "from": 400, "to": 700 },
+      "items": ["chatbot", "automatizacion"],
+      "maintenance": "esencial",
+      "icon": "Workflow",
+      "name": { "es": "Automatiza", "en": "Automate", "pt": "Automatiza" },
+      "audience": {
+        "es": "Para quien contesta lo mismo 50 veces por día.",
+        "en": "For anyone answering the same question 50 times a day.",
+        "pt": "Para quem responde a mesma coisa 50 vezes por dia."
+      },
+      "includes": {
+        "es": [
+          "Chatbot IA en WhatsApp y en tu web",
+          "Recordatorios automáticos",
+          "Mails automáticos",
+          "Seguimiento de clientes sin hacerlo a mano"
+        ],
+        "en": [
+          "AI chatbot on WhatsApp and your website",
+          "Automatic reminders",
+          "Automatic emails",
+          "Customer follow-up without doing it by hand"
+        ],
+        "pt": [
+          "Chatbot com IA no WhatsApp e no seu site",
+          "Lembretes automáticos",
+          "E-mails automáticos",
+          "Follow-up de clientes sem fazer à mão"
+        ]
+      }
+    },
+    {
+      "id": "sistema",
+      "priceUsd": { "from": 1000, "to": 1500 },
+      "items": ["turnos", "pedidos", "automatizacion", "dashboard", "landing", "voz"],
+      "maintenance": "crecimiento",
+      "icon": "CalendarCheck",
+      "name": { "es": "Sistema", "en": "System", "pt": "Sistema" },
+      "audience": {
+        "es": "Para clínicas, estudios y gimnasios con la agenda llena.",
+        "en": "For clinics, studios and gyms with a full calendar.",
+        "pt": "Para clínicas, estúdios e academias com a agenda cheia."
+      },
+      "includes": {
+        "es": [
+          "Sistema de turnos y pedidos",
+          "Automatizaciones",
+          "Dashboard interno",
+          "Landing premium",
+          "Agente de voz con IA"
+        ],
+        "en": [
+          "Booking and ordering system",
+          "Automations",
+          "Internal dashboard",
+          "Premium landing page",
+          "AI voice agent"
+        ],
+        "pt": [
+          "Sistema de agendamentos e pedidos",
+          "Automações",
+          "Dashboard interno",
+          "Landing page premium",
+          "Agente de voz com IA"
+        ]
+      }
+    },
+    {
+      "id": "comercio",
+      "priceUsd": { "from": 2000, "to": 3500 },
+      "items": ["ecommerce", "turnos", "pedidos", "automatizacion", "dashboard", "landing", "gamificacion"],
+      "maintenance": "escala",
+      "icon": "ShoppingCart",
+      "name": { "es": "Comercio", "en": "Commerce", "pt": "Comércio" },
+      "audience": {
+        "es": "Para vender online y ordenar todo lo de adentro.",
+        "en": "For selling online and running the back office.",
+        "pt": "Para vender online e organizar a operação."
+      },
+      "includes": {
+        "es": [
+          "E-commerce completo",
+          "Sistema de turnos y pedidos",
+          "Automatizaciones",
+          "Dashboard interno",
+          "Landing premium",
+          "Gamificación y misiones"
+        ],
+        "en": [
+          "Full e-commerce",
+          "Booking and ordering system",
+          "Automations",
+          "Internal dashboard",
+          "Premium landing page",
+          "Gamification and missions"
+        ],
+        "pt": [
+          "E-commerce completo",
+          "Sistema de agendamentos e pedidos",
+          "Automações",
+          "Dashboard interno",
+          "Landing page premium",
+          "Gamificação e missões"
+        ]
+      }
+    },
+    {
+      "id": "plataforma",
+      "priceUsd": { "from": 4000, "to": 7000 },
+      "items": ["app-ondemand", "landing", "crm", "gamificacion", "voz"],
+      "maintenance": "escala",
+      "icon": "Smartphone",
+      "name": { "es": "Plataforma", "en": "Platform", "pt": "Plataforma" },
+      "audience": {
+        "es": "Para convertir tu servicio en una app propia.",
+        "en": "For turning your service into your own app.",
+        "pt": "Para transformar seu serviço em um app próprio."
+      },
+      "includes": {
+        "es": [
+          "App on-demand",
+          "Landing premium",
+          "Dashboard CRM y documentación interna",
+          "Gamificación y misiones",
+          "Agente de voz con IA"
+        ],
+        "en": [
+          "On-demand app",
+          "Premium landing page",
+          "CRM dashboard and internal documentation",
+          "Gamification and missions",
+          "AI voice agent"
+        ],
+        "pt": [
+          "App on-demand",
+          "Landing page premium",
+          "Dashboard CRM e documentação interna",
+          "Gamificação e missões",
+          "Agente de voz com IA"
+        ]
+      }
+    }
+  ]
+}

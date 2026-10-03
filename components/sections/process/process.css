@@ -1,0 +1,247 @@
+/*
+ * "Cómo trabajamos" timeline.
+ * Vertical below 1024px (rail on the left), horizontal from 1024px.
+ * Each step except the last owns the segment that runs from its node's center to
+ * the next node's center; <ProcessTimeline> scales the amber fill along it.
+ * --lit (0…1) drives the node ignition. It's 1 by default (no JS, reduced motion);
+ * once the timeline is armed, a step stays dark until the light reaches it.
+ */
+
+.process-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* A low horizon glow behind the timeline. Kept faint and wide: tighter dim
+     radials show 8-bit banding rings on the flat night sky. */
+  background: radial-gradient(70rem 20rem at 30% 64%, rgb(245 185 66 / 0.045), transparent 72%);
+}
+
+.proc-list {
+  --node: 3rem;
+  --proc-gap: 2rem;
+  position: relative;
+  display: grid;
+}
+
+.proc-step {
+  --lit: 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--node) minmax(0, 1fr);
+  column-gap: 1.25rem;
+  padding-bottom: 3.25rem;
+}
+.proc-step:last-child {
+  padding-bottom: 0;
+}
+[data-armed] .proc-step {
+  --lit: 0;
+}
+[data-armed] .proc-step[data-lit] {
+  --lit: 1;
+}
+
+/* ---- Track ------------------------------------------------------------ */
+.proc-seg {
+  position: absolute;
+  top: calc(var(--node) / 2);
+  bottom: calc(var(--node) / -2);
+  left: calc(var(--node) / 2 - 1px);
+  width: 2px;
+}
+.proc-seg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0.5px;
+  width: 1px;
+  background: var(--line-strong);
+}
+.proc-seg-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--corona) 0%, var(--flare) 100%);
+  box-shadow: 0 0 14px 1px rgb(245 185 66 / 0.5);
+  transform-origin: 50% 0;
+}
+
+/* Spark riding the light front (positioned by <ProcessTimeline>). Hidden until
+   armed; it passes behind the nodes (z-index 0 < 1), as if light entered them. */
+.proc-spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: -0.45rem 0 0 -0.45rem;
+  border-radius: 50%;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    #fffaf0 0%,
+    rgb(255 248 230 / 0.95) 28%,
+    rgb(255 232 176 / 0.7) 46%,
+    rgb(245 185 66 / 0.25) 68%,
+    transparent 72%
+  );
+  box-shadow: 0 0 22px 7px rgb(245 185 66 / 0.45);
+}
+
+/* ---- Node: a small eclipse that ignites -------------------------------- */
+.proc-node {
+  position: relative;
+  z-index: 1;
+  display: block;
+  grid-column: 1;
+  grid-row: 1;
+  width: var(--node);
+  height: var(--node);
+}
+.proc-node-glow {
+  position: absolute;
+  inset: -80%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgb(255 232 176 / 0.42) 22%,
+    rgb(245 185 66 / 0.2) 46%,
+    rgb(245 185 66 / 0.05) 72%,
+    transparent 100%
+  );
+  opacity: var(--lit);
+  transform: scale(calc(0.45 + 0.55 * var(--lit)));
+  transition:
+    opacity 0.6s ease,
+    transform 1s var(--ease-expo);
+}
+.proc-node-ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgb(255 232 176 / 0.95),
+    0 0 0 3px rgb(245 185 66 / 0.18),
+    0 0 26px 2px rgb(245 185 66 / 0.55);
+  opacity: var(--lit);
+  transition: opacity 0.5s ease;
+}
+.proc-node-disc {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: radial-gradient(circle at 36% 30%, #181821 0%, #0a0a10 62%, #050509 100%);
+}
+.proc-node-num {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--flare);
+  opacity: calc(0.45 + 0.55 * var(--lit));
+  transition: opacity 0.5s ease;
+}
+
+/* ---- Copy ------------------------------------------------------------- */
+.proc-body {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.6rem;
+}
+.proc-title {
+  font-size: 1.85rem;
+  line-height: 1.04;
+  opacity: calc(0.55 + 0.45 * var(--lit));
+  transition: opacity 0.6s ease;
+}
+/* Visually above the title, after it in the DOM (heading first for screen readers). */
+.proc-meta {
+  order: -1;
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.4rem;
+  height: 1.75rem;
+  margin-bottom: 0.9rem;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 0.78rem;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--fg-muted);
+}
+.proc-meta-time {
+  border-color: rgb(245 185 66 / 0.38);
+  color: var(--accent);
+  opacity: calc(0.6 + 0.4 * var(--lit));
+  transition: opacity 0.6s ease;
+}
+.proc-text {
+  margin-top: 0.75rem;
+  max-width: 34rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+/* ---- Desktop: horizontal ---------------------------------------------- */
+@media (min-width: 1024px) {
+  .proc-list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    column-gap: var(--proc-gap);
+  }
+  .proc-step {
+    display: block;
+    padding-bottom: 0;
+  }
+  .proc-seg {
+    top: calc(var(--node) / 2 - 1px);
+    bottom: auto;
+    left: calc(var(--node) / 2);
+    right: calc(-1 * var(--proc-gap) - var(--node) / 2);
+    width: auto;
+    height: 2px;
+  }
+  .proc-seg::before {
+    top: 0.5px;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 1px;
+  }
+  .proc-seg-fill {
+    background: linear-gradient(90deg, var(--corona) 0%, var(--flare) 100%);
+    transform-origin: 0 50%;
+  }
+  .proc-body {
+    margin-top: 2rem;
+    padding-top: 0;
+  }
+  .proc-title {
+    font-size: 1.7rem;
+  }
+}
+@media (min-width: 1280px) {
+  .proc-list {
+    --proc-gap: 2.5rem;
+  }
+  .proc-title {
+    font-size: 1.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proc-node-glow {
+    transform: none;
+  }
+}

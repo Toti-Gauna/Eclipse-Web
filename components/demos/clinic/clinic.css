@@ -1,0 +1,270 @@
+/*
+ * Clínica Aurora demo. Sizes in em (the device screen sets the root font-size).
+ * Only transform / opacity are animated; everything is static with reduced motion.
+ */
+.clinic {
+  --clinic-ok: #166534;
+  --clinic-ok-bg: #e3f3e8;
+  --clinic-warn: #8a5a00;
+  --clinic-warn-bg: #fdf1d8;
+  --clinic-new: #1d4ed8;
+  --clinic-new-bg: #e6effd;
+  --clinic-wait: #4c3fb5;
+  --clinic-wait-bg: #eeebfb;
+  --clinic-bad: #a1253b;
+  --clinic-bad-bg: #fde8ea;
+  --clinic-done-bg: #eeebe5;
+  --clinic-accent-ink: #0a5961;
+  --clinic-amber: #f5b942;
+}
+
+/*
+ * demo.css resets `.demo-root button { font: inherit; color: inherit }` outside any
+ * cascade layer, which beats Tailwind's (layered) utilities on every button.
+ * Hand those two properties back to the layers inside this demo.
+ */
+.demo-root:has(.clinic) button {
+  font: revert-layer;
+  color: revert-layer;
+}
+
+/* Entrances ---------------------------------------------------------- */
+@keyframes clinic-pop {
+  from {
+    transform: translateY(0.35em) scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.clinic-pop {
+  animation: clinic-pop 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes clinic-view-in {
+  from {
+    transform: translateY(0.6em);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.clinic-view {
+  animation: clinic-view-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes clinic-bubble-in {
+  from {
+    transform: translateY(0.4em) scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.clinic-bubble {
+  animation: clinic-bubble-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: bottom left;
+}
+.clinic-bubble[data-from='patient'] {
+  transform-origin: bottom right;
+}
+.clinic-bubble[data-from='agenda'] {
+  transform-origin: center;
+}
+
+@keyframes clinic-toast-in {
+  from {
+    transform: translateY(-0.8em) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.clinic-toast {
+  animation: clinic-toast-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* A soft halo on something that just changed */
+.clinic-fresh {
+  position: relative;
+}
+.clinic-fresh::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0.22em color-mix(in oklab, var(--demo-accent) 30%, transparent);
+  opacity: 0;
+  animation: clinic-halo 2.2s ease-out both;
+  pointer-events: none;
+}
+@keyframes clinic-halo {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Live dot ----------------------------------------------------------- */
+.clinic-live-dot {
+  position: relative;
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 999px;
+  background: #16a34a;
+}
+.clinic-live-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: clinic-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes clinic-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  80%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* Progress / bars ---------------------------------------------------- */
+.clinic-meter > span {
+  display: block;
+  height: 100%;
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clinic-bar {
+  transform-origin: bottom center;
+}
+
+/* Free slot (dashed) */
+.clinic-free {
+  border: 1px dashed color-mix(in oklab, var(--demo-accent) 45%, transparent);
+  background: color-mix(in oklab, var(--demo-accent) 4%, white);
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clinic-free:hover {
+  background: var(--demo-accent-soft);
+  border-color: var(--demo-accent);
+}
+.clinic-free:active {
+  transform: scale(0.98);
+}
+
+/* WhatsApp-like chat ----------------------------------------------- */
+.clinic-wa {
+  background-color: #efeae2;
+  background-image: radial-gradient(rgb(17 17 20 / 0.05) 1px, transparent 1.2px);
+  background-size: 1.1em 1.1em;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.clinic-wa::-webkit-scrollbar {
+  display: none;
+}
+.clinic-bubble-tail-in {
+  border-top-left-radius: 0.2em;
+}
+.clinic-bubble-tail-out {
+  border-top-right-radius: 0.2em;
+}
+
+.clinic-reply {
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.2s ease;
+}
+.clinic-reply:not(:disabled):hover {
+  background: #f5f7f6;
+}
+.clinic-reply:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Switch */
+.clinic-switch {
+  position: relative;
+  width: 2.3em;
+  height: 1.3em;
+  border-radius: 999px;
+  background: #cfcac2;
+  transition: background-color 0.25s ease;
+  flex-shrink: 0;
+}
+.clinic-switch::after {
+  content: '';
+  position: absolute;
+  top: 0.15em;
+  left: 0.15em;
+  width: 1em;
+  height: 1em;
+  border-radius: 999px;
+  background: white;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clinic-switch[aria-checked='true'] {
+  background: var(--demo-accent);
+}
+.clinic-switch[aria-checked='true']::after {
+  transform: translateX(1em);
+}
+
+/* Eclipse CTA inside the fictional app (amber = Eclipse layer, like the Demo badge) */
+.clinic-cta {
+  background: #f5b942;
+  color: #05050a;
+  box-shadow: 0 0.6em 1.6em -0.6em rgb(138 90 0 / 0.55);
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s ease;
+}
+.clinic-cta:hover {
+  box-shadow:
+    0 0 0 0.3em rgb(245 185 66 / 0.25),
+    0 0.6em 1.6em -0.6em rgb(138 90 0 / 0.6);
+}
+.clinic-cta:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clinic-pop,
+  .clinic-view,
+  .clinic-bubble,
+  .clinic-toast,
+  .clinic-fresh::after,
+  .clinic-live-dot::after {
+    animation: none;
+  }
+  .clinic-wa {
+    scroll-behavior: auto;
+  }
+  .clinic-meter > span,
+  .clinic-switch,
+  .clinic-switch::after {
+    transition: none;
+  }
+}

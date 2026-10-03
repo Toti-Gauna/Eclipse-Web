@@ -1,0 +1,270 @@
+/*
+ * "Ejemplos": large cinematic cards (trailer + demo business), alternating on
+ * desktop, stacked on mobile; plus the fullscreen demo modal.
+ * Lit effects are opacity / transform only.
+ */
+
+.examples-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(46rem 30rem at 12% 18%, rgb(245 185 66 / 0.05), transparent 70%),
+    radial-gradient(40rem 34rem at 92% 62%, rgb(255 232 176 / 0.035), transparent 70%);
+}
+
+/* ---- Card ---------------------------------------------------------- */
+.ex-card {
+  --lit: 0;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  border-radius: var(--radius-card-lg);
+  background: linear-gradient(180deg, rgb(26 26 36 / 0.66), rgb(12 12 20 / 0.5));
+  border: 1px solid rgb(244 239 230 / 0.08);
+  box-shadow:
+    inset 0 1px 0 rgb(244 239 230 / 0.05),
+    0 50px 100px -60px rgb(0 0 0 / 0.95);
+}
+/* Warm 1px ring while the trailer plays or the card has keyboard focus. */
+.ex-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    155deg,
+    rgb(255 232 176 / 0.7),
+    rgb(245 185 66 / 0.35) 24%,
+    rgb(245 185 66 / 0.06) 58%,
+    rgb(245 185 66 / 0.2)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  opacity: var(--lit);
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+.ex-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(80% 60% at 30% 0%, rgb(245 185 66 / 0.08), transparent 65%);
+  opacity: var(--lit);
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+.ex-card:has(.trl[data-playing]),
+.ex-card:has(:focus-visible) {
+  --lit: 1;
+}
+
+.ex-media {
+  padding: 8px 8px 0;
+}
+.ex-media .trl {
+  --trl-radius: 20px;
+}
+
+.ex-body {
+  padding: 26px 20px 24px;
+}
+@media (min-width: 640px) {
+  .ex-media {
+    padding: 10px 10px 0;
+  }
+  .ex-body {
+    padding: 34px 32px 32px;
+  }
+}
+
+.ex-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.ex-eyebrow-line {
+  width: 1.75rem;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.ex-facts {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .ex-facts {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 2rem;
+  }
+}
+.ex-fact-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.ex-number {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: clamp(4.25rem, 16vw, 6.25rem);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+.ex-number::before {
+  content: '';
+  position: absolute;
+  inset: -45% -35%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(245 185 66 / 0.16), rgb(245 185 66 / 0.05) 55%, transparent 100%);
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .ex-card {
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    align-items: center;
+  }
+  .ex-media {
+    padding: 12px;
+  }
+  .ex-card--flip {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+  }
+  .ex-card--flip .ex-media {
+    order: 2;
+  }
+  .ex-body {
+    padding: 40px 44px 40px 30px;
+  }
+  .ex-card--flip .ex-body {
+    padding: 40px 30px 40px 44px;
+  }
+  .ex-facts {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    gap: 1.25rem;
+  }
+  .ex-number {
+    font-size: clamp(4.5rem, 6.6vw, 6rem);
+  }
+}
+
+/* ---- "¿No ves tu rubro?" ------------------------------------------- */
+.ex-more-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 768px) {
+  .ex-more-inner {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+}
+
+/* ---- Fullscreen demo modal ----------------------------------------- */
+.ex-modal {
+  background:
+    radial-gradient(70% 55% at 50% 60%, rgb(245 185 66 / 0.09), transparent 72%),
+    var(--night);
+  color: var(--fg);
+}
+.ex-modal-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.ex-modal-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  background: rgb(12 12 20 / 0.82);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.ex-modal-close {
+  order: 3;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--fg);
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+.ex-modal-close:hover {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+.ex-modal-stage {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 20px var(--gutter) 24px;
+}
+.ex-modal-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(90vw, 900px);
+  aspect-ratio: 1.6;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 232 176 / 0.12), rgb(245 185 66 / 0.05) 55%, transparent 100%);
+  pointer-events: none;
+}
+.ex-modal-showcase {
+  position: relative;
+  width: min(300px, calc(100vw - 2 * var(--gutter) - 12px), calc((100dvh - 230px) * 0.46));
+}
+@media (min-width: 768px) {
+  .ex-modal-showcase {
+    width: min(1040px, 100%, calc((100dvh - 150px) * 1.536));
+  }
+}
+.ex-modal-cta {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom));
+  background: linear-gradient(0deg, var(--night) 55%, rgb(12 12 20 / 0));
+}

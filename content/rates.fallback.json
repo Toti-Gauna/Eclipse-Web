@@ -1,0 +1,6 @@
+{
+  "$comment": "Cotizaciones de respaldo (unidades por 1 USD) si fallan dolarapi.com (MEP) o frankfurter. Actualizar periódicamente.",
+  "updatedAt": "2026-10-01",
+  "ARS": 1450,
+  "BRL": 5.4
+}

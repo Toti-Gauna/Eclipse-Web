@@ -141,3 +141,21 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Next.js
+.next/
+.next-*/
+out/
+next-env.d.ts
+
+# env (keep the example)
+.env*
+!.env.example
+
+# test artifacts
+/test-results/
+/playwright-report/
+/.lab-shots/
+
+# dev-only component labs (page.dev.tsx) and local QA
+/app/\[locale\]/lab/

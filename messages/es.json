@@ -1,0 +1,1199 @@
+{
+  "meta": {
+    "title": "Eclipse — Te mostramos tu negocio funcionando",
+    "description": "Webs, sistemas, agentes de IA, e-commerce y apps para negocios de LatAm. Antes de hablar, te mostramos tu negocio funcionando.",
+    "planTitle": "Armá tu plan — Eclipse",
+    "planDescription": "Elegí lo que necesitás y mirá el presupuesto estimado al instante, en tu moneda.",
+    "ogAlt": "Eclipse: un eclipse total con su corona dorada",
+    "organizationDescription": "Estudio de desarrollo, IA y automatización. Webs, sistemas, agentes de IA, e-commerce y apps.",
+    "notFoundTitle": "Esta página quedó a oscuras",
+    "notFoundBody": "No encontramos lo que buscabas.",
+    "notFoundCta": "Volver al inicio"
+  },
+  "common": {
+    "demo": "Demo",
+    "preview": "Vista previa",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "back": "Volver",
+    "from": "desde",
+    "to": "hasta",
+    "perMonth": "/mes",
+    "perYear": "/año",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "included": "Incluido",
+    "none": "Ninguno",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "play": "Reproducir",
+    "pause": "Pausar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "loading": "Cargando…",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "approxPrefix": "≈",
+    "sections": "secciones"
+  },
+  "nav": {
+    "services": "Servicios",
+    "examples": "Ejemplos",
+    "pricing": "Precios",
+    "founders": "Fundadores"
+  },
+  "header": {
+    "home": "Eclipse, ir al inicio",
+    "skip": "Saltar al contenido",
+    "menu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "mainNav": "Navegación principal",
+    "language": "Idioma",
+    "currency": "Moneda",
+    "progress": "Progreso de lectura: {value}%",
+    "buildPlan": "Armá tu plan",
+    "progressLabel": "Progreso de lectura"
+  },
+  "currency": {
+    "ARS": "Pesos argentinos",
+    "BRL": "Reales",
+    "USD": "Dólares",
+    "notice": "Precios en USD. Los valores en ARS y BRL son referenciales según la cotización del día.",
+    "source": "Cotización {date}",
+    "sourceFallback": "Cotización de referencia {date}"
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English",
+    "pt": "Português"
+  },
+  "loader": {
+    "label": "Cargando Eclipse"
+  },
+  "hero": {
+    "eyebrow": "Desarrollo · IA · Automatización",
+    "title": "Antes de hablar, te mostramos <em>tu negocio</em> funcionando.",
+    "subtitle": "Webs, sistemas y agentes de IA para negocios que no pueden esperar. Elegí tu rubro y miralo.",
+    "pickVertical": "Elegí tu rubro",
+    "ctaDemo": "Pedí tu demo",
+    "ctaPlan": "Armá tu plan",
+    "seeAnother": "Ver otro rubro",
+    "scroll": "Bajá para ver más",
+    "wantThis": "Quiero esto para mi negocio"
+  },
+  "whatsapp": {
+    "greeting": "Hola Eclipse.",
+    "demo": "Hola Eclipse. Quiero pedir mi demo. Rubro: {vertical}.",
+    "demoNoVertical": "Hola Eclipse. Quiero pedir mi demo.",
+    "wantThis": "Hola Eclipse. Vi la demo de {business} y quiero algo así para mi negocio ({vertical}).",
+    "notListed": "Hola Eclipse. Mi rubro no está en la lista: {vertical}. ¿Me arman una demo?"
+  },
+  "footer": {
+    "tagline": "Desarrollo, IA y automatización para negocios que no pueden esperar.",
+    "explore": "Explorar",
+    "contact": "Contacto",
+    "settings": "Preferencias",
+    "teaser": "Eclipse es más que un estudio. <em>Próximamente</em>.",
+    "comingSoon": "Próximamente",
+    "rights": "© {year} Eclipse. Todos los derechos reservados.",
+    "demoNotice": "Los negocios que ves en las demos son ficticios."
+  },
+  "planMessage": {
+    "introCard": "Hola Eclipse. Quiero este plan:",
+    "introBuilder": "Hola Eclipse. Armé mi plan en la web:",
+    "planLine": "Plan {name} — desde {price}",
+    "itemLine": "{name} — {price}",
+    "comboTag": "(combo)",
+    "total": "Total estimado: {price}",
+    "totalRange": "Total estimado: de {from} a {to}",
+    "totalWithOffers": "Con ofertas: {price}",
+    "maintenance": "Mantenimiento {name}: {price} {period}",
+    "maintenanceAnnual": "Mantenimiento {name}: {price} {period} (pago anual, 2 meses gratis)",
+    "maintenanceNone": "Sin mantenimiento por ahora",
+    "voiceUsage": "Agente de voz: {price} por mes + minutos según uso",
+    "offers": "Ofertas: {list}",
+    "vertical": "Rubro: {name}",
+    "localeCurrency": "Idioma: {language} · Moneda: {currency}",
+    "usdRef": "({amount})",
+    "perMonth": "por mes",
+    "perYear": "por año"
+  },
+  "problem": {
+    "eyebrow": "El problema",
+    "title": "¿Cuánto te cuesta <em>no tener</em> esto?",
+    "sub": "Cada consulta sin respuesta y cada hora copiando datos a mano tiene un precio. Poné tus números y miralo en tu moneda.",
+    "inputsTitle": "Tus números",
+    "verticalLegend": "Tu rubro",
+    "painLabel": "El problema típico",
+    "painFallback": "Consultas sin responder y horas de trabajo a mano",
+    "hoursLabel": "Horas por semana en tareas repetitivas",
+    "lostValueText": "{count} por semana",
+    "hoursValue": "{count} h",
+    "hoursValueText": "{count, plural, one {# hora} other {# horas}} por semana",
+    "approxValueText": "aproximadamente {amount}",
+    "resultTitle": "Estimación mensual",
+    "resultLead": "Estás perdiendo",
+    "resultTail": "por mes",
+    "resultAnnounce": "Estás perdiendo aproximadamente {amount} por mes.",
+    "breakdown": "Desglose",
+    "lostRevenue": "Ingresos que se escapan",
+    "lostDetail": "<n>{count}</n> al mes × {ticket}",
+    "timeCost": "Horas de tu equipo",
+    "timeDetail": "<n>{count}</n> h al mes × {rate} la hora",
+    "cta": "Recuperalo — pedí tu demo",
+    "ctaPlan": "Armá tu plan",
+    "note": "Es una estimación: {weeks} semanas por mes y {rate} por hora de trabajo. Tu número real puede ser otro.",
+    "whatsapp": "Hola Eclipse. Usé la calculadora de la web: estoy perdiendo unos {amount} por mes. Quiero recuperarlo. ¿Me muestran una demo? Rubro: {vertical}.",
+    "whatsappNoVertical": "Hola Eclipse. Usé la calculadora de la web: estoy perdiendo unos {amount} por mes. Quiero recuperarlo. ¿Me muestran una demo?"
+  },
+  "services": {
+    "eyebrow": "Qué hacemos",
+    "title": "Lo que construimos para que tu negocio <em>no se duerma</em>.",
+    "sub": "Seis servicios. Usalos solos o combinalos. Cualquiera sea, primero lo ves funcionando con tu negocio.",
+    "resultLabel": "Resultado",
+    "from": "Desde",
+    "add": "Sumalo a tu plan",
+    "items": {
+      "webs": {
+        "title": "Webs con motion",
+        "description": "Landings y sitios que se mueven, cargan rápido y explican tu negocio en segundos.",
+        "result": "Te escriben por WhatsApp con un toque, desde el celular."
+      },
+      "systems": {
+        "title": "Sistemas de turnos y pedidos",
+        "description": "Agenda online, confirmaciones automáticas y pedidos que llegan ordenados.",
+        "result": "Tus clientes reservan y piden solos, a cualquier hora."
+      },
+      "voice": {
+        "title": "Agentes de voz con IA",
+        "description": "Una voz natural que atiende el teléfono, responde lo de siempre y agenda.",
+        "result": "Atiende llamadas 24/7, también fuera de horario."
+      },
+      "chat": {
+        "title": "Chatbots y automatizaciones",
+        "description": "Respuestas al instante en WhatsApp y en tu web. Recordatorios y seguimientos que salen solos.",
+        "result": "Cada consulta tiene respuesta en segundos y a vos te llega el cliente listo."
+      },
+      "commerce": {
+        "title": "E-commerce",
+        "description": "Catálogo, carrito, pagos y envíos, con la identidad de tu marca.",
+        "result": "Vendés las 24 horas, aunque el local esté cerrado."
+      },
+      "apps": {
+        "title": "Apps y plataformas",
+        "description": "Tu servicio en una app propia: reservas, pedidos y pagos, con un panel para manejarlo.",
+        "result": "Tus clientes reservan, piden y pagan desde tu propia app."
+      }
+    }
+  },
+  "process": {
+    "eyebrow": "Cómo trabajamos",
+    "title": "Primero ves <em>tu demo</em>. Después hablamos.",
+    "sub": "Así vendemos: en {hours} horas armamos una demo de tu negocio, antes de cualquier llamada. Si te convence, seguimos.",
+    "durationLabel": "Plazo",
+    "hoursUnit": "h",
+    "from": "Desde",
+    "perMonth": "/mes",
+    "steps": {
+      "demo": {
+        "title": "Demo de tu negocio",
+        "body": "Con tu nombre, tu rubro y tus servicios. Te la mandamos por WhatsApp y la probás antes de cualquier llamada."
+      },
+      "call": {
+        "title": "Llamada y propuesta",
+        "body": "Charlamos sobre lo que viste y te mandamos la propuesta por escrito: alcance, precio y plazos."
+      },
+      "build": {
+        "title": "Seña y construcción",
+        "body": "Con la seña arrancamos. Construimos sobre la demo que ya aprobaste y ves cada avance.",
+        "meta": "Según alcance"
+      },
+      "launch": {
+        "title": "Entrega y capacitación",
+        "body": "Lo publicamos, lo dejamos funcionando y te enseñamos a usarlo, a vos y a tu equipo.",
+        "meta": "Con tu equipo"
+      },
+      "care": {
+        "title": "Mantenimiento y mejoras",
+        "body": "Hosting, backups y cambios todos los meses. Tu sistema crece con tu negocio."
+      }
+    },
+    "ctaLead": "El primer paso es ver tu negocio funcionando."
+  },
+  "builder": {
+    "eyebrow": "Generador de presupuesto",
+    "title": "Armá tu plan",
+    "pageTitle": "Armá tu <em>plan</em>",
+    "intro": "Elegí lo que necesitás. El total se arma solo, en tu moneda.",
+    "pageIntro": "Elegí lo que necesitás y mirá el número al instante. Si tu selección ya es un plan, te avisamos cuánto ahorrás.",
+    "copyLink": "Copiar link",
+    "linkCopied": "Link copiado",
+    "copyFailed": "No se pudo copiar",
+    "catalog": "Catálogo",
+    "vertical": "Tu rubro",
+    "optional": "opcional",
+    "categoryCount": "{count, plural, one {# elegido} other {# elegidos}}",
+    "includedIn": "Incluido en el plan {plan}",
+    "hintDashboard": "El dashboard brilla con un sistema detrás: sumá turnos, pedidos o e-commerce.",
+    "hintChatbot": "El chatbot rinde más con automatizaciones: responde y además hace el seguimiento.",
+    "detectTitle": "Esto es el plan {plan}: ahorrás ≈ {pct}%",
+    "detectBody": "Pagás {amount} menos que por separado.",
+    "detectCta": "Cambiar al plan",
+    "switched": "Cambiaste al plan {plan}.",
+    "removePlan": "Quitar plan",
+    "removePlanLabel": "Quitar el plan {plan} y volver a ítems sueltos",
+    "planRemoved": "Volviste a ítems sueltos.",
+    "removeItem": "Quitar {item}",
+    "summaryTitle": "Tu plan",
+    "empty": "Todavía no elegiste nada. Tocá lo que necesitás y el total se arma solo.",
+    "count": "{count, plural, one {# ítem} other {# ítems}}",
+    "planLine": "Plan {plan}",
+    "planIncludes": "Incluye {count, plural, one {# ítem} other {# ítems}}",
+    "total": "Total estimado",
+    "oneTime": "Pago único",
+    "range": "Según el alcance, entre {from} y {to}.",
+    "rangeNoDiscounts": "Según el alcance, entre {from} y {to} sin descuentos.",
+    "totalAnnounce": "Total estimado: {amount}",
+    "showSummary": "Ver resumen",
+    "hideSummary": "Ocultar resumen",
+    "maintenanceLegend": "Mantenimiento mensual",
+    "suggested": "Sugerido",
+    "noneDetail": "Lo manejás vos",
+    "maintenanceIncludes": "Incluye: {list}.",
+    "billingLegend": "Forma de pago del mantenimiento",
+    "freeMonths": "{count, plural, one {# mes gratis} other {# meses gratis}}",
+    "voiceUsage": "{name}: {price}/mes {note}",
+    "offersTitle": "Ofertas",
+    "applied": "Aplicada",
+    "comboApplied": "El agente de voz queda en {price}.",
+    "comboGap": "si el resto de tu plan llega a {min}, el agente de voz queda en {price}. Te faltan {missing}.",
+    "annualApplied": "Ahorrás {amount} por año en mantenimiento.",
+    "founderApplied": "Ahorrás {amount} en el pago único.",
+    "founderToggle": "Quiero precio fundador (−{pct}%)",
+    "founderDeal": "A cambio: tu testimonio, permiso para mostrar el caso y un referido.",
+    "founderLeft": "Quedan {left} de {total} lugares.",
+    "endsInDays": "Termina en {days, plural, one {# día} other {# días}}",
+    "endsInHours": "Termina en {hours, plural, one {# hora} other {# horas}}",
+    "send": "Enviar mi plan por WhatsApp",
+    "sendShort": "Enviar",
+    "sendDisabled": "Elegí al menos un ítem para enviar tu plan.",
+    "copySummary": "Copiar resumen",
+    "summaryCopied": "Resumen copiado",
+    "notice": "Precios estimados. La demo y la propuesta final ajustan el número a tu negocio."
+  },
+  "pricing": {
+    "eyebrow": "Precios",
+    "title": "Precios claros. <em>Sin letra chica.</em>",
+    "subtitle": "Cada plan arranca en un precio “desde” y tiene un rango según el alcance. Sumá extras, elegí el mantenimiento y mirá el total en tu moneda, al instante.",
+    "featured": "Recomendado",
+    "from": "Desde",
+    "range": "Rango según alcance: <nums>{from} – {to}</nums>",
+    "separate": "Por separado: {separate} → <save>ahorrás <count>≈ {pct}%</count></save>",
+    "includes": "Qué incluye",
+    "addons": "Sumá extras",
+    "add": "Sumar",
+    "added": "Sumado",
+    "included": "Incluido",
+    "includedNote": "Ya viene en el plan",
+    "comboBadge": "Combo",
+    "maintenance": "Mantenimiento + hosting",
+    "perMonth": "por mes",
+    "perYear": "por año",
+    "none": "Ninguno",
+    "suggested": "Sugerido",
+    "optional": "Opcional. Para arrancar, con {name} alcanza.",
+    "voiceUsage": "+ {name}: {price}/mes {note}",
+    "total": "Total estimado",
+    "recurring": "+ {price} {period} de mantenimiento",
+    "cta": "Lo quiero",
+    "ctaLabel": "Lo quiero: plan {name}, por WhatsApp",
+    "live": "{plan}: total estimado desde {total}.",
+    "liveMaintenance": "{plan}: mantenimiento {name}, {price} {period}.",
+    "liveNoMaintenance": "{plan}: sin mantenimiento.",
+    "billing": {
+      "label": "Pago del mantenimiento",
+      "monthly": "Mensual",
+      "annual": "Anual",
+      "free": "{months, plural, one {# mes gratis} other {# meses gratis}}"
+    },
+    "founder": {
+      "left": "{left, plural, one {# lugar libre de {total}} other {# lugares libres de {total}}}",
+      "cta": "Ver programa fundador"
+    },
+    "offers": {
+      "label": "Ofertas vigentes",
+      "endsIn": "Termina en {time}",
+      "days": "{days} d {hours} h",
+      "hours": "{hours} h {minutes} min",
+      "minutes": "{minutes} min"
+    },
+    "carousel": {
+      "label": "Planes",
+      "hint": "{count} planes. Deslizá para verlos.",
+      "goTo": "Ver plan {name}",
+      "goToFeatured": "Ir al más elegido",
+      "dots": "Elegí qué plan ver"
+    },
+    "build": {
+      "title": "¿Necesitás otra combinación?",
+      "text": "Elegí ítem por ítem y mirá el presupuesto al instante.",
+      "cta": "Armá tu plan",
+      "note": "Los precios son “desde”: el valor final depende del alcance. Antes de empezar te pasamos el número final."
+    },
+    "care": {
+      "eyebrow": "Mantenimiento + hosting",
+      "title": "Tu sitio no se apaga cuando terminamos. <em>Lo mantenemos vivo.</em>",
+      "subtitle": "Hosting, seguridad, backups y cambios por un precio fijo. Elegís el nivel según lo que construimos juntos.",
+      "suggestedFor": "Sugerido para {plans}",
+      "voiceText": "Se suma solo cuando tu plan tiene agente de voz: un fijo por mes más los minutos que use.",
+      "perMonthShort": "/mes"
+    }
+  },
+  "heroReveal": {
+    "hint": "Demo navegable: probala como si fuera tuya.",
+    "loading": "Cargando la demo de {business}…"
+  },
+  "demoShowcase": {
+    "laptopLabel": "{business}: demo navegable, versión de escritorio",
+    "phoneLabel": "{business}: demo navegable, versión para celular"
+  },
+  "demoClinic": {
+    "tabs": {
+      "agenda": "Agenda",
+      "reminders": "Recordatorios",
+      "absences": "Ausencias"
+    },
+    "live": "En vivo",
+    "reception": "Recepción",
+    "pros": {
+      "lucia": {
+        "name": "Dra. Lucía M.",
+        "short": "Lucía"
+      },
+      "tomas": {
+        "name": "Dr. Tomás R.",
+        "short": "Tomás"
+      },
+      "sofia": {
+        "name": "Lic. Sofía P.",
+        "short": "Sofía"
+      }
+    },
+    "specialties": {
+      "all": "Todos",
+      "dental": "Odontología",
+      "ortho": "Ortodoncia",
+      "aesthetic": "Estética"
+    },
+    "treatments": {
+      "cleaning": "Limpieza dental",
+      "checkup": "Control",
+      "filling": "Arreglo",
+      "whitening": "Blanqueamiento",
+      "orthoConsult": "Consulta de ortodoncia",
+      "braces": "Ajuste de brackets",
+      "aligners": "Control de alineadores",
+      "facial": "Limpieza facial",
+      "peeling": "Peeling",
+      "aestheticConsult": "Consulta estética"
+    },
+    "patients": {
+      "you": "Vos",
+      "ana": "Ana L.",
+      "diego": "Diego S.",
+      "carla": "Carla B.",
+      "camila": "Camila R.",
+      "pedro": "Pedro A.",
+      "martina": "Martina G.",
+      "lucas": "Lucas D.",
+      "paula": "Paula N.",
+      "bruno": "Bruno C.",
+      "elena": "Elena V.",
+      "sebastian": "Sebastián F.",
+      "nicolas": "Nicolás T.",
+      "renata": "Renata V.",
+      "joaquin": "Joaquín M.",
+      "valentina": "Valentina S.",
+      "lola": "Lola K.",
+      "irene": "Irene Q.",
+      "florencia": "Florencia H.",
+      "micaela": "Micaela O.",
+      "julieta": "Julieta A.",
+      "rocio": "Rocío E.",
+      "gabriela": "Gabriela Z.",
+      "julian": "Julián P.",
+      "agustina": "Agustina R.",
+      "mateo": "Mateo L.",
+      "emilia": "Emilia C.",
+      "santiago": "Santiago B.",
+      "clara": "Clara M.",
+      "facundo": "Facundo V."
+    },
+    "firstNames": {
+      "martina": "Martina"
+    },
+    "status": {
+      "done": "Atendido",
+      "now": "En curso",
+      "confirmed": "Confirmado",
+      "reminded": "Recordatorio enviado",
+      "new": "Nuevo · online",
+      "waitlist": "Lista de espera",
+      "you": "Reservado por vos",
+      "freed": "Liberado",
+      "noshow": "Ausente"
+    },
+    "agenda": {
+      "title": "Agenda",
+      "days": "Días de la semana",
+      "filter": "Filtrar por especialidad",
+      "occupancy": "{booked} de {total} turnos ocupados",
+      "freeLeft": "{count, plural, one {# turno libre} other {# turnos libres}}",
+      "free": "Libre",
+      "freeHint": "Tocá para reservar",
+      "pastFree": "Sin reservar",
+      "showPast": "Ver turnos anteriores ({count})",
+      "hidePast": "Ocultar turnos anteriores",
+      "bookTitle": "Reservar turno",
+      "bookWhen": "{day} · {time} · {pro}",
+      "treatment": "Tratamiento",
+      "confirm": "Confirmar reserva",
+      "cancel": "Cancelar",
+      "pickSlot": "Elegí un horario libre en la grilla para reservarlo.",
+      "now": "Ahora",
+      "freeSlot": "{time}, {pro}: libre. Reservar",
+      "busySlot": "{time}, {pro}: {patient}, {treatment}, {status}",
+      "emptySlot": "{time}, {pro}: sin reservar"
+    },
+    "kpis": {
+      "today": "Turnos hoy",
+      "confirmed": "Confirmados",
+      "confirmedOf": "de {count} reservados",
+      "recovered": "Recuperados esta semana",
+      "recoveredHint": "con recordatorios y lista de espera",
+      "waitlist": "En lista de espera",
+      "waitlistHint": "listos para tomar un turno libre"
+    },
+    "activity": {
+      "title": "Actividad en vivo",
+      "justNow": "Ahora",
+      "sent": "Se enviaron {count} recordatorios por WhatsApp para hoy",
+      "new": "Nuevo turno online: {patient}, {time} con {pro}",
+      "confirm": "{patient} confirmó por WhatsApp el turno de las {time}",
+      "cancel": "{patient} canceló el turno de las {time}",
+      "reschedule": "{patient} reprogramó por WhatsApp. Se liberó el turno de las {time}",
+      "refill": "{patient} tomó el turno de las {time} desde la lista de espera",
+      "you": "Reservaste el turno de las {time} con {pro}"
+    },
+    "chat": {
+      "heading": "Así le llega a tu paciente",
+      "hint": "Respondé como si fueras {name}.",
+      "online": "en línea",
+      "typing": "escribiendo…",
+      "typingLabel": "{business} está escribiendo",
+      "log": "Conversación simulada de WhatsApp entre {business} y {name}",
+      "auto": "Mensaje automático",
+      "reminder": "Hola, {name}. Te escribimos de {business}. Te recordamos tu turno de hoy: {treatment}, a las {time} con {pro}.",
+      "ask": "¿Nos confirmás si venís?",
+      "choices": {
+        "confirm": "Confirmo",
+        "reschedule": "Reprogramar",
+        "cancel": "Cancelar turno"
+      },
+      "confirmed": "¡Gracias, {name}! Te esperamos a las {time}. Si podés, llegá 10 minutos antes.",
+      "offer": "Sin problema. Estos son los próximos turnos libres con {pro}:",
+      "rescheduled": "Listo, quedaste para el {slot}. Te mandamos un recordatorio el día anterior.",
+      "cancelled": "Listo, cancelamos tu turno. Cuando quieras, escribinos y te buscamos otro horario.",
+      "agenda": "En la agenda",
+      "sysConfirmed": "{name} confirmó. El turno de las {time} queda firme.",
+      "sysFreed": "Se liberó el turno de las {time}. Se lo ofrecemos a la lista de espera.",
+      "sysFreedOff": "Se liberó el turno de las {time}. La lista de espera está pausada.",
+      "sysRefilled": "{name} tomó el turno de las {time} desde la lista de espera.",
+      "replay": "Ver de nuevo",
+      "read": "Leído"
+    },
+    "reminders": {
+      "title": "Recordatorios",
+      "subtitle": "Turnos de hoy por WhatsApp",
+      "stats": {
+        "sent": "Enviados",
+        "confirmed": "Confirmados",
+        "changed": "Con cambios",
+        "pending": "Sin respuesta"
+      },
+      "patients": "Pacientes de hoy",
+      "patientView": "Vista del paciente",
+      "state": {
+        "waiting": "Esperando respuesta",
+        "confirmed": "Confirmó",
+        "rescheduled": "Reprogramó",
+        "cancelled": "Canceló"
+      },
+      "rulesTitle": "Automatizaciones",
+      "rules": {
+        "day": {
+          "title": "24 h antes",
+          "body": "Mensaje con botones para confirmar, reprogramar o cancelar."
+        },
+        "hours": {
+          "title": "2 h antes",
+          "body": "Último aviso el mismo día, con la dirección."
+        },
+        "waitlist": {
+          "title": "Lista de espera",
+          "body": "Si alguien cancela, el turno se ofrece solo al primero de la lista."
+        }
+      },
+      "on": "Activo",
+      "off": "Pausado"
+    },
+    "absences": {
+      "title": "Ausencias",
+      "subtitle": "Esta semana",
+      "recovered": "Turnos recuperados esta semana",
+      "revenue": "Ingresos que no se perdieron",
+      "fromWaitlist": "Desde lista de espera",
+      "fromReminders": "Confirmados por recordatorio",
+      "noShows": "Ausencias esta semana",
+      "before": "Antes: {count} por semana",
+      "change": "{value} de ausencias",
+      "chartTitle": "Ausencias por semana",
+      "chartBefore": "Sin recordatorios",
+      "chartAfter": "Con recordatorios",
+      "week": "S{n}",
+      "thisWeek": "Esta",
+      "barLabel": "{week}: {count} ausencias",
+      "todayTitle": "Recuperados hoy",
+      "todayEmpty": "Todavía no se recuperó ningún turno hoy.",
+      "waitlist": "En lista de espera"
+    }
+  },
+  "demoGym": {
+    "live": "En vivo",
+    "pts": "pts",
+    "pointsLabel": "{count, plural, one {# punto} other {# puntos}}",
+    "me": "Sol",
+    "memberView": "Así lo ve tu socio",
+    "ownerView": "Así lo ves vos",
+    "ownerPanel": "Panel del dueño",
+    "replay": "Ver de nuevo",
+    "tabs": {
+      "home": "Inicio",
+      "missions": "Misiones",
+      "ranking": "Ranking",
+      "panel": "Panel",
+      "retention": "Retención",
+      "members": "Socios"
+    },
+    "members": {
+      "sol": "Sol R.",
+      "ana": "Ana L.",
+      "bruno": "Bruno C.",
+      "carla": "Carla B.",
+      "lucas": "Lucas D.",
+      "elena": "Elena V.",
+      "tomas": "Tomás R.",
+      "julia": "Julia M.",
+      "mateo": "Mateo F.",
+      "diego": "Diego S.",
+      "paula": "Paula N.",
+      "martin": "Martín G.",
+      "renata": "Renata P.",
+      "sebastian": "Sebastián T.",
+      "julian": "Julián A."
+    },
+    "home": {
+      "hello": "Hola, {name}",
+      "missionsValue": "{done} de {total} misiones completadas",
+      "bonus": "Completalas y sumá +{points} pts",
+      "bonusDone": "Semana completa",
+      "weekPoints": "{points} pts esta semana",
+      "nextMission": "Tu próxima misión",
+      "weekDone": "Tu semana",
+      "allMissions": "Ver todas"
+    },
+    "streak": {
+      "title": "Tu racha",
+      "days": "{count, plural, one {día seguido} other {días seguidos}}",
+      "next": "{count, plural, one {Falta # día} other {Faltan # días}} para la insignia de {goal} días",
+      "week": "Esta semana",
+      "dayDone": "{day}: entrenaste",
+      "todayDone": "{day}, hoy: entrenaste",
+      "todayPending": "{day}, hoy: falta tu check-in"
+    },
+    "checkin": {
+      "cta": "Hacer check-in",
+      "hint": "Tocá al llegar al gimnasio",
+      "done": "Check-in hecho",
+      "doneHint": "Hoy, {time} · racha de {count, plural, one {# día} other {# días}}"
+    },
+    "missionsView": {
+      "title": "Misiones de la semana",
+      "subtitle": "{count, plural, one {Queda # día} other {Quedan # días}} · se renuevan el lunes",
+      "progress": "{done} de {total} completadas",
+      "bonus": "Completá todas y sumá +{points} pts de bonus.",
+      "bonusDone": "¡Semana completa! Sumaste +{points} pts de bonus."
+    },
+    "missions": {
+      "completed": "Completada",
+      "days": {
+        "title": "Entrená {goal} días esta semana",
+        "detail": "Cada check-in suma un día.",
+        "short": "{goal} días de entrenamiento",
+        "progress": "{value} de {goal} días",
+        "action": "Hacer check-in"
+      },
+      "cardio": {
+        "title": "Sumá {goal} minutos de cardio",
+        "detail": "Cinta, bici o remo: se registra desde la máquina.",
+        "short": "{goal} min de cardio",
+        "progress": "{value} de {goal} min",
+        "action": "Registrar {minutes} min de cinta"
+      },
+      "class": {
+        "title": "Probá una clase nueva",
+        "detail": "Funcional, spinning o yoga: una que todavía no hiciste.",
+        "short": "Una clase nueva",
+        "progress": "{value} de {goal}"
+      },
+      "friend": {
+        "title": "Traé a un amigo",
+        "detail": "Con un pase de invitado por un día.",
+        "short": "Traer a un amigo",
+        "progress": "{value} de {goal}",
+        "action": "Enviar pase de invitado",
+        "waiting": "Esperando a tu amigo"
+      }
+    },
+    "stats": {
+      "title": "Misiones esta semana",
+      "total": "<n>{count}</n> completadas",
+      "participation": "El {value} de los socios ya completó al menos una misión esta semana."
+    },
+    "ranking": {
+      "title": "Ranking",
+      "ownerSubtitle": "Puntos por check-ins, misiones y bonus semanal. Arranca de cero cada lunes.",
+      "period": "Período del ranking",
+      "week": "Semana",
+      "month": "Mes",
+      "yourPlace": "Tu puesto",
+      "position": "Puesto {rank}",
+      "climbedShort": "{count, plural, one {# puesto} other {# puestos}}",
+      "up": "{count, plural, one {subió # puesto} other {subió # puestos}}",
+      "down": "{count, plural, one {bajó # puesto} other {bajó # puestos}}",
+      "youUp": "{count, plural, one {Subiste # puesto} other {Subiste # puestos}}",
+      "rowLabel": "{rank}. {name}, {points} puntos",
+      "streak": "{count, plural, one {# día} other {# días}}",
+      "noStreak": "Sin racha",
+      "toPass": "Te faltan {points} pts para pasar a {name}.",
+      "first": "Vas primero. Mantené la racha para quedarte arriba.",
+      "howPoints": "Cada check-in suma {checkin} pts, cada misión suma lo suyo y completar la semana da {bonus} de bonus.",
+      "colMember": "Socio",
+      "colStreak": "Racha",
+      "colChange": "Cambio",
+      "colPoints": "Puntos"
+    },
+    "rules": {
+      "title": "Cómo se suman puntos",
+      "checkin": "Check-in",
+      "bonus": "Semana completa"
+    },
+    "you": {
+      "tag": "Vos",
+      "checkin": "Check-in hecho: racha de {count, plural, one {# día} other {# días}} · +{points} pts",
+      "mission": "Misión completada: {mission} · +{points} pts",
+      "bonus": "¡Semana completa! +{points} pts de bonus",
+      "invite": "Pase enviado. Te avisamos cuando llegue tu amigo.",
+      "friend": "Tu amigo hizo check-in: misión completada · +{points} pts",
+      "rankUp": "Subiste al puesto {rank} del ranking",
+      "rankDown": "{by} te pasó: estás en el puesto {rank}"
+    },
+    "activity": {
+      "title": "Actividad en vivo",
+      "justNow": "Ahora",
+      "onPhone": "En el teléfono",
+      "auto": "La app mandó {count} misiones de regreso a socios en riesgo",
+      "checkin": "{name} hizo check-in · racha de {count, plural, one {# día} other {# días}}",
+      "return": "{name} volvió después de {count} días sin venir",
+      "mission": "{name} completó «{mission}» · +{points} pts",
+      "bonus": "{name} completó todas las misiones de la semana · +{points} pts",
+      "invite": "{name} mandó un pase de invitado a un amigo",
+      "friend": "Entró el invitado de {name}: un posible socio nuevo",
+      "sent": "Misión de regreso enviada a {name}",
+      "rankUp": "{name} subió al puesto {rank} del ranking",
+      "rankDown": "{by} pasó a {name} en el ranking"
+    },
+    "churn": {
+      "title": "Bajas por mes",
+      "inMonth": "bajas en {month}",
+      "change": "{value} de bajas",
+      "before": "Antes: {count} por mes",
+      "chart": "Bajas por mes en los últimos seis meses",
+      "barLabel": "{month}: {count} bajas",
+      "legendBefore": "Sin misiones",
+      "legendAfter": "Con misiones y rachas",
+      "kept": "{count, plural, one {# socio más se quedó} other {# socios más se quedaron}} este mes. Cuotas que siguen entrando:"
+    },
+    "kpis": {
+      "active": "Socios activos",
+      "activeHint": "con la cuota al día",
+      "atRisk": "En riesgo",
+      "atRiskHint": "{days} días o más sin venir",
+      "returned": "{count, plural, one {# volvió hoy} other {# volvieron hoy}}",
+      "checkins": "Check-ins hoy",
+      "checkinsHint": "desde que abrió el gimnasio",
+      "missions": "Misiones hechas",
+      "missionsHint": "esta semana · participa el {value} de los socios"
+    },
+    "risk": {
+      "title": "Socios en riesgo",
+      "subtitle": "{days} días o más sin venir. La app les manda una misión de regreso.",
+      "high": "riesgo alto",
+      "sent": "Misión enviada",
+      "back": "Volvió hoy",
+      "sendNow": "Enviar ahora",
+      "sentNow": "Enviada",
+      "sendTo": "Enviar ahora la misión de regreso a {name}",
+      "sentTo": "Misión de regreso enviada a {name}",
+      "away": "{count} días sin venir",
+      "backAfter": "Volvió hoy, después de {count} días",
+      "queuedAt": "sale sola a las {time}",
+      "more": "{count, plural, one {# socio más en seguimiento} other {# socios más en seguimiento}}"
+    },
+    "retention": {
+      "title": "Retención",
+      "subtitle": "Quién se queda, quién está por irse y qué hace la app para traerlo de vuelta."
+    },
+    "membersView": {
+      "title": "Socios",
+      "subtitle": "{count} socios activos · primero los que necesitan atención",
+      "filter": "Filtrar socios",
+      "filters": {
+        "all": "Todos",
+        "risk": "En riesgo",
+        "streak": "En racha",
+        "back": "Volvieron hoy"
+      },
+      "caption": "Socios: {filter}",
+      "colMember": "Socio",
+      "colStreak": "Racha",
+      "colLast": "Última visita",
+      "colMissions": "Misiones",
+      "colStatus": "Estado",
+      "today": "Hoy",
+      "yesterday": "Ayer",
+      "daysAgo": "{count, plural, one {Hace # día} other {Hace # días}}",
+      "missionsOf": "{done} de {total} misiones",
+      "empty": "No hay socios con este filtro.",
+      "status": {
+        "high": "Riesgo alto",
+        "medium": "Riesgo medio",
+        "back": "Volvió hoy",
+        "streak": "En racha",
+        "active": "Activo"
+      },
+      "note": {
+        "sent": "Misión de regreso enviada ayer",
+        "queued": "Misión de regreso: sale a las {time}",
+        "sentNow": "Misión de regreso enviada recién",
+        "back": "Volvió con la misión de regreso"
+      }
+    }
+  },
+  "demoRealEstate": {
+    "tabs": {
+      "chat": "Chat",
+      "inbox": "Consultas",
+      "listings": "Propiedades",
+      "leads": "Leads"
+    },
+    "aiOn": "IA activa",
+    "office": "Oficina",
+    "closed": "Cerrada hasta el lunes a las 10 h",
+    "slotLong": "{day} {date} a las {time}",
+    "ops": {
+      "sale": "Comprar",
+      "rent": "Alquilar"
+    },
+    "types": {
+      "all": "Todos",
+      "apartment": "Departamento",
+      "house": "Casa",
+      "duplex": "Dúplex"
+    },
+    "zones": {
+      "centro": "Centro",
+      "arboleda": "La Arboleda",
+      "ribera": "La Ribera",
+      "colinas": "Las Colinas"
+    },
+    "features": {
+      "balcony": "Balcón",
+      "garage": "Cochera",
+      "garden": "Jardín",
+      "pool": "Pileta",
+      "river": "Vista al río",
+      "pets": "Acepta mascotas",
+      "amenities": "Amenities",
+      "terrace": "Terraza"
+    },
+    "listing": {
+      "price": "USD {amount}",
+      "rent": "USD {amount}/mes",
+      "beds": "{count, plural, one {# dorm.} other {# dorm.}}",
+      "baths": "{count, plural, one {# baño} other {# baños}}",
+      "area": "{count} m²",
+      "title": "{type} en {zone}",
+      "inquiries": "{count, plural, one {# consulta} other {# consultas}}",
+      "recommended": "Sugerida a {name}",
+      "new": "Nueva",
+      "recommendedShort": "Sugerida"
+    },
+    "filters": {
+      "op": "Operación",
+      "type": "Tipo de propiedad",
+      "beds": "Dormitorios",
+      "any": "Todos",
+      "bedsMin": "{count}+",
+      "price": "Precio máximo",
+      "upTo": "Hasta {price}",
+      "noLimit": "Sin tope",
+      "results": "{count, plural, =0 {Sin resultados} one {# propiedad} other {# propiedades}}",
+      "clear": "Limpiar",
+      "empty": "No hay propiedades con esos filtros."
+    },
+    "listings": {
+      "title": "Propiedades",
+      "subtitle": "{count} publicadas",
+      "inquiriesWeek": "consultas esta semana"
+    },
+    "people": {
+      "live": "Carolina M.",
+      "liveFirst": "Carolina",
+      "advisor": "Julia R.",
+      "advisorFirst": "Julia",
+      "tomas": "Tomás B.",
+      "lucia": "Lucía F.",
+      "martin": "Martín G.",
+      "valeria": "Valeria S.",
+      "diego": "Diego P."
+    },
+    "channels": {
+      "whatsapp": "WhatsApp",
+      "web": "Web",
+      "instagram": "Instagram"
+    },
+    "stages": {
+      "live": "Calificando",
+      "new": "Nuevo",
+      "qualified": "Calificado",
+      "visit": "Visita agendada"
+    },
+    "chat": {
+      "heading": "Así le responde a tu cliente",
+      "hint": "Respondé como si fueras {name}.",
+      "aiTag": "IA",
+      "online": "en línea · responde al instante",
+      "typing": "escribiendo…",
+      "typingLabel": "{business} está escribiendo",
+      "log": "Conversación simulada de WhatsApp entre {name} y {business}",
+      "closed": "Fuera de horario: te responde Lumi, el asistente virtual de {business}. Un asesor sigue la charla el lunes.",
+      "inquiry": "Hola, ¿atienden hoy? Busco un depto de {beds} dormitorios en {zone}.",
+      "greet": "¡Hola, {name}! Soy Lumi, el asistente virtual de {business}. La oficina abre el lunes, pero te ayudo ahora. ¿Querés comprar o alquilar?",
+      "ops": {
+        "sale": "Quiero comprar",
+        "rent": "Quiero alquilar"
+      },
+      "budgetAskSale": "Genial. ¿Hasta cuánto pensás invertir?",
+      "budgetAskRent": "Genial. ¿Cuánto querés pagar por mes, como máximo?",
+      "budgetReply": "Hasta {price}",
+      "matches": "{count, plural, one {Tengo # opción que encaja con lo que buscás:} other {Tengo # opciones que encajan con lo que buscás:}}",
+      "visitAsk": "¿Querés visitarlas? {advisor}, nuestra asesora, tiene estos horarios:",
+      "booked": "¡Listo, {name}! Visita agendada para el {slot} con {advisor}. Te mando la ubicación por acá y un recordatorio el día anterior.",
+      "crmTag": "CRM",
+      "crm": "Lead calificado: {name} ya está en el CRM con presupuesto, zona y visita agendada.",
+      "responded": "Respondió en {seconds} s",
+      "viewListing": "Ver ficha",
+      "replay": "Ver de nuevo",
+      "read": "Leído"
+    },
+    "stats": {
+      "thisChat": "Esta charla",
+      "avgWeekend": "Promedio",
+      "underMinute": "En < 1 min",
+      "seconds": "{seconds} s"
+    },
+    "kpis": {
+      "inquiries": "Consultas recibidas",
+      "inquiriesHint": "Del viernes a las 19 h a hoy",
+      "fast": "Respondidas en < 1 min",
+      "fastHint": "{count} de {count}, incluso de noche y en fin de semana.",
+      "avg": "Respuesta promedio",
+      "avgHint": "Sin esperar al lunes",
+      "secondsUnit": "s",
+      "visits": "Visitas agendadas",
+      "visitsHint": "Para esta semana, en la agenda del equipo"
+    },
+    "inbox": {
+      "title": "Consultas",
+      "subtitle": "La oficina está cerrada: el agente IA responde por vos.",
+      "list": "Conversaciones recientes",
+      "now": "Ahora",
+      "agentTyping": "Lumi está escribiendo…",
+      "agentSays": "Lumi: {text}",
+      "responded": "{seconds} s",
+      "previews": {
+        "tomas": "¿Puedo ver la casa de Las Colinas el sábado a la mañana?",
+        "lucia": "¿El depto del Centro acepta mascotas?",
+        "martin": "¿El dúplex de La Ribera tiene cochera?",
+        "valeria": "¿Cuánto son las expensas del depto con vista al río?",
+        "diego": "Hola, ¿tienen algo en La Arboleda?"
+      }
+    },
+    "lead": {
+      "title": "Lead calificado",
+      "qualifying": "Calificando en vivo",
+      "pending": "Pendiente",
+      "unknown": "Sin definir",
+      "score": "Intención",
+      "intent": {
+        "high": "Alta",
+        "medium": "Media",
+        "low": "Baja"
+      },
+      "seeksLabel": "Busca",
+      "seeks": "{op} · {type} · {beds}",
+      "zone": "Zona",
+      "budget": "Presupuesto",
+      "budgetUpTo": "Hasta {price}",
+      "channel": "Canal",
+      "next": "Próximo paso",
+      "nextVisit": "Visita {slot} con {advisor}",
+      "nextCall": "Llamada de {advisor} el lunes a las 10 h",
+      "nextFollowup": "Seguimiento automático el lunes",
+      "listings": "Propiedades sugeridas",
+      "noListings": "Todavía ninguna",
+      "summaryLabel": "Resumen de la IA",
+      "responded": "{seconds} s",
+      "intentVerb": {
+        "sale": "Quiere comprar",
+        "rent": "Quiere alquilar"
+      },
+      "summary": {
+        "live": "{intent} un depto de {beds} dormitorios en {zone}, hasta {budget}. Recibió {count} opciones y agendó visita para el {slot}.",
+        "tomas": "Familia de cuatro. Busca casa con jardín en Las Colinas y vende su depto actual. Visita el sábado a las 10.",
+        "lucia": "Busca depto de 1 dormitorio en el Centro para mudarse en noviembre. Tiene un gato: pidió confirmar si aceptan mascotas.",
+        "martin": "Inversor. Quiere el dúplex de La Ribera con cochera; pidió planos y expensas. Visita el lunes a las 11.",
+        "valeria": "Quiere alquilar con vista al río y amenities. Preguntó por las expensas; prefiere que la llamen después de las 18 h.",
+        "diego": "Preguntó por La Arboleda y no volvió a responder. Lumi le escribe de nuevo el lunes con 3 opciones."
+      }
+    },
+    "leads": {
+      "title": "Leads",
+      "subtitle": "Calificados por el agente IA mientras la oficina estaba cerrada.",
+      "liveTitle": "Ahora mismo",
+      "othersTitle": "Del fin de semana",
+      "openChat": "Ver la conversación",
+      "waiting": "Esperando la próxima consulta…",
+      "tableCaption": "Leads del fin de semana",
+      "cols": {
+        "lead": "Lead",
+        "seeks": "Busca",
+        "budget": "Presupuesto",
+        "score": "Intención",
+        "stage": "Etapa"
+      },
+      "hints": {
+        "new": "Lumi les vuelve a escribir solo",
+        "qualified": "Listos para que los llame el equipo",
+        "visit": "Ya están en la agenda"
+      }
+    },
+    "announce": {
+      "lead": "Nuevo lead calificado: {name}, intención {score} de 100. Visita agendada para el {slot}."
+    }
+  },
+  "examples": {
+    "eyebrow": "Ejemplos",
+    "title": "Mirá un negocio como el tuyo <em>funcionando</em>.",
+    "sub": "Tres negocios de demo, cada uno con el problema más caro de su rubro. Mirá el trailer de {seconds} segundos o abrí la demo y usala.",
+    "pain": "El problema",
+    "result": "En la demo",
+    "openDemo": "Abrir demo",
+    "openDemoLabel": "Abrir demo: {business}",
+    "modal": {
+      "close": "Cerrar la demo",
+      "hint": "Es una demo navegable: tocá y probá todo.",
+      "loading": "Cargando la demo de {business}…",
+      "wantThis": "Quiero esto para mi negocio"
+    },
+    "notListed": {
+      "title": "¿No ves tu rubro? <em>Lo armamos en 48 h.</em>",
+      "body": "Contanos qué hace tu negocio y te mostramos tu demo.",
+      "cta": "Escribinos por WhatsApp",
+      "message": "Hola Eclipse. Mi rubro no está en los ejemplos de la web. ¿Me arman una demo? Mi negocio es:"
+    },
+    "note": "Los negocios de estos ejemplos son ficticios. Sus números son el escenario de cada demo, no resultados de clientes."
+  },
+  "trailers": {
+    "title": "{business} — Demo",
+    "player": {
+      "play": "Reproducir trailer: {title}",
+      "muted": "Sin sonido",
+      "length": "{seconds} s",
+      "summary": "Trailer de {seconds} segundos, sin sonido."
+    },
+    "summary": "{problem} Escenario de la demo: {pain}. {feature} Resultado: {result}.",
+    "scenario": "Escenario de la demo",
+    "solution": "Así lo resuelve la demo",
+    "withEclipse": "Con Eclipse",
+    "brand": "Eclipse",
+    "endLine": "Hecho a medida de tu negocio.",
+    "clinic": {
+      "problem1": "El paciente no vino.",
+      "problem2": "Y nadie avisó.",
+      "pain": "turnos vacíos por semana",
+      "feature": "Recordatorios por WhatsApp y lista de espera automática.",
+      "screen": {
+        "title": "Agenda de hoy",
+        "today": "Hoy",
+        "unconfirmed": "Sin confirmar",
+        "confirmed": "Confirmado",
+        "cancelled": "Canceló",
+        "reassigned": "Reasignado",
+        "free": "Libre",
+        "booked": "Ocupado",
+        "toastReminder": "Recordatorio enviado por WhatsApp",
+        "toastWaitlist": "Lista de espera: turno ocupado"
+      }
+    },
+    "realEstate": {
+      "problem1": "Son las 23:40.",
+      "problem2": "Nadie responde.",
+      "pain": "consultas sin respuesta por semana",
+      "feature": "Un agente responde al instante, a cualquier hora.",
+      "screen": {
+        "online": "En línea",
+        "question": "Hola, ¿sigue disponible el depto de 2 ambientes?",
+        "answer": "¡Sí! Te paso fotos y horarios. ¿Te queda bien verlo mañana a las 18?",
+        "listing": "2 ambientes con balcón",
+        "listingMeta": "Disponible · Visitas esta semana",
+        "cta": "Agendar visita",
+        "replied": "Respondido en 40 s"
+      }
+    },
+    "gym": {
+      "problem1": "Vino tres semanas.",
+      "problem2": "Después, nunca más.",
+      "pain": "socios que se dan de baja por semana",
+      "feature": "Misiones y rachas que hacen volver.",
+      "screen": {
+        "title": "Tu semana",
+        "streak": "Racha",
+        "days": "{count, plural, one {# día} other {# días}}",
+        "missions": "Misiones",
+        "m1": "3 clases esta semana",
+        "m2": "Probá una clase nueva",
+        "m3": "Traé a un amigo",
+        "levelUp": "¡Subiste de nivel!",
+        "level": "Nivel {count}"
+      }
+    }
+  },
+  "founders": {
+    "eyebrow": "Programa fundador",
+    "title": "Clientes <em>fundadores</em>",
+    "sub": "Estamos eligiendo los primeros {total} negocios. Precio fundador, prioridad total y tu caso contado acá.",
+    "subNoOffer": "Estamos eligiendo los primeros {total} negocios para trabajar codo a codo y contar su caso acá.",
+    "eyebrowClients": "Casos reales",
+    "titleClients": "<em>Clientes</em>",
+    "subClients": "Los primeros negocios que confiaron en nosotros. Cada caso, contado con sus números.",
+    "counter": "{left, plural, one {<v>Queda</v> <n>{left}</n> de {total}} other {<v>Quedan</v> <n>{left}</n> de {total}}}",
+    "counterSr": "{left, plural, one {# lugar de fundador libre de {total}} other {# lugares de fundador libres de {total}}}",
+    "slotsLabel": "Lugares del programa fundador",
+    "clientsLabel": "Clientes",
+    "slot": {
+      "number": "Lugar {n}",
+      "free": "Libre",
+      "founder": "Fundador",
+      "emptyTitle": "Tu negocio acá",
+      "cta": "Quiero ser fundador",
+      "ctaLabel": "Quiero ser fundador: lugar {n} de {total}, por WhatsApp",
+      "case": "Ver caso",
+      "caseOf": "de {name}",
+      "logoAlt": "Logo de {name}"
+    },
+    "deal": {
+      "title": "Un trato <em>de ida y vuelta</em>",
+      "get": "Lo que recibís",
+      "give": "Lo que nos das",
+      "priceText": "Sobre el total del desarrollo, mientras queden lugares.",
+      "maintenanceTitle": "Primer mes de mantenimiento bonificado",
+      "maintenanceText": "El plan de mantenimiento que elijas, sin costo el primer mes.",
+      "priorityTitle": "Prioridad en la cola",
+      "priorityText": "Tu proyecto arranca primero y tus pedidos pasan adelante.",
+      "testimonialTitle": "Tu testimonio",
+      "testimonialText": "Con tus palabras: cómo te fue trabajando con nosotros.",
+      "caseTitle": "Permiso para mostrar tu caso",
+      "caseText": "Tu negocio y tus resultados, contados en esta sección.",
+      "referralTitle": "Un referido",
+      "referralText": "Nos presentás a un negocio que pueda necesitarnos."
+    },
+    "next": "¿Querés ser el próximo caso?",
+    "whatsapp": "Hola Eclipse. Quiero ser cliente fundador.",
+    "whatsappVertical": "Hola Eclipse. Quiero ser cliente fundador. Mi rubro: {vertical}."
+  },
+  "agent": {
+    "eyebrow": "Tu turno",
+    "title": "Tu negocio, <em>a plena luz</em>.",
+    "sub": "Pedí tu demo y en {hours} horas ves tu negocio funcionando, antes de cualquier llamada. ¿Preferís ver números primero? Armá tu plan.",
+    "chat": {
+      "label": "Vista previa del agente de Eclipse",
+      "name": "Agente Eclipse",
+      "status": "Una muestra guionada del agente que entrenamos con tu negocio en la demo.",
+      "log": "Conversación con el agente",
+      "typing": "El agente está escribiendo",
+      "restart": "Reiniciar",
+      "restartLabel": "Reiniciar la conversación",
+      "restarted": "Conversación reiniciada.",
+      "suggestions": "Respuestas sugeridas",
+      "inputLabel": "Tu respuesta",
+      "send": "Enviar",
+      "you": "Vos",
+      "bot": {
+        "hello": "Hola, soy el agente de Eclipse. Esto es una vista previa: en tu demo me entrenan con los datos de tu negocio.",
+        "askVertical": "Para arrancar, ¿de qué rubro es tu negocio?",
+        "askOther": "Contame: ¿a qué se dedica tu negocio?",
+        "knownVertical": "Vi que elegiste {vertical}. Arranquemos por ahí.",
+        "askNeed": "¿Qué te gustaría resolver primero?",
+        "askName": "Perfecto. Última pregunta: ¿cómo te llamás?",
+        "done": "Gracias, {name}. Te dejé el resumen listo. Seguimos por WhatsApp y te responde una persona del equipo."
+      },
+      "placeholder": {
+        "idle": "El agente está por escribir…",
+        "vertical": "O escribí tu rubro…",
+        "verticalOther": "Escribí tu rubro…",
+        "need": "O escribilo vos…",
+        "name": "Tu nombre…",
+        "wait": "Un segundo…"
+      },
+      "mic": "Agente de voz, vista previa",
+      "micTip": "Agente de voz — disponible en tu demo",
+      "otherVertical": "Otro",
+      "needs": {
+        "leads": "Más turnos o consultas",
+        "always": "Responder 24/7",
+        "sell": "Vender online",
+        "ops": "Ordenar mi operación"
+      },
+      "summary": {
+        "title": "Resumen",
+        "name": "Nombre",
+        "vertical": "Rubro",
+        "need": "Necesidad"
+      },
+      "whatsappCta": "Seguir por WhatsApp",
+      "message": "Hola Eclipse. Hablé con el agente de la web.\nNombre: {name}\nRubro: {vertical}\nNecesito: {need}\nIdioma: {language}"
+    }
+  }
+}

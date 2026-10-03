@@ -1,0 +1,11 @@
+{
+  "$comment": "Slots de clientes fundadores. Para sumar uno: filled=true y completar name, vertical (id de verticals.json), result {es,en,pt}, logo (ruta en /public, opcional) y caseUrl (opcional). Cuando los 5 están llenos, la sección pasa a 'Clientes' y se apaga el precio fundador.",
+  "total": 5,
+  "slots": [
+    { "id": "fundador-1", "filled": false },
+    { "id": "fundador-2", "filled": false },
+    { "id": "fundador-3", "filled": false },
+    { "id": "fundador-4", "filled": false },
+    { "id": "fundador-5", "filled": false }
+  ]
+}
