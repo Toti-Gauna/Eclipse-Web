@@ -141,7 +141,7 @@
       "gimnasios": "Every week I lose <lost></lost> paying <ticket></ticket> a month.",
       "tiendas": "Every week I lose <lost></lost>, with an average order of <ticket></ticket>.",
       "restaurantes": "Every week I lose <lost></lost>, worth <ticket></ticket> each on average.",
-      "servicios": "Every week I lose <lost></lost>, each worth <ticket></ticket>.",
+      "academias": "Every week I lose <lost></lost> paying <ticket></ticket> a month.",
       "otro": "Every week I lose <lost></lost>, worth <ticket></ticket> each on average."
     },
     "hours": "My team spends <hours></hours> a week on tasks that could run on their own.",
@@ -166,9 +166,9 @@
         "one": "order or booking",
         "other": "orders or bookings"
       },
-      "servicios": {
-        "one": "job",
-        "other": "jobs"
+      "academias": {
+        "one": "student",
+        "other": "students"
       },
       "otro": {
         "one": "inquiry or sale",
@@ -185,7 +185,7 @@
       "gimnasios": "a gym",
       "tiendas": "an online store",
       "restaurantes": "a restaurant",
-      "servicios": "a home-services business",
+      "academias": "a school or academy",
       "otro": "another kind of business"
     },
     "ticketValueText": "{amount} each",

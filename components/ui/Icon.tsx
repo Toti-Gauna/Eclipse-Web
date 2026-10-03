@@ -7,6 +7,7 @@ import {
   Clapperboard,
   ClipboardList,
   Dumbbell,
+  GraduationCap,
   LayoutDashboard,
   LayoutTemplate,
   Megaphone,
@@ -21,7 +22,6 @@ import {
   Trophy,
   UtensilsCrossed,
   Workflow,
-  Wrench,
   type LucideIcon,
   type LucideProps,
 } from 'lucide-react';
@@ -36,6 +36,7 @@ export const contentIcons: Record<string, LucideIcon> = {
   Clapperboard,
   ClipboardList,
   Dumbbell,
+  GraduationCap,
   LayoutDashboard,
   LayoutTemplate,
   Megaphone,
@@ -50,7 +51,6 @@ export const contentIcons: Record<string, LucideIcon> = {
   Trophy,
   UtensilsCrossed,
   Workflow,
-  Wrench,
 };
 
 export function ContentIcon({ name, ...props }: { name: string } & LucideProps) {

@@ -11,5 +11,5 @@ export const DEMO_PALETTES: Partial<Record<DemoId, readonly string[]>> = {
   gym: ['#0B0C0F', '#CCFF33', '#FF3E8A'],
   shop: ['#FBF6EE', '#2B1B14', '#E4472B', '#EADFCB'],
   restaurant: ['#1A1113', '#F3E6D0', '#B23A52', '#8C9A4B'],
-  ondemand: ['#F3F5F7', '#0F2440', '#12A45B', '#3AA0FF'],
+  academy: ['#172338', '#F3F0E6', '#7CC8F5', '#FF9F87'],
 };

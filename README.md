@@ -27,7 +27,7 @@ nos escriba por WhatsApp.
   Mantenimiento → Resumen).
 - **Demos v2** sobre un kit propio (`components/demos/kit`, guía en `components/demos/README.md`): sidebar
   colapsable, chatbots, agentes de voz, gamificación, sitios públicos y paneles, cada demo con su marca y paleta.
-  Rubros: clínica, inmobiliaria, gimnasio, **tienda online**, **restaurante** y **servicios a domicilio** (app on-demand).
+  Rubros: clínica, inmobiliaria, gimnasio, **tienda online**, **restaurante** y **academias y cursos** (plataforma propia).
 
 ---
 
@@ -112,7 +112,7 @@ después de editar.
 | `content/addons.json` | Extras que se suman a un paquete en el armador. Si el paquete ya incluye el `itemId`, se muestra como "Incluido" (`whenIncluded: show`) o se oculta (`hide`). `offer` lo conecta con el combo de voz. |
 | `content/maintenance.json` | Planes mensuales, uso del agente de voz (49 + minutos) y `annualMonthsCharged` (10 = 2 meses gratis). |
 | `content/offers.json` | Ofertas reales. `active` las prende/apaga; `endsAt` (ISO, opcional) muestra un contador y las apaga sola. |
-| `content/verticals.json` | Rubros (7: clínicas, inmobiliarias, gimnasios, tiendas online, restaurantes, servicios a domicilio, otro): negocio ficticio, demo, dolor, número clave y valores por defecto de la calculadora. Un rubro nuevo con demo necesita además su carpeta en `components/demos/<id>/` (ver `components/demos/README.md`), su trailer en `components/trailers/` y las entradas en los dos `registry.ts`. |
+| `content/verticals.json` | Rubros (7: clínicas, inmobiliarias, gimnasios, tiendas online, restaurantes, academias y cursos, otro): negocio ficticio, demo, dolor, número clave y valores por defecto de la calculadora. Un rubro nuevo con demo necesita además su carpeta en `components/demos/<id>/` (ver `components/demos/README.md`), su trailer en `components/trailers/` y las entradas en los dos `registry.ts`. |
 | `content/founders.json` | Slots de clientes fundadores (ver abajo). |
 | `content/units.json` | Unidades de Eclipse (Agency activa; Media y Market "Próximamente"). |
 | `content/rates.fallback.json` | Cotizaciones de respaldo si fallan las APIs. |

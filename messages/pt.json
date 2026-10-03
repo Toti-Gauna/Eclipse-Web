@@ -141,7 +141,7 @@
       "gimnasios": "Toda semana perco <lost></lost>, com mensalidade de <ticket></ticket>.",
       "tiendas": "Toda semana perco <lost></lost>, com ticket médio de <ticket></ticket>.",
       "restaurantes": "Toda semana perco <lost></lost>, de <ticket></ticket> em média.",
-      "servicios": "Toda semana perco <lost></lost>, e cada um vale <ticket></ticket>.",
+      "academias": "Toda semana perco <lost></lost>, com mensalidade de <ticket></ticket>.",
       "otro": "Toda semana perco <lost></lost>, de <ticket></ticket> em média."
     },
     "hours": "Minha equipe gasta <hours></hours> por semana em tarefas que poderiam rodar sozinhas.",
@@ -166,9 +166,9 @@
         "one": "pedido ou reserva",
         "other": "pedidos ou reservas"
       },
-      "servicios": {
-        "one": "serviço",
-        "other": "serviços"
+      "academias": {
+        "one": "aluno",
+        "other": "alunos"
       },
       "otro": {
         "one": "contato ou venda",
@@ -185,7 +185,7 @@
       "gimnasios": "uma academia",
       "tiendas": "uma loja online",
       "restaurantes": "um restaurante",
-      "servicios": "um serviço a domicílio",
+      "academias": "uma escola ou curso",
       "otro": "outro tipo de negócio"
     },
     "ticketValueText": "{amount} cada",

@@ -6,5 +6,5 @@ export const DEMO_NAMESPACES = [
   'demoGym',
   'demoShop',
   'demoRestaurant',
-  'demoOndemand',
+  'demoAcademy',
 ] as const;

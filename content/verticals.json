@@ -225,53 +225,49 @@
       }
     },
     {
-      "id": "servicios",
-      "icon": "Wrench",
-      "demo": "ondemand",
-      "name": {
-        "es": "Servicios a domicilio",
-        "en": "Home services",
-        "pt": "Serviços a domicílio"
-      },
+      "id": "academias",
+      "icon": "GraduationCap",
+      "demo": "academy",
+      "name": { "es": "Academias y cursos", "en": "Schools & courses", "pt": "Escolas e cursos" },
       "longName": {
-        "es": "Servicios a domicilio y apps on-demand",
-        "en": "Home services and on-demand apps",
-        "pt": "Serviços a domicílio e apps sob demanda"
+        "es": "Academias, institutos y cursos online",
+        "en": "Language schools, institutes and online courses",
+        "pt": "Escolas de idiomas, institutos e cursos online"
       },
-      "business": "Tuerca Hogar",
+      "business": "Atrio Idiomas",
       "pain": {
-        "es": "Pedidos que se pierden en el chat y técnicos sin coordinar",
-        "en": "Requests lost in the chat and uncoordinated technicians",
-        "pt": "Pedidos perdidos no chat e técnicos sem coordenação"
+        "es": "Alumnos que abandonan a mitad de curso",
+        "en": "Students who drop out halfway through",
+        "pt": "Alunos que desistem no meio do curso"
       },
       "keyNumber": {
-        "value": 15,
-        "prefix": "< ",
-        "suffix": " min",
+        "value": 82,
+        "prefix": "",
+        "suffix": "%",
         "headline": {
-          "es": "Asigna un técnico en menos de 15 minutos",
-          "en": "Assigns a technician in under 15 minutes",
-          "pt": "Designa um técnico em menos de 15 minutos"
+          "es": "82% de los alumnos termina el curso",
+          "en": "82% of students finish the course",
+          "pt": "82% dos alunos terminam o curso"
         },
         "label": {
-          "es": "para asignar un técnico",
-          "en": "to assign a technician",
-          "pt": "para designar um técnico"
+          "es": "de los alumnos termina el curso",
+          "en": "of students finish the course",
+          "pt": "dos alunos terminam o curso"
         }
       },
       "calculator": {
-        "lostPerWeek": 8,
-        "ticketUsd": 45,
-        "hoursPerWeek": 12,
+        "lostPerWeek": 3,
+        "ticketUsd": 50,
+        "hoursPerWeek": 10,
         "lostLabel": {
-          "es": "Trabajos perdidos por semana",
-          "en": "Jobs lost per week",
-          "pt": "Serviços perdidos por semana"
+          "es": "Alumnos que abandonan por semana",
+          "en": "Students who drop out per week",
+          "pt": "Alunos que desistem por semana"
         },
         "ticketLabel": {
-          "es": "Valor promedio de un trabajo",
-          "en": "Average job value",
-          "pt": "Valor médio de um serviço"
+          "es": "Cuota mensual promedio",
+          "en": "Average monthly fee",
+          "pt": "Mensalidade média"
         }
       }
     },

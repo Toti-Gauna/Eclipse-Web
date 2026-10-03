@@ -4,6 +4,6 @@ import type { DemoProps } from '../types';
 import { PlaceholderDemo } from '../PlaceholderDemo';
 
 /** TEMPORARY (v2): replaced by the real demo. */
-export default function OndemandDemo(props: DemoProps) {
-  return <PlaceholderDemo {...props} id="ondemand" />;
+export default function AcademyDemo(props: DemoProps) {
+  return <PlaceholderDemo {...props} id="academy" />;
 }

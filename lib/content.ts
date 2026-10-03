@@ -49,9 +49,9 @@ export type VerticalId =
   | 'gimnasios'
   | 'tiendas'
   | 'restaurantes'
-  | 'servicios'
+  | 'academias'
   | 'otro';
-export type DemoId = 'clinic' | 'realEstate' | 'gym' | 'shop' | 'restaurant' | 'ondemand';
+export type DemoId = 'clinic' | 'realEstate' | 'gym' | 'shop' | 'restaurant' | 'academy';
 export type OfferId = 'founder' | 'combo-voz' | 'annual' | 'referral';
 
 export interface ItemCategory {
