@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { useLocale } from 'next-intl';
 import { useIsClient } from '@/components/motion/useIsClient';
 import { useReducedMotion } from '@/components/motion/useReducedMotion';
 import { Eclipse } from './Eclipse';
@@ -10,25 +11,40 @@ import { useCorona } from './corona/useCorona';
 import { useStarParallax } from './useStarParallax';
 import { useHeroMotion } from './useHeroMotion';
 import { LIMB_POINT } from './geometry';
+import { Dial } from './Dial';
+import { useDial } from './useDial';
+import { l, verticals } from '@/lib/content';
+import type { Locale } from '@/i18n/routing';
 
 /**
  * Full-bleed visual layer of the hero (behind the copy, decorative).
  *
  * Layers, back to front: warm sky (scroll) · stars (parallax) · bloom (scroll) ·
- * eclipse (CSS corona first paint → WebGL corona when supported) · diamond ring
- * (reveal only). Wrappers keep every motion on its own element:
+ * eclipse (CSS corona first paint → WebGL corona when supported) · the dial
+ * (instrument bezel, aimed by the rubro chips) · diamond ring (reveal only).
+ * Wrappers keep every motion on its own element:
  *   [data-hero-eclipse-motion] parallax x/y + scroll scale
  *   [data-hero-eclipse]        entrance (opacity + scale)
  *   [data-eclipse-moon-scroll] scroll moon offset · [data-eclipse-moon] reveal moon offset
  */
 export function HeroStage() {
-  const { phase, bus } = useHeroState();
+  const { phase, bus, registerDial } = useHeroState();
   const reduced = useReducedMotion();
   const isClient = useIsClient();
   const motion = isClient && !reduced;
+  const locale = useLocale() as Locale;
   const stage = useRef<HTMLDivElement>(null);
   const glHost = useRef<HTMLDivElement>(null);
+  const bezel = useRef<HTMLDivElement>(null);
+  const readout = useRef<HTMLDivElement>(null);
   const covered = phase === 'open';
+
+  const names = useMemo(() => verticals.map((v) => l(v.name, locale)), [locale]);
+  const dialController = useDial(bezel, readout, names, motion);
+  useEffect(() => {
+    registerDial(dialController);
+    return () => registerDial(null);
+  }, [registerDial, dialController]);
 
   const setCoronaActive = useCorona(glHost, bus);
   useStarParallax(stage, motion);
@@ -74,6 +90,7 @@ export function HeroStage() {
             <Eclipse className="[--eclipse-size:var(--hero-eclipse-size)]">
               <div ref={glHost} data-corona-host className="eclipse-gl-host" />
             </Eclipse>
+            <Dial bezelRef={bezel} readoutRef={readout} />
             {phase !== 'closed' && !reduced ? (
               <div
                 data-diamond

@@ -29,32 +29,40 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await ctx.close();
 }
 
-// 2. Home (mobile): loader only on first visit, no horizontal overflow, H1 present in HTML.
+// 2. Home (mobile): loader on every load, no horizontal overflow, H1 present in HTML.
 {
   const { ctx, page, errors } = await newPage(360, 780);
-  await page.goto(`${BASE}/es/`);
-  check('loader shown on first visit', (await page.getAttribute('html', 'data-loader')) === 'on');
-  await page.waitForTimeout(1800);
-  await page.reload();
-  check('loader skipped on second visit', (await page.getAttribute('html', 'data-loader')) === null);
+  await page.goto(`${BASE}/es/`, { waitUntil: 'domcontentloaded' });
+  check('loader shown on load', (await page.getAttribute('html', 'data-loader')) === 'on');
+  await page.waitForTimeout(2400);
+  check('loader done after ~1.8 s', (await page.getAttribute('html', 'data-loader')) === 'done');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  check('loader shown again on refresh', (await page.getAttribute('html', 'data-loader')) === 'on');
+  await page.waitForTimeout(2400);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   check('no horizontal overflow at 360px', overflow <= 0, `${overflow}px`);
   check('hero H1 rendered', (await page.locator('h1#hero-title').count()) === 1);
 
-  // Sections hydrate lazily: pricing becomes interactive after scrolling to it.
+  // Sections hydrate lazily: the calculator reacts once it is reached.
+  await page.evaluate(() => document.getElementById('problema')?.scrollIntoView());
+  await page.waitForTimeout(1500);
+  const calcBefore = await page.locator('#problema').innerText();
+  await page.locator('#problema .vf').first().locator('button').last().click();
+  await page.waitForTimeout(900);
+  check('calculator +1 updates the sentence and the total', (await page.locator('#problema').innerText()) !== calcBefore);
+
+  // Pricing: package rows open on phones after lazy hydration.
   await page.evaluate(() => document.getElementById('precios')?.scrollIntoView());
   await page.waitForTimeout(1500);
-  const card = page.locator('#precios .plan-card').first();
-  check('pricing cards present', (await card.count()) > 0);
-  const firstCard = page.locator('#precios .plan-card').first();
-  await firstCard.scrollIntoViewIfNeeded();
+  const rows = page.locator('#precios .pr-plan');
+  check('pricing package rows present', (await rows.count()) >= 7, `${await rows.count()}`);
+  const toggle = rows.first().locator('.pr-plan-toggle').first();
+  await toggle.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(600);
+  await toggle.click();
   await page.waitForTimeout(800);
-  const addBtn = firstCard.locator('button[aria-pressed]').first();
-  const before = await firstCard.innerText();
-  await addBtn.click();
-  await page.waitForTimeout(1200);
-  const after = await firstCard.innerText();
-  check('pricing add-on toggles after lazy hydration', before !== after && (await addBtn.getAttribute('aria-pressed')) === 'true');
+  check('package row opens after lazy hydration', (await toggle.getAttribute('aria-expanded')) === 'true');
+  check('one monthly/annual switch on the page', (await page.locator('#precios [role="radiogroup"], #precios [data-billing-toggle]').count()) <= 1);
 
   // Header flips to the light theme over the dawn sections.
   const headerLight = await page.evaluate(() => document.querySelector('header.site-header')?.classList.contains('theme-light'));
@@ -98,12 +106,35 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
     await back.click();
     await page.waitForTimeout(1800);
   }
+  // Sound is opt-in; the preferences popover explains the currency.
+  const sound = page.getByRole('banner').getByRole('button', { name: /Sonido/ }).first();
+  check('sound is off by default', (await sound.getAttribute('aria-pressed')) === 'false');
+  await page.getByRole('banner').getByRole('button', { name: /Idioma y moneda/ }).first().click();
+  await page.waitForTimeout(600);
+  const prefs = page.getByRole('dialog', { name: /Idioma, moneda/ }).first();
+  check('preferences popover shows the rate used', /1 USD ≈/.test(await prefs.innerText()));
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(400);
+
+  // Sala de demos: one tab per business with a demo.
+  await page.evaluate(() => document.getElementById('ejemplos')?.scrollIntoView());
+  await page.waitForTimeout(1500);
+  check('demo room lists every business', (await page.locator('#ejemplos [role="tab"]').count()) >= 6);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(500);
+
   await page.getByRole('banner').getByRole('button', { name: 'Armá tu plan' }).first().click();
   await page.waitForTimeout(1500);
   check('builder drawer opens from header', (await page.locator('dialog[open]').count()) === 1);
-  const item = page.locator('dialog[open] input[type="checkbox"]').first();
-  await item.check({ force: true });
+  const goal = page.locator('dialog[open] input[type="checkbox"]').first();
+  await goal.check({ force: true });
   await page.waitForTimeout(800);
+  for (let i = 0; i < 3; i++) {
+    const next = page.locator('dialog[open] button', { hasText: /Siguiente/ }).first();
+    if (!(await next.count())) break;
+    await next.click();
+    await page.waitForTimeout(700);
+  }
   const send = page.locator('dialog[open] a[href^="https://wa.me/"]').first();
   const href = (await send.count()) ? await send.getAttribute('href') : '';
   const msg = decodeURIComponent((href ?? '').split('text=')[1] ?? '');
@@ -120,7 +151,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.goto(`${BASE}/en/plan/?items=turnos,pedidos,automatizacion,dashboard,landing,voz&m=crecimiento`);
   await page.waitForTimeout(2500);
   const text = await page.locator('main').innerText();
-  check('/plan detects the System plan from the URL', /System plan/i.test(text), '');
+  check('/plan detects the System package from the URL', /System (plan|package)/i.test(text), '');
   check('no page errors (/plan)', errors.length === 0, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }
@@ -149,7 +180,9 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const { ctx, page, errors } = await newPage(1440, 900);
   await page.goto(`${BASE}/es/plan/?items=landing`);
   await page.waitForTimeout(1500);
-  const en = page.getByRole('navigation', { name: 'Idioma' }).first().getByRole('link', { name: 'English' });
+  await page.getByRole('banner').getByRole('button', { name: /Idioma y moneda/ }).first().click();
+  await page.waitForTimeout(600);
+  const en = page.getByRole('group', { name: /Idioma/ }).first().getByRole('link', { name: /English/ });
   const href = await en.getAttribute('href');
   check('locale link keeps path + query under the basePath', href === '/Eclipse-Web/en/plan/?items=landing', href ?? '');
   await en.click();

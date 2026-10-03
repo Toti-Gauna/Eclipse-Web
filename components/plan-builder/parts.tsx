@@ -1,15 +1,28 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
-import { useTranslations } from 'next-intl';
-import { Check, Clock, MessageCircle, Sparkles } from 'lucide-react';
+import { useEffect, useId, useState, type ReactNode } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { ArrowRight, Check, Clock, MessageCircle } from 'lucide-react';
 import { useIsClient } from '@/components/motion/useIsClient';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
+import { useSound } from '@/components/sound/SoundContext';
+import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
+import { itemById, l } from '@/lib/content';
 import { track } from '@/lib/analytics';
+import type { Locale } from '@/i18n/routing';
 import type { PlanSwitch } from './rules';
 import { timeLeft } from './rules';
 import { copyText } from './browser';
+
+/** The square (multi-select) or round (single choice) mark of a row. Decorative. */
+export function Mark({ checked, round = false }: { checked: boolean; round?: boolean }) {
+  return (
+    <span aria-hidden className={`pb-mark ${round ? 'pb-mark--round' : ''}`} data-checked={checked || undefined}>
+      {round ? <span className="pb-mark-dot" /> : <Check strokeWidth={2.4} />}
+    </span>
+  );
+}
 
 /** Button that copies text and confirms with a polite status ("Copiado"). */
 export function CopyButton({
@@ -30,6 +43,7 @@ export function CopyButton({
   labelClassName?: string;
 }) {
   const t = useTranslations('builder');
+  const { play } = useSound();
   const [status, setStatus] = useState<'idle' | 'done' | 'fail'>('idle');
   useEffect(() => {
     if (status === 'idle') return;
@@ -47,9 +61,10 @@ export function CopyButton({
           if (disabled) return;
           const ok = await copyText(getText(), e.currentTarget.closest('dialog'));
           setStatus(ok ? 'done' : 'fail');
+          if (ok) play('success');
         }}
       >
-        {status === 'done' ? <Check aria-hidden className="size-4 shrink-0 text-corona" strokeWidth={2} /> : icon}
+        {status === 'done' ? <Check aria-hidden className="size-4 shrink-0 text-accent" strokeWidth={2} /> : icon}
         <span className={labelClassName}>{status === 'idle' ? label : message}</span>
       </button>
       <span role="status" className="sr-only">
@@ -60,39 +75,43 @@ export function CopyButton({
 }
 
 /**
- * "Enviar mi plan por WhatsApp". A real wa.me link; while nothing is selected it is
- * an aria-disabled button that stays focusable and explains why.
+ * "Enviar por WhatsApp". A real wa.me link; while nothing is selected it is an
+ * aria-disabled button that stays focusable and explains why.
  */
 export function SendAction({
   message,
   disabled,
-  compact = false,
   describedBy,
   analytics,
+  className = '',
+  label,
 }: {
   message: string;
   disabled: boolean;
-  compact?: boolean;
   describedBy?: string;
   analytics: { items: string; plan: string; total: number; count: number };
+  className?: string;
+  /** Visible label (the accessible name is always the full "Enviar mi plan por WhatsApp"). */
+  label?: ReactNode;
 }) {
   const t = useTranslations('builder');
-  const label = compact ? t('sendShort') : t('send');
-  const className = `btn btn-primary ${compact ? 'btn-sm shrink-0 !px-4' : 'w-full'}`;
+  const { play } = useSound();
+  const full = t('send');
   const content = (
     <>
       <MessageCircle aria-hidden className="size-[1.1em] shrink-0" strokeWidth={1.8} />
-      {label}
+      <span>{label ?? full}</span>
     </>
   );
+  const aria = label !== undefined && label !== full ? full : undefined;
   if (disabled) {
     return (
       <button
         type="button"
         aria-disabled="true"
-        aria-label={compact ? t('send') : undefined}
+        aria-label={aria}
         aria-describedby={describedBy}
-        className={`${className} cursor-not-allowed opacity-45 !shadow-none`}
+        className={`btn btn-primary ${className} cursor-not-allowed opacity-45 !shadow-none`}
       >
         {content}
       </button>
@@ -103,16 +122,22 @@ export function SendAction({
       origin="builder"
       message={message}
       extra={{ items: analytics.count, plan: analytics.plan }}
-      aria-label={compact ? t('send') : undefined}
-      className={className}
-      onClick={() => track('builder_sent', { items: analytics.items, plan: analytics.plan, total: analytics.total })}
+      aria-label={aria}
+      className={`btn btn-primary ${className}`}
+      onClick={() => {
+        play('glint');
+        track('builder_sent', { items: analytics.items, plan: analytics.plan, total: analytics.total });
+      }}
     >
       {content}
     </WhatsAppLink>
   );
 }
 
-/** "Esto es el plan Sistema: ahorrás ≈ X%" + "Cambiar al plan". */
+/**
+ * "Con esto te conviene el paquete Sistema: ahorrás ≈ X%" + one tap to switch.
+ * When the package brings more pieces than the visitor picked, it says which.
+ */
 export function DetectBanner({
   suggestion,
   planName,
@@ -125,30 +150,32 @@ export function DetectBanner({
   compact?: boolean;
 }) {
   const t = useTranslations('builder');
+  const locale = useLocale() as Locale;
   const { format } = useCurrency();
-  const title = t('detectTitle', { plan: planName, pct: suggestion.savingsPct });
-  if (compact) {
-    return (
-      <div className="pb-pop flex items-center gap-3 border-b border-corona/25 bg-[linear-gradient(90deg,rgb(245_185_66/0.16),rgb(245_185_66/0.06))] px-4 py-2.5">
-        <Sparkles aria-hidden className="size-4 shrink-0 text-corona" strokeWidth={1.6} />
-        <p className="min-w-0 flex-1 text-[0.8rem] font-medium leading-snug text-flare">{title}</p>
-        <button type="button" onClick={onSwitch} className="btn btn-primary btn-sm shrink-0 !min-h-11 !px-3.5 text-[0.8rem]">
-          {t('detectCta')}
-        </button>
-      </div>
-    );
-  }
+  const more = suggestion.adds.length > 0;
+  const title = more
+    ? t('detectMoreTitle', { plan: planName, count: suggestion.adds.length, pct: suggestion.savingsPct })
+    : t('detectTitle', { plan: planName, pct: suggestion.savingsPct });
+  const list = new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' }).format(
+    suggestion.adds.map((id) => {
+      const item = itemById(id);
+      return item ? l(item.name, locale) : id;
+    }),
+  );
+  const body = more ? t('detectMoreBody', { list, amount: format(suggestion.savingsUsd) }) : t('detectBody', { amount: format(suggestion.savingsUsd) });
+  const id = useId();
   return (
-    <div className="pb-pop relative overflow-hidden rounded-card-sm border border-corona/40 bg-[radial-gradient(120%_140%_at_100%_0%,rgb(245_185_66/0.22),rgb(245_185_66/0.05)_60%)] p-4">
-      <div className="flex items-start gap-3">
-        <Sparkles aria-hidden className="mt-0.5 size-5 shrink-0 text-corona" strokeWidth={1.5} />
-        <div className="min-w-0">
-          <p className="font-medium leading-snug text-flare">{title}</p>
-          <p className="mt-1 text-sm text-fg-muted">{t('detectBody', { amount: format(suggestion.savingsUsd) })}</p>
-        </div>
+    <div className="pb-detect" data-compact={compact || undefined}>
+      <PhaseGlyph phase={1} size={compact ? 18 : 22} className="pb-detect-glyph" />
+      <div className="pb-detect-text">
+        <p id={`${id}-title`} className="pb-detect-title">
+          {title}
+        </p>
+        <p className={`pb-detect-body ${compact ? 'sr-only' : ''}`}>{body}</p>
       </div>
-      <button type="button" onClick={onSwitch} className="btn btn-primary btn-sm mt-4 w-full">
-        {t('detectCta')}
+      <button type="button" onClick={onSwitch} className="pb-detect-cta" aria-describedby={`${id}-title`}>
+        <span>{compact ? t('detectCtaShort') : t('detectCta')}</span>
+        <ArrowRight aria-hidden className="size-4 shrink-0" strokeWidth={1.6} />
       </button>
     </div>
   );

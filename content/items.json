@@ -1,12 +1,12 @@
 {
   "$comment": "Catálogo individual para 'Armá tu plan'. Precios en USD. Los planes (plans.json) y add-ons (addons.json) referencian estos ids.",
   "categories": [
-    { "id": "presencia", "name": { "es": "Presencia", "en": "Presence", "pt": "Presença" } },
-    { "id": "sistemas", "name": { "es": "Sistemas", "en": "Systems", "pt": "Sistemas" } },
-    { "id": "comercio", "name": { "es": "Comercio", "en": "Commerce", "pt": "Comércio" } },
-    { "id": "plataformas", "name": { "es": "Plataformas", "en": "Platforms", "pt": "Plataformas" } },
-    { "id": "ia", "name": { "es": "IA", "en": "AI", "pt": "IA" } },
-    { "id": "estrategia", "name": { "es": "Estrategia", "en": "Strategy", "pt": "Estratégia" } }
+    { "id": "presencia", "name": { "es": "Web y marca", "en": "Web & brand", "pt": "Web e marca" } },
+    { "id": "sistemas", "name": { "es": "Gestión y operación", "en": "Operations", "pt": "Gestão e operação" } },
+    { "id": "comercio", "name": { "es": "Venta online", "en": "Online sales", "pt": "Venda online" } },
+    { "id": "plataformas", "name": { "es": "Apps a medida", "en": "Custom apps", "pt": "Apps sob medida" } },
+    { "id": "ia", "name": { "es": "IA y agentes", "en": "AI & agents", "pt": "IA e agentes" } },
+    { "id": "estrategia", "name": { "es": "Estrategia y crecimiento", "en": "Strategy & growth", "pt": "Estratégia e crescimento" } }
   ],
   "items": [
     {
@@ -84,9 +84,9 @@
       "icon": "ClipboardList",
       "name": { "es": "Sistema de pedidos", "en": "Ordering system", "pt": "Sistema de pedidos" },
       "description": {
-        "es": "Pedidos online que llegan ordenados y sin errores.",
-        "en": "Online orders that arrive organized and error-free.",
-        "pt": "Pedidos online que chegam organizados e sem erros."
+        "es": "Pedidos online que llegan completos y ordenados.",
+        "en": "Online orders that arrive complete and organized.",
+        "pt": "Pedidos online que chegam completos e organizados."
       }
     },
     {
@@ -193,7 +193,7 @@
       },
       "description": {
         "es": "Responde al instante y te pasa los clientes listos.",
-        "en": "Replies instantly and hands you ready-to-buy leads.",
+        "en": "Replies instantly and hands you qualified leads.",
         "pt": "Responde na hora e te passa o cliente pronto."
       }
     },

@@ -1,10 +1,12 @@
 /**
  * Browser-only helpers for the builder: clipboard with a fallback, and the
- * sessionStorage copy of the plan (switching language keeps it).
+ * sessionStorage copy of the plan and its step (switching language keeps them).
  */
 import { decodePlanState, encodePlanState, type PlanState } from '@/lib/plan-url';
+import { isStep, type StepId } from './rules';
 
 export const PLAN_STORAGE_KEY = 'eclipse:plan';
+export const STEP_STORAGE_KEY = 'eclipse:plan-step';
 
 /** Fired by BuilderHost on /plan: the page builder applies the preset instead of opening the drawer. */
 export const BUILDER_FOCUS_EVENT = 'eclipse:builder-focus';
@@ -23,6 +25,23 @@ export function writeStoredPlan(state: PlanState): void {
     window.sessionStorage.setItem(PLAN_STORAGE_KEY, encodePlanState(state));
   } catch {
     // Storage blocked: the plan still lives in memory and in the URL.
+  }
+}
+
+export function readStoredStep(): StepId | null {
+  try {
+    const raw = window.sessionStorage.getItem(STEP_STORAGE_KEY);
+    return isStep(raw) ? raw : null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeStoredStep(step: StepId): void {
+  try {
+    window.sessionStorage.setItem(STEP_STORAGE_KEY, step);
+  } catch {
+    // Storage blocked: the step still lives in memory.
   }
 }
 

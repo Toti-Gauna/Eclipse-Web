@@ -43,8 +43,15 @@ export type ItemId =
 
 export type PlanId = 'diagnostico' | 'presencia' | 'voz' | 'automatiza' | 'sistema' | 'comercio' | 'plataforma';
 export type MaintenanceId = 'esencial' | 'crecimiento' | 'escala';
-export type VerticalId = 'clinicas' | 'inmobiliarias' | 'gimnasios' | 'otro';
-export type DemoId = 'clinic' | 'realEstate' | 'gym';
+export type VerticalId =
+  | 'clinicas'
+  | 'inmobiliarias'
+  | 'gimnasios'
+  | 'tiendas'
+  | 'restaurantes'
+  | 'servicios'
+  | 'otro';
+export type DemoId = 'clinic' | 'realEstate' | 'gym' | 'shop' | 'restaurant' | 'ondemand';
 export type OfferId = 'founder' | 'combo-voz' | 'annual' | 'referral';
 
 export interface ItemCategory {
@@ -61,8 +68,12 @@ export interface Item {
   description: Localized;
 }
 
+/** Presentational group of a plan in the pricing section: "Para empezar" / "Sistemas completos". */
+export type PlanTier = 'starter' | 'complete';
+
 export interface Plan {
   id: PlanId;
+  tier: PlanTier;
   priceUsd: { from: number; to: number };
   items: ItemId[];
   maintenance: MaintenanceId | null;

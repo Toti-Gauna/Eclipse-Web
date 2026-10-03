@@ -7,6 +7,7 @@ import { gsap, ScrollTrigger } from '@/components/motion/gsap';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useMediaQuery } from '@/components/motion/useMediaQuery';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
+import { useSound } from '@/components/sound/SoundContext';
 import { l, verticalById } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
 import { useHeroState, type DemoVertical, type RevealPhase } from './HeroState';
@@ -110,6 +111,12 @@ function RevealLayer({
   const halo = useRef<HTMLDivElement>(null);
   const running = useRef<Running | null>(null);
   const [inView, setInView] = useState(false);
+  // Sound cues of the reveal (no-ops until the visitor turns sound on).
+  const { play } = useSound();
+  const playRef = useRef(play);
+  useEffect(() => {
+    playRef.current = play;
+  });
 
   const v = verticalById(vertical);
   const business = v?.business ?? '';
@@ -192,7 +199,10 @@ function RevealLayer({
 
     if (reduced) {
       el.style.clipPath = 'none';
-      if (target === 'opening') setHeaderLight(true);
+      if (target === 'opening') {
+        setHeaderLight(true);
+        playRef.current('whoosh');
+      }
       start(gsap.timeline().fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power1.out' }), 'opening');
       if (target === 'closing') running.current?.tl.progress(1, true).reverse();
       return;
@@ -241,7 +251,12 @@ function RevealLayer({
         { x: MOON_DIR.x * REVEAL_MOON_DIAMOND, y: MOON_DIR.y * REVEAL_MOON_DIAMOND, duration: 0.62, ease: 'power2.inOut' },
         0,
       );
-      // 2 · diamond ring: an intense point + a 400 ms horizontal flare
+      // 2 · diamond ring: an intense point + a 400 ms horizontal flare (+ its glint),
+      //     then the light's whoosh. Cues only fire playing forward.
+      const cue = (name: 'glint' | 'whoosh') => () => {
+        if (!t1.reversed()) playRef.current(name);
+      };
+      t1.call(cue('glint'), undefined, 0.36).call(cue('whoosh'), undefined, 0.74);
       if (core)
         t1.fromTo(core, { autoAlpha: 0, scale: 0.15 }, { autoAlpha: 1, scale: 1, duration: 0.32, ease: 'expo.out' }, 0.34);
       if (flare)
@@ -354,15 +369,11 @@ function RevealLayer({
           className="container-x relative flex min-h-full flex-col pb-6 pt-[calc(var(--header-h)+0.5rem)] md:pt-[calc(var(--header-h)+1rem)]"
         >
           <div className="grid items-center gap-x-6 gap-y-2 md:grid-cols-[1fr_auto] md:gap-y-3 lg:grid-cols-[1fr_auto_1fr]">
-            <div data-reveal-item className="justify-self-start">
-              <button type="button" onClick={reset} className="btn btn-ghost btn-sm">
-                <ArrowLeft aria-hidden className="size-4" strokeWidth={1.6} />
-                {t('hero.seeAnother')}
-              </button>
-            </div>
+            {/* The title comes first in the DOM (focus lands on it when the light opens), so
+                Tab reaches "Ver otro rubro" next; the grid still shows the button first. */}
             <div
               data-reveal-item
-              className="md:col-span-2 md:row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:text-center"
+              className="row-start-2 md:col-span-2 md:row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:text-center"
             >
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 lg:justify-center">
                 <span className="badge-demo" aria-hidden>
@@ -379,6 +390,12 @@ function RevealLayer({
                 </h2>
               </div>
               <p className="mt-1.5 hidden text-sm text-fg-muted md:block">{t('heroReveal.hint')}</p>
+            </div>
+            <div data-reveal-item className="col-start-1 row-start-1 justify-self-start">
+              <button type="button" onClick={reset} className="btn btn-ghost btn-sm">
+                <ArrowLeft aria-hidden className="size-4" strokeWidth={1.6} />
+                {t('hero.seeAnother')}
+              </button>
             </div>
             <div data-reveal-item className="hidden justify-self-end md:col-start-2 md:row-start-1 md:block lg:col-start-3">
               {wantThis('btn btn-primary btn-sm')}

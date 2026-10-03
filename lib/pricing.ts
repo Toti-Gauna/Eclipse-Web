@@ -33,6 +33,7 @@ import {
   type OfferId,
   type Plan,
   type PlanId,
+  type PlanTier,
   type Rates,
   type VoiceComboOffer,
   type VoiceUsage,
@@ -258,6 +259,56 @@ export function annualize(monthlyUsd: number, monthsCharged: number = defaultAnn
   return monthlyUsd * monthsCharged;
 }
 
+/** Months not charged per year when paying maintenance annually (2 with the default 10). */
+export function annualFreeMonths(monthsCharged: number = defaultAnnualMonths): number {
+  return Math.min(12, Math.max(0, 12 - monthsCharged));
+}
+
+/** The cheapest maintenance plan: the "desde … por mes" of the pricing ledger. */
+export function lowestMaintenance(list: readonly MaintenancePlan[] = allMaintenance): MaintenancePlan | null {
+  return list.reduce<MaintenancePlan | null>((low, m) => (!low || m.priceUsd < low.priceUsd ? m : low), null);
+}
+
+// ---------------------------------------------------------------------------
+// Catalog views (services index, plan groups, offer conditions)
+// ---------------------------------------------------------------------------
+
+/** Lowest catalog price among the given items ("pieza suelta desde"). null when none is known. */
+export function lowestItemPrice(ids: readonly string[], catalog: readonly Item[] = allItems): number | null {
+  const wanted = new Set(ids);
+  const prices = catalog.filter((i) => wanted.has(i.id)).map((i) => i.priceUsd);
+  return prices.length ? Math.min(...prices) : null;
+}
+
+/** Plans (packages) that already include an item, in plans.json order. */
+export function plansIncluding(itemId: string, planList: readonly Plan[] = allPlans): Plan[] {
+  return planList.filter((p) => p.items.includes(itemId as ItemId));
+}
+
+export const PLAN_TIERS: readonly PlanTier[] = ['starter', 'complete'];
+
+/** Plans grouped by their presentational tier, tiers in PLAN_TIERS order, plans in plans.json order. */
+export function plansByTier(planList: readonly Plan[] = allPlans): { tier: PlanTier; plans: Plan[] }[] {
+  return PLAN_TIERS.map((tier) => ({ tier, plans: planList.filter((p) => p.tier === tier) })).filter((g) => g.plans.length > 0);
+}
+
+/**
+ * Where the voice combo price applies, split for the copy: plans of the offer that
+ * don't include the voice agent yet (it can be added at the combo price) and the ones
+ * that already include it. The other path (a selection that reaches minSubtotalUsd
+ * without the voice agent) is in voiceComboApplies().
+ */
+export function voiceComboPlans(
+  offer: Pick<VoiceComboOffer, 'itemId' | 'plans'>,
+  planList: readonly Plan[] = allPlans,
+): { addTo: Plan[]; included: Plan[] } {
+  const inOffer = planList.filter((p) => offer.plans.includes(p.id));
+  return {
+    addTo: inOffer.filter((p) => !p.items.includes(offer.itemId)),
+    included: inOffer.filter((p) => p.items.includes(offer.itemId)),
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Quote (plan card + builder)
 // ---------------------------------------------------------------------------
@@ -478,4 +529,38 @@ export function formatMoney(
     .join('');
   const approx = options.approx ?? isApproximate(currency);
   return approx && isApproximate(currency) ? `≈ ${formatted}` : formatted;
+}
+
+/**
+ * A converted, rounded amount without currency symbol or "≈": the second half of a
+ * range ("US$ 1.000 · hasta 1.500").
+ */
+export function formatAmount(
+  usd: number,
+  currency: Currency,
+  rates: Pick<Rates, 'ARS' | 'BRL'>,
+  locale: Locale | string = 'es',
+): string {
+  const tag = (localeTags as Record<string, string>)[locale] ?? locale;
+  return new Intl.NumberFormat(tag, { maximumFractionDigits: 0 }).format(toCurrency(usd, currency, rates));
+}
+
+/**
+ * The exchange rate itself, unrounded ("1 USD ≈ $ 1.450", "1 USD ≈ R$ 5,40"), for the
+ * conversion note next to local prices. USD → "US$ 1".
+ */
+export function formatRate(currency: Currency, rates: Pick<Rates, 'ARS' | 'BRL'>, locale: Locale | string = 'es'): string {
+  const tag = (localeTags as Record<string, string>)[locale] ?? locale;
+  const value = currency === 'USD' ? 1 : rates[currency];
+  const decimals = Number.isInteger(value) || value >= 100 ? 0 : 2;
+  return new Intl.NumberFormat(tag, {
+    style: 'currency',
+    currency,
+    currencyDisplay: 'symbol',
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  })
+    .formatToParts(value)
+    .map((part) => (part.type === 'currency' && currency === 'BRL' ? 'R$' : part.value))
+    .join('');
 }

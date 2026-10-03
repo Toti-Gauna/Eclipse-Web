@@ -1,54 +1,97 @@
 /*
- * "Agente en vivo + CTA final" (components/sections/agent). Light theme over --dawn.
- * The eclipse is resolved here: a full sun. Only transform/opacity are animated.
+ * 08 · "Tu negocio, a plena luz." (components/sections/agent). Light theme over --dawn.
+ * The eclipse is resolved here: the sun rises behind the title (Dawn.tsx).
+ * Only transform / opacity are animated.
  */
 
+/* The morning light, from the sun's side; it rises from the top edge so it never
+   ends in a hard line against the section above. */
 .agent-sky {
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(55% 40% at 18% 14%, rgb(255 232 176 / 0.95), transparent 72%),
-    radial-gradient(40% 35% at 85% 70%, rgb(245 185 66 / 0.12), transparent 70%);
-}
-@media (min-width: 1024px) {
-  .agent-sky {
-    background:
-      radial-gradient(42% 52% at 16% 26%, rgb(255 232 176 / 0.95), transparent 72%),
-      radial-gradient(36% 40% at 80% 70%, rgb(245 185 66 / 0.12), transparent 70%);
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/* The full sun                                                         */
-/* ------------------------------------------------------------------ */
-.agent-sun {
-  --sun-size: clamp(132px, 38vw, 184px);
-  position: relative;
-  width: var(--sun-size);
-  aspect-ratio: 1;
-  contain: layout style;
+  background: radial-gradient(70% 38% at 50% 22%, rgb(255 236 196 / 0.75), transparent 72%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 min(30%, 18rem));
+  mask-image: linear-gradient(180deg, transparent, #000 min(30%, 18rem));
 }
 @media (min-width: 768px) {
-  .agent-sun {
-    --sun-size: 220px;
-  }
-}
-@media (min-width: 1280px) {
-  .agent-sun {
-    --sun-size: 250px;
+  .agent-sky {
+    background: radial-gradient(52% 42% at 62% 24%, rgb(255 236 196 / 0.75), transparent 72%);
   }
 }
 
-.agent-sun > * {
+/* ------------------------------------------------------------------ */
+/* The dawn (Dawn.tsx): the sun rises behind the giant title.            */
+/* The sky layer clips everything under the horizon (its bottom edge).   */
+/* ------------------------------------------------------------------ */
+.agent-dawn {
+  --sun: min(78vw, 300px);
+  position: relative;
+  display: flex;
+  min-height: calc(var(--sun) * 1.22);
+  align-items: flex-end;
+  padding-bottom: 1.75rem;
+}
+.agent-dawn-sky {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Only the horizon clips: the halo spills freely up and to the sides. */
+  clip-path: inset(-60vh -100vw 0 -100vw);
+}
+.agent-dawn-sun {
+  position: absolute;
+  bottom: calc(var(--sun) * -0.18);
+  left: 50%;
+  width: var(--sun);
+  aspect-ratio: 1;
+  margin-left: calc(var(--sun) / -2);
+}
+.agent-dawn-sun > * {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
 }
+.agent-dawn-type {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+.agent-title {
+  font-size: clamp(3.4rem, 15.5vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+/* The horizon: a hairline ruled every 24px, drawn by the scroll. */
+.agent-horizon {
+  position: absolute;
+  right: calc(-1 * var(--gutter));
+  bottom: 0;
+  left: calc(-1 * var(--gutter));
+  z-index: 1;
+  height: 7px;
+  background:
+    linear-gradient(var(--line-strong), var(--line-strong)) 0 100% / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, var(--line-strong) 0 1px, transparent 1px 24px) 0 100% / 100% 7px no-repeat;
+  transform-origin: 50% 50%;
+}
+@media (min-width: 768px) {
+  .agent-dawn {
+    --sun: min(46vw, 520px);
+    min-height: calc(var(--sun) * 0.9);
+    padding-bottom: 2.5rem;
+  }
+  .agent-dawn-sun {
+    left: 62%;
+  }
+  .agent-title {
+    font-size: clamp(5rem, 10.5vw, 10rem);
+  }
+}
 
 .agent-sun-halo {
-  inset: -58%;
+  inset: -62%;
   background: radial-gradient(
     closest-side,
     rgb(255 244 214 / 0.95) 30%,
@@ -58,9 +101,8 @@
     transparent 100%
   );
 }
-
 .agent-sun-rays {
-  inset: -38%;
+  inset: -40%;
   -webkit-mask-image: radial-gradient(closest-side, transparent 44%, #000 52%, rgb(0 0 0 / 0.4) 74%, transparent 100%);
   mask-image: radial-gradient(closest-side, transparent 44%, #000 52%, rgb(0 0 0 / 0.4) 74%, transparent 100%);
 }
@@ -73,14 +115,13 @@
   background: repeating-conic-gradient(
     from 0deg,
     rgb(245 185 66 / 0) 0deg 5deg,
-    rgb(245 185 66 / 0.32) 6.5deg,
+    rgb(245 185 66 / 0.3) 6.5deg,
     rgb(245 185 66 / 0) 8deg 13deg,
-    rgb(255 210 120 / 0.22) 14deg,
+    rgb(255 210 120 / 0.2) 14deg,
     rgb(245 185 66 / 0) 15.5deg 22deg
   );
   animation: eclipse-spin 240s linear infinite;
 }
-
 .agent-sun-disc {
   inset: 0;
   background: radial-gradient(circle at 46% 42%, #fffefa 0%, #fff8e6 34%, #ffefc6 62%, #ffdb90 87%, #f8c763 100%);
@@ -88,8 +129,48 @@
     inset 0 0 0 1px rgb(245 185 66 / 0.22),
     inset 0 -10px 26px -8px rgb(245 185 66 / 0.35),
     0 0 18px 4px rgb(255 248 228 / 0.9),
-    0 0 70px 22px rgb(255 226 160 / 0.75),
-    0 0 150px 56px rgb(245 185 66 / 0.22);
+    0 0 70px 22px rgb(255 226 160 / 0.7),
+    0 0 150px 56px rgb(245 185 66 / 0.2);
+}
+
+/* Under the horizon: the two paths (left) and the agent (right). */
+.agent-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 3rem;
+  margin-top: 2.25rem;
+}
+.agent-sub {
+  max-width: 30rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+.agent-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+@media (min-width: 640px) {
+  .agent-ctas {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+@media (min-width: 1024px) {
+  .agent-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 27rem);
+    align-items: start;
+    gap: 4rem;
+    margin-top: 3rem;
+  }
+}
+@media (min-width: 1280px) {
+  .agent-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 29rem);
+    gap: 6rem;
+  }
 }
 
 /* ------------------------------------------------------------------ */

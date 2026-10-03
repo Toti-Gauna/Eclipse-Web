@@ -5,7 +5,7 @@
  *
  * Example (es, ARS):
  *   Hola Eclipse. Armé mi plan en la web:
- *   • Plan Sistema — desde ≈ $ 1.450.000 (USD 1.000)
+ *   • Paquete Sistema — desde ≈ $ 1.450.000 (USD 1.000)
  *   • Trailer en motion graphics — ≈ $ 363.000 (USD 250)
  *   Total estimado: ≈ $ 1.813.000 (USD 1.250)
  *   Mantenimiento Crecimiento: ≈ $ 115.000/mes (USD 79)
@@ -14,7 +14,7 @@
  *   Rubro: Clínicas
  *   Idioma: Español · Moneda: ARS
  */
-import type { Rates } from '@/lib/content';
+import { annualMonthsCharged, type Rates } from '@/lib/content';
 import type { Currency } from '@/lib/currency';
 import { formatMoney, type Billing, type Quote } from '@/lib/pricing';
 import type { Locale } from '@/i18n/routing';
@@ -76,6 +76,7 @@ export function buildPlanMessage(input: PlanMessageInput, t: Translate): string 
         name: input.maintenanceName,
         price: `${money(m.periodUsd)}`,
         period: period(m.billing),
+        months: 12 - annualMonthsCharged,
       }),
     );
   } else {

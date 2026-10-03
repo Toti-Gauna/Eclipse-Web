@@ -105,8 +105,13 @@
 
 /* Starfield */
 .starfield {
+  /* Sized from the viewport, not from the hero's height: the hero grows when the
+     web font swaps in (longer locales), and a %-based box would shift (CLS). */
   position: absolute;
-  inset: -4%;
+  top: -4svh;
+  left: -4%;
+  right: -4%;
+  height: max(110svh, 1400px);
   pointer-events: none;
 }
 .starfield svg {
@@ -181,21 +186,33 @@
 /* everything from 1024px — the copy never runs into the disc.          */
 /* ------------------------------------------------------------------ */
 .hero {
-  --hero-eclipse-size: min(60vw, 34svh, 300px);
+  --hero-eclipse-size: min(54vw, 30svh, 300px);
+  /* One cell; minmax(0, …) so wide content (the rubro scroller) never widens the page. */
+  grid-template-columns: minmax(0, 1fr);
 }
 .hero-copy-cell {
   display: flex;
   min-height: 100svh;
   flex-direction: column;
   justify-content: flex-end;
-  padding-top: calc(var(--header-h) + 2svh + var(--hero-eclipse-size) + 0.75rem);
-  padding-bottom: 6rem;
+  /* The dial reaches 8% of the eclipse beyond its square on every side. */
+  padding-top: calc(var(--header-h) + 1svh + var(--hero-eclipse-size) * 1.16 + 0.75rem);
+  padding-bottom: 3rem;
 }
 .hero-eclipse-anchor {
   position: absolute;
   left: 50%;
-  top: calc(var(--header-h) + 2svh);
+  top: calc(var(--header-h) + 1svh + var(--hero-eclipse-size) * 0.08);
   translate: -50% 0;
+}
+/* Phones: a tighter rhythm so "Pedí tu demo" shows on the first screen. */
+@media (max-width: 767.98px) {
+  .hero-pick-wrap {
+    margin-top: 1.5rem;
+  }
+  .hero-ctas {
+    margin-top: 1.25rem;
+  }
 }
 .hero-scroll-hint {
   display: none;
@@ -207,7 +224,7 @@
 }
 @media (min-width: 768px) and (orientation: landscape), (min-width: 1024px) {
   .hero {
-    --hero-eclipse-size: min(44vw, 72svh, 640px);
+    --hero-eclipse-size: min(42vw, 70svh, 620px);
   }
   .hero-copy-cell {
     justify-content: center;
@@ -215,7 +232,7 @@
     padding-bottom: 5rem;
   }
   .hero-eclipse-anchor {
-    left: 71%;
+    left: 73%;
     top: 50%;
     translate: -50% -50%;
   }
@@ -223,8 +240,22 @@
     display: flex;
   }
   .hero-sky {
-    --sky-x: 71%;
+    --sky-x: 73%;
     --sky-y: 50%;
+  }
+}
+/* Narrow side-by-side screens (1024–1279px, landscape tablets): a smaller dial further
+   right, so its ring and numbers never cross the headline. */
+@media (min-width: 768px) and (max-width: 1279.98px) and (orientation: landscape),
+  (min-width: 1024px) and (max-width: 1279.98px) {
+  .hero {
+    --hero-eclipse-size: min(36vw, 64svh, 620px);
+  }
+  .hero-eclipse-anchor {
+    left: 76%;
+  }
+  .hero-sky {
+    --sky-x: 76%;
   }
 }
 /* Short laptops (1366×657…): the whole copy stays on the pinned screen. */
@@ -399,4 +430,246 @@
 }
 [data-pinned] > .hero-light-zone[data-on] {
   height: calc(100% + 100vh);
+}
+
+/* ------------------------------------------------------------------ */
+/* The dial (Dial.tsx): bezel + fixed pointer, marks and readout.       */
+/* Box = the eclipse square + 8% on each side. Strokes stay 1px.        */
+/* ------------------------------------------------------------------ */
+.hero-dial {
+  position: absolute;
+  inset: -8%;
+  z-index: 1;
+  pointer-events: none;
+}
+.hero-dial-bezel {
+  position: absolute;
+  inset: 0;
+  animation: hero-dial-drift 240s linear infinite;
+  will-change: transform;
+}
+.hero-dial-bezel[data-aimed] {
+  animation: none;
+}
+@keyframes hero-dial-drift {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.hero-dial-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.hero-dial-svg * {
+  fill: none;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.hero-dial-ring {
+  stroke: rgb(244 239 230 / 0.14);
+}
+.hero-dial-tick {
+  stroke: rgb(244 239 230 / 0.2);
+}
+.hero-dial-tick--mid {
+  stroke: rgb(244 239 230 / 0.34);
+}
+.hero-dial-tick--major {
+  stroke: rgb(255 232 176 / 0.72);
+}
+.hero-dial-cross {
+  stroke: rgb(244 239 230 / 0.32);
+}
+.hero-dial-pointer-line {
+  stroke: rgb(245 185 66 / 0.9);
+}
+.hero-dial-svg .hero-dial-pointer {
+  fill: var(--corona);
+  stroke: none;
+}
+.hero-dial-label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: rgb(244 239 230 / 0.5);
+  text-shadow: 0 0 6px rgb(5 5 10 / 0.95);
+  transition: color 0.5s ease;
+}
+.hero-dial-label[data-on] {
+  color: var(--corona);
+}
+/* What the dial points at, under it (wide screens only). */
+.hero-dial-readout {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.25rem);
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  translate: -50% 0;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dawn);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.hero-dial-readout[data-on] {
+  opacity: 1;
+}
+.hero-dial-readout-index {
+  color: var(--corona);
+}
+.hero-dial-readout-rule {
+  width: 1.5rem;
+  height: 1px;
+  background: rgb(244 239 230 / 0.3);
+}
+@media (min-width: 768px) {
+  .hero-dial-label {
+    font-size: 10px;
+  }
+}
+@media (min-width: 768px) and (orientation: landscape), (min-width: 1024px) {
+  .hero-dial-readout {
+    display: flex;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Rubro keys (VerticalChips.tsx)                                       */
+/* ------------------------------------------------------------------ */
+.hero-pick {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.hero-pick-rule {
+  flex: 0 0 2rem;
+  height: 1px;
+  background: var(--line-strong);
+}
+.hero-pick-count {
+  color: var(--fg);
+}
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 41rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hero-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0 0.95rem 0 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: rgb(12 12 20 / 0.55);
+  color: var(--fg);
+  font-size: 0.875rem;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.4s var(--ease-expo);
+}
+.hero-chip-index {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  transition: color 0.3s ease;
+}
+.hero-chip-plus {
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-left: -0.15rem;
+  color: var(--corona);
+}
+.hero-chip:hover {
+  border-color: rgb(245 185 66 / 0.55);
+  background: rgb(26 26 36 / 0.75);
+}
+.hero-chip:hover .hero-chip-index,
+.hero-chip:focus-visible .hero-chip-index {
+  color: var(--corona);
+}
+/* Pressed: a lit key (amber edge + LED), not a second solid amber button. */
+.hero-chip[aria-pressed='true'] {
+  border-color: var(--corona);
+  background: rgb(245 185 66 / 0.1);
+  box-shadow: 0 0 26px -10px rgb(245 185 66 / 0.85);
+}
+.hero-chip[aria-pressed='true'] .hero-chip-index {
+  color: var(--corona);
+}
+.hero-chip[aria-pressed='true']::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--flare);
+  box-shadow: 0 0 8px 1px var(--corona);
+}
+
+/* Phones: two tidy rows that scroll sideways, edge to edge, with a fade. */
+@media (max-width: 767.98px) {
+  .hero-chips-scroller {
+    margin: -6px calc(-1 * var(--gutter));
+    padding: 6px 0 6px var(--gutter);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--gutter);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - 2.75rem), transparent);
+    mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - 2.75rem), transparent);
+  }
+  .hero-chips {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(2, auto);
+    width: max-content;
+    max-width: none;
+    padding-right: 2.75rem;
+  }
+  .hero-chips > li {
+    display: flex;
+  }
+  .hero-chip {
+    width: 100%;
+    scroll-snap-align: start;
+  }
+}
+
+/* Short laptops (1366×657…): tighter rhythm so the copy still fits the pinned screen. */
+@media (min-width: 768px) and (orientation: landscape) and (max-height: 760px),
+  (min-width: 1024px) and (max-height: 760px) {
+  .hero h1 {
+    font-size: min(5.4rem, 10.4svh, 7.6vw);
+  }
+  .hero-sub,
+  .hero-pick-wrap,
+  .hero-ctas {
+    margin-top: 1.1rem;
+  }
 }

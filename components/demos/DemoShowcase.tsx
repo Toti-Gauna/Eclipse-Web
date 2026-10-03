@@ -9,11 +9,8 @@ import { DemoMessages } from './DemoMessages';
 import { demoLoaders } from './registry';
 import type { DemoProps } from './types';
 
-const lazyDemos: Record<DemoId, ComponentType<DemoProps>> = {
-  clinic: lazy(demoLoaders.clinic),
-  realEstate: lazy(demoLoaders.realEstate),
-  gym: lazy(demoLoaders.gym),
-};
+const lazyDemos = {} as Record<DemoId, ComponentType<DemoProps>>;
+for (const id of Object.keys(demoLoaders) as DemoId[]) lazyDemos[id] = lazy(demoLoaders[id]);
 
 /** Preloads a demo's code (call on hover/focus of the control that reveals it). */
 export function preloadDemo(id: DemoId) {

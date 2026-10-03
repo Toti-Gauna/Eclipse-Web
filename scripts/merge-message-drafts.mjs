@@ -22,12 +22,23 @@ for (const locale of locales) {
   merged[locale] = JSON.parse(await readFile(path.join(root, 'messages', `${locale}.json`), 'utf8'));
 }
 
+// Same rules as i18n/messages.ts: objects merge key by key, `null` deletes, the rest replaces.
+const isObject = (v) => typeof v === 'object' && v !== null && !Array.isArray(v);
+function deepMerge(target, patch) {
+  for (const [key, value] of Object.entries(patch)) {
+    if (value === null) delete target[key];
+    else if (isObject(value) && isObject(target[key])) deepMerge(target[key], value);
+    else target[key] = value;
+  }
+  return target;
+}
+
 for (const file of files) {
   const draft = JSON.parse(await readFile(path.join(draftsDir, file), 'utf8'));
   for (const [ns, perLocale] of Object.entries(draft)) {
     for (const locale of locales) {
       if (!perLocale[locale]) throw new Error(`${file}: namespace "${ns}" is missing "${locale}"`);
-      merged[locale][ns] = perLocale[locale];
+      deepMerge(merged[locale], { [ns]: perLocale[locale] });
     }
   }
   console.log(`merged ${file}: ${Object.keys(draft).join(', ')}`);

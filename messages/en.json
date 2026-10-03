@@ -25,14 +25,10 @@
     "included": "Included",
     "none": "None",
     "copy": "Copy",
-    "copied": "Copied",
     "play": "Play",
     "pause": "Pause",
     "next": "Next",
-    "previous": "Previous",
-    "loading": "Loading…",
     "whatsapp": "WhatsApp",
-    "email": "Email",
     "approxPrefix": "≈",
     "sections": "sections"
   },
@@ -40,19 +36,22 @@
     "services": "Services",
     "examples": "Examples",
     "pricing": "Pricing",
-    "founders": "Founders"
+    "founders": "Founders",
+    "clients": "Clients"
   },
   "header": {
     "home": "Eclipse, go to home",
     "skip": "Skip to content",
     "menu": "Open menu",
+    "menuDialog": "Menu",
     "closeMenu": "Close menu",
     "mainNav": "Main navigation",
     "language": "Language",
     "currency": "Currency",
     "progress": "Reading progress: {value}%",
     "buildPlan": "Build your plan",
-    "progressLabel": "Reading progress"
+    "progressLabel": "Reading progress",
+    "prefsTrigger": "Language & currency"
   },
   "currency": {
     "ARS": "Argentine pesos",
@@ -60,7 +59,7 @@
     "USD": "US dollars",
     "notice": "Prices in USD. ARS and BRL amounts are estimates based on today's exchange rate.",
     "source": "Rate as of {date}",
-    "sourceFallback": "Reference rate {date}"
+    "sourceFallback": "Reference rate as of {date}"
   },
   "languages": {
     "es": "Español",
@@ -68,7 +67,8 @@
     "pt": "Português"
   },
   "loader": {
-    "label": "Loading Eclipse"
+    "label": "Loading Eclipse",
+    "endLine": "Built around your business."
   },
   "hero": {
     "eyebrow": "Development · AI · Automation",
@@ -85,8 +85,7 @@
     "greeting": "Hi Eclipse.",
     "demo": "Hi Eclipse. I'd like to get my demo. Industry: {vertical}.",
     "demoNoVertical": "Hi Eclipse. I'd like to get my demo.",
-    "wantThis": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}).",
-    "notListed": "Hi Eclipse. My industry isn't on the list: {vertical}. Can you build me a demo?"
+    "wantThis": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical})."
   },
   "footer": {
     "tagline": "Development, AI and automation for businesses that can't wait.",
@@ -99,16 +98,16 @@
     "demoNotice": "The businesses shown in the demos are fictional."
   },
   "planMessage": {
-    "introCard": "Hi Eclipse. I'd like this plan:",
+    "introCard": "Hi Eclipse. I'd like this package:",
     "introBuilder": "Hi Eclipse. I built my plan on your website:",
-    "planLine": "{name} plan — from {price}",
+    "planLine": "{name} package — from {price}",
     "itemLine": "{name} — {price}",
     "comboTag": "(combo)",
     "total": "Estimated total: {price}",
     "totalRange": "Estimated total: {from} to {to}",
     "totalWithOffers": "With offers: {price}",
     "maintenance": "{name} maintenance: {price} {period}",
-    "maintenanceAnnual": "{name} maintenance: {price} {period} (paid yearly, 2 months free)",
+    "maintenanceAnnual": "{name} maintenance: {price} {period} (paid yearly, {months, plural, one {# month free} other {# months free}})",
     "maintenanceNone": "No maintenance for now",
     "voiceUsage": "Voice agent: {price} per month + minutes based on usage",
     "offers": "Offers: {list}",
@@ -119,76 +118,183 @@
     "perYear": "per year"
   },
   "problem": {
-    "eyebrow": "The problem",
     "title": "What does <em>not having</em> this cost you?",
-    "sub": "Every unanswered inquiry and every hour spent copying data by hand has a price. Plug in your numbers and see it in your currency.",
+    "sub": "Fill in the sentence with your numbers. The math does itself, in your currency.",
     "inputsTitle": "Your numbers",
     "verticalLegend": "Your industry",
-    "painLabel": "The usual problem",
-    "painFallback": "Unanswered inquiries and hours of manual work",
     "hoursLabel": "Hours a week on repetitive tasks",
     "lostValueText": "{count} per week",
     "hoursValue": "{count} h",
     "hoursValueText": "{count, plural, one {# hour} other {# hours}} per week",
     "approxValueText": "about {amount}",
-    "resultTitle": "Monthly estimate",
-    "resultLead": "You're losing",
-    "resultTail": "a month",
-    "resultAnnounce": "You're losing about {amount} a month.",
-    "breakdown": "Breakdown",
+    "resultAnnounce": "With your numbers you lose about {amount} a month.",
     "lostRevenue": "Revenue slipping away",
-    "lostDetail": "<n>{count}</n> a month × {ticket}",
     "timeCost": "Your team's hours",
-    "timeDetail": "<n>{count}</n> h a month × {rate} an hour",
-    "cta": "Win it back — get your demo",
+    "cta": "Win it back: get your demo",
     "ctaPlan": "Build your plan",
-    "note": "This is an estimate: {weeks} weeks a month and {rate} per hour of work. Your real number may differ.",
-    "whatsapp": "Hi Eclipse. I used the calculator on your site: I'm losing about {amount} a month. I want it back. Can you show me a demo? Industry: {vertical}.",
-    "whatsappNoVertical": "Hi Eclipse. I used the calculator on your site: I'm losing about {amount} a month. I want it back. Can you show me a demo?"
+    "whatsapp": "Hi Eclipse. I used the calculator on your site: with my numbers I'm losing about {amount} a month ({lost} {unit} and {hours} h of repetitive tasks a week). I want it back. Can you show me a demo? Industry: {vertical}.",
+    "whatsappNoVertical": "Hi Eclipse. I used the calculator on your site: with my numbers I'm losing about {amount} a month ({lost} {unit} and {hours} h of repetitive tasks a week). I want it back. Can you show me a demo?",
+    "lead": "I run <vertical></vertical>.",
+    "lost": {
+      "clinicas": "Every week I lose <lost></lost>, each worth <ticket></ticket>.",
+      "inmobiliarias": "Every week I leave <lost></lost> unanswered, each worth <ticket></ticket>.",
+      "gimnasios": "Every week I lose <lost></lost> paying <ticket></ticket> a month.",
+      "tiendas": "Every week I lose <lost></lost>, with an average order of <ticket></ticket>.",
+      "restaurantes": "Every week I lose <lost></lost>, worth <ticket></ticket> each on average.",
+      "servicios": "Every week I lose <lost></lost>, each worth <ticket></ticket>.",
+      "otro": "Every week I lose <lost></lost>, worth <ticket></ticket> each on average."
+    },
+    "hours": "My team spends <hours></hours> a week on tasks that could run on their own.",
+    "unit": {
+      "clinicas": {
+        "one": "appointment",
+        "other": "appointments"
+      },
+      "inmobiliarias": {
+        "one": "inquiry",
+        "other": "inquiries"
+      },
+      "gimnasios": {
+        "one": "member",
+        "other": "members"
+      },
+      "tiendas": {
+        "one": "abandoned cart",
+        "other": "abandoned carts"
+      },
+      "restaurantes": {
+        "one": "order or booking",
+        "other": "orders or bookings"
+      },
+      "servicios": {
+        "one": "job",
+        "other": "jobs"
+      },
+      "otro": {
+        "one": "inquiry or sale",
+        "other": "inquiries or sales"
+      }
+    },
+    "hoursUnit": {
+      "one": "hour",
+      "other": "hours"
+    },
+    "verticalOption": {
+      "clinicas": "a clinic",
+      "inmobiliarias": "a real estate agency",
+      "gimnasios": "a gym",
+      "tiendas": "an online store",
+      "restaurantes": "a restaurant",
+      "servicios": "a home-services business",
+      "otro": "another kind of business"
+    },
+    "ticketValueText": "{amount} each",
+    "decrease": "Less: {label}",
+    "increase": "More: {label}",
+    "presets": "Shortcuts",
+    "presetsFor": "Quick values: {label}",
+    "readoutTitle": "Estimated loss",
+    "perMonth": "a month",
+    "perYear": "{amount} a year",
+    "usdRef": "{amount} a month",
+    "honest": "An estimate with your numbers",
+    "showMath": "Show the math",
+    "hideMath": "Hide the math",
+    "mathLost": "{count} {unit} × {ticket}",
+    "mathTime": "{count} h × {rate}",
+    "mathTotal": "Total a month",
+    "assumptions": "Assumptions: 1 month = {weeks} weeks · 1 hour of your team = {rate}. Your real number may differ.",
+    "miniLabel": "You lose a month",
+    "miniJump": "See the estimate in detail"
   },
   "services": {
-    "eyebrow": "What we do",
-    "title": "What we build so your business <em>never sleeps</em>.",
-    "sub": "Six services. Use one or combine them. Whichever you pick, you see it working with your business first.",
+    "title": "What we build, <em>piece by piece</em>.",
+    "sub": "{families} families, {count} pieces. Buy each one on its own or inside a package, and see it working for your business first.",
     "resultLabel": "The result",
-    "from": "From",
-    "add": "Add to your plan",
-    "items": {
-      "webs": {
-        "title": "Websites with motion",
-        "description": "Landing pages and sites that move, load fast and explain your business in seconds.",
-        "result": "People message you on WhatsApp in one tap, right from their phone."
+    "from": "from",
+    "add": "Add",
+    "key": {
+      "pieceTerm": "Single piece",
+      "pieceText": "Bought on its own. One-time payment, starting price.",
+      "includedTerm": "Included in",
+      "includedText": "The packages that already come with it.",
+      "includedLink": "See packages"
+    },
+    "pieces": "{count, plural, one {# piece} other {# pieces}}",
+    "piecesTitle": "Single pieces · one-time payment",
+    "addLabel": "Add {name} to your plan",
+    "includedIn": "Included in",
+    "goToPlan": "See the {name} package",
+    "extra": "Extra: add it to any package",
+    "preview": "Preview",
+    "families": {
+      "web": {
+        "description": "Landing pages and websites that move, load fast and explain your business in seconds. With SEO so people find you.",
+        "result": "People message you on WhatsApp in one tap, from their phone.",
+        "preview": {
+          "url": "yourbusiness.com",
+          "kicker": "Online booking",
+          "headline": "Your business, open around the clock.",
+          "cta": "Message us",
+          "bubble": "Hi, any openings tomorrow?"
+        }
       },
-      "systems": {
-        "title": "Booking and ordering systems",
-        "description": "Online calendar, automatic confirmations and orders that arrive organized.",
-        "result": "Customers book and order on their own, at any hour."
+      "ai": {
+        "description": "A natural voice that answers the phone and a chat that replies instantly on WhatsApp and your website.",
+        "result": "Every call and every message gets an answer, after hours too.",
+        "preview": {
+          "call": "Incoming call",
+          "agent": "Voice agent · on the line",
+          "question": "Any openings on Thursday?",
+          "answer": "Yes, at 10:30. Shall I book it?",
+          "done": "Booked · Thu 10:30"
+        }
       },
-      "voice": {
-        "title": "AI voice agents",
-        "description": "A natural voice that answers the phone, handles the usual questions and books appointments.",
-        "result": "Answers calls 24/7, after hours too."
+      "ops": {
+        "description": "Bookings, orders, automations, a CRM and a dashboard with today's numbers. The back office, in order.",
+        "result": "Customers book and order on their own; you see everything on one screen.",
+        "preview": {
+          "title": "This week's calendar",
+          "kpi": "Bookings today",
+          "order": "Order ready",
+          "toast": "Reminder sent"
+        }
       },
-      "chat": {
-        "title": "Chatbots and automations",
-        "description": "Instant replies on WhatsApp and on your website. Reminders and follow-ups that go out on their own.",
-        "result": "Every inquiry gets an answer in seconds, and you get the customer ready to buy."
-      },
-      "commerce": {
-        "title": "E-commerce",
+      "sales": {
         "description": "Catalog, cart, payments and shipping, with your brand's identity.",
-        "result": "You sell around the clock, even when the store is closed."
+        "result": "You sell around the clock, even when the shop is closed.",
+        "preview": {
+          "store": "Online store",
+          "add": "Add",
+          "paid": "Payment approved"
+        }
       },
       "apps": {
-        "title": "Apps and platforms",
-        "description": "Your service in your own app: bookings, orders and payments, with a dashboard to run it.",
-        "result": "Customers book, order and pay from your own app."
+        "description": "Your service in your own app: orders, bookings and payments, with a dashboard to run it.",
+        "result": "Customers order, track and pay from your own app.",
+        "preview": {
+          "board": "Today's jobs",
+          "status": "Technician on the way",
+          "eta": "Arrives in",
+          "unit": "min"
+        }
+      },
+      "strategy": {
+        "description": "Digital audit and market research: what your competitors do and where you're losing customers today.",
+        "result": "A prioritized action plan, before you invest.",
+        "preview": {
+          "title": "Digital audit",
+          "web": "Website",
+          "google": "Google",
+          "social": "Social",
+          "whatsapp": "WhatsApp",
+          "priority": "Priority 1: your Google profile"
+        }
       }
     }
   },
   "process": {
-    "eyebrow": "How we work",
-    "title": "First you see <em>your demo</em>. Then we talk.",
+    "title": "First you see your demo. Then we talk.",
     "sub": "That's how we sell: within {hours} hours we build a demo of your business, before any call. If you like it, we keep going.",
     "durationLabel": "Turnaround",
     "hoursUnit": "h",
@@ -221,52 +327,29 @@
     "ctaLead": "Step one is seeing your business working."
   },
   "builder": {
-    "eyebrow": "Quote builder",
+    "eyebrow": "An estimate in your currency",
     "title": "Build your plan",
     "pageTitle": "Build your <em>plan</em>",
-    "intro": "Pick what you need. The total adds itself up, in your currency.",
-    "pageIntro": "Pick what you need and see the number instantly. If your selection is already a plan, we tell you how much you save.",
+    "pageIntro": "Four steps, and you can skip any of them. Pick what you want to solve: the number adds up on its own.",
     "copyLink": "Copy link",
     "linkCopied": "Link copied",
     "copyFailed": "Couldn't copy",
-    "catalog": "Catalog",
     "vertical": "Your industry",
     "optional": "optional",
-    "categoryCount": "{count, plural, one {# selected} other {# selected}}",
-    "includedIn": "Included in the {plan} plan",
+    "includedIn": "Included in the {plan} package",
     "hintDashboard": "A dashboard shines with a system behind it: add bookings, orders or e-commerce.",
     "hintChatbot": "The chatbot does more with automations: it replies and also follows up.",
-    "detectTitle": "This is the {plan} plan: you save ≈ {pct}%",
-    "detectBody": "You pay {amount} less than buying each piece.",
-    "detectCta": "Switch to the plan",
-    "switched": "Switched to the {plan} plan.",
-    "removePlan": "Remove plan",
-    "removePlanLabel": "Remove the {plan} plan and go back to individual items",
-    "planRemoved": "Back to individual items.",
-    "removeItem": "Remove {item}",
-    "summaryTitle": "Your plan",
-    "empty": "Nothing picked yet. Tap what you need and the total adds itself up.",
-    "count": "{count, plural, one {# item} other {# items}}",
-    "planLine": "{plan} plan",
-    "planIncludes": "Includes {count, plural, one {# item} other {# items}}",
-    "total": "Estimated total",
-    "oneTime": "One-time payment",
-    "range": "Depending on scope, between {from} and {to}.",
-    "rangeNoDiscounts": "Depending on scope, between {from} and {to} without discounts.",
-    "totalAnnounce": "Estimated total: {amount}",
-    "showSummary": "View summary",
-    "hideSummary": "Hide summary",
-    "maintenanceLegend": "Monthly maintenance",
+    "detectTitle": "Switch to the {plan} package and save ≈ {pct}%",
+    "detectBody": "You pay {amount} less than piece by piece.",
+    "detectCta": "Switch to the package",
+    "switched": "Switched to the {plan} package.",
+    "planRemoved": "Now piece by piece.",
+    "totalAnnounce": "One-time payment: {amount}.",
     "suggested": "Suggested",
     "noneDetail": "You handle it",
-    "maintenanceIncludes": "Includes: {list}.",
     "billingLegend": "Maintenance billing",
     "freeMonths": "{count, plural, one {# month free} other {# months free}}",
-    "voiceUsage": "{name}: {price}/mo {note}",
-    "offersTitle": "Offers",
-    "applied": "Applied",
-    "comboApplied": "Your voice agent drops to {price}.",
-    "comboGap": "if the rest of your plan reaches {min}, the voice agent drops to {price}. You're {missing} away.",
+    "comboGap": "If the rest of your plan reaches {min}, the voice agent drops to {price}. You are {missing} away.",
     "annualApplied": "You save {amount} a year on maintenance.",
     "founderApplied": "You save {amount} on the one-time payment.",
     "founderToggle": "I want the founder price (−{pct}%)",
@@ -276,77 +359,213 @@
     "endsInHours": "Ends in {hours, plural, one {# hour} other {# hours}}",
     "send": "Send my plan on WhatsApp",
     "sendShort": "Send",
-    "sendDisabled": "Pick at least one item to send your plan.",
+    "sendDisabled": "Pick at least one piece to send your plan.",
     "copySummary": "Copy summary",
     "summaryCopied": "Summary copied",
-    "notice": "Estimated prices. The demo and the final proposal tune the number to your business."
+    "notice": "Estimated prices. The demo and the final proposal tune the number to your business.",
+    "stepsLabel": "Plan steps",
+    "stepOf": "Step {n} of {total}",
+    "goToStep": "Step {n}: {name}",
+    "steps": {
+      "objetivo": {
+        "name": "Goal",
+        "title": "What do you want to solve?",
+        "help": "Pick one or more. We preselect the pieces and you fine-tune them next."
+      },
+      "piezas": {
+        "name": "Pieces",
+        "title": "Fine-tune the pieces",
+        "help": "Tap to add or remove. If a package is a better deal, we tell you."
+      },
+      "mantenimiento": {
+        "name": "Maintenance",
+        "title": "Maintenance and hosting",
+        "help": "A fixed fee to keep everything running: hosting, security, backups and changes. Optional."
+      },
+      "resumen": {
+        "name": "Summary",
+        "title": "Your plan, at a glance",
+        "help": "What you pay once and what you pay every month, side by side."
+      }
+    },
+    "back": "Back",
+    "next": "Next",
+    "goals": {
+      "encontrar": {
+        "name": "Get found",
+        "desc": "A fast website that shows up on Google."
+      },
+      "atender": {
+        "name": "Answer 24/7",
+        "desc": "A voice agent and a chatbot that reply on their own."
+      },
+      "ordenar": {
+        "name": "Organize bookings and orders",
+        "desc": "All online, with automatic reminders."
+      },
+      "vender": {
+        "name": "Sell online",
+        "desc": "Your own store with payments and shipping."
+      },
+      "fidelizar": {
+        "name": "Keep customers coming back",
+        "desc": "Missions, rewards and follow-ups."
+      },
+      "app": {
+        "name": "My own app",
+        "desc": "Your service in an app: orders, bookings and payments."
+      },
+      "diagnostico": {
+        "name": "Not sure: I'd like a diagnosis",
+        "desc": "Where you're losing customers today, with an action plan."
+      }
+    },
+    "pieceCount": "{count, plural, one {# piece} other {# pieces}}",
+    "goalsChosen": "{count, plural, =0 {None yet} one {# chosen} other {# chosen}}",
+    "verticalNone": "Not specified",
+    "fromPackage": "Or start from a package",
+    "chosen": "Chosen",
+    "packageHead": "{plan} package",
+    "packageIncludes": "Includes {count, plural, one {# piece} other {# pieces}}. Add any others you want.",
+    "editPieces": "Edit piece by piece",
+    "dropPackage": "Remove package",
+    "suggestedTag": "Suggested",
+    "comboNote": "Combo: the voice agent drops to {price} with the {plan} package or above, or when the rest of your plan adds up to {min} or more.",
+    "detectMoreTitle": "The {plan} package has all this plus {count, plural, one {# more piece} other {# more pieces}}: save ≈ {pct}%",
+    "detectMoreBody": "It adds {list}. You still pay {amount} less.",
+    "detectCtaShort": "Switch",
+    "packageDropped": "Package removed.",
+    "maintenanceNone": "No maintenance",
+    "perMonthLong": "a month",
+    "perYearLong": "a year",
+    "voiceNote": "The voice agent adds {price} a month {note}. It is separate from maintenance and always billed monthly.",
+    "founderTitle": "Founder price",
+    "referralTitle": "Referrals",
+    "ledgerOneTime": "One-time payment",
+    "ledgerMonthly": "Every month",
+    "ledgerYearly": "Every year",
+    "ledgerTotal": "Total",
+    "ledgerFrom": "from",
+    "edit": "Edit",
+    "rangeNote": "Packages have a “from” price: depending on scope, the total can go up to {to}. We confirm the number before we start.",
+    "maintenanceLine": "{name} maintenance",
+    "maintenanceAnnualLine": "{name} maintenance, billed yearly",
+    "voiceLine": "Voice agent (fixed fee)",
+    "nothingMonthly": "Nothing fixed: no maintenance.",
+    "emptyTitle": "You haven't picked anything yet.",
+    "emptyCta": "Pick what you want to solve",
+    "messagePreview": "See the message we send",
+    "dockOneTime": "One-time",
+    "dockFrom": "from",
+    "recurringAnnounce": "Plus {amount} {period}.",
+    "goalsLine": "Goal: {list}"
   },
   "pricing": {
-    "eyebrow": "Pricing",
-    "title": "Clear prices. <em>No fine print.</em>",
-    "subtitle": "Every plan starts at a “from” price, with a range based on scope. Add extras, pick your maintenance and see the total in your currency, instantly.",
+    "title": "What it costs,<br></br> and how you pay.",
     "featured": "Recommended",
-    "from": "From",
-    "range": "Range by scope: <nums>{from} – {to}</nums>",
-    "separate": "Bought separately: {separate} → <save>you save <count>≈ {pct}%</count></save>",
-    "includes": "What's included",
-    "addons": "Add extras",
-    "add": "Add",
-    "added": "Added",
-    "included": "Included",
-    "includedNote": "Already in the plan",
-    "comboBadge": "Combo",
-    "maintenance": "Maintenance + hosting",
     "perMonth": "per month",
     "perYear": "per year",
-    "none": "None",
-    "suggested": "Suggested",
-    "optional": "Optional. {name} is enough to get started.",
-    "voiceUsage": "+ {name}: {price}/mo {note}",
-    "total": "Estimated total",
-    "recurring": "+ {price} {period} for maintenance",
     "cta": "I want it",
-    "ctaLabel": "I want it: {name} plan, on WhatsApp",
-    "live": "{plan}: estimated total from {total}.",
-    "liveMaintenance": "{plan}: {name} maintenance, {price} {period}.",
-    "liveNoMaintenance": "{plan}: no maintenance.",
+    "ctaLabel": "I want it: {name} package, on WhatsApp",
     "billing": {
       "label": "Maintenance billing",
       "monthly": "Monthly",
       "annual": "Yearly",
       "free": "{months, plural, one {# month free} other {# months free}}"
     },
-    "founder": {
-      "left": "{left, plural, one {# spot left of {total}} other {# spots left of {total}}}",
-      "cta": "See the founder program"
-    },
     "offers": {
       "label": "Current offers",
       "endsIn": "Ends in {time}",
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
-      "minutes": "{minutes} min"
-    },
-    "carousel": {
-      "label": "Plans",
-      "hint": "{count} plans. Swipe to see them all.",
-      "goTo": "Show {name} plan",
-      "goToFeatured": "Jump to most popular",
-      "dots": "Choose a plan to show"
-    },
-    "build": {
-      "title": "Need a different mix?",
-      "text": "Pick item by item and see your estimate instantly.",
-      "cta": "Build your plan",
-      "note": "Prices are “from” prices: the final amount depends on scope. We confirm the final number before we start."
+      "minutes": "{minutes} min",
+      "founderHow": "You ask for it: turn it on when you build your plan.",
+      "founderLeft": "{left, plural, one {# spot left of {total}} other {# spots left of {total}}}",
+      "founderCta": "See the founder program",
+      "comboTitle": "Voice agent for {price}",
+      "comboText": "One-time payment, when you add it to {plans} or to a selection of pieces that reaches {min} without it.",
+      "comboIncluded": "{count, plural, one {{plans} already includes it.} other {{plans} already include it.}}",
+      "founderWhat": "It applies to the project’s one-time payment.",
+      "founderDeal": "In return: your testimonial, permission to show your case and one referral."
     },
     "care": {
-      "eyebrow": "Maintenance + hosting",
-      "title": "Your site doesn't go dark when we're done. <em>We keep it alive.</em>",
-      "subtitle": "Hosting, security, backups and changes for a fixed price. Pick the level that fits what we build together.",
+      "title": "Your system doesn't go dark when we're done.",
       "suggestedFor": "Suggested for {plans}",
-      "voiceText": "Only added when your plan has a voice agent: a fixed monthly fee plus the minutes it uses.",
-      "perMonthShort": "/mo"
+      "label": "Maintenance · optional",
+      "text": "Hosting, security, backups and changes for a fixed price. Pick the level that fits what we build together.",
+      "annualNote": "You pay {charged} months, you get 12",
+      "voice": "Only if your project has one: {price} a month {note}. Always monthly, even on yearly billing.",
+      "live": "Maintenance on {billing} billing: prices {period}."
+    },
+    "sub": "Prices in US dollars, no fine print. What you see is the starting point: we confirm the final number in writing, after the demo.",
+    "approx": "approximately",
+    "rate": {
+      "label": "Today's conversion",
+      "value": "1 USD ≈ {rate}",
+      "note": "Amounts with ≈ are converted from USD at today's rate, for reference.",
+      "usd": "Amounts in US dollars, no conversion."
+    },
+    "how": {
+      "label": "How you pay",
+      "project": {
+        "title": "Project",
+        "when": "One-time payment",
+        "text": "What we build for your business. You see a starting price; we confirm the final one in writing after the demo and the call.",
+        "link": "See packages"
+      },
+      "care": {
+        "title": "Maintenance",
+        "when": "Monthly · optional",
+        "text": "Hosting, security, backups and changes, from {price} a month.",
+        "annual": "Pay for the year and {months, plural, one {# month is free} other {# months are free}}.",
+        "link": "See maintenance"
+      },
+      "extras": {
+        "title": "Extras",
+        "when": "Whenever you want",
+        "text": "Add pieces when you need them, at each piece's price.",
+        "link": "See pieces"
+      }
+    },
+    "ways": {
+      "label": "Two ways to buy",
+      "bundles": {
+        "title": "Packages",
+        "text": "Ready-made combinations for the most common cases. The multi-piece ones cost less than the pieces one by one.",
+        "count": "{count} packages, in {groups} groups"
+      },
+      "pieces": {
+        "title": "Piece by piece",
+        "text": "Pick only what you need and see the total instantly, in your currency.",
+        "cta": "Build it piece by piece",
+        "from": "Pieces from {price}."
+      }
+    },
+    "groups": {
+      "starter": {
+        "title": "To get started",
+        "text": "One specific need, solved."
+      },
+      "complete": {
+        "title": "Complete systems",
+        "text": "Everything connected: what your customers see and the back office."
+      },
+      "count": "{count, plural, one {# package} other {# packages}}"
+    },
+    "plan": {
+      "from": "From",
+      "once": "One-time payment",
+      "rangeLocal": "{from} · up to {to} depending on scope",
+      "rangeUsd": "Up to {to} depending on scope",
+      "includes": "What's included",
+      "savings": "Save <pct></pct> vs. single pieces",
+      "customize": "Customize",
+      "customizeLabel": "Customize the {name} package in the plan builder"
+    },
+    "noneFits": "No package fits?",
+    "noneFitsCta": "Build it piece by piece",
+    "notes": {
+      "from": "“From” is the starting price: the final one depends on scope, and we confirm it in writing before we start."
     }
   },
   "heroReveal": {
@@ -358,44 +577,36 @@
     "phoneLabel": "{business}: interactive demo, mobile version"
   },
   "demoClinic": {
-    "tabs": {
-      "agenda": "Schedule",
-      "reminders": "Reminders",
-      "absences": "No-shows"
-    },
-    "live": "Live",
-    "reception": "Front desk",
     "pros": {
       "lucia": {
-        "name": "Dr. Lucía M.",
-        "short": "Lucía"
+        "name": "Dr. Lucía Méndez",
+        "short": "Dr. Lucía"
       },
       "tomas": {
-        "name": "Dr. Tomás R.",
-        "short": "Tomás"
+        "name": "Dr. Tomás Ríos",
+        "short": "Dr. Tomás"
       },
       "sofia": {
-        "name": "Sofía P.",
+        "name": "Sofía Paz",
         "short": "Sofía"
       }
     },
     "specialties": {
-      "all": "All",
-      "dental": "Dental",
+      "dental": "General dentistry",
       "ortho": "Orthodontics",
       "aesthetic": "Aesthetics"
     },
     "treatments": {
       "cleaning": "Dental cleaning",
-      "checkup": "Check-up",
+      "checkup": "Checkup",
       "filling": "Filling",
       "whitening": "Whitening",
-      "orthoConsult": "Orthodontic consult",
+      "orthoConsult": "Ortho consult",
       "braces": "Braces adjustment",
       "aligners": "Aligner check",
       "facial": "Facial",
       "peeling": "Chemical peel",
-      "aestheticConsult": "Aesthetic consult"
+      "aestheticConsult": "Aesthetics consult"
     },
     "patients": {
       "you": "You",
@@ -409,163 +620,395 @@
       "paula": "Paula N.",
       "bruno": "Bruno C.",
       "elena": "Elena V.",
-      "sebastian": "Sebastian F.",
-      "nicolas": "Nicolas T.",
+      "sebastian": "Sebastián F.",
+      "nicolas": "Nicolás T.",
       "renata": "Renata V.",
-      "joaquin": "Joaquin M.",
+      "joaquin": "Joaquín M.",
       "valentina": "Valentina S.",
       "lola": "Lola K.",
       "irene": "Irene Q.",
-      "florencia": "Florence H.",
+      "florencia": "Florencia H.",
       "micaela": "Micaela O.",
-      "julieta": "Juliet A.",
       "rocio": "Rocío E.",
-      "gabriela": "Gabriela Z.",
-      "julian": "Julian P.",
-      "agustina": "Agustina R.",
-      "mateo": "Mateo L.",
-      "emilia": "Emilia C.",
-      "santiago": "Santiago B.",
-      "clara": "Clara M.",
-      "facundo": "Facundo V."
+      "julian": "Julián P."
     },
     "firstNames": {
-      "martina": "Martina"
+      "martina": "Martina",
+      "camila": "Camila",
+      "julian": "Julián"
     },
     "status": {
       "done": "Seen",
-      "now": "In progress",
+      "now": "In the chair",
       "confirmed": "Confirmed",
       "reminded": "Reminder sent",
-      "new": "New · online",
+      "new": "Booked online",
       "waitlist": "From waitlist",
       "you": "Booked by you",
       "freed": "Freed up",
-      "noshow": "No-show"
+      "voice": "Booked by AI"
     },
     "agenda": {
       "title": "Schedule",
-      "days": "Days of the week",
-      "filter": "Filter by specialty",
-      "occupancy": "{booked} of {total} slots booked",
-      "freeLeft": "{count, plural, one {# free slot} other {# free slots}}",
-      "free": "Free",
-      "freeHint": "Tap to book",
-      "pastFree": "Not booked",
-      "showPast": "Show earlier slots ({count})",
-      "hidePast": "Hide earlier slots",
-      "bookTitle": "Book this slot",
-      "bookWhen": "{day} · {time} · {pro}",
+      "filter": "Filter by practitioner",
+      "free": "Open",
+      "bookTitle": "Book appointment",
       "treatment": "Treatment",
       "confirm": "Confirm booking",
       "cancel": "Cancel",
-      "pickSlot": "Pick a free slot on the grid to book it.",
-      "now": "Now",
-      "freeSlot": "{time}, {pro}: free. Book",
-      "busySlot": "{time}, {pro}: {patient}, {treatment}, {status}",
-      "emptySlot": "{time}, {pro}: not booked"
-    },
-    "kpis": {
-      "today": "Today's appointments",
-      "confirmed": "Confirmed",
-      "confirmedOf": "of {count} booked",
-      "recovered": "Recovered this week",
-      "recoveredHint": "with reminders and the waitlist",
-      "waitlist": "On the waitlist",
-      "waitlistHint": "ready to take a free slot"
-    },
-    "activity": {
-      "title": "Live activity",
-      "justNow": "Now",
-      "sent": "{count} WhatsApp reminders sent for today",
-      "new": "New online booking: {patient}, {time} with {pro}",
-      "confirm": "{patient} confirmed the {time} appointment on WhatsApp",
-      "cancel": "{patient} cancelled the {time} appointment",
-      "reschedule": "{patient} rescheduled on WhatsApp. The {time} slot is free",
-      "refill": "{patient} took the {time} slot from the waitlist",
-      "you": "You booked the {time} slot with {pro}"
+      "freeSlot": "{time} · {pro}: open, book",
+      "summary": "{day} · {count} appointments · {pct}% booked",
+      "label": "Today's schedule by practitioner",
+      "all": "All",
+      "freedTitle": "Freed up",
+      "freedSub": "{name} · being offered",
+      "minutes": "{n} min",
+      "waitlist": "Waitlist",
+      "took": "Took a slot",
+      "waiters": {
+        "ivan": "Iván R.",
+        "sol": "Sol M."
+      },
+      "wants": {
+        "paula": "Orthodontics",
+        "ivan": "Cleaning",
+        "sol": "Facial"
+      },
+      "hintPhone": "Tap an open time to book it.",
+      "hintLaptop": "Pick an open time in the grid to book it."
     },
     "chat": {
-      "heading": "What your patient gets",
-      "hint": "Reply as if you were {name}.",
-      "online": "online",
-      "typing": "typing…",
-      "typingLabel": "{business} is typing",
-      "log": "Simulated WhatsApp conversation between {business} and {name}",
-      "auto": "Automated message",
-      "reminder": "Hi {name}, this is {business}. A reminder of your appointment today: {treatment} at {time} with {pro}.",
-      "ask": "Can you confirm you're coming?",
-      "choices": {
-        "confirm": "I'll be there",
-        "reschedule": "Reschedule",
-        "cancel": "Cancel"
+      "composer": "Message",
+      "martina": {
+        "log": "Simulated WhatsApp chat between {business} and {name}",
+        "reminder": "Hi {name}, a reminder of your appointment today at {time} with {pro}: {treatment}.",
+        "ask": "Can you confirm you're coming?",
+        "replies": {
+          "confirm": "Confirm",
+          "reschedule": "Reschedule",
+          "cancel": "Cancel"
+        },
+        "thanks": "Thanks, {name}! See you at {time}.",
+        "noteConfirmed": "Appointment confirmed in the schedule",
+        "offer": "No problem. These are the next openings with {pro}:",
+        "moved": "Done, you're booked for {slot}. We'll remind you the day before.",
+        "cancelled": "Done, your appointment is cancelled. Message us anytime and we'll find a new one.",
+        "noteFreed": "Today {time} is free: offered to the waitlist and to callers"
       },
-      "confirmed": "Thanks, {name}! See you at {time}. If you can, arrive 10 minutes early.",
-      "offer": "No problem. These are the next free slots with {pro}:",
-      "rescheduled": "Done, you're booked for {slot}. We'll remind you the day before.",
-      "cancelled": "Done, your appointment is cancelled. Message us whenever you want a new time.",
-      "agenda": "On the schedule",
-      "sysConfirmed": "{name} confirmed. The {time} slot is locked in.",
-      "sysFreed": "The {time} slot is free. Offering it to the waitlist.",
-      "sysFreedOff": "The {time} slot is free. The waitlist is paused.",
-      "sysRefilled": "{name} took the {time} slot from the waitlist.",
-      "replay": "Play again",
-      "read": "Read"
+      "patient": {
+        "conf": "Hi {name}! Your appointment is confirmed.",
+        "confYou": "Hi! Your appointment is confirmed.",
+        "remind": "We'll message you 2 h before as a reminder. Anything else?",
+        "replies": {
+          "map": "How do I get there",
+          "change": "Change time",
+          "bye": "That's all, thanks"
+        },
+        "map": "We're at Calle del Alba 1250, 3 blocks from the subway.",
+        "change": "No problem. Tell me which day works better and I'll send you times.",
+        "bye": "See you soon, {name}!",
+        "byeYou": "See you soon!"
+      },
+      "faq": {
+        "hi": "Hi, I'm the clinic's assistant. How can I help?",
+        "replies": {
+          "whitening": "How long does whitening take?",
+          "insurance": "Do you take insurance?",
+          "book": "I want an appointment",
+          "yes": "Yes, this week",
+          "later": "Later"
+        },
+        "whitening": "One 60-minute session. If you haven't had a cleaning in the last 6 months, it's best to do that first.",
+        "insurance": "Yes, the main plans. Tell me yours and I'll confirm your coverage.",
+        "offer": "Want me to find you a time?",
+        "slots": "Here are openings with {pro}:",
+        "note": "Pick one and it goes straight into the schedule",
+        "later": "Sure. Message me here or on WhatsApp anytime."
+      }
     },
-    "reminders": {
-      "title": "Reminders",
-      "subtitle": "Today's appointments on WhatsApp",
-      "stats": {
-        "sent": "Sent",
-        "confirmed": "Confirmed",
-        "changed": "Changed",
-        "pending": "No reply yet"
+    "nav": {
+      "today": "Today",
+      "agenda": "Schedule",
+      "calls": "AI front desk",
+      "callsShort": "Calls",
+      "group": "Automations",
+      "whatsapp": "WhatsApp",
+      "site": "Website",
+      "recovered": "No-shows",
+      "recoveredShort": "No-shows"
+    },
+    "top": {
+      "liveCall": "AI on a call · {time}",
+      "live": "Live",
+      "site": "Site",
+      "ringing": "Incoming call…"
+    },
+    "side": {
+      "aiTitle": "AI receptionist",
+      "aiBody": "On · answers 24/7",
+      "aiOff": "Off · not answering"
+    },
+    "fullNames": {
+      "julian": "Julián Pérez"
+    },
+    "feed": {
+      "sent": "{count} WhatsApp reminders went out for today",
+      "online": "{patient} booked online: {treatment}, {time}",
+      "confirm": "{patient} confirmed their {time} appointment on WhatsApp",
+      "cancel": "{patient} cancelled on WhatsApp. {time} is free",
+      "offer": "{time} offered to {count} patients on the waitlist",
+      "waitlist": "{patient} took the {time} slot from the waitlist",
+      "reschedule": "{patient} moved to {slot}. {time} is free",
+      "call": "Incoming call: the AI receptionist picks up",
+      "voice": "The AI receptionist booked {patient} at {time}",
+      "missed": "Missed call: the AI receptionist was off",
+      "you": "You booked {treatment}: {time} · {pro}",
+      "afterHours": "After hours: the AI receptionist booked an ortho consult"
+    },
+    "toast": {
+      "online": "New online booking",
+      "waitlist": "Appointment recovered",
+      "voice": "AI booked an appointment",
+      "you": "You booked an appointment",
+      "missed": "Missed call"
+    },
+    "today": {
+      "greeting": "Good morning",
+      "recovered": "Appointments recovered this week",
+      "recoveredToday": "{count, plural, =0 {live now} other {+# today}}",
+      "recoveredMoney": "in revenue kept",
+      "recoveredTrend": "Recovered so far this week: {count}",
+      "next": "Up next",
+      "appointments": "Appointments today",
+      "occupancy": "{pct}% of the schedule booked",
+      "occupancyShort": "{pct}% booked",
+      "confirmed": "Confirmed",
+      "pending": "{count, plural, =0 {No one pending} one {# without a reply} other {# without a reply}}",
+      "activity": "Live activity",
+      "siteTitle": "Your booking site",
+      "calls": "Calls today",
+      "callsHint": "All answered · 7 after hours",
+      "agendaTitle": "Today's schedule",
+      "openAgenda": "Open schedule"
+    },
+    "call": {
+      "agent": "AI receptionist",
+      "agentTag": "AI receptionist",
+      "callerTag": "Patient",
+      "newPatient": "New patient",
+      "label": "Call answered by the AI receptionist",
+      "open": "View call",
+      "openIdle": "Open AI front desk",
+      "sent": "Confirmation sent on WhatsApp",
+      "outcome": "Appointment booked for {name}",
+      "lines": {
+        "hello": "Clínica Aurora, good morning. I'm the virtual receptionist. How can I help?",
+        "ask": "Hi, do you have anything today for a cleaning?",
+        "check": "Schedule · dental cleaning · today → {time} open",
+        "checkNone": "Schedule · dental cleaning · today → full",
+        "offerFreed": "Yes, a slot just opened up today at {time} with {pro}. Shall I book it?",
+        "offer": "Yes, I have today at {time} with {pro}. Shall I book it?",
+        "offerNone": "We're full today. Does tomorrow at 9:30 work?",
+        "accept": "Great, please do. I'm {name}.",
+        "booked": "Booked · today {time} · {name}",
+        "bookedNone": "Booked · tomorrow 9:30",
+        "bye": "All set, {name}. I sent the confirmation on WhatsApp. See you soon!"
       },
-      "patients": "Today's patients",
-      "patientView": "Patient's view",
-      "state": {
-        "waiting": "Waiting for reply",
-        "confirmed": "Confirmed",
+      "missedNote": "No one picked up. With the AI receptionist on, this call ended in a booking."
+    },
+    "calls": {
+      "title": "AI front desk",
+      "subtitle": "Answers every call, books and confirms on WhatsApp.",
+      "switch": "AI receptionist",
+      "switchOn": "Answers 24/7, after hours too",
+      "switchOff": "Off: calls ring unanswered",
+      "logTitle": "Today's calls",
+      "footnote": "Every call is transcribed into the patient's record.",
+      "topics": {
+        "cleaningToday": "Wants a cleaning today",
+        "priceWhitening": "Asked what whitening costs",
+        "moveCheckup": "Moved her checkup to Monday",
+        "afterHoursOrtho": "After hours: asked for an ortho consult",
+        "toothache": "Toothache: urgent"
+      },
+      "callers": {
+        "unknown1": "+54 11 4•••-1180",
+        "unknown2": "+54 11 6•••-5521",
+        "unknown3": "+54 9 11 •••-0412"
+      },
+      "outcomes": {
+        "answered": "Answered",
         "rescheduled": "Rescheduled",
-        "cancelled": "Cancelled"
+        "booked": "Booked",
+        "handoff": "Sent to {pro}",
+        "live": "Live",
+        "missed": "Missed"
       },
-      "rulesTitle": "Automations",
-      "rules": {
-        "day": {
-          "title": "24 h before",
-          "body": "Message with buttons to confirm, reschedule or cancel."
+      "agentCard": {
+        "title": "How it answers",
+        "voice": {
+          "label": "Voice",
+          "value": "Warm and natural, in your patients' language"
         },
         "hours": {
-          "title": "2 h before",
-          "body": "Last same-day nudge, with the address."
+          "label": "Hours",
+          "value": "24/7, holidays too"
         },
-        "waitlist": {
-          "title": "Waitlist",
-          "body": "When someone cancels, the slot goes straight to the next person in line."
+        "can": {
+          "label": "Can",
+          "value": "Book, reschedule, cancel and answer questions"
+        },
+        "handoff": {
+          "label": "Hands off to a person",
+          "value": "Emergencies, or when the patient asks"
         }
       },
-      "on": "On",
-      "off": "Paused"
+      "kpis": {
+        "total": "Calls today",
+        "totalHint": "None missed",
+        "booked": "Booked by voice",
+        "bookedHint": "Today, no one picked up a phone",
+        "afterHours": "After hours",
+        "afterHoursHint": "Before 9 am or after 8 pm",
+        "avg": "Average length",
+        "avgHint": "Per call"
+      }
     },
-    "absences": {
+    "whatsapp": {
+      "title": "WhatsApp",
+      "subtitle": "Reminders and confirmations that send themselves.",
+      "hint": "Reply as {name}: tap a button.",
+      "stats": {
+        "sent": "Sent today",
+        "confirmed": "Confirmed",
+        "changed": "Changes",
+        "noReply": "No reply"
+      },
+      "rules": {
+        "title": "Automations",
+        "booked": {
+          "title": "Confirmation on booking",
+          "body": "Right after booking, from the web, phone or WhatsApp."
+        },
+        "day": {
+          "title": "Reminder 24 h before",
+          "body": "With buttons to confirm, reschedule or cancel."
+        },
+        "hours": {
+          "title": "Heads-up 2 h before",
+          "body": "With the address and directions."
+        },
+        "waitlist": {
+          "title": "Automatic waitlist",
+          "body": "If someone cancels, the slot is offered on its own."
+        }
+      },
+      "repliesTitle": "Today's replies",
+      "state": {
+        "confirmed": "Confirmed",
+        "waiting": "No reply",
+        "cancelled": "Cancelled",
+        "talking": "Replying…",
+        "rescheduled": "Rescheduled"
+      },
+      "patientView": "This is what your patient gets."
+    },
+    "recovered": {
       "title": "No-shows",
-      "subtitle": "This week",
-      "recovered": "Appointments recovered this week",
-      "revenue": "Revenue you didn't lose",
-      "fromWaitlist": "From the waitlist",
-      "fromReminders": "Confirmed by reminder",
-      "noShows": "No-shows this week",
-      "before": "Before: {count} a week",
-      "change": "{value} no-shows",
-      "chartTitle": "No-shows per week",
-      "chartBefore": "Without reminders",
-      "chartAfter": "With reminders",
-      "week": "W{n}",
+      "subtitle": "Appointments that were about to be lost, recovered.",
+      "heroLabel": "Recovered this week",
+      "heroToday": "{count, plural, =0 {Nothing yet today} other {+# today, live}}",
+      "money": "in revenue kept",
+      "arcLabel": "Recovered per day: {days}",
+      "sourcesTitle": "Where they came from",
+      "sources": {
+        "reminder": "WhatsApp reminder",
+        "waitlist": "Waitlist",
+        "voice": "AI receptionist"
+      },
+      "noShowsTitle": "No-shows per week",
+      "noShowsDelta": "{value} no-shows",
       "thisWeek": "Now",
-      "barLabel": "{week}: {count} no-shows",
-      "todayTitle": "Recovered today",
-      "todayEmpty": "No appointments recovered yet today.",
-      "waitlist": "On the waitlist"
+      "week": "W{n}",
+      "before": "Before",
+      "after": "With automations",
+      "boardTitle": "Live recovery",
+      "empty": "Nothing yet",
+      "today": "Today",
+      "columns": {
+        "freed": "Freed up",
+        "offered": "Offered",
+        "won": "Recovered"
+      },
+      "notes": {
+        "cancelled": "{patient} cancelled",
+        "rescheduled": "{patient} rescheduled",
+        "offerWaitlist": "Offered to {count} on the waitlist",
+        "offerBoth": "Waitlist + AI front desk",
+        "byWaitlist": "{patient} · waitlist",
+        "byVoice": "{patient} · call with the AI",
+        "byYou": "Taken by you"
+      }
+    },
+    "site": {
+      "nav": {
+        "treatments": "Treatments",
+        "team": "Team",
+        "visit": "Visit",
+        "book": "Book now"
+      },
+      "kicker": "Dental & aesthetics",
+      "title": "Your smile, <em>unhurried</em>.",
+      "body": "Book online in 30 seconds. We confirm on WhatsApp and remind you before your visit.",
+      "treatmentsKicker": "Treatments",
+      "treatmentsTitle": "What we do",
+      "minutes": "{n} min",
+      "teamKicker": "Team",
+      "teamTitle": "Who'll see you",
+      "visitKicker": "Visit us",
+      "visitTitle": "Getting here",
+      "address": "Calle del Alba 1250 · 3 blocks from the subway",
+      "hours": "Monday to Saturday, 9 am to 8 pm",
+      "viewTitle": "Website",
+      "viewSub": "{url} · online booking 24/7",
+      "kpis": {
+        "online": "Online bookings today",
+        "visits": "Visits today",
+        "chat": "Chat questions"
+      },
+      "booking": {
+        "title": "Book your visit",
+        "treatment": "Treatment",
+        "day": "Day",
+        "today": "Today",
+        "time": "Time",
+        "none": "No times that day",
+        "confirm": "Book",
+        "note": "No calls, no waiting. We confirm on WhatsApp.",
+        "booked": "Done! You're booked",
+        "bookedCamila": "Done, {name}! You're booked",
+        "sentWhatsApp": "Confirmation sent on WhatsApp",
+        "again": "Book another"
+      },
+      "chat": {
+        "title": "Virtual assistant",
+        "subtitle": "Replies instantly",
+        "label": "{business} website chat",
+        "composer": "Type your question",
+        "close": "Close chat",
+        "open": "Questions?",
+        "expand": "Open the site chat"
+      }
+    },
+    "patient": {
+      "backToSite": "Site",
+      "threadLabel": "Simulated WhatsApp chat with {business}",
+      "app": "WhatsApp",
+      "now": "now",
+      "push": "Done, {name}! You're confirmed: today {time}, {treatment}.",
+      "pushYou": "Done! You're confirmed: {time} · {pro}.",
+      "openPush": "Open the confirmation in WhatsApp",
+      "backToApp": "Back to the clinic app"
     }
   },
   "demoGym": {
@@ -592,15 +1035,15 @@
       "carla": "Carla B.",
       "lucas": "Lucas D.",
       "elena": "Elena V.",
-      "tomas": "Tomas R.",
+      "tomas": "Tomás R.",
       "julia": "Julia M.",
       "mateo": "Mateo F.",
       "diego": "Diego S.",
       "paula": "Paula N.",
-      "martin": "Martin G.",
+      "martin": "Martín G.",
       "renata": "Renata P.",
-      "sebastian": "Sebastian T.",
-      "julian": "Julian A."
+      "sebastian": "Sebastián T.",
+      "julian": "Julián A."
     },
     "home": {
       "hello": "Hi, {name}",
@@ -738,7 +1181,7 @@
       "active": "Active members",
       "activeHint": "paid up",
       "atRisk": "At risk",
-      "atRiskHint": "{days}+ days without coming",
+      "atRiskHint": "{days}+ days without a visit",
       "returned": "{count, plural, one {# came back today} other {# came back today}}",
       "checkins": "Check-ins today",
       "checkinsHint": "since the gym opened",
@@ -747,7 +1190,7 @@
     },
     "risk": {
       "title": "Members at risk",
-      "subtitle": "{days}+ days without coming. The app sends them a comeback mission.",
+      "subtitle": "{days}+ days without a visit. The app sends them a comeback mission.",
       "high": "high risk",
       "sent": "Mission sent",
       "back": "Back today",
@@ -755,7 +1198,7 @@
       "sentNow": "Sent",
       "sendTo": "Send the comeback mission to {name} now",
       "sentTo": "Comeback mission sent to {name}",
-      "away": "{count} days without coming",
+      "away": "{count} days without a visit",
       "backAfter": "Back today, after {count} days",
       "queuedAt": "goes out on its own at {time}",
       "more": "{count, plural, one {# more member being followed up} other {# more members being followed up}}"
@@ -794,7 +1237,7 @@
       },
       "note": {
         "sent": "Comeback mission sent yesterday",
-        "queued": "Comeback mission at {time}",
+        "queued": "Comeback mission goes out at {time}",
         "sentNow": "Comeback mission just sent",
         "back": "Came back with the comeback mission"
       }
@@ -810,7 +1253,7 @@
     "aiOn": "AI on",
     "office": "Office",
     "closed": "Closed until Monday 10 AM",
-    "slotLong": "{day} the {date}th at {time}",
+    "slotLong": "{day} the {date, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} at {time}",
     "ops": {
       "sale": "Buy",
       "rent": "Rent"
@@ -897,9 +1340,9 @@
       "typing": "typing…",
       "typingLabel": "{business} is typing",
       "log": "Simulated WhatsApp conversation between {name} and {business}",
-      "closed": "After hours: Lumi, the virtual assistant of {business}, is answering. An agent picks it up on Monday.",
+      "closed": "After hours: Lumi, the virtual assistant at {business}, is replying. An agent takes over on Monday.",
       "inquiry": "Hi, are you open today? I'm looking for a {beds}-bedroom apartment in {zone}.",
-      "greet": "Hi {name}! I'm Lumi, the virtual assistant of {business}. The office opens on Monday, but I can help you right now. Are you looking to buy or rent?",
+      "greet": "Hi {name}! I'm Lumi, the virtual assistant at {business}. The office opens on Monday, but I can help you right now. Are you looking to buy or rent?",
       "ops": {
         "sale": "I want to buy",
         "rent": "I want to rent"
@@ -1014,26 +1457,26 @@
     }
   },
   "examples": {
-    "eyebrow": "Examples",
-    "title": "See a business like yours <em>running</em>.",
-    "sub": "Three demo businesses, each facing the costliest problem in its industry. Watch the {seconds}-second trailer or open the demo and use it.",
+    "title": "See a business like yours, running.",
+    "sub": "{count} demo businesses, each facing the costliest problem in its industry. Pick one: watch its {seconds}-second trailer or open the demo and use it.",
     "pain": "The problem",
     "result": "In the demo",
     "openDemo": "Open demo",
     "openDemoLabel": "Open demo: {business}",
     "modal": {
       "close": "Close the demo",
-      "hint": "It's a working demo: tap around and try everything.",
+      "hint": "Interactive demo: tap around and try everything.",
       "loading": "Loading the {business} demo…",
       "wantThis": "I want this for my business"
     },
     "notListed": {
-      "title": "Don't see your industry? <em>We build it in 48 h.</em>",
+      "title": "Don't see your industry? <em>We build it in {hours} h.</em>",
       "body": "Tell us what your business does and we'll show you your demo.",
       "cta": "Message us on WhatsApp",
       "message": "Hi Eclipse. My industry isn't in your examples. Can you build me a demo? My business is:"
     },
-    "note": "The businesses in these examples are fictional. Their numbers describe each demo's scenario, not client results."
+    "note": "The businesses in these examples are fictional. Their numbers describe each demo's scenario, not client results.",
+    "tabsLabel": "Demo businesses"
   },
   "trailers": {
     "title": "{business} — Demo",
@@ -1074,9 +1517,9 @@
       "feature": "An agent replies instantly, at any hour.",
       "screen": {
         "online": "Online",
-        "question": "Hi, is the 2-room apartment still available?",
+        "question": "Hi, is the one-bedroom still available?",
         "answer": "Yes! Here are photos and viewing times. Does tomorrow at 6 p.m. work?",
-        "listing": "2 rooms with balcony",
+        "listing": "One-bedroom with balcony",
         "listingMeta": "Available · Viewings this week",
         "cta": "Book a viewing",
         "replied": "Answered in 40 s"
@@ -1101,14 +1544,11 @@
     }
   },
   "founders": {
-    "eyebrow": "Founder program",
-    "title": "Founding <em>clients</em>",
-    "sub": "We're choosing our first {total} businesses. Founder pricing, top priority and your story told right here.",
+    "title": "Founding clients",
+    "sub": "We're choosing our first {total} businesses. Founder pricing, priority in the queue and your story told right here.",
     "subNoOffer": "We're choosing our first {total} businesses to work with side by side and tell their story here.",
-    "eyebrowClients": "Real cases",
-    "titleClients": "<em>Clients</em>",
+    "titleClients": "Clients",
     "subClients": "The first businesses that trusted us. Every case, told with its numbers.",
-    "counter": "{left, plural, one {<n>{left}</n> of {total} <v>left</v>} other {<n>{left}</n> of {total} <v>left</v>}}",
     "counterSr": "{left, plural, one {# of {total} founder spots left} other {# of {total} founder spots left}}",
     "slotsLabel": "Founder program spots",
     "clientsLabel": "Clients",
@@ -1124,29 +1564,39 @@
       "logoAlt": "{name} logo"
     },
     "deal": {
-      "title": "A deal that <em>goes both ways</em>",
+      "title": "A deal that goes both ways",
       "get": "What you get",
-      "give": "What you give",
+      "give": "What we ask",
       "priceText": "On the full development price, while spots last.",
-      "maintenanceTitle": "First month of maintenance free",
+      "maintenanceTitle": "First month of maintenance",
       "maintenanceText": "Whichever maintenance plan you choose, free for the first month.",
       "priorityTitle": "Priority in the queue",
       "priorityText": "Your project starts first and your requests jump the line.",
       "testimonialTitle": "Your testimonial",
       "testimonialText": "In your own words: what it was like working with us.",
-      "caseTitle": "Permission to show your case",
+      "caseTitle": "Your case, told here",
       "caseText": "Your business and your results, told in this section.",
       "referralTitle": "One referral",
-      "referralText": "You introduce us to a business that could use us."
+      "referralText": "You introduce us to a business that could use us.",
+      "priceTitle": "Founder price",
+      "priceValue": "−{percent}%",
+      "maintenanceValue": "free",
+      "priorityValue": "you start first",
+      "testimonialValue": "in your words",
+      "caseValue": "with your OK",
+      "referralValue": "1 business"
     },
     "next": "Want to be the next case?",
     "whatsapp": "Hi Eclipse. I want to be a founding client.",
-    "whatsappVertical": "Hi Eclipse. I want to be a founding client. My industry: {vertical}."
+    "whatsappVertical": "Hi Eclipse. I want to be a founding client. My industry: {vertical}.",
+    "readout": {
+      "left": "{left, plural, one {Last spot} other {Spots open}}",
+      "of": "of {total}"
+    }
   },
   "agent": {
-    "eyebrow": "Your move",
     "title": "Your business, <em>in full light</em>.",
-    "sub": "Ask for your demo and see your business working in {hours} hours, before any call. Rather see numbers first? Build your plan.",
+    "sub": "Get your demo and see your business working within {hours} hours, before any call. Rather see numbers first? Build your plan.",
     "chat": {
       "label": "Eclipse agent preview",
       "name": "Eclipse agent",
@@ -1194,6 +1644,101 @@
       },
       "whatsappCta": "Continue on WhatsApp",
       "message": "Hi Eclipse. I talked to the agent on your website.\nName: {name}\nIndustry: {vertical}\nI need: {need}\nLanguage: {language}"
+    }
+  },
+  "sections": {
+    "index": "Index",
+    "labels": {
+      "hero": "Home",
+      "problem": "What you lose",
+      "services": "What we build",
+      "examples": "Demos",
+      "process": "How we work",
+      "pricing": "Pricing",
+      "founders": "Founders",
+      "agent": "Let's talk"
+    },
+    "clients": "Clients"
+  },
+  "prefs": {
+    "title": "Language, currency and sound",
+    "language": "Language",
+    "currency": "Currency",
+    "sound": "Sound",
+    "languages": {
+      "es": "Español (Argentina)",
+      "en": "English",
+      "pt": "Português (Brasil)"
+    },
+    "currencies": {
+      "USD": "US dollar",
+      "ARS": "Argentine peso",
+      "BRL": "Brazilian real"
+    },
+    "base": "Reference currency",
+    "rate": "1 USD ≈ {amount} · {source}",
+    "rateSource": {
+      "ARS": "MEP dollar",
+      "BRL": "ECB ref."
+    },
+    "live": "Today's rate · {date}",
+    "fallback": "Estimated rate · {date}",
+    "note": "Prices are set in US dollars. Pesos and reais show an approximate equivalent (≈) at today's rate.",
+    "effects": "Sound effects",
+    "effectsHint": "Soft clicks when you choose and confirm",
+    "music": "Ambient music",
+    "musicHint": "Generated live, never repeats"
+  },
+  "sound": {
+    "toggle": "Sound",
+    "turnOn": "Turn on sound and music",
+    "turnOff": "Mute"
+  },
+  "demoKit": {
+    "shell": {
+      "collapse": "Collapse menu",
+      "expand": "Expand menu",
+      "more": "More",
+      "menu": "Menu",
+      "close": "Close"
+    },
+    "chat": {
+      "typing": "typing…",
+      "online": "online",
+      "read": "Read",
+      "replies": "Quick replies",
+      "typingLabel": "{name} is typing",
+      "composer": "Type a message"
+    },
+    "voice": {
+      "incoming": "Incoming call",
+      "answering": "{agent} is about to pick up",
+      "answeredBy": "{agent} on the line",
+      "working": "{agent} is checking the schedule",
+      "ended": "Call ended",
+      "waiting": "No calls right now",
+      "caller": "Caller",
+      "action": "Action",
+      "duration": "Duration {time}",
+      "transcript": "Live transcript",
+      "open": "View call",
+      "missed": "Missed call"
+    },
+    "browser": {
+      "address": "Address"
+    },
+    "feed": {
+      "now": "Now"
+    },
+    "game": {
+      "level": "Level {n}",
+      "toNext": "Progress to level {n}",
+      "streak": "{count, plural, one {day streak} other {day streak}}",
+      "done": "done",
+      "pending": "pending",
+      "earned": "Earned",
+      "progress": "{pct}% complete",
+      "rank": "Rank {n}"
     }
   }
 }

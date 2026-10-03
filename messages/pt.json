@@ -25,14 +25,10 @@
     "included": "Incluído",
     "none": "Nenhum",
     "copy": "Copiar",
-    "copied": "Copiado",
     "play": "Reproduzir",
     "pause": "Pausar",
     "next": "Próximo",
-    "previous": "Anterior",
-    "loading": "Carregando…",
     "whatsapp": "WhatsApp",
-    "email": "E-mail",
     "approxPrefix": "≈",
     "sections": "seções"
   },
@@ -40,27 +36,30 @@
     "services": "Serviços",
     "examples": "Exemplos",
     "pricing": "Preços",
-    "founders": "Fundadores"
+    "founders": "Fundadores",
+    "clients": "Clientes"
   },
   "header": {
     "home": "Eclipse, ir para o início",
     "skip": "Pular para o conteúdo",
     "menu": "Abrir menu",
+    "menuDialog": "Menu",
     "closeMenu": "Fechar menu",
     "mainNav": "Navegação principal",
     "language": "Idioma",
     "currency": "Moeda",
     "progress": "Progresso de leitura: {value}%",
     "buildPlan": "Monte seu plano",
-    "progressLabel": "Progresso de leitura"
+    "progressLabel": "Progresso de leitura",
+    "prefsTrigger": "Idioma e moeda"
   },
   "currency": {
     "ARS": "Pesos argentinos",
     "BRL": "Reais",
     "USD": "Dólares",
     "notice": "Preços em USD. Os valores em ARS e BRL são referenciais, conforme a cotação do dia.",
-    "source": "Cotação de {date}",
-    "sourceFallback": "Cotação de referência {date}"
+    "source": "Cotação do dia {date}",
+    "sourceFallback": "Cotação de referência do dia {date}"
   },
   "languages": {
     "es": "Español",
@@ -68,7 +67,8 @@
     "pt": "Português"
   },
   "loader": {
-    "label": "Carregando Eclipse"
+    "label": "Carregando Eclipse",
+    "endLine": "Feito sob medida para o seu negócio."
   },
   "hero": {
     "eyebrow": "Desenvolvimento · IA · Automação",
@@ -79,14 +79,13 @@
     "ctaPlan": "Monte seu plano",
     "seeAnother": "Ver outro setor",
     "scroll": "Role para ver mais",
-    "wantThis": "Quero isso para o meu negócio"
+    "wantThis": "Quero isso no meu negócio"
   },
   "whatsapp": {
     "greeting": "Olá, Eclipse.",
     "demo": "Olá, Eclipse. Quero pedir minha demo. Setor: {vertical}.",
     "demoNoVertical": "Olá, Eclipse. Quero pedir minha demo.",
-    "wantThis": "Olá, Eclipse. Vi a demo da {business} e quero algo assim para o meu negócio ({vertical}).",
-    "notListed": "Olá, Eclipse. Meu setor não está na lista: {vertical}. Vocês montam uma demo para mim?"
+    "wantThis": "Olá, Eclipse. Vi a demo da {business} e quero algo assim para o meu negócio ({vertical})."
   },
   "footer": {
     "tagline": "Desenvolvimento, IA e automação para negócios que não podem esperar.",
@@ -99,16 +98,16 @@
     "demoNotice": "Os negócios que aparecem nas demos são fictícios."
   },
   "planMessage": {
-    "introCard": "Olá, Eclipse. Quero este plano:",
+    "introCard": "Olá, Eclipse. Quero este pacote:",
     "introBuilder": "Olá, Eclipse. Montei meu plano no site:",
-    "planLine": "Plano {name} — a partir de {price}",
+    "planLine": "Pacote {name} — a partir de {price}",
     "itemLine": "{name} — {price}",
     "comboTag": "(combo)",
     "total": "Total estimado: {price}",
     "totalRange": "Total estimado: de {from} a {to}",
     "totalWithOffers": "Com ofertas: {price}",
     "maintenance": "Manutenção {name}: {price} {period}",
-    "maintenanceAnnual": "Manutenção {name}: {price} {period} (pagamento anual, 2 meses grátis)",
+    "maintenanceAnnual": "Manutenção {name}: {price} {period} (pagamento anual, {months, plural, one {# mês grátis} other {# meses grátis}})",
     "maintenanceNone": "Sem manutenção por enquanto",
     "voiceUsage": "Agente de voz: {price} por mês + minutos conforme o uso",
     "offers": "Ofertas: {list}",
@@ -119,76 +118,183 @@
     "perYear": "por ano"
   },
   "problem": {
-    "eyebrow": "O problema",
     "title": "Quanto custa <em>não ter</em> isso?",
-    "sub": "Cada contato sem resposta e cada hora copiando dados à mão têm um preço. Coloque seus números e veja na sua moeda.",
+    "sub": "Complete a frase com os seus números. A conta se faz sozinha, na sua moeda.",
     "inputsTitle": "Seus números",
     "verticalLegend": "Seu setor",
-    "painLabel": "O problema típico",
-    "painFallback": "Contatos sem resposta e horas de trabalho manual",
     "hoursLabel": "Horas por semana em tarefas repetitivas",
     "lostValueText": "{count} por semana",
     "hoursValue": "{count} h",
     "hoursValueText": "{count, plural, one {# hora} other {# horas}} por semana",
     "approxValueText": "aproximadamente {amount}",
-    "resultTitle": "Estimativa mensal",
-    "resultLead": "Você está perdendo",
-    "resultTail": "por mês",
-    "resultAnnounce": "Você está perdendo aproximadamente {amount} por mês.",
-    "breakdown": "Detalhamento",
+    "resultAnnounce": "Com os seus números, você perde cerca de {amount} por mês.",
     "lostRevenue": "Receita que escapa",
-    "lostDetail": "<n>{count}</n> por mês × {ticket}",
     "timeCost": "Horas da sua equipe",
-    "timeDetail": "<n>{count}</n> h por mês × {rate} a hora",
-    "cta": "Recupere isso — peça sua demo",
+    "cta": "Recupere: peça sua demo",
     "ctaPlan": "Monte seu plano",
-    "note": "É uma estimativa: {weeks} semanas por mês e {rate} por hora de trabalho. Seu número real pode ser outro.",
-    "whatsapp": "Olá, Eclipse. Usei a calculadora do site: estou perdendo cerca de {amount} por mês. Quero recuperar isso. Podem me mostrar uma demo? Setor: {vertical}.",
-    "whatsappNoVertical": "Olá, Eclipse. Usei a calculadora do site: estou perdendo cerca de {amount} por mês. Quero recuperar isso. Podem me mostrar uma demo?"
+    "whatsapp": "Olá, Eclipse. Usei a calculadora do site: com os meus números perco cerca de {amount} por mês ({lost} {unit} e {hours} h de tarefas repetitivas por semana). Quero recuperar isso. Podem me mostrar uma demo? Setor: {vertical}.",
+    "whatsappNoVertical": "Olá, Eclipse. Usei a calculadora do site: com os meus números perco cerca de {amount} por mês ({lost} {unit} e {hours} h de tarefas repetitivas por semana). Quero recuperar isso. Podem me mostrar uma demo?",
+    "lead": "Tenho <vertical></vertical>.",
+    "lost": {
+      "clinicas": "Toda semana perco <lost></lost>, e cada um vale <ticket></ticket>.",
+      "inmobiliarias": "Toda semana deixo <lost></lost> sem resposta, e cada um vale <ticket></ticket>.",
+      "gimnasios": "Toda semana perco <lost></lost>, com mensalidade de <ticket></ticket>.",
+      "tiendas": "Toda semana perco <lost></lost>, com ticket médio de <ticket></ticket>.",
+      "restaurantes": "Toda semana perco <lost></lost>, de <ticket></ticket> em média.",
+      "servicios": "Toda semana perco <lost></lost>, e cada um vale <ticket></ticket>.",
+      "otro": "Toda semana perco <lost></lost>, de <ticket></ticket> em média."
+    },
+    "hours": "Minha equipe gasta <hours></hours> por semana em tarefas que poderiam rodar sozinhas.",
+    "unit": {
+      "clinicas": {
+        "one": "horário",
+        "other": "horários"
+      },
+      "inmobiliarias": {
+        "one": "contato",
+        "other": "contatos"
+      },
+      "gimnasios": {
+        "one": "aluno",
+        "other": "alunos"
+      },
+      "tiendas": {
+        "one": "carrinho abandonado",
+        "other": "carrinhos abandonados"
+      },
+      "restaurantes": {
+        "one": "pedido ou reserva",
+        "other": "pedidos ou reservas"
+      },
+      "servicios": {
+        "one": "serviço",
+        "other": "serviços"
+      },
+      "otro": {
+        "one": "contato ou venda",
+        "other": "contatos ou vendas"
+      }
+    },
+    "hoursUnit": {
+      "one": "hora",
+      "other": "horas"
+    },
+    "verticalOption": {
+      "clinicas": "uma clínica",
+      "inmobiliarias": "uma imobiliária",
+      "gimnasios": "uma academia",
+      "tiendas": "uma loja online",
+      "restaurantes": "um restaurante",
+      "servicios": "um serviço a domicílio",
+      "otro": "outro tipo de negócio"
+    },
+    "ticketValueText": "{amount} cada",
+    "decrease": "Menos: {label}",
+    "increase": "Mais: {label}",
+    "presets": "Atalhos",
+    "presetsFor": "Valores rápidos: {label}",
+    "readoutTitle": "Perda estimada",
+    "perMonth": "por mês",
+    "perYear": "{amount} por ano",
+    "usdRef": "{amount} por mês",
+    "honest": "Estimativa com os seus números",
+    "showMath": "Ver a conta",
+    "hideMath": "Ocultar a conta",
+    "mathLost": "{count} {unit} × {ticket}",
+    "mathTime": "{count} h × {rate}",
+    "mathTotal": "Total por mês",
+    "assumptions": "Premissas: 1 mês = {weeks} semanas · 1 hora da sua equipe = {rate}. Seu número real pode ser outro.",
+    "miniLabel": "Você perde por mês",
+    "miniJump": "Ver a estimativa em detalhe"
   },
   "services": {
-    "eyebrow": "O que fazemos",
-    "title": "O que a gente constrói para o seu negócio <em>não dormir no ponto</em>.",
-    "sub": "Seis serviços. Use um só ou combine. Seja qual for, você vê funcionando com o seu negócio antes.",
+    "title": "O que construímos, <em>peça por peça</em>.",
+    "sub": "{families} famílias, {count} peças. Cada uma é vendida avulsa ou dentro de um pacote, e você vê tudo funcionando com o seu negócio antes.",
     "resultLabel": "Resultado",
-    "from": "A partir de",
-    "add": "Incluir no plano",
-    "items": {
-      "webs": {
-        "title": "Sites com motion",
-        "description": "Landing pages e sites que se movem, carregam rápido e explicam seu negócio em segundos.",
-        "result": "O cliente te chama no WhatsApp com um toque, direto do celular."
+    "from": "a partir de",
+    "add": "Adicionar",
+    "key": {
+      "pieceTerm": "Peça avulsa",
+      "pieceText": "Comprada sozinha. Pagamento único, preço a partir de.",
+      "includedTerm": "Incluída em",
+      "includedText": "Os pacotes que já vêm com ela.",
+      "includedLink": "Ver pacotes"
+    },
+    "pieces": "{count, plural, one {# peça} other {# peças}}",
+    "piecesTitle": "Peças avulsas · pagamento único",
+    "addLabel": "Adicionar {name} ao seu plano",
+    "includedIn": "Incluída em",
+    "goToPlan": "Ver o pacote {name}",
+    "extra": "Extra: entra em qualquer pacote",
+    "preview": "Prévia",
+    "families": {
+      "web": {
+        "description": "Landing pages e sites que se movem, carregam rápido e explicam seu negócio em segundos. Com SEO para te encontrarem.",
+        "result": "Te chamam no WhatsApp com um toque, direto do celular.",
+        "preview": {
+          "url": "seunegocio.com",
+          "kicker": "Agenda online",
+          "headline": "Seu negócio, aberto 24 horas.",
+          "cta": "Fale com a gente",
+          "bubble": "Oi, tem horário amanhã?"
+        }
       },
-      "systems": {
-        "title": "Sistemas de agendamento e pedidos",
-        "description": "Agenda online, confirmações automáticas e pedidos que chegam organizados.",
-        "result": "Seus clientes agendam e pedem sozinhos, a qualquer hora."
+      "ai": {
+        "description": "Uma voz natural que atende o telefone e um chat que responde na hora no WhatsApp e no seu site.",
+        "result": "Toda ligação e toda mensagem têm resposta, também fora do horário.",
+        "preview": {
+          "call": "Ligação recebida",
+          "agent": "Agente de voz · atendendo",
+          "question": "Tem horário na quinta?",
+          "answer": "Tem, às 10:30. Quer que eu reserve?",
+          "done": "Agendado · qui 10:30"
+        }
       },
-      "voice": {
-        "title": "Agentes de voz com IA",
-        "description": "Uma voz natural que atende o telefone, responde as dúvidas de sempre e agenda.",
-        "result": "Atende ligações 24/7, inclusive fora do horário."
+      "ops": {
+        "description": "Agendamentos, pedidos, automações, CRM e um painel com os números do dia. A operação, organizada.",
+        "result": "Seus clientes agendam e pedem sozinhos; você vê tudo em uma tela.",
+        "preview": {
+          "title": "Agenda da semana",
+          "kpi": "Agendamentos hoje",
+          "order": "Pedido pronto",
+          "toast": "Lembrete enviado"
+        }
       },
-      "chat": {
-        "title": "Chatbots e automações",
-        "description": "Respostas na hora no WhatsApp e no site. Lembretes e follow-ups que saem sozinhos.",
-        "result": "Toda mensagem tem resposta em segundos, e o cliente chega pronto pra você."
-      },
-      "commerce": {
-        "title": "E-commerce",
+      "sales": {
         "description": "Catálogo, carrinho, pagamentos e frete, com a identidade da sua marca.",
-        "result": "Você vende 24 horas por dia, mesmo com a loja fechada."
+        "result": "Você vende 24 horas, mesmo com a loja fechada.",
+        "preview": {
+          "store": "Loja online",
+          "add": "Adicionar",
+          "paid": "Pagamento aprovado"
+        }
       },
       "apps": {
-        "title": "Apps e plataformas",
-        "description": "Seu serviço num app próprio: reservas, pedidos e pagamentos, com um painel para gerenciar tudo.",
-        "result": "Seus clientes reservam, pedem e pagam pelo seu próprio app."
+        "description": "Seu serviço em um app próprio: pedidos, reservas e pagamentos, com um painel para gerenciar.",
+        "result": "Seus clientes pedem, acompanham e pagam pelo seu próprio app.",
+        "preview": {
+          "board": "Pedidos de hoje",
+          "status": "Técnico a caminho",
+          "eta": "Chega em",
+          "unit": "min"
+        }
+      },
+      "strategy": {
+        "description": "Auditoria digital e estudo de mercado: o que a concorrência faz e onde você está perdendo clientes hoje.",
+        "result": "Um plano de ação priorizado, antes de investir.",
+        "preview": {
+          "title": "Auditoria digital",
+          "web": "Site",
+          "google": "Google",
+          "social": "Redes",
+          "whatsapp": "WhatsApp",
+          "priority": "Prioridade 1: seu perfil no Google"
+        }
       }
     }
   },
   "process": {
-    "eyebrow": "Como trabalhamos",
-    "title": "Primeiro você vê <em>sua demo</em>. Depois a gente conversa.",
+    "title": "Primeiro você vê sua demo. Depois a gente conversa.",
     "sub": "É assim que a gente vende: em {hours} horas montamos uma demo do seu negócio, antes de qualquer ligação. Se fizer sentido, seguimos.",
     "durationLabel": "Prazo",
     "hoursUnit": "h",
@@ -221,52 +327,29 @@
     "ctaLead": "O primeiro passo é ver seu negócio funcionando."
   },
   "builder": {
-    "eyebrow": "Gerador de orçamento",
+    "eyebrow": "Orçamento na sua moeda",
     "title": "Monte seu plano",
     "pageTitle": "Monte seu <em>plano</em>",
-    "intro": "Escolha o que você precisa. O total se monta sozinho, na sua moeda.",
-    "pageIntro": "Escolha o que você precisa e veja o número na hora. Se a sua seleção já for um plano, a gente avisa quanto você economiza.",
+    "pageIntro": "Quatro passos, e dá para pular qualquer um. Escolha o que você quer resolver: o número se monta sozinho.",
     "copyLink": "Copiar link",
     "linkCopied": "Link copiado",
     "copyFailed": "Não deu para copiar",
-    "catalog": "Catálogo",
     "vertical": "Seu setor",
     "optional": "opcional",
-    "categoryCount": "{count, plural, one {# escolhido} other {# escolhidos}}",
-    "includedIn": "Incluído no plano {plan}",
+    "includedIn": "Incluída no pacote {plan}",
     "hintDashboard": "O dashboard brilha com um sistema por trás: adicione agendamentos, pedidos ou e-commerce.",
     "hintChatbot": "O chatbot rende mais com automações: responde e ainda faz o follow-up.",
-    "detectTitle": "Isto é o plano {plan}: você economiza ≈ {pct}%",
-    "detectBody": "Você paga {amount} a menos do que comprando separado.",
-    "detectCta": "Mudar para o plano",
-    "switched": "Você mudou para o plano {plan}.",
-    "removePlan": "Tirar plano",
-    "removePlanLabel": "Tirar o plano {plan} e voltar aos itens avulsos",
-    "planRemoved": "De volta aos itens avulsos.",
-    "removeItem": "Remover {item}",
-    "summaryTitle": "Seu plano",
-    "empty": "Você ainda não escolheu nada. Toque no que precisa e o total se monta sozinho.",
-    "count": "{count, plural, one {# item} other {# itens}}",
-    "planLine": "Plano {plan}",
-    "planIncludes": "Inclui {count, plural, one {# item} other {# itens}}",
-    "total": "Total estimado",
-    "oneTime": "Pagamento único",
-    "range": "Conforme o escopo, entre {from} e {to}.",
-    "rangeNoDiscounts": "Conforme o escopo, entre {from} e {to} sem descontos.",
-    "totalAnnounce": "Total estimado: {amount}",
-    "showSummary": "Ver resumo",
-    "hideSummary": "Ocultar resumo",
-    "maintenanceLegend": "Manutenção mensal",
+    "detectTitle": "Com isso, compensa o pacote {plan}: você economiza ≈ {pct}%",
+    "detectBody": "Você paga {amount} a menos do que peça por peça.",
+    "detectCta": "Mudar para o pacote",
+    "switched": "Você mudou para o pacote {plan}.",
+    "planRemoved": "Agora é peça por peça.",
+    "totalAnnounce": "Pagamento único: {amount}.",
     "suggested": "Sugerido",
     "noneDetail": "Você cuida",
-    "maintenanceIncludes": "Inclui: {list}.",
     "billingLegend": "Cobrança da manutenção",
     "freeMonths": "{count, plural, one {# mês grátis} other {# meses grátis}}",
-    "voiceUsage": "{name}: {price}/mês {note}",
-    "offersTitle": "Ofertas",
-    "applied": "Aplicada",
-    "comboApplied": "Seu agente de voz fica por {price}.",
-    "comboGap": "se o resto do seu plano chegar a {min}, o agente de voz fica por {price}. Faltam {missing}.",
+    "comboGap": "Se o resto do seu plano chegar a {min}, o agente de voz fica por {price}. Faltam {missing}.",
     "annualApplied": "Você economiza {amount} por ano na manutenção.",
     "founderApplied": "Você economiza {amount} no pagamento único.",
     "founderToggle": "Quero o preço de fundador (−{pct}%)",
@@ -276,77 +359,213 @@
     "endsInHours": "Termina em {hours, plural, one {# hora} other {# horas}}",
     "send": "Enviar meu plano pelo WhatsApp",
     "sendShort": "Enviar",
-    "sendDisabled": "Escolha pelo menos um item para enviar seu plano.",
+    "sendDisabled": "Escolha pelo menos uma peça para enviar seu plano.",
     "copySummary": "Copiar resumo",
     "summaryCopied": "Resumo copiado",
-    "notice": "Preços estimados. A demo e a proposta final ajustam o número ao seu negócio."
+    "notice": "Preços estimados. A demo e a proposta final ajustam o número ao seu negócio.",
+    "stepsLabel": "Passos do plano",
+    "stepOf": "Passo {n} de {total}",
+    "goToStep": "Passo {n}: {name}",
+    "steps": {
+      "objetivo": {
+        "name": "Objetivo",
+        "title": "O que você quer resolver?",
+        "help": "Escolha um ou vários. A gente pré-seleciona as peças e você ajusta depois."
+      },
+      "piezas": {
+        "name": "Peças",
+        "title": "Ajuste as peças",
+        "help": "Toque para adicionar ou tirar. Se um pacote compensar, a gente avisa."
+      },
+      "mantenimiento": {
+        "name": "Manutenção",
+        "title": "Manutenção e hospedagem",
+        "help": "Um valor fixo para tudo seguir funcionando: hospedagem, segurança, backups e alterações. É opcional."
+      },
+      "resumen": {
+        "name": "Resumo",
+        "title": "Seu plano, organizado",
+        "help": "O que você paga uma vez e o que paga todo mês, separado."
+      }
+    },
+    "back": "Voltar",
+    "next": "Próximo",
+    "goals": {
+      "encontrar": {
+        "name": "Ser encontrado",
+        "desc": "Um site rápido que aparece no Google."
+      },
+      "atender": {
+        "name": "Atender 24/7",
+        "desc": "Um agente de voz e um chatbot que respondem sozinhos."
+      },
+      "ordenar": {
+        "name": "Organizar agenda e pedidos",
+        "desc": "Tudo online, com lembretes automáticos."
+      },
+      "vender": {
+        "name": "Vender online",
+        "desc": "Loja própria com pagamentos e frete."
+      },
+      "fidelizar": {
+        "name": "Fidelizar clientes",
+        "desc": "Missões, prêmios e follow-up para eles voltarem."
+      },
+      "app": {
+        "name": "Um app próprio",
+        "desc": "Seu serviço em um app: pedidos, reservas e pagamentos."
+      },
+      "diagnostico": {
+        "name": "Não sei: quero um diagnóstico",
+        "desc": "Onde você está perdendo clientes hoje, com plano de ação."
+      }
+    },
+    "pieceCount": "{count, plural, one {# peça} other {# peças}}",
+    "goalsChosen": "{count, plural, =0 {Nenhum ainda} one {# escolhido} other {# escolhidos}}",
+    "verticalNone": "Sem especificar",
+    "fromPackage": "Ou comece por um pacote",
+    "chosen": "Escolhido",
+    "packageHead": "Pacote {plan}",
+    "packageIncludes": "Inclui {count, plural, one {# peça} other {# peças}}. Adicione as que quiser.",
+    "editPieces": "Editar peça por peça",
+    "dropPackage": "Tirar pacote",
+    "suggestedTag": "Sugerida",
+    "comboNote": "Combo: o agente de voz fica por {price} com um pacote a partir do {plan}, ou se o resto do seu plano somar {min} ou mais.",
+    "detectMoreTitle": "O pacote {plan} traz tudo isso e {count, plural, one {mais # peça} other {mais # peças}}: você economiza ≈ {pct}%",
+    "detectMoreBody": "Ele soma {list}. Mesmo assim, você paga {amount} a menos.",
+    "detectCtaShort": "Mudar",
+    "packageDropped": "Você tirou o pacote.",
+    "maintenanceNone": "Sem manutenção",
+    "perMonthLong": "por mês",
+    "perYearLong": "por ano",
+    "voiceNote": "O agente de voz soma {price} por mês {note}. É separado da manutenção e sempre cobrado por mês.",
+    "founderTitle": "Preço de fundador",
+    "referralTitle": "Indicações",
+    "ledgerOneTime": "Pagamento único",
+    "ledgerMonthly": "Por mês",
+    "ledgerYearly": "Por ano",
+    "ledgerTotal": "Total",
+    "ledgerFrom": "a partir de",
+    "edit": "Editar",
+    "rangeNote": "Os pacotes têm preço “a partir de”: conforme o escopo, o total pode chegar a {to}. A gente confirma o número antes de começar.",
+    "maintenanceLine": "Manutenção {name}",
+    "maintenanceAnnualLine": "Manutenção {name}, pagamento anual",
+    "voiceLine": "Agente de voz (fixo)",
+    "nothingMonthly": "Nada fixo: sem manutenção.",
+    "emptyTitle": "Você ainda não escolheu nada.",
+    "emptyCta": "Escolha o que você quer resolver",
+    "messagePreview": "Ver a mensagem que será enviada",
+    "dockOneTime": "Pagamento único",
+    "dockFrom": "a partir de",
+    "recurringAnnounce": "Além disso, {amount} {period}.",
+    "goalsLine": "Objetivo: {list}"
   },
   "pricing": {
-    "eyebrow": "Preços",
-    "title": "Preços claros. <em>Sem letras miúdas.</em>",
-    "subtitle": "Cada plano começa em um preço “a partir de” e tem uma faixa conforme o escopo. Some extras, escolha a manutenção e veja o total na sua moeda, na hora.",
+    "title": "Quanto custa<br></br> e como você paga.",
     "featured": "Recomendado",
-    "from": "A partir de",
-    "range": "Faixa conforme o escopo: <nums>{from} – {to}</nums>",
-    "separate": "Comprando separado: {separate} → <save>você economiza <count>≈ {pct}%</count></save>",
-    "includes": "O que inclui",
-    "addons": "Adicione extras",
-    "add": "Adicionar",
-    "added": "Adicionado",
-    "included": "Incluído",
-    "includedNote": "Já vem no plano",
-    "comboBadge": "Combo",
-    "maintenance": "Manutenção + hospedagem",
     "perMonth": "por mês",
     "perYear": "por ano",
-    "none": "Nenhuma",
-    "suggested": "Sugerido",
-    "optional": "Opcional. Para começar, o {name} já resolve.",
-    "voiceUsage": "+ {name}: {price}/mês {note}",
-    "total": "Total estimado",
-    "recurring": "+ {price} {period} de manutenção",
     "cta": "Quero esse",
-    "ctaLabel": "Quero esse: plano {name}, pelo WhatsApp",
-    "live": "{plan}: total estimado a partir de {total}.",
-    "liveMaintenance": "{plan}: manutenção {name}, {price} {period}.",
-    "liveNoMaintenance": "{plan}: sem manutenção.",
+    "ctaLabel": "Quero esse: pacote {name}, pelo WhatsApp",
     "billing": {
       "label": "Pagamento da manutenção",
       "monthly": "Mensal",
       "annual": "Anual",
       "free": "{months, plural, one {# mês grátis} other {# meses grátis}}"
     },
-    "founder": {
-      "left": "{left, plural, one {# vaga livre de {total}} other {# vagas livres de {total}}}",
-      "cta": "Ver programa de fundadores"
-    },
     "offers": {
       "label": "Ofertas vigentes",
       "endsIn": "Termina em {time}",
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
-      "minutes": "{minutes} min"
-    },
-    "carousel": {
-      "label": "Planos",
-      "hint": "{count} planos. Deslize para ver todos.",
-      "goTo": "Ver plano {name}",
-      "goToFeatured": "Ir para o mais escolhido",
-      "dots": "Escolha qual plano ver"
-    },
-    "build": {
-      "title": "Precisa de outra combinação?",
-      "text": "Escolha item por item e veja o orçamento na hora.",
-      "cta": "Monte seu plano",
-      "note": "Os preços são “a partir de”: o valor final depende do escopo. Antes de começar, a gente confirma o número final."
+      "minutes": "{minutes} min",
+      "founderHow": "Você pede: é só ativar ao montar seu plano.",
+      "founderLeft": "{left, plural, one {Resta # vaga de {total}} other {Restam # vagas de {total}}}",
+      "founderCta": "Ver programa de fundadores",
+      "comboTitle": "Agente de voz por {price}",
+      "comboText": "Pagamento único, se você adicionar ao {plans} ou a uma seleção de peças que chegue a {min} sem contar ele.",
+      "comboIncluded": "{count, plural, one {{plans} já vem com ele incluído.} other {{plans} já vêm com ele incluído.}}",
+      "founderWhat": "Vale sobre o pagamento único do projeto.",
+      "founderDeal": "Em troca: seu depoimento, permissão para mostrar seu caso e uma indicação."
     },
     "care": {
-      "eyebrow": "Manutenção + hospedagem",
-      "title": "Seu site não se apaga quando a gente termina. <em>A gente mantém ele vivo.</em>",
-      "subtitle": "Hospedagem, segurança, backups e alterações por um preço fixo. Você escolhe o nível conforme o que construímos juntos.",
+      "title": "Seu sistema não se apaga quando a gente termina.",
       "suggestedFor": "Sugerido para {plans}",
-      "voiceText": "Só entra quando seu plano tem agente de voz: um valor fixo por mês mais os minutos usados.",
-      "perMonthShort": "/mês"
+      "label": "Manutenção · opcional",
+      "text": "Hospedagem, segurança, backups e alterações por um preço fixo. Você escolhe o nível conforme o que construímos juntos.",
+      "annualNote": "Você paga {charged} meses e usa 12",
+      "voice": "Só entra se o seu projeto tiver um: {price} por mês {note}. Sempre mensal, também no pagamento anual.",
+      "live": "Manutenção com pagamento {billing}: preços {period}."
+    },
+    "sub": "Preços em dólar, sem letras miúdas. O que você vê é o ponto de partida: o valor final a gente confirma por escrito, depois da demo.",
+    "approx": "aproximadamente",
+    "rate": {
+      "label": "Conversão do dia",
+      "value": "1 USD ≈ {rate}",
+      "note": "Os valores com ≈ são convertidos de USD pela cotação do dia, como referência.",
+      "usd": "Valores em dólar, sem conversão."
+    },
+    "how": {
+      "label": "Como se paga",
+      "project": {
+        "title": "Projeto",
+        "when": "Pagamento único",
+        "text": "O que construímos para o seu negócio. Você vê um preço a partir de; o final a gente confirma por escrito depois da demo e da conversa.",
+        "link": "Ver pacotes"
+      },
+      "care": {
+        "title": "Manutenção",
+        "when": "Por mês · opcional",
+        "text": "Hospedagem, segurança, backups e alterações, a partir de {price} por mês.",
+        "annual": "Pagando o ano, {months, plural, one {# mês sai grátis} other {# meses saem grátis}}.",
+        "link": "Ver manutenção"
+      },
+      "extras": {
+        "title": "Extras",
+        "when": "Quando quiser",
+        "text": "Você adiciona peças quando precisar, pelo preço de cada uma.",
+        "link": "Ver peças"
+      }
+    },
+    "ways": {
+      "label": "Duas formas de comprar",
+      "bundles": {
+        "title": "Pacotes",
+        "text": "Combinações prontas para os casos mais comuns. As de várias peças saem por menos do que avulsas.",
+        "count": "{count} pacotes, em {groups} grupos"
+      },
+      "pieces": {
+        "title": "Peça por peça",
+        "text": "Escolha só o que precisa e veja o total na hora, na sua moeda.",
+        "cta": "Montar peça por peça",
+        "from": "Peças a partir de {price}."
+      }
+    },
+    "groups": {
+      "starter": {
+        "title": "Para começar",
+        "text": "Uma necessidade pontual, resolvida."
+      },
+      "complete": {
+        "title": "Sistemas completos",
+        "text": "Tudo conectado: o que o cliente vê e a operação por dentro."
+      },
+      "count": "{count, plural, one {# pacote} other {# pacotes}}"
+    },
+    "plan": {
+      "from": "A partir de",
+      "once": "Pagamento único",
+      "rangeLocal": "{from} · até {to} conforme o escopo",
+      "rangeUsd": "Até {to} conforme o escopo",
+      "includes": "O que inclui",
+      "savings": "Economize <pct></pct> vs. peças avulsas",
+      "customize": "Personalizar",
+      "customizeLabel": "Personalizar o pacote {name} no montador"
+    },
+    "noneFits": "Nenhum pacote serve?",
+    "noneFitsCta": "Monte peça por peça",
+    "notes": {
+      "from": "“A partir de” é o preço de partida: o final depende do escopo e a gente confirma por escrito antes de começar."
     }
   },
   "heroReveal": {
@@ -358,30 +577,22 @@
     "phoneLabel": "{business}: demo navegável, versão para celular"
   },
   "demoClinic": {
-    "tabs": {
-      "agenda": "Agenda",
-      "reminders": "Lembretes",
-      "absences": "Faltas"
-    },
-    "live": "Ao vivo",
-    "reception": "Recepção",
     "pros": {
       "lucia": {
-        "name": "Dra. Luana M.",
-        "short": "Luana"
+        "name": "Dra. Luana Moraes",
+        "short": "Dra. Luana"
       },
       "tomas": {
-        "name": "Dr. Rodrigo R.",
-        "short": "Rodrigo"
+        "name": "Dr. Rodrigo Reis",
+        "short": "Dr. Rodrigo"
       },
       "sofia": {
-        "name": "Dra. Bruna P.",
-        "short": "Bruna"
+        "name": "Dra. Bruna Prado",
+        "short": "Dra. Bruna"
       }
     },
     "specialties": {
-      "all": "Todos",
-      "dental": "Odontologia",
+      "dental": "Clínica geral",
       "ortho": "Ortodontia",
       "aesthetic": "Estética"
     },
@@ -418,154 +629,386 @@
       "irene": "Isabela Q.",
       "florencia": "Beatriz H.",
       "micaela": "Letícia O.",
-      "julieta": "Júlia A.",
       "rocio": "Aline E.",
-      "gabriela": "Gabriela Z.",
-      "julian": "Thiago P.",
-      "agustina": "Bianca R.",
-      "mateo": "Mateus L.",
-      "emilia": "Luiza C.",
-      "santiago": "Felipe B.",
-      "clara": "Clara M.",
-      "facundo": "Caio V."
+      "julian": "Thiago P."
     },
     "firstNames": {
-      "martina": "Mariana"
+      "martina": "Mariana",
+      "camila": "Camila",
+      "julian": "Thiago"
     },
     "status": {
       "done": "Atendido",
       "now": "Em atendimento",
       "confirmed": "Confirmado",
       "reminded": "Lembrete enviado",
-      "new": "Novo · online",
+      "new": "Agendou online",
       "waitlist": "Lista de espera",
       "you": "Agendado por você",
       "freed": "Liberado",
-      "noshow": "Faltou"
+      "voice": "Agendado pela IA"
     },
     "agenda": {
       "title": "Agenda",
-      "days": "Dias da semana",
-      "filter": "Filtrar por especialidade",
-      "occupancy": "{booked} de {total} horários ocupados",
-      "freeLeft": "{count, plural, one {# horário livre} other {# horários livres}}",
+      "filter": "Filtrar por profissional",
       "free": "Livre",
-      "freeHint": "Toque para agendar",
-      "pastFree": "Sem agendamento",
-      "showPast": "Ver horários anteriores ({count})",
-      "hidePast": "Ocultar horários anteriores",
       "bookTitle": "Agendar horário",
-      "bookWhen": "{day} · {time} · {pro}",
-      "treatment": "Procedimento",
+      "treatment": "Tratamento",
       "confirm": "Confirmar agendamento",
       "cancel": "Cancelar",
-      "pickSlot": "Escolha um horário livre na grade para agendar.",
-      "now": "Agora",
-      "freeSlot": "{time}, {pro}: livre. Agendar",
-      "busySlot": "{time}, {pro}: {patient}, {treatment}, {status}",
-      "emptySlot": "{time}, {pro}: sem agendamento"
-    },
-    "kpis": {
-      "today": "Horários hoje",
-      "confirmed": "Confirmados",
-      "confirmedOf": "de {count} agendados",
-      "recovered": "Recuperados na semana",
-      "recoveredHint": "com lembretes e lista de espera",
-      "waitlist": "Na lista de espera",
-      "waitlistHint": "prontos para ocupar um horário livre"
-    },
-    "activity": {
-      "title": "Atividade ao vivo",
-      "justNow": "Agora",
-      "sent": "{count} lembretes enviados pelo WhatsApp para hoje",
-      "new": "Novo agendamento online: {patient}, {time} com {pro}",
-      "confirm": "{patient} confirmou pelo WhatsApp o horário das {time}",
-      "cancel": "{patient} cancelou o horário das {time}",
-      "reschedule": "{patient} remarcou pelo WhatsApp. O horário das {time} ficou livre",
-      "refill": "{patient} ficou com o horário das {time} pela lista de espera",
-      "you": "Você agendou o horário das {time} com {pro}"
+      "freeSlot": "{time} · {pro}: livre, agendar",
+      "summary": "{day} · {count} horários · {pct}% ocupada",
+      "label": "Agenda de hoje por profissional",
+      "all": "Todos",
+      "freedTitle": "Liberado",
+      "freedSub": "{name} · sendo oferecido",
+      "minutes": "{n} min",
+      "waitlist": "Lista de espera",
+      "took": "Pegou um horário",
+      "waiters": {
+        "ivan": "Ivo R.",
+        "sol": "Sol M."
+      },
+      "wants": {
+        "paula": "Ortodontia",
+        "ivan": "Limpeza",
+        "sol": "Limpeza de pele"
+      },
+      "hintPhone": "Toque num horário livre para agendar.",
+      "hintLaptop": "Escolha um horário livre na grade para agendar."
     },
     "chat": {
-      "heading": "É assim que chega para o seu paciente",
-      "hint": "Responda como se você fosse a {name}.",
-      "online": "online",
-      "typing": "digitando…",
-      "typingLabel": "{business} está digitando",
-      "log": "Conversa simulada de WhatsApp entre {business} e {name}",
-      "auto": "Mensagem automática",
-      "reminder": "Oi, {name}! Aqui é da {business}. Passando para lembrar do seu horário de hoje: {treatment}, às {time} com {pro}.",
-      "ask": "Você confirma presença?",
-      "choices": {
-        "confirm": "Confirmo",
-        "reschedule": "Remarcar",
-        "cancel": "Cancelar"
+      "composer": "Mensagem",
+      "martina": {
+        "log": "Conversa simulada de WhatsApp entre {business} e {name}",
+        "reminder": "Oi, {name}! Lembrete do seu horário de hoje às {time} com a {pro}: {treatment}.",
+        "ask": "Pode confirmar se vem?",
+        "replies": {
+          "confirm": "Confirmo",
+          "reschedule": "Remarcar",
+          "cancel": "Cancelar"
+        },
+        "thanks": "Obrigada, {name}! Te esperamos às {time}.",
+        "noteConfirmed": "Horário confirmado na agenda",
+        "offer": "Sem problema. Estes são os próximos horários com a {pro}:",
+        "moved": "Pronto, ficou para {slot}. A gente te avisa um dia antes.",
+        "cancelled": "Pronto, cancelamos seu horário. Quando quiser, é só chamar que achamos outro.",
+        "noteFreed": "Hoje às {time} ficou livre: oferecido à lista de espera e a quem ligar"
       },
-      "confirmed": "Obrigado, {name}! Te esperamos às {time}. Se puder, chegue 10 minutos antes.",
-      "offer": "Sem problema. Estes são os próximos horários livres com {pro}:",
-      "rescheduled": "Pronto, remarcamos para {slot}. Mandamos um lembrete na véspera.",
-      "cancelled": "Pronto, cancelamos seu horário. Quando quiser, é só chamar que a gente encontra outro.",
-      "agenda": "Na agenda",
-      "sysConfirmed": "{name} confirmou. O horário das {time} está garantido.",
-      "sysFreed": "O horário das {time} ficou livre. Oferecendo para a lista de espera.",
-      "sysFreedOff": "O horário das {time} ficou livre. A lista de espera está pausada.",
-      "sysRefilled": "{name} ficou com o horário das {time} pela lista de espera.",
-      "replay": "Ver de novo",
-      "read": "Lida"
+      "patient": {
+        "conf": "Oi, {name}! Seu horário está confirmado.",
+        "confYou": "Oi! Seu horário está confirmado.",
+        "remind": "Vamos te lembrar 2 h antes. Precisa de mais alguma coisa?",
+        "replies": {
+          "map": "Como chego",
+          "change": "Mudar horário",
+          "bye": "Só isso, obrigado"
+        },
+        "map": "Estamos na Calle del Alba 1250, a 3 quadras do metrô.",
+        "change": "Sem problema. Me diz qual dia é melhor e te mando os horários.",
+        "bye": "Até já, {name}!",
+        "byeYou": "Até já!"
+      },
+      "faq": {
+        "hi": "Oi, sou a assistente da clínica. Como posso ajudar?",
+        "replies": {
+          "whitening": "Quanto dura um clareamento?",
+          "insurance": "Vocês aceitam convênio?",
+          "book": "Quero agendar",
+          "yes": "Sim, nesta semana",
+          "later": "Mais pra frente"
+        },
+        "whitening": "Uma sessão de 60 minutos. Se você não fez limpeza nos últimos 6 meses, o ideal é fazer antes.",
+        "insurance": "Sim, os principais. Me conta qual é o seu que eu confirmo a cobertura.",
+        "offer": "Quer que eu procure um horário?",
+        "slots": "Tenho estes horários com a {pro}:",
+        "note": "É só escolher um e ele entra direto na agenda",
+        "later": "Combinado. Quando quiser, me chama aqui ou no WhatsApp."
+      }
     },
-    "reminders": {
-      "title": "Lembretes",
-      "subtitle": "Horários de hoje pelo WhatsApp",
-      "stats": {
-        "sent": "Enviados",
-        "confirmed": "Confirmados",
-        "changed": "Com alteração",
-        "pending": "Sem resposta"
+    "nav": {
+      "today": "Hoje",
+      "agenda": "Agenda",
+      "calls": "Recepção IA",
+      "callsShort": "Ligações",
+      "group": "Automações",
+      "whatsapp": "WhatsApp",
+      "site": "Site",
+      "recovered": "Faltas",
+      "recoveredShort": "Faltas"
+    },
+    "top": {
+      "liveCall": "IA em ligação · {time}",
+      "live": "Ao vivo",
+      "site": "Site",
+      "ringing": "Ligação recebida…"
+    },
+    "side": {
+      "aiTitle": "Recepcionista IA",
+      "aiBody": "Ativa · atende 24/7",
+      "aiOff": "Desligada · não atende"
+    },
+    "fullNames": {
+      "julian": "Thiago Pereira"
+    },
+    "feed": {
+      "sent": "Saíram {count} lembretes no WhatsApp para hoje",
+      "online": "{patient} agendou online: {treatment}, {time}",
+      "confirm": "{patient} confirmou no WhatsApp o horário das {time}",
+      "cancel": "{patient} cancelou no WhatsApp. {time} ficou livre",
+      "offer": "Horário das {time} oferecido a {count} pacientes da lista de espera",
+      "waitlist": "{patient} pegou o horário das {time} pela lista de espera",
+      "reschedule": "{patient} remarcou para {slot}. {time} ficou livre",
+      "call": "Ligação recebida: a recepcionista IA atende",
+      "voice": "A recepcionista IA agendou {patient} às {time}",
+      "missed": "Ligação perdida: a recepcionista IA estava desligada",
+      "you": "Você agendou {treatment}: {time} · {pro}",
+      "afterHours": "Fora do horário: a recepcionista IA agendou uma consulta de ortodontia"
+    },
+    "toast": {
+      "online": "Novo agendamento online",
+      "waitlist": "Horário recuperado",
+      "voice": "A IA agendou um horário",
+      "you": "Você agendou um horário",
+      "missed": "Ligação perdida"
+    },
+    "today": {
+      "greeting": "Bom dia",
+      "recovered": "Horários recuperados nesta semana",
+      "recoveredToday": "{count, plural, =0 {ao vivo} other {+# hoje}}",
+      "recoveredMoney": "que não se perderam",
+      "recoveredTrend": "Recuperados na semana até agora: {count}",
+      "next": "Próximos horários",
+      "appointments": "Horários hoje",
+      "occupancy": "{pct}% da agenda ocupada",
+      "occupancyShort": "{pct}% ocupada",
+      "confirmed": "Confirmados",
+      "pending": "{count, plural, =0 {Ninguém pendente} one {# sem resposta} other {# sem resposta}}",
+      "activity": "Atividade ao vivo",
+      "siteTitle": "Seu site de agendamento",
+      "calls": "Ligações hoje",
+      "callsHint": "Todas atendidas · 7 fora do horário",
+      "agendaTitle": "Agenda de hoje",
+      "openAgenda": "Abrir agenda"
+    },
+    "call": {
+      "agent": "Recepcionista IA",
+      "agentTag": "Recepcionista IA",
+      "callerTag": "Paciente",
+      "newPatient": "Paciente novo",
+      "label": "Ligação atendida pela recepcionista IA",
+      "open": "Ver ligação",
+      "openIdle": "Abrir recepção IA",
+      "sent": "Confirmação enviada no WhatsApp",
+      "outcome": "Horário agendado para {name}",
+      "lines": {
+        "hello": "Clínica Aurora, bom dia. Sou a recepcionista virtual, como posso ajudar?",
+        "ask": "Oi, vocês têm algum horário hoje para limpeza?",
+        "check": "Agenda · limpeza · hoje → {time} livre",
+        "checkNone": "Agenda · limpeza · hoje → lotada",
+        "offerFreed": "Tenho sim: acabou de vagar um horário hoje às {time} com a {pro}. Posso reservar?",
+        "offer": "Tenho sim: hoje às {time} com a {pro}. Posso reservar?",
+        "offerNone": "Hoje está lotado. Amanhã às 9h30 serve?",
+        "accept": "Pode sim, perfeito. É {name}.",
+        "booked": "Reservado · hoje {time} · {name}",
+        "bookedNone": "Reservado · amanhã 9h30",
+        "bye": "Pronto, {name}. Mandei a confirmação no WhatsApp. Até já!"
       },
-      "patients": "Pacientes de hoje",
-      "patientView": "Visão do paciente",
-      "state": {
-        "waiting": "Aguardando resposta",
-        "confirmed": "Confirmou",
+      "missedNote": "Ninguém atendeu. Com a recepcionista IA ligada, essa ligação virava um horário agendado."
+    },
+    "calls": {
+      "title": "Recepção IA",
+      "subtitle": "Atende todas as ligações, agenda e confirma no WhatsApp.",
+      "switch": "Recepcionista IA",
+      "switchOn": "Atende 24/7, inclusive fora do horário",
+      "switchOff": "Desligada: as ligações tocam sem resposta",
+      "logTitle": "Ligações de hoje",
+      "footnote": "Cada ligação fica transcrita na ficha do paciente.",
+      "topics": {
+        "cleaningToday": "Quer uma limpeza hoje",
+        "priceWhitening": "Perguntou o preço do clareamento",
+        "moveCheckup": "Passou a consulta para segunda",
+        "afterHoursOrtho": "Fora do horário: pediu consulta de ortodontia",
+        "toothache": "Dor de dente: urgência"
+      },
+      "callers": {
+        "unknown1": "+54 11 4•••-1180",
+        "unknown2": "+54 11 6•••-5521",
+        "unknown3": "+54 9 11 •••-0412"
+      },
+      "outcomes": {
+        "answered": "Respondida",
         "rescheduled": "Remarcou",
-        "cancelled": "Cancelou"
+        "booked": "Agendou",
+        "handoff": "Encaminhada para {pro}",
+        "live": "Em andamento",
+        "missed": "Perdida"
       },
-      "rulesTitle": "Automações",
-      "rules": {
-        "day": {
-          "title": "24 h antes",
-          "body": "Mensagem com botões para confirmar, remarcar ou cancelar."
+      "agentCard": {
+        "title": "Como atende",
+        "voice": {
+          "label": "Voz",
+          "value": "Calorosa e natural, no idioma do paciente"
         },
         "hours": {
-          "title": "2 h antes",
-          "body": "Último aviso no mesmo dia, com o endereço."
+          "label": "Horário",
+          "value": "24/7, inclusive feriados"
         },
-        "waitlist": {
-          "title": "Lista de espera",
-          "body": "Se alguém cancela, o horário é oferecido na hora ao próximo da fila."
+        "can": {
+          "label": "Pode",
+          "value": "Agendar, remarcar, cancelar e tirar dúvidas"
+        },
+        "handoff": {
+          "label": "Passa para uma pessoa",
+          "value": "Urgências, ou quando o paciente pede"
         }
       },
-      "on": "Ativo",
-      "off": "Pausado"
+      "kpis": {
+        "total": "Ligações hoje",
+        "totalHint": "Nenhuma sem atender",
+        "booked": "Agendados por voz",
+        "bookedHint": "Hoje, sem ninguém atender o telefone",
+        "afterHours": "Fora do horário",
+        "afterHoursHint": "Antes das 9h ou depois das 20h",
+        "avg": "Duração média",
+        "avgHint": "Por ligação"
+      }
     },
-    "absences": {
+    "whatsapp": {
+      "title": "WhatsApp",
+      "subtitle": "Lembretes e confirmações que saem sozinhos.",
+      "hint": "Responda como se fosse a {name}: toque um botão.",
+      "stats": {
+        "sent": "Enviados hoje",
+        "confirmed": "Confirmaram",
+        "changed": "Mudanças",
+        "noReply": "Sem resposta"
+      },
+      "rules": {
+        "title": "Automações",
+        "booked": {
+          "title": "Confirmação ao agendar",
+          "body": "Assim que agendam, pelo site, telefone ou WhatsApp."
+        },
+        "day": {
+          "title": "Lembrete 24 h antes",
+          "body": "Com botões para confirmar, remarcar ou cancelar."
+        },
+        "hours": {
+          "title": "Aviso 2 h antes",
+          "body": "Com o endereço e como chegar."
+        },
+        "waitlist": {
+          "title": "Lista de espera automática",
+          "body": "Se alguém cancela, o horário é oferecido sozinho."
+        }
+      },
+      "repliesTitle": "Respostas de hoje",
+      "state": {
+        "confirmed": "Confirmou",
+        "waiting": "Sem resposta",
+        "cancelled": "Cancelou",
+        "talking": "Respondendo…",
+        "rescheduled": "Remarcou"
+      },
+      "patientView": "É assim que chega para o seu paciente."
+    },
+    "recovered": {
       "title": "Faltas",
-      "subtitle": "Esta semana",
-      "recovered": "Horários recuperados na semana",
-      "revenue": "Receita que não se perdeu",
-      "fromWaitlist": "Pela lista de espera",
-      "fromReminders": "Confirmados pelo lembrete",
-      "noShows": "Faltas nesta semana",
-      "before": "Antes: {count} por semana",
-      "change": "{value} de faltas",
-      "chartTitle": "Faltas por semana",
-      "chartBefore": "Sem lembretes",
-      "chartAfter": "Com lembretes",
+      "subtitle": "Horários que iam se perder e foram recuperados.",
+      "heroLabel": "Recuperados nesta semana",
+      "heroToday": "{count, plural, =0 {Nada ainda hoje} other {+# hoje, ao vivo}}",
+      "money": "que não se perderam",
+      "arcLabel": "Recuperados por dia: {days}",
+      "sourcesTitle": "De onde vieram",
+      "sources": {
+        "reminder": "Lembrete no WhatsApp",
+        "waitlist": "Lista de espera",
+        "voice": "Recepcionista IA"
+      },
+      "noShowsTitle": "Faltas por semana",
+      "noShowsDelta": "{value} faltas",
+      "thisWeek": "Esta",
       "week": "S{n}",
-      "thisWeek": "Atual",
-      "barLabel": "{week}: {count} faltas",
-      "todayTitle": "Recuperados hoje",
-      "todayEmpty": "Nenhum horário recuperado hoje, por enquanto.",
-      "waitlist": "Na lista de espera"
+      "before": "Antes",
+      "after": "Com automações",
+      "boardTitle": "Recuperação ao vivo",
+      "empty": "Nada por enquanto",
+      "today": "Hoje",
+      "columns": {
+        "freed": "Liberado",
+        "offered": "Oferecido",
+        "won": "Recuperado"
+      },
+      "notes": {
+        "cancelled": "{patient} cancelou",
+        "rescheduled": "{patient} remarcou",
+        "offerWaitlist": "Oferecido a {count} na lista de espera",
+        "offerBoth": "Lista de espera + recepção IA",
+        "byWaitlist": "{patient} · lista de espera",
+        "byVoice": "{patient} · ligação com a IA",
+        "byYou": "Você pegou"
+      }
+    },
+    "site": {
+      "nav": {
+        "treatments": "Tratamentos",
+        "team": "Equipe",
+        "visit": "Como chegar",
+        "book": "Agendar"
+      },
+      "kicker": "Odontologia e estética",
+      "title": "Seu sorriso, <em>sem pressa</em>.",
+      "body": "Agende online em 30 segundos. A gente confirma no WhatsApp e lembra você antes da consulta.",
+      "treatmentsKicker": "Tratamentos",
+      "treatmentsTitle": "O que fazemos",
+      "minutes": "{n} min",
+      "teamKicker": "Equipe",
+      "teamTitle": "Quem vai te atender",
+      "visitKicker": "Visite",
+      "visitTitle": "Como chegar",
+      "address": "Calle del Alba 1250 · a 3 quadras do metrô",
+      "hours": "Segunda a sábado, das 9h às 20h",
+      "viewTitle": "Site",
+      "viewSub": "{url} · agendamento online 24 h",
+      "kpis": {
+        "online": "Agendamentos online hoje",
+        "visits": "Visitas hoje",
+        "chat": "Perguntas no chat"
+      },
+      "booking": {
+        "title": "Agende sua consulta",
+        "treatment": "Tratamento",
+        "day": "Dia",
+        "today": "Hoje",
+        "time": "Horário",
+        "none": "Sem horários nesse dia",
+        "confirm": "Agendar",
+        "note": "Sem ligar, sem esperar. A gente confirma no WhatsApp.",
+        "booked": "Pronto! Horário agendado",
+        "bookedCamila": "Pronto, {name}! Horário agendado",
+        "sentWhatsApp": "Confirmação enviada no WhatsApp",
+        "again": "Agendar outro"
+      },
+      "chat": {
+        "title": "Assistente virtual",
+        "subtitle": "Responde na hora",
+        "label": "Chat do site da {business}",
+        "composer": "Escreva sua dúvida",
+        "close": "Fechar chat",
+        "open": "Dúvidas?",
+        "expand": "Abrir o chat do site"
+      }
+    },
+    "patient": {
+      "backToSite": "Site",
+      "threadLabel": "Conversa simulada de WhatsApp com {business}",
+      "app": "WhatsApp",
+      "now": "agora",
+      "push": "Pronto, {name}! Seu horário está confirmado: hoje {time}, {treatment}.",
+      "pushYou": "Pronto! Seu horário está confirmado: {time} · {pro}.",
+      "openPush": "Abrir a confirmação no WhatsApp",
+      "backToApp": "Voltar ao app da clínica"
     }
   },
   "demoGym": {
@@ -685,7 +1128,7 @@
       "rowLabel": "{rank}º {name}, {points} pontos",
       "streak": "{count, plural, one {# dia} other {# dias}}",
       "noStreak": "Sem sequência",
-      "toPass": "Faltam {points} pts para passar {name}.",
+      "toPass": "Faltam {points} pts para ultrapassar {name}.",
       "first": "Você está em primeiro. Mantenha a sequência para continuar no topo.",
       "howPoints": "Cada check-in vale {checkin} pts, cada missão soma os seus e fechar a semana dá {bonus} de bônus.",
       "colMember": "Aluno",
@@ -706,7 +1149,7 @@
       "invite": "Passe enviado. Avisamos quando seu amigo chegar.",
       "friend": "Seu amigo fez check-in: missão concluída · +{points} pts",
       "rankUp": "Você subiu para a posição {rank} do ranking",
-      "rankDown": "{by} passou você: você está na posição {rank}"
+      "rankDown": "{by} ultrapassou você: agora você está na posição {rank}"
     },
     "activity": {
       "title": "Atividade ao vivo",
@@ -721,7 +1164,7 @@
       "friend": "O convidado de {name} fez check-in: um possível aluno novo",
       "sent": "Missão de retorno enviada para {name}",
       "rankUp": "{name} subiu para a posição {rank} do ranking",
-      "rankDown": "{by} passou {name} no ranking"
+      "rankDown": "{by} ultrapassou {name} no ranking"
     },
     "churn": {
       "title": "Cancelamentos por mês",
@@ -1014,9 +1457,8 @@
     }
   },
   "examples": {
-    "eyebrow": "Exemplos",
-    "title": "Veja um negócio como o seu <em>funcionando</em>.",
-    "sub": "Três negócios de demonstração, cada um com o problema mais caro do seu setor. Assista ao trailer de {seconds} segundos ou abra a demo e use.",
+    "title": "Veja um negócio como o seu funcionando.",
+    "sub": "{count} negócios de demo, cada um com o problema mais caro do seu setor. Escolha um: assista ao trailer de {seconds} s ou abra a demo e use.",
     "pain": "O problema",
     "result": "Na demo",
     "openDemo": "Abrir demo",
@@ -1028,12 +1470,13 @@
       "wantThis": "Quero isso no meu negócio"
     },
     "notListed": {
-      "title": "Não achou o seu setor? <em>A gente monta em 48 h.</em>",
+      "title": "Não achou o seu setor? <em>A gente monta em {hours} h.</em>",
       "body": "Conte o que o seu negócio faz e mostramos a sua demo.",
       "cta": "Fale com a gente no WhatsApp",
       "message": "Olá, Eclipse. Meu setor não está nos exemplos do site. Vocês montam uma demo para mim? Meu negócio é:"
     },
-    "note": "Os negócios destes exemplos são fictícios. Os números mostram o cenário de cada demo, não resultados de clientes."
+    "note": "Os negócios destes exemplos são fictícios. Os números mostram o cenário de cada demo, não resultados de clientes.",
+    "tabsLabel": "Negócios de demo"
   },
   "trailers": {
     "title": "{business} — Demo",
@@ -1074,16 +1517,16 @@
       "feature": "Um agente responde na hora, a qualquer momento.",
       "screen": {
         "online": "Online",
-        "question": "Oi, o apê de 2 quartos ainda está disponível?",
+        "question": "Oi, o quarto e sala ainda está disponível?",
         "answer": "Sim! Te mando fotos e horários. Amanhã às 18h fica bom para visitar?",
-        "listing": "2 quartos com varanda",
+        "listing": "Quarto e sala com varanda",
         "listingMeta": "Disponível · Visitas nesta semana",
         "cta": "Agendar visita",
         "replied": "Respondido em 40 s"
       }
     },
     "gym": {
-      "problem1": "Veio três semanas.",
+      "problem1": "Treinou três semanas.",
       "problem2": "Depois, sumiu.",
       "pain": "alunos que cancelam por semana",
       "feature": "Missões e sequências que fazem voltar.",
@@ -1101,14 +1544,11 @@
     }
   },
   "founders": {
-    "eyebrow": "Programa fundador",
-    "title": "Clientes <em>fundadores</em>",
-    "sub": "Estamos escolhendo os {total} primeiros negócios. Preço de fundador, prioridade total e o seu caso contado aqui.",
+    "title": "Clientes fundadores",
+    "sub": "Estamos escolhendo os {total} primeiros negócios. Preço de fundador, prioridade na fila e o seu caso contado aqui.",
     "subNoOffer": "Estamos escolhendo os {total} primeiros negócios para trabalhar lado a lado e contar o caso deles aqui.",
-    "eyebrowClients": "Casos reais",
-    "titleClients": "<em>Clientes</em>",
+    "titleClients": "Clientes",
     "subClients": "Os primeiros negócios que confiaram na gente. Cada caso, contado com os números dele.",
-    "counter": "{left, plural, one {<v>Resta</v> <n>{left}</n> de {total}} other {<v>Restam</v> <n>{left}</n> de {total}}}",
     "counterSr": "{left, plural, one {# vaga de fundador livre de {total}} other {# vagas de fundador livres de {total}}}",
     "slotsLabel": "Vagas do programa fundador",
     "clientsLabel": "Clientes",
@@ -1124,27 +1564,37 @@
       "logoAlt": "Logo de {name}"
     },
     "deal": {
-      "title": "Uma troca <em>de verdade</em>",
+      "title": "Um acordo de mão dupla",
       "get": "O que você recebe",
-      "give": "O que você oferece",
+      "give": "O que pedimos",
       "priceText": "Sobre o valor total do desenvolvimento, enquanto houver vagas.",
-      "maintenanceTitle": "Primeiro mês de manutenção grátis",
+      "maintenanceTitle": "Primeiro mês de manutenção",
       "maintenanceText": "O plano de manutenção que você escolher, sem custo no primeiro mês.",
       "priorityTitle": "Prioridade na fila",
       "priorityText": "Seu projeto começa primeiro e seus pedidos passam na frente.",
       "testimonialTitle": "Seu depoimento",
       "testimonialText": "Com as suas palavras: como foi trabalhar com a gente.",
-      "caseTitle": "Permissão para mostrar o seu caso",
+      "caseTitle": "Seu caso, contado aqui",
       "caseText": "Seu negócio e seus resultados, contados nesta seção.",
       "referralTitle": "Uma indicação",
-      "referralText": "Você nos apresenta um negócio que possa precisar da gente."
+      "referralText": "Você nos apresenta um negócio que possa precisar da gente.",
+      "priceTitle": "Preço de fundador",
+      "priceValue": "−{percent}%",
+      "maintenanceValue": "grátis",
+      "priorityValue": "você começa primeiro",
+      "testimonialValue": "com suas palavras",
+      "caseValue": "com sua permissão",
+      "referralValue": "1 negócio"
     },
     "next": "Quer ser o próximo caso?",
     "whatsapp": "Olá, Eclipse. Quero ser cliente fundador.",
-    "whatsappVertical": "Olá, Eclipse. Quero ser cliente fundador. Meu setor: {vertical}."
+    "whatsappVertical": "Olá, Eclipse. Quero ser cliente fundador. Meu setor: {vertical}.",
+    "readout": {
+      "left": "{left, plural, one {Resta só} other {Ainda restam}}",
+      "of": "de {total} vagas"
+    }
   },
   "agent": {
-    "eyebrow": "Sua vez",
     "title": "Seu negócio, <em>em plena luz</em>.",
     "sub": "Peça sua demo e em {hours} horas você vê seu negócio funcionando, antes de qualquer ligação. Prefere ver valores primeiro? Monte seu plano.",
     "chat": {
@@ -1161,7 +1611,7 @@
       "send": "Enviar",
       "you": "Você",
       "bot": {
-        "hello": "Oi, eu sou o agente da Eclipse. Isto é uma prévia: na sua demo, eu sou treinado com os dados do seu negócio.",
+        "hello": "Oi, sou o agente da Eclipse. Isso é uma prévia: na sua demo, eu sou treinado com os dados do seu negócio.",
         "askVertical": "Para começar, qual é o setor do seu negócio?",
         "askOther": "Me conta: o que o seu negócio faz?",
         "knownVertical": "Vi que você escolheu {vertical}. Vamos começar por aí.",
@@ -1194,6 +1644,101 @@
       },
       "whatsappCta": "Continuar no WhatsApp",
       "message": "Olá, Eclipse. Conversei com o agente do site.\nNome: {name}\nSetor: {vertical}\nPreciso de: {need}\nIdioma: {language}"
+    }
+  },
+  "sections": {
+    "index": "Índice",
+    "labels": {
+      "hero": "Início",
+      "problem": "O que você perde",
+      "services": "O que construímos",
+      "examples": "Demos",
+      "process": "Como trabalhamos",
+      "pricing": "Preços",
+      "founders": "Fundadores",
+      "agent": "Vamos conversar"
+    },
+    "clients": "Clientes"
+  },
+  "prefs": {
+    "title": "Idioma, moeda e som",
+    "language": "Idioma",
+    "currency": "Moeda",
+    "sound": "Som",
+    "languages": {
+      "es": "Español (Argentina)",
+      "en": "English",
+      "pt": "Português (Brasil)"
+    },
+    "currencies": {
+      "USD": "Dólar americano",
+      "ARS": "Peso argentino",
+      "BRL": "Real brasileiro"
+    },
+    "base": "Moeda de referência",
+    "rate": "1 USD ≈ {amount} · {source}",
+    "rateSource": {
+      "ARS": "dólar MEP",
+      "BRL": "ref. BCE"
+    },
+    "live": "Cotação de hoje · {date}",
+    "fallback": "Cotação estimada · {date}",
+    "note": "Os preços são definidos em dólares. Em pesos e reais você vê um valor aproximado (≈) pela cotação do dia.",
+    "effects": "Efeitos sonoros",
+    "effectsHint": "Cliques suaves ao escolher e confirmar",
+    "music": "Música ambiente",
+    "musicHint": "Gerada ao vivo, nunca se repete"
+  },
+  "sound": {
+    "toggle": "Som",
+    "turnOn": "Ativar som e música",
+    "turnOff": "Silenciar"
+  },
+  "demoKit": {
+    "shell": {
+      "collapse": "Recolher menu",
+      "expand": "Expandir menu",
+      "more": "Mais",
+      "menu": "Menu",
+      "close": "Fechar"
+    },
+    "chat": {
+      "typing": "digitando…",
+      "online": "online",
+      "read": "Lida",
+      "replies": "Respostas rápidas",
+      "typingLabel": "{name} está digitando",
+      "composer": "Digite uma mensagem"
+    },
+    "voice": {
+      "incoming": "Chamada recebida",
+      "answering": "{agent} vai atender",
+      "answeredBy": "{agent} na linha",
+      "working": "{agent} está consultando a agenda",
+      "ended": "Chamada encerrada",
+      "waiting": "Nenhuma chamada agora",
+      "caller": "Quem liga",
+      "action": "Ação",
+      "duration": "Duração {time}",
+      "transcript": "Transcrição ao vivo",
+      "open": "Ver chamada",
+      "missed": "Chamada perdida"
+    },
+    "browser": {
+      "address": "Endereço"
+    },
+    "feed": {
+      "now": "Agora"
+    },
+    "game": {
+      "level": "Nível {n}",
+      "toNext": "Progresso até o nível {n}",
+      "streak": "{count, plural, one {dia de sequência} other {dias de sequência}}",
+      "done": "feito",
+      "pending": "pendente",
+      "earned": "Conquistada",
+      "progress": "{pct}% concluída",
+      "rank": "Posição {n}"
     }
   }
 }

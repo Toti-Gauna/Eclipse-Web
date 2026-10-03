@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { Sheet } from '@/components/ui/Sheet';
 import { useExperience } from '@/components/providers/ExperienceProvider';
+import { useSound } from '@/components/sound/SoundContext';
 import { PlanBuilder } from './PlanBuilder';
 
 /**
@@ -11,14 +13,21 @@ import { PlanBuilder } from './PlanBuilder';
  */
 export function PlanBuilderSheet({ suppressed = false }: { suppressed?: boolean }) {
   const { builder, closeBuilder } = useExperience();
+  const { play } = useSound();
   const open = builder.open && !suppressed;
+
+  // open / close sounds (not on mount while closed)
+  const was = useRef(false);
+  useEffect(() => {
+    if (open === was.current) return;
+    was.current = open;
+    play(open ? 'open' : 'close');
+  }, [open, play]);
+
   return (
-    <Sheet open={open} onClose={closeBuilder} variant="drawer" labelledBy="builder-title">
-      <div className="relative h-full overflow-hidden bg-night">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-32 -top-40 size-[26rem] rounded-full bg-[radial-gradient(closest-side,rgb(245_185_66/0.16),transparent)]"
-        />
+    <Sheet open={open} onClose={closeBuilder} variant="drawer" labelledBy="builder-title" panelClassName="pb-panel">
+      <div className="pb-panel-inner">
+        <div aria-hidden className="pb-panel-light" />
         <PlanBuilder mode="sheet" open={open} preset={builder.preset} onClose={closeBuilder} />
       </div>
     </Sheet>

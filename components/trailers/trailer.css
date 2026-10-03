@@ -611,7 +611,7 @@
 .mk-card {
   border: 1px solid var(--mk-line);
   border-radius: 0.9em;
-  background: #fff;
+  background: var(--mk-card, #fff);
 }
 .mk-skel {
   display: block;
@@ -647,21 +647,21 @@
   height: 1.1em;
 }
 .mk-pill--muted {
-  background: #eeebe5;
-  color: #5b5866;
+  background: var(--mk-muted-bg, #eeebe5);
+  color: var(--mk-muted, #5b5866);
 }
 .mk-pill--ok {
-  background: #e3f3e8;
-  color: #166534;
+  background: var(--mk-ok-bg, #e3f3e8);
+  color: var(--mk-ok, #166534);
 }
 .mk-pill--bad {
-  background: #fde8ea;
-  color: #a1253b;
+  background: var(--mk-bad-bg, #fde8ea);
+  color: var(--mk-bad, #a1253b);
 }
 .mk-pill--free {
   background: transparent;
-  color: #5b5866;
-  box-shadow: inset 0 0 0 1px rgb(21 21 27 / 0.22);
+  color: var(--mk-muted, #5b5866);
+  box-shadow: inset 0 0 0 1px var(--mk-line, rgb(21 21 27 / 0.22));
 }
 .mk-pill--accent {
   background: var(--mk-accent-soft);

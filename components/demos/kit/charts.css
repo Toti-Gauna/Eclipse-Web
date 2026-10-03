@@ -1,0 +1,268 @@
+/* Demo kit — charts (Sparkline, Bars, Donut, Legend, Kpi) */
+.demo-spark {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 2.2em;
+}
+.demo-spark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: demo-draw 1.1s var(--demo-ease) 0.1s both;
+}
+.demo-spark-line {
+  fill: none;
+  stroke: var(--tone-solid);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.demo-spark-area {
+  fill: var(--tone-solid);
+  opacity: 0.12;
+}
+.demo-spark-dot {
+  position: absolute;
+  width: 0.45em;
+  height: 0.45em;
+  margin: -0.225em 0 0 -0.225em;
+  border-radius: 999px;
+  background: var(--tone-solid);
+  box-shadow: 0 0 0 0.18em color-mix(in oklab, var(--tone-solid) 22%, transparent);
+  animation: demo-fade 0.4s ease 0.9s both;
+}
+@keyframes demo-draw {
+  from {
+    clip-path: inset(-10% 100% -10% 0);
+  }
+  to {
+    clip-path: inset(-10% -2% -10% 0);
+  }
+}
+@keyframes demo-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Bars */
+.demo-bars-plot {
+  display: flex;
+  align-items: stretch;
+  gap: 0.45em;
+  border-bottom: 1px solid var(--demo-line);
+}
+.demo-bars-col {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25em;
+}
+.demo-bars-value {
+  font-size: 0.66em;
+  font-weight: 650;
+  color: var(--tone-fg);
+  opacity: 0;
+}
+.demo-bars-value[data-show] {
+  opacity: 1;
+}
+.demo-bars-col:hover .demo-bars-value {
+  opacity: 1;
+}
+.demo-bars-track {
+  display: flex;
+  width: 100%;
+  max-width: 1.8em;
+  flex: 1;
+  align-items: flex-end;
+}
+.demo-bars-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.35em 0.35em 0 0;
+  background: var(--tone-solid);
+  transform-origin: bottom center;
+  transition: transform 0.9s var(--demo-ease);
+  animation: demo-grow 1s var(--demo-ease) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 0.1s);
+}
+@keyframes demo-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+.demo-bars-axis {
+  display: flex;
+  gap: 0.45em;
+  margin-top: 0.35em;
+}
+.demo-bars-axis span {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: var(--demo-muted);
+  font-size: 0.6em;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.demo-bars-axis span:last-child {
+  color: var(--demo-ink);
+  font-weight: 600;
+}
+
+/* Donut */
+.demo-donut {
+  position: relative;
+  flex: none;
+}
+.demo-donut svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg);
+}
+.demo-donut-track {
+  fill: none;
+  stroke: var(--demo-sunken);
+  stroke-width: 5.2;
+}
+.demo-donut-seg {
+  fill: none;
+  stroke: var(--tone-solid);
+  stroke-width: 5.2;
+  transform-origin: 21px 21px;
+  animation: demo-seg-in 0.9s var(--demo-ease) both;
+  animation-delay: calc(var(--i, 0) * 120ms + 0.1s);
+}
+@keyframes demo-seg-in {
+  from {
+    opacity: 0;
+    transform: rotate(-40deg) scale(0.92);
+  }
+}
+.demo-donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.demo-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  font-size: 0.72em;
+}
+.demo-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.demo-legend-swatch {
+  width: 0.7em;
+  height: 0.7em;
+  flex: none;
+  border-radius: 0.2em;
+  background: var(--tone-solid);
+}
+
+/* Kpi */
+.demo-kpi {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.3em;
+  padding: 0.85em 0.9em;
+  border: 1px solid var(--demo-line);
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+}
+.demo-kpi[data-emphasis] {
+  border-color: transparent;
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.demo-kpi-label {
+  color: var(--demo-muted);
+  font-size: 0.7em;
+  font-weight: 500;
+}
+.demo-kpi[data-emphasis] .demo-kpi-label,
+.demo-kpi[data-emphasis] .demo-kpi-hint {
+  color: color-mix(in oklab, var(--demo-accent-ink) 82%, transparent);
+}
+.demo-kpi-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25em;
+  font-size: 1.85em;
+  line-height: 1;
+}
+.demo-kpi[data-size='lg'] .demo-kpi-value {
+  font-size: 3em;
+}
+.demo-kpi-suffix {
+  color: var(--demo-muted);
+  font-size: 0.42em;
+  font-weight: 500;
+}
+.demo-kpi[data-emphasis] .demo-kpi-suffix {
+  color: inherit;
+  opacity: 0.8;
+}
+.demo-kpi-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  align-self: flex-start;
+  padding: 0.15em 0.5em 0.15em 0.35em;
+  border-radius: 999px;
+  background: var(--tone-soft);
+  color: var(--tone-fg);
+  font-size: 0.64em;
+  font-weight: 650;
+}
+.demo-kpi[data-emphasis] .demo-kpi-delta {
+  background: color-mix(in oklab, var(--demo-accent-ink) 16%, transparent);
+  color: inherit;
+}
+.demo-kpi-delta svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.demo-kpi-hint {
+  color: var(--demo-muted);
+  font-size: 0.64em;
+  line-height: 1.35;
+}
+.demo-kpi-spark {
+  margin-top: 0.2em;
+  height: 1.8em;
+}
+.demo-kpi[data-emphasis] .demo-kpi-spark {
+  --tone-solid: var(--demo-accent-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-spark svg,
+  .demo-spark-dot,
+  .demo-bars-bar,
+  .demo-donut-seg {
+    animation: none;
+  }
+  .demo-bars-bar {
+    transition: none;
+  }
+}

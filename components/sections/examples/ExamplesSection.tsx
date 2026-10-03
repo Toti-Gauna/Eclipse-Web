@@ -1,62 +1,72 @@
 import './examples.css';
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { MessageCircle } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { Reveal } from '@/components/motion/Reveal';
-import { SectionHeading } from '@/components/motion/SectionHeading';
+import { LightSweep } from '@/components/motion/LightSweep';
+import { DrawLine } from '@/components/motion/DrawLine';
+import { SectionMark } from '@/components/ui/SectionMark';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { TRAILER_DURATION } from '@/components/trailers/constants';
+import { DEMO_HOURS } from '@/components/sections/process/steps';
 import { verticals } from '@/lib/content';
-import { ExampleCard } from './ExampleCard';
+import { DemoTheater } from './DemoTheater';
 
 /**
- * "Ejemplos": one large card per rubro (trailer + demo business + key number +
- * "Abrir demo"), then "¿No ves tu rubro? Lo armamos en 48 h." → WhatsApp.
+ * 04 · "Sala de demos": every demo business of /content (one per rubro with a
+ * demo) in a theater — selector, stage with its trailer, facts and "Abrir demo"
+ * (fullscreen modal) — plus "¿No ves tu rubro?" → WhatsApp.
  * Every business here is fictional and labeled "Demo".
  */
 export function ExamplesSection() {
   const t = useTranslations('examples');
-  const em = (chunks: ReactNode) => <em>{chunks}</em>;
-  const items = verticals.filter((v) => v.id !== 'otro' && v.demo && v.business && v.keyNumber);
+  // "Lo armamos en 48 h." wraps as one unit instead of leaving "Lo" alone at a line end.
+  const emUnit = (chunks: ReactNode) => <em className="inline-block">{chunks}</em>;
+  const ids = verticals.filter((v) => v.id !== 'otro' && v.demo && v.business && v.keyNumber).map((v) => v.id);
+
+  const more = (
+    <div className="ex-more-card">
+      <span aria-hidden className="ex-more-index">
+        {String(ids.length + 1).padStart(2, '0')}
+      </span>
+      <p className="ex-more-title display">{t.rich('notListed.title', { hours: DEMO_HOURS, em: emUnit })}</p>
+      <p className="ex-more-body">{t('notListed.body')}</p>
+      <WhatsAppLink origin="examples_not_listed" message={t('notListed.message')} className="ex-more-link">
+        <span>{t('notListed.cta')}</span>
+        <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.6} />
+      </WhatsAppLink>
+    </div>
+  );
 
   return (
     <section
       id={SECTION_IDS.examples}
       aria-labelledby="examples-title"
-      className="examples theme-dark relative isolate overflow-hidden bg-night py-24 md:py-36"
+      className="examples theme-dark relative isolate overflow-hidden bg-night py-24 md:py-32"
     >
       <div aria-hidden className="examples-ambient" />
       <div className="container-x">
-        <Reveal>
-          <SectionHeading id="examples-title" eyebrow={t('eyebrow')} sub={t('sub', { seconds: TRAILER_DURATION })}>
-            {t.rich('title', { em })}
-          </SectionHeading>
-        </Reveal>
-
-        <ol role="list" className="mt-14 flex flex-col gap-6 md:mt-20 md:gap-10 lg:gap-14">
-          {items.map((v, i) => (
-            <Reveal as="li" key={v.id} start="top 88%">
-              <ExampleCard verticalId={v.id} index={i} />
-            </Reveal>
-          ))}
-        </ol>
-
-        <Reveal className="ex-more mt-16 md:mt-24" start="top 90%">
-          <div data-reveal className="ex-more-inner">
-            <div className="max-w-2xl">
-              <p className="display text-[2.1rem] leading-[1.02] sm:text-[2.6rem] md:text-5xl">{t.rich('notListed.title', { em })}</p>
-              <p className="mt-4 text-base text-fg-muted sm:text-lg">{t('notListed.body')}</p>
-            </div>
-            <WhatsAppLink origin="examples_not_listed" message={t('notListed.message')} className="btn btn-ghost w-full shrink-0 sm:w-auto">
-              <MessageCircle aria-hidden className="size-[1.1em]" strokeWidth={1.8} />
-              {t('notListed.cta')}
-            </WhatsAppLink>
+        <Reveal className="ex-head">
+          <div data-reveal>
+            <SectionMark section="examples" />
           </div>
-          <p data-reveal className="mt-8 max-w-2xl text-[0.8rem] leading-relaxed text-fg-muted">
-            {t('note')}
-          </p>
+          <h2 id="examples-title" data-reveal className="ex-title display">
+            <LightSweep>{t('title')}</LightSweep>
+          </h2>
+          <div data-reveal className="ex-sub">
+            <DrawLine className="ex-sub-rule" />
+            <p>{t('sub', { count: ids.length, seconds: TRAILER_DURATION })}</p>
+          </div>
         </Reveal>
+
+        <Reveal start="top 85%" className="mt-12 md:mt-16">
+          <div data-reveal>
+            <DemoTheater ids={ids} more={more} />
+          </div>
+        </Reveal>
+
+        <p className="ex-note">{t('note')}</p>
       </div>
     </section>
   );

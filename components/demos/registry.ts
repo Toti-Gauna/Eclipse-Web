@@ -9,4 +9,7 @@ export const demoLoaders: Record<DemoId, Loader> = {
   clinic: () => import('./clinic/ClinicDemo'),
   realEstate: () => import('./real-estate/RealEstateDemo'),
   gym: () => import('./gym/GymDemo'),
+  shop: () => import('./shop/ShopDemo'),
+  restaurant: () => import('./restaurant/RestaurantDemo'),
+  ondemand: () => import('./ondemand/OndemandDemo'),
 };

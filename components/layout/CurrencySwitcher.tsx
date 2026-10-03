@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { CURRENCIES } from '@/lib/currency';
 
-/** ARS / BRL / USD as a radio group (arrow keys move between options). */
+/** ARS / BRL / USD as a radio group (arrow keys move between options). 36px pill, 44px hit area (::before). */
 export function CurrencySwitcher({ className = '' }: { className?: string }) {
   const t = useTranslations();
   const { currency, setCurrency } = useCurrency();
@@ -17,7 +17,7 @@ export function CurrencySwitcher({ className = '' }: { className?: string }) {
         <label
           key={c}
           title={t(`currency.${c}`)}
-          className="relative grid h-9 min-w-11 cursor-pointer place-items-center rounded-full px-2 text-xs font-medium tracking-wider text-fg-muted transition-colors hover:text-fg has-[:checked]:bg-corona has-[:checked]:text-void has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--focus)]"
+          className="relative grid h-9 min-w-11 cursor-pointer before:absolute before:inset-x-0 before:-inset-y-1 before:rounded-full place-items-center rounded-full px-2 text-xs font-medium tracking-wider text-fg-muted transition-colors hover:text-fg has-[:checked]:bg-corona has-[:checked]:text-void has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--focus)]"
         >
           <input
             type="radio"

@@ -1,0 +1,16 @@
+/* <PriceReadout>: a price as an instrument reading; the "≈" of converted currencies drawn small. */
+.pr-readout {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2em;
+  white-space: nowrap;
+  color: var(--fg);
+}
+.pr-approx {
+  font-family: var(--font-mono);
+  font-size: 0.62em;
+  color: var(--fg-muted);
+}
+.pr-readout .readout {
+  letter-spacing: -0.03em;
+}

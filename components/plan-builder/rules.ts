@@ -1,6 +1,6 @@
 /**
- * Pure rules for "Armá tu plan": state transitions, catalog grouping, plan
- * detection against the real quote, maintenance suggestion and soft hints.
+ * Pure rules for "Armá tu plan": state transitions, catalog grouping, package
+ * detection against the real quote, maintenance suggestion, steps and soft hints.
  * Every price comes from lib/pricing.ts; nothing here re-implements pricing.
  */
 import {
@@ -19,7 +19,7 @@ import {
 import { detectPlans, isOfferActive, maintenanceSuggestion, MIN_SAVINGS_PCT, quote, type Quote } from '@/lib/pricing';
 import type { PlanState } from '@/lib/plan-url';
 
-/** What other parts of the page can pre-load into the builder (pricing cards, chips). */
+/** What other parts of the page can pre-load into the builder (pricing cards, service cards). */
 export interface Preset {
   items?: readonly ItemId[];
   planId?: PlanId | null;
@@ -30,6 +30,58 @@ export interface BuilderContext {
   foundersLeft: number;
   now?: Date;
 }
+
+// ---------------------------------------------------------------------------
+// Steps
+// ---------------------------------------------------------------------------
+
+/** The guided flow: Objetivo → Piezas → Mantenimiento → Resumen. Every step can be skipped. */
+export const STEPS = ['objetivo', 'piezas', 'mantenimiento', 'resumen'] as const;
+export type StepId = (typeof STEPS)[number];
+
+export function isStep(value: unknown): value is StepId {
+  return typeof value === 'string' && (STEPS as readonly string[]).includes(value);
+}
+
+export function stepIndex(step: StepId): number {
+  return STEPS.indexOf(step);
+}
+
+/** The neighbour step (clamped to the ends). */
+export function siblingStep(step: StepId, direction: 1 | -1): StepId {
+  return STEPS[Math.min(STEPS.length - 1, Math.max(0, stepIndex(step) + direction))];
+}
+
+/** Phase of the step's eclipse glyph: the moon covers the sun as the plan comes together. */
+export function stepPhase(step: StepId): number {
+  return (stepIndex(step) + 1) / STEPS.length;
+}
+
+/**
+ * Where to land. A preset (a package to personalize, a piece to add) opens on the
+ * pieces; a shared link with a plan opens on the summary; otherwise the remembered
+ * step, or the first one.
+ */
+export function landingStep({
+  preset,
+  fromLink,
+  remembered,
+  empty,
+}: {
+  preset?: Preset | null;
+  fromLink?: boolean;
+  remembered?: StepId | null;
+  empty: boolean;
+}): StepId {
+  if (preset && (preset.planId || preset.items?.length)) return 'piezas';
+  if (fromLink && !empty) return 'resumen';
+  if (remembered && !(empty && remembered === 'resumen')) return remembered;
+  return 'objetivo';
+}
+
+// ---------------------------------------------------------------------------
+// Selection
+// ---------------------------------------------------------------------------
 
 const catalogOrder = new Map<string, number>(allItems.map((item, index) => [item.id, index]));
 
@@ -44,12 +96,12 @@ export function planById(planId: PlanId | null | undefined, list: readonly Plan[
   return planId ? (list.find((p) => p.id === planId) ?? null) : null;
 }
 
-/** Item ids covered by the selected plan. */
+/** Item ids covered by the selected package. */
 export function includedIds(state: Pick<PlanState, 'planId'>): ItemId[] {
   return planById(state.planId)?.items ?? [];
 }
 
-/** Everything the visitor has: the plan's items plus the extras, in catalog order. */
+/** Everything the visitor has: the package's items plus the extras, in catalog order. */
 export function selectionIds(state: Pick<PlanState, 'planId' | 'items'>): ItemId[] {
   return sortItemIds([...includedIds(state), ...state.items]);
 }
@@ -58,7 +110,7 @@ export function isEmptyState(state: Pick<PlanState, 'planId' | 'items'>): boolea
   return !state.planId && state.items.length === 0;
 }
 
-/** Extras never repeat an item the plan already includes. */
+/** Extras never repeat an item the package already includes. */
 export function normalizeState(state: PlanState): PlanState {
   const included = new Set<string>(includedIds(state));
   return { ...state, items: sortItemIds(state.items.filter((id) => !included.has(id))) };
@@ -70,25 +122,55 @@ export function toggleItem(state: PlanState, id: ItemId): PlanState {
   return normalizeState({ ...state, items });
 }
 
-/** "Cambiar al plan": the plan replaces its items, the rest stays as extras. */
+/** "Cambiar al paquete": the package replaces its items, the rest stays as extras. */
 export function switchToPlan(state: PlanState, planId: PlanId): PlanState {
   return normalizeState({ ...state, planId, items: selectionIds(state) });
 }
 
-/** Back to individual items (the plan's items stay selected). */
+/** "Editar pieza por pieza": no package, its pieces stay selected one by one. */
 export function removePlan(state: PlanState): PlanState {
   return { ...state, planId: null, items: selectionIds(state) };
 }
 
-/** A preset replaces the selection; maintenance goes back to the suggestion. */
-export function applyPreset(state: PlanState, preset: Preset): PlanState {
-  return normalizeState({
-    ...state,
-    planId: preset.planId ?? null,
-    items: [...(preset.items ?? [])],
-    maintenance: undefined,
-  });
+/** "Quitar paquete": the package and its pieces go; the extras stay. */
+export function dropPlan(state: PlanState): PlanState {
+  return { ...state, planId: null };
 }
+
+/** Step 1 "Empezá desde un paquete": tap to start from it, tap again to drop it. */
+export function togglePlan(state: PlanState, planId: PlanId): PlanState {
+  return state.planId === planId ? dropPlan(state) : switchToPlan(state, planId);
+}
+
+/**
+ * Presets from the rest of the page:
+ * - a package ("Personalizar" on a pricing card) starts over from it: its extras
+ *   (if any) replace the selection, the goals are cleared and maintenance follows
+ *   the package's suggestion;
+ * - pieces alone ("Sumala a tu plan" on a service) are added to what is there.
+ */
+export function applyPreset(state: PlanState, preset: Preset): PlanState {
+  if (preset.planId) {
+    return normalizeState({
+      ...state,
+      goals: [],
+      planId: preset.planId,
+      items: [...(preset.items ?? [])],
+      maintenance: undefined,
+    });
+  }
+  return normalizeState({ ...state, items: [...state.items, ...(preset.items ?? [])] });
+}
+
+/** Items a preset adds that weren't selected yet (to point them out in step 2). */
+export function addedByPreset(state: PlanState, preset: Preset): ItemId[] {
+  const before = new Set<string>(selectionIds(state));
+  return selectionIds(applyPreset(state, preset)).filter((id) => !before.has(id));
+}
+
+// ---------------------------------------------------------------------------
+// Maintenance & quote
+// ---------------------------------------------------------------------------
 
 export function suggestedMaintenance(state: Pick<PlanState, 'planId' | 'items'>): MaintenanceId | null {
   return maintenanceSuggestion({ planId: state.planId, itemIds: state.items });
@@ -112,8 +194,21 @@ export function builderQuote(state: PlanState, ctx: BuilderContext): Quote {
 }
 
 /**
+ * What is paid again and again, split by period: monthly maintenance + the voice
+ * agent's fixed fee per month; annual maintenance per year (it is billed yearly).
+ */
+export function recurringSplit(q: Pick<Quote, 'maintenance'>): { monthlyUsd: number; yearlyUsd: number } {
+  const m = q.maintenance;
+  const maintenance = m.plan ? m.periodUsd : 0;
+  return {
+    monthlyUsd: (m.billing === 'monthly' ? maintenance : 0) + m.voiceUsageMonthlyUsd,
+    yearlyUsd: m.billing === 'annual' ? maintenance : 0,
+  };
+}
+
+/**
  * Price an item would be charged if selected now (voice combo aware).
- * `null` when the selected plan already includes it.
+ * `null` when the selected package already includes it.
  */
 export function priceIfSelected(state: PlanState, id: ItemId, ctx: BuilderContext): number | null {
   if (includedIds(state).includes(id)) return null;
@@ -122,10 +217,16 @@ export function priceIfSelected(state: PlanState, id: ItemId, ctx: BuilderContex
   return line ? line.priceUsd : null;
 }
 
+// ---------------------------------------------------------------------------
+// Package detection
+// ---------------------------------------------------------------------------
+
 export interface PlanSwitch {
   plan: Plan;
   /** Items that stay as extras after switching. */
   extras: ItemId[];
+  /** Pieces the package brings that the visitor hadn't picked (empty when it is already inside the selection). */
+  adds: ItemId[];
   /** One-time USD saved versus what the visitor would pay now. */
   savingsUsd: number;
   /** Rounded % of the current one-time subtotal. */
@@ -133,24 +234,37 @@ export interface PlanSwitch {
 }
 
 /**
- * "Esto es el plan Sistema: ahorrás ≈ X%". Uses detectPlans() to find bundles fully
- * contained in the selection, then measures the saving against the current quote
- * (so the voice combo is already counted). Only real savings are announced.
+ * "Con esto te conviene el paquete Sistema: ahorrás ≈ X%". Candidates are the bundles
+ * fully inside the selection (detectPlans) and the bigger bundles the selection already
+ * covers at least half of (≥ 2 pieces): those add pieces and still cost less. Each one is
+ * measured against the current quote (voice combo and extras included); only real
+ * savings ≥ MIN_SAVINGS_PCT are announced. Single-piece packages are never suggested.
  */
-export function planSwitchSuggestion(state: PlanState, ctx: BuilderContext): PlanSwitch | null {
+export function planSwitchSuggestion(state: PlanState, ctx: BuilderContext, planList: readonly Plan[] = allPlans): PlanSwitch | null {
   const selection = selectionIds(state);
   if (!selection.length) return null;
   const current = builderQuote(state, ctx).subtotalUsd;
   if (current <= 0) return null;
+  const selected = new Set<string>(selection);
+  const contained = new Set<string>(detectPlans(selection, planList).map((m) => m.plan.id));
   let best: PlanSwitch | null = null;
-  for (const match of detectPlans(selection)) {
-    if (match.plan.id === state.planId) continue;
-    const candidate = builderQuote(switchToPlan(state, match.plan.id), ctx).subtotalUsd;
-    const savingsUsd = current - candidate;
+  for (const plan of planList) {
+    if (plan.id === state.planId || plan.items.length < 2) continue;
+    const adds = plan.items.filter((id) => !selected.has(id));
+    const covered = plan.items.length - adds.length;
+    const qualifies = contained.has(plan.id) || (adds.length > 0 && covered >= 2 && covered * 2 >= plan.items.length);
+    if (!qualifies) continue;
+    const savingsUsd = current - builderQuote(switchToPlan(state, plan.id), ctx).subtotalUsd;
     const savingsPct = Math.round((savingsUsd / current) * 100);
     if (savingsUsd <= 0 || savingsPct < MIN_SAVINGS_PCT) continue;
-    if (!best || savingsUsd > best.savingsUsd) {
-      best = { plan: match.plan, extras: sortItemIds(match.extras), savingsUsd, savingsPct };
+    if (!best || savingsUsd > best.savingsUsd || (savingsUsd === best.savingsUsd && adds.length < best.adds.length)) {
+      best = {
+        plan,
+        extras: sortItemIds(selection.filter((id) => !plan.items.includes(id))),
+        adds: sortItemIds(adds),
+        savingsUsd,
+        savingsPct,
+      };
     }
   }
   return best;
@@ -158,7 +272,7 @@ export function planSwitchSuggestion(state: PlanState, ctx: BuilderContext): Pla
 
 /**
  * Voice combo not reached yet: how much more the rest of the selection needs.
- * Only when the voice agent is an extra and the plan alone doesn't unlock it.
+ * Only when the voice agent is an extra and the package alone doesn't unlock it.
  */
 export function voiceComboGap(
   state: PlanState,

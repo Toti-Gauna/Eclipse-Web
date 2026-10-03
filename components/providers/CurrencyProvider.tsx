@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import type { Locale } from '@/i18n/routing';
+import { localeTags, type Locale } from '@/i18n/routing';
 import { fallbackRates, type Rates } from '@/lib/content';
 import { CURRENCY_STORAGE_KEY, defaultCurrencyFor, getRates, isCurrency, type Currency } from '@/lib/currency';
 import { formatMoney, toCurrency } from '@/lib/pricing';
@@ -16,6 +16,41 @@ interface CurrencyContextValue {
   format: (usd: number, options?: { approx?: boolean }) => string;
   /** Converted + rounded number in the active currency. */
   convert: (usd: number) => number;
+  /** Today's rate as money: ARS → "$ 1.450", BRL → "R$ 5,40" (what 1 USD is worth). */
+  formatRate: (currency: Exclude<Currency, 'USD'>) => string;
+  /** The symbol prices use in this locale (es: US$ / $ / R$, en: $ / ARS / R$). */
+  symbol: (currency: Currency) => string;
+}
+
+const rateFormats = new Map<string, Intl.NumberFormat>();
+
+function rateFormat(tag: string, currency: Currency, digits: number): Intl.NumberFormat {
+  const key = `${tag}|${currency}|${digits}`;
+  let f = rateFormats.get(key);
+  if (!f) {
+    f = new Intl.NumberFormat(tag, {
+      style: 'currency',
+      currency,
+      currencyDisplay: 'symbol',
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
+    });
+    rateFormats.set(key, f);
+  }
+  return f;
+}
+
+/** Same symbol rule as formatMoney (lib/pricing): BRL always reads "R$". */
+function formatWithSymbol(value: number, currency: Currency, locale: Locale, digits: number): string {
+  return rateFormat(localeTags[locale], currency, digits)
+    .formatToParts(value)
+    .map((part) => (part.type === 'currency' && currency === 'BRL' ? 'R$' : part.value))
+    .join('');
+}
+
+function symbolFor(currency: Currency, locale: Locale): string {
+  if (currency === 'BRL') return 'R$';
+  return rateFormat(localeTags[locale], currency, 0).formatToParts(0).find((p) => p.type === 'currency')?.value ?? currency;
 }
 
 const CurrencyContext = createContext<CurrencyContextValue | null>(null);
@@ -80,6 +115,8 @@ export function CurrencyProvider({ locale, children }: { locale: Locale; childre
       rates,
       format: (usd, options) => formatMoney(usd, currency, rates, locale, options),
       convert: (usd) => toCurrency(usd, currency, rates),
+      formatRate: (c) => formatWithSymbol(rates[c], c, locale, rates[c] >= 100 ? 0 : 2),
+      symbol: (c) => symbolFor(c, locale),
     }),
     [locale, currency, setCurrency, rates],
   );

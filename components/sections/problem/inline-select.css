@@ -1,0 +1,57 @@
+/*
+ * <InlineSelect>: a native <select> that reads as part of a sentence ("Tengo [una clínica ▾].").
+ * The visible text hugs the current option; the real select sits on top, transparent.
+ */
+.isel {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28em;
+  color: var(--corona);
+  font-style: italic;
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  transition: color 0.25s ease;
+}
+.isel-text {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgb(245 185 66 / 0.55);
+  text-underline-offset: 0.2em;
+}
+.isel-caret {
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: -0.12em;
+  flex: none;
+  align-self: center;
+  color: var(--fg-muted);
+  transition: transform 0.3s var(--ease-expo);
+}
+.isel:hover {
+  color: var(--flare);
+}
+.isel:hover .isel-caret {
+  transform: translateY(2px);
+}
+.isel-native {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 16px; /* no zoom on iOS */
+  -webkit-appearance: none;
+  appearance: none;
+}
+.isel:has(.isel-native:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}

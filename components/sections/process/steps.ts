@@ -19,3 +19,11 @@ export const PROCESS_STEPS: readonly ProcessStep[] = [
   { id: 'launch', meta: 'text' },
   { id: 'care', meta: 'maintenance' },
 ];
+
+/**
+ * Eclipse phase of step `i` (its glyph): the first crescent of light at the demo,
+ * the full sun at the last step (0.8 → 0.6 → … → 0 for five steps).
+ */
+export function stepPhase(i: number, count: number = PROCESS_STEPS.length): number {
+  return Math.max(0, 1 - (i + 1) / count);
+}

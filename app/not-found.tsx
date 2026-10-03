@@ -1,5 +1,5 @@
 import './globals.css';
-import { fontSans, fontSerif } from './fonts';
+import { fontMono, fontSans, fontSerif } from './fonts';
 import { routing, localeTags } from '@/i18n/routing';
 import { BASE_PATH } from '@/lib/env';
 import es from '@/messages/es.json';
@@ -12,7 +12,11 @@ const messages = { es, en, pt };
 // locale here, so it shows all three.
 export default function NotFound() {
   return (
-    <html lang="es" className={`${fontSans.variable} ${fontSerif.variable}`}>
+    <html lang="es" className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable}`}>
+      <head>
+        {/* No metadata pipeline here (own <html>): without it the 404 had no document title. */}
+        <title>{`${messages.es.meta.notFoundTitle} — Eclipse`}</title>
+      </head>
       <body className="theme-dark grain grid min-h-dvh place-items-center bg-void">
         <main className="container-x py-24 text-center">
           <div aria-hidden className="mx-auto mb-10 size-24 rounded-full bg-void shadow-[0_0_0_2px_var(--corona),0_0_60px_10px_rgb(245_185_66/0.35)]" />

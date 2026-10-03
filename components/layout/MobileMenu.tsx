@@ -8,15 +8,21 @@ import { gsap } from '@/components/motion/gsap';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { DemoCta } from '@/components/ui/DemoCta';
-import { LocaleSwitcher } from './LocaleSwitcher';
-import { CurrencySwitcher } from './CurrencySwitcher';
-import { NAV_LINKS } from './navLinks';
+import { useSound } from '@/components/sound/SoundContext';
+import { SoundBadge, SoundToggle } from '@/components/sound/SoundToggle';
+import { PrefsPanel } from './PrefsPanel';
+import { NAV_LINKS, navLabelKey } from './navLinks';
 import { lockScroll } from '@/lib/scroll-lock';
 
-/** Full-screen menu that opens as an iris from the hamburger button. */
+/**
+ * Full-screen menu that opens as an iris from the hamburger button. Below the nav:
+ * the plan CTAs, then language / currency / sound (<PrefsPanel>, the same content as
+ * the header popover), which is the only place for them on phones.
+ */
 export function MobileMenu({ className = '' }: { className?: string }) {
   const t = useTranslations();
   const { openBuilder } = useExperience();
+  const { play } = useSound();
   const [open, setOpen] = useState(false);
   const button = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -59,14 +65,18 @@ export function MobileMenu({ className = '' }: { className?: string }) {
     const onCancel = (e: Event) => {
       e.preventDefault();
       setOpen(false);
+      play('close');
     };
     d.addEventListener('cancel', onCancel);
     return () => d.removeEventListener('cancel', onCancel);
-  }, []);
+  }, [play]);
 
   useEffect(() => (open ? lockScroll() : undefined), [open]);
 
-  const close = () => setOpen(false);
+  const close = () => {
+    setOpen(false);
+    play('close');
+  };
 
   return (
     <>
@@ -76,25 +86,32 @@ export function MobileMenu({ className = '' }: { className?: string }) {
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-label={t('header.menu')}
-        onClick={() => setOpen(true)}
-        className={`grid size-11 place-items-center rounded-full border border-line text-fg transition-colors hover:border-[color:var(--accent)] ${className}`}
+        onClick={() => {
+          setOpen(true);
+          play('open');
+        }}
+        className={`relative grid size-11 place-items-center rounded-full border border-line text-fg transition-colors hover:border-[color:var(--accent)] ${className}`}
       >
         <Menu aria-hidden className="size-5" strokeWidth={1.6} />
+        <SoundBadge />
       </button>
 
-      <dialog ref={dialog} aria-label={t('header.mainNav')} className="mobile-menu theme-dark">
+      <dialog ref={dialog} aria-label={t('header.menuDialog')} className="mobile-menu theme-dark">
         <div ref={panel} className="grain flex min-h-dvh flex-col bg-void">
           <div className="container-x flex h-[var(--header-h)] items-center justify-between">
             <span className="text-[0.8rem] font-medium tracking-[0.32em]">ECLIPSE</span>
-            <button
-              type="button"
-              autoFocus
-              onClick={close}
-              aria-label={t('header.closeMenu')}
-              className="grid size-11 place-items-center rounded-full border border-line"
-            >
-              <X aria-hidden className="size-5" strokeWidth={1.6} />
-            </button>
+            <div className="flex items-center gap-2">
+              <SoundToggle />
+              <button
+                type="button"
+                autoFocus
+                onClick={close}
+                aria-label={t('header.closeMenu')}
+                className="grid size-11 place-items-center rounded-full border border-line"
+              >
+                <X aria-hidden className="size-5" strokeWidth={1.6} />
+              </button>
+            </div>
           </div>
 
           <nav aria-label={t('header.mainNav')} className="container-x flex-1 pt-6">
@@ -107,20 +124,25 @@ export function MobileMenu({ className = '' }: { className?: string }) {
                     className="group flex min-h-14 items-baseline gap-4 py-2 font-serif text-5xl leading-none"
                   >
                     <span className="font-sans text-xs tabular text-fg-muted">0{i + 1}</span>
-                    <span className="transition-colors group-hover:text-corona">{t(`nav.${link.id}`)}</span>
+                    <span className="transition-colors group-hover:text-corona">{t(`nav.${navLabelKey(link.id)}`)}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
-          <div className="container-x space-y-6 pb-[max(2rem,env(safe-area-inset-bottom))]">
+          <div className="container-x space-y-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-8">
             <div data-menu-item className="flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  close();
+                  // Close at once, without the iris (the builder covers it anyway): the
+                  // dialog hands focus back to the menu button before the builder opens,
+                  // so closing the builder returns focus there instead of losing it.
+                  tl.current?.kill();
+                  dialog.current?.close();
+                  setOpen(false); // no 'close' sound: the builder opening is the moment
                   openBuilder('menu');
                 }}
               >
@@ -128,9 +150,8 @@ export function MobileMenu({ className = '' }: { className?: string }) {
               </button>
               <DemoCta origin="header" className="btn btn-ghost" />
             </div>
-            <div data-menu-item className="flex flex-wrap items-center gap-3">
-              <LocaleSwitcher />
-              <CurrencySwitcher />
+            <div data-menu-item className="max-w-md">
+              <PrefsPanel />
             </div>
           </div>
         </div>

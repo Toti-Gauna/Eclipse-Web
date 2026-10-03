@@ -46,10 +46,69 @@ Static export (`output: 'export'`) deployed to GitHub Pages under `/Eclipse-Web`
   with `t.rich('key', { em: (c) => <em>{c}</em> })` inside `.display` headings.
 - **While several agents work in parallel, do not edit `messages/*.json`.** Put your
   namespaces in `messages/drafts/<area>.json` shaped `{ "<namespace>": { "es": {...}, "en": {...}, "pt": {...} } }`.
-  In dev they are overlaid automatically (`i18n/messages.ts`); `npm test` checks key parity
-  across locales including drafts; `npm run i18n:merge` folds them in later.
+  In dev they are **deep-merged** over the base files (`i18n/messages.ts`): objects merge key
+  by key, other values replace, and `null` deletes a key — so a draft only carries the keys
+  you add, change or remove (`"oldKey": null`), never a copy of a whole namespace.
+  `npm test` checks key parity across locales including drafts; `npm run i18n:merge` folds
+  them in later with the same rules. Drafts are dev-only: `npm run build` ignores them.
 - Localized content fields in `/content` are `{ es, en, pt }` objects → `l(value, locale)`.
 - Locale tags: `localeTags` (es-AR, en, pt-BR) for `Intl` and `lang`.
+
+## Art direction v2 — "Efemérides" (read before touching any UI)
+
+The site is an observatory: the visitor watches their business come out of the shadow. The
+eclipse is the narrative (totality in the hero → dawn at the final CTA) and the **instrument**
+is the visual language: precise, technical, editorial, warm. It must not look like a template.
+
+**Signature elements**
+- Type: Instrument Serif at extreme sizes for *one* moment per section (up to ~10rem on desktop);
+  Geist for UI and body; **Geist Mono** (`font-mono`, `.label`, `.readout`) for indices, units,
+  timestamps, prices and any number that behaves like a reading. Big/small contrast, little in between.
+- Marks: 1px hairlines (`border-line`), `.ticks` registration marks on featured frames, rulers with
+  tick marks on sliders/progress, `.leader` dotted leaders in price lists, and
+  `<PhaseGlyph phase>` (`components/ui/PhaseGlyph.tsx`) as the brand icon for steps, progress,
+  states and loaders.
+- Light: amber (`--corona`) is *the light source*, not decoration — the CTA, the active state, the
+  one number that matters. At most one solid amber button per viewport. Dark sections are lit from
+  one side (a corona glow), never with random gradient blobs.
+- Index: sections are numbered `01`–`08` in mono, each with its phase name as a label.
+- Copy: short, concrete, numbers with units. Never "soluciones", "innovador", "potenciá",
+  "llevá tu negocio al siguiente nivel".
+
+**Composition** — every section has its own layout; never again "eyebrow + h2 + p + grid of identical
+cards". Use index lists with a live preview, sticky giant numbers, ledgers, horizontal phases,
+split screens, type that bleeds to the edge, elements that cross section boundaries. Asymmetry and
+negative space over symmetric grids. Mobile gets its own composition, not a squeezed desktop.
+
+**Motion signature** (GSAP or CSS; transform/opacity/clip-path only; `--ease-expo`; 0.5–0.9 s)
+1. Occultation: content is uncovered by a disc or an edge passing (`clip-path: circle()/inset()`).
+2. Readouts: numbers roll/count like instruments (`CountUp`, `RollingNumber`, `AnimatedMoney`).
+3. Glint: a diamond-ring sparkle on the primary action and on "success" moments.
+4. Drawing: hairlines and rulers draw in (`scaleX`/`scaleY` from 0) as sections enter.
+5. Scrub: scroll advances the moon (phase) in glyphs/rails. Never scroll-jack; never pin on mobile.
+Reduced motion → final state immediately (a ≤150 ms fade at most).
+
+**Sound** — `useSound()` from `components/sound/SoundContext.tsx` (names and when to use each in
+`lib/sound/types.ts`). Off by default; the visitor turns it on. Call `play()` only on meaningful
+moments (select, toggle, open/close, success, demo reveal) — never on hover, scroll or load.
+
+**AI-slop tells to avoid** — grids of identical icon cards; gradient blobs/orbs; glassmorphism on
+everything; emoji or "✨" in UI; an italic amber word in every heading (max one per section, not in
+all of them); centered-everything; "1-2-3 circles" steps; indigo/violet SaaS defaults (#6366F1,
+#6C63FF, #5A48D0 — in demos too); charts without a story; filler copy.
+
+**Demos** — each demo is a different fictional product with its own brand, palette and
+personality (always labeled "Demo"). They show what we sell: landing pages, chatbots, voice
+agents, gamification, e-commerce, dashboards, automations, apps.
+
+| Demo | Business | Mode | Palette | Personality | Must show |
+|---|---|---|---|---|---|
+| clinic | Clínica Aurora | light | porcelain #F7F4EF · ink #1D2A2B · teal #127C74 · blush #F2C4B3 | calm, rounded, airy | public landing with booking, agenda, **voice receptionist** call, WhatsApp reminders, no-show panel |
+| realEstate | Lumen Propiedades | light | stone #ECE8E1 · ink #141414 · cobalt #2448C8 · sand #D9CBB3 | editorial: serif, thin rules, square corners | property site, **chatbot** that qualifies leads 24/7, CRM pipeline, follow-ups, visits |
+| gym | Órbita Fitness | dark | #0B0C0F · lime #CCFF33 · pink #FF3E8A | bold condensed caps, game UI | member app with **gamification** (streaks, missions, XP, ranking, badges), classes, churn panel + win-back |
+| shop | Bruma Tostadores | light | cream #FBF6EE · espresso #2B1B14 · tomato #E4472B · oat #EADFCB | playful retail, pills, product-first | **storefront** (catalog → product → cart → checkout), product chatbot, abandoned-cart recovery, sales panel, subscription club |
+| restaurant | Bodegón Lucero | dark warm | #1A1113 · cream #F3E6D0 · wine #B23A52 · olive #8C9A4B | menu type, serif italics, dotted leaders, tickets | QR menu + online orders, **voice agent** taking phone orders (3 calls at once), kitchen display, reservations |
+| ondemand | Tuerca Hogar | light app | #F3F5F7 · ink #0F2440 · jade #12A45B · sky #3AA0FF | native mobile app, map, big tap targets | customer app (request → live tracking → pay → rate), dispatch board, technician view, WhatsApp/voice intake |
 
 ## Design system (app/globals.css)
 
@@ -67,6 +126,8 @@ Static export (`output: 'export'`) deployed to GitHub Pages under `/Eclipse-Web`
   `.card`, `.glass`, `.badge-demo`, `.grain`, `.tabular`, `.no-scrollbar`. Radius tokens:
   `rounded-card-sm|card|card-lg` (20/24/28px). Fonts: `font-serif` (Instrument Serif), `font-sans` (Geist).
 - Icons: Lucide only, thin stroke (`strokeWidth={1.5}`). Content icons by name via `<ContentIcon name=… />`.
+- v2 utilities: `.label` (mono uppercase caption), `.readout` (mono tabular numbers), `.ticks`
+  (corner registration marks; `--tick`, `--tick-c`), `.leader` (dotted leader), `font-mono` (Geist Mono).
 - Component-specific CSS goes in a file next to the component (e.g. `components/pricing/pricing.css`)
   imported by it — don't grow `app/globals.css`.
 
