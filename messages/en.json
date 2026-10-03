@@ -2040,6 +2040,29 @@
         "ticketGf": "Steak · gluten-free",
         "toast": "Table {table} booked · WhatsApp sent"
       }
+    },
+    "shop": {
+      "problem1": "She filled the cart.",
+      "problem2": "And left without paying.",
+      "pain": "abandoned carts per week",
+      "feature": "A WhatsApp with a coupon, half an hour later. Automatically.",
+      "screen": {
+        "title": "Today's carts",
+        "today": "Today",
+        "abandoned": "Abandoned",
+        "sent": "WhatsApp sent",
+        "recovered": "Recovered",
+        "toastSent": "WhatsApp with coupon {code} sent",
+        "toastPaid": "Cart recovered · paid",
+        "counter": "Recovered this week",
+        "names": {
+          "ines": "Inés",
+          "martin": "Martín",
+          "lautaro": "Lautaro"
+        },
+        "items": "{count, plural, one {# item} other {# items}}",
+        "of": "{count} of {total}"
+      }
     }
   },
   "founders": {
@@ -2785,6 +2808,514 @@
       "youBooking": "Your booking",
       "webBooking": "Web booking",
       "out": "On the way"
+    }
+  },
+  "demoShop": {
+    "nav": {
+      "today": "Today",
+      "orders": "Orders",
+      "carts": "Carts",
+      "chat": "Site chat",
+      "chatShort": "Chat",
+      "club": "Club",
+      "site": "Online store",
+      "groupAuto": "Automated",
+      "groupClients": "Customers",
+      "groupChannel": "Channel"
+    },
+    "top": {
+      "live": "{count} people in the store",
+      "store": "Store"
+    },
+    "side": {
+      "title": "Carts",
+      "on": "Recovery on",
+      "off": "Recovery off"
+    },
+    "products": {
+      "niebla": {
+        "name": "Niebla",
+        "notes": "Milk chocolate · hazelnut",
+        "origin": "BLEND · BRAZIL + COLOMBIA",
+        "process": "Natural + washed",
+        "about": "The house blend: sweet, round, for every day."
+      },
+      "huila": {
+        "name": "Huila",
+        "notes": "Panela · tangerine",
+        "origin": "COLOMBIA · HUILA · 1,700 M",
+        "process": "Washed",
+        "about": "Clean and sweet with a citrus finish. It shines as filter."
+      },
+      "sidamo": {
+        "name": "Sidamo",
+        "notes": "Blueberry · jasmine",
+        "origin": "ETHIOPIA · SIDAMO · 2,000 M",
+        "process": "Natural",
+        "about": "Fruity and floral, light body. For filter or French press."
+      },
+      "cerrado": {
+        "name": "Cerrado",
+        "notes": "Dark chocolate · peanut",
+        "origin": "BRAZIL · CERRADO · 1,100 M",
+        "process": "Natural",
+        "about": "Full body, low acidity: made for moka and espresso."
+      },
+      "medianoche": {
+        "name": "Medianoche",
+        "notes": "Cocoa · date · decaf",
+        "origin": "COLOMBIA · DECAF",
+        "process": "Water decaf",
+        "about": "All the flavor, no caffeine. The after-dinner coffee."
+      },
+      "moka": {
+        "name": "Moka pot, 3 cups",
+        "short": "Aluminum · 150 ml",
+        "notes": "Aluminum · 3 cups",
+        "origin": "GEAR",
+        "process": "Cast aluminum",
+        "about": "The classic Italian pot. Medium-fine grind, low heat."
+      }
+    },
+    "sizes": {
+      "s250": "250 g",
+      "s500": "500 g",
+      "s1000": "1 kg"
+    },
+    "grinds": {
+      "beans": "Whole bean",
+      "espresso": "Espresso",
+      "moka": "Moka",
+      "filter": "Filter",
+      "press": "French press"
+    },
+    "pays": {
+      "card": "Card",
+      "transfer": "Bank transfer",
+      "cash": "Cash"
+    },
+    "via": {
+      "recovered": "Recovered",
+      "club": "Club",
+      "you": "You"
+    },
+    "levels": {
+      "light": "Light roast",
+      "medium": "Medium roast",
+      "dark": "Dark roast"
+    },
+    "people": {
+      "ines": "Inés",
+      "tomas": "Tomás",
+      "carla": "Carla",
+      "diego": "Diego",
+      "ana": "Ana",
+      "bruno": "Bruno",
+      "sol": "Sol",
+      "pedro": "Pedro",
+      "lara": "Lara",
+      "nico": "Nico",
+      "valeria": "Valeria",
+      "joaquin": "Joaquín",
+      "martin": "Martín",
+      "sofia": "Sofía",
+      "lautaro": "Lautaro",
+      "you": "You"
+    },
+    "feed": {
+      "order": "Order #{id} from {name} · {total}",
+      "chat": "{name} is chatting with the store bot",
+      "checkout": "{name} is at checkout",
+      "abandon": "{name} left the cart at checkout",
+      "sent": "WhatsApp with a coupon to {name}",
+      "unsent": "No recovery: nobody wrote to {name}",
+      "read": "{name} opened the message",
+      "back": "{name} came back to the cart with the coupon",
+      "recovered": "Cart recovered: {name} paid {total}",
+      "lost": "Cart lost: {name} never came back",
+      "stock": "Low stock: {left} bags of {product} left",
+      "restock": "Monday roast scheduled: {product}",
+      "levelup": "{name} hit 6 months in the club and leveled up",
+      "faq": "The bot answered a shipping question on its own",
+      "mineAbandon": "You left your cart: recovery is off, no message went out",
+      "mineSent": "We wrote to you on WhatsApp with a coupon",
+      "mineOrder": "Your order #{id} reached the panel · {total}"
+    },
+    "toast": {
+      "order": "New order",
+      "abandon": "Cart abandoned",
+      "sent": "Recovery sent",
+      "recovered": "Cart recovered",
+      "levelup": "Level up",
+      "stock": "Low stock",
+      "mineOrder": "Your order",
+      "mineSent": "Recovery sent",
+      "lost": "Cart lost"
+    },
+    "today": {
+      "title": "Today",
+      "sub": "What the store sells while you roast.",
+      "revenue": "Sales today",
+      "vsLastWeek": "vs. last Tuesday at this hour",
+      "curve": "Today's sales, hour by hour, ahead of last week",
+      "orders": "Orders",
+      "conversion": "Conversion",
+      "visits": "{count} visits",
+      "ticket": "Average order",
+      "shelf": "Today's shelf",
+      "lowPill": "{name}: {count} left",
+      "restocked": "+{count} bags in Monday's roast",
+      "stock": "{count} in stock",
+      "stockSr": "{count} bags in stock",
+      "restock": "Schedule a {name} roast (+{count})",
+      "live": "Live orders",
+      "recovered": "Carts recovered this week",
+      "of": "of",
+      "open": "See carts",
+      "botLine": "The site bot sells while you roast"
+    },
+    "orders": {
+      "title": "Orders",
+      "sub": "{count, plural, one {# order to roast and ship} other {# orders to roast and ship}}",
+      "board": "Orders by stage",
+      "stages": {
+        "new": "New",
+        "roasting": "Roasting",
+        "shipping": "On the way",
+        "delivered": "Delivered"
+      },
+      "empty": "Nothing here",
+      "filter": "Filter orders",
+      "filters": {
+        "all": "All",
+        "club": "Club",
+        "recovered": "Recovered"
+      },
+      "items": "{count, plural, one {# item} other {# items}}"
+    },
+    "carts": {
+      "title": "Abandoned carts",
+      "sub": "Half an hour later, a WhatsApp with a coupon brings them back.",
+      "switch": "WhatsApp recovery",
+      "switchOn": "On · writes 30 min later",
+      "switchOff": "Off · carts get lost",
+      "funnel": {
+        "abandoned": "Abandoned",
+        "sent": "Message sent",
+        "read": "Read",
+        "back": "Came back",
+        "paid": "Paid",
+        "caption": "{paid} of {total} came back and paid",
+        "offNote": "Off: every cart that leaves is lost"
+      },
+      "list": "This week",
+      "yesterday": "yesterday",
+      "status": {
+        "browsing": "Browsing",
+        "checkout": "At checkout",
+        "abandoned": "Abandoned",
+        "sent": "WhatsApp sent",
+        "unsent": "No message",
+        "read": "Read",
+        "back": "Came back",
+        "recovered": "Recovered",
+        "lost": "Lost"
+      },
+      "thread": "Conversation with {name}",
+      "customer": "Customer",
+      "threadLabel": "Messages from {business} to {name}",
+      "template": "The message that goes out",
+      "templateOff": "Recovery is off: this message won't go out",
+      "templateText": "Hi, we saved your cart. Use code {code} for {pct}% off until 10 PM.",
+      "rule": {
+        "when": "When",
+        "whenValue": "30 min later",
+        "coupon": "Coupon",
+        "couponValue": "{code} · {pct}% off",
+        "channel": "Channel",
+        "channelValue": "WhatsApp · 1 message"
+      }
+    },
+    "club": {
+      "title": "Club Bruma",
+      "sub": "Subscriptions with beans, levels and streaks.",
+      "members": "Members",
+      "mrr": "Subscriptions per month",
+      "avgStreak": "Average streak",
+      "months": "months",
+      "levels": "Members by level",
+      "from": "from {count}",
+      "membersSr": "{count} of {total} members",
+      "streakMonths": "{count, plural, one {# month in a row} other {# months in a row}}",
+      "streakShort": "{count, plural, one {# month} other {# months}}",
+      "levelUp": "{name} completed another month: +{bonus} beans and moved up to {level}.",
+      "almost": "{name} is {count} beans away from Dark roast. Renews this month.",
+      "perkUnlocked": "Unlocked a free bag",
+      "perkNext": "Leveling up unlocks a free bag",
+      "ranking": "Bean ranking",
+      "granos": "beans",
+      "how": {
+        "title": "How members earn beans",
+        "buy": "Every purchase adds beans",
+        "streak": "Every month in a row: +{bonus}",
+        "gift": "600 beans: a free bag"
+      }
+    },
+    "chat": {
+      "title": "Site chat",
+      "sub": "Answers instantly, recommends and sells. Hands you what it doesn't know.",
+      "kpis": {
+        "total": "Conversations today",
+        "byBot": "Solved by the bot",
+        "sales": "Ended in a purchase",
+        "human": "Handed to you"
+      },
+      "list": "Conversations",
+      "visitor": "Visitor",
+      "onSite": "on the online store",
+      "transcriptLabel": "{name}'s conversation with the {business} assistant",
+      "top": "Most asked",
+      "topq": {
+        "moka": "What coffee for my moka pot?",
+        "roastDay": "What day do you roast?",
+        "shipping": "Do you ship to my city?"
+      },
+      "states": {
+        "live": "Live",
+        "bot": "Bot",
+        "sale": "Bought",
+        "human": "For you"
+      },
+      "lines": {
+        "you": "Trying the bot",
+        "inesAsk": "Asks what coffee suits her moka pot",
+        "inesPick": "The bot recommended {product}",
+        "inesAdded": "Added {product} to the cart",
+        "inesPaid": "Bought · came back via WhatsApp"
+      },
+      "convs": {
+        "faq": {
+          "q": "Do you ship to Rosario?",
+          "a": "Yes: it arrives in 48 to 72 h, and shipping is free from {amount}."
+        },
+        "martin": {
+          "q": "What day do you roast?",
+          "a": "We roast on Mondays and ship Tuesday and Wednesday. Always fresh."
+        },
+        "sofia": {
+          "q": "Can you change the grind on my order?",
+          "a": "Sure. Let me pass you to someone on the team to change it now.",
+          "note": "Handed to the team"
+        },
+        "joaquin": {
+          "q": "I'm looking for a coffee to give as a gift",
+          "a": "Huila 500 g: sweet, easy to drink and works with any brewer.",
+          "note": "Bought · Huila 500 g"
+        }
+      }
+    },
+    "site": {
+      "title": "Your online store",
+      "sub": "{url} · what your customers see",
+      "visits": "Visits today",
+      "orders": "Orders",
+      "carts": "Active carts"
+    },
+    "bot": {
+      "hi": "Hi, I'm Bruma's assistant. Want help choosing?",
+      "moka": "For a moka pot, go medium-dark: full body, low acidity. That's Cerrado. We'll grind it for moka.",
+      "fruity": "If you like fruity, try Sidamo: a natural from Ethiopia, blueberry and jasmine. Great as filter.",
+      "gift": "As a gift, Huila 500 g: sweet, easy to drink and works with any brewer.",
+      "alt_moka": "Another option: Niebla, our house blend. Sweeter, milk chocolate.",
+      "alt_fruity": "Another option: Huila, a washed Colombian. Panela and tangerine.",
+      "alt_gift": "Another option: Niebla 500 g, our house blend.",
+      "added": "Done, it's in your cart. We roast on Monday and it arrives Wednesday.",
+      "replies": {
+        "moka": "What coffee for my moka pot?",
+        "fruity": "Something fruity",
+        "gift": "It's a gift",
+        "add": "Add to cart",
+        "other": "Another option"
+      }
+    },
+    "wa": {
+      "msg": "Hi {name}, we saved your cart. Use code {code} for {pct}% off until 10 PM.",
+      "msgYou": "Hi, we saved your cart. Use code {code} for {pct}% off until 10 PM.",
+      "doubt": "Tell me. If it's about shipping: it arrives Wednesday, free.",
+      "opening": "Opening your cart with the coupon…",
+      "replies": {
+        "back": "Back to my cart",
+        "doubt": "I have a question"
+      },
+      "cartItems": "{count, plural, one {# item} other {# items}}",
+      "withCoupon": "With {code}:"
+    },
+    "front": {
+      "hero": {
+        "kicker": "LOT 41 · ROASTED MONDAY",
+        "title": "Specialty coffee, <em>roasted this week</em>.",
+        "body": "We roast on Mondays and ship Tuesday and Wednesday."
+      },
+      "cats": {
+        "label": "Categories",
+        "all": "All",
+        "coffee": "Coffee",
+        "gear": "Gear"
+      },
+      "from": "from",
+      "left": "{count} left",
+      "addNamed": "Add {name} to cart",
+      "clubStrip": {
+        "title": "Club Bruma",
+        "body": "Your coffee every 2 weeks, with beans and gifts."
+      },
+      "back": "Back",
+      "product": {
+        "grind": "Grind",
+        "size": "Size",
+        "roast": "Roast",
+        "roasts": {
+          "1": "Light",
+          "2": "Medium",
+          "3": "Dark"
+        },
+        "process": "Process",
+        "material": "Material",
+        "bestFor": "Best for",
+        "add": "Add to cart",
+        "stampTop": "ROASTED ON",
+        "stampDay": "Monday"
+      },
+      "brew": {
+        "espresso": "espresso",
+        "moka": "moka",
+        "filter": "filter",
+        "press": "French press"
+      },
+      "nav": {
+        "label": "Store sections",
+        "store": "Store",
+        "club": "Club",
+        "order": "My order"
+      },
+      "panel": "Panel",
+      "cart": {
+        "open": "{count, plural, =0 {Empty cart} one {Cart with # item} other {Cart with # items}}",
+        "title": "Your cart",
+        "close": "Close the cart",
+        "qty": "Quantity of {name}",
+        "less": "One less",
+        "more": "One more",
+        "empty": "Your cart is empty. Ask the bot: it will suggest one.",
+        "freeDone": "Free shipping unlocked",
+        "freeLeft": "{amount} away from free shipping",
+        "subtotal": "Subtotal",
+        "checkout": "Checkout"
+      },
+      "checkout": {
+        "backToCart": "Cart",
+        "title": "Checkout",
+        "delivery": "Delivery",
+        "addressInes": "Inés · 1240 Park Ave, apt 3B",
+        "addressYou": "Your address · you enter it once",
+        "deliveries": {
+          "home": "Home delivery",
+          "homeWhen": "Arrives Wednesday",
+          "pickup": "Pick up at the roastery",
+          "pickupWhen": "From Tuesday, 9 AM to 6 PM"
+        },
+        "payment": "Payment",
+        "pays": {
+          "card": "Card",
+          "transfer": "Bank transfer",
+          "cash": "Cash at pickup"
+        },
+        "summary": "Summary",
+        "couponOn": "{pct}% off applied",
+        "couponOff": "Have a coupon?",
+        "subtotal": "Subtotal",
+        "discount": "Discount",
+        "shipping": "Shipping",
+        "free": "Free",
+        "total": "Total",
+        "pay": "Pay {total}",
+        "secure": "Secure payment · Demo: nothing is charged"
+      },
+      "done": {
+        "title": "Done! Your coffee is on its way",
+        "titleName": "Done, {name}!",
+        "body": "Order #{id}. We roast it on Monday and it arrives Wednesday.",
+        "stages": {
+          "received": "Received",
+          "roasted": "Roasted",
+          "shipped": "On the way",
+          "delivered": "Delivered"
+        },
+        "monday": "Monday",
+        "wednesday": "Wednesday",
+        "doneSr": "done",
+        "pendingSr": "pending",
+        "granos": "+{count} beans in Club Bruma",
+        "whatsapp": "We'll update you at every step on WhatsApp.",
+        "more": "Keep shopping",
+        "emptyTitle": "No orders yet",
+        "emptyBody": "When you buy, you'll see your order here and when it arrives.",
+        "clubNext": "{total} beans so far · {count} to {level}",
+        "clubTop": "{total} beans so far · top level"
+      },
+      "club": {
+        "kicker": "CLUB BRUMA",
+        "title": "Your coffee every two weeks. And beans for every bag.",
+        "yourLevel": "Your level",
+        "granos": "beans",
+        "toNext": "{count} to {level}",
+        "top": "You reached the top level",
+        "streak": "{count, plural, one {month in a row} other {months in a row}}",
+        "monthDone": "done",
+        "monthNow": "this month",
+        "streakNote": "Every month in a row adds {bonus} beans.",
+        "perks": {
+          "presale": "Micro-lot presales",
+          "shipping": "Free shipping, always",
+          "gift": "A free bag every 600 beans"
+        },
+        "perkOpen": "You have it",
+        "perkFrom": "From {level}",
+        "every": "Frequency",
+        "plans": {
+          "2w": "Every 2 weeks",
+          "4w": "Every 4 weeks"
+        },
+        "join": "Join the club",
+        "joined": "You're in",
+        "joinNote": "Pause or cancel anytime.",
+        "joinedNote": "+50 welcome beans. Your first bag ships Monday."
+      },
+      "chat": {
+        "title": "Bruma assistant",
+        "subtitle": "replies instantly",
+        "label": "Chat with the {business} assistant",
+        "composer": "Ask anything",
+        "close": "Close the chat",
+        "open": "Open the chat with the assistant",
+        "ask": "Need help choosing?"
+      },
+      "lock": {
+        "now": "now",
+        "push": "{name}, we saved your cart: {pct}% off with {code} until 10 PM.",
+        "pushYou": "We saved your cart: {pct}% off with {code} until 10 PM.",
+        "openPush": "Open the WhatsApp message",
+        "jump": "30 minutes later",
+        "off": "Recovery is off: nobody wrote to {name}. The cart is lost.",
+        "toStore": "Go to the store",
+        "desktop": "We sent your cart to WhatsApp, with a coupon.",
+        "back": "Back to my cart",
+        "business": "Business account",
+        "threadLabel": "Messages from {business}",
+        "today": "Today",
+        "composer": "Message",
+        "left": "{name} left {count, plural, one {# item} other {# items}} in the cart"
+      }
     }
   }
 }

@@ -2040,6 +2040,29 @@
         "ticketGf": "Bife · sem glúten",
         "toast": "Mesa {table} reservada · WhatsApp enviado"
       }
+    },
+    "shop": {
+      "problem1": "Encheu o carrinho.",
+      "problem2": "E saiu sem pagar.",
+      "pain": "carrinhos abandonados por semana",
+      "feature": "Um WhatsApp com cupom, meia hora depois. Sozinho.",
+      "screen": {
+        "title": "Carrinhos de hoje",
+        "today": "Hoje",
+        "abandoned": "Abandonado",
+        "sent": "WhatsApp enviado",
+        "recovered": "Recuperado",
+        "toastSent": "WhatsApp com cupom {code} enviado",
+        "toastPaid": "Carrinho recuperado · pagou",
+        "counter": "Recuperados na semana",
+        "names": {
+          "ines": "Bia",
+          "martin": "Marcelo",
+          "lautaro": "Rafael"
+        },
+        "items": "{count, plural, one {# produto} other {# produtos}}",
+        "of": "{count} de {total}"
+      }
     }
   },
   "founders": {
@@ -2785,6 +2808,514 @@
       "youBooking": "Sua reserva",
       "webBooking": "Reserva pelo site",
       "out": "A caminho"
+    }
+  },
+  "demoShop": {
+    "nav": {
+      "today": "Hoje",
+      "orders": "Pedidos",
+      "carts": "Carrinhos",
+      "chat": "Chat do site",
+      "chatShort": "Chat",
+      "club": "Clube",
+      "site": "Loja online",
+      "groupAuto": "Automático",
+      "groupClients": "Clientes",
+      "groupChannel": "Canal"
+    },
+    "top": {
+      "live": "{count} pessoas na loja",
+      "store": "Loja"
+    },
+    "side": {
+      "title": "Carrinhos",
+      "on": "Recuperação ligada",
+      "off": "Recuperação desligada"
+    },
+    "products": {
+      "niebla": {
+        "name": "Niebla",
+        "notes": "Chocolate ao leite · avelã",
+        "origin": "BLEND · BRASIL + COLÔMBIA",
+        "process": "Natural + lavado",
+        "about": "O blend da casa: doce, redondo, para todo dia."
+      },
+      "huila": {
+        "name": "Huila",
+        "notes": "Rapadura · tangerina",
+        "origin": "COLÔMBIA · HUILA · 1.700 M",
+        "process": "Lavado",
+        "about": "Limpo e doce, com final cítrico. Brilha no coado."
+      },
+      "sidamo": {
+        "name": "Sidamo",
+        "notes": "Mirtilo · jasmim",
+        "origin": "ETIÓPIA · SIDAMO · 2.000 M",
+        "process": "Natural",
+        "about": "Frutado e floral, de corpo leve. Para coado ou prensa."
+      },
+      "cerrado": {
+        "name": "Cerrado",
+        "notes": "Chocolate amargo · amendoim",
+        "origin": "BRASIL · CERRADO · 1.100 M",
+        "process": "Natural",
+        "about": "Muito corpo, pouca acidez: feito para moka e espresso."
+      },
+      "medianoche": {
+        "name": "Medianoche",
+        "notes": "Cacau · tâmara · descafeinado",
+        "origin": "COLÔMBIA · DESCAFEINADO",
+        "process": "Descafeinado com água",
+        "about": "Todo o sabor, sem cafeína. O café depois do jantar."
+      },
+      "moka": {
+        "name": "Cafeteira italiana 3 xícaras",
+        "short": "Alumínio · 150 ml",
+        "notes": "Alumínio · 3 xícaras",
+        "origin": "ACESSÓRIOS",
+        "process": "Alumínio fundido",
+        "about": "A cafeteira italiana de sempre. Moagem média-fina e fogo baixo."
+      }
+    },
+    "sizes": {
+      "s250": "250 g",
+      "s500": "500 g",
+      "s1000": "1 kg"
+    },
+    "grinds": {
+      "beans": "Em grão",
+      "espresso": "Espresso",
+      "moka": "Moka",
+      "filter": "Coado",
+      "press": "Prensa"
+    },
+    "pays": {
+      "card": "Cartão",
+      "transfer": "Transferência",
+      "cash": "Dinheiro"
+    },
+    "via": {
+      "recovered": "Recuperado",
+      "club": "Clube",
+      "you": "Você"
+    },
+    "levels": {
+      "light": "Torra clara",
+      "medium": "Torra média",
+      "dark": "Torra escura"
+    },
+    "people": {
+      "ines": "Bia",
+      "tomas": "Thiago",
+      "carla": "Carla",
+      "diego": "Diogo",
+      "ana": "Ana",
+      "bruno": "Bruno",
+      "sol": "Luana",
+      "pedro": "Pedro",
+      "lara": "Lara",
+      "nico": "Caio",
+      "valeria": "Valéria",
+      "joaquin": "Joaquim",
+      "martin": "Marcelo",
+      "sofia": "Sofia",
+      "lautaro": "Rafael",
+      "you": "Você"
+    },
+    "feed": {
+      "order": "Pedido #{id} de {name} · {total}",
+      "chat": "{name} está falando com o bot da loja",
+      "checkout": "{name} está no checkout",
+      "abandon": "{name} deixou o carrinho no checkout",
+      "sent": "WhatsApp com cupom para {name}",
+      "unsent": "Sem recuperação: ninguém escreveu para {name}",
+      "read": "{name} abriu a mensagem",
+      "back": "{name} voltou ao carrinho com o cupom",
+      "recovered": "Carrinho recuperado: {name} pagou {total}",
+      "lost": "Carrinho perdido: {name} não voltou",
+      "stock": "Estoque baixo: restam {left} pacotes de {product}",
+      "restock": "Torra de segunda agendada: {product}",
+      "levelup": "{name} completou 6 meses no clube e subiu de nível",
+      "faq": "O bot respondeu sozinho uma dúvida de frete",
+      "mineAbandon": "Você deixou o carrinho: sem recuperação, nenhuma mensagem saiu",
+      "mineSent": "Escrevemos para você no WhatsApp com um cupom",
+      "mineOrder": "Seu pedido #{id} chegou ao painel · {total}"
+    },
+    "toast": {
+      "order": "Pedido novo",
+      "abandon": "Carrinho abandonado",
+      "sent": "Recuperação enviada",
+      "recovered": "Carrinho recuperado",
+      "levelup": "Subiu de nível",
+      "stock": "Estoque baixo",
+      "mineOrder": "Seu pedido",
+      "mineSent": "Recuperação enviada",
+      "lost": "Carrinho perdido"
+    },
+    "today": {
+      "title": "Hoje",
+      "sub": "O que a loja vende enquanto você torra.",
+      "revenue": "Vendas de hoje",
+      "vsLastWeek": "vs. terça passada neste horário",
+      "curve": "As vendas de hoje, hora a hora, acima da semana passada",
+      "orders": "Pedidos",
+      "conversion": "Conversão",
+      "visits": "{count} visitas",
+      "ticket": "Ticket médio",
+      "shelf": "Gôndola de hoje",
+      "lowPill": "{name}: restam {count}",
+      "restocked": "+{count} pacotes na torra de segunda",
+      "stock": "{count} em estoque",
+      "stockSr": "{count} pacotes em estoque",
+      "restock": "Agendar torra de {name} (+{count})",
+      "live": "Pedidos ao vivo",
+      "recovered": "Carrinhos recuperados na semana",
+      "of": "de",
+      "open": "Ver carrinhos",
+      "botLine": "O bot do site vende enquanto você torra"
+    },
+    "orders": {
+      "title": "Pedidos",
+      "sub": "{count, plural, one {# pedido para torrar e enviar} other {# pedidos para torrar e enviar}}",
+      "board": "Pedidos por etapa",
+      "stages": {
+        "new": "Novos",
+        "roasting": "Torrando",
+        "shipping": "A caminho",
+        "delivered": "Entregues"
+      },
+      "empty": "Nada por aqui",
+      "filter": "Filtrar pedidos",
+      "filters": {
+        "all": "Todos",
+        "club": "Clube",
+        "recovered": "Recuperados"
+      },
+      "items": "{count, plural, one {# produto} other {# produtos}}"
+    },
+    "carts": {
+      "title": "Carrinhos abandonados",
+      "sub": "Meia hora depois, um WhatsApp com cupom traz o cliente de volta.",
+      "switch": "Recuperação por WhatsApp",
+      "switchOn": "Ligada · escreve 30 min depois",
+      "switchOff": "Desligada · os carrinhos se perdem",
+      "funnel": {
+        "abandoned": "Abandonados",
+        "sent": "Mensagem enviada",
+        "read": "Lida",
+        "back": "Voltaram",
+        "paid": "Pagaram",
+        "caption": "{paid} de {total} voltaram e pagaram",
+        "offNote": "Desligada: cada carrinho que sai se perde"
+      },
+      "list": "Nesta semana",
+      "yesterday": "ontem",
+      "status": {
+        "browsing": "Olhando",
+        "checkout": "No checkout",
+        "abandoned": "Abandonado",
+        "sent": "WhatsApp enviado",
+        "unsent": "Sem mensagem",
+        "read": "Lida",
+        "back": "Voltou",
+        "recovered": "Recuperado",
+        "lost": "Perdido"
+      },
+      "thread": "Conversa com {name}",
+      "customer": "Cliente",
+      "threadLabel": "Mensagens de {business} para {name}",
+      "template": "A mensagem que sai",
+      "templateOff": "Recuperação desligada: esta mensagem não sai",
+      "templateText": "Oi, guardamos seu carrinho. Com o código {code} você tem {pct}% off até as 22h.",
+      "rule": {
+        "when": "Quando",
+        "whenValue": "30 min depois",
+        "coupon": "Cupom",
+        "couponValue": "{code} · {pct}% off",
+        "channel": "Canal",
+        "channelValue": "WhatsApp · 1 mensagem"
+      }
+    },
+    "club": {
+      "title": "Clube Bruma",
+      "sub": "Assinaturas com grãos, níveis e sequências.",
+      "members": "Assinantes",
+      "mrr": "Assinaturas por mês",
+      "avgStreak": "Sequência média",
+      "months": "meses",
+      "levels": "Assinantes por nível",
+      "from": "a partir de {count}",
+      "membersSr": "{count} de {total} assinantes",
+      "streakMonths": "{count, plural, one {# mês seguido} other {# meses seguidos}}",
+      "streakShort": "{count, plural, one {# mês} other {# meses}}",
+      "levelUp": "{name} completou mais um mês: +{bonus} grãos e subiu para {level}.",
+      "almost": "Faltam {count} grãos para {name} chegar à Torra escura. Renova este mês.",
+      "perkUnlocked": "Desbloqueou um pacote de presente",
+      "perkNext": "Ao subir, desbloqueia um pacote de presente",
+      "ranking": "Ranking de grãos",
+      "granos": "grãos",
+      "how": {
+        "title": "Como se ganham grãos",
+        "buy": "Cada compra soma grãos",
+        "streak": "Cada mês seguido no clube: +{bonus}",
+        "gift": "Com 600 grãos: um pacote de presente"
+      }
+    },
+    "chat": {
+      "title": "Chat do site",
+      "sub": "Responde na hora, recomenda e vende. O que não sabe, passa para você.",
+      "kpis": {
+        "total": "Conversas hoje",
+        "byBot": "Resolvidas pelo bot",
+        "sales": "Viraram compra",
+        "human": "Passou para você"
+      },
+      "list": "Conversas",
+      "visitor": "Visitante",
+      "onSite": "na loja online",
+      "transcriptLabel": "Conversa de {name} com o assistente da {business}",
+      "top": "O que mais perguntam",
+      "topq": {
+        "moka": "Qual café vai bem na minha moka?",
+        "roastDay": "Que dia vocês torram?",
+        "shipping": "Vocês entregam na minha cidade?"
+      },
+      "states": {
+        "live": "Ao vivo",
+        "bot": "Bot",
+        "sale": "Comprou",
+        "human": "Para você"
+      },
+      "lines": {
+        "you": "Testando o bot",
+        "inesAsk": "Pergunta qual café vai bem na moka",
+        "inesPick": "O bot recomendou {product}",
+        "inesAdded": "Colocou {product} no carrinho",
+        "inesPaid": "Comprou · voltou pelo WhatsApp"
+      },
+      "convs": {
+        "faq": {
+          "q": "Vocês entregam em Curitiba?",
+          "a": "Sim: chega em 48 a 72 h, e a partir de {amount} o frete é grátis."
+        },
+        "martin": {
+          "q": "Que dia vocês torram?",
+          "a": "Torramos às segundas e enviamos terça e quarta. Sempre fresco."
+        },
+        "sofia": {
+          "q": "Dá para trocar a moagem do meu pedido?",
+          "a": "Claro. Vou passar você para alguém da equipe trocar agora.",
+          "note": "Passado para a equipe"
+        },
+        "joaquin": {
+          "q": "Quero um café para dar de presente",
+          "a": "Huila 500 g: doce, fácil de beber e vai bem em qualquer cafeteira.",
+          "note": "Comprou · Huila 500 g"
+        }
+      }
+    },
+    "site": {
+      "title": "Sua loja online",
+      "sub": "{url} · como seus clientes veem",
+      "visits": "Visitas hoje",
+      "orders": "Pedidos",
+      "carts": "Carrinhos ativos"
+    },
+    "bot": {
+      "hi": "Oi, sou o assistente da Bruma. Quer ajuda para escolher?",
+      "moka": "Para moka, vai bem uma torra média-escura, encorpada e com pouca acidez: o Cerrado. A gente mói para moka.",
+      "fruity": "Se você gosta de frutado, o Sidamo: natural da Etiópia, mirtilo e jasmim. Fica ótimo no coado.",
+      "gift": "Para presente, Huila 500 g: doce, fácil de beber e vai bem em qualquer cafeteira.",
+      "alt_moka": "Outra opção: Niebla, o blend da casa. Mais doce, chocolate ao leite.",
+      "alt_fruity": "Outra opção: Huila, lavado da Colômbia. Rapadura e tangerina.",
+      "alt_gift": "Outra opção: Niebla 500 g, o blend da casa.",
+      "added": "Pronto, já está no seu carrinho. Torramos na segunda e chega na quarta.",
+      "replies": {
+        "moka": "Qual café vai bem na minha moka?",
+        "fruity": "Quero algo frutado",
+        "gift": "É para presente",
+        "add": "Colocar no carrinho",
+        "other": "Ver outra opção"
+      }
+    },
+    "wa": {
+      "msg": "Oi, {name}! Guardamos seu carrinho. Com o código {code} você tem {pct}% off até as 22h.",
+      "msgYou": "Oi! Guardamos seu carrinho. Com o código {code} você tem {pct}% off até as 22h.",
+      "doubt": "Pode falar. Se for o frete: chega na quarta e é grátis.",
+      "opening": "Abrindo seu carrinho com o cupom…",
+      "replies": {
+        "back": "Voltar ao carrinho",
+        "doubt": "Tenho uma dúvida"
+      },
+      "cartItems": "{count, plural, one {# produto} other {# produtos}}",
+      "withCoupon": "Com {code}:"
+    },
+    "front": {
+      "hero": {
+        "kicker": "LOTE 41 · TORRADO NA SEGUNDA",
+        "title": "Café especial, <em>torrado esta semana</em>.",
+        "body": "Torramos às segundas e enviamos terça e quarta."
+      },
+      "cats": {
+        "label": "Categorias",
+        "all": "Tudo",
+        "coffee": "Cafés",
+        "gear": "Acessórios"
+      },
+      "from": "a partir de",
+      "left": "Restam {count}",
+      "addNamed": "Colocar {name} no carrinho",
+      "clubStrip": {
+        "title": "Clube Bruma",
+        "body": "Seu café a cada 2 semanas, com grãos e presentes."
+      },
+      "back": "Voltar",
+      "product": {
+        "grind": "Moagem",
+        "size": "Tamanho",
+        "roast": "Torra",
+        "roasts": {
+          "1": "Clara",
+          "2": "Média",
+          "3": "Escura"
+        },
+        "process": "Processo",
+        "material": "Material",
+        "bestFor": "Ideal para",
+        "add": "Colocar no carrinho",
+        "stampTop": "TORRADO NA",
+        "stampDay": "segunda"
+      },
+      "brew": {
+        "espresso": "espresso",
+        "moka": "moka",
+        "filter": "coado",
+        "press": "prensa"
+      },
+      "nav": {
+        "label": "Seções da loja",
+        "store": "Loja",
+        "club": "Clube",
+        "order": "Meu pedido"
+      },
+      "panel": "Painel",
+      "cart": {
+        "open": "{count, plural, =0 {Carrinho vazio} one {Carrinho com # produto} other {Carrinho com # produtos}}",
+        "title": "Seu carrinho",
+        "close": "Fechar o carrinho",
+        "qty": "Quantidade de {name}",
+        "less": "Um a menos",
+        "more": "Um a mais",
+        "empty": "Seu carrinho está vazio. Pergunte ao bot: ele recomenda um.",
+        "freeDone": "Frete grátis liberado",
+        "freeLeft": "Faltam {amount} para o frete grátis",
+        "subtotal": "Subtotal",
+        "checkout": "Ir para o pagamento"
+      },
+      "checkout": {
+        "backToCart": "Carrinho",
+        "title": "Finalizar compra",
+        "delivery": "Entrega",
+        "addressInes": "Bia · Rua das Acácias 1240, ap. 3B",
+        "addressYou": "Seu endereço · você cadastra uma vez só",
+        "deliveries": {
+          "home": "Em casa",
+          "homeWhen": "Chega na quarta",
+          "pickup": "Retirar na torrefação",
+          "pickupWhen": "A partir de terça, das 9h às 18h"
+        },
+        "payment": "Pagamento",
+        "pays": {
+          "card": "Cartão",
+          "transfer": "Transferência",
+          "cash": "Dinheiro na retirada"
+        },
+        "summary": "Resumo",
+        "couponOn": "{pct}% off aplicado",
+        "couponOff": "Tem um cupom?",
+        "subtotal": "Subtotal",
+        "discount": "Desconto",
+        "shipping": "Frete",
+        "free": "Grátis",
+        "total": "Total",
+        "pay": "Pagar {total}",
+        "secure": "Pagamento protegido · Demo: nada é cobrado"
+      },
+      "done": {
+        "title": "Pronto! Seu café está a caminho",
+        "titleName": "Pronto, {name}!",
+        "body": "Pedido #{id}. Torramos na segunda e chega na quarta.",
+        "stages": {
+          "received": "Recebido",
+          "roasted": "Torrado",
+          "shipped": "A caminho",
+          "delivered": "Entregue"
+        },
+        "monday": "segunda",
+        "wednesday": "quarta",
+        "doneSr": "feito",
+        "pendingSr": "pendente",
+        "granos": "+{count} grãos no Clube Bruma",
+        "whatsapp": "Avisamos cada etapa pelo WhatsApp.",
+        "more": "Continuar comprando",
+        "emptyTitle": "Você ainda não pediu nada",
+        "emptyBody": "Quando comprar, aqui você vê o pedido e quando chega.",
+        "clubNext": "Você já soma {total} grãos · faltam {count} para {level}",
+        "clubTop": "Você já soma {total} grãos · nível mais alto"
+      },
+      "club": {
+        "kicker": "CLUBE BRUMA",
+        "title": "Seu café a cada duas semanas. E grãos por cada pacote.",
+        "yourLevel": "Seu nível",
+        "granos": "grãos",
+        "toNext": "Faltam {count} para {level}",
+        "top": "Você chegou ao nível mais alto",
+        "streak": "{count, plural, one {mês seguido} other {meses seguidos}}",
+        "monthDone": "cumprido",
+        "monthNow": "este mês",
+        "streakNote": "Cada mês seguido soma {bonus} grãos.",
+        "perks": {
+          "presale": "Pré-venda de microlotes",
+          "shipping": "Frete grátis sempre",
+          "gift": "Um pacote de presente a cada 600 grãos"
+        },
+        "perkOpen": "Você já tem",
+        "perkFrom": "A partir de {level}",
+        "every": "Frequência",
+        "plans": {
+          "2w": "A cada 2 semanas",
+          "4w": "A cada 4 semanas"
+        },
+        "join": "Entrar no clube",
+        "joined": "Você já faz parte",
+        "joinNote": "Pause ou cancele quando quiser.",
+        "joinedNote": "+50 grãos de boas-vindas. Seu primeiro pacote sai na segunda."
+      },
+      "chat": {
+        "title": "Assistente Bruma",
+        "subtitle": "responde na hora",
+        "label": "Chat com o assistente da {business}",
+        "composer": "Pergunte o que quiser",
+        "close": "Fechar o chat",
+        "open": "Abrir o chat com o assistente",
+        "ask": "Quer ajuda para escolher?"
+      },
+      "lock": {
+        "now": "agora",
+        "push": "{name}, guardamos seu carrinho: {pct}% off com {code} até as 22h.",
+        "pushYou": "Guardamos seu carrinho: {pct}% off com {code} até as 22h.",
+        "openPush": "Abrir a mensagem do WhatsApp",
+        "jump": "30 minutos depois",
+        "off": "Recuperação desligada: ninguém escreveu para {name}. O carrinho se perde.",
+        "toStore": "Ir para a loja",
+        "desktop": "Mandamos seu carrinho pelo WhatsApp, com um cupom.",
+        "back": "Voltar ao carrinho",
+        "business": "Conta comercial",
+        "threadLabel": "Mensagens de {business}",
+        "today": "Hoje",
+        "composer": "Mensagem",
+        "left": "{name} deixou {count, plural, one {# produto} other {# produtos}} no carrinho"
+      }
     }
   }
 }
