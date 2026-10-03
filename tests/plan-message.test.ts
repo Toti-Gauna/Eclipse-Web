@@ -36,8 +36,8 @@ describe('buildPlanMessage', () => {
     );
     expect(msg).toBe(
       [
-        'Hola Eclipse. Quiero este plan:',
-        '• Plan Comercio — desde ≈ $ 2.900.000 (US$ 2.000)',
+        'Hola Eclipse. Quiero este paquete:',
+        '• Paquete Comercio — desde ≈ $ 2.900.000 (US$ 2.000)',
         '• Agente de voz con IA — ≈ $ 435.000 (US$ 300) (combo)',
         'Total estimado: de ≈ $ 3.335.000 (US$ 2.300) a ≈ $ 5.510.000 (US$ 3.800)',
         'Mantenimiento Escala: ≈ $ 289.000 (US$ 199) por mes',

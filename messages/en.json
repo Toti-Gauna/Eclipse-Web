@@ -98,9 +98,9 @@
     "demoNotice": "The businesses shown in the demos are fictional."
   },
   "planMessage": {
-    "introCard": "Hi Eclipse. I'd like this plan:",
+    "introCard": "Hi Eclipse. I'd like this package:",
     "introBuilder": "Hi Eclipse. I built my plan on your website:",
-    "planLine": "{name} plan — from {price}",
+    "planLine": "{name} package — from {price}",
     "itemLine": "{name} — {price}",
     "comboTag": "(combo)",
     "total": "Estimated total: {price}",

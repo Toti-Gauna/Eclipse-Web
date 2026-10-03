@@ -5,7 +5,7 @@
  *
  * Example (es, ARS):
  *   Hola Eclipse. Armé mi plan en la web:
- *   • Plan Sistema — desde ≈ $ 1.450.000 (USD 1.000)
+ *   • Paquete Sistema — desde ≈ $ 1.450.000 (USD 1.000)
  *   • Trailer en motion graphics — ≈ $ 363.000 (USD 250)
  *   Total estimado: ≈ $ 1.813.000 (USD 1.250)
  *   Mantenimiento Crecimiento: ≈ $ 115.000/mes (USD 79)

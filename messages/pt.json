@@ -98,9 +98,9 @@
     "demoNotice": "Os negócios que aparecem nas demos são fictícios."
   },
   "planMessage": {
-    "introCard": "Olá, Eclipse. Quero este plano:",
+    "introCard": "Olá, Eclipse. Quero este pacote:",
     "introBuilder": "Olá, Eclipse. Montei meu plano no site:",
-    "planLine": "Plano {name} — a partir de {price}",
+    "planLine": "Pacote {name} — a partir de {price}",
     "itemLine": "{name} — {price}",
     "comboTag": "(combo)",
     "total": "Total estimado: {price}",
