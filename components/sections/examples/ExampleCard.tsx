@@ -13,11 +13,9 @@ import { track } from '@/lib/analytics';
 import type { Locale } from '@/i18n/routing';
 import { DemoModal } from './DemoModal';
 
-const trailers: Record<DemoId, LazyExoticComponent<ComponentType<TrailerComponentProps>>> = {
-  clinic: lazy(trailerLoaders.clinic),
-  realEstate: lazy(trailerLoaders.realEstate),
-  gym: lazy(trailerLoaders.gym),
-};
+const trailers = Object.fromEntries(
+  Object.entries(trailerLoaders).map(([id, load]) => [id, lazy(load)]),
+) as Record<DemoId, LazyExoticComponent<ComponentType<TrailerComponentProps>>>;
 
 /** Warms the showcase + demo chunks (hover / focus on "Abrir demo"). */
 function preloadDemo(demo: DemoId) {

@@ -31,7 +31,8 @@ export function DemoMessages({ children }: { children: ReactNode }) {
   const timeZone = useTimeZone();
   const parent = useMessages() as Messages;
   const all = use(loadMessages(locale));
-  const extra = Object.fromEntries(DEMO_NAMESPACES.map((ns) => [ns, all[ns]]));
+  // `parent` only carries demo namespaces in development (drafts overlay, see the layout).
+  const extra = Object.fromEntries(DEMO_NAMESPACES.map((ns) => [ns, parent[ns] ?? all[ns]]));
   return (
     <NextIntlClientProvider locale={locale} timeZone={timeZone} messages={{ ...parent, ...extra }}>
       {children}

@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing, localeTags, type Locale } from '@/i18n/routing';
-import { fontSans, fontSerif } from '../fonts';
+import { fontMono, fontSans, fontSerif } from '../fonts';
 import { baseMetadata } from '@/lib/seo';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { Header } from '@/components/layout/Header';
@@ -46,12 +46,17 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   // The demos' copy (~40% of all messages) ships with the demo code, not with every page.
   const messages = await getMessages();
-  const clientMessages = Object.fromEntries(
-    Object.entries(messages).filter(([ns]) => !(DEMO_NAMESPACES as readonly string[]).includes(ns)),
-  );
+  // Demo copy is loaded with the demo code (<DemoMessages>). In development it stays in the
+  // payload so drafts (messages/drafts, overlaid server-side only) reach the demos too.
+  const clientMessages =
+    process.env.NODE_ENV === 'development'
+      ? messages
+      : Object.fromEntries(
+          Object.entries(messages).filter(([ns]) => !(DEMO_NAMESPACES as readonly string[]).includes(ns)),
+        );
 
   return (
-    <html lang={localeTags[locale as Locale]} suppressHydrationWarning className={`${fontSans.variable} ${fontSerif.variable}`}>
+    <html lang={localeTags[locale as Locale]} suppressHydrationWarning className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: LOADER_HEAD_SCRIPT }} />
       </head>

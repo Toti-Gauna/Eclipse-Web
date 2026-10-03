@@ -16,3 +16,14 @@ export const fontSerif = localFont({
   variable: '--font-instrument',
   display: 'swap',
 });
+
+// Instrument labels and readouts (v2 art direction). Weight axis cut to 400–600 and
+// not preloaded: it only sets small labels, so it must never compete with the LCP text.
+export const fontMono = localFont({
+  src: './fonts/GeistMono-Variable.woff2',
+  variable: '--font-geist-mono',
+  weight: '400 600',
+  display: 'swap',
+  preload: false,
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+});

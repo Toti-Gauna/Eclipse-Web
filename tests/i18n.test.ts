@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
+import { deepMerge } from '@/i18n/messages';
 
 const root = path.resolve(import.meta.dirname, '..');
 const LOCALES = ['es', 'en', 'pt'] as const;
@@ -8,13 +9,13 @@ const LOCALES = ['es', 'en', 'pt'] as const;
 type Tree = { [key: string]: string | Tree };
 
 function load(locale: string): Tree {
-  const base = JSON.parse(readFileSync(path.join(root, 'messages', `${locale}.json`), 'utf8')) as Tree;
+  const base: Tree = JSON.parse(readFileSync(path.join(root, 'messages', `${locale}.json`), 'utf8')) as Tree;
   // Drafts only exist during development; they're folded in by `npm run i18n:merge`.
   const draftsDir = path.join(root, 'messages', 'drafts');
   if (existsSync(draftsDir)) {
     for (const file of readdirSync(draftsDir).filter((f) => f.endsWith('.json'))) {
       const draft = JSON.parse(readFileSync(path.join(draftsDir, file), 'utf8')) as Record<string, Record<string, Tree>>;
-      for (const [ns, perLocale] of Object.entries(draft)) base[ns] = perLocale[locale];
+      for (const [ns, perLocale] of Object.entries(draft)) deepMerge(base, { [ns]: perLocale[locale] });
     }
   }
   return base;

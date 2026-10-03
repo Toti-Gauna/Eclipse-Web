@@ -131,6 +131,151 @@
       }
     },
     {
+      "id": "tiendas",
+      "icon": "ShoppingBag",
+      "demo": "shop",
+      "name": { "es": "Tiendas online", "en": "Online stores", "pt": "Lojas online" },
+      "longName": {
+        "es": "Tiendas y marcas con venta online",
+        "en": "Shops and brands selling online",
+        "pt": "Lojas e marcas com venda online"
+      },
+      "business": "Bruma Tostadores",
+      "pain": {
+        "es": "Carritos abandonados y consultas sin responder",
+        "en": "Abandoned carts and unanswered questions",
+        "pt": "Carrinhos abandonados e dúvidas sem resposta"
+      },
+      "keyNumber": {
+        "value": 1,
+        "prefix": "",
+        "suffix": " / 5",
+        "headline": {
+          "es": "Recupera 1 de cada 5 carritos abandonados",
+          "en": "Recovers 1 in 5 abandoned carts",
+          "pt": "Recupera 1 em cada 5 carrinhos abandonados"
+        },
+        "label": {
+          "es": "carritos abandonados recuperados",
+          "en": "abandoned carts recovered",
+          "pt": "carrinhos abandonados recuperados"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 15,
+        "ticketUsd": 35,
+        "hoursPerWeek": 8,
+        "lostLabel": {
+          "es": "Carritos abandonados por semana",
+          "en": "Abandoned carts per week",
+          "pt": "Carrinhos abandonados por semana"
+        },
+        "ticketLabel": {
+          "es": "Ticket promedio de una compra",
+          "en": "Average order value",
+          "pt": "Ticket médio de uma compra"
+        }
+      }
+    },
+    {
+      "id": "restaurantes",
+      "icon": "UtensilsCrossed",
+      "demo": "restaurant",
+      "name": { "es": "Restaurantes", "en": "Restaurants", "pt": "Restaurantes" },
+      "longName": {
+        "es": "Restaurantes, bares y delivery",
+        "en": "Restaurants, bars and delivery",
+        "pt": "Restaurantes, bares e delivery"
+      },
+      "business": "Bodegón Lucero",
+      "pain": {
+        "es": "Pedidos y reservas perdidos en hora pico",
+        "en": "Orders and bookings lost at rush hour",
+        "pt": "Pedidos e reservas perdidos no horário de pico"
+      },
+      "keyNumber": {
+        "value": 3,
+        "prefix": "",
+        "suffix": "",
+        "headline": {
+          "es": "Atiende 3 llamadas a la vez en hora pico",
+          "en": "Answers 3 calls at once at rush hour",
+          "pt": "Atende 3 ligações ao mesmo tempo no pico"
+        },
+        "label": {
+          "es": "llamadas a la vez, sin tono de ocupado",
+          "en": "calls at once, never a busy tone",
+          "pt": "ligações ao mesmo tempo, sem sinal de ocupado"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 20,
+        "ticketUsd": 20,
+        "hoursPerWeek": 10,
+        "lostLabel": {
+          "es": "Pedidos o reservas perdidos por semana",
+          "en": "Orders or bookings lost per week",
+          "pt": "Pedidos ou reservas perdidos por semana"
+        },
+        "ticketLabel": {
+          "es": "Ticket promedio por pedido",
+          "en": "Average order value",
+          "pt": "Ticket médio por pedido"
+        }
+      }
+    },
+    {
+      "id": "servicios",
+      "icon": "Wrench",
+      "demo": "ondemand",
+      "name": {
+        "es": "Servicios a domicilio",
+        "en": "Home services",
+        "pt": "Serviços a domicílio"
+      },
+      "longName": {
+        "es": "Servicios a domicilio y apps on-demand",
+        "en": "Home services and on-demand apps",
+        "pt": "Serviços a domicílio e apps sob demanda"
+      },
+      "business": "Tuerca Hogar",
+      "pain": {
+        "es": "Pedidos que se pierden en el chat y técnicos sin coordinar",
+        "en": "Requests lost in the chat and uncoordinated technicians",
+        "pt": "Pedidos perdidos no chat e técnicos sem coordenação"
+      },
+      "keyNumber": {
+        "value": 15,
+        "prefix": "< ",
+        "suffix": " min",
+        "headline": {
+          "es": "Asigna un técnico en menos de 15 minutos",
+          "en": "Assigns a technician in under 15 minutes",
+          "pt": "Designa um técnico em menos de 15 minutos"
+        },
+        "label": {
+          "es": "para asignar un técnico",
+          "en": "to assign a technician",
+          "pt": "para designar um técnico"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 8,
+        "ticketUsd": 45,
+        "hoursPerWeek": 12,
+        "lostLabel": {
+          "es": "Trabajos perdidos por semana",
+          "en": "Jobs lost per week",
+          "pt": "Serviços perdidos por semana"
+        },
+        "ticketLabel": {
+          "es": "Valor promedio de un trabajo",
+          "en": "Average job value",
+          "pt": "Valor médio de um serviço"
+        }
+      }
+    },
+    {
       "id": "otro",
       "icon": "Plus",
       "demo": null,
@@ -148,11 +293,7 @@
           "en": "Lost inquiries or bookings per week",
           "pt": "Contatos ou horários perdidos por semana"
         },
-        "ticketLabel": {
-          "es": "Ticket promedio",
-          "en": "Average ticket",
-          "pt": "Ticket médio"
-        }
+        "ticketLabel": { "es": "Ticket promedio", "en": "Average ticket", "pt": "Ticket médio" }
       }
     }
   ]

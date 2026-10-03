@@ -114,7 +114,18 @@ describe('content integrity', () => {
         expect(v.keyNumber, v.id).toBeTruthy();
       }
     }
-    expect(verticals.map((v) => v.id)).toEqual(['clinicas', 'inmobiliarias', 'gimnasios', 'otro']);
+    expect(verticals.map((v) => v.id)).toEqual([
+      'clinicas',
+      'inmobiliarias',
+      'gimnasios',
+      'tiendas',
+      'restaurantes',
+      'servicios',
+      'otro',
+    ]);
+    // Every demo id is used by exactly one vertical.
+    const demos = verticals.flatMap((v) => (v.demo ? [v.demo] : []));
+    expect(new Set(demos).size).toBe(demos.length);
   });
 
   it('founders: slots match the total and filled slots are complete', () => {
