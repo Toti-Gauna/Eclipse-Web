@@ -1244,216 +1244,431 @@
     }
   },
   "demoRealEstate": {
-    "tabs": {
-      "chat": "Chat",
-      "inbox": "Inquiries",
-      "listings": "Listings",
-      "leads": "Leads"
-    },
-    "aiOn": "AI on",
-    "office": "Office",
-    "closed": "Closed until Monday 10 AM",
-    "slotLong": "{day} the {date, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} at {time}",
-    "ops": {
-      "sale": "Buy",
-      "rent": "Rent"
-    },
-    "types": {
-      "all": "All",
-      "apartment": "Apartment",
-      "house": "House",
-      "duplex": "Duplex"
-    },
+    "slotLong": "{day} at {time}",
     "zones": {
       "centro": "Downtown",
-      "arboleda": "The Grove",
-      "ribera": "Riverside",
-      "colinas": "The Hills"
+      "arboleda": "La Arboleda",
+      "ribera": "La Ribera",
+      "colinas": "Las Colinas",
+      "parque": "Parque Norte"
     },
     "features": {
       "balcony": "Balcony",
-      "garage": "Parking",
+      "garage": "Garage",
       "garden": "Garden",
       "pool": "Pool",
       "river": "River view",
-      "pets": "Pet friendly",
-      "amenities": "Amenities",
-      "terrace": "Terrace"
+      "terrace": "Terrace",
+      "credit": "Mortgage-ready",
+      "light": "Bright",
+      "patio": "Patio"
     },
     "listing": {
       "price": "USD {amount}",
-      "rent": "USD {amount}/mo",
-      "beds": "{count, plural, one {# bed} other {# beds}}",
       "baths": "{count, plural, one {# bath} other {# baths}}",
       "area": "{count} m²",
-      "title": "{type} in {zone}",
+      "title": "{kind} in {zone}",
       "inquiries": "{count, plural, one {# inquiry} other {# inquiries}}",
-      "recommended": "Sent to {name}",
-      "new": "New",
-      "recommendedShort": "Suggested"
-    },
-    "filters": {
-      "op": "Operation",
-      "type": "Property type",
-      "beds": "Bedrooms",
-      "any": "Any",
-      "bedsMin": "{count}+",
-      "price": "Max price",
-      "upTo": "Up to {price}",
-      "noLimit": "No limit",
-      "results": "{count, plural, =0 {No results} one {# listing} other {# listings}}",
-      "clear": "Clear",
-      "empty": "No listings match those filters."
+      "rooms": "{beds, select, other {{rooms} rooms}}",
+      "roomsShort": "{beds, select, other {{rooms} rooms}}",
+      "fees": "HOA USD {amount}",
+      "noFees": "No HOA fees",
+      "visits": "{count, plural, one {# viewing} other {# viewings}}",
+      "days": "{count} days listed",
+      "available": "Available",
+      "reserved": "Reserved",
+      "photo": "Facade of {street}, illustration"
     },
     "listings": {
       "title": "Listings",
-      "subtitle": "{count} active",
-      "inquiriesWeek": "inquiries this week"
+      "sub": "{count} live on the website",
+      "caption": "Listings on the website",
+      "cols": {
+        "property": "Property",
+        "price": "Price",
+        "area": "Area",
+        "inquiries": "Inquiries",
+        "visits": "Viewings",
+        "status": "Status"
+      }
     },
     "people": {
-      "live": "Carolina M.",
-      "liveFirst": "Carolina",
-      "advisor": "Julia R.",
-      "advisorFirst": "Julia",
-      "tomas": "Tomás B.",
-      "lucia": "Lucía F.",
-      "martin": "Martín G.",
-      "valeria": "Valeria S.",
-      "diego": "Diego P."
-    },
-    "channels": {
-      "whatsapp": "WhatsApp",
-      "web": "Web",
-      "instagram": "Instagram"
+      "tomas": "Tomás Bauer",
+      "lucia": "Lucía Ferrer",
+      "martin": "Martín Gil",
+      "valeria": "Valeria Sosa",
+      "diego": "Diego Ramos",
+      "carolina": "Carolina Méndez",
+      "carolinaFirst": "Carolina",
+      "julia": "Julia Ríos",
+      "juliaFirst": "Julia",
+      "marcos": "Marcos Vidal",
+      "andres": "Andrés Paz",
+      "pablo": "Pablo Núñez",
+      "sofia": "Sofía Arce",
+      "you": "You"
     },
     "stages": {
-      "live": "Qualifying",
       "new": "New",
       "qualified": "Qualified",
-      "visit": "Visit booked"
+      "visit": "Viewing",
+      "reserve": "Reserved"
     },
     "chat": {
-      "heading": "How it answers your customer",
-      "hint": "Reply as if you were {name}.",
-      "aiTag": "AI",
-      "online": "online · replies instantly",
-      "typing": "typing…",
-      "typingLabel": "{business} is typing",
-      "log": "Simulated WhatsApp conversation between {name} and {business}",
-      "closed": "After hours: Lumi, the virtual assistant at {business}, is replying. An agent takes over on Monday.",
-      "inquiry": "Hi, are you open today? I'm looking for a {beds}-bedroom apartment in {zone}.",
-      "greet": "Hi {name}! I'm Lumi, the virtual assistant at {business}. The office opens on Monday, but I can help you right now. Are you looking to buy or rent?",
-      "ops": {
-        "sale": "I want to buy",
-        "rent": "I want to rent"
+      "subtitle": "Lumi · replies instantly",
+      "subtitleOff": "Out of hours",
+      "label": "{business} website chat with {name}",
+      "composer": "Type your question",
+      "open": "Chat",
+      "close": "Close the chat",
+      "expand": "Open the website chat",
+      "as": "You are {name}: pick her answers.",
+      "answeredIn": "{seconds} s",
+      "ai": "AI",
+      "steps": {
+        "ask": "Hi, is the 3-room apartment on {street} still available? Can I see it this week?",
+        "hi": "Hi {name}! Yes, it's available. Two quick questions and I'll send you viewing times.",
+        "pay": "How are you planning to pay?",
+        "budget": "What's your budget, at most?",
+        "fits_cash": "It fits: it's listed at USD {price}, and paying cash leaves room to negotiate.",
+        "fits_credit": "It fits: it's listed at USD {price} and it's mortgage-ready.",
+        "fits_sell": "It fits: it's listed at USD {price}. We can value your place for free, too.",
+        "alt": "That one is USD {price}. Four blocks away I have a very similar one for USD {altPrice}:",
+        "slots": "{advisor}, our agent, can show it to you. What works best?",
+        "booked": "Done, {name}: viewing on {slot} with {advisor}. I'll send you the location on WhatsApp.",
+        "crm": "Lead qualified · details and viewing saved to the CRM",
+        "wait": "Office closed · no one answers",
+        "opens": "Friday 9:00 AM · the office opens",
+        "human": "Hi {name}! Sorry for the wait, we just opened. Yes, it's still available. When would you like to see it?",
+        "lost": "Thanks, but I already booked a viewing with another agency.",
+        "lostNote": "Lead lost · first reply {late} later"
       },
-      "budgetAskSale": "Great. What's your budget?",
-      "budgetAskRent": "Great. What's the most you'd pay per month?",
-      "budgetReply": "Up to {price}",
-      "matches": "{count, plural, one {I have # option that fits what you're looking for:} other {I have # options that fit what you're looking for:}}",
-      "visitAsk": "Want to see them? {advisor}, our agent, has these times:",
-      "booked": "Done, {name}! Your visit is booked for {slot} with {advisor}. I'll send you the location here and a reminder the day before.",
-      "crmTag": "CRM",
-      "crm": "Qualified lead: {name} is in the CRM with budget, area and a booked visit.",
-      "responded": "Replied in {seconds} s",
-      "viewListing": "View",
-      "replay": "Watch again",
-      "read": "Read"
-    },
-    "stats": {
-      "thisChat": "This chat",
-      "avgWeekend": "Average",
-      "underMinute": "In < 1 min",
-      "seconds": "{seconds} s"
-    },
-    "kpis": {
-      "inquiries": "Inquiries received",
-      "inquiriesHint": "From Friday 7 PM to now",
-      "fast": "Answered in < 1 min",
-      "fastHint": "{count} of {count}, nights and weekends included.",
-      "avg": "Average response",
-      "avgHint": "No waiting until Monday",
-      "secondsUnit": "s",
-      "visits": "Visits booked",
-      "visitsHint": "This week, in the team's calendar"
+      "replies": {
+        "cash": "Cash",
+        "credit": "With a mortgage",
+        "sell": "Selling my apartment",
+        "low": "Up to USD 150,000",
+        "mid": "USD 150,000 to 200,000",
+        "high": "Over USD 200,000"
+      }
     },
     "inbox": {
       "title": "Inquiries",
-      "subtitle": "The office is closed: the AI agent answers for you.",
-      "list": "Recent conversations",
-      "now": "Now",
-      "agentTyping": "Lumi is typing…",
-      "agentSays": "Lumi: {text}",
-      "responded": "{seconds} s",
+      "list": "Conversations",
       "previews": {
-        "tomas": "Can I see the house in The Hills on Saturday morning?",
-        "lucia": "Does the downtown apartment allow pets?",
-        "martin": "Does the Riverside duplex have parking?",
-        "valeria": "What are the building fees for the river-view apartment?",
-        "diego": "Hi, do you have anything in The Grove?"
-      }
+        "lucia": "Can I see the townhouse on Saturday?",
+        "valeria": "Does the duplex have parking for two cars?",
+        "diego": "I saw the sign on Los Aromos. Price?",
+        "andres": "Is the loft on Mitre mortgage-ready?"
+      },
+      "transcript": "Transcript",
+      "simulate": "Pick {name}'s answer",
+      "extract": {
+        "pay": "Financing → {value}",
+        "budget": "Budget → {value}",
+        "visit": "Viewing → {value}",
+        "crm": "Stage → {value}"
+      },
+      "botLabel": "Lumi · AI",
+      "humanLabel": "{name} · team",
+      "noReply": "No reply",
+      "channel": "Conversation channel"
     },
     "lead": {
-      "title": "Qualified lead",
-      "qualifying": "Qualifying live",
+      "title": "Lead file",
       "pending": "Pending",
-      "unknown": "Not set",
       "score": "Intent",
-      "intent": {
-        "high": "High",
-        "medium": "Medium",
-        "low": "Low"
-      },
-      "seeksLabel": "Looking to",
-      "seeks": "{op} · {type} · {beds}",
-      "zone": "Area",
+      "seeks": "Wants",
       "budget": "Budget",
-      "budgetUpTo": "Up to {price}",
-      "channel": "Channel",
       "next": "Next step",
-      "nextVisit": "Visit {slot} with {advisor}",
-      "nextCall": "Call from {advisor}, Monday 10 AM",
-      "nextFollowup": "Automatic follow-up on Monday",
-      "listings": "Suggested listings",
-      "noListings": "None yet",
-      "summaryLabel": "AI summary",
-      "responded": "{seconds} s",
-      "intentVerb": {
-        "sale": "Wants to buy",
-        "rent": "Wants to rent"
+      "scoreOf": "/ 100",
+      "seeksValue": "{kind} · {rooms} · {zone}",
+      "pay": "Financing",
+      "visit": "Viewing",
+      "source": "Source",
+      "nextSteps": {
+        "qualify": "Lumi is qualifying",
+        "book": "Offer viewing times",
+        "visit": "Viewing with {advisor}",
+        "follow": "WhatsApp follow-up",
+        "reserve": "Deposit with {advisor} tomorrow 10 AM",
+        "similar": "Waiting on the options",
+        "think": "Reminder on Tuesday",
+        "call": "Call first thing",
+        "lost": "Lost: we answered too late"
       },
-      "summary": {
-        "live": "{intent} a {beds}-bedroom apartment in {zone}, up to {budget}. Got {count} options and booked a visit for {slot}.",
-        "tomas": "Family of four. Wants a house with a garden in The Hills and is selling their current apartment. Visit on Saturday at 10.",
-        "lucia": "Looking for a 1-bedroom downtown to move in November. Has a cat: asked to confirm pets are allowed.",
-        "martin": "Investor. Wants the Riverside duplex with parking; asked for floor plans and building fees. Visit on Monday at 11.",
-        "valeria": "Wants to rent with a river view and amenities. Asked about building fees; prefers a call after 6 PM.",
-        "diego": "Asked about The Grove and hasn't replied since. Lumi follows up on Monday with 3 options."
-      }
+      "stageTrack": "Lead stage: {stage}"
     },
-    "leads": {
-      "title": "Leads",
-      "subtitle": "Qualified by the AI agent while the office was closed.",
-      "liveTitle": "Right now",
-      "othersTitle": "From the weekend",
-      "openChat": "See the conversation",
-      "waiting": "Waiting for the next inquiry…",
-      "tableCaption": "Weekend leads",
-      "cols": {
-        "lead": "Lead",
-        "seeks": "Looking to",
-        "budget": "Budget",
-        "score": "Intent",
-        "stage": "Stage"
+    "nav": {
+      "today": "Today",
+      "inbox": "Inquiries",
+      "pipeline": "Pipeline",
+      "visits": "Viewings",
+      "followups": "Follow-ups",
+      "listings": "Listings",
+      "site": "Website",
+      "groupAuto": "Automations",
+      "groupShop": "Storefront"
+    },
+    "top": {
+      "closed": "Office closed · Lumi on duty",
+      "open": "Office open",
+      "off": "Assistant off",
+      "buyer": "Buyer",
+      "buyerLabel": "See what the buyer sees on their phone",
+      "date": "{date} · {time}"
+    },
+    "bot": {
+      "name": "Lumi",
+      "title": "Lumi · AI assistant",
+      "on": "Answers 24/7 on the site and WhatsApp",
+      "offShort": "Off: inquiries wait",
+      "switch": "24/7 assistant",
+      "hint": "Turn it off and watch what happens to the 11:40 PM inquiry.",
+      "hintOff": "Turn it back on and the inquiry is answered in seconds."
+    },
+    "kinds": {
+      "apartment": "Apartment",
+      "duplex": "Duplex",
+      "house": "House",
+      "loft": "Loft",
+      "ph": "Townhouse"
+    },
+    "sources": {
+      "web": "Website",
+      "whatsapp": "WhatsApp",
+      "portal": "Listing sites",
+      "sign": "Sign",
+      "site": "Online booking"
+    },
+    "pay": {
+      "cash": "Cash",
+      "credit": "Mortgage",
+      "sell": "Selling their place"
+    },
+    "budget": {
+      "low": "Up to USD 150k",
+      "mid": "USD 150–200k",
+      "high": "Over USD 200k"
+    },
+    "slot": "{day} · {time}",
+    "follow": {
+      "steps": {
+        "how": "Hi {name}, how did you like the apartment on {street}? If you liked it, I can hold it for you for 72 h, free.",
+        "reserved": "Done: it's on hold until Monday at 7 PM. {advisor} will call you tomorrow at 10 about the deposit.",
+        "reservedNote": "Reservation saved · {street} is now Reserved",
+        "similarList": "Here are two similar ones nearby:",
+        "similarNote": "Follow-up: 2 options sent",
+        "later": "Sure, no rush. I'll write on Tuesday with news and two similar options.",
+        "laterNote": "Reminder scheduled · Tuesday 13"
       },
-      "hints": {
-        "new": "Lumi follows up on its own",
-        "qualified": "Ready for the team to call",
-        "visit": "Already in the calendar"
-      }
+      "replies": {
+        "reserve": "I want to reserve it",
+        "similar": "See similar ones",
+        "think": "I'll think about it"
+      },
+      "label": "{business} WhatsApp with {name}",
+      "composer": "Message"
     },
-    "announce": {
-      "lead": "New qualified lead: {name}, intent {score} out of 100. Visit booked for {slot}."
+    "buyer": {
+      "app": "WhatsApp",
+      "now": "now",
+      "push": "How did you like the apartment on {street}?",
+      "openPush": "Open the WhatsApp message",
+      "backToSite": "Site",
+      "backToApp": "Back to the app",
+      "jump": "{date} · after the viewing"
+    },
+    "time": {
+      "late": "{hours} h {minutes} min",
+      "seconds": "{seconds} s",
+      "minutes": "{minutes} min"
+    },
+    "notes": {
+      "base": "{listing}",
+      "waiting": "No reply · {wait}",
+      "lost": "Lost · {wait} without a reply",
+      "answered": "Answered in 4 s · qualifying",
+      "qualified": "{budget} · {pay}",
+      "booked": "Viewing {slot}",
+      "visited": "Viewing done · follow-up",
+      "reserved": "Reserved {street}",
+      "similar": "Got 2 similar options",
+      "think": "Thinking it over · reminder Tuesday",
+      "you": "Your viewing · {slot}"
+    },
+    "today": {
+      "kicker": "Today · {date}",
+      "headline": "Office closed. <em>Lumi is on.</em>",
+      "headlineOff": "Office closed. No one answers.",
+      "headlineJump": "The viewing is over. Lumi follows up.",
+      "key": "of inquiries answered in under 1 minute",
+      "keyOf": "{fast} of {total} this week",
+      "keyWaiting": "1 inquiry waiting · {wait}",
+      "avg": "First reply",
+      "avgHint": "Weekly average",
+      "visits": "Viewings booked",
+      "visitsHint": "This week",
+      "afterHours": "After hours",
+      "afterHoursHint": "{count} of {total} inquiries",
+      "reserves": "Reservations",
+      "reservesHint": "This week",
+      "now": "Now",
+      "nowEmpty": "Waiting for the next inquiry…",
+      "pipeline": "Pipeline",
+      "openPipeline": "Open pipeline",
+      "openInbox": "Open conversation",
+      "sources": "Inquiries by source",
+      "sourcesLabel": "The website brings the most inquiries: {count} of {total} this week.",
+      "activity": "Activity",
+      "headlineReserved": "Reserved. <em>Without opening the office.</em>",
+      "headlineOpens": "9:00 AM: the office opens. The inquiry waited all night.",
+      "headlineLost": "{late} later, <em>the lead was gone.</em>"
+    },
+    "pipeline": {
+      "title": "Pipeline",
+      "label": "Sales pipeline: {count} leads",
+      "value": "USD {amount}",
+      "empty": "No leads",
+      "note": "Lumi moves the cards on its own: it qualifies, books the viewing and follows up."
+    },
+    "visits": {
+      "title": "Viewings",
+      "label": "Viewings calendar, Friday 9 to Monday 12",
+      "free": "Free",
+      "freeLabel": "Book a viewing on {day} at {time}",
+      "next": "Next viewing",
+      "nextEmpty": "No new viewings tonight",
+      "reminder": "WhatsApp reminder 2 h before",
+      "withAdvisor": "with {advisor}",
+      "hint": "Tap a free time to book a viewing.",
+      "what": {
+        "visit": "Viewing",
+        "appraisal": "Valuation",
+        "openHouse": "Open house",
+        "signing": "Reservation signing"
+      },
+      "you": "Your viewing",
+      "done": "Done",
+      "booked": "Viewing booked: {slot}",
+      "legendLive": "Booked by Lumi"
+    },
+    "followups": {
+      "title": "Follow-ups",
+      "sequence": "After every viewing",
+      "sequenceSub": "On WhatsApp, with the visitor's name and the property.",
+      "for": "Now with {name}",
+      "steps": {
+        "confirm": {
+          "when": "When booked",
+          "what": "Confirmation and location"
+        },
+        "remind": {
+          "when": "2 h before",
+          "what": "Viewing reminder"
+        },
+        "after": {
+          "when": "Right after",
+          "what": "How was it? + reserve"
+        },
+        "similar": {
+          "when": "+3 days, no reply",
+          "what": "Two similar options"
+        },
+        "news": {
+          "when": "+7 days",
+          "what": "Price updates"
+        }
+      },
+      "status": {
+        "sent": "Sent",
+        "scheduled": "Scheduled",
+        "skipped": "Not needed",
+        "waiting": "On hold"
+      },
+      "preview": "What the buyer sees",
+      "previewEmpty": "The message goes out on its own when the viewing ends.",
+      "stats": "{sent} follow-ups this week · {pct} answered"
+    },
+    "site": {
+      "nav": {
+        "buy": "Buy",
+        "rent": "Rent",
+        "sell": "Sell",
+        "contact": "Contact"
+      },
+      "kicker": "Real estate · La Arboleda and around",
+      "title": "Homes with good light, <em>in plain sight.</em>",
+      "body": "Search, check the floor plan and book a viewing at any hour.",
+      "search": {
+        "op": "Looking to",
+        "opValue": "Buy",
+        "zone": "Area",
+        "zoneAll": "All",
+        "rooms": "Rooms",
+        "roomsAny": "Any",
+        "roomsMin": "{count}+",
+        "go": "Search",
+        "results": "{count, plural, one {# property} other {# properties}}"
+      },
+      "crumbs": "Buy · {zone}",
+      "back": "Results",
+      "gallery": "Photo {n} of {total}",
+      "features": "Features",
+      "map": "Approximate location",
+      "plan": "Floor plan",
+      "planRooms": {
+        "living": "Living",
+        "bed": "Bed",
+        "kitchen": "Kitchen",
+        "bath": "Bath",
+        "balcony": "Balcony"
+      },
+      "ask": "Ask",
+      "book": "Book a viewing",
+      "booking": {
+        "title": "Book your viewing",
+        "day": "Day",
+        "time": "Time",
+        "none": "No free times",
+        "confirm": "Confirm viewing",
+        "booked": "Viewing booked",
+        "bookedBody": "{slot} · {street}. The confirmation arrives on WhatsApp.",
+        "again": "Book another"
+      },
+      "url": "Website address"
+    },
+    "toast": {
+      "inquiry": "New inquiry · 11:40 PM",
+      "answered": "Answered in 4 s",
+      "qualified": "Lead qualified",
+      "booked": "Viewing booked",
+      "followSent": "Follow-up sent",
+      "reserved": "Reservation",
+      "similar": "Options sent",
+      "think": "Reminder scheduled",
+      "waiting": "Unanswered inquiry",
+      "lost": "Lead lost",
+      "you": "Your viewing"
+    },
+    "feed": {
+      "pastPortal": "{name} came from a listing site · answered in 7 s",
+      "pastWhatsApp": "{name} asked on WhatsApp · answered in 5 s",
+      "pastFollow": "Viewing reminder sent to {name}",
+      "inquiry": "{name} asked about {street} on the website",
+      "answered": "Lumi replied in 4 s",
+      "qualified": "{name} qualified: {budget}, {pay}",
+      "booked": "Viewing booked: {slot} with {advisor}",
+      "visited": "Viewing done at {street}",
+      "followSent": "WhatsApp follow-up to {name}",
+      "reserved": "{name} reserved {street}",
+      "similar": "{name} got two similar options",
+      "think": "{name} is thinking: reminder on Tuesday",
+      "waiting": "No one replied: the office is closed",
+      "opens": "The office opens",
+      "human": "{advisor} replied {late} later",
+      "lost": "{name} went with another agency",
+      "you": "You booked a viewing: {slot}"
     }
   },
   "examples": {
@@ -1517,12 +1732,12 @@
       "feature": "An agent replies instantly, at any hour.",
       "screen": {
         "online": "Online",
-        "question": "Hi, is the one-bedroom still available?",
-        "answer": "Yes! Here are photos and viewing times. Does tomorrow at 6 p.m. work?",
-        "listing": "One-bedroom with balcony",
-        "listingMeta": "Available · Viewings this week",
+        "question": "Hi, is the 3-room apartment on Olmos 1420 still available?",
+        "answer": "Yes, it's available! Viewing times: Friday 6:30 PM or Saturday 11 AM?",
+        "listing": "3 rooms with balcony",
+        "listingMeta": "Olmos 1420 · USD 168,000",
         "cta": "Book a viewing",
-        "replied": "Answered in 40 s"
+        "replied": "Answered in 4 s"
       }
     },
     "gym": {

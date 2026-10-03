@@ -1,257 +1,233 @@
 /**
- * Fictional data for the "Lumen Propiedades" demo. Names, zones and copy are
- * message keys (namespace `demoRealEstate`), so every locale can use its own.
- * Time is measured in demo "ticks" (useDemoClock). "Now" is Sunday 9:41: the
- * office is closed and the AI agent answers every inquiry within seconds.
- * Listing prices are in USD (common in the region; all fictional).
+ * Fictional data for "Lumen Propiedades — Demo" (vertical "inmobiliarias"): an agency that
+ * sells and rents homes. People, zones and copy are message keys (namespace `demoRealEstate`)
+ * so each locale names them; street addresses are invented. Prices are in USD, as homes are
+ * listed in the region (all fictional).
+ * Time: minutes from midnight on days of the week of Monday 5 October 2026 (day 0).
+ * The story starts on Thursday 8 (day 3) at 23:40, with the office closed.
  */
+import type { DemoTheme, Tone } from '../kit';
 
-export const ACCENT = '#2f4590';
-export const TICK_MS = 1600;
-/** Effectively endless (the chat can be replayed); reduced motion jumps here. */
-export const MAX_TICK = 100_000;
+/** Palette: stone · ink · cobalt · sand. Editorial and architectural: serif, hairlines, square corners. */
+export const LUMEN_THEME: DemoTheme = {
+  mode: 'light',
+  bg: '#ECE8E1',
+  surface: '#F6F4EF',
+  sunken: '#E4DFD6',
+  ink: '#141414',
+  muted: '#57534B',
+  line: 'rgb(20 20 20 / 0.13)',
+  accent: '#2448C8',
+  accentInk: '#FFFFFF',
+  accentText: '#2448C8',
+  accent2: '#D9CBB3',
+  accent2Ink: '#141414',
+  accent2Text: '#6B5733',
+  ok: '#2E6B3E',
+  warn: '#8A5A12',
+  bad: '#A3352C',
+  info: '#2C5A7A',
+  radius: '0',
+  display: { family: 'serif', weight: 400, tracking: '-0.015em' },
+};
 
-/** Sunday 11 October 2026 (UTC) — the demo's "today". Saturday is the 10th. */
-export const TODAY_UTC = Date.UTC(2026, 9, 11);
-export const dayDate = (offset: number, minutes = 0) => new Date(TODAY_UTC + offset * 86_400_000 + minutes * 60_000);
-/** 9:41 — the demo's "now" (matches the phone status bar). */
-export const NOW_MIN = 581;
+/* ------------------------------------------------------------------ */
+/* Calendar                                                             */
+/* ------------------------------------------------------------------ */
+/** Monday 5 October 2026 (UTC). */
+export const WEEK_START = Date.UTC(2026, 9, 5);
+export const TODAY = 3;
+export const dayDate = (day: number) => new Date(WEEK_START + day * 86_400_000);
 
-export type Op = 'sale' | 'rent';
-export type PropType = 'apartment' | 'house' | 'duplex';
-export type ZoneId = 'centro' | 'arboleda' | 'ribera' | 'colinas';
-export type Feature = 'balcony' | 'garage' | 'garden' | 'pool' | 'river' | 'pets' | 'amenities' | 'terrace';
-export type Scene = 'morning' | 'day' | 'dusk' | 'night';
-export type ListingId = 'a1' | 'a2' | 'a3' | 'a4' | 'h1' | 'h2' | 'd1' | 'r1' | 'r2' | 'r3' | 'r4' | 'r5' | 'r6';
+/* ------------------------------------------------------------------ */
+/* Listings                                                             */
+/* ------------------------------------------------------------------ */
+export type ListingId = 'olmos' | 'ceibo' | 'ribera' | 'colinas' | 'loft' | 'parque';
+export type Kind = 'apartment' | 'duplex' | 'house' | 'loft' | 'ph';
+export type ZoneId = 'arboleda' | 'ribera' | 'colinas' | 'centro' | 'parque';
+export type Feature = 'balcony' | 'credit' | 'garage' | 'terrace' | 'garden' | 'pool' | 'river' | 'light' | 'patio';
+/** Architectural composition used as the listing's "photo" (see facade.tsx). */
+export type FacadeKind = 'tower' | 'midrise' | 'duplex' | 'house' | 'loft' | 'ph';
+export type Scene = 'day' | 'dusk' | 'night';
 
 export interface Listing {
   id: ListingId;
-  op: Op;
-  type: PropType;
+  kind: Kind;
   zone: ZoneId;
+  /** Invented street address (not translated). */
+  street: string;
+  /** Rooms counted the Río de la Plata way (living included) and bedrooms. */
+  rooms: number;
   beds: number;
   baths: number;
   area: number;
-  /** USD (sale) or USD per month (rent). */
+  /** Sale price, USD. */
   price: number;
+  /** Monthly building fees, USD. */
+  fees: number;
   features: Feature[];
-  /** Inquiries this week (before the live conversation). */
+  /** Inquiries and visits this week (before the story). */
   inquiries: number;
+  visits: number;
+  facade: FacadeKind;
   scene: Scene;
-  /** Facade tone (index into the thumbnail palette). */
-  tone: number;
-  isNew?: boolean;
+  /** Days on the market. */
+  days: number;
 }
 
-const L = (
-  id: ListingId,
-  op: Op,
-  type: PropType,
-  zone: ZoneId,
-  [beds, baths, area]: [number, number, number],
-  price: number,
-  features: Feature[],
-  inquiries: number,
-  scene: Scene,
-  tone: number,
-  isNew = false,
-): Listing => ({ id, op, type, zone, beds, baths, area, price, features, inquiries, scene, tone, isNew });
-
+const L = (l: Listing) => l;
 export const LISTINGS: Listing[] = [
-  L('a1', 'sale', 'apartment', 'arboleda', [2, 1, 68], 138_000, ['balcony'], 6, 'day', 0),
-  L('d1', 'sale', 'duplex', 'ribera', [3, 2, 132], 248_000, ['river', 'terrace'], 7, 'dusk', 2, true),
-  L('a2', 'sale', 'apartment', 'centro', [2, 1, 61], 124_000, ['amenities'], 4, 'dusk', 1),
-  L('h2', 'sale', 'house', 'arboleda', [3, 2, 150], 189_000, ['garden', 'garage'], 5, 'morning', 3),
-  L('a3', 'sale', 'apartment', 'arboleda', [3, 2, 96], 205_000, ['garage', 'balcony'], 5, 'morning', 4),
-  L('h1', 'sale', 'house', 'colinas', [4, 3, 210], 320_000, ['garden', 'pool'], 3, 'day', 0),
-  L('a4', 'sale', 'apartment', 'ribera', [1, 1, 45], 98_000, ['river'], 2, 'night', 2, true),
-  L('r1', 'rent', 'apartment', 'arboleda', [2, 1, 58], 650, ['balcony', 'pets'], 8, 'morning', 0, true),
-  L('r3', 'rent', 'apartment', 'ribera', [2, 2, 74], 950, ['river', 'amenities'], 6, 'dusk', 4),
-  L('r2', 'rent', 'apartment', 'centro', [2, 1, 55], 620, ['amenities'], 3, 'day', 1),
-  L('r6', 'rent', 'duplex', 'arboleda', [3, 2, 118], 1_150, ['terrace', 'garage'], 3, 'morning', 3),
-  L('r4', 'rent', 'house', 'colinas', [3, 2, 140], 1_400, ['garden', 'pets'], 2, 'day', 2),
-  L('r5', 'rent', 'apartment', 'centro', [1, 1, 38], 480, ['balcony'], 4, 'night', 4),
+  L({ id: 'olmos', kind: 'apartment', zone: 'arboleda', street: 'Olmos 1420', rooms: 3, beds: 2, baths: 1, area: 78, price: 168_000, fees: 95, features: ['balcony', 'credit', 'light'], inquiries: 11, visits: 4, facade: 'tower', scene: 'day', days: 12 }),
+  L({ id: 'ceibo', kind: 'apartment', zone: 'arboleda', street: 'Ceibo 655', rooms: 3, beds: 2, baths: 1, area: 71, price: 146_000, fees: 70, features: ['credit', 'balcony'], inquiries: 7, visits: 3, facade: 'midrise', scene: 'dusk', days: 26 }),
+  L({ id: 'ribera', kind: 'duplex', zone: 'ribera', street: 'Paseo del Río 210', rooms: 4, beds: 3, baths: 2, area: 132, price: 248_000, fees: 140, features: ['terrace', 'river', 'garage'], inquiries: 9, visits: 3, facade: 'duplex', scene: 'dusk', days: 18 }),
+  L({ id: 'colinas', kind: 'house', zone: 'colinas', street: 'Los Aromos 88', rooms: 5, beds: 3, baths: 3, area: 210, price: 320_000, fees: 0, features: ['garden', 'pool', 'garage'], inquiries: 6, visits: 2, facade: 'house', scene: 'day', days: 41 }),
+  L({ id: 'parque', kind: 'ph', zone: 'parque', street: 'Laprida 1735', rooms: 3, beds: 2, baths: 1, area: 84, price: 158_000, fees: 0, features: ['patio', 'credit'], inquiries: 8, visits: 2, facade: 'ph', scene: 'day', days: 9 }),
+  L({ id: 'loft', kind: 'loft', zone: 'centro', street: 'Mitre 402', rooms: 2, beds: 1, baths: 1, area: 58, price: 112_000, fees: 60, features: ['light', 'credit'], inquiries: 5, visits: 1, facade: 'loft', scene: 'night', days: 33 }),
 ];
 export const listingById = (id: ListingId) => LISTINGS.find((l) => l.id === id)!;
 
-/* ------------------------------------------------------------------ */
-/* Filters                                                              */
-/* ------------------------------------------------------------------ */
-export type TypeFilter = 'all' | PropType;
-export const TYPE_FILTERS: TypeFilter[] = ['all', 'apartment', 'house', 'duplex'];
-export const BED_FILTERS = [0, 1, 2, 3];
-/** Max-price stops of the slider; the last one (null) means "no limit". */
-export const PRICE_STOPS: Record<Op, (number | null)[]> = {
-  sale: [100_000, 150_000, 200_000, 250_000, null],
-  rent: [500, 700, 1_000, 1_200, null],
-};
-export interface Filters {
-  op: Op;
-  type: TypeFilter;
-  beds: number;
-  /** Index into PRICE_STOPS[op]. */
-  price: number;
-}
-export const DEFAULT_FILTERS: Filters = { op: 'sale', type: 'all', beds: 0, price: PRICE_STOPS.sale.length - 1 };
+/** The listing the buyer asks about, and the cheaper one the agent offers when the budget is lower. */
+export const ASKED: ListingId = 'olmos';
+export const ALTERNATIVE: ListingId = 'ceibo';
+/** Listings sent when the buyer asks for similar options after the visit. */
+export const SIMILAR: ListingId[] = ['parque', 'ceibo'];
 
-export function filterListings(f: Filters): Listing[] {
-  const max = PRICE_STOPS[f.op][f.price];
-  return LISTINGS.filter(
-    (l) => l.op === f.op && (f.type === 'all' || l.type === f.type) && l.beds >= f.beds && (max === null || l.price <= max),
-  );
-}
+/** The public site. Fictional `.demo` domain. */
+export const SITE_URL = 'lumenpropiedades.demo';
+export const listingPath = (id: ListingId) => `${SITE_URL}/propiedad/${listingById(id).street.toLowerCase().replace(/\s+/g, '-')}`;
 
 /* ------------------------------------------------------------------ */
-/* The scripted after-hours conversation                                */
+/* People and leads                                                     */
 /* ------------------------------------------------------------------ */
-/** What the customer asks for in the first message (an apartment, 2 bedrooms, in La Arboleda). */
-export const ASK = { type: 'apartment' as PropType, beds: 2, zone: 'arboleda' as ZoneId };
-/** Budget options the agent offers, per operation (USD / USD per month). */
-export const BUDGETS: Record<Op, number[]> = { sale: [150_000, 220_000], rent: [700, 1_000] };
-
-/** The two listings the agent recommends: in budget, the asked zone first, then closest to the budget. */
-export function recommend(op: Op, budget: number): ListingId[] {
-  return LISTINGS.filter((l) => l.op === op && l.type === ASK.type && l.beds >= ASK.beds && l.price <= budget)
-    .sort((a, b) => Number(b.zone === ASK.zone) - Number(a.zone === ASK.zone) || b.price - a.price)
-    .slice(0, 2)
-    .map((l) => l.id);
-}
-
-/** Visit slots the agent offers (day offset from today, minutes from midnight). */
-export interface VisitSlot {
-  day: number;
-  minutes: number;
-}
-export const VISIT_SLOTS: VisitSlot[] = [
-  { day: 1, minutes: 18 * 60 + 30 },
-  { day: 2, minutes: 10 * 60 },
-  { day: 6, minutes: 11 * 60 },
+export type AdvisorId = 'julia' | 'marcos';
+export const ADVISORS: { id: AdvisorId; initials: string; color: string; ink: string }[] = [
+  { id: 'julia', initials: 'JR', color: '#2448C8', ink: '#FFFFFF' },
+  { id: 'marcos', initials: 'MV', color: '#141414', ink: '#ECE8E1' },
 ];
 
-/** Seconds the AI agent took to answer each of its messages (shown under the bubble). */
-export const RESPONSE_SECONDS = { greet: 8, budgetAsk: 6, matches: 11, visitAsk: 4, booked: 7 } as const;
+export type Source = 'web' | 'whatsapp' | 'portal' | 'sign';
+export const SOURCES: Source[] = ['web', 'whatsapp', 'portal', 'sign'];
+export type Stage = 'new' | 'qualified' | 'visit' | 'reserve';
+export const STAGES: Stage[] = ['new', 'qualified', 'visit', 'reserve'];
+export const STAGE_TONE: Record<Stage, Tone> = { new: 'neutral', qualified: 'accent2', visit: 'accent', reserve: 'ink' };
 
-/* ------------------------------------------------------------------ */
-/* Weekend inbox + leads                                                */
-/* ------------------------------------------------------------------ */
-export type Channel = 'whatsapp' | 'web' | 'instagram';
-export type Stage = 'new' | 'qualified' | 'visit';
-export type LeadId = 'live' | 'tomas' | 'lucia' | 'martin' | 'valeria' | 'diego';
-export type NextStep = { kind: 'visit'; slot: VisitSlot } | { kind: 'call' } | { kind: 'followup' };
+export type PersonId = 'carolina' | 'valeria' | 'andres' | 'lucia' | 'diego' | 'tomas' | 'pablo' | 'sofia' | 'martin';
+export type PayId = 'cash' | 'credit' | 'sell';
+export type BudgetId = 'low' | 'mid' | 'high';
 
-export interface PastLead {
-  id: Exclude<LeadId, 'live'>;
-  channel: Channel;
-  /** Day offset (0 = today, −1 = Saturday) and minutes from midnight. */
-  day: number;
-  minutes: number;
-  responseSec: number;
-  op: Op;
-  type: PropType;
-  zone: ZoneId;
-  beds: number;
-  budget: number | null;
-  score: number;
+export interface BaseLead {
+  id: Exclude<PersonId, 'carolina'>;
+  source: Source;
   stage: Stage;
-  next: NextStep;
-  listings: ListingId[];
-  /** Avatar color (marks only, never text). */
-  color: string;
+  listing: ListingId;
+  budget: BudgetId;
+  pay: PayId;
+  score: number;
+  /** When they first wrote: day + minutes. */
+  day: number;
+  min: number;
+  /** Seconds to the first answer. */
+  responseSec: number;
 }
 
-/** Conversations the agent handled since the office closed (all answered in < 1 min). */
-export const PAST_LEADS: PastLead[] = [
-  {
-    id: 'tomas',
-    channel: 'web',
-    day: 0,
-    minutes: 8 * 60 + 12,
-    responseSec: 11,
-    op: 'sale',
-    type: 'house',
-    zone: 'colinas',
-    beds: 4,
-    budget: 330_000,
-    score: 88,
-    stage: 'visit',
-    next: { kind: 'visit', slot: { day: 6, minutes: 10 * 60 } },
-    listings: ['h1'],
-    color: '#8a5a2b',
-  },
-  {
-    id: 'lucia',
-    channel: 'whatsapp',
-    day: 0,
-    minutes: 1 * 60 + 36,
-    responseSec: 9,
-    op: 'rent',
-    type: 'apartment',
-    zone: 'centro',
-    beds: 1,
-    budget: 500,
-    score: 74,
-    stage: 'qualified',
-    next: { kind: 'call' },
-    listings: ['r5'],
-    color: '#b0457a',
-  },
-  {
-    id: 'martin',
-    channel: 'instagram',
-    day: -1,
-    minutes: 23 * 60 + 40,
-    responseSec: 14,
-    op: 'sale',
-    type: 'duplex',
-    zone: 'ribera',
-    beds: 3,
-    budget: 250_000,
-    score: 90,
-    stage: 'visit',
-    next: { kind: 'visit', slot: { day: 1, minutes: 11 * 60 } },
-    listings: ['d1'],
-    color: '#2f7d6d',
-  },
-  {
-    id: 'valeria',
-    channel: 'web',
-    day: -1,
-    minutes: 21 * 60 + 5,
-    responseSec: 18,
-    op: 'rent',
-    type: 'apartment',
-    zone: 'ribera',
-    beds: 2,
-    budget: 1_000,
-    score: 69,
-    stage: 'qualified',
-    next: { kind: 'call' },
-    listings: ['r3'],
-    color: '#5a4fc4',
-  },
-  {
-    id: 'diego',
-    channel: 'whatsapp',
-    day: -1,
-    minutes: 19 * 60 + 52,
-    responseSec: 7,
-    op: 'sale',
-    type: 'apartment',
-    zone: 'arboleda',
-    beds: 2,
-    budget: null,
-    score: 41,
-    stage: 'new',
-    next: { kind: 'followup' },
-    listings: [],
-    color: '#6b6878',
-  },
+const lead = (l: BaseLead) => l;
+/** The pipeline at 23:40 (before the story). */
+export const BASE_LEADS: BaseLead[] = [
+  lead({ id: 'valeria', source: 'portal', stage: 'new', listing: 'ribera', budget: 'high', pay: 'sell', score: 41, day: 3, min: 21 * 60 + 5, responseSec: 7 }),
+  lead({ id: 'andres', source: 'whatsapp', stage: 'new', listing: 'loft', budget: 'low', pay: 'credit', score: 38, day: 3, min: 22 * 60 + 15, responseSec: 5 }),
+  lead({ id: 'lucia', source: 'web', stage: 'qualified', listing: 'parque', budget: 'mid', pay: 'credit', score: 72, day: 3, min: 13 * 60 + 40, responseSec: 4 }),
+  lead({ id: 'diego', source: 'sign', stage: 'qualified', listing: 'colinas', budget: 'high', pay: 'cash', score: 77, day: 2, min: 18 * 60 + 2, responseSec: 9 }),
+  lead({ id: 'tomas', source: 'web', stage: 'visit', listing: 'colinas', budget: 'high', pay: 'sell', score: 88, day: 2, min: 8 * 60 + 12, responseSec: 6 }),
+  lead({ id: 'pablo', source: 'portal', stage: 'visit', listing: 'ceibo', budget: 'low', pay: 'credit', score: 81, day: 1, min: 23 * 60 + 18, responseSec: 5 }),
+  lead({ id: 'sofia', source: 'whatsapp', stage: 'visit', listing: 'parque', budget: 'mid', pay: 'cash', score: 84, day: 1, min: 10 * 60 + 30, responseSec: 3 }),
+  lead({ id: 'martin', source: 'web', stage: 'reserve', listing: 'ribera', budget: 'high', pay: 'cash', score: 95, day: 0, min: 19 * 60 + 40, responseSec: 6 }),
 ];
-export const LIVE_COLOR = ACCENT;
 
-/**
- * Weekend totals before the live conversation (it adds one inquiry, and one
- * visit when it books). Every inquiry was answered in under a minute: the
- * vertical's key number (content/verticals.json) is 100%.
- */
-export const WEEKEND = { inquiries: 22, visits: 5, qualified: 9, avgSeconds: 12 };
+/* ------------------------------------------------------------------ */
+/* Visits (calendar: Fri 9, Sat 10, Mon 12; 10:00 → 20:00)              */
+/* ------------------------------------------------------------------ */
+export const CAL_DAYS = [4, 5, 7] as const;
+export const CAL_START = 600;
+export const CAL_END = 1200;
+export const CAL_STEP = 30;
+export const VISIT_MIN = 60;
+
+export type VisitWhat = 'visit' | 'appraisal' | 'openHouse' | 'signing';
+export interface BaseVisit {
+  id: string;
+  day: number;
+  start: number;
+  end: number;
+  what: VisitWhat;
+  who?: PersonId;
+  listing: ListingId;
+  advisor: AdvisorId;
+}
+export const BASE_VISITS: BaseVisit[] = [
+  { id: 'v-tomas', day: 4, start: 630, end: 690, what: 'visit', who: 'tomas', listing: 'colinas', advisor: 'julia' },
+  { id: 'v-appraisal', day: 4, start: 780, end: 840, what: 'appraisal', listing: 'loft', advisor: 'marcos' },
+  { id: 'v-pablo', day: 4, start: 960, end: 1020, what: 'visit', who: 'pablo', listing: 'ceibo', advisor: 'marcos' },
+  { id: 'v-open', day: 5, start: 600, end: 660, what: 'openHouse', listing: 'loft', advisor: 'julia' },
+  { id: 'v-sofia', day: 5, start: 720, end: 780, what: 'visit', who: 'sofia', listing: 'parque', advisor: 'marcos' },
+  { id: 'v-martin', day: 7, start: 600, end: 660, what: 'signing', who: 'martin', listing: 'ribera', advisor: 'julia' },
+  { id: 'v-lucia', day: 7, start: 1050, end: 1110, what: 'visit', who: 'lucia', listing: 'parque', advisor: 'marcos' },
+];
+
+/** The two slots the assistant offers in the chat (held for the live conversation). */
+export type SlotId = 'fri' | 'sat';
+export const CHAT_SLOTS: Record<SlotId, { day: number; start: number }> = {
+  fri: { day: 4, start: 1110 },
+  sat: { day: 5, start: 660 },
+};
+/** Times the site's "Book a visit" offers per day (only the free ones show). */
+export const SITE_TIMES: Record<number, number[]> = {
+  4: [720, 870, 1020],
+  5: [810, 900, 960],
+  7: [690, 900, 1140],
+};
+
+/* ------------------------------------------------------------------ */
+/* The week in numbers (before the story)                               */
+/* ------------------------------------------------------------------ */
+/** Inquiries this week by source; all of them answered in under a minute (the vertical's key number). */
+export const WEEK_BY_SOURCE: Record<Source, number> = { web: 18, whatsapp: 15, portal: 10, sign: 4 };
+export const WEEK = {
+  /** Of the inquiries above, how many arrived with the office closed. */
+  afterHours: 19,
+  /** Average first answer, seconds. */
+  avgSec: 6,
+  visits: 14,
+  reserves: 2,
+  followups: 31,
+  followReplyPct: 0.68,
+};
+/** Inquiries per day this week (Mon → Thu) before the live one. */
+export const WEEK_BY_DAY = [11, 13, 9, 14] as const;
+
+/* ------------------------------------------------------------------ */
+/* The story (ms on a 28 s loop)                                        */
+/* ------------------------------------------------------------------ */
+export const LOOP_MS = 28_000;
+export const STORY = {
+  /** The buyer opens the site's chat. */
+  chatOpen: 600,
+  /** Chat time 0: the inquiry is sent (23:40). */
+  chatStart: 1200,
+  /** Earliest jump to after the visit (and at least this long after the booking). */
+  timelapse: 16_500,
+  timelapseAfterBooking: 1800,
+  /** The WhatsApp follow-up starts this long after the jump. */
+  follow: 500,
+  /** Buyer's phone: the push becomes the WhatsApp thread. */
+  openThread: 1700,
+  /** Bot off: the night fast-forwards between these story times, up to 9:00. */
+  off: { from: 2300, to: 7800 },
+} as const;
+
+/** Story clock start: Thursday 23:40. */
+export const CLOCK_START = { day: TODAY, min: 23 * 60 + 40 };
+/** Office opening (bot off: first human answer is at 9:12). */
+export const OFFICE_OPENS = { day: 4, min: 9 * 60 };
+export const HUMAN_REPLY_MIN = 9 * 60 + 12;
+/** Seconds the assistant took to answer each of its messages (shown under the bubble). */
+export const BOT_SECONDS: Record<string, number> = { hi: 4, pay: 2, budget: 3, fits: 5, alt: 6, slots: 3, booked: 4 };

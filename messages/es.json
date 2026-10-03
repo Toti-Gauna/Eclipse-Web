@@ -1244,31 +1244,13 @@
     }
   },
   "demoRealEstate": {
-    "tabs": {
-      "chat": "Chat",
-      "inbox": "Consultas",
-      "listings": "Propiedades",
-      "leads": "Leads"
-    },
-    "aiOn": "IA activa",
-    "office": "Oficina",
-    "closed": "Cerrada hasta el lunes a las 10 h",
-    "slotLong": "{day} {date} a las {time}",
-    "ops": {
-      "sale": "Comprar",
-      "rent": "Alquilar"
-    },
-    "types": {
-      "all": "Todos",
-      "apartment": "Departamento",
-      "house": "Casa",
-      "duplex": "Dúplex"
-    },
+    "slotLong": "{day} a las {time}",
     "zones": {
       "centro": "Centro",
       "arboleda": "La Arboleda",
       "ribera": "La Ribera",
-      "colinas": "Las Colinas"
+      "colinas": "Las Colinas",
+      "parque": "Parque Norte"
     },
     "features": {
       "balcony": "Balcón",
@@ -1276,184 +1258,417 @@
       "garden": "Jardín",
       "pool": "Pileta",
       "river": "Vista al río",
-      "pets": "Acepta mascotas",
-      "amenities": "Amenities",
-      "terrace": "Terraza"
+      "terrace": "Terraza",
+      "credit": "Apto crédito",
+      "light": "Muy luminoso",
+      "patio": "Patio"
     },
     "listing": {
       "price": "USD {amount}",
-      "rent": "USD {amount}/mes",
-      "beds": "{count, plural, one {# dorm.} other {# dorm.}}",
       "baths": "{count, plural, one {# baño} other {# baños}}",
       "area": "{count} m²",
-      "title": "{type} en {zone}",
+      "title": "{kind} en {zone}",
       "inquiries": "{count, plural, one {# consulta} other {# consultas}}",
-      "recommended": "Sugerida a {name}",
-      "new": "Nueva",
-      "recommendedShort": "Sugerida"
-    },
-    "filters": {
-      "op": "Operación",
-      "type": "Tipo de propiedad",
-      "beds": "Dormitorios",
-      "any": "Todos",
-      "bedsMin": "{count}+",
-      "price": "Precio máximo",
-      "upTo": "Hasta {price}",
-      "noLimit": "Sin tope",
-      "results": "{count, plural, =0 {Sin resultados} one {# propiedad} other {# propiedades}}",
-      "clear": "Limpiar",
-      "empty": "No hay propiedades con esos filtros."
+      "rooms": "{beds, select, other {{rooms} ambientes}}",
+      "roomsShort": "{beds, select, other {{rooms} amb.}}",
+      "fees": "Expensas USD {amount}",
+      "noFees": "Sin expensas",
+      "visits": "{count, plural, one {# visita} other {# visitas}}",
+      "days": "{count} días publicada",
+      "available": "Disponible",
+      "reserved": "Reservada",
+      "photo": "Fachada de {street}, ilustración"
     },
     "listings": {
       "title": "Propiedades",
-      "subtitle": "{count} publicadas",
-      "inquiriesWeek": "consultas esta semana"
+      "sub": "{count} publicadas en el sitio",
+      "caption": "Propiedades publicadas",
+      "cols": {
+        "property": "Propiedad",
+        "price": "Precio",
+        "area": "Superficie",
+        "inquiries": "Consultas",
+        "visits": "Visitas",
+        "status": "Estado"
+      }
     },
     "people": {
-      "live": "Carolina M.",
-      "liveFirst": "Carolina",
-      "advisor": "Julia R.",
-      "advisorFirst": "Julia",
-      "tomas": "Tomás B.",
-      "lucia": "Lucía F.",
-      "martin": "Martín G.",
-      "valeria": "Valeria S.",
-      "diego": "Diego P."
-    },
-    "channels": {
-      "whatsapp": "WhatsApp",
-      "web": "Web",
-      "instagram": "Instagram"
+      "tomas": "Tomás Bauer",
+      "lucia": "Lucía Ferrer",
+      "martin": "Martín Gil",
+      "valeria": "Valeria Sosa",
+      "diego": "Diego Ramos",
+      "carolina": "Carolina Méndez",
+      "carolinaFirst": "Carolina",
+      "julia": "Julia Ríos",
+      "juliaFirst": "Julia",
+      "marcos": "Marcos Vidal",
+      "andres": "Andrés Paz",
+      "pablo": "Pablo Núñez",
+      "sofia": "Sofía Arce",
+      "you": "Vos"
     },
     "stages": {
-      "live": "Calificando",
       "new": "Nuevo",
       "qualified": "Calificado",
-      "visit": "Visita agendada"
+      "visit": "Visita",
+      "reserve": "Reserva"
     },
     "chat": {
-      "heading": "Así le responde a tu cliente",
-      "hint": "Respondé como si fueras {name}.",
-      "aiTag": "IA",
-      "online": "en línea · responde al instante",
-      "typing": "escribiendo…",
-      "typingLabel": "{business} está escribiendo",
-      "log": "Conversación simulada de WhatsApp entre {name} y {business}",
-      "closed": "Fuera de horario: te responde Lumi, el asistente virtual de {business}. Un asesor sigue la charla el lunes.",
-      "inquiry": "Hola, ¿atienden hoy? Busco un depto de {beds} dormitorios en {zone}.",
-      "greet": "¡Hola, {name}! Soy Lumi, el asistente virtual de {business}. La oficina abre el lunes, pero te ayudo ahora. ¿Querés comprar o alquilar?",
-      "ops": {
-        "sale": "Quiero comprar",
-        "rent": "Quiero alquilar"
+      "subtitle": "Lumi · responde al instante",
+      "subtitleOff": "Fuera de horario",
+      "label": "Chat del sitio de {business} con {name}",
+      "composer": "Escribí tu consulta",
+      "open": "Chatear",
+      "close": "Cerrar el chat",
+      "expand": "Abrir el chat del sitio",
+      "as": "Vos sos {name}: elegí sus respuestas.",
+      "answeredIn": "{seconds} s",
+      "ai": "IA",
+      "steps": {
+        "ask": "Hola, ¿sigue disponible el 3 ambientes de {street}? ¿Se puede ver esta semana?",
+        "hi": "¡Hola, {name}! Sí, está disponible. Te hago dos preguntas y te paso horarios de visita.",
+        "pay": "¿Cómo pensás pagarlo?",
+        "budget": "¿Hasta cuánto querés invertir?",
+        "fits_cash": "Entra justo: está en USD {price}, y pagando de contado hay margen para negociar.",
+        "fits_credit": "Entra justo: está en USD {price} y es apto crédito.",
+        "fits_sell": "Entra justo: está en USD {price}. Si querés, tasamos tu depto sin cargo.",
+        "alt": "Ese está en USD {price}. A cuatro cuadras tengo uno muy parecido, en USD {altPrice}:",
+        "slots": "{advisor}, nuestra asesora, puede mostrártelo. ¿Cuándo te queda mejor?",
+        "booked": "Listo, {name}: visita el {slot} con {advisor}. Te mando la ubicación por WhatsApp.",
+        "crm": "Lead calificado · ficha y visita cargadas en el CRM",
+        "wait": "Oficina cerrada · nadie responde",
+        "opens": "Viernes 9:00 · abre la oficina",
+        "human": "¡Hola, {name}! Perdón la demora, recién abrimos. Sí, sigue disponible. ¿Cuándo querés verlo?",
+        "lost": "Gracias, pero ya coordiné una visita con otra inmobiliaria.",
+        "lostNote": "Lead perdido · primera respuesta {late} después"
       },
-      "budgetAskSale": "Genial. ¿Hasta cuánto pensás invertir?",
-      "budgetAskRent": "Genial. ¿Cuánto querés pagar por mes, como máximo?",
-      "budgetReply": "Hasta {price}",
-      "matches": "{count, plural, one {Tengo # opción que encaja con lo que buscás:} other {Tengo # opciones que encajan con lo que buscás:}}",
-      "visitAsk": "¿Querés visitarlas? {advisor}, nuestra asesora, tiene estos horarios:",
-      "booked": "¡Listo, {name}! Visita agendada para el {slot} con {advisor}. Te mando la ubicación por acá y un recordatorio el día anterior.",
-      "crmTag": "CRM",
-      "crm": "Lead calificado: {name} ya está en el CRM con presupuesto, zona y visita agendada.",
-      "responded": "Respondió en {seconds} s",
-      "viewListing": "Ver ficha",
-      "replay": "Ver de nuevo",
-      "read": "Leído"
-    },
-    "stats": {
-      "thisChat": "Esta charla",
-      "avgWeekend": "Promedio",
-      "underMinute": "En < 1 min",
-      "seconds": "{seconds} s"
-    },
-    "kpis": {
-      "inquiries": "Consultas recibidas",
-      "inquiriesHint": "Del viernes a las 19 h a hoy",
-      "fast": "Respondidas en < 1 min",
-      "fastHint": "{count} de {count}, incluso de noche y en fin de semana.",
-      "avg": "Respuesta promedio",
-      "avgHint": "Sin esperar al lunes",
-      "secondsUnit": "s",
-      "visits": "Visitas agendadas",
-      "visitsHint": "Para esta semana, en la agenda del equipo"
+      "replies": {
+        "cash": "De contado",
+        "credit": "Con crédito hipotecario",
+        "sell": "Vendiendo mi depto",
+        "low": "Hasta USD 150.000",
+        "mid": "USD 150.000 a 200.000",
+        "high": "Más de USD 200.000"
+      }
     },
     "inbox": {
       "title": "Consultas",
-      "subtitle": "La oficina está cerrada: el agente IA responde por vos.",
-      "list": "Conversaciones recientes",
-      "now": "Ahora",
-      "agentTyping": "Lumi está escribiendo…",
-      "agentSays": "Lumi: {text}",
-      "responded": "{seconds} s",
+      "list": "Conversaciones",
       "previews": {
-        "tomas": "¿Puedo ver la casa de Las Colinas el sábado a la mañana?",
-        "lucia": "¿El depto del Centro acepta mascotas?",
-        "martin": "¿El dúplex de La Ribera tiene cochera?",
-        "valeria": "¿Cuánto son las expensas del depto con vista al río?",
-        "diego": "Hola, ¿tienen algo en La Arboleda?"
-      }
+        "lucia": "¿Se puede visitar el PH el sábado?",
+        "valeria": "¿El dúplex tiene cochera para dos autos?",
+        "diego": "Vi el cartel en Los Aromos. ¿Precio?",
+        "andres": "¿El loft de Mitre acepta crédito?"
+      },
+      "transcript": "Transcripción",
+      "simulate": "Simulá la respuesta de {name}",
+      "extract": {
+        "pay": "Financiación → {value}",
+        "budget": "Presupuesto → {value}",
+        "visit": "Visita → {value}",
+        "crm": "Etapa → {value}"
+      },
+      "botLabel": "Lumi · IA",
+      "humanLabel": "{name} · equipo",
+      "noReply": "Sin respuesta",
+      "channel": "Canal de la conversación"
     },
     "lead": {
-      "title": "Lead calificado",
-      "qualifying": "Calificando en vivo",
+      "title": "Ficha del lead",
       "pending": "Pendiente",
-      "unknown": "Sin definir",
       "score": "Intención",
-      "intent": {
-        "high": "Alta",
-        "medium": "Media",
-        "low": "Baja"
-      },
-      "seeksLabel": "Busca",
-      "seeks": "{op} · {type} · {beds}",
-      "zone": "Zona",
+      "seeks": "Busca",
       "budget": "Presupuesto",
-      "budgetUpTo": "Hasta {price}",
-      "channel": "Canal",
       "next": "Próximo paso",
-      "nextVisit": "Visita {slot} con {advisor}",
-      "nextCall": "Llamada de {advisor} el lunes a las 10 h",
-      "nextFollowup": "Seguimiento automático el lunes",
-      "listings": "Propiedades sugeridas",
-      "noListings": "Todavía ninguna",
-      "summaryLabel": "Resumen de la IA",
-      "responded": "{seconds} s",
-      "intentVerb": {
-        "sale": "Quiere comprar",
-        "rent": "Quiere alquilar"
+      "scoreOf": "/ 100",
+      "seeksValue": "{kind} · {rooms} · {zone}",
+      "pay": "Financiación",
+      "visit": "Visita",
+      "source": "Origen",
+      "nextSteps": {
+        "qualify": "Lumi está calificando",
+        "book": "Ofrecer horarios de visita",
+        "visit": "Visita con {advisor}",
+        "follow": "Seguimiento por WhatsApp",
+        "reserve": "Seña con {advisor} mañana 10:00",
+        "similar": "Esperar respuesta a las opciones",
+        "think": "Recordatorio el martes",
+        "call": "Llamar a primera hora",
+        "lost": "Perdido: respondimos tarde"
       },
-      "summary": {
-        "live": "{intent} un depto de {beds} dormitorios en {zone}, hasta {budget}. Recibió {count} opciones y agendó visita para el {slot}.",
-        "tomas": "Familia de cuatro. Busca casa con jardín en Las Colinas y vende su depto actual. Visita el sábado a las 10.",
-        "lucia": "Busca depto de 1 dormitorio en el Centro para mudarse en noviembre. Tiene un gato: pidió confirmar si aceptan mascotas.",
-        "martin": "Inversor. Quiere el dúplex de La Ribera con cochera; pidió planos y expensas. Visita el lunes a las 11.",
-        "valeria": "Quiere alquilar con vista al río y amenities. Preguntó por las expensas; prefiere que la llamen después de las 18 h.",
-        "diego": "Preguntó por La Arboleda y no volvió a responder. Lumi le escribe de nuevo el lunes con 3 opciones."
-      }
+      "stageTrack": "Etapa del lead: {stage}"
     },
-    "leads": {
-      "title": "Leads",
-      "subtitle": "Calificados por el agente IA mientras la oficina estaba cerrada.",
-      "liveTitle": "Ahora mismo",
-      "othersTitle": "Del fin de semana",
-      "openChat": "Ver la conversación",
-      "waiting": "Esperando la próxima consulta…",
-      "tableCaption": "Leads del fin de semana",
-      "cols": {
-        "lead": "Lead",
-        "seeks": "Busca",
-        "budget": "Presupuesto",
-        "score": "Intención",
-        "stage": "Etapa"
+    "nav": {
+      "today": "Hoy",
+      "inbox": "Consultas",
+      "pipeline": "Pipeline",
+      "visits": "Visitas",
+      "followups": "Seguimientos",
+      "listings": "Propiedades",
+      "site": "Sitio web",
+      "groupAuto": "Automatizaciones",
+      "groupShop": "Vidriera"
+    },
+    "top": {
+      "closed": "Oficina cerrada · Lumi atiende",
+      "open": "Oficina abierta",
+      "off": "Asistente apagado",
+      "buyer": "Comprador",
+      "buyerLabel": "Ver lo que ve el comprador en su celular",
+      "date": "{date} · {time}"
+    },
+    "bot": {
+      "name": "Lumi",
+      "title": "Lumi · asistente IA",
+      "on": "Responde 24/7 en el sitio y WhatsApp",
+      "offShort": "Apagado: las consultas esperan",
+      "switch": "Asistente 24/7",
+      "hint": "Apagalo y mirá qué pasa con la consulta de las 23:40.",
+      "hintOff": "Prendelo de nuevo y la consulta se responde en segundos."
+    },
+    "kinds": {
+      "apartment": "Departamento",
+      "duplex": "Dúplex",
+      "house": "Casa",
+      "loft": "Loft",
+      "ph": "PH"
+    },
+    "sources": {
+      "web": "Sitio web",
+      "whatsapp": "WhatsApp",
+      "portal": "Portales",
+      "sign": "Cartel",
+      "site": "Agenda online"
+    },
+    "pay": {
+      "cash": "Contado",
+      "credit": "Crédito hipotecario",
+      "sell": "Vende su depto"
+    },
+    "budget": {
+      "low": "Hasta USD 150k",
+      "mid": "USD 150–200k",
+      "high": "Más de USD 200k"
+    },
+    "slot": "{day} · {time}",
+    "follow": {
+      "steps": {
+        "how": "Hola, {name}. ¿Qué te pareció el depto de {street}? Si te gustó, te lo reservo 72 h sin costo.",
+        "reserved": "Hecho: queda reservado hasta el lunes a las 19. {advisor} te llama mañana a las 10 para la seña.",
+        "reservedNote": "Reserva registrada · {street} pasa a Reservada",
+        "similarList": "Te paso dos parecidos en la zona:",
+        "similarNote": "Seguimiento: 2 opciones enviadas",
+        "later": "Dale, sin apuro. El martes te escribo con novedades y dos opciones parecidas.",
+        "laterNote": "Recordatorio programado · martes 13"
       },
-      "hints": {
-        "new": "Lumi les vuelve a escribir solo",
-        "qualified": "Listos para que los llame el equipo",
-        "visit": "Ya están en la agenda"
-      }
+      "replies": {
+        "reserve": "Quiero reservarlo",
+        "similar": "Ver parecidos",
+        "think": "Lo voy a pensar"
+      },
+      "label": "WhatsApp de {business} con {name}",
+      "composer": "Mensaje"
     },
-    "announce": {
-      "lead": "Nuevo lead calificado: {name}, intención {score} de 100. Visita agendada para el {slot}."
+    "buyer": {
+      "app": "WhatsApp",
+      "now": "ahora",
+      "push": "¿Qué te pareció el depto de {street}?",
+      "openPush": "Abrir el mensaje de WhatsApp",
+      "backToSite": "Sitio",
+      "backToApp": "Volver a la app",
+      "jump": "{date} · después de la visita"
+    },
+    "time": {
+      "late": "{hours} h {minutes} min",
+      "seconds": "{seconds} s",
+      "minutes": "{minutes} min"
+    },
+    "notes": {
+      "base": "{listing}",
+      "waiting": "Sin respuesta · {wait}",
+      "lost": "Perdido · {wait} sin respuesta",
+      "answered": "Respondida en 4 s · calificando",
+      "qualified": "{budget} · {pay}",
+      "booked": "Visita {slot}",
+      "visited": "Visita realizada · seguimiento",
+      "reserved": "Reservó {street}",
+      "similar": "Recibió 2 opciones parecidas",
+      "think": "Lo piensa · recordatorio el martes",
+      "you": "Tu visita · {slot}"
+    },
+    "today": {
+      "kicker": "Hoy · {date}",
+      "headline": "Oficina cerrada. <em>Lumi atiende.</em>",
+      "headlineOff": "Oficina cerrada. Nadie atiende.",
+      "headlineJump": "La visita ya pasó. Lumi hace el seguimiento.",
+      "key": "de consultas respondidas en menos de 1 minuto",
+      "keyOf": "{fast} de {total} esta semana",
+      "keyWaiting": "1 consulta esperando · {wait}",
+      "avg": "Primera respuesta",
+      "avgHint": "Promedio de la semana",
+      "visits": "Visitas agendadas",
+      "visitsHint": "Esta semana",
+      "afterHours": "Fuera de horario",
+      "afterHoursHint": "{count} de {total} consultas",
+      "reserves": "Reservas",
+      "reservesHint": "Esta semana",
+      "now": "Ahora",
+      "nowEmpty": "Esperando la próxima consulta…",
+      "pipeline": "Pipeline",
+      "openPipeline": "Ver pipeline",
+      "openInbox": "Ver conversación",
+      "sources": "Consultas por origen",
+      "sourcesLabel": "El sitio web trae más consultas: {count} de {total} esta semana.",
+      "activity": "Actividad",
+      "headlineReserved": "Reservado. <em>Sin abrir la oficina.</em>",
+      "headlineOpens": "9:00: abre la oficina. La consulta esperó toda la noche.",
+      "headlineLost": "{late} después, <em>el lead ya no estaba.</em>"
+    },
+    "pipeline": {
+      "title": "Pipeline",
+      "label": "Pipeline de ventas: {count} leads",
+      "value": "USD {amount}",
+      "empty": "Sin leads",
+      "note": "Lumi mueve las tarjetas solo: califica, agenda la visita y hace el seguimiento."
+    },
+    "visits": {
+      "title": "Visitas",
+      "label": "Agenda de visitas, viernes 9 a lunes 12",
+      "free": "Libre",
+      "freeLabel": "Agendar una visita el {day} a las {time}",
+      "next": "Próxima visita",
+      "nextEmpty": "Sin visitas nuevas esta noche",
+      "reminder": "Recordatorio por WhatsApp 2 h antes",
+      "withAdvisor": "con {advisor}",
+      "hint": "Tocá un horario libre para agendar una visita.",
+      "what": {
+        "visit": "Visita",
+        "appraisal": "Tasación",
+        "openHouse": "Open house",
+        "signing": "Firma de reserva"
+      },
+      "you": "Tu visita",
+      "done": "Realizada",
+      "booked": "Visita agendada: {slot}",
+      "legendLive": "Agendada por Lumi"
+    },
+    "followups": {
+      "title": "Seguimientos",
+      "sequence": "Después de cada visita",
+      "sequenceSub": "Por WhatsApp, con el nombre de quien visitó y la propiedad.",
+      "for": "Ahora con {name}",
+      "steps": {
+        "confirm": {
+          "when": "Al agendar",
+          "what": "Confirmación y ubicación"
+        },
+        "remind": {
+          "when": "2 h antes",
+          "what": "Recordatorio de la visita"
+        },
+        "after": {
+          "when": "Al terminar",
+          "what": "¿Qué te pareció? + reservar"
+        },
+        "similar": {
+          "when": "+3 días sin respuesta",
+          "what": "Dos opciones parecidas"
+        },
+        "news": {
+          "when": "+7 días",
+          "what": "Novedades de precio"
+        }
+      },
+      "status": {
+        "sent": "Enviado",
+        "scheduled": "Programado",
+        "skipped": "No hace falta",
+        "waiting": "En espera"
+      },
+      "preview": "Vista del comprador",
+      "previewEmpty": "El mensaje sale solo cuando termina la visita.",
+      "stats": "{sent} seguimientos esta semana · {pct} respondidos"
+    },
+    "site": {
+      "nav": {
+        "buy": "Comprar",
+        "rent": "Alquilar",
+        "sell": "Vender",
+        "contact": "Contacto"
+      },
+      "kicker": "Inmobiliaria · La Arboleda y alrededores",
+      "title": "Casas con buena luz, <em>a la vista.</em>",
+      "body": "Buscá, mirá el plano y agendá la visita a cualquier hora.",
+      "search": {
+        "op": "Operación",
+        "opValue": "Comprar",
+        "zone": "Zona",
+        "zoneAll": "Todas",
+        "rooms": "Ambientes",
+        "roomsAny": "Cualquiera",
+        "roomsMin": "{count}+",
+        "go": "Buscar",
+        "results": "{count, plural, one {# propiedad} other {# propiedades}}"
+      },
+      "crumbs": "Comprar · {zone}",
+      "back": "Resultados",
+      "gallery": "Foto {n} de {total}",
+      "features": "Características",
+      "map": "Ubicación aproximada",
+      "plan": "Plano",
+      "planRooms": {
+        "living": "Living",
+        "bed": "Dorm.",
+        "kitchen": "Cocina",
+        "bath": "Baño",
+        "balcony": "Balcón"
+      },
+      "ask": "Consultar",
+      "book": "Agendar visita",
+      "booking": {
+        "title": "Agendá tu visita",
+        "day": "Día",
+        "time": "Horario",
+        "none": "Sin horarios libres",
+        "confirm": "Confirmar visita",
+        "booked": "Visita agendada",
+        "bookedBody": "{slot} · {street}. Te llega la confirmación por WhatsApp.",
+        "again": "Agendar otra"
+      },
+      "url": "Dirección del sitio"
+    },
+    "toast": {
+      "inquiry": "Consulta nueva · 23:40",
+      "answered": "Respondida en 4 s",
+      "qualified": "Lead calificado",
+      "booked": "Visita agendada",
+      "followSent": "Seguimiento enviado",
+      "reserved": "Reserva",
+      "similar": "Opciones enviadas",
+      "think": "Recordatorio programado",
+      "waiting": "Consulta sin responder",
+      "lost": "Lead perdido",
+      "you": "Tu visita"
+    },
+    "feed": {
+      "pastPortal": "{name} llegó desde un portal · respondida en 7 s",
+      "pastWhatsApp": "{name} preguntó por WhatsApp · respondida en 5 s",
+      "pastFollow": "Recordatorio de visita enviado a {name}",
+      "inquiry": "{name} consultó por {street} desde el sitio",
+      "answered": "Lumi respondió en 4 s",
+      "qualified": "{name} calificada: {budget}, {pay}",
+      "booked": "Visita agendada: {slot} con {advisor}",
+      "visited": "Visita realizada en {street}",
+      "followSent": "Seguimiento por WhatsApp a {name}",
+      "reserved": "{name} reservó {street}",
+      "similar": "{name} recibió dos opciones parecidas",
+      "think": "{name} lo piensa: recordatorio el martes",
+      "waiting": "Nadie respondió: la oficina está cerrada",
+      "opens": "Abre la oficina",
+      "human": "{advisor} respondió {late} después",
+      "lost": "{name} coordinó con otra inmobiliaria",
+      "you": "Agendaste una visita: {slot}"
     }
   },
   "examples": {
@@ -1517,12 +1732,12 @@
       "feature": "Un agente responde al instante, a cualquier hora.",
       "screen": {
         "online": "En línea",
-        "question": "Hola, ¿sigue disponible el depto de 2 ambientes?",
-        "answer": "¡Sí! Te paso fotos y horarios. ¿Te queda bien verlo mañana a las 18?",
-        "listing": "2 ambientes con balcón",
-        "listingMeta": "Disponible · Visitas esta semana",
+        "question": "Hola, ¿sigue disponible el 3 ambientes de Olmos 1420?",
+        "answer": "¡Sí, está disponible! Te paso horarios de visita: ¿viernes 18:30 o sábado 11:00?",
+        "listing": "3 ambientes con balcón",
+        "listingMeta": "Olmos 1420 · USD 168.000",
         "cta": "Agendar visita",
-        "replied": "Respondido en 40 s"
+        "replied": "Respondida en 4 s"
       }
     },
     "gym": {

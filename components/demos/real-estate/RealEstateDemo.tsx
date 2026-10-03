@@ -1,192 +1,228 @@
 'use client';
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { Building2, Inbox, MessageCircle, UserCheck } from 'lucide-react';
-import { useReducedMotion } from '@/components/motion/useReducedMotion';
+import { Building2, CalendarDays, Columns3, Globe, House, MessagesSquare, Send, Smartphone } from 'lucide-react';
+import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { DemoShell, useDemoClock, type DemoTab } from '../kit';
+import { AppShell, Avatar, LiveDot, Switch, usePairedStore, useStory, type NavItem } from '../kit';
 import type { DemoProps } from '../types';
-import { ACCENT, MAX_TICK, NOW_MIN, TICK_MS, VISIT_SLOTS, type ListingId } from './data';
-import { createEstateStore, deriveChat, deriveKpis, deriveLiveLead, pairedPhoneOf, pairedStoreFor, pastLeadViews, type EstateStore } from './sim';
-import { EstateProvider, useEstate, useFmt, type EstateCtx } from './context';
-import { LiveBadge, LumenLogo, WantThis } from './ui';
-import { LaptopListings, PhoneListings } from './Listings';
-import { PhoneChat } from './Chat';
-import { LaptopInbox } from './Inbox';
-import { LaptopLeads, PhoneLeads } from './Leads';
+import { ADVISORS, LUMEN_THEME } from './data';
+import { act, createEstateStore, deriveEstate } from './story';
+import { EstateProvider, useEstate, type EstateCtx, type EstateTab } from './context';
+import { Announcer, EstateToasts, LumenMark, useEstateText } from './ui';
+import { LaptopToday, PhoneToday } from './views/Today';
+import { LaptopInbox, PhoneInbox } from './views/Inbox';
+import { LaptopPipeline, PhonePipeline } from './views/Pipeline';
+import { LaptopVisits, PhoneVisits } from './views/Visits';
+import { LaptopFollowups, PhoneFollowups } from './views/Followups';
+import { LaptopListings, PhoneListings } from './views/Listings';
+import { BuyerPhone, LaptopSite } from './views/Site';
 import './real-estate.css';
 
-type TabId = 'inbox' | 'listings' | 'leads';
-
-const VIEWS: Record<TabId, Record<DemoProps['screen'], () => React.ReactNode>> = {
-  inbox: { phone: PhoneChat, laptop: LaptopInbox },
+const VIEWS: Record<EstateTab, Record<DemoProps['screen'], () => ReactNode>> = {
+  today: { phone: PhoneToday, laptop: LaptopToday },
+  inbox: { phone: PhoneInbox, laptop: LaptopInbox },
+  pipeline: { phone: PhonePipeline, laptop: LaptopPipeline },
+  visits: { phone: PhoneVisits, laptop: LaptopVisits },
+  followups: { phone: PhoneFollowups, laptop: LaptopFollowups },
   listings: { phone: PhoneListings, laptop: LaptopListings },
-  leads: { phone: PhoneLeads, laptop: LaptopLeads },
+  // On the phone "Sitio web" opens the buyer's view (overlay) instead of a tab.
+  site: { phone: PhoneInbox, laptop: LaptopSite },
 };
+const ORDER: Record<DemoProps['screen'], EstateTab[]> = {
+  laptop: ['today', 'inbox', 'pipeline', 'visits', 'followups', 'listings', 'site'],
+  phone: ['inbox', 'pipeline', 'visits', 'today', 'followups', 'listings', 'site'],
+};
+const ICONS = { today: House, inbox: MessagesSquare, pipeline: Columns3, visits: CalendarDays, followups: Send, listings: Building2, site: Globe };
 
-function LaptopTopBar() {
-  const t = useTranslations('demoRealEstate');
-  const fmt = useFmt();
-  return (
-    <>
-      <div className="mr-auto flex min-w-0 items-center gap-[0.7em]">
-        <span className="text-[0.85em] font-semibold">{t('office')}</span>
-        <span aria-hidden className="h-[1em] w-px bg-[var(--demo-line)]" />
-        <span className="truncate text-[0.8em] text-[var(--demo-muted)]">
-          {fmt.long(0)} · {fmt.time(NOW_MIN)} · {t('closed')}
-        </span>
-        <LiveBadge />
-      </div>
-      <WantThis variant="header" />
-    </>
-  );
-}
+/** Office hours (weekdays 9–19): the top bar says who is answering. */
+const officeOpen = (day: number, min: number) => day % 7 < 5 && min >= 540 && min < 1140;
 
 /**
- * One polite announcement per laptop+phone pair: the qualified lead reaching the
- * CRM. Each chat message is already read by the chat's own log, so nothing else.
- */
-function Announcer() {
-  const t = useTranslations('demoRealEstate');
-  const fmt = useFmt();
-  const { chat, state, announce, live } = useEstate();
-  if (!announce) return null;
-  const fresh = chat.doneAt !== null && state.tick - chat.doneAt <= 1 && live && chat.slot !== null;
-  return (
-    <p className="sr-only" aria-live="polite" aria-atomic="true">
-      {fresh ? t('announce.lead', { name: t('people.live'), score: live.score, slot: fmt.slotLong(VISIT_SLOTS[chat.slot!]) }) : ''}
-    </p>
-  );
-}
-
-/**
- * Lumen Propiedades (vertical "inmobiliarias"): listings with working filters,
- * an AI agent answering a scripted after-hours inquiry in seconds, and the
- * qualified lead it leaves in the agency's CRM.
+ * Lumen Propiedades (vertical "inmobiliarias"): an agency that sells and rents homes.
+ * - laptop: the agency's workspace (collapsible sidebar): today's numbers, the inquiry inbox
+ *   (live transcript + lead file), CRM pipeline, visits calendar, WhatsApp follow-ups,
+ *   listings and the public site.
+ * - phone alone: the same product as an app, opening on the live conversation (the visitor
+ *   plays the buyer); "Comprador" / "Sitio web" opens what the buyer sees.
+ * - phone next to the laptop: the BUYER's phone (site + chat at 23:40, WhatsApp after the visit).
+ * One story (28 s loop, see story.ts) drives both screens.
  */
 export default function RealEstateDemo({ screen, active }: DemoProps) {
-  const t = useTranslations('demoRealEstate');
   const vertical = verticalById('inmobiliarias')!;
   const business = vertical.business ?? '';
   const keyNumber = vertical.keyNumber?.value ?? 100;
   const keySuffix = vertical.keyNumber?.suffix ?? '%';
-  const reduced = useReducedMotion();
+  const t = useTranslations('demoRealEstate');
+  const x = useEstateText();
+  const { play } = useSound();
 
-  // Own store until we find the laptop/phone sibling of the same showcase.
-  const [ownStore] = useState(() => createEstateStore(false));
-  const [sharedStore, setSharedStore] = useState<EstateStore | null>(null);
-  const store = sharedStore ?? ownStore;
-  const root = useRef<HTMLDivElement | null>(null);
-  const attach = useCallback((el: HTMLDivElement | null) => {
-    root.current = el;
-    if (!el) return;
-    const shared = pairedStoreFor(el);
-    if (shared) setSharedStore(shared);
-  }, []);
+  const { store, paired, ref } = usePairedStore('realEstate', createEstateStore);
+  const snap = useStory(store, active);
+  const view = useMemo(() => deriveEstate(snap.state, snap.t, snap.reduced), [snap.state, snap.t, snap.reduced]);
 
-  const tick = useDemoClock(active, TICK_MS, MAX_TICK);
+  const [tab, setTab] = useState<EstateTab>(screen === 'phone' ? 'inbox' : 'today');
+  const [buyerOpen, setBuyerOpen] = useState(false);
+  const buyerPhone = screen === 'phone' && paired;
+  const announce = screen === 'laptop' || !paired;
+  const rootRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      ref(el);
+      el?.classList.add('lumen');
+    },
+    [ref],
+  );
+
+  // Sound (one instance per pair, only while visible): a soft tick per message, a chime when a visit or a reservation lands.
+  const messages = view.chat.items.length + (view.follow?.items.length ?? 0);
+  const lastEvent = view.events[view.events.length - 1];
+  const heard = useRef<{ messages: number; event: string } | null>(null);
   useEffect(() => {
-    store.report(tick);
-  }, [store, tick]);
-  const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
-
-  const chat = useMemo(() => deriveChat(state, reduced), [state, reduced]);
-  const live = useMemo(() => deriveLiveLead(chat), [chat]);
-  const leads = useMemo(() => (live ? [live, ...pastLeadViews()] : pastLeadViews()), [live]);
-  const kpis = useMemo(() => deriveKpis(chat), [chat]);
-  const paired = store.paired;
-
-  // Next to the laptop, the phone opens on the customer's chat. Alone, too:
-  // the conversation is what shows the key number ("answers in < 1 min").
-  const [tab, setTab] = useState<TabId>('inbox');
-  const [focus, setFocus] = useState<ListingId | null>(null);
-  const scrollTop = () => root.current?.closest('.demo-scroll')?.scrollTo({ top: 0 });
-  const openTab = (id: TabId) => {
-    setFocus(null);
-    setTab(id);
-    scrollTop();
-  };
+    const prev = heard.current;
+    heard.current = { messages, event: lastEvent?.id ?? '' };
+    if (!prev || !active || !announce || snap.reduced) return;
+    if (lastEvent && lastEvent.id !== prev.event && lastEvent.at >= 0 && (lastEvent.kind === 'booked' || lastEvent.kind === 'reserved')) play('success');
+    else if (messages > prev.messages) play('type');
+  }, [messages, lastEvent, active, announce, snap.reduced, play]);
 
   const ctx: EstateCtx = {
     screen,
+    paired,
     store,
-    state,
-    chat,
-    live,
-    leads,
-    kpis,
+    state: snap.state,
+    view,
+    t: snap.t,
+    loop: snap.loop,
+    reduced: snap.reduced,
+    active,
+    announce,
     business,
     keyNumber,
     keySuffix,
-    reduced,
-    announce: screen === 'laptop' || !paired,
-    paired,
-    focus,
-    openListing: (id) => {
-      setFocus(id);
-      setTab('listings');
+    go: (id) => setTab(id),
+    openBuyer: () => {
+      setBuyerOpen(true);
+      if (active) play('open');
     },
-    openTab,
+    toggleBot: () => {
+      store.update(act.toggleBot());
+      store.restart();
+      if (active) play('toggle');
+    },
   };
 
-  // The showcase's phone covers the laptop's right edge: measure how much, as a
-  // fraction of the screen (so neither the hero's scale animations nor the font
-  // size matter), and keep the dashboards clear of it through --re-safe, which
-  // resolves in cqw against the device screen.
-  useLayoutEffect(() => {
-    const el = root.current;
-    const screenEl = el?.closest('.device-screen');
-    const phone = el ? pairedPhoneOf(el) : null;
-    if (screen !== 'laptop' || !paired || !el || !screenEl || !phone) return;
-    const measure = () => {
-      const s = screenEl.getBoundingClientRect();
-      const p = phone.getBoundingClientRect();
-      if (!s.width) return;
-      const covered = Math.max(0, (s.right - p.left) / s.width);
-      const safe = `calc(${covered.toFixed(4)} * 100cqw + 0.8em)`;
-      el.style.setProperty('--re-safe', safe);
-      // Small showcases: the phone also rises over the title row (top ~20% of the screen).
-      el.style.setProperty('--re-safe-top', (p.top - s.top) / s.height < 0.2 ? safe : '0em');
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(screenEl);
-    ro.observe(phone);
-    return () => ro.disconnect();
-  }, [screen, paired]);
+  const clock = x.clock(view.clock);
 
-  const tabs: DemoTab[] = [
-    { id: 'inbox', label: t(screen === 'phone' ? 'tabs.chat' : 'tabs.inbox'), icon: screen === 'phone' ? MessageCircle : Inbox },
-    { id: 'listings', label: t('tabs.listings'), icon: Building2 },
-    { id: 'leads', label: t('tabs.leads'), icon: UserCheck },
-  ];
+  if (buyerPhone) {
+    return (
+      <EstateProvider value={ctx}>
+        <AppShell screen="phone" chrome="bare" theme={LUMEN_THEME} business={business} logo={<LumenMark />} active={active} rootRef={rootRef} statusTime={clock}>
+          <BuyerPhone key={snap.loop} />
+        </AppShell>
+      </EstateProvider>
+    );
+  }
+
+  const live = view.t >= view.inquiryAt && !view.chat.done;
+  const nav: NavItem[] = ORDER[screen].map((id) => ({
+    id,
+    label: t(`nav.${id}`),
+    icon: ICONS[id],
+    badge: id === 'inbox' && live ? 'live' : undefined,
+    group: screen === 'laptop' ? (id === 'followups' ? t('nav.groupAuto') : id === 'listings' ? t('nav.groupShop') : undefined) : undefined,
+  }));
+  const open = officeOpen(view.clock.day, view.clock.min);
+  const julia = ADVISORS[0];
   const View = VIEWS[tab][screen];
 
+  const headerRight =
+    screen === 'laptop' ? (
+      <>
+        <span className="re-toppill" data-tone={view.botOff && !open ? 'bad' : open ? 'neutral' : 'accent'}>
+          <LiveDot color={view.botOff && !open ? 'var(--demo-bad)' : 'var(--demo-accent)'} />
+          {view.botOff && !open ? t('top.off') : open ? t('top.open') : t('top.closed')}
+        </span>
+        <Avatar initials={julia.initials} color={julia.color} ink={julia.ink} className="text-[0.72em]" />
+      </>
+    ) : (
+      <button type="button" className="re-buyerbtn" onClick={ctx.openBuyer} aria-haspopup="dialog" aria-label={t('top.buyerLabel')}>
+        <Smartphone aria-hidden strokeWidth={1.8} />
+        {t('top.buyer')}
+      </button>
+    );
+
   return (
-    <DemoShell
-      screen={screen}
-      business={business}
-      accent={ACCENT}
-      logo={<LumenLogo />}
-      tabs={tabs}
-      activeTab={tab}
-      onTab={(id) => openTab(id as TabId)}
-      headerRight={screen === 'laptop' ? <LaptopTopBar /> : <LiveBadge />}
-    >
-      <EstateProvider value={ctx}>
-        <div ref={attach} className="re flex min-h-full flex-col" data-paused={active ? undefined : ''}>
-          <div key={tab} className="re-view pt-[0.25em]">
+    <EstateProvider value={ctx}>
+      <AppShell
+        screen={screen}
+        theme={LUMEN_THEME}
+        business={business}
+        logo={<LumenMark />}
+        nav={nav}
+        current={tab}
+        onNavigate={(id) => {
+          if (screen === 'phone' && id === 'site') ctx.openBuyer();
+          else setTab(id as EstateTab);
+        }}
+        title={
+          screen === 'laptop' ? (
+            <>
+              <p className="re-toptitle">{t(`nav.${tab}`)}</p>
+              <p className="re-topdate demo-num">{t('top.date', { date: x.day(view.clock.day, 'long'), time: clock })}</p>
+            </>
+          ) : undefined
+        }
+        headerRight={headerRight}
+        sidebarFooter={<SidebarFooter />}
+        active={active}
+        rootRef={rootRef}
+        statusTime={clock}
+        phoneNav="tabs"
+        maxTabs={5}
+        overlay={
+          screen === 'phone' ? (
+            <BuyerPhone
+              key={snap.loop}
+              onClose={() => {
+                setBuyerOpen(false);
+                if (active) play('close');
+              }}
+            />
+          ) : undefined
+        }
+        overlayOpen={buyerOpen}
+        overlayOrigin={['80%', '4%']}
+      >
+        <div className="re" data-screen={screen} data-tab={tab}>
+          <EstateToasts placement={screen === 'phone' ? 'top' : 'bottom-right'} />
+          <div key={tab} className="demo-view re-view">
             <View />
           </div>
-          {screen === 'phone' && !paired ? (
-            <div className="sticky bottom-[-1em] z-20 -mx-[1em] mt-auto bg-gradient-to-t from-[var(--demo-bg)] from-55% to-transparent px-[1em] pb-[0.8em] pt-[1.6em]">
-              <WantThis variant="floating" />
-            </div>
-          ) : null}
           <Announcer />
         </div>
-      </EstateProvider>
-    </DemoShell>
+      </AppShell>
+    </EstateProvider>
+  );
+}
+
+/** The assistant's switch, at the bottom of the sidebar. */
+function SidebarFooter() {
+  const t = useTranslations('demoRealEstate.bot');
+  const { view, toggleBot } = useEstate();
+  const id = useId();
+  return (
+    <div className="re-sidefoot" data-off={view.botOff ? '' : undefined}>
+      <span className="re-sidefoot-mark" aria-hidden>
+        <LumenMark />
+      </span>
+      <span className="min-w-0 flex-1 leading-[1.25]">
+        <span id={id} className="block truncate text-[0.72em] font-semibold">
+          {t('title')}
+        </span>
+        <span className="block text-[0.6em] text-[var(--demo-muted)]">{view.botOff ? t('offShort') : t('on')}</span>
+      </span>
+      <Switch checked={!view.botOff} onChange={toggleBot} labelledBy={id} />
+    </div>
   );
 }

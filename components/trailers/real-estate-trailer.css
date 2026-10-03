@@ -1,0 +1,89 @@
+/*
+ * Lumen Propiedades — trailer mock screen in the demo's palette (stone · ink · cobalt · sand):
+ * square corners, hairlines, serif name, mono readings. Reads the shared trailer.css --mk-* variables.
+ */
+.mk.mk-re {
+  --mk-accent: #2448c8;
+  --mk-accent-soft: #dde2f3;
+  --mk-ink: #141414;
+  --mk-muted: #57534b;
+  --mk-line: rgb(20 20 20 / 0.14);
+  --mk-card: #f6f4ef;
+  background: #ece8e1;
+  color: #141414;
+}
+.mk-re .mk-bar {
+  border-bottom-color: #141414;
+}
+.mk-re .mk-logo {
+  display: grid;
+  place-items: center;
+  border-radius: 0;
+  background: #141414;
+  box-shadow: none;
+  color: #ece8e1;
+}
+.mk-re .mk-logo svg {
+  width: 70%;
+  height: 70%;
+}
+.mk-re .mk-re-name {
+  font-family: var(--font-serif);
+  font-size: 1.12em;
+  font-weight: 400;
+}
+.mk-re .mk-online {
+  color: #2448c8;
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.mk-re .mk-online::before {
+  border-radius: 0;
+  background: #2448c8;
+  transform: rotate(45deg) scale(0.85);
+}
+.mk-re .mk-sep {
+  border-radius: 0;
+  background: transparent;
+  box-shadow:
+    inset 0 1px 0 var(--mk-line),
+    inset 0 -1px 0 var(--mk-line);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.mk-re .mk-bubble,
+.mk-re .mk-typing,
+.mk-re .mk-card,
+.mk-re .mk-photo,
+.mk-re .mk-cta {
+  border-radius: 0;
+}
+.mk-re .mk-bubble--in {
+  background: #f6f4ef;
+}
+.mk-re .mk-typing > span {
+  border-radius: 0;
+}
+.mk-re .mk-listing {
+  border-color: #141414;
+}
+.mk-re .mk-photo {
+  display: block;
+  overflow: hidden;
+  background: #d8dde6;
+}
+.mk-re .mk-photo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mk-re .mk-listing small {
+  font-family: var(--font-mono);
+  font-size: 0.66em;
+}
+/* The panel that holds this mock: square too (scoped to Lumen's screen). */
+.trl-panel:has(> .mk-re) {
+  border-radius: 0;
+}
