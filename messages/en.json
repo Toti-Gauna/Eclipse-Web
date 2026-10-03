@@ -118,32 +118,94 @@
     "perYear": "per year"
   },
   "problem": {
-    "eyebrow": "The problem",
     "title": "What does <em>not having</em> this cost you?",
-    "sub": "Every unanswered inquiry and every hour spent copying data by hand has a price. Plug in your numbers and see it in your currency.",
+    "sub": "Fill in the sentence with your numbers. The math does itself, in your currency.",
     "inputsTitle": "Your numbers",
     "verticalLegend": "Your industry",
-    "painLabel": "The usual problem",
-    "painFallback": "Unanswered inquiries and hours of manual work",
     "hoursLabel": "Hours a week on repetitive tasks",
     "lostValueText": "{count} per week",
     "hoursValue": "{count} h",
     "hoursValueText": "{count, plural, one {# hour} other {# hours}} per week",
     "approxValueText": "about {amount}",
-    "resultTitle": "Monthly estimate",
-    "resultLead": "You're losing",
-    "resultTail": "a month",
-    "resultAnnounce": "You're losing about {amount} a month.",
-    "breakdown": "Breakdown",
+    "resultAnnounce": "With your numbers you lose about {amount} a month.",
     "lostRevenue": "Revenue slipping away",
-    "lostDetail": "<n>{count}</n> a month × {ticket}",
     "timeCost": "Your team's hours",
-    "timeDetail": "<n>{count}</n> h a month × {rate} an hour",
-    "cta": "Win it back — get your demo",
+    "cta": "Win it back: get your demo",
     "ctaPlan": "Build your plan",
-    "note": "This is an estimate: {weeks} weeks a month and {rate} per hour of work. Your real number may differ.",
-    "whatsapp": "Hi Eclipse. I used the calculator on your site: I'm losing about {amount} a month. I want it back. Can you show me a demo? Industry: {vertical}.",
-    "whatsappNoVertical": "Hi Eclipse. I used the calculator on your site: I'm losing about {amount} a month. I want it back. Can you show me a demo?"
+    "whatsapp": "Hi Eclipse. I used the calculator on your site: with my numbers I'm losing about {amount} a month ({lost} {unit} and {hours} h of repetitive tasks a week). I want it back. Can you show me a demo? Industry: {vertical}.",
+    "whatsappNoVertical": "Hi Eclipse. I used the calculator on your site: with my numbers I'm losing about {amount} a month ({lost} {unit} and {hours} h of repetitive tasks a week). I want it back. Can you show me a demo?",
+    "lead": "I run <vertical></vertical>.",
+    "lost": {
+      "clinicas": "Every week I lose <lost></lost>, each worth <ticket></ticket>.",
+      "inmobiliarias": "Every week I leave <lost></lost> unanswered, each worth <ticket></ticket>.",
+      "gimnasios": "Every week I lose <lost></lost> paying <ticket></ticket> a month.",
+      "tiendas": "Every week I lose <lost></lost>, with an average order of <ticket></ticket>.",
+      "restaurantes": "Every week I lose <lost></lost>, worth <ticket></ticket> each on average.",
+      "servicios": "Every week I lose <lost></lost>, each worth <ticket></ticket>.",
+      "otro": "Every week I lose <lost></lost>, worth <ticket></ticket> each on average."
+    },
+    "hours": "My team spends <hours></hours> a week on tasks that could run on their own.",
+    "unit": {
+      "clinicas": {
+        "one": "appointment",
+        "other": "appointments"
+      },
+      "inmobiliarias": {
+        "one": "inquiry",
+        "other": "inquiries"
+      },
+      "gimnasios": {
+        "one": "member",
+        "other": "members"
+      },
+      "tiendas": {
+        "one": "abandoned cart",
+        "other": "abandoned carts"
+      },
+      "restaurantes": {
+        "one": "order or booking",
+        "other": "orders or bookings"
+      },
+      "servicios": {
+        "one": "job",
+        "other": "jobs"
+      },
+      "otro": {
+        "one": "inquiry or sale",
+        "other": "inquiries or sales"
+      }
+    },
+    "hoursUnit": {
+      "one": "hour",
+      "other": "hours"
+    },
+    "verticalOption": {
+      "clinicas": "a clinic",
+      "inmobiliarias": "a real estate agency",
+      "gimnasios": "a gym",
+      "tiendas": "an online store",
+      "restaurantes": "a restaurant",
+      "servicios": "a home-services business",
+      "otro": "another kind of business"
+    },
+    "ticketValueText": "{amount} each",
+    "decrease": "Less: {label}",
+    "increase": "More: {label}",
+    "presets": "Shortcuts",
+    "presetsFor": "Quick values: {label}",
+    "readoutTitle": "Estimated loss",
+    "perMonth": "a month",
+    "perYear": "{amount} a year",
+    "usdRef": "{amount} a month",
+    "honest": "An estimate with your numbers",
+    "showMath": "Show the math",
+    "hideMath": "Hide the math",
+    "mathLost": "{count} {unit} × {ticket}",
+    "mathTime": "{count} h × {rate}",
+    "mathTotal": "Total a month",
+    "assumptions": "Assumptions: 1 month = {weeks} weeks · 1 hour of your team = {rate}. Your real number may differ.",
+    "miniLabel": "You lose a month",
+    "miniJump": "See the estimate in detail"
   },
   "services": {
     "eyebrow": "What we do",
@@ -219,52 +281,29 @@
     "ctaLead": "Step one is seeing your business working."
   },
   "builder": {
-    "eyebrow": "Quote builder",
+    "eyebrow": "An estimate in your currency",
     "title": "Build your plan",
     "pageTitle": "Build your <em>plan</em>",
-    "intro": "Pick what you need. The total adds up on its own, in your currency.",
-    "pageIntro": "Pick what you need and see the number instantly. If your selection is already a plan, we tell you how much you save.",
+    "pageIntro": "Four steps, and you can skip any of them. Pick what you want to solve: the number adds up on its own.",
     "copyLink": "Copy link",
     "linkCopied": "Link copied",
     "copyFailed": "Couldn't copy",
-    "catalog": "Catalog",
     "vertical": "Your industry",
     "optional": "optional",
-    "categoryCount": "{count, plural, one {# selected} other {# selected}}",
-    "includedIn": "Included in the {plan} plan",
+    "includedIn": "Included in the {plan} package",
     "hintDashboard": "A dashboard shines with a system behind it: add bookings, orders or e-commerce.",
     "hintChatbot": "The chatbot does more with automations: it replies and also follows up.",
-    "detectTitle": "That's the {plan} plan: you save ≈ {pct}%",
-    "detectBody": "You pay {amount} less than buying each item separately.",
-    "detectCta": "Switch to the plan",
-    "switched": "Switched to the {plan} plan.",
-    "removePlan": "Remove plan",
-    "removePlanLabel": "Remove the {plan} plan and go back to individual items",
-    "planRemoved": "Back to individual items.",
-    "removeItem": "Remove {item}",
-    "summaryTitle": "Your plan",
-    "empty": "Nothing picked yet. Tap what you need and the total adds up on its own.",
-    "count": "{count, plural, one {# item} other {# items}}",
-    "planLine": "{plan} plan",
-    "planIncludes": "Includes {count, plural, one {# item} other {# items}}",
-    "total": "Estimated total",
-    "oneTime": "One-time payment",
-    "range": "Depending on scope, between {from} and {to}.",
-    "rangeNoDiscounts": "Depending on scope, between {from} and {to} before discounts.",
-    "totalAnnounce": "Estimated total: {amount}",
-    "showSummary": "View summary",
-    "hideSummary": "Hide summary",
-    "maintenanceLegend": "Maintenance + hosting",
+    "detectTitle": "Switch to the {plan} package and save ≈ {pct}%",
+    "detectBody": "You pay {amount} less than piece by piece.",
+    "detectCta": "Switch to the package",
+    "switched": "Switched to the {plan} package.",
+    "planRemoved": "Now piece by piece.",
+    "totalAnnounce": "One-time payment: {amount}.",
     "suggested": "Suggested",
     "noneDetail": "You handle it",
-    "maintenanceIncludes": "Includes: {list}.",
     "billingLegend": "Maintenance billing",
     "freeMonths": "{count, plural, one {# month free} other {# months free}}",
-    "voiceUsage": "{name}: {price}/mo {note}",
-    "offersTitle": "Offers",
-    "applied": "Applied",
-    "comboApplied": "Your voice agent drops to {price}.",
-    "comboGap": "if the rest of your plan reaches {min}, the voice agent drops to {price}. You're {missing} away.",
+    "comboGap": "If the rest of your plan reaches {min}, the voice agent drops to {price}. You are {missing} away.",
     "annualApplied": "You save {amount} a year on maintenance.",
     "founderApplied": "You save {amount} on the one-time payment.",
     "founderToggle": "I want the founder price (−{pct}%)",
@@ -274,10 +313,106 @@
     "endsInHours": "Ends in {hours, plural, one {# hour} other {# hours}}",
     "send": "Send my plan on WhatsApp",
     "sendShort": "Send",
-    "sendDisabled": "Pick at least one item to send your plan.",
+    "sendDisabled": "Pick at least one piece to send your plan.",
     "copySummary": "Copy summary",
     "summaryCopied": "Summary copied",
-    "notice": "Estimated prices. The demo and the final proposal tune the number to your business."
+    "notice": "Estimated prices. The demo and the final proposal tune the number to your business.",
+    "stepsLabel": "Plan steps",
+    "stepOf": "Step {n} of {total}",
+    "goToStep": "Step {n}: {name}",
+    "steps": {
+      "objetivo": {
+        "name": "Goal",
+        "title": "What do you want to solve?",
+        "help": "Pick one or more. We preselect the pieces and you fine-tune them next."
+      },
+      "piezas": {
+        "name": "Pieces",
+        "title": "Fine-tune the pieces",
+        "help": "Tap to add or remove. If a package is a better deal, we tell you."
+      },
+      "mantenimiento": {
+        "name": "Maintenance",
+        "title": "Maintenance and hosting",
+        "help": "A fixed fee to keep everything running: hosting, security, backups and changes. Optional."
+      },
+      "resumen": {
+        "name": "Summary",
+        "title": "Your plan, at a glance",
+        "help": "What you pay once and what you pay every month, side by side."
+      }
+    },
+    "back": "Back",
+    "next": "Next",
+    "goals": {
+      "encontrar": {
+        "name": "Get found",
+        "desc": "A fast website that shows up on Google."
+      },
+      "atender": {
+        "name": "Answer 24/7",
+        "desc": "A voice agent and a chatbot that reply on their own."
+      },
+      "ordenar": {
+        "name": "Organize bookings and orders",
+        "desc": "All online, with automatic reminders."
+      },
+      "vender": {
+        "name": "Sell online",
+        "desc": "Your own store with payments and shipping."
+      },
+      "fidelizar": {
+        "name": "Keep customers coming back",
+        "desc": "Missions, rewards and follow-ups."
+      },
+      "app": {
+        "name": "My own app",
+        "desc": "Your service in an app: orders, bookings and payments."
+      },
+      "diagnostico": {
+        "name": "Not sure: I'd like a diagnosis",
+        "desc": "Where you're losing customers today, with an action plan."
+      }
+    },
+    "pieceCount": "{count, plural, one {# piece} other {# pieces}}",
+    "goalsChosen": "{count, plural, =0 {None yet} one {# chosen} other {# chosen}}",
+    "verticalNone": "Not specified",
+    "fromPackage": "Or start from a package",
+    "chosen": "Chosen",
+    "packageHead": "{plan} package",
+    "packageIncludes": "Includes {count, plural, one {# piece} other {# pieces}}. Add any others you want.",
+    "editPieces": "Edit piece by piece",
+    "dropPackage": "Remove package",
+    "suggestedTag": "Suggested",
+    "comboNote": "Combo: the voice agent drops to {price} with the {plan} package or above, or when the rest of your plan adds up to {min} or more.",
+    "detectMoreTitle": "The {plan} package has all this plus {count, plural, one {# more piece} other {# more pieces}}: save ≈ {pct}%",
+    "detectMoreBody": "It adds {list}. You still pay {amount} less.",
+    "detectCtaShort": "Switch",
+    "packageDropped": "Package removed.",
+    "maintenanceNone": "No maintenance",
+    "perMonthLong": "a month",
+    "perYearLong": "a year",
+    "voiceNote": "The voice agent adds {price} a month {note}. It is separate from maintenance and always billed monthly.",
+    "founderTitle": "Founder price",
+    "referralTitle": "Referrals",
+    "ledgerOneTime": "One-time payment",
+    "ledgerMonthly": "Every month",
+    "ledgerYearly": "Every year",
+    "ledgerTotal": "Total",
+    "ledgerFrom": "from",
+    "edit": "Edit",
+    "rangeNote": "Packages have a “from” price: depending on scope, the total can go up to {to}. We confirm the number before we start.",
+    "maintenanceLine": "{name} maintenance",
+    "maintenanceAnnualLine": "{name} maintenance, billed yearly",
+    "voiceLine": "Voice agent (fixed fee)",
+    "nothingMonthly": "Nothing fixed: no maintenance.",
+    "emptyTitle": "You haven't picked anything yet.",
+    "emptyCta": "Pick what you want to solve",
+    "messagePreview": "See the message we send",
+    "dockOneTime": "One-time",
+    "dockFrom": "from",
+    "recurringAnnounce": "Plus {amount} {period}.",
+    "goalsLine": "Goal: {list}"
   },
   "pricing": {
     "eyebrow": "Pricing",

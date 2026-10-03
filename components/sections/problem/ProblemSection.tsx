@@ -1,14 +1,16 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { SECTION_IDS } from '@/components/layout/navLinks';
+import { LightSweep } from '@/components/motion/LightSweep';
 import { Reveal } from '@/components/motion/Reveal';
-import { SectionHeading } from '@/components/motion/SectionHeading';
+import { SectionMark } from '@/components/ui/SectionMark';
 import { LossCalculator } from './LossCalculator';
 import './problem.css';
 
 /**
- * "El problema + calculadora": what not automating costs, estimated per month in
- * the visitor's currency. Follows the vertical chosen in the hero.
+ * 02 · "¿Cuánto te cuesta no tener esto?" — the visitor completes a sentence with their
+ * own numbers and reads the monthly loss on an instrument, in their currency.
+ * Follows the vertical chosen in the hero. Lit from the right (the readout side).
  */
 export function ProblemSection() {
   const t = useTranslations('problem');
@@ -18,17 +20,24 @@ export function ProblemSection() {
     <section
       id={SECTION_IDS.problem}
       aria-labelledby="problem-title"
-      className="problem theme-dark relative isolate overflow-hidden bg-night py-24 md:py-36"
+      className="problem theme-dark relative isolate overflow-clip bg-night py-20 md:py-32"
     >
-      <div aria-hidden className="problem-aura pointer-events-none absolute inset-0 -z-10" />
+      <div aria-hidden className="problem-light pointer-events-none absolute inset-0 -z-10" />
       <div className="container-x">
-        <Reveal>
-          <SectionHeading id="problem-title" eyebrow={t('eyebrow')} sub={t('sub')}>
-            {t.rich('title', { em })}
-          </SectionHeading>
-        </Reveal>
-        <Reveal className="mt-12 md:mt-16" start="top 85%">
-          <LossCalculator />
+        <Reveal start="top 80%">
+          <LossCalculator
+            header={
+              <header className="calc-head">
+                <SectionMark section="problem" className="calc-mark" />
+                <h2 id="problem-title" data-reveal className="display calc-title">
+                  <LightSweep className="calc-sweep">{t.rich('title', { em })}</LightSweep>
+                </h2>
+                <p data-reveal className="calc-sub">
+                  {t('sub')}
+                </p>
+              </header>
+            }
+          />
         </Reveal>
       </div>
     </section>

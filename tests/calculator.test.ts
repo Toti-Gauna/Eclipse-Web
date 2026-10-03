@@ -1,31 +1,54 @@
 import { describe, expect, it } from 'vitest';
 import {
   CALCULATOR_RANGES,
+  COUNT_PRESETS,
   DEFAULT_HOURLY_USD,
   WEEKS_PER_MONTH,
   calculatorDefaults,
+  clampTicketUsd,
   clampToRange,
   clampValues,
+  displayTicket,
   hourlyRateIn,
   lossShares,
   monthlyLoss,
+  niceRound,
+  parseTyped,
   perMonth,
-  rangePercent,
+  perYear,
+  rateOf,
+  roundSignificant,
+  stepAmount,
+  stepCount,
+  ticketBounds,
+  ticketPresets,
+  ticketStep,
+  ticketUsdFromLocal,
 } from '@/lib/calculator';
 import { formatMoney } from '@/lib/pricing';
 import { verticals, type Vertical } from '@/lib/content';
 
 const rates = { ARS: 1450, BRL: 5.4 };
+/** Intl uses no-break spaces; compare with plain ones. */
+const clean = (s: string) => s.replace(/[\u00a0\u202f]/g, ' ');
 
 describe('constants', () => {
   it('uses 4.3 weeks per month and 5 USD per hour', () => {
     expect(WEEKS_PER_MONTH).toBe(4.3);
     expect(DEFAULT_HOURLY_USD).toBe(5);
   });
-  it('ranges match the brief', () => {
-    expect(CALCULATOR_RANGES.lostPerWeek).toEqual({ min: 0, max: 50, step: 1 });
-    expect(CALCULATOR_RANGES.ticketUsd).toEqual({ min: 5, max: 500, step: 5 });
-    expect(CALCULATOR_RANGES.hoursPerWeek).toEqual({ min: 0, max: 40, step: 1 });
+  it('accepts the numbers a real business types', () => {
+    expect(CALCULATOR_RANGES.lostPerWeek).toEqual({ min: 0, max: 200, step: 1 });
+    expect(CALCULATOR_RANGES.ticketUsd).toMatchObject({ min: 1, max: 2000 });
+    expect(CALCULATOR_RANGES.hoursPerWeek).toEqual({ min: 0, max: 80, step: 1 });
+  });
+  it('count presets sit inside their ranges', () => {
+    for (const field of ['lostPerWeek', 'hoursPerWeek'] as const) {
+      for (const n of COUNT_PRESETS[field]) {
+        expect(n).toBeGreaterThanOrEqual(CALCULATOR_RANGES[field].min);
+        expect(n).toBeLessThanOrEqual(CALCULATOR_RANGES[field].max);
+      }
+    }
   });
 });
 
@@ -69,8 +92,13 @@ describe('monthlyLoss', () => {
   });
 
   it('maximum inputs stay finite', () => {
-    const r = monthlyLoss({ lostPerWeek: 50, ticketUsd: 500, hoursPerWeek: 40 });
-    expect(r.totalUsd).toBe(107500 + 860);
+    const r = monthlyLoss({ lostPerWeek: 200, ticketUsd: 2000, hoursPerWeek: 80 });
+    expect(r.totalUsd).toBe(1_720_000 + 1720);
+  });
+
+  it('a year is twelve months', () => {
+    expect(perYear(1462)).toBe(17544);
+    expect(perYear(-1)).toBe(0);
   });
 });
 
@@ -100,33 +128,32 @@ describe('hourlyRateIn', () => {
     const brl = r.timeCostUsd * rates.BRL; // 928.8 → shown as ≈ R$ 930
     expect(Math.abs(r.hoursPerMonth * hourlyRateIn('BRL', rates) - brl) / brl).toBeLessThan(0.01);
   });
+
+  it('rateOf is 1 for USD', () => {
+    expect(rateOf('USD', rates)).toBe(1);
+    expect(rateOf('ARS', rates)).toBe(1450);
+  });
 });
 
-describe('clampToRange / clampValues', () => {
-  it('snaps to the step and clamps to the range', () => {
-    expect(clampToRange(37, CALCULATOR_RANGES.ticketUsd)).toBe(35);
-    expect(clampToRange(38, CALCULATOR_RANGES.ticketUsd)).toBe(40);
-    expect(clampToRange(0, CALCULATOR_RANGES.ticketUsd)).toBe(5);
-    expect(clampToRange(9999, CALCULATOR_RANGES.ticketUsd)).toBe(500);
+describe('clamping', () => {
+  it('counts snap to the step and stay in range', () => {
+    expect(clampToRange(12.4, CALCULATOR_RANGES.hoursPerWeek)).toBe(12);
     expect(clampToRange(-4, CALCULATOR_RANGES.lostPerWeek)).toBe(0);
+    expect(clampToRange(999, CALCULATOR_RANGES.lostPerWeek)).toBe(200);
     expect(clampToRange(Number.NaN, CALCULATOR_RANGES.hoursPerWeek)).toBe(0);
   });
+  it('the ticket is clamped but never snapped (it comes from a local amount)', () => {
+    expect(clampTicketUsd(29.66)).toBe(29.66);
+    expect(clampTicketUsd(0)).toBe(1);
+    expect(clampTicketUsd(99999)).toBe(2000);
+    expect(clampTicketUsd(Number.NaN)).toBe(1);
+  });
   it('clamps every field', () => {
-    expect(clampValues({ lostPerWeek: 80, ticketUsd: 2, hoursPerWeek: 12.4 })).toEqual({
-      lostPerWeek: 50,
-      ticketUsd: 5,
+    expect(clampValues({ lostPerWeek: 800, ticketUsd: 0.2, hoursPerWeek: 12.4 })).toEqual({
+      lostPerWeek: 200,
+      ticketUsd: 1,
       hoursPerWeek: 12,
     });
-  });
-});
-
-describe('rangePercent', () => {
-  it('maps a value to 0–100', () => {
-    expect(rangePercent(0, CALCULATOR_RANGES.lostPerWeek)).toBe(0);
-    expect(rangePercent(25, CALCULATOR_RANGES.lostPerWeek)).toBe(50);
-    expect(rangePercent(500, CALCULATOR_RANGES.ticketUsd)).toBe(100);
-    expect(rangePercent(5000, CALCULATOR_RANGES.ticketUsd)).toBe(100);
-    expect(rangePercent(5, { min: 5, max: 5, step: 1 })).toBe(0);
   });
 });
 
@@ -141,14 +168,13 @@ describe('calculatorDefaults', () => {
     }
   });
 
-  it('every vertical default sits inside the slider ranges', () => {
+  it('every vertical default sits inside the ranges', () => {
     for (const v of verticals) {
       const c = v.calculator;
       expect(c.lostPerWeek).toBeGreaterThanOrEqual(CALCULATOR_RANGES.lostPerWeek.min);
       expect(c.lostPerWeek).toBeLessThanOrEqual(CALCULATOR_RANGES.lostPerWeek.max);
       expect(c.ticketUsd).toBeGreaterThanOrEqual(CALCULATOR_RANGES.ticketUsd.min);
       expect(c.ticketUsd).toBeLessThanOrEqual(CALCULATOR_RANGES.ticketUsd.max);
-      expect(c.ticketUsd % CALCULATOR_RANGES.ticketUsd.step).toBe(0);
       expect(c.hoursPerWeek).toBeGreaterThanOrEqual(CALCULATOR_RANGES.hoursPerWeek.min);
       expect(c.hoursPerWeek).toBeLessThanOrEqual(CALCULATOR_RANGES.hoursPerWeek.max);
     }
@@ -156,16 +182,16 @@ describe('calculatorDefaults', () => {
 
   it('falls back to "otro" for an unknown id and clamps out-of-range content', () => {
     const list = [
-      { ...verticals.find((v) => v.id === 'otro')!, calculator: { ...verticals[0].calculator, lostPerWeek: 99, ticketUsd: 3, hoursPerWeek: 5 } },
+      { ...verticals.find((v) => v.id === 'otro')!, calculator: { ...verticals[0].calculator, lostPerWeek: 999, ticketUsd: 0.5, hoursPerWeek: 5 } },
     ] as Vertical[];
-    expect(calculatorDefaults('clinicas', list)).toEqual({ lostPerWeek: 50, ticketUsd: 5, hoursPerWeek: 5 });
+    expect(calculatorDefaults('clinicas', list)).toEqual({ lostPerWeek: 200, ticketUsd: 1, hoursPerWeek: 5 });
   });
 
   it('clinic defaults → USD 1.462 per month, ≈ $ 2.120.000 in ARS', () => {
     const r = monthlyLoss(calculatorDefaults('clinicas'));
     expect(r.totalUsd).toBe(1462);
-    expect(formatMoney(r.totalUsd, 'ARS', rates, 'es')).toBe('≈ $ 2.120.000');
-    expect(formatMoney(r.totalUsd, 'USD', rates, 'en')).toBe('$1,462');
+    expect(clean(formatMoney(r.totalUsd, 'ARS', rates, 'es'))).toBe('≈ $ 2.120.000');
+    expect(clean(formatMoney(r.totalUsd, 'USD', rates, 'en'))).toBe('$1,462');
   });
 });
 
@@ -178,5 +204,79 @@ describe('lossShares', () => {
   });
   it('is zero when the total is zero', () => {
     expect(lossShares({ lostRevenueUsd: 0, timeCostUsd: 0, totalUsd: 0 })).toEqual({ revenue: 0, time: 0 });
+  });
+});
+
+describe('editing', () => {
+  it('count steppers move by one (or more on long press) and stay in range', () => {
+    expect(stepCount(10, 1, CALCULATOR_RANGES.lostPerWeek)).toBe(11);
+    expect(stepCount(10, -1, CALCULATOR_RANGES.lostPerWeek)).toBe(9);
+    expect(stepCount(0, -1, CALCULATOR_RANGES.lostPerWeek)).toBe(0);
+    expect(stepCount(198, 1, CALCULATOR_RANGES.lostPerWeek, 5)).toBe(200);
+    expect(stepCount(12, 1, CALCULATOR_RANGES.hoursPerWeek, 5)).toBe(17);
+  });
+
+  it('parses what the visitor types, whatever the separators', () => {
+    expect(parseTyped('43.500')).toBe(43500);
+    expect(parseTyped('43,500')).toBe(43500);
+    expect(parseTyped('$ 1.200')).toBe(1200);
+    expect(parseTyped('12')).toBe(12);
+    expect(parseTyped('')).toBeNull();
+    expect(parseTyped('abc')).toBeNull();
+  });
+
+  it('nice and significant rounding', () => {
+    expect(niceRound(14500)).toBe(15000);
+    expect(niceRound(36250)).toBe(40000);
+    expect(niceRound(72500)).toBe(75000);
+    expect(niceRound(135)).toBe(150);
+    expect(niceRound(540)).toBe(500);
+    expect(niceRound(25)).toBe(25);
+    expect(niceRound(0)).toBe(0);
+    expect(roundSignificant(43125)).toBe(43000);
+    expect(roundSignificant(162)).toBe(160);
+    expect(roundSignificant(30)).toBe(30);
+    expect(roundSignificant(5)).toBe(5);
+  });
+
+  it('ticket steps are about a tenth of the amount, on a 1·2·5 grid', () => {
+    expect(ticketStep(43500)).toBe(2000);
+    expect(ticketStep(7250)).toBe(500);
+    expect(ticketStep(30)).toBe(2);
+    expect(ticketStep(162)).toBe(10);
+    expect(ticketStep(3)).toBe(1);
+    expect(stepAmount(43500, 1)).toBe(44000);
+    expect(stepAmount(44000, 1)).toBe(46000);
+    expect(stepAmount(43500, -1)).toBe(42000);
+    expect(stepAmount(30, 1)).toBe(32);
+    expect(stepAmount(1, -1)).toBe(0);
+  });
+
+  it('ticket bounds and conversion from a local amount', () => {
+    expect(ticketBounds('ARS', rates)).toEqual({ min: 1450, max: 2_900_000 });
+    expect(ticketBounds('USD', rates)).toEqual({ min: 1, max: 2000 });
+    expect(ticketUsdFromLocal(43500, 'ARS', rates)).toBe(30);
+    expect(ticketUsdFromLocal(10, 'ARS', rates)).toBe(1); // below the minimum
+    expect(ticketUsdFromLocal(54, 'BRL', rates)).toBe(10);
+  });
+
+  it('defaults show as round local amounts; edited tickets stay exact', () => {
+    expect(displayTicket(30, false, 'ARS', rates)).toEqual({ local: 44000, usd: 44000 / 1450 });
+    expect(displayTicket(30, false, 'BRL', rates)).toEqual({ local: 160, usd: 160 / 5.4 });
+    expect(displayTicket(30, false, 'USD', rates)).toEqual({ local: 30, usd: 30 });
+    expect(displayTicket(47350 / 1450, true, 'ARS', rates).local).toBe(47350);
+  });
+
+  it('the maths on the displayed ticket adds up: count × local ticket = local amount', () => {
+    const t = displayTicket(30, false, 'ARS', rates);
+    const r = monthlyLoss({ lostPerWeek: 10, ticketUsd: t.usd, hoursPerWeek: 0 });
+    // Only the cents rounding of the USD amount separates them (< 1 cent × rate).
+    expect(Math.abs(r.lostPerMonth * t.local - r.lostRevenueUsd * 1450)).toBeLessThan(0.01 * 1450);
+  });
+
+  it('ticket presets are nice amounts in each currency', () => {
+    expect(ticketPresets('USD', rates)).toEqual([10, 25, 50, 100]);
+    expect(ticketPresets('ARS', rates)).toEqual([15000, 40000, 75000, 150000]);
+    expect(ticketPresets('BRL', rates)).toEqual([50, 150, 250, 500]);
   });
 });
