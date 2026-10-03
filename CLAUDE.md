@@ -89,6 +89,20 @@ Static export (`output: 'export'`) deployed to GitHub Pages under `/Eclipse-Web`
 - Section anchors: `SECTION_IDS` / `NAV_LINKS` in `components/layout/navLinks.ts`.
 - basePath: `asset('/file.png')` from `lib/env.ts` for anything in `/public`.
 
+## Performance pitfalls (measured — don't reintroduce)
+
+- No `:has()` rules whose subject is `html`/`body` (e.g. `html:has(dialog[open])`): Chrome re-styles
+  the whole document on DOM insertions. Lock scroll with `lockScroll()` from `lib/scroll-lock.ts`.
+- No `scroll-behavior: smooth` on `html`: ScrollTrigger toggles it inline on every refresh, which
+  invalidates the whole document. In-page anchors are smoothed by `<SmoothAnchors>`.
+- Below-the-fold sections are wrapped in `<LazyHydrate>` (app/[locale]/page.tsx): their DOM is
+  re-created when they hydrate, so never keep references to DOM nodes of another section; listen
+  to `HYDRATED_EVENT` if you must re-query.
+- Demo copy (`demoClinic`, `demoRealEstate`, `demoGym`) is not in the page payload; it is loaded
+  by `<DemoMessages>` inside `DemoShowcase`.
+- `npm run test:e2e` (after `NEXT_PUBLIC_BASE_PATH=/Eclipse-Web npm run build` and serving `out/`
+  under `/Eclipse-Web`) must stay green.
+
 ## Working in this repo
 
 - Don't commit (the orchestrator commits per phase). Don't edit files outside your area.
