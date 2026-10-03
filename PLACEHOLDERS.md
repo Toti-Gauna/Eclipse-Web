@@ -30,7 +30,7 @@ sin tocar componentes (env, `/content`, `/messages` o `/public`), salvo donde se
 | Qué | Dónde | Nota |
 |---|---|---|
 | Cotizaciones de respaldo | `content/rates.fallback.json` | ARS 1.450 / BRL 5,40 por USD (estimadas: desde el entorno de build no se pudo consultar las APIs). Actualizar periódicamente. |
-| Números clave de los rubros | `content/verticals.json` (`keyNumber`) | "Recupera 12 turnos por semana", "100% de consultas en < 1 min", "−25% de bajas": son escenarios de las demos, rotulados "Demo". Reemplazar por resultados reales cuando haya casos. |
+| Números clave de los rubros | `content/verticals.json` (`keyNumber`) | "Recupera 12 turnos por semana", "100% de consultas en < 1 min", "−25% de bajas", "Recupera 1 de cada 5 carritos abandonados", "Atiende 3 llamadas a la vez en hora pico", "Asigna un técnico en menos de 15 minutos": son escenarios de las demos, rotulados "Demo". Reemplazar por resultados reales cuando haya casos. |
 | Valores por defecto de la calculadora | `content/verticals.json` (`calculator`) | Estimaciones razonables por rubro; ajustarlas con datos reales. |
 | Agente de voz en Plataforma | `content/plans.json` (`plataforma.items` incluye `voz`) | La regla de add-ons dice que Sistema y Plataforma ya lo incluyen; se agregó a los incluidos de Plataforma para que sea coherente. Confirmar. |
 | Base del "ahorrás ≈ Y%" | `lib/pricing.ts` (`planSavings`) | Compara la suma de ítems contra el precio "desde" del plan. |
@@ -40,8 +40,9 @@ sin tocar componentes (env, `/content`, `/messages` o `/public`), salvo donde se
 
 ## Negocios de las demos (ficticios)
 
-"Clínica Aurora", "Lumen Propiedades" y "Órbita Fitness", y todas las personas, propiedades, precios y métricas que
-aparecen dentro de las demos y trailers, son ficticios y están rotulados "Demo". Antes de una campaña grande conviene
+"Clínica Aurora", "Lumen Propiedades", "Órbita Fitness", "Bruma Tostadores", "Bodegón Lucero" y "Tuerca Hogar", y todas
+las personas, propiedades, productos, precios y métricas que aparecen dentro de las demos y trailers, son ficticios y están
+rotulados "Demo". Antes de una campaña grande conviene
 verificar que ningún nombre coincida con una marca registrada en AR/BR.
 
 ## Pendiente fuera del alcance del mockup
