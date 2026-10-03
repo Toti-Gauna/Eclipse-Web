@@ -208,42 +208,88 @@
     "miniJump": "Ver el detalle de la estimación"
   },
   "services": {
-    "eyebrow": "Qué hacemos",
-    "title": "Lo que construimos para que tu negocio <em>no se duerma</em>.",
-    "sub": "Seis servicios. Usá uno o combinalos. Sea cual sea, primero lo ves funcionando con tu negocio.",
+    "title": "Lo que construimos, <em>pieza por pieza</em>.",
+    "sub": "{families} familias, {count} piezas. Cada una se compra suelta o dentro de un paquete, y primero la ves funcionando con tu negocio.",
     "resultLabel": "Resultado",
-    "from": "Desde",
-    "add": "Sumalo a tu plan",
-    "items": {
-      "webs": {
-        "title": "Webs con motion",
-        "description": "Landings y sitios que se mueven, cargan rápido y explican tu negocio en segundos.",
-        "result": "Te escriben por WhatsApp con un toque, desde el celular."
+    "from": "desde",
+    "add": "Sumar",
+    "key": {
+      "pieceTerm": "Pieza suelta",
+      "pieceText": "Se compra sola. Pago único, precio desde.",
+      "includedTerm": "Incluida en",
+      "includedText": "Los paquetes que ya la traen.",
+      "includedLink": "Ver paquetes"
+    },
+    "pieces": "{count, plural, one {# pieza} other {# piezas}}",
+    "piecesTitle": "Piezas sueltas · pago único",
+    "addLabel": "Sumar {name} a tu plan",
+    "includedIn": "Incluida en",
+    "goToPlan": "Ver el paquete {name}",
+    "extra": "Extra: se suma a cualquier paquete",
+    "preview": "Vista previa",
+    "families": {
+      "web": {
+        "description": "Landings y webs que se mueven, cargan rápido y explican tu negocio en segundos. Con SEO para que te encuentren.",
+        "result": "Te escriben por WhatsApp con un toque, desde el celular.",
+        "preview": {
+          "url": "tunegocio.com",
+          "kicker": "Turnos online",
+          "headline": "Tu negocio, abierto las 24 horas.",
+          "cta": "Escribinos",
+          "bubble": "Hola, ¿tienen turno mañana?"
+        }
       },
-      "systems": {
-        "title": "Sistemas de turnos y pedidos",
-        "description": "Agenda online, confirmaciones automáticas y pedidos que llegan ordenados.",
-        "result": "Tus clientes reservan y piden solos, a cualquier hora."
+      "ai": {
+        "description": "Una voz natural que atiende el teléfono y un chat que responde al instante en WhatsApp y en tu web.",
+        "result": "Cada llamada y cada consulta tiene respuesta, también fuera de horario.",
+        "preview": {
+          "call": "Llamada entrante",
+          "agent": "Agente de voz · atendiendo",
+          "question": "¿Tienen turno el jueves?",
+          "answer": "Sí, a las 10:30. ¿Te lo reservo?",
+          "done": "Turno agendado · jue 10:30"
+        }
       },
-      "voice": {
-        "title": "Agentes de voz con IA",
-        "description": "Una voz natural que atiende el teléfono, responde lo de siempre y agenda.",
-        "result": "Atiende llamadas 24/7, también fuera de horario."
+      "ops": {
+        "description": "Turnos, pedidos, automatizaciones, CRM y un panel con los números del día. Lo de adentro, ordenado.",
+        "result": "Tus clientes reservan y piden solos; vos ves todo en una pantalla.",
+        "preview": {
+          "title": "Agenda de la semana",
+          "kpi": "Turnos hoy",
+          "order": "Pedido listo",
+          "toast": "Recordatorio enviado"
+        }
       },
-      "chat": {
-        "title": "Chatbots y automatizaciones",
-        "description": "Respuestas al instante en WhatsApp y en tu web. Recordatorios y seguimientos que salen solos.",
-        "result": "Cada consulta tiene respuesta en segundos y a vos te llega el cliente listo."
-      },
-      "commerce": {
-        "title": "E-commerce",
+      "sales": {
         "description": "Catálogo, carrito, pagos y envíos, con la identidad de tu marca.",
-        "result": "Vendés las 24 horas, aunque el local esté cerrado."
+        "result": "Vendés las 24 horas, aunque el local esté cerrado.",
+        "preview": {
+          "store": "Tienda online",
+          "add": "Agregar",
+          "paid": "Pago aprobado"
+        }
       },
       "apps": {
-        "title": "Apps y plataformas",
-        "description": "Tu servicio en una app propia: reservas, pedidos y pagos, con un panel para manejarlo.",
-        "result": "Tus clientes reservan, piden y pagan desde tu propia app."
+        "description": "Tu servicio en una app propia: pedidos, reservas y pagos, con un panel para manejarlo.",
+        "result": "Tus clientes piden, siguen y pagan desde tu propia app.",
+        "preview": {
+          "board": "Pedidos de hoy",
+          "status": "Técnico en camino",
+          "eta": "Llega en",
+          "unit": "min"
+        }
+      },
+      "strategy": {
+        "description": "Auditoría digital y estudio de mercado: qué hace tu competencia y dónde estás perdiendo clientes hoy.",
+        "result": "Un plan de acción priorizado, antes de invertir.",
+        "preview": {
+          "title": "Auditoría digital",
+          "web": "Web",
+          "google": "Google",
+          "social": "Redes",
+          "whatsapp": "WhatsApp",
+          "priority": "Prioridad 1: tu ficha de Google"
+        }
       }
     }
   },
@@ -415,43 +461,17 @@
     "goalsLine": "Objetivo: {list}"
   },
   "pricing": {
-    "eyebrow": "Precios",
-    "title": "Precios claros. <em>Sin letra chica.</em>",
-    "subtitle": "Cada plan arranca en un precio “desde” y tiene un rango según el alcance. Sumá extras, elegí el mantenimiento y mirá el total en tu moneda, al instante.",
+    "title": "Cuánto cuesta<br></br> y cómo se paga.",
     "featured": "Recomendado",
-    "from": "Desde",
-    "range": "Rango según alcance: <nums>{from} – {to}</nums>",
-    "separate": "Por separado: {separate} → <save>ahorrás <count>≈ {pct}%</count></save>",
-    "includes": "Qué incluye",
-    "addons": "Sumá extras",
-    "add": "Sumar",
-    "added": "Sumado",
-    "included": "Incluido",
-    "includedNote": "Ya viene en el plan",
-    "comboBadge": "Combo",
-    "maintenance": "Mantenimiento + hosting",
     "perMonth": "por mes",
     "perYear": "por año",
-    "none": "Ninguno",
-    "suggested": "Sugerido",
-    "optional": "Opcional. Para arrancar, con {name} alcanza.",
-    "voiceUsage": "+ {name}: {price}/mes {note}",
-    "total": "Total estimado",
-    "recurring": "+ {price} {period} de mantenimiento",
     "cta": "Lo quiero",
-    "ctaLabel": "Lo quiero: plan {name}, por WhatsApp",
-    "live": "{plan}: total estimado desde {total}.",
-    "liveMaintenance": "{plan}: mantenimiento {name}, {price} {period}.",
-    "liveNoMaintenance": "{plan}: sin mantenimiento.",
+    "ctaLabel": "Lo quiero: paquete {name}, por WhatsApp",
     "billing": {
       "label": "Pago del mantenimiento",
       "monthly": "Mensual",
       "annual": "Anual",
       "free": "{months, plural, one {# mes gratis} other {# meses gratis}}"
-    },
-    "founder": {
-      "left": "{left, plural, one {# lugar libre de {total}} other {# lugares libres de {total}}}",
-      "cta": "Ver programa fundador"
     },
     "offers": {
       "label": "Ofertas vigentes",
@@ -459,28 +479,93 @@
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
       "minutes": "{minutes} min",
-      "voiceCombo": "Agente de voz con IA a {price} en planes desde {plan}."
-    },
-    "carousel": {
-      "label": "Planes",
-      "hint": "{count} planes. Deslizá para verlos.",
-      "goTo": "Ver plan {name}",
-      "goToFeatured": "Ir al recomendado",
-      "dots": "Elegí qué plan ver"
-    },
-    "build": {
-      "title": "¿Necesitás otra combinación?",
-      "text": "Elegí ítem por ítem y mirá el presupuesto al instante.",
-      "cta": "Armá tu plan",
-      "note": "Los precios son “desde”: el valor final depende del alcance. Antes de empezar te pasamos el número final."
+      "founderHow": "Lo pedís vos: lo activás al armar tu plan.",
+      "founderLeft": "{left, plural, one {Queda # lugar de {total}} other {Quedan # lugares de {total}}}",
+      "founderCta": "Ver programa fundador",
+      "comboTitle": "Agente de voz a {price}",
+      "comboText": "Pago único, si lo sumás a {plans} o a una selección de piezas que, sin contarlo, llegue a {min}.",
+      "comboIncluded": "{count, plural, one {{plans} ya lo trae incluido.} other {{plans} ya lo traen incluido.}}",
+      "founderWhat": "Se aplica sobre el pago único del proyecto.",
+      "founderDeal": "A cambio: tu testimonio, permiso para mostrar tu caso y un referido."
     },
     "care": {
-      "eyebrow": "Mantenimiento + hosting",
-      "title": "Tu sitio no se apaga cuando terminamos. <em>Lo mantenemos vivo.</em>",
-      "subtitle": "Hosting, seguridad, backups y cambios por un precio fijo. Elegís el nivel según lo que construimos juntos.",
+      "title": "Tu sistema no se apaga cuando terminamos.",
       "suggestedFor": "Sugerido para {plans}",
-      "voiceText": "Se suma solo cuando tu plan tiene agente de voz: un fijo por mes más los minutos que use.",
-      "perMonthShort": "/mes"
+      "label": "Mantenimiento · opcional",
+      "text": "Hosting, seguridad, backups y cambios por un precio fijo. Elegís el nivel según lo que construimos juntos.",
+      "annualNote": "Pagás {charged} meses y usás 12",
+      "voice": "Se suma solo si tu proyecto lo tiene: {price} por mes {note}. Siempre mensual, también con pago anual.",
+      "live": "Mantenimiento con pago {billing}: precios {period}."
+    },
+    "sub": "Precios en dólares, sin letra chica. Lo que ves es el punto de partida: el número final te lo confirmamos por escrito, después de la demo.",
+    "approx": "aproximadamente",
+    "rate": {
+      "label": "Conversión del día",
+      "value": "1 USD ≈ {rate}",
+      "note": "Los montos con ≈ están convertidos de USD al cambio del día: son de referencia.",
+      "usd": "Montos en dólares, sin conversión."
+    },
+    "how": {
+      "label": "Cómo se paga",
+      "project": {
+        "title": "Proyecto",
+        "when": "Pago único",
+        "text": "Lo que construimos para tu negocio. Ves un precio desde; el final te lo confirmamos por escrito después de la demo y la llamada.",
+        "link": "Ver paquetes"
+      },
+      "care": {
+        "title": "Mantenimiento",
+        "when": "Por mes · opcional",
+        "text": "Hosting, seguridad, backups y cambios, desde {price} por mes.",
+        "annual": "Si pagás el año, {months, plural, one {# mes es gratis} other {# meses son gratis}}.",
+        "link": "Ver mantenimiento"
+      },
+      "extras": {
+        "title": "Extras",
+        "when": "Cuando quieras",
+        "text": "Sumás piezas cuando las necesitás, al precio de cada una.",
+        "link": "Ver piezas"
+      }
+    },
+    "ways": {
+      "label": "Dos formas de comprar",
+      "bundles": {
+        "title": "Paquetes",
+        "text": "Combinaciones listas para los casos más comunes. Las de varias piezas salen menos que sueltas.",
+        "count": "{count} paquetes, en {groups} grupos"
+      },
+      "pieces": {
+        "title": "Pieza por pieza",
+        "text": "Elegí solo lo que necesitás y mirá el total al instante, en tu moneda.",
+        "cta": "Armar pieza por pieza",
+        "from": "Piezas desde {price}."
+      }
+    },
+    "groups": {
+      "starter": {
+        "title": "Para empezar",
+        "text": "Una necesidad puntual, resuelta."
+      },
+      "complete": {
+        "title": "Sistemas completos",
+        "text": "Todo conectado: lo que ve tu cliente y lo de adentro."
+      },
+      "count": "{count, plural, one {# paquete} other {# paquetes}}"
+    },
+    "plan": {
+      "from": "Desde",
+      "once": "Pago único",
+      "rangeLocal": "{from} · hasta {to} según alcance",
+      "rangeUsd": "Hasta {to} según alcance",
+      "includes": "Qué incluye",
+      "savings": "Ahorrás <pct></pct> vs. piezas sueltas",
+      "customize": "Personalizar",
+      "customizeLabel": "Personalizar el paquete {name} en el armador"
+    },
+    "noneFits": "¿Ningún paquete encaja?",
+    "noneFitsCta": "Armalo pieza por pieza",
+    "notes": {
+      "from": "«Desde» es el precio de partida: el final depende del alcance y te lo confirmamos por escrito antes de empezar."
     }
   },
   "heroReveal": {

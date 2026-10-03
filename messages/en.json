@@ -208,42 +208,88 @@
     "miniJump": "See the estimate in detail"
   },
   "services": {
-    "eyebrow": "What we do",
-    "title": "What we build so your business <em>never sleeps</em>.",
-    "sub": "Six services. Use one or combine them. Whichever you pick, you see it working with your business first.",
+    "title": "What we build, <em>piece by piece</em>.",
+    "sub": "{families} families, {count} pieces. Buy each one on its own or inside a package, and see it working for your business first.",
     "resultLabel": "The result",
-    "from": "From",
-    "add": "Add to your plan",
-    "items": {
-      "webs": {
-        "title": "Websites with motion",
-        "description": "Landing pages and sites that move, load fast and explain your business in seconds.",
-        "result": "People message you on WhatsApp in one tap, right from their phone."
+    "from": "from",
+    "add": "Add",
+    "key": {
+      "pieceTerm": "Single piece",
+      "pieceText": "Bought on its own. One-time payment, starting price.",
+      "includedTerm": "Included in",
+      "includedText": "The packages that already come with it.",
+      "includedLink": "See packages"
+    },
+    "pieces": "{count, plural, one {# piece} other {# pieces}}",
+    "piecesTitle": "Single pieces · one-time payment",
+    "addLabel": "Add {name} to your plan",
+    "includedIn": "Included in",
+    "goToPlan": "See the {name} package",
+    "extra": "Extra: add it to any package",
+    "preview": "Preview",
+    "families": {
+      "web": {
+        "description": "Landing pages and websites that move, load fast and explain your business in seconds. With SEO so people find you.",
+        "result": "People message you on WhatsApp in one tap, from their phone.",
+        "preview": {
+          "url": "yourbusiness.com",
+          "kicker": "Online booking",
+          "headline": "Your business, open around the clock.",
+          "cta": "Message us",
+          "bubble": "Hi, any openings tomorrow?"
+        }
       },
-      "systems": {
-        "title": "Booking and ordering systems",
-        "description": "Online calendar, automatic confirmations and orders that arrive organized.",
-        "result": "Customers book and order on their own, at any hour."
+      "ai": {
+        "description": "A natural voice that answers the phone and a chat that replies instantly on WhatsApp and your website.",
+        "result": "Every call and every message gets an answer, after hours too.",
+        "preview": {
+          "call": "Incoming call",
+          "agent": "Voice agent · on the line",
+          "question": "Any openings on Thursday?",
+          "answer": "Yes, at 10:30. Shall I book it?",
+          "done": "Booked · Thu 10:30"
+        }
       },
-      "voice": {
-        "title": "AI voice agents",
-        "description": "A natural voice that answers the phone, handles the usual questions and books appointments.",
-        "result": "Answers calls 24/7, after hours too."
+      "ops": {
+        "description": "Bookings, orders, automations, a CRM and a dashboard with today's numbers. The back office, in order.",
+        "result": "Customers book and order on their own; you see everything on one screen.",
+        "preview": {
+          "title": "This week's calendar",
+          "kpi": "Bookings today",
+          "order": "Order ready",
+          "toast": "Reminder sent"
+        }
       },
-      "chat": {
-        "title": "Chatbots and automations",
-        "description": "Instant replies on WhatsApp and on your website. Reminders and follow-ups that go out on their own.",
-        "result": "Every inquiry gets an answer in seconds, and customers reach you already qualified."
-      },
-      "commerce": {
-        "title": "E-commerce",
+      "sales": {
         "description": "Catalog, cart, payments and shipping, with your brand's identity.",
-        "result": "You sell around the clock, even when the store is closed."
+        "result": "You sell around the clock, even when the shop is closed.",
+        "preview": {
+          "store": "Online store",
+          "add": "Add",
+          "paid": "Payment approved"
+        }
       },
       "apps": {
-        "title": "Apps and platforms",
-        "description": "Your service in your own app: bookings, orders and payments, with a dashboard to run it.",
-        "result": "Customers book, order and pay from your own app."
+        "description": "Your service in your own app: orders, bookings and payments, with a dashboard to run it.",
+        "result": "Customers order, track and pay from your own app.",
+        "preview": {
+          "board": "Today's jobs",
+          "status": "Technician on the way",
+          "eta": "Arrives in",
+          "unit": "min"
+        }
+      },
+      "strategy": {
+        "description": "Digital audit and market research: what your competitors do and where you're losing customers today.",
+        "result": "A prioritized action plan, before you invest.",
+        "preview": {
+          "title": "Digital audit",
+          "web": "Website",
+          "google": "Google",
+          "social": "Social",
+          "whatsapp": "WhatsApp",
+          "priority": "Priority 1: your Google profile"
+        }
       }
     }
   },
@@ -415,43 +461,17 @@
     "goalsLine": "Goal: {list}"
   },
   "pricing": {
-    "eyebrow": "Pricing",
-    "title": "Clear prices. <em>No fine print.</em>",
-    "subtitle": "Every plan starts at a “from” price, with a range based on scope. Add extras, pick your maintenance and see the total in your currency, instantly.",
+    "title": "What it costs,<br></br> and how you pay.",
     "featured": "Recommended",
-    "from": "From",
-    "range": "Range by scope: <nums>{from} – {to}</nums>",
-    "separate": "Bought separately: {separate} → <save>you save <count>≈ {pct}%</count></save>",
-    "includes": "What's included",
-    "addons": "Add extras",
-    "add": "Add",
-    "added": "Added",
-    "included": "Included",
-    "includedNote": "Already in the plan",
-    "comboBadge": "Combo",
-    "maintenance": "Maintenance + hosting",
     "perMonth": "per month",
     "perYear": "per year",
-    "none": "None",
-    "suggested": "Suggested",
-    "optional": "Optional. {name} is enough to get started.",
-    "voiceUsage": "+ {name}: {price}/mo {note}",
-    "total": "Estimated total",
-    "recurring": "+ {price} {period} for maintenance",
     "cta": "I want it",
-    "ctaLabel": "I want it: {name} plan, on WhatsApp",
-    "live": "{plan}: estimated total from {total}.",
-    "liveMaintenance": "{plan}: {name} maintenance, {price} {period}.",
-    "liveNoMaintenance": "{plan}: no maintenance.",
+    "ctaLabel": "I want it: {name} package, on WhatsApp",
     "billing": {
       "label": "Maintenance billing",
       "monthly": "Monthly",
       "annual": "Yearly",
       "free": "{months, plural, one {# month free} other {# months free}}"
-    },
-    "founder": {
-      "left": "{left, plural, one {# spot left of {total}} other {# spots left of {total}}}",
-      "cta": "See the founder program"
     },
     "offers": {
       "label": "Current offers",
@@ -459,28 +479,93 @@
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
       "minutes": "{minutes} min",
-      "voiceCombo": "AI voice agent for {price} on plans from {plan} up."
-    },
-    "carousel": {
-      "label": "Plans",
-      "hint": "{count} plans. Swipe to see them all.",
-      "goTo": "Show the {name} plan",
-      "goToFeatured": "Jump to recommended",
-      "dots": "Choose a plan to show"
-    },
-    "build": {
-      "title": "Need a different mix?",
-      "text": "Pick item by item and see your estimate instantly.",
-      "cta": "Build your plan",
-      "note": "Prices are “from” prices: the final amount depends on scope. We confirm the final number before we start."
+      "founderHow": "You ask for it: turn it on when you build your plan.",
+      "founderLeft": "{left, plural, one {# spot left of {total}} other {# spots left of {total}}}",
+      "founderCta": "See the founder program",
+      "comboTitle": "Voice agent for {price}",
+      "comboText": "One-time payment, when you add it to {plans} or to a selection of pieces that reaches {min} without it.",
+      "comboIncluded": "{count, plural, one {{plans} already includes it.} other {{plans} already include it.}}",
+      "founderWhat": "It applies to the project’s one-time payment.",
+      "founderDeal": "In return: your testimonial, permission to show your case and one referral."
     },
     "care": {
-      "eyebrow": "Maintenance + hosting",
-      "title": "Your site doesn't go dark when we're done. <em>We keep it alive.</em>",
-      "subtitle": "Hosting, security, backups and changes for a fixed price. Pick the level that fits what we build together.",
+      "title": "Your system doesn't go dark when we're done.",
       "suggestedFor": "Suggested for {plans}",
-      "voiceText": "Only added when your plan has a voice agent: a fixed monthly fee plus the minutes it uses.",
-      "perMonthShort": "/mo"
+      "label": "Maintenance · optional",
+      "text": "Hosting, security, backups and changes for a fixed price. Pick the level that fits what we build together.",
+      "annualNote": "You pay {charged} months, you get 12",
+      "voice": "Only if your project has one: {price} a month {note}. Always monthly, even on yearly billing.",
+      "live": "Maintenance on {billing} billing: prices {period}."
+    },
+    "sub": "Prices in US dollars, no fine print. What you see is the starting point: we confirm the final number in writing, after the demo.",
+    "approx": "approximately",
+    "rate": {
+      "label": "Today's conversion",
+      "value": "1 USD ≈ {rate}",
+      "note": "Amounts with ≈ are converted from USD at today's rate, for reference.",
+      "usd": "Amounts in US dollars, no conversion."
+    },
+    "how": {
+      "label": "How you pay",
+      "project": {
+        "title": "Project",
+        "when": "One-time payment",
+        "text": "What we build for your business. You see a starting price; we confirm the final one in writing after the demo and the call.",
+        "link": "See packages"
+      },
+      "care": {
+        "title": "Maintenance",
+        "when": "Monthly · optional",
+        "text": "Hosting, security, backups and changes, from {price} a month.",
+        "annual": "Pay for the year and {months, plural, one {# month is free} other {# months are free}}.",
+        "link": "See maintenance"
+      },
+      "extras": {
+        "title": "Extras",
+        "when": "Whenever you want",
+        "text": "Add pieces when you need them, at each piece's price.",
+        "link": "See pieces"
+      }
+    },
+    "ways": {
+      "label": "Two ways to buy",
+      "bundles": {
+        "title": "Packages",
+        "text": "Ready-made combinations for the most common cases. The multi-piece ones cost less than the pieces one by one.",
+        "count": "{count} packages, in {groups} groups"
+      },
+      "pieces": {
+        "title": "Piece by piece",
+        "text": "Pick only what you need and see the total instantly, in your currency.",
+        "cta": "Build it piece by piece",
+        "from": "Pieces from {price}."
+      }
+    },
+    "groups": {
+      "starter": {
+        "title": "To get started",
+        "text": "One specific need, solved."
+      },
+      "complete": {
+        "title": "Complete systems",
+        "text": "Everything connected: what your customers see and the back office."
+      },
+      "count": "{count, plural, one {# package} other {# packages}}"
+    },
+    "plan": {
+      "from": "From",
+      "once": "One-time payment",
+      "rangeLocal": "{from} · up to {to} depending on scope",
+      "rangeUsd": "Up to {to} depending on scope",
+      "includes": "What's included",
+      "savings": "Save <pct></pct> vs. single pieces",
+      "customize": "Customize",
+      "customizeLabel": "Customize the {name} package in the plan builder"
+    },
+    "noneFits": "No package fits?",
+    "noneFitsCta": "Build it piece by piece",
+    "notes": {
+      "from": "“From” is the starting price: the final one depends on scope, and we confirm it in writing before we start."
     }
   },
   "heroReveal": {

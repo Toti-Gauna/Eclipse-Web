@@ -68,8 +68,12 @@ export interface Item {
   description: Localized;
 }
 
+/** Presentational group of a plan in the pricing section: "Para empezar" / "Sistemas completos". */
+export type PlanTier = 'starter' | 'complete';
+
 export interface Plan {
   id: PlanId;
+  tier: PlanTier;
   priceUsd: { from: number; to: number };
   items: ItemId[];
   maintenance: MaintenanceId | null;

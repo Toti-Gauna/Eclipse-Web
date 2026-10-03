@@ -1,30 +1,43 @@
-import { itemById, type ItemId } from '@/lib/content';
+import { itemCategories, items, type Item, type ItemCategory } from '@/lib/content';
+import { lowestItemPrice } from '@/lib/pricing';
 
-export type ServiceId = 'webs' | 'systems' | 'voice' | 'chat' | 'commerce' | 'apps';
+export type FamilyId = 'web' | 'ai' | 'ops' | 'sales' | 'apps' | 'strategy';
 
-export interface Service {
-  id: ServiceId;
-  /** Items from content/items.json preloaded in "Armá tu plan". The first one gives the icon. */
-  items: readonly ItemId[];
+export interface Family {
+  id: FamilyId;
+  /** The category of content/items.json whose pieces this family lists (same groups as the builder's catalog). */
+  category: string;
 }
 
-/** The six "Qué hacemos" cards, in display order. Copy lives in messages (`services.items.<id>`). */
-export const SERVICES: readonly Service[] = [
-  { id: 'webs', items: ['landing'] },
-  { id: 'systems', items: ['turnos', 'pedidos'] },
-  { id: 'voice', items: ['voz'] },
-  { id: 'chat', items: ['chatbot', 'automatizacion'] },
-  { id: 'commerce', items: ['ecommerce'] },
-  { id: 'apps', items: ['app-ondemand'] },
+/**
+ * "Qué construimos": the six families of pieces. Each one is an item category of
+ * content/items.json, in the same order, so the section, the builder's catalog and
+ * the packages number and name the same pieces with the same prices (tests/pricing
+ * checks it). Copy lives in messages (`services.families.<id>`); names and prices
+ * come from content.
+ */
+export const FAMILIES: readonly Family[] = [
+  { id: 'web', category: 'presencia' },
+  { id: 'ops', category: 'sistemas' },
+  { id: 'sales', category: 'comercio' },
+  { id: 'apps', category: 'plataformas' },
+  { id: 'ai', category: 'ia' },
+  { id: 'strategy', category: 'estrategia' },
 ];
 
-/** Lucide icon name of the service's main item (same icon the builder shows). */
-export function serviceIcon(service: Service): string {
-  return itemById(service.items[0])?.icon ?? 'Plus';
+export function familyCategory(family: Family): ItemCategory | undefined {
+  return itemCategories.find((c) => c.id === family.category);
 }
 
-/** Lowest catalog price among the service's items, in USD ("desde"). */
-export function serviceFromUsd(service: Service): number | null {
-  const prices = service.items.map((id) => itemById(id)?.priceUsd).filter((p): p is number => typeof p === 'number');
-  return prices.length ? Math.min(...prices) : null;
+/** The pieces of a family, in catalog order. */
+export function familyItems(family: Family, catalog: readonly Item[] = items): Item[] {
+  return catalog.filter((item) => item.category === family.category);
+}
+
+/** "Pieza suelta desde": the cheapest piece of the family, in USD. */
+export function familyFromUsd(family: Family, catalog: readonly Item[] = items): number | null {
+  return lowestItemPrice(
+    familyItems(family, catalog).map((i) => i.id),
+    catalog,
+  );
 }

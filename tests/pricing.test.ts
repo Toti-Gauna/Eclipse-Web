@@ -1,19 +1,28 @@
 import { describe, expect, it } from 'vitest';
 import {
   addonsForPlan,
+  annualFreeMonths,
   annualize,
   applyOffers,
   detectPlans,
+  formatAmount,
   formatMoney,
+  formatRate,
+  lowestItemPrice,
+  lowestMaintenance,
   maintenanceSuggestion,
   planSavings,
+  plansByTier,
+  plansIncluding,
   quote,
   sumItems,
   voiceComboApplies,
+  voiceComboPlans,
   isOfferActive,
   defaultCatalog,
 } from '@/lib/pricing';
-import { plans, offers, type Offer, type Plan } from '@/lib/content';
+import { itemCategories, items, maintenancePlans, plans, offers, type Offer, type Plan, type VoiceComboOffer } from '@/lib/content';
+import { FAMILIES, familyFromUsd, familyItems } from '@/components/sections/services/services';
 
 const rates = { ARS: 1450, BRL: 5.4 };
 const plan = (id: string) => plans.find((p) => p.id === id) as Plan;
@@ -250,5 +259,112 @@ describe('formatMoney', () => {
   });
   it('approximation prefix can be disabled', () => {
     expect(clean(formatMoney(1000, 'BRL', rates, 'pt', { approx: false }))).toBe('R$ 5.400');
+  });
+});
+
+describe('annualFreeMonths', () => {
+  it('12 minus the months charged, clamped', () => {
+    expect(annualFreeMonths()).toBe(2);
+    expect(annualFreeMonths(12)).toBe(0);
+    expect(annualFreeMonths(14)).toBe(0);
+    expect(annualFreeMonths(-1)).toBe(12);
+  });
+});
+
+describe('lowestMaintenance', () => {
+  it('returns the cheapest plan (Esencial, USD 25)', () => {
+    expect(lowestMaintenance()).toMatchObject({ id: 'esencial', priceUsd: 25 });
+  });
+  it('does not depend on the order and handles an empty list', () => {
+    expect(lowestMaintenance([...maintenancePlans].reverse())?.id).toBe('esencial');
+    expect(lowestMaintenance([])).toBeNull();
+  });
+});
+
+describe('lowestItemPrice', () => {
+  it('lowest catalog price among the ids', () => {
+    expect(lowestItemPrice(['landing', 'web-multi', 'seo', 'trailer'])).toBe(150);
+    expect(lowestItemPrice(['voz', 'chatbot'])).toBe(350);
+    expect(lowestItemPrice(['app-ondemand'])).toBe(3500);
+  });
+  it('null when nothing is known', () => {
+    expect(lowestItemPrice([])).toBeNull();
+    expect(lowestItemPrice(['nope'])).toBeNull();
+  });
+});
+
+describe('plansIncluding', () => {
+  it('lists the packages that already bring an item, in catalog order', () => {
+    expect(plansIncluding('landing').map((p) => p.id)).toEqual(['presencia', 'sistema', 'comercio', 'plataforma']);
+    expect(plansIncluding('voz').map((p) => p.id)).toEqual(['voz', 'sistema', 'plataforma']);
+    expect(plansIncluding('chatbot').map((p) => p.id)).toEqual(['automatiza']);
+  });
+  it('is empty for pieces sold only on their own', () => {
+    expect(plansIncluding('seo')).toEqual([]);
+    expect(plansIncluding('nope')).toEqual([]);
+  });
+});
+
+describe('plansByTier', () => {
+  it('splits the 7 packages in two groups, keeping the catalog order', () => {
+    expect(plansByTier().map((g) => [g.tier, g.plans.map((p) => p.id)])).toEqual([
+      ['starter', ['diagnostico', 'presencia', 'voz', 'automatiza']],
+      ['complete', ['sistema', 'comercio', 'plataforma']],
+    ]);
+  });
+  it('drops empty tiers', () => {
+    expect(plansByTier(plans.filter((p) => p.tier === 'complete')).map((g) => g.tier)).toEqual(['complete']);
+  });
+});
+
+describe('voiceComboPlans', () => {
+  const combo = offers.find((o) => o.kind === 'voiceCombo') as VoiceComboOffer;
+  it('splits the offer plans into "add it to" and "already included"', () => {
+    const { addTo, included } = voiceComboPlans(combo);
+    expect(addTo.map((p) => p.id)).toEqual(['comercio']);
+    expect(included.map((p) => p.id)).toEqual(['sistema', 'plataforma']);
+  });
+  it('agrees with voiceComboApplies for the plans it lists', () => {
+    for (const plan of voiceComboPlans(combo).addTo) {
+      expect(voiceComboApplies({ planId: plan.id, restUsd: plan.priceUsd.from }, offers, NOW)).not.toBeNull();
+    }
+  });
+});
+
+describe('formatAmount', () => {
+  const clean = (s: string) => s.replace(/[\u00a0\u202f]/g, ' ');
+  it('converted and rounded like formatMoney, without symbol', () => {
+    expect(formatAmount(1500, 'USD', rates, 'es')).toBe('1.500');
+    expect(formatAmount(1500, 'USD', rates, 'en')).toBe('1,500');
+    expect(clean(formatAmount(1000, 'ARS', rates, 'es'))).toBe('1.450.000');
+    expect(formatAmount(25, 'BRL', rates, 'pt')).toBe('140');
+  });
+});
+
+describe('formatRate', () => {
+  const clean = (s: string) => s.replace(/[\u00a0\u202f]/g, ' ');
+  it('shows the raw rate of the day', () => {
+    expect(clean(formatRate('ARS', rates, 'es'))).toBe('$ 1.450');
+    expect(clean(formatRate('BRL', rates, 'pt'))).toBe('R$ 5,40');
+    expect(clean(formatRate('BRL', rates, 'en'))).toMatch(/^R\$ ?5\.40$/);
+    expect(clean(formatRate('USD', rates, 'en'))).toBe('$1');
+  });
+  it('drops decimals for big fractional rates', () => {
+    expect(clean(formatRate('ARS', { ARS: 1452.6, BRL: 5.4 }, 'es'))).toBe('$ 1.453');
+  });
+});
+
+describe('services catalog (03 · Qué construimos)', () => {
+  it('one family per item category, in the content order (same as the builder catalog)', () => {
+    expect(FAMILIES.map((f) => f.category)).toEqual(itemCategories.map((c) => c.id));
+  });
+  it('every piece of the catalog belongs to exactly one family', () => {
+    const listed = FAMILIES.flatMap((f) => familyItems(f).map((i) => i.id));
+    expect([...listed].sort()).toEqual(items.map((i) => i.id).sort());
+  });
+  it('"pieza suelta desde" is the cheapest piece of each family', () => {
+    for (const family of FAMILIES) {
+      expect(familyFromUsd(family), family.id).toBe(Math.min(...familyItems(family).map((i) => i.priceUsd)));
+    }
   });
 });
