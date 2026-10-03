@@ -2020,6 +2020,26 @@
         "levelUp": "¡Subiste de nivel!",
         "level": "Nivel {count}"
       }
+    },
+    "restaurant": {
+      "problem1": "Viernes, 21:30.",
+      "problem2": "El teléfono no para.",
+      "pain": "pedidos o reservas perdidos por semana",
+      "feature": "Un agente de voz con IA que atiende todas las líneas a la vez.",
+      "screen": {
+        "title": "Teléfono IA",
+        "tonight": "Vie · 21:30",
+        "line": "Línea {n}",
+        "order": "Pedido · delivery",
+        "booking": "Reserva · 4 personas",
+        "gf": "Consulta · sin TACC",
+        "ringing": "Sonando",
+        "answered": "Atiende la IA",
+        "kitchen": "Cocina",
+        "ticketOrder": "2 napolitanas · flan",
+        "ticketGf": "Bife · sin TACC",
+        "toast": "Mesa {table} reservada · WhatsApp enviado"
+      }
     }
   },
   "founders": {
@@ -2218,6 +2238,553 @@
       "earned": "Obtenida",
       "progress": "{pct} % completada",
       "rank": "Puesto {n}"
+    }
+  },
+  "demoRestaurant": {
+    "nav": {
+      "service": "Servicio",
+      "groupTonight": "Esta noche",
+      "phone": "Teléfono IA",
+      "phoneShort": "Teléfono",
+      "kitchen": "Cocina",
+      "floor": "Salón y reservas",
+      "floorShort": "Salón",
+      "groupRoom": "El local",
+      "menu": "Carta",
+      "numbers": "Números",
+      "groupBiz": "Negocio"
+    },
+    "top": {
+      "live": "{count, plural, one {# llamada en curso} other {# llamadas en curso}}",
+      "aiOn": "Teléfono IA activo",
+      "aiOff": "Teléfono IA apagado",
+      "customer": "Cliente",
+      "tonight": "{day} · turno noche"
+    },
+    "side": {
+      "aiTitle": "Teléfono IA",
+      "aiOn": "{count, plural, =0 {Esperando llamadas} one {Atendiendo # llamada} other {Atendiendo # llamadas}}",
+      "aiOff": "Apagado: suena en el mostrador"
+    },
+    "people": {
+      "you": "Vos",
+      "marta": {
+        "name": "Marta Ibáñez",
+        "first": "Marta",
+        "address": "Yatay 840"
+      },
+      "ramiro": {
+        "name": "Ramiro Sosa",
+        "first": "Ramiro",
+        "phone": "+54 11 6•••-4410"
+      },
+      "lucia": {
+        "name": "Lucía Ferrero",
+        "first": "Lucía",
+        "phone": "+54 11 3•••-9052"
+      },
+      "sofia": {
+        "name": "Sofía Medina",
+        "first": "Sofía"
+      },
+      "gomez": {
+        "name": "Familia Gómez",
+        "first": "Gómez"
+      },
+      "ledesma": {
+        "name": "Andrés Ledesma",
+        "first": "Andrés"
+      },
+      "paz": {
+        "name": "Clara Paz",
+        "first": "Clara"
+      },
+      "rios": {
+        "name": "Julieta Ríos",
+        "first": "Julieta"
+      },
+      "rider": {
+        "name": "Tomás"
+      }
+    },
+    "dishes": {
+      "provoleta": {
+        "name": "Provoleta a la parrilla",
+        "short": "Provoleta",
+        "a": "una provoleta",
+        "n": "{count, plural, one {# provoleta} other {# provoletas}}",
+        "desc": "Con orégano y aceite de oliva."
+      },
+      "empanadas": {
+        "name": "Empanadas de carne",
+        "short": "Empanadas ×2",
+        "a": "un par de empanadas",
+        "n": "{count, plural, one {# par de empanadas} other {# pares de empanadas}}",
+        "desc": "Cortada a cuchillo, horno de barro. Van de a dos."
+      },
+      "napolitana": {
+        "name": "Milanesa napolitana",
+        "short": "Napolitana",
+        "a": "una milanesa napolitana",
+        "n": "{count, plural, one {# napolitana} other {# napolitanas}}",
+        "desc": "Con jamón, muzzarella y salsa. Con fritas."
+      },
+      "suprema": {
+        "name": "Suprema napolitana",
+        "short": "Suprema nap.",
+        "a": "una suprema napolitana",
+        "n": "{count, plural, one {# suprema napolitana} other {# supremas napolitanas}}",
+        "desc": "De pollo, con jamón y muzzarella. Con puré."
+      },
+      "bife": {
+        "name": "Bife de chorizo",
+        "short": "Bife chorizo",
+        "a": "un bife de chorizo",
+        "n": "{count, plural, one {# bife de chorizo} other {# bifes de chorizo}}",
+        "desc": "400 g, con papas al horno. Sin TACC."
+      },
+      "ravioles": {
+        "name": "Ravioles con tuco",
+        "short": "Ravioles",
+        "a": "una de ravioles",
+        "n": "{count, plural, one {# de ravioles} other {# de ravioles}}",
+        "desc": "De ricota y nuez, con el tuco de la casa."
+      },
+      "flan": {
+        "name": "Flan mixto",
+        "short": "Flan mixto",
+        "a": "un flan mixto",
+        "n": "{count, plural, one {# flan mixto} other {# flanes mixtos}}",
+        "desc": "Con dulce de leche y crema. Sin TACC."
+      },
+      "panqueque": {
+        "name": "Panqueque con dulce de leche",
+        "short": "Panqueque",
+        "a": "un panqueque con dulce de leche",
+        "n": "{count, plural, one {# panqueque} other {# panqueques}}",
+        "desc": "Quemado con azúcar, como corresponde."
+      },
+      "pinguino": {
+        "name": "Tinto de la casa en pingüino",
+        "short": "Pingüino tinto",
+        "a": "un pingüino de tinto",
+        "n": "{count, plural, one {# pingüino} other {# pingüinos}}",
+        "desc": "El vino de la casa, en la jarra de siempre."
+      },
+      "vermu": {
+        "name": "Vermú con soda",
+        "short": "Vermú",
+        "a": "un vermú",
+        "n": "{count, plural, one {# vermú} other {# vermús}}",
+        "desc": "Con sifón, hielo y una rodaja de naranja."
+      }
+    },
+    "cats": {
+      "starters": "Entradas",
+      "mains": "Principales",
+      "desserts": "Postres",
+      "drinks": "Para tomar"
+    },
+    "channel": {
+      "salon": "Salón",
+      "delivery": "Delivery",
+      "pickup": "Retira"
+    },
+    "stage": {
+      "new": "Nuevo",
+      "cooking": "En cocina",
+      "ready": "Listo",
+      "out": "En camino",
+      "done": "Entregado"
+    },
+    "table": {
+      "label": "Mesa {n}",
+      "short": "M{n}",
+      "status": {
+        "free": "Libre",
+        "seated": "Ocupada",
+        "bill": "Pidió la cuenta",
+        "reserved": "Reservada"
+      }
+    },
+    "calls": {
+      "agent": "Lucero IA",
+      "agentTag": "IA",
+      "callerTag": "Cliente",
+      "line": "Línea {n}",
+      "lineShort": "L{n}",
+      "idle": "Libre",
+      "waiting": "Línea libre",
+      "label": "Llamada en la línea {n}",
+      "open": "Ver llamada",
+      "frequent": "Clienta frecuente",
+      "newCaller": "Número nuevo",
+      "unknownNumber": "+54 11 4•••-7731",
+      "lampLabel": "Línea {n}: {state}",
+      "state": {
+        "idle": "libre",
+        "ringing": "sonando",
+        "live": "en curso",
+        "ended": "atendida",
+        "missed": "perdida"
+      },
+      "topic": {
+        "order": "Pedido · delivery",
+        "booking": "Reserva · 4 personas",
+        "gf": "Consulta · sin TACC",
+        "alt": "Pedido · para retirar",
+        "info": "Consulta · horario"
+      },
+      "order": {
+        "hello": "Bodegón Lucero, buenas noches. ¿Pedido o reserva?",
+        "ask": "Hola, un pedido para delivery: dos napolitanas con fritas y un flan mixto.",
+        "check": "Carta → {items}: hay",
+        "checkSub": "Carta → {missing}: agotado · alternativa: {alts}",
+        "offer": "Anotado: {items}. Son {total}. ¿Te lo mando a {address}, como siempre?",
+        "offerSub": "Esta noche no queda {missing}; te ofrezco {alts}, sale igual de rápido. Serían {items}, {total}. ¿A {address}?",
+        "yes": "Sí, ahí. Gracias.",
+        "ticket": "Comanda #{num} → cocina · delivery",
+        "bye": "Listo, {first}: llega en 40 minutos. Te mando el detalle por WhatsApp."
+      },
+      "none": {
+        "offer": "Esta noche se nos terminó. ¿Te tiento con otro plato de la carta?",
+        "yes": "No, gracias. Otro día.",
+        "ticket": "Sin pedido",
+        "bye": "Perdón por eso. ¡Buenas noches!"
+      },
+      "booking": {
+        "hello": "Bodegón Lucero, buenas noches.",
+        "ask": "Hola, quería reservar para cuatro, hoy a las {time}.",
+        "check": "Salón → {time} · 4 personas → mesa {table}",
+        "checkNone": "Salón → {time} · 4 personas → sin mesa",
+        "offerWindow": "Tengo la mesa {table}, junto a la ventana. ¿A nombre de quién?",
+        "offer": "Tengo la mesa {table}. ¿A nombre de quién la anoto?",
+        "offerNone": "A las {time} no me queda mesa para cuatro. ¿Te anoto en lista de espera?",
+        "name": "A nombre de {name}.",
+        "waitlist": "Lista de espera · WhatsApp ✓",
+        "book": "Reserva · mesa {table} · {time} · WhatsApp ✓",
+        "bye": "Listo, {first}. Te llega la confirmación por WhatsApp.",
+        "byeNone": "Listo, {first}. Si se libera una mesa, te aviso por WhatsApp."
+      },
+      "gf": {
+        "hello": "Bodegón Lucero, buenas noches.",
+        "ask": "Hola, ¿tienen algo sin TACC? Soy celíaca.",
+        "check": "Carta → sin TACC: {count, plural, one {# plato} other {# platos}}",
+        "offer": "Sí: {list}. Se cocinan aparte, con utensilios propios.",
+        "offerNone": "Esta noche no me queda nada sin TACC, perdón.",
+        "order": "Buenísimo. Entonces {dish} para retirar.",
+        "ticket": "Comanda #{num} · sin TACC → cocina",
+        "bye": "Hecho. Pasá a las {time}; te aviso por WhatsApp cuando esté."
+      },
+      "alt": {
+        "hello": "Bodegón Lucero, buenas noches.",
+        "ask": "Hola, ¿me preparás {dishA} para retirar?",
+        "check": "Carta → {dish}: hay",
+        "checkSub": "Carta → {dish}: agotado · alternativa: {alt}",
+        "checkNone": "Carta → {dish}: agotado · sin alternativa",
+        "offer": "¡Claro! Sale en 20 minutos.",
+        "offerSub": "Hoy se nos terminó. Te ofrezco {altA}: sale en 20 minutos. ¿Te va?",
+        "yes": "Dale, va esa.",
+        "ticket": "Comanda #{num} → cocina · retira",
+        "bye": "Listo. Te aviso por WhatsApp cuando esté."
+      },
+      "info": {
+        "hello": "Bodegón Lucero, buenas noches.",
+        "ask": "Hola, ¿hasta qué hora toman pedidos?",
+        "answer": "La cocina está abierta hasta las {time}. ¿Te tomo el pedido ahora?",
+        "no": "No, más tarde. Gracias.",
+        "bye": "Dale. ¡Buenas noches!"
+      },
+      "outcome": {
+        "missed": "Llamada perdida",
+        "lost": {
+          "order": "Un pedido de delivery que no entró.",
+          "booking": "Una reserva para 4 que no se hizo.",
+          "gf": "Una consulta (y un pedido) sin respuesta.",
+          "alt": "Un pedido para retirar que no entró.",
+          "info": "Una consulta sin respuesta."
+        },
+        "booking": "Mesa {table} · {time} · {people} personas",
+        "waitlist": "En lista de espera",
+        "info": "Consulta respondida",
+        "none": "Sin pedido",
+        "delivery": "Pedido #{num} · delivery · llega {time}",
+        "pickup": "Pedido #{num} · retira {time}"
+      },
+      "sent": {
+        "order": "Detalle enviado por WhatsApp",
+        "booking": "Confirmación enviada por WhatsApp",
+        "gf": "Aviso por WhatsApp cuando esté listo",
+        "alt": "Aviso por WhatsApp cuando esté listo"
+      },
+      "ringingNow": "Sonando… atiende Lucero IA",
+      "counter": "Mostrador",
+      "ringingCounter": "Sonando en el mostrador… nadie atiende"
+    },
+    "phone": {
+      "rubric": "Agente de voz",
+      "title": "Teléfono IA",
+      "subtitle": "Atiende todas las líneas a la vez, con la carta y el salón en tiempo real: toma pedidos, reserva mesas y confirma por WhatsApp.",
+      "switch": "Teléfono IA",
+      "switchOn": "Atiende las 3 líneas",
+      "switchOff": "Apagado: el teléfono suena en el mostrador",
+      "pick": "Elegí una línea",
+      "liveNow": "{count, plural, =0 {Sin llamadas en curso} one {# llamada en curso} other {# llamadas en curso}}",
+      "logTitle": "Llamadas de esta noche",
+      "earlier": {
+        "ea": "Pedido · para retirar",
+        "eb": "Reserva · 2 personas",
+        "ec": "Consulta · estacionamiento"
+      },
+      "kpis": {
+        "live": "En línea ahora",
+        "liveHint": "Sin tono de ocupado",
+        "calls": "Atendidas hoy",
+        "callsHint": "Desde las 20:00",
+        "peak": "Pico de la noche",
+        "peakSuffix": "a la vez",
+        "peakHint": "Llamadas simultáneas",
+        "missed": "Perdidas",
+        "missedHint": "Ninguna sin atender",
+        "missedHintOff": "Con la IA apagada"
+      },
+      "footnote": "Cada llamada tiene su propia línea: en hora pico nadie escucha tono de ocupado."
+    },
+    "service": {
+      "rubric": "{day} · turno noche",
+      "rubricShort": "{day} · hora pico",
+      "title": "Hora pico,",
+      "live": "{count, plural, one {llamada en línea} other {llamadas en línea}}",
+      "rail": "La comanda",
+      "toKitchen": "Cocina",
+      "kitchen": "Cocina ahora",
+      "salon": "Salón",
+      "toFloor": "Salón",
+      "tables": "{seated}/{total} mesas",
+      "people": "{count, plural, one {# persona sentada} other {# personas sentadas}}",
+      "ledger": {
+        "covers": "Cubiertos",
+        "avg": "Ticket promedio",
+        "direct": "Pedidos directos",
+        "missed": "Llamadas perdidas"
+      },
+      "customer": "Lo que ve el cliente",
+      "customerSub": "Carta QR, pedido online y reservas"
+    },
+    "kitchen": {
+      "rubric": "Pantalla de cocina",
+      "title": "Cocina en vivo",
+      "subtitle": "Cada pedido entra solo, venga del salón, la web o el teléfono. Sin papelitos ni gritos.",
+      "ticketLabel": "Comanda {num}, {channel}, {stage}: {items}",
+      "age": "{min} min",
+      "gf": "Sin TACC",
+      "yours": "Tu pedido",
+      "arrives": "Llega {time}",
+      "pickupAt": "Retira {time}",
+      "empty": "Nada por acá",
+      "stats": {
+        "cooking": "En cocina",
+        "orders": "Pedidos hoy",
+        "late": "Demorados"
+      },
+      "footnote": "Lo que toma el teléfono IA y lo que piden por la web entra directo a la pantalla, con notas como «sin TACC»."
+    },
+    "floor": {
+      "rubric": "Salón y reservas",
+      "title": "El salón, en vivo",
+      "titleShort": "El salón",
+      "subtitle": "{seated} de {total} mesas ocupadas · {people} personas sentadas.",
+      "mapLabel": "Plano del salón",
+      "zones": {
+        "kitchen": "Cocina",
+        "bar": "Barra",
+        "window": "Ventana a la calle",
+        "door": "Entrada"
+      },
+      "free": "libre",
+      "billShort": "cuenta",
+      "seatedShort": "{people} p.",
+      "seats": "{count, plural, one {# lugar} other {# lugares}}",
+      "people": "{count, plural, one {# persona} other {# personas}}",
+      "byWindow": "Junto a la ventana",
+      "form": {
+        "people": "Personas",
+        "time": "Hora",
+        "book": "Reservar mesa {n}",
+        "cancel": "Cancelar"
+      },
+      "pending": "Confirmando…",
+      "via": {
+        "ai": "Teléfono IA",
+        "web": "Web",
+        "phone": "Teléfono",
+        "you": "Vos"
+      },
+      "wa": {
+        "title": "WhatsApp",
+        "empty": "Cada reserva nueva recibe su confirmación por WhatsApp, sola.",
+        "conf": "Hola, {name}. Tu mesa está confirmada: hoy a las {time}, {people} personas, mesa {table}. Si cambian los planes, respondé este mensaje.",
+        "confYou": "¡Listo! Tu mesa está confirmada: hoy a las {time}, {people} personas, mesa {table}. Si cambian los planes, respondé este mensaje.",
+        "note": "Recordatorio automático 2 horas antes",
+        "label": "Confirmación de reserva por WhatsApp"
+      },
+      "hint": "Tocá una mesa libre para reservarla: la confirmación sale sola por WhatsApp.",
+      "hintPhone": "Tocá una mesa libre para reservarla.",
+      "listTitle": "Reservas de esta noche"
+    },
+    "menu": {
+      "rubric": "Carta y stock",
+      "title": "La carta",
+      "subtitle": "Una sola carta para el QR del salón, la web y el teléfono IA. Si algo se agota, deja de ofrecerse en todos lados.",
+      "subtitleShort": "Una sola carta para el QR, la web y el teléfono IA.",
+      "in": "Hay",
+      "out": "Agotado",
+      "stockLabel": "Hay {dish}",
+      "house": "Clásico de la casa",
+      "gf": "Sin TACC",
+      "effect": {
+        "title": "Si algo se agota",
+        "idle": "Probá: marcá un plato como agotado. El próximo que lo pida por teléfono escucha una alternativa.",
+        "body": "Sin stock de {dish}. La IA ofrece {alt} en su lugar.",
+        "soon": "Entra una llamada en la línea {n}…",
+        "ringing": "Línea {n}: sonando",
+        "live": "Línea {n}: la IA está ofreciendo la alternativa",
+        "ended": "Línea {n}: pedido tomado con la alternativa",
+        "missed": "Línea {n}: llamada perdida (la IA está apagada)",
+        "line1": "La línea {n} ya la está ofreciendo",
+        "listen": "Escuchar la línea {n}"
+      },
+      "qr": {
+        "title": "QR en cada mesa",
+        "body": "Escanean, piden y el pedido va directo a la cocina."
+      }
+    },
+    "numbers": {
+      "rubric": "Para el dueño",
+      "title": "Números de la noche",
+      "titleShort": "Números",
+      "subtitle": "Viernes desde las 20:00. Sale de los pedidos, el salón y el teléfono: nadie carga nada a mano.",
+      "kpis": {
+        "covers": "Cubiertos",
+        "coversHint": "En el salón, desde las 20:00",
+        "avg": "Ticket promedio",
+        "avgHint": "Por pedido, todos los canales",
+        "direct": "Pedidos directos",
+        "directHint": "Web y teléfono, sin comisión de apps",
+        "peak": "Pico de llamadas",
+        "peakSuffix": "a la vez",
+        "peakHint": "{missed, plural, =0 {Ninguna perdida} one {# perdida} other {# perdidas}}"
+      },
+      "byHour": {
+        "title": "Pedidos cada media hora · {time}, en curso",
+        "label": "La hora pico arrancó a las 21:00 y ningún pedido quedó afuera"
+      },
+      "lost": {
+        "title": "Pedidos y reservas perdidos por semana",
+        "week": "S{n}",
+        "label": "Antes del agente de voz se perdían unos {before} por semana; ahora, casi ninguno",
+        "before": "Antes: tono de ocupado",
+        "after": "Con el agente de voz IA"
+      },
+      "channels": {
+        "title": "Pedidos de hoy por canal",
+        "label": "Pedidos de hoy por canal"
+      }
+    },
+    "customer": {
+      "backToStaff": "Volver al local",
+      "tabsLabel": "Pedir o reservar",
+      "tabs": {
+        "order": "Pedir",
+        "book": "Reservar mesa"
+      },
+      "backToMenu": "Volver a la carta",
+      "menu": {
+        "hello": "¿Qué comemos hoy?"
+      },
+      "add": "Agregar {dish}",
+      "less": "Uno menos de {dish}",
+      "more": "Uno más de {dish}",
+      "viewCart": "Ver tu pedido",
+      "total": "Total",
+      "cart": {
+        "title": "Tu pedido",
+        "how": "¿Cómo lo querés?",
+        "delivery": "Delivery",
+        "pickup": "Retiro en el local",
+        "deliveryEta": "40 min",
+        "pickupEta": "25 min",
+        "direct": "Pedido directo al bodegón: sin comisiones de apps de por medio.",
+        "confirm": "Confirmar pedido · {total}"
+      },
+      "status": {
+        "sending": "Mandando tu pedido…",
+        "title": "Tu pedido",
+        "arrives": "Llega a las",
+        "ready": "Listo a las",
+        "progress": "Estado del pedido",
+        "steps": {
+          "received": "Recibido",
+          "cooking": "En cocina",
+          "ready": "Listo",
+          "out": "En camino",
+          "picked": "Retiralo"
+        },
+        "whatsapp": "Te avisamos por WhatsApp en cada paso.",
+        "again": "Hacer otro pedido",
+        "route": {
+          "from": "Bodegón",
+          "to": "Tu casa",
+          "rider": "{name} va en camino",
+          "riderWait": "La moto sale cuando esté listo"
+        }
+      },
+      "book": {
+        "title": "Reservá tu mesa",
+        "tonight": "{day}, esta noche",
+        "fewer": "Una persona menos",
+        "more": "Una persona más",
+        "table": "Tenemos la mesa {n} para vos.",
+        "full": "No quedan mesas libres para esa cantidad.",
+        "confirm": "Reservar",
+        "doneTitle": "¡Mesa reservada!",
+        "whatsapp": "Te mandamos la confirmación por WhatsApp."
+      },
+      "push": {
+        "app": "WhatsApp",
+        "now": "ahora",
+        "out": "Tu pedido #{num} salió: llega a las {time}.",
+        "ready": "Tu pedido #{num} está listo para retirar ({time})."
+      }
+    },
+    "feed": {
+      "ring": "Línea {line}: entra una llamada",
+      "aiOrder": "Pedido #{num} por teléfono: {who}, delivery",
+      "aiBooking": "Mesa {table} reservada para {people} a las {time} ({who})",
+      "aiGf": "Pedido sin TACC #{num} para retirar ({who})",
+      "web": "Pedido web #{num}: delivery",
+      "qr": "Mesa {table} pidió por QR: #{num}",
+      "walkIn": "Mesa {table}: se sentaron {people}",
+      "out": "#{num} salió, en camino",
+      "bill": "Mesa {table} pidió la cuenta",
+      "missed": "Línea {line}: llamada perdida",
+      "alt": "Línea {line}: la IA ofreció {alt} en lugar de {dish}",
+      "altSame": "Línea {line}: pedido de {dish} para retirar",
+      "youOrder": "Tu pedido #{num} entró a la cocina",
+      "youBooking": "Reservaste la mesa {table} a las {time}",
+      "webBooking": "Reserva web: mesa {table} a las {time}"
+    },
+    "toast": {
+      "aiOrder": "Pedido por teléfono",
+      "aiBooking": "Reserva por teléfono",
+      "aiGf": "Pedido sin TACC",
+      "web": "Pedido web",
+      "missed": "Llamada perdida",
+      "alt": "Alternativa ofrecida",
+      "youOrder": "Tu pedido",
+      "youBooking": "Tu reserva",
+      "webBooking": "Reserva web",
+      "out": "En camino"
     }
   }
 }

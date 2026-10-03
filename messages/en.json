@@ -2020,6 +2020,26 @@
         "levelUp": "Level up!",
         "level": "Level {count}"
       }
+    },
+    "restaurant": {
+      "problem1": "Friday, 9:30 PM.",
+      "problem2": "The phone won't stop.",
+      "pain": "orders or bookings lost a week",
+      "feature": "An AI voice agent that answers every line at once.",
+      "screen": {
+        "title": "AI phone",
+        "tonight": "Fri · 9:30 PM",
+        "line": "Line {n}",
+        "order": "Order · delivery",
+        "booking": "Booking · 4 people",
+        "gf": "Question · gluten-free",
+        "ringing": "Ringing",
+        "answered": "AI answering",
+        "kitchen": "Kitchen",
+        "ticketOrder": "2 napolitanas · flan",
+        "ticketGf": "Steak · gluten-free",
+        "toast": "Table {table} booked · WhatsApp sent"
+      }
     }
   },
   "founders": {
@@ -2218,6 +2238,553 @@
       "earned": "Earned",
       "progress": "{pct}% complete",
       "rank": "Rank {n}"
+    }
+  },
+  "demoRestaurant": {
+    "nav": {
+      "service": "Service",
+      "groupTonight": "Tonight",
+      "phone": "AI phone",
+      "phoneShort": "Phone",
+      "kitchen": "Kitchen",
+      "floor": "Floor & bookings",
+      "floorShort": "Floor",
+      "groupRoom": "The room",
+      "menu": "Menu",
+      "numbers": "Numbers",
+      "groupBiz": "Business"
+    },
+    "top": {
+      "live": "{count, plural, one {# call in progress} other {# calls in progress}}",
+      "aiOn": "AI phone on",
+      "aiOff": "AI phone off",
+      "customer": "Customer",
+      "tonight": "{day} · night shift"
+    },
+    "side": {
+      "aiTitle": "AI phone",
+      "aiOn": "{count, plural, =0 {Waiting for calls} one {Answering # call} other {Answering # calls}}",
+      "aiOff": "Off: it rings at the counter"
+    },
+    "people": {
+      "you": "You",
+      "marta": {
+        "name": "Marta Ibáñez",
+        "first": "Marta",
+        "address": "Yatay 840"
+      },
+      "ramiro": {
+        "name": "Ramiro Sosa",
+        "first": "Ramiro",
+        "phone": "+54 11 6•••-4410"
+      },
+      "lucia": {
+        "name": "Lucía Ferrero",
+        "first": "Lucía",
+        "phone": "+54 11 3•••-9052"
+      },
+      "sofia": {
+        "name": "Sofía Medina",
+        "first": "Sofía"
+      },
+      "gomez": {
+        "name": "The Gómez family",
+        "first": "Gómez"
+      },
+      "ledesma": {
+        "name": "Andrés Ledesma",
+        "first": "Andrés"
+      },
+      "paz": {
+        "name": "Clara Paz",
+        "first": "Clara"
+      },
+      "rios": {
+        "name": "Julieta Ríos",
+        "first": "Julieta"
+      },
+      "rider": {
+        "name": "Tomás"
+      }
+    },
+    "dishes": {
+      "provoleta": {
+        "name": "Grilled provoleta",
+        "short": "Provoleta",
+        "a": "a provoleta",
+        "n": "{count, plural, one {# provoleta} other {# provoletas}}",
+        "desc": "Melted provolone, oregano and olive oil."
+      },
+      "empanadas": {
+        "name": "Beef empanadas",
+        "short": "Empanadas ×2",
+        "a": "a pair of empanadas",
+        "n": "{count, plural, one {# pair of empanadas} other {# pairs of empanadas}}",
+        "desc": "Hand-cut beef, clay oven. Served in pairs."
+      },
+      "napolitana": {
+        "name": "Milanesa napolitana",
+        "short": "Napolitana",
+        "a": "a milanesa napolitana",
+        "n": "{count, plural, one {# napolitana} other {# napolitanas}}",
+        "desc": "Breaded beef, ham, mozzarella and tomato. With fries."
+      },
+      "suprema": {
+        "name": "Chicken napolitana",
+        "short": "Chicken nap.",
+        "a": "a chicken napolitana",
+        "n": "{count, plural, one {# chicken napolitana} other {# chicken napolitanas}}",
+        "desc": "Breaded chicken, ham and mozzarella. With mash."
+      },
+      "bife": {
+        "name": "Bife de chorizo",
+        "short": "Strip steak",
+        "a": "a bife de chorizo",
+        "n": "{count, plural, one {# bife de chorizo} other {# bifes de chorizo}}",
+        "desc": "400 g strip steak, roast potatoes. Gluten-free."
+      },
+      "ravioles": {
+        "name": "Ravioli with tuco",
+        "short": "Ravioli",
+        "a": "a plate of ravioli",
+        "n": "{count, plural, one {# plate of ravioli} other {# plates of ravioli}}",
+        "desc": "Ricotta and walnut, with the house tomato sauce."
+      },
+      "flan": {
+        "name": "Flan mixto",
+        "short": "Flan mixto",
+        "a": "a flan mixto",
+        "n": "{count, plural, one {# flan} other {# flans}}",
+        "desc": "With dulce de leche and cream. Gluten-free."
+      },
+      "panqueque": {
+        "name": "Dulce de leche crêpe",
+        "short": "Crêpe",
+        "a": "a dulce de leche crêpe",
+        "n": "{count, plural, one {# crêpe} other {# crêpes}}",
+        "desc": "Caramelized on top, the old way."
+      },
+      "pinguino": {
+        "name": "House red, penguin jug",
+        "short": "Red, jug",
+        "a": "a penguin jug of red",
+        "n": "{count, plural, one {# penguin jug} other {# penguin jugs}}",
+        "desc": "The house red in the classic penguin jug."
+      },
+      "vermu": {
+        "name": "Vermouth and soda",
+        "short": "Vermouth",
+        "a": "a vermouth",
+        "n": "{count, plural, one {# vermouth} other {# vermouths}}",
+        "desc": "Siphon soda, ice and a slice of orange."
+      }
+    },
+    "cats": {
+      "starters": "Starters",
+      "mains": "Mains",
+      "desserts": "Desserts",
+      "drinks": "To drink"
+    },
+    "channel": {
+      "salon": "Dine-in",
+      "delivery": "Delivery",
+      "pickup": "Pickup"
+    },
+    "stage": {
+      "new": "New",
+      "cooking": "Cooking",
+      "ready": "Ready",
+      "out": "On the way",
+      "done": "Delivered"
+    },
+    "table": {
+      "label": "Table {n}",
+      "short": "T{n}",
+      "status": {
+        "free": "Free",
+        "seated": "Seated",
+        "bill": "Asked for the bill",
+        "reserved": "Reserved"
+      }
+    },
+    "calls": {
+      "agent": "Lucero AI",
+      "agentTag": "AI",
+      "callerTag": "Caller",
+      "line": "Line {n}",
+      "lineShort": "L{n}",
+      "idle": "Free",
+      "waiting": "Line free",
+      "label": "Call on line {n}",
+      "open": "Open call",
+      "frequent": "Regular customer",
+      "newCaller": "New number",
+      "unknownNumber": "+54 11 4•••-7731",
+      "lampLabel": "Line {n}: {state}",
+      "state": {
+        "idle": "free",
+        "ringing": "ringing",
+        "live": "in progress",
+        "ended": "answered",
+        "missed": "missed"
+      },
+      "topic": {
+        "order": "Order · delivery",
+        "booking": "Booking · 4 people",
+        "gf": "Question · gluten-free",
+        "alt": "Order · pickup",
+        "info": "Question · hours"
+      },
+      "order": {
+        "hello": "Bodegón Lucero, good evening. Order or booking?",
+        "ask": "Hi, an order for delivery: two napolitanas with fries and a flan mixto.",
+        "check": "Menu → {items}: in stock",
+        "checkSub": "Menu → {missing}: sold out · alternative: {alts}",
+        "offer": "Got it: {items}. That's {total}. Same address as always, {address}?",
+        "offerSub": "We're out of {missing} tonight; I can do {alts}, just as quick. That's {items}, {total}. To {address}?",
+        "yes": "Yes, there. Thanks.",
+        "ticket": "Ticket #{num} → kitchen · delivery",
+        "bye": "Done, {first}: it'll be there in 40 minutes. I'm sending the details on WhatsApp."
+      },
+      "none": {
+        "offer": "We're out of that tonight. Can I tempt you with something else?",
+        "yes": "No thanks. Another day.",
+        "ticket": "No order",
+        "bye": "Sorry about that. Good night!"
+      },
+      "booking": {
+        "hello": "Bodegón Lucero, good evening.",
+        "ask": "Hi, I'd like a table for four, tonight at {time}.",
+        "check": "Floor → {time} · 4 people → table {table}",
+        "checkNone": "Floor → {time} · 4 people → no table",
+        "offerWindow": "I have table {table}, by the window. What name is it under?",
+        "offer": "I have table {table}. What name should I put it under?",
+        "offerNone": "Nothing for four at {time}, sorry. Shall I add you to the waitlist?",
+        "name": "Under {name}.",
+        "waitlist": "Waitlist · WhatsApp ✓",
+        "book": "Booking · table {table} · {time} · WhatsApp ✓",
+        "bye": "All set, {first}. The confirmation is on its way on WhatsApp.",
+        "byeNone": "All set, {first}. If a table frees up, I'll text you on WhatsApp."
+      },
+      "gf": {
+        "hello": "Bodegón Lucero, good evening.",
+        "ask": "Hi, do you have anything gluten-free? I'm celiac.",
+        "check": "Menu → gluten-free: {count, plural, one {# dish} other {# dishes}}",
+        "offer": "Yes: {list}. Cooked separately, with their own utensils.",
+        "offerNone": "Nothing gluten-free left tonight, sorry.",
+        "order": "Great. Then {dish} for pickup.",
+        "ticket": "Ticket #{num} · gluten-free → kitchen",
+        "bye": "Done. Come by at {time}; I'll text you on WhatsApp when it's ready."
+      },
+      "alt": {
+        "hello": "Bodegón Lucero, good evening.",
+        "ask": "Hi, can I get {dishA} for pickup?",
+        "check": "Menu → {dish}: in stock",
+        "checkSub": "Menu → {dish}: sold out · alternative: {alt}",
+        "checkNone": "Menu → {dish}: sold out · no alternative",
+        "offer": "Sure! Ready in 20 minutes.",
+        "offerSub": "We just ran out. I can do {altA} instead, ready in 20 minutes. Okay?",
+        "yes": "Sure, that one.",
+        "ticket": "Ticket #{num} → kitchen · pickup",
+        "bye": "Done. I'll text you on WhatsApp when it's ready."
+      },
+      "info": {
+        "hello": "Bodegón Lucero, good evening.",
+        "ask": "Hi, until what time do you take orders?",
+        "answer": "The kitchen is open until {time}. Want to order now?",
+        "no": "Not yet, later. Thanks.",
+        "bye": "Sure. Good night!"
+      },
+      "outcome": {
+        "missed": "Missed call",
+        "lost": {
+          "order": "A delivery order that never came in.",
+          "booking": "A booking for 4 that never happened.",
+          "gf": "A question (and an order) with no answer.",
+          "alt": "A pickup order that never came in.",
+          "info": "A question with no answer."
+        },
+        "booking": "Table {table} · {time} · {people} people",
+        "waitlist": "On the waitlist",
+        "info": "Question answered",
+        "none": "No order",
+        "delivery": "Order #{num} · delivery · arrives {time}",
+        "pickup": "Order #{num} · pickup {time}"
+      },
+      "sent": {
+        "order": "Details sent on WhatsApp",
+        "booking": "Confirmation sent on WhatsApp",
+        "gf": "WhatsApp alert when it's ready",
+        "alt": "WhatsApp alert when it's ready"
+      },
+      "ringingNow": "Ringing… Lucero AI is picking up",
+      "counter": "The counter",
+      "ringingCounter": "Ringing at the counter… nobody picks up"
+    },
+    "phone": {
+      "rubric": "Voice agent",
+      "title": "AI phone",
+      "subtitle": "Answers every line at once, with the live menu and floor: takes orders, books tables and confirms on WhatsApp.",
+      "switch": "AI phone",
+      "switchOn": "Answers all 3 lines",
+      "switchOff": "Off: the phone rings at the counter",
+      "pick": "Pick a line",
+      "liveNow": "{count, plural, =0 {No calls in progress} one {# call in progress} other {# calls in progress}}",
+      "logTitle": "Tonight's calls",
+      "earlier": {
+        "ea": "Order · pickup",
+        "eb": "Booking · 2 people",
+        "ec": "Question · parking"
+      },
+      "kpis": {
+        "live": "On the line now",
+        "liveHint": "No busy tone",
+        "calls": "Answered today",
+        "callsHint": "Since 8:00 PM",
+        "peak": "Tonight's peak",
+        "peakSuffix": "at once",
+        "peakHint": "Simultaneous calls",
+        "missed": "Missed",
+        "missedHint": "None unanswered",
+        "missedHintOff": "With the AI off"
+      },
+      "footnote": "Every call gets its own line: at rush hour nobody hears a busy tone."
+    },
+    "service": {
+      "rubric": "{day} · night shift",
+      "rubricShort": "{day} · rush hour",
+      "title": "Rush hour,",
+      "live": "{count, plural, one {call on the line} other {calls on the line}}",
+      "rail": "Incoming tickets",
+      "toKitchen": "Kitchen",
+      "kitchen": "Kitchen now",
+      "salon": "Floor",
+      "toFloor": "Floor",
+      "tables": "{seated}/{total} tables",
+      "people": "{count, plural, one {# guest seated} other {# guests seated}}",
+      "ledger": {
+        "covers": "Covers",
+        "avg": "Average ticket",
+        "direct": "Direct orders",
+        "missed": "Missed calls"
+      },
+      "customer": "What the customer sees",
+      "customerSub": "QR menu, online orders and bookings"
+    },
+    "kitchen": {
+      "rubric": "Kitchen display",
+      "title": "Kitchen, live",
+      "subtitle": "Every order lands on its own, from the floor, the site or the phone. No paper slips, no shouting.",
+      "ticketLabel": "Ticket {num}, {channel}, {stage}: {items}",
+      "age": "{min} min",
+      "gf": "Gluten-free",
+      "yours": "Your order",
+      "arrives": "Arrives {time}",
+      "pickupAt": "Pickup {time}",
+      "empty": "Nothing here",
+      "stats": {
+        "cooking": "Cooking",
+        "orders": "Orders today",
+        "late": "Running late"
+      },
+      "footnote": "What the AI phone takes and what comes in from the site goes straight to the screen, with notes like “gluten-free”."
+    },
+    "floor": {
+      "rubric": "Floor & bookings",
+      "title": "The floor, live",
+      "titleShort": "The floor",
+      "subtitle": "{seated} of {total} tables taken · {people} guests seated.",
+      "mapLabel": "Floor plan",
+      "zones": {
+        "kitchen": "Kitchen",
+        "bar": "Bar",
+        "window": "Street window",
+        "door": "Door"
+      },
+      "free": "free",
+      "billShort": "bill",
+      "seatedShort": "{people} p.",
+      "seats": "{count, plural, one {# seat} other {# seats}}",
+      "people": "{count, plural, one {# person} other {# people}}",
+      "byWindow": "By the window",
+      "form": {
+        "people": "People",
+        "time": "Time",
+        "book": "Book table {n}",
+        "cancel": "Cancel"
+      },
+      "pending": "Confirming…",
+      "via": {
+        "ai": "AI phone",
+        "web": "Web",
+        "phone": "Phone",
+        "you": "You"
+      },
+      "wa": {
+        "title": "WhatsApp",
+        "empty": "Every new booking gets its WhatsApp confirmation automatically.",
+        "conf": "Hi {name}. Your table is confirmed: tonight at {time}, {people} people, table {table}. If plans change, just reply here.",
+        "confYou": "Done! Your table is confirmed: tonight at {time}, {people} people, table {table}. If plans change, just reply here.",
+        "note": "Automatic reminder 2 hours before",
+        "label": "Booking confirmation on WhatsApp"
+      },
+      "hint": "Tap a free table to book it: the confirmation goes out on WhatsApp by itself.",
+      "hintPhone": "Tap a free table to book it.",
+      "listTitle": "Tonight's bookings"
+    },
+    "menu": {
+      "rubric": "Menu & stock",
+      "title": "The menu",
+      "subtitle": "One menu for the table QR, the site and the AI phone. When something runs out, it stops being offered everywhere.",
+      "subtitleShort": "One menu for the QR, the site and the AI phone.",
+      "in": "In stock",
+      "out": "Sold out",
+      "stockLabel": "{dish} in stock",
+      "house": "House classic",
+      "gf": "Gluten-free",
+      "effect": {
+        "title": "When something runs out",
+        "idle": "Try it: mark a dish as sold out. The next caller who asks for it hears an alternative.",
+        "body": "{dish} is sold out. The AI offers {alt} instead.",
+        "soon": "A call is coming in on line {n}…",
+        "ringing": "Line {n}: ringing",
+        "live": "Line {n}: the AI is offering the alternative",
+        "ended": "Line {n}: order taken with the alternative",
+        "missed": "Line {n}: missed call (the AI is off)",
+        "line1": "Line {n} is already offering it",
+        "listen": "Listen to line {n}"
+      },
+      "qr": {
+        "title": "A QR on every table",
+        "body": "Guests scan, order, and it goes straight to the kitchen."
+      }
+    },
+    "numbers": {
+      "rubric": "For the owner",
+      "title": "Tonight's numbers",
+      "titleShort": "Numbers",
+      "subtitle": "Friday since 8:00 PM. It all comes from orders, the floor and the phone: nobody types anything in.",
+      "kpis": {
+        "covers": "Covers",
+        "coversHint": "Dine-in, since 8:00 PM",
+        "avg": "Average ticket",
+        "avgHint": "Per order, every channel",
+        "direct": "Direct orders",
+        "directHint": "Site and phone, no app commission",
+        "peak": "Call peak",
+        "peakSuffix": "at once",
+        "peakHint": "{missed, plural, =0 {None missed} one {# missed} other {# missed}}"
+      },
+      "byHour": {
+        "title": "Orders per half hour · {time} in progress",
+        "label": "The rush started at 9:00 PM and no order was left out"
+      },
+      "lost": {
+        "title": "Orders and bookings lost per week",
+        "week": "W{n}",
+        "label": "Before the voice agent about {before} were lost a week; now almost none",
+        "before": "Before: busy tone",
+        "after": "With the AI voice agent"
+      },
+      "channels": {
+        "title": "Today's orders by channel",
+        "label": "Today's orders by channel"
+      }
+    },
+    "customer": {
+      "backToStaff": "Back to the restaurant",
+      "tabsLabel": "Order or book",
+      "tabs": {
+        "order": "Order",
+        "book": "Book a table"
+      },
+      "backToMenu": "Back to the menu",
+      "menu": {
+        "hello": "What are we having tonight?"
+      },
+      "add": "Add {dish}",
+      "less": "One less {dish}",
+      "more": "One more {dish}",
+      "viewCart": "View your order",
+      "total": "Total",
+      "cart": {
+        "title": "Your order",
+        "how": "How do you want it?",
+        "delivery": "Delivery",
+        "pickup": "Pickup",
+        "deliveryEta": "40 min",
+        "pickupEta": "25 min",
+        "direct": "Ordered straight from the bodegón: no delivery-app commission in between.",
+        "confirm": "Place order · {total}"
+      },
+      "status": {
+        "sending": "Sending your order…",
+        "title": "Your order",
+        "arrives": "Arrives at",
+        "ready": "Ready at",
+        "progress": "Order status",
+        "steps": {
+          "received": "Received",
+          "cooking": "Cooking",
+          "ready": "Ready",
+          "out": "On the way",
+          "picked": "Pick it up"
+        },
+        "whatsapp": "We'll text you on WhatsApp at every step.",
+        "again": "Place another order",
+        "route": {
+          "from": "Bodegón",
+          "to": "Your place",
+          "rider": "{name} is on the way",
+          "riderWait": "The rider leaves when it’s ready"
+        }
+      },
+      "book": {
+        "title": "Book your table",
+        "tonight": "{day}, tonight",
+        "fewer": "One person less",
+        "more": "One person more",
+        "table": "Table {n} is yours.",
+        "full": "No free tables for that many people.",
+        "confirm": "Book",
+        "doneTitle": "Table booked!",
+        "whatsapp": "The confirmation is on its way on WhatsApp."
+      },
+      "push": {
+        "app": "WhatsApp",
+        "now": "now",
+        "out": "Your order #{num} is on its way: it arrives at {time}.",
+        "ready": "Your order #{num} is ready for pickup ({time})."
+      }
+    },
+    "feed": {
+      "ring": "Line {line}: incoming call",
+      "aiOrder": "Phone order #{num}: {who}, delivery",
+      "aiBooking": "Table {table} booked for {people} at {time} ({who})",
+      "aiGf": "Gluten-free order #{num} for pickup ({who})",
+      "web": "Web order #{num}: delivery",
+      "qr": "Table {table} ordered by QR: #{num}",
+      "walkIn": "Table {table}: {people} just sat down",
+      "out": "#{num} is on its way",
+      "bill": "Table {table} asked for the bill",
+      "missed": "Line {line}: missed call",
+      "alt": "Line {line}: the AI offered {alt} instead of {dish}",
+      "altSame": "Line {line}: {dish} for pickup",
+      "youOrder": "Your order #{num} is in the kitchen",
+      "youBooking": "You booked table {table} at {time}",
+      "webBooking": "Web booking: table {table} at {time}"
+    },
+    "toast": {
+      "aiOrder": "Phone order",
+      "aiBooking": "Phone booking",
+      "aiGf": "Gluten-free order",
+      "web": "Web order",
+      "missed": "Missed call",
+      "alt": "Alternative offered",
+      "youOrder": "Your order",
+      "youBooking": "Your booking",
+      "webBooking": "Web booking",
+      "out": "On the way"
     }
   }
 }
