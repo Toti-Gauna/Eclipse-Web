@@ -127,11 +127,10 @@
   font-weight: 450;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
+  /* Full opacity: --fg-muted already is the quiet tone and stays AA on night and dawn
+     (at 0.6 it fell to ~2.6:1 over the light sections). */
   color: var(--fg-muted);
-  opacity: 0.6;
-  transition:
-    color 0.3s ease,
-    opacity 0.3s ease;
+  transition: color 0.3s ease;
 }
 .eph-tick:hover .eph-tick-mark,
 .eph-tick:focus-visible .eph-tick-mark {
