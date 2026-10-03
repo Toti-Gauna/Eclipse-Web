@@ -1,4 +1,4 @@
-# Eclipse — landing (mockup v1)
+# Eclipse — landing (mockup v2)
 
 Landing de **Eclipse**, estudio de desarrollo, IA y automatización. Venta *demo-first*: antes de hablar, le mostramos al
 cliente su negocio funcionando. Un solo objetivo de conversión: que el visitante **pida su demo** o **arme su plan** y
@@ -8,6 +8,26 @@ nos escriba por WhatsApp.
   GSAP + ScrollTrigger · OGL (solo la corona del eclipse, con fallback CSS) · Lucide · Vitest.
 - **Deploy:** GitHub Pages en `https://toti-gauna.github.io/Eclipse-Web/` (automático en cada push a `main`).
 - Todo el contenido comercial vive en **`/content/*.json`** y todo el copy de la UI en **`/messages/*.json`**.
+
+## Qué cambió en la v2
+
+- **Dirección de arte "Efemérides"** (detalle en `CLAUDE.md`): la página es un observatorio y el lenguaje es el de un
+  instrumento: rótulos en Geist Mono, líneas finas, marcas de registro, glifos de fases del eclipse
+  (`<PhaseGlyph>`), secciones numeradas 01–08 y un riel de índice en escritorio. Cada sección tiene su propia
+  composición (dial de instrumento en el hero, sala de demos, fases del proceso, constelación de fundadores, amanecer).
+- **Sonido y música** (`lib/sound/`, `components/sound/`): efectos y música ambiente generativa sintetizados con Web
+  Audio, sin archivos. Apagados por defecto; el visitante los prende desde el header o el panel de preferencias.
+- **Loader**: la escena final de los trailers (luna → corona → anillo de diamante → ECLIPSE) en cada carga, solo CSS,
+  1,78 s y salteable con cualquier clic o tecla.
+- **Idioma y moneda con contexto**: un panel con nombres nativos, la cotización usada, su fuente y si es en vivo o
+  estimada.
+- **Precios claros**: cómo se paga (proyecto pago único · mantenimiento mensual opcional · extras), *Paquetes* vs.
+  *Pieza por pieza*, un solo switch mensual/anual (en mantenimiento) y el mismo nombre ("paquete") en el WhatsApp.
+- **Calculadora en forma de frase** con botones −/+ y **armador guiado** en 4 pasos (Objetivo → Piezas →
+  Mantenimiento → Resumen).
+- **Demos v2** sobre un kit propio (`components/demos/kit`, guía en `components/demos/README.md`): sidebar
+  colapsable, chatbots, agentes de voz, gamificación, sitios públicos y paneles, cada demo con su marca y paleta.
+  Rubros: clínica, inmobiliaria, gimnasio, **tienda online**, **restaurante** y **servicios a domicilio** (app on-demand).
 
 ---
 
@@ -65,12 +85,14 @@ app/
   [locale]/page.tsx       # la landing
   [locale]/plan/page.tsx  # "Armá tu plan" como página compartible (?items=…&m=…)
 components/
-  loader/  hero/  demos/  sections/  pricing/  plan-builder/  trailers/
-  layout/  (header, footer, selectores)   motion/ (GSAP, Reveal, CountUp…)   ui/   providers/
+  loader/  hero/  demos/ (kit/ + una carpeta por demo)  sections/  pricing/  plan-builder/  trailers/
+  layout/  (header, footer, panel de idioma y moneda)   motion/ (GSAP, Reveal, CountUp, Occult, DrawLine…)
+  sound/ (proveedor, toggle)   ui/ (PhaseGlyph, SectionMark, EphemerisRail…)   providers/
 content/                  # JSON comerciales (ver abajo)
 messages/                 # copy de la UI: es.json, en.json, pt.json
 lib/
   pricing.ts  currency.ts  plan-message.ts  plan-url.ts  whatsapp.ts  analytics.ts  content.ts  env.ts  seo.ts
+  calculator.ts  sound/ (motor Web Audio + música generativa, se carga recién al prender el sonido)
 tests/                    # Vitest
 scripts/                  # generate-og.mjs, merge-message-drafts.mjs, shot.mjs (QA), dev.sh
 ```
@@ -85,19 +107,20 @@ después de editar.
 
 | Archivo | Qué contiene |
 |---|---|
-| `content/plans.json` | Los 7 planes: `priceUsd.from/to`, `items` (ids de `items.json`, se usan para detectar el plan en el generador y para la línea "Por separado → ahorrás"), `maintenance` sugerido, nombre, para quién es, incluidos. `featured` = el plan "Más elegido". |
-| `content/items.json` | Catálogo individual de "Armá tu plan" (precio, categoría, ícono Lucide, nombre, descripción). |
-| `content/addons.json` | Botones "+ Sumar" de las cards. Si el plan ya incluye el `itemId`, el add-on se muestra como "Incluido" (`whenIncluded: show`) o se oculta (`hide`). `offer` lo conecta con el combo de voz. |
+| `content/plans.json` | Los 7 paquetes: `priceUsd.from/to`, `items` (ids de `items.json`, se usan para detectar el paquete en el armador y para el "ahorrás ≈ X% vs. piezas sueltas"), `tier` (`start` = "Para empezar", `complete` = "Sistemas completos"), `maintenance` sugerido, nombre, para quién es, incluidos. `featured` = el paquete "Recomendado". |
+| `content/items.json` | Piezas sueltas (precio, categoría, ícono Lucide, nombre, descripción). Las categorías son las 6 familias de la sección Servicios y del armador; sus nombres no repiten los de los paquetes. |
+| `content/addons.json` | Extras que se suman a un paquete en el armador. Si el paquete ya incluye el `itemId`, se muestra como "Incluido" (`whenIncluded: show`) o se oculta (`hide`). `offer` lo conecta con el combo de voz. |
 | `content/maintenance.json` | Planes mensuales, uso del agente de voz (49 + minutos) y `annualMonthsCharged` (10 = 2 meses gratis). |
 | `content/offers.json` | Ofertas reales. `active` las prende/apaga; `endsAt` (ISO, opcional) muestra un contador y las apaga sola. |
-| `content/verticals.json` | Rubros: negocio ficticio, dolor, número clave y valores por defecto de la calculadora. |
+| `content/verticals.json` | Rubros (7: clínicas, inmobiliarias, gimnasios, tiendas online, restaurantes, servicios a domicilio, otro): negocio ficticio, demo, dolor, número clave y valores por defecto de la calculadora. Un rubro nuevo con demo necesita además su carpeta en `components/demos/<id>/` (ver `components/demos/README.md`), su trailer en `components/trailers/` y las entradas en los dos `registry.ts`. |
 | `content/founders.json` | Slots de clientes fundadores (ver abajo). |
 | `content/units.json` | Unidades de Eclipse (Agency activa; Media y Market "Próximamente"). |
 | `content/rates.fallback.json` | Cotizaciones de respaldo si fallan las APIs. |
 
 ### Reglas de precio (en `lib/pricing.ts`, con tests)
 
-- **Precio de la card** = "desde" del plan + add-ons sumados; el rango "desde–hasta" se muestra en chico.
+- **Precio del paquete** = su "desde" (pago único); el rango "desde–hasta" se muestra en chico. Los extras y el
+  mantenimiento se suman en el armador.
 - **"Por separado: X → ahorrás ≈ Y%"**: suma de los ítems del plan a precio de catálogo vs. el "desde" del plan. Solo se
   muestra en combos (2+ ítems) con un ahorro real (≥ 5%).
 - **Combo voz**: el agente de voz cuesta USD 300 en Sistema, Comercio y Plataforma, o en "Armá tu plan" cuando el resto
@@ -193,9 +216,11 @@ ya reenvía a `window.plausible` o `window.gtag` si cargás alguno de esos scrip
 
 ## Decisiones técnicas
 
-- **Loader 100% CSS** (anillo, destello, letras e iris con una máscara animada vía `@property`): corre antes de que
-  cargue el JS, dura ≤ 1,45 s, solo en la primera visita de la sesión y nunca tapa el LCP (el H1 se pinta debajo desde
-  el primer frame). Reduced motion: fade de 300 ms.
+- **Loader 100% CSS** con la escena final de los trailers: corre antes de que cargue el JS, en cada carga, dura 1,78 s
+  (cualquier clic, toque o tecla lo saltea) y nunca tapa el LCP: el H1 se pinta debajo desde el primer frame y sigue
+  siendo el elemento LCP. Reduced motion: cuadro fijo que se va en ~380 ms.
+- **Sonido opt-in**: el `AudioContext` se crea recién dentro del clic del visitante y el motor (`lib/sound/engine.ts`,
+  `music.ts`) es un chunk aparte que no se pide hasta entonces. La preferencia se guarda en `localStorage`.
 - **OGL en lugar de Three.js** para la corona: ~10 veces más liviano. Se carga con `import()` solo con WebGL,
   `hardwareConcurrency > 4`, sin `prefers-reduced-motion` ni ahorro de datos; si no, queda la corona CSS.
 - **Demos navegables reales** (React, no imágenes) dentro de `DeviceFrame`; cada demo se descarga recién cuando se va a
