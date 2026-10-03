@@ -68,7 +68,7 @@ function Sources() {
       <h3 id="re-sources" className="re-panel-title">
         {t('today.sources')}
       </h3>
-      <ul className="re-sources" role="img" aria-label={t('today.sourcesLabel', { count: k.bySource.web, total: k.inquiries })}>
+      <ul className="re-sources" aria-label={t('today.sourcesLabel', { count: k.bySource.web, total: k.inquiries })}>
         {SOURCES.map((s) => {
           const Icon = SOURCE_ICON[s];
           return (

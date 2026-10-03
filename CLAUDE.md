@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Eclipse — landing (mockup v1)
+# Eclipse — landing (mockup v2)
 
 Landing for **Eclipse**, a development / AI / automation studio. Demo-first sales: we show
 the visitor *their business working* before talking. Single conversion goal: ask for a demo
@@ -146,7 +146,10 @@ agents, gamification, e-commerce, dashboards, automations, apps.
   `lib/whatsapp.ts`. Analytics: `track(event, props)` from `lib/analytics.ts`.
 - Modal: `<Sheet open onClose variant="drawer|fullscreen|center" labelledBy>` (native dialog).
 - Demos: `<DemoShowcase demo business active />`, `<DeviceFrame>`, registry in
-  `components/demos/registry.ts`, contract in `components/demos/types.ts`.
+  `components/demos/registry.ts`, contract in `components/demos/types.ts`, kit v2 in
+  `components/demos/kit*` (guide: `components/demos/README.md`; reference demo: `clinic/`).
+- Sound: `useSound().play(name)` (see Art direction → Sound). Section index: `<SectionMark section>`,
+  `<EphemerisRail>`; motion: `<Occult>`, `<DrawLine>`; brand icon: `<PhaseGlyph phase>`.
 - Section anchors: `SECTION_IDS` / `NAV_LINKS` in `components/layout/navLinks.ts`.
 - basePath: `asset('/file.png')` from `lib/env.ts` for anything in `/public`.
 
@@ -159,8 +162,9 @@ agents, gamification, e-commerce, dashboards, automations, apps.
 - Below-the-fold sections are wrapped in `<LazyHydrate>` (app/[locale]/page.tsx): their DOM is
   re-created when they hydrate, so never keep references to DOM nodes of another section; listen
   to `HYDRATED_EVENT` if you must re-query.
-- Demo copy (`demoClinic`, `demoRealEstate`, `demoGym`) is not in the page payload; it is loaded
-  by `<DemoMessages>` inside `DemoShowcase`.
+- Demo copy (`demoKit` + one namespace per demo, listed in `components/demos/namespaces.ts`) is not in
+  the page payload; it is loaded by `<DemoMessages>` inside `DemoShowcase` (in dev it stays in the payload
+  so drafts reach the demos).
 - `npm run test:e2e` (after `NEXT_PUBLIC_BASE_PATH=/Eclipse-Web npm run build` and serving `out/`
   under `/Eclipse-Web`) must stay green.
 
