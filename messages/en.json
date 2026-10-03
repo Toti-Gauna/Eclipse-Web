@@ -2063,6 +2063,26 @@
         "items": "{count, plural, one {# item} other {# items}}",
         "of": "{count} of {total}"
       }
+    },
+    "academy": {
+      "problem1": "They sign up excited.",
+      "problem2": "By week three, they're gone.",
+      "pain": "students who drop out per week",
+      "feature": "Streaks, an AI tutor and a WhatsApp when someone drifts away.",
+      "screen": {
+        "title": "Today's students",
+        "today": "Thu · 8:12 PM",
+        "valentina": "Valentina R.",
+        "valentinaSub": "English A2 · lesson 6.3",
+        "martin": "Martín S.",
+        "martinSub": "5 days away",
+        "streak": "{count, plural, one {# day} other {# days}}",
+        "risk": "At risk",
+        "back": "Back",
+        "nudge": "WhatsApp to Martín: 5-min lesson",
+        "levelUp": "Valentina moved up to B1",
+        "completion": "Finish the course"
+      }
     }
   },
   "founders": {
@@ -3316,6 +3336,554 @@
         "composer": "Message",
         "left": "{name} left {count, plural, one {# item} other {# items}} in the cart"
       }
+    }
+  },
+  "demoAcademy": {
+    "people": {
+      "valentina": "Valentina Ruiz",
+      "camila": "Camila M.",
+      "bruno": "Bruno A.",
+      "sofia": "Sofía L.",
+      "lucas": "Lucas D.",
+      "martin": "Martín Sosa",
+      "julieta": "Julieta P.",
+      "tomas": "Tomás G.",
+      "renata": "Renata V.",
+      "joaquin": "Joaquín M.",
+      "you": "You",
+      "youInitials": "YOU"
+    },
+    "first": {
+      "valentina": "Valentina",
+      "camila": "Camila",
+      "bruno": "Bruno",
+      "sofia": "Sofía",
+      "lucas": "Lucas",
+      "martin": "Martín",
+      "julieta": "Julieta",
+      "tomas": "Tomás",
+      "renata": "Renata",
+      "joaquin": "Joaquín",
+      "you": "You"
+    },
+    "langs": {
+      "en": "English",
+      "pt": "Portuguese"
+    },
+    "courseName": "{lang} {level}",
+    "teachers": {
+      "carla": "Carla F.",
+      "diego": "Diego R.",
+      "ana": "Ana V."
+    },
+    "pay": {
+      "card": "card",
+      "transfer": "bank transfer"
+    },
+    "feed": {
+      "reminders": "Fee reminder sent to {count} students",
+      "lesson": "{name} opened today's lesson",
+      "speaking": "{name} finished her speaking session: {score}/100",
+      "complete": "{name} completed lesson 6.3",
+      "levelUp": "{name} moved up to {level}",
+      "review": "{name} has 1 exercise to review tomorrow",
+      "booked": "{name} booked the B1 Conversation Club",
+      "test": "{name} started the level test on the site",
+      "level": "{name} took the test: level {level}",
+      "levelYou": "You took the test: level {level}",
+      "enrolled": "{name} enrolled in {course} and paid by {pay}",
+      "enrolledYou": "You enrolled in {course} and paid by {pay}",
+      "flagged": "{name} hasn't logged in for 5 days: at risk",
+      "nudge": "WhatsApp to {name} with a 5-minute lesson",
+      "replied": "{name} replied: doing the lesson now",
+      "later": "{name} is leaving it for tomorrow at 7 PM",
+      "back": "{name} did the express lesson and is back",
+      "dropped": "{name} dropped out of the course",
+      "paid": "{name} paid the October fee by {pay}"
+    },
+    "toast": {
+      "enrolled": "New enrollment",
+      "levelUp": "Level up",
+      "back": "A student is back",
+      "dropped": "Dropped out",
+      "review": "Lesson complete"
+    },
+    "nav": {
+      "today": "Today",
+      "students": "Students",
+      "courses": "Courses",
+      "live": "Live classes",
+      "tutor": "AI tutor",
+      "site": "Enrollments",
+      "groupSchool": "School",
+      "groupGrowth": "AI & growth",
+      "todayShort": "Today",
+      "studentsShort": "Students",
+      "siteShort": "Site"
+    },
+    "top": {
+      "online": "{count} students online",
+      "coordInitials": "LM"
+    },
+    "side": {
+      "title": "Follow-up",
+      "on": "On · {count} at risk",
+      "off": "Off"
+    },
+    "mode": {
+      "label": "View as",
+      "student": "Student",
+      "school": "School"
+    },
+    "student": {
+      "tabs": {
+        "home": "Today",
+        "course": "Course",
+        "speak": "Speak",
+        "tutor": "Tutor",
+        "class": "Class"
+      },
+      "done": "done",
+      "now": "now",
+      "pending": "pending",
+      "hello": "Good evening, {name}.",
+      "yourLevel": "Your level",
+      "levelLeft": "{pct}% to go for B1",
+      "levelPending": "B1: 1 review left",
+      "levelNew": "New level: B1",
+      "rulerLabel": "Level {level}, {pct}% complete",
+      "lessonKicker": "Today's lesson · 12 min",
+      "lessonSteps": "Lesson 6.3, step by step",
+      "step1": "Speaking",
+      "step2": "Writing",
+      "step3": "Exercise",
+      "lessonTitle": "Simple past: the irregular verbs",
+      "act1": "Speaking with your AI tutor",
+      "act2": "Writing, corrected",
+      "act3": "Quick exercise",
+      "start": "Start",
+      "continue": "Continue",
+      "complete": "Lesson complete",
+      "completeB1": "Lesson complete · A2 done",
+      "streakLabel": "{count, plural, one {#-day streak} other {#-day streak}}",
+      "goal": "Weekly goal",
+      "goalLabel": "{value} of {goal} minutes this week",
+      "goalDone": "Done. Nice.",
+      "goalLeft": "{count, plural, one {# minute to go} other {# minutes to go}}",
+      "nextClass": "Next live class",
+      "today": "Today",
+      "booked": "Booked",
+      "book": "Book",
+      "seats": "{count, plural, one {# seat left} other {# seats left}}",
+      "classes": {
+        "en-a2": "English A2 · Tue & Thu",
+        "club-b1": "Conversation Club B1",
+        "en-b1": "English B1 · Tue & Thu",
+        "en-b2": "English B2",
+        "pt-a1": "Portuguese A1",
+        "en-a1": "English A1",
+        "pt-a2": "Portuguese A2"
+      }
+    },
+    "course": {
+      "kicker": "English · level {level}",
+      "title": "Your course",
+      "syllabus": "Course units",
+      "unit": "U{n}",
+      "units": {
+        "u1": "Introductions",
+        "u2": "Routines and times",
+        "u3": "Food and shopping",
+        "u4": "Travel",
+        "u5": "Experiences",
+        "u6": "Simple past"
+      },
+      "nextOpen": "B1 unlocked",
+      "nextLocked": "B1 · opens when you finish A2",
+      "b1": {
+        "u1": "Plans and predictions",
+        "u2": "Work and study"
+      },
+      "live": "Your live classes",
+      "bookClub": "Book the {time} club",
+      "calendarLabel": "Your live classes this week and next"
+    },
+    "speak": {
+      "kicker": "Activity 1 of 3 · Speaking",
+      "title": "Talk 2 minutes with your tutor",
+      "pick": "Pick a topic",
+      "topic": "Topic",
+      "topicLabel": "Session topic",
+      "question": {
+        "weekend": "What did you do last weekend?",
+        "series": "Tell me about the last series you watched."
+      },
+      "again": "Practice again",
+      "prompts": {
+        "weekend": "Your last weekend",
+        "series": "The last series you watched"
+      },
+      "tutor": "AI tutor · speaking",
+      "tutorTag": "Tutor",
+      "status": {
+        "idle": "Ready when you are",
+        "connecting": "Connecting…",
+        "talking": "Your tutor is talking",
+        "listening": "Listening to {name}",
+        "analyzing": "Checking pronunciation",
+        "ended": "Session over"
+      },
+      "connecting": "Your tutor is connecting…",
+      "label": "{name}'s speaking practice with the AI tutor",
+      "duration": "Duration {time}",
+      "transcript": "Live transcript",
+      "score": "Score",
+      "scores": {
+        "pron": "Pronunciation",
+        "fluency": "Fluency",
+        "grammar": "Grammar"
+      },
+      "improved": "You fixed the /θ/ sound in one try.",
+      "badWord": "sink",
+      "goodWord": "think",
+      "weekend": {
+        "l0": "Hi Valentina! What did you do last weekend?",
+        "l1": "I sink I went to the cinema with my brother.",
+        "l2": "«sink» → «think» · /θ/ sound",
+        "l3": "Nice past tense! Now «think»: tongue between your teeth.",
+        "l4": "I think… I think it was great!",
+        "l5": "/θ/ right · score 92"
+      },
+      "series": {
+        "l0": "Hi Valentina! Tell me about the last series you watched.",
+        "l1": "I sink it was a Korean series. I watched three episodes.",
+        "l2": "«sink» → «think» · /θ/ sound",
+        "l3": "Good! Careful with «think»: tongue between your teeth.",
+        "l4": "I think… I think I loved it!",
+        "l5": "/θ/ right · score 90"
+      }
+    },
+    "tutor": {
+      "kicker": "Activity 2 of 3 · Writing",
+      "title": "AI tutor",
+      "subtitle": "Corrects you and explains in one line",
+      "date": "Today",
+      "label": "Valentina's chat with the AI tutor",
+      "composer": "Write a sentence in English…",
+      "waiting": "After the speaking, write me a sentence in English: I'll correct it and explain why in one line.",
+      "msg": "Yesterday I buyed a new jacket for the trip.",
+      "fix": "Yesterday I <bad>buyed</bad> <good>bought</good> a new jacket for the trip.",
+      "why": "«Buy» is irregular: buy → bought. No -ed.",
+      "quizKicker": "Quick exercise",
+      "quiz": "Last week she <gap>___</gap> a new phone.",
+      "replies": {
+        "bought": "bought",
+        "buyed": "buyed",
+        "buys": "buys"
+      },
+      "right": "Exactly: «bought». +{points} pts and the lesson is done.",
+      "wrong": "Almost: it's «bought» (buy → bought). I'll save it for tomorrow's review. +{points} pts."
+    },
+    "site": {
+      "path": "level-test",
+      "index": "Public site · level test",
+      "title": "Enrollments",
+      "botName": "Atri · assistant",
+      "botSub": "Level test in 2 minutes",
+      "chatLabel": "Site chat: level test",
+      "composer": "Type your answer…",
+      "taking": "{name} is taking the test",
+      "takingYou": "You're taking the test",
+      "tryIt": "Take the test yourself",
+      "again": "Take it again",
+      "hi": "Hi! I'm Atri, Atrio's assistant. Shall we do the level test? It's 3 questions.",
+      "courses": "We teach English from A1 to C1 and Portuguese from A1 to B2. Fee: {price} a month, with live classes and an AI tutor. Shall we find your level first?",
+      "q1": "1/3 · Fill in: She ___ to work by bus.",
+      "q2": "2/3 · Yesterday we ___ a great film.",
+      "q3": "3/3 · I ___ here since 2020.",
+      "result": "Your level: <b>{level}</b>. I recommend <b>{course}</b>: 12 weeks, 2 live classes a week and an AI tutor any time.",
+      "courseMeta": "12 weeks · 2 live classes a week",
+      "perMonth": "{price}/month",
+      "doubt": "Your first live class is a trial: if you don't like it, you don't pay. Shall I enroll you?",
+      "pay": "How would you like to pay the first fee?",
+      "paid": "Done, {name}! Payment approved. Your first class is Tuesday at 7 PM. We'll send everything on WhatsApp.",
+      "paidYou": "Done! Payment approved. Your first class is Tuesday at 7 PM. We'll send everything on WhatsApp.",
+      "approved": "Approved",
+      "alias": "Here's the school's account alias: atrio.idiomas.demo. Your access opens as soon as the transfer clears.",
+      "paidTransfer": "Transfer received · access open",
+      "replies": {
+        "start": "Start the test",
+        "courses": "See courses and prices",
+        "go": "go",
+        "goes": "goes",
+        "going": "going",
+        "see": "see",
+        "saw": "saw",
+        "seen": "seen",
+        "live": "live",
+        "have": "have lived",
+        "am": "am living",
+        "enroll": "Enroll me",
+        "doubt": "I have a question",
+        "card": "Card",
+        "transfer": "Bank transfer"
+      },
+      "links": {
+        "courses": "Courses",
+        "live": "Live classes",
+        "prices": "Prices"
+      },
+      "cta": "Level test",
+      "kicker": "English and Portuguese online",
+      "heroA": "Speak in 12 weeks, with someone who",
+      "heroB": "always corrects you.",
+      "heroBody": "Live classes twice a week, an AI tutor that corrects you at any hour and a plan that moves at your pace.",
+      "testCta": "Take the test (2 min)",
+      "seeCourses": "See courses",
+      "coursesKicker": "Courses",
+      "coursesTitle": "Start at your level",
+      "enrolLine": "Test {level} → {course}",
+      "payShort": {
+        "card": "Paid by card",
+        "transfer": "Paid by bank transfer"
+      },
+      "enrolledToday": "Today's enrollments",
+      "enrolledCount": "{count} in October",
+      "leads": {
+        "lead1": "Florencia D.",
+        "lead2": "Ramiro C."
+      },
+      "funnel": "Level test · October",
+      "funnelSteps": {
+        "visits": "Site visits",
+        "tests": "Took the test",
+        "enrolled": "Enrolled"
+      }
+    },
+    "wa": {
+      "nudge": "Hi {name}, how's it going? You haven't logged in for 5 days. I made you a 5-minute express lesson to pick up where you left off.",
+      "cardTitle": "Express lesson · Routines",
+      "cardMeta": "5 min · 8 sentences",
+      "replies": {
+        "yes": "Sure, doing it now",
+        "later": "Can't today"
+      },
+      "go": "Great! It's 8 short sentences. See you inside.",
+      "done": "{name} completed the express lesson · 5 min",
+      "tomorrow": "No problem. I'll keep it for tomorrow and remind you at 7 PM.",
+      "noteLater": "Reminder scheduled · tomorrow 7 PM",
+      "waiting": "Message scheduled for {name}",
+      "noNudge": "No follow-up: nobody writes to {name}",
+      "dropped": "{name} dropped out. Nobody wrote to him.",
+      "label": "{name}'s WhatsApp with the school",
+      "date": "Today"
+    },
+    "class": {
+      "kicker": "English A2 · Tue & Thu group",
+      "title": "Your class · this week",
+      "you": "you",
+      "martinBack": "Back today",
+      "rankLabel": "Rank {rank} of {count}",
+      "pts": "pts",
+      "climbed": "{count, plural, one {Up # spot today} other {Up # spots today}}",
+      "keepGoing": "One more lesson and you move up",
+      "boardLabel": "Your class's weekly ranking",
+      "stickers": "Stickers"
+    },
+    "badges": {
+      "levelB1": "Level B1",
+      "speak10": "10 speaking sessions",
+      "streak7": "7 days in a row",
+      "firstLive": "First live class",
+      "words": "100 words",
+      "streak30": "30 days in a row"
+    },
+    "levelUp": {
+      "close": "Close",
+      "kicker": "Lesson 6.3 · complete",
+      "titleB1": "A2 done. You're B1 now.",
+      "title": "Lesson complete.",
+      "bodyB1": "From your next class you move to the English B1 group. Your streak goes on.",
+      "body": "One exercise left to finish A2: you'll review it with your tutor tomorrow.",
+      "streak": "Streak",
+      "days": "{count, plural, one {# day} other {# days}}",
+      "points": "Points",
+      "speaking": "Speaking",
+      "book": "Book the {time} club",
+      "booked": "Booked · {time} club",
+      "continue": "Continue"
+    },
+    "today": {
+      "greeting": "Today at school",
+      "completion": "Finish the course · August cohort",
+      "completionSub": "<b>{n}</b> of {total} students still on track",
+      "completionFell": "Down: {name} dropped out and nobody wrote to him.",
+      "withNudges": "With follow-up",
+      "before": "Before: {pct}",
+      "fees": "Fees · October",
+      "feesHint": "{paid} of {total} students up to date",
+      "active": "Active students",
+      "activeHint": "Across 6 courses",
+      "atRisk": "At risk",
+      "atRiskHint": "3+ days without logging in",
+      "atRiskDelta": "{count, plural, one {# came back today} other {# came back today}}",
+      "atRiskDropped": "1 dropped out",
+      "enrollments": "Enrollments · October",
+      "enrollmentsDelta": "+{count} today",
+      "enrollmentsHint": "From the level test",
+      "now": "Now at Atrio",
+      "openStudents": "See students",
+      "activity": "Activity"
+    },
+    "lanes": {
+      "label": "What's happening now",
+      "done": "done",
+      "now": "in progress",
+      "pending": "pending",
+      "inProgress": "In progress",
+      "valentina": {
+        "context": "English A2 · lesson 6.3",
+        "s1": "Opened the lesson",
+        "s2": "Speaking · {score}/100",
+        "s2pending": "Speaking",
+        "s3": "Writing corrected",
+        "s3wrong": "Exercise missed",
+        "s4": "Lesson complete",
+        "outB1": "Up to B1",
+        "outReview": "Reviews tomorrow"
+      },
+      "lead": {
+        "context": "Level test on the site",
+        "s1": "Opened the chat",
+        "s2": "Level {level}",
+        "s2pending": "Test in progress",
+        "s3": "Picked a course",
+        "s4": "Paid by {pay}",
+        "s4pending": "Payment",
+        "out": "Enrolled",
+        "outYou": "You're in"
+      },
+      "martin": {
+        "context": "5 days away",
+        "s1": "Flagged at risk",
+        "s2": "WhatsApp + 5-min lesson",
+        "s2off": "No follow-up",
+        "s3": "Replied",
+        "s3later": "Leaves it for tomorrow",
+        "s3off": "Nobody wrote",
+        "s4": "Came back",
+        "s4off": "Dropped out",
+        "outBack": "Back",
+        "outDropped": "Dropped",
+        "outLater": "Tomorrow 7 PM"
+      }
+    },
+    "students": {
+      "index": "Students · {count} active",
+      "title": "Students",
+      "sub": "Anyone who drifts away gets a 5-minute lesson on WhatsApp. Nobody has to chase them.",
+      "roster": "Today's follow-up",
+      "rosterCount": "{shown} of {total}",
+      "cols": {
+        "student": "Student",
+        "progress": "Level progress",
+        "status": "Status"
+      },
+      "lastToday": "Today",
+      "lastDays": "{count, plural, one {# day ago} other {# days ago}}",
+      "status": {
+        "ok": "On track",
+        "risk": "At risk",
+        "sent": "WhatsApp sent",
+        "back": "Back",
+        "later": "Tomorrow",
+        "dropped": "Dropped",
+        "lesson": "In a lesson",
+        "b1": "Up to B1"
+      },
+      "nudge": {
+        "title": "WhatsApp rescue",
+        "rule": "3 days without logging in → a WhatsApp with a 5-minute lesson.",
+        "off": "Off: students who drift away get nothing.",
+        "sentWeek": "Sent this week",
+        "backWeek": "Came back",
+        "avg": "Back within",
+        "avgValue": "38 min"
+      },
+      "fees": {
+        "title": "Fee reminders",
+        "rule": "Due on the 10th · {count} reminders went out today",
+        "of": "{paid} of {total} paid",
+        "firstFee": "{name} · first fee",
+        "via": {
+          "card": "card",
+          "transfer": "transfer"
+        }
+      }
+    },
+    "courses": {
+      "index": "Courses · {count} active",
+      "title": "Courses",
+      "sub": "Where students stay. This quarter, follow-up brought {rescued} back.",
+      "retention": "Active students per week · August cohort",
+      "legendNow": "With follow-up",
+      "legendBefore": "Before (2025 cohort)",
+      "week3": "Week 3: {now} still in (before {before})",
+      "caption": "Week 3 used to be the cliff. Today <b>{last}</b> of {total} finish; before, {before}.",
+      "srSummary": "With follow-up, {pct} of the cohort finishes; before, {before}.",
+      "ledger": "Courses",
+      "ledgerHint": "Students per unit (1–8)",
+      "students": "{count} students",
+      "unitsLabel": "Students spread across 8 units; the average is at unit {unit}"
+    },
+    "live": {
+      "index": "Live classes · Thursday",
+      "title": "Live classes",
+      "sub": "6 classes today, 3 teachers. Every student books a seat from the app.",
+      "seats": "{taken}/{seats} seats",
+      "onAir": "Live · {count} connected",
+      "done": "Finished",
+      "upcoming": "Later",
+      "onAirTitle": "On air",
+      "connected": "connected",
+      "nextTitle": "Filling up",
+      "bookedBy": "{name} booked (just moved up to B1)",
+      "clubHint": "Only for B1 students and up",
+      "attendance": "Attendance this week",
+      "attendanceHint": "With a WhatsApp reminder 1 h before",
+      "calendarLabel": "Today's live classes by teacher",
+      "subjects": {
+        "carla": "English",
+        "diego": "English",
+        "ana": "Portuguese"
+      }
+    },
+    "tutorView": {
+      "index": "AI tutor · 24/7",
+      "title": "AI tutor",
+      "sub": "It corrects, explains in one line and makes students practice. Teachers see where each group struggles.",
+      "corrections": "Corrections today",
+      "correctionsHint": "Written and spoken",
+      "sessions": "Speaking sessions",
+      "sessionsHint": "2 minutes each, scored",
+      "solved": "Questions solved without a teacher",
+      "solvedHint": "The rest go to a teacher with context",
+      "errors": "Most corrected today",
+      "errorsLabel": "Today's most frequent mistakes",
+      "errorNames": {
+        "th": "/θ/ sound (th)",
+        "past": "Irregular past",
+        "prep": "Prepositions",
+        "third": "Third-person -s"
+      },
+      "errorEx": {
+        "th": "sink → think",
+        "past": "buyed → bought",
+        "prep": "in Monday → on Monday",
+        "third": "she go → she goes"
+      },
+      "liveSpeaking": "Live speaking · {name}",
+      "liveWriting": "Live writing · {name}"
     }
   }
 }

@@ -1,0 +1,2973 @@
+/*
+ * Atrio Idiomas — Demo. A dark chalkboard (#172338) written on with chalk (#F3F0E6),
+ * sky (#7CC8F5) and salmon (#FF9F87) chalk. Classroom & notebook: hand-drawn chalk
+ * marks (SVG strokes wiped in with clip-path), sticker badges, mono scores, ruled
+ * notebook pages. Sizes in em (the demo root scales with the device); colors from the
+ * theme's --demo-* variables. Motion: transform / opacity / clip-path only.
+ */
+
+.atrio {
+  --atrio-chalk: var(--demo-ink);
+  --atrio-sky: var(--demo-accent);
+  --atrio-salmon: var(--demo-accent-2);
+  --atrio-yellow: var(--demo-ok);
+  --atrio-rule: color-mix(in oklab, var(--demo-ink) 7%, transparent);
+  /* On the board, the salmon tint stays light (the kit default is heavy on dark surfaces). */
+  --demo-accent-2-soft: color-mix(in oklab, var(--demo-accent-2) 18%, var(--demo-surface));
+  position: relative;
+  min-height: 100%;
+}
+/* The board is lit from the top-left, like a window next to it. */
+.atrio-board {
+  background: radial-gradient(110% 70% at 0% 0%, rgb(243 240 230 / 0.045), transparent 62%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Type                                                                 */
+/* ------------------------------------------------------------------ */
+.atrio-index {
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.atrio-label {
+  display: block;
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.atrio-h3 {
+  font-size: 0.86em;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+}
+.atrio-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1em;
+}
+.atrio-title {
+  margin-top: 0.15em;
+  font-size: 1.7em;
+}
+.atrio-sub {
+  margin-top: 0.4em;
+  max-width: 36em;
+  color: var(--demo-muted);
+  font-size: 0.74em;
+  line-height: 1.4;
+}
+.atrio-head-aside {
+  flex: none;
+}
+.atrio-hello {
+  padding-top: 0.2em;
+}
+.atrio-hello-title {
+  margin-top: 0.25em;
+  font-size: 1.55em;
+  line-height: 1.05;
+}
+.atrio-bigmono {
+  margin-top: 0.15em;
+  font-size: 1.7em;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.atrio-strong {
+  color: var(--demo-accent-text);
+  font-weight: 650;
+}
+.atrio-money {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Chalk marks                                                          */
+/* ------------------------------------------------------------------ */
+.atrio-chalk {
+  overflow: visible;
+  fill: none;
+  stroke: var(--chalk-c, var(--atrio-sky));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.atrio-chalk[data-tone='salmon'] {
+  --chalk-c: var(--atrio-salmon);
+}
+.atrio-chalk[data-tone='chalk'] {
+  --chalk-c: var(--atrio-chalk);
+}
+.atrio-chalk[data-tone='ok'] {
+  --chalk-c: var(--atrio-yellow);
+}
+.atrio-chalk path {
+  stroke-width: 2.4;
+  vector-effect: non-scaling-stroke;
+}
+.atrio-chalk .atrio-chalk-2 {
+  stroke-width: 1.1;
+  opacity: 0.5;
+}
+.atrio-chalk[data-draw] {
+  animation: atrio-wipe 0.75s var(--demo-ease) 0.1s both;
+}
+@keyframes atrio-wipe {
+  from {
+    clip-path: inset(-20% 100% -20% -10%);
+  }
+  to {
+    clip-path: inset(-20% -10% -20% -10%);
+  }
+}
+.atrio-mark {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.atrio-mark > .atrio-chalk-under {
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  bottom: -0.32em;
+  width: 108%;
+  height: 0.5em;
+}
+.atrio-mark > .atrio-chalk-circle {
+  position: absolute;
+  inset: -0.32em -0.45em -0.28em -0.5em;
+  width: calc(100% + 0.95em);
+  height: calc(100% + 0.6em);
+}
+.atrio-chalk-tick {
+  width: 1em;
+  height: 1em;
+}
+.atrio-chalk-tick path {
+  stroke-width: 2.6;
+}
+
+/* ------------------------------------------------------------------ */
+/* Controls                                                             */
+/* ------------------------------------------------------------------ */
+.atrio-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 2.75em;
+  padding: 0 1.2em;
+  border-radius: 0.6em;
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+  font-size: 0.8em;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  box-shadow:
+    0 0.12em 0 color-mix(in oklab, var(--demo-accent) 55%, #000),
+    0 0.7em 1.4em -0.8em color-mix(in oklab, var(--demo-accent) 70%, transparent);
+  transition: transform 0.25s var(--demo-ease);
+}
+.atrio-btn:active {
+  transform: translateY(0.1em) scale(0.98);
+}
+.atrio-btn svg {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+}
+.atrio-btn[data-pressing] {
+  animation: atrio-press 0.5s var(--demo-ease) both;
+}
+@keyframes atrio-press {
+  50% {
+    transform: translateY(0.12em) scale(0.96);
+  }
+}
+.atrio-btn-sm {
+  min-height: 2.2em;
+  padding: 0 0.85em;
+  font-size: 0.68em;
+}
+.atrio-btn-ghost {
+  background: transparent;
+  color: var(--demo-accent-text);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-accent) 55%, transparent);
+}
+.atrio-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  min-height: 2em;
+  color: var(--demo-accent-text);
+  font-size: 0.7em;
+  font-weight: 600;
+}
+.atrio-link svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.atrio-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.atrio-pill {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.3em 0.65em;
+  border-radius: 0.4em;
+  background: var(--demo-sunken);
+  color: var(--demo-muted);
+  font-size: 0.64em;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.atrio-pill[data-tone='ok'] {
+  background: color-mix(in oklab, var(--demo-ok) 16%, var(--demo-surface));
+  color: var(--demo-ok);
+}
+.atrio-pill svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+.atrio-card {
+  border: 1px solid var(--demo-line);
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+}
+.atrio-panel {
+  padding: 0.85em 0.9em;
+}
+.atrio-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+  margin-bottom: 0.6em;
+}
+
+/* Kit restyles: pills a touch squarer (index cards), cards on the board */
+.atrio .demo-pill {
+  border-radius: 0.38em;
+  font-weight: 620;
+}
+.atrio .demo-card {
+  border-color: var(--demo-line);
+}
+.atrio .demo-kpi {
+  gap: 0.35em;
+}
+.atrio .demo-kpi-label {
+  font-family: var(--font-mono);
+  font-size: 0.58em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.atrio .demo-kpi-value {
+  font-size: 1.75em;
+}
+.atrio .demo-kpi-value .demo-display {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+.atrio .demo-kpi[data-emphasis] {
+  background: var(--demo-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell bits                                                           */
+/* ------------------------------------------------------------------ */
+.atrio-toptitle {
+  font-size: 1.05em;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.atrio-topdate {
+  color: var(--demo-muted);
+  font-size: 0.66em;
+}
+.atrio-toppill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.4em 0.75em;
+  border-radius: 0.5em;
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+  font-size: 0.68em;
+  font-weight: 550;
+  white-space: nowrap;
+}
+.atrio-coord {
+  display: grid;
+  width: 2.2em;
+  height: 2.2em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-accent-2);
+  color: var(--demo-accent-2-ink);
+  font-size: 0.72em;
+  font-weight: 700;
+}
+.atrio-sidefoot {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.65em;
+  border-radius: var(--demo-radius-sm);
+  background: color-mix(in oklab, var(--demo-accent) 12%, var(--demo-surface));
+}
+.atrio-sidefoot[data-off] {
+  background: color-mix(in oklab, var(--demo-bad) 12%, var(--demo-surface));
+}
+.atrio-sidefoot-mark {
+  display: grid;
+  width: 2em;
+  height: 2em;
+  flex: none;
+  place-items: center;
+  border-radius: 0.45em;
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.atrio-sidefoot[data-off] .atrio-sidefoot-mark {
+  background: var(--demo-bad);
+}
+.atrio-sidefoot-mark svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.atrio-mode {
+  display: inline-flex;
+  padding: 0.18em;
+  border-radius: 0.6em;
+  background: var(--demo-sunken);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-mode button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  min-height: 2.3em;
+  padding: 0 0.55em;
+  border-radius: 0.45em;
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.58em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.atrio-mode button svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+.atrio-mode button[aria-pressed='true'] {
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.atrio-me {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.2em 0.2em 0.2em 0.55em;
+  border-radius: 999px;
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+  color: var(--demo-accent-2-text);
+  font-size: 0.74em;
+  font-weight: 600;
+}
+.atrio-me > svg {
+  width: 1.05em;
+  height: 1.05em;
+}
+.atrio-me-av {
+  margin-left: 0.15em;
+  font-size: 0.82em;
+}
+
+/* Toasts: index cards pinned to the board */
+.atrio-toasts .demo-toast {
+  border-radius: 0.55em;
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.2),
+    0 1.2em 2em -1em rgb(0 0 0 / 0.7);
+}
+.atrio-toasts .demo-toast-body {
+  color: color-mix(in oklab, var(--demo-bg) 72%, transparent);
+}
+.atrio-toasts .demo-toast-icon {
+  background: var(--demo-bg);
+  color: var(--tone-fg);
+}
+
+/* ------------------------------------------------------------------ */
+/* CEFR ruler                                                           */
+/* ------------------------------------------------------------------ */
+.atrio-cefr {
+  --pos: 0.4;
+  position: relative;
+  padding: 0.95em 0.15em 0;
+  overflow: hidden;
+}
+.atrio-cefr-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  height: 0.9em;
+}
+.atrio-cefr-seg {
+  position: relative;
+  border-left: 1px solid color-mix(in oklab, var(--demo-ink) 55%, transparent);
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0 calc(20% - 1px),
+    color-mix(in oklab, var(--demo-ink) 22%, transparent) calc(20% - 1px) 20%
+  );
+  background-size: 100% 45%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
+.atrio-cefr-seg:last-of-type {
+  border-right: 1px solid color-mix(in oklab, var(--demo-ink) 55%, transparent);
+}
+.atrio-cefr-track::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: color-mix(in oklab, var(--demo-ink) 40%, transparent);
+}
+.atrio-cefr-fill {
+  position: absolute;
+  inset: auto 0 0;
+  height: 0.32em;
+  border-radius: 0 0.2em 0.2em 0;
+  background: var(--demo-accent);
+  transform: scaleX(var(--pos));
+  transform-origin: left center;
+  transition: transform 1.1s var(--demo-ease);
+}
+.atrio-cefr-marker {
+  position: absolute;
+  inset: -0.95em 0 auto 0;
+  height: 0.8em;
+  transform: translateX(calc(var(--pos) * 100%));
+  transition: transform 1.1s var(--demo-ease);
+  pointer-events: none;
+}
+.atrio-cefr-marker > span {
+  position: absolute;
+  left: -0.42em;
+  top: 0;
+  width: 0.84em;
+  height: 0.7em;
+  background: var(--demo-accent-2);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+.atrio-cefr-labels {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: 0.35em;
+}
+.atrio-cefr-labels li {
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.66em;
+  font-weight: 500;
+  padding-left: 0.2em;
+}
+.atrio-cefr-labels li[data-state='done'] {
+  color: color-mix(in oklab, var(--demo-ink) 80%, transparent);
+}
+.atrio-cefr-labels li[data-state='now'] {
+  color: var(--demo-accent-text);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ */
+/* Goal ring                                                            */
+/* ------------------------------------------------------------------ */
+.atrio-ring {
+  position: relative;
+  width: 4.4em;
+  height: 4.4em;
+  flex: none;
+}
+.atrio-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+.atrio-ring-track {
+  fill: none;
+  stroke: var(--demo-sunken);
+  stroke-width: 4;
+}
+.atrio-ring-arc {
+  fill: none;
+  stroke: var(--demo-accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.atrio-ring[data-done] .atrio-ring-arc {
+  stroke: var(--demo-ok);
+}
+.atrio-ring-tick {
+  stroke: color-mix(in oklab, var(--demo-ink) 30%, transparent);
+  stroke-width: 0.6;
+}
+.atrio-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  padding-top: 1.45em;
+  line-height: 1;
+}
+.atrio-ring-n {
+  font-size: 1.15em;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+.atrio-ring-of {
+  color: var(--demo-muted);
+  font-size: 0.6em;
+}
+.atrio-ring[data-done] {
+  animation: atrio-pop 0.6s var(--demo-ease) both;
+}
+@keyframes atrio-pop {
+  0% {
+    transform: scale(0.92);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Student app                                                          */
+/* ------------------------------------------------------------------ */
+.atrio[data-app='student'],
+.atrio[data-app='student'] > .demo-view {
+  height: 100%;
+}
+.atrio-student {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  gap: 0.85em;
+  padding-bottom: 0.6em;
+}
+.atrio-fill {
+  height: 100%;
+  min-height: 0;
+}
+.atrio-levelcard {
+  padding: 0.75em 0.85em 0.8em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-levelcard-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6em;
+}
+.atrio-levelcard-pct {
+  color: var(--demo-accent-text);
+  font-size: 0.62em;
+  white-space: nowrap;
+}
+
+/* Notebook page: ruled lines + a salmon margin */
+.atrio-notebook {
+  --rule: 1.5em;
+  position: relative;
+  padding: 0.85em 0.9em 0.95em 1.55em;
+  overflow: hidden;
+  border-radius: var(--demo-radius);
+  background:
+    linear-gradient(to right, transparent 1.05em, color-mix(in oklab, var(--demo-accent-2) 75%, transparent) 1.05em 1.12em, transparent 1.12em),
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--rule) - 1px), var(--atrio-rule) calc(var(--rule) - 1px) var(--rule)),
+    #F3F0E6;
+  background-position: 0 0, 0 0.42em, 0 0;
+  color: #172338;
+  box-shadow: 0 1em 2em -1.2em rgb(0 0 0 / 0.65);
+  --atrio-rule: rgb(23 35 56 / 0.1);
+}
+.atrio-notebook::after {
+  content: '';
+  position: absolute;
+  top: 0.55em;
+  right: 0.7em;
+  width: 2.4em;
+  height: 0.85em;
+  background: color-mix(in oklab, var(--demo-accent) 70%, #fff);
+  opacity: 0.7;
+  transform: rotate(6deg);
+  clip-path: polygon(0 8%, 100% 0, 96% 100%, 3% 92%);
+}
+.atrio-notebook-k {
+  display: flex;
+  gap: 0.6em;
+  color: #46526a;
+  font-family: var(--font-mono);
+  font-size: 0.58em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.atrio-notebook-title {
+  margin-top: 0.4em;
+  max-width: 13em;
+  font-size: 1.22em;
+  line-height: 1.12;
+}
+.atrio-activities {
+  display: flex;
+  flex-direction: column;
+  margin: 0.55em 0 0.75em;
+}
+.atrio-activity {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  min-height: 2.05em;
+  color: #46526a;
+  font-size: 0.74em;
+}
+.atrio-activity[data-now] {
+  color: #172338;
+  font-weight: 650;
+}
+.atrio-activity[data-done] {
+  color: #172338;
+}
+.atrio-activity-n {
+  display: grid;
+  width: 1.55em;
+  height: 1.55em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px rgb(23 35 56 / 0.35);
+  font-size: 0.86em;
+}
+.atrio-activity[data-now] .atrio-activity-n {
+  background: #172338;
+  color: #f3f0e6;
+  box-shadow: none;
+}
+.atrio-activity[data-done] .atrio-activity-n {
+  box-shadow: none;
+}
+.atrio-activity .atrio-chalk-tick {
+  width: 1.5em;
+  height: 1.5em;
+  --chalk-c: #c2410c;
+}
+.atrio-activity-icon {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+  opacity: 0.7;
+}
+.atrio-notebook .atrio-btn {
+  background: #172338;
+  color: #f3f0e6;
+  box-shadow: 0 0.12em 0 #000;
+}
+.atrio-notebook-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.45em 0.75em;
+  border-radius: 0.5em;
+  background: #172338;
+  color: var(--demo-ok);
+  font-size: 0.72em;
+  font-weight: 650;
+}
+.atrio-notebook-done svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.atrio-row2 {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 0.6em;
+}
+.atrio-goal {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.65em;
+}
+.atrio-goal-text {
+  min-width: 0;
+}
+.atrio-streakcard {
+  padding: 0.65em 0.7em;
+}
+/* Streak: count + tally of the week, in chalk */
+.atrio-streak .demo-streak-flame {
+  width: 1.9em;
+  height: 1.9em;
+  border-radius: 0.5em;
+  background: color-mix(in oklab, var(--demo-accent-2) 18%, var(--demo-surface));
+  color: var(--demo-accent-2-text);
+}
+.atrio-streak .demo-streak-days {
+  font-family: var(--font-mono);
+  font-size: 1.6em;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+.atrio-streak .demo-streak-label {
+  font-size: 0.62em;
+  line-height: 1.15;
+}
+.atrio-streak .demo-streak-week {
+  gap: 0.15em;
+  margin-top: 0.5em;
+}
+.atrio-streak .demo-streak-dot {
+  width: 1.05em;
+  height: 1.05em;
+  border-radius: 0.25em;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-ink) 28%, transparent);
+}
+.atrio-streak .demo-streak-week li[data-done] .demo-streak-dot {
+  background: var(--demo-accent-2);
+  box-shadow: none;
+}
+.atrio-streak .demo-streak-week li[data-today] .demo-streak-dot {
+  box-shadow:
+    0 0 0 0.12em var(--demo-surface),
+    0 0 0 0.24em var(--demo-accent-2);
+}
+.atrio-streak .demo-streak-day {
+  font-family: var(--font-mono);
+  font-size: 0.5em;
+}
+
+.atrio-next {
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+  padding: 0.65em 0.75em;
+}
+.atrio-next-icon {
+  display: grid;
+  width: 2.1em;
+  height: 2.1em;
+  flex: none;
+  place-items: center;
+  border-radius: 0.5em;
+  background: var(--demo-sunken);
+  color: var(--demo-accent-text);
+}
+.atrio-next-icon svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+/* Course map: a syllabus on a line */
+.atrio-syllabus {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.atrio-syllabus::before {
+  content: '';
+  position: absolute;
+  top: 0.9em;
+  bottom: 0.9em;
+  left: 0.85em;
+  width: 1px;
+  background: repeating-linear-gradient(to bottom, color-mix(in oklab, var(--demo-ink) 35%, transparent) 0 0.25em, transparent 0.25em 0.45em);
+}
+.atrio-unit {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+  padding: 0.4em 0;
+}
+.atrio-unit-node {
+  position: relative;
+  display: grid;
+  width: 1.7em;
+  height: 1.7em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-bg);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--demo-ink) 35%, transparent);
+  color: var(--demo-muted);
+  font-size: 0.74em;
+}
+.atrio-unit-node svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+.atrio-unit[data-state='done'] .atrio-unit-node {
+  background: color-mix(in oklab, var(--demo-ink) 14%, var(--demo-bg));
+  box-shadow: none;
+  color: var(--demo-ink);
+}
+.atrio-unit[data-state='now'] .atrio-unit-node {
+  background: var(--demo-accent);
+  box-shadow: 0 0 0 0.25em color-mix(in oklab, var(--demo-accent) 25%, transparent);
+  color: var(--demo-accent-ink);
+}
+.atrio-unit[data-state='open'] .atrio-unit-node {
+  background: var(--demo-accent-2);
+  box-shadow: none;
+  color: var(--demo-accent-2-ink);
+  animation: atrio-pop 0.6s var(--demo-ease) both;
+}
+.atrio-unit[data-state='locked'] {
+  opacity: 0.72;
+}
+.atrio-unit-title {
+  display: block;
+  padding-top: 0.2em;
+  font-size: 0.76em;
+  line-height: 1.3;
+}
+.atrio-unit[data-state='now'] .atrio-unit-title {
+  font-weight: 650;
+}
+.atrio-unit-k {
+  color: var(--demo-muted);
+  font-size: 0.86em;
+}
+.atrio-unit-count {
+  flex: none;
+  padding-top: 0.3em;
+  color: var(--demo-muted);
+  font-size: 0.66em;
+}
+.atrio-lessons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+  margin-top: 0.4em;
+}
+.atrio-lesson {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.25em 0.5em;
+  border-radius: 0.35em;
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  color: var(--demo-muted);
+  font-size: 0.64em;
+}
+.atrio-lesson[data-done] {
+  background: color-mix(in oklab, var(--demo-ink) 10%, transparent);
+  box-shadow: none;
+  color: var(--demo-ink);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in oklab, var(--demo-ink) 40%, transparent);
+}
+.atrio-lesson[data-today] {
+  box-shadow: inset 0 0 0 1.5px var(--demo-accent-2);
+  color: var(--demo-ink);
+}
+.atrio-lesson-today {
+  color: var(--demo-accent-2-text);
+  font-weight: 650;
+}
+.atrio-livecal {
+  padding: 0.75em 0.7em 0.5em;
+}
+.atrio-livecal .demo-cal {
+  margin-top: 0.55em;
+}
+
+/* Calendar on the board: index-card events */
+.atrio-cal .demo-cal-event {
+  border-radius: 0.35em;
+}
+
+/* Lesson steps: three segments of a ruler */
+.atrio-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.3em;
+}
+.atrio-steps li {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.atrio-steps-bar {
+  display: block;
+  height: 0.28em;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--demo-ink) 14%, transparent);
+  overflow: hidden;
+}
+.atrio-steps li[data-done] .atrio-steps-bar {
+  background: var(--demo-ok);
+}
+.atrio-steps li[data-now] .atrio-steps-bar {
+  background: linear-gradient(to right, var(--demo-accent) 45%, color-mix(in oklab, var(--demo-ink) 14%, transparent) 45%);
+}
+.atrio-steps-label {
+  overflow: hidden;
+  color: var(--demo-muted);
+  font-size: 0.6em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.atrio-steps li[data-now] .atrio-steps-label {
+  color: var(--demo-accent-text);
+  font-weight: 650;
+}
+.atrio-steps li[data-done] .atrio-steps-label {
+  color: var(--demo-ink);
+}
+
+/* Topic of the speaking session: the question in chalky serif */
+.atrio-topic {
+  padding: 0.7em 0.85em 0.75em;
+  border-radius: var(--demo-radius);
+  background:
+    repeating-linear-gradient(to right, transparent 0 1.4em, rgb(243 240 230 / 0.03) 1.4em calc(1.4em + 1px)),
+    repeating-linear-gradient(to bottom, transparent 0 1.4em, rgb(243 240 230 / 0.03) 1.4em calc(1.4em + 1px)),
+    var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-topic-q {
+  margin-top: 0.25em;
+  font-family: var(--font-serif);
+  font-size: 1.32em;
+  font-style: italic;
+  line-height: 1.15;
+  animation: atrio-line-in 0.45s var(--demo-ease) both;
+}
+.atrio-prompts {
+  margin-top: 0.6em;
+  padding-top: 0.55em;
+  border-top: 1px dashed var(--demo-line-strong);
+}
+.atrio-prompts-k {
+  color: var(--demo-muted);
+  font-size: 0.62em;
+}
+
+/* Speaking */
+.atrio-speakview {
+  gap: 0.7em;
+}
+.atrio-prompts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  margin-top: 0.45em;
+}
+.atrio-prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: 2.6em;
+  padding: 0 0.85em;
+  border-radius: 0.55em;
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  font-size: 0.74em;
+  font-weight: 600;
+  transition:
+    transform 0.2s var(--demo-ease),
+    background-color 0.2s ease;
+}
+.atrio-prompt svg {
+  width: 1.05em;
+  height: 1.05em;
+}
+.atrio-prompt[aria-pressed='true'] {
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+  box-shadow: none;
+}
+.atrio-prompt:active {
+  transform: scale(0.97);
+}
+
+.atrio-speak {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75em;
+  padding: 0.9em;
+  border-radius: var(--demo-radius-lg);
+  background: var(--demo-sunken);
+  box-shadow:
+    inset 0 0 0 1px var(--demo-line),
+    0 1em 2em -1.4em rgb(0 0 0 / 0.7);
+}
+.atrio-speak[data-variant='compact'] {
+  gap: 0.6em;
+  padding: 0.8em;
+}
+.atrio-speak-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+}
+.atrio-speak-orb {
+  position: relative;
+  display: grid;
+  width: 2.5em;
+  height: 2.5em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.atrio-speak[data-phase='ended'] .atrio-speak-orb {
+  background: color-mix(in oklab, var(--demo-ink) 12%, transparent);
+  color: var(--demo-muted);
+}
+.atrio-speak-orb svg {
+  position: relative;
+  width: 1.2em;
+  height: 1.2em;
+}
+.atrio-speak-rings,
+.atrio-speak-rings::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0.12em var(--demo-accent);
+  animation: atrio-ring 2.4s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+}
+.atrio-speak-rings::before {
+  content: '';
+  animation-delay: 0.8s;
+}
+@keyframes atrio-ring {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+.atrio-speak-status {
+  margin-top: 0.1em;
+  color: var(--demo-muted);
+  font-size: 0.68em;
+}
+.atrio-speak[data-phase='live'] .atrio-speak-status {
+  color: var(--demo-accent-text);
+}
+.atrio-speak-timer {
+  flex: none;
+  padding: 0.25em 0.5em;
+  border-radius: 0.4em;
+  background: color-mix(in oklab, var(--demo-ink) 8%, transparent);
+  font-size: 0.8em;
+}
+.atrio-wave {
+  --voice-agent: var(--demo-accent);
+  --voice-caller: var(--demo-accent-2);
+  flex: none;
+  height: 3em;
+  padding: 0 0.2em;
+}
+.atrio-transcript {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.6em;
+  padding-top: 0.6em;
+  overflow-y: auto;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 1.4em);
+  mask-image: linear-gradient(to bottom, transparent, #000 1.4em);
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.atrio-transcript::-webkit-scrollbar {
+  display: none;
+}
+.atrio-speak[data-variant='compact'] .atrio-transcript {
+  max-height: none;
+}
+.atrio-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18em;
+  animation: atrio-line-in 0.4s var(--demo-ease) both;
+}
+.atrio-line[data-who='caller'] {
+  padding-left: 1.2em;
+}
+.atrio-line-tag {
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.56em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.atrio-line[data-who='agent'] .atrio-line-tag {
+  color: var(--demo-accent-text);
+}
+.atrio-line[data-who='caller'] .atrio-line-tag {
+  color: var(--demo-accent-2-text);
+}
+.atrio-line-text {
+  font-size: 0.8em;
+  line-height: 1.45;
+}
+.atrio-line[data-who='caller'] .atrio-line-text {
+  font-family: var(--font-serif);
+  font-size: 0.98em;
+  font-style: italic;
+  line-height: 1.3;
+}
+.atrio-word {
+  animation: atrio-word-in 0.35s ease-out both;
+}
+@keyframes atrio-word-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes atrio-line-in {
+  from {
+    transform: translateY(0.4em);
+    opacity: 0;
+  }
+}
+.atrio-word-bad {
+  color: var(--demo-accent-2-text);
+}
+.atrio-word-good {
+  color: var(--demo-accent-text);
+}
+.atrio-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 0.32em 0.65em;
+  border-radius: 0.4em;
+  background: color-mix(in oklab, var(--demo-accent-2) 16%, transparent);
+  color: var(--demo-accent-2-text);
+  font-family: var(--font-mono);
+  font-size: 0.62em;
+}
+.atrio-line[data-last] .atrio-flag {
+  background: color-mix(in oklab, var(--demo-ok) 14%, transparent);
+  color: var(--demo-ok);
+}
+.atrio-flag svg {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+}
+.atrio-flag span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.atrio-speak-empty {
+  color: var(--demo-muted);
+  font-size: 0.74em;
+}
+
+.atrio-score {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.4em 1em;
+  padding: 0.7em 0.8em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+  animation: atrio-line-in 0.5s var(--demo-ease) both;
+}
+.atrio-score-n {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1em;
+  margin-top: 0.15em;
+  font-size: 2.3em;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+.atrio-score[data-compact] .atrio-score-n {
+  font-size: 1.8em;
+}
+.atrio-score-of {
+  color: var(--demo-muted);
+  font-size: 0.32em;
+  letter-spacing: 0;
+}
+.atrio-score-circle {
+  position: absolute;
+  inset: -0.18em -0.3em -0.12em -0.28em;
+  width: calc(100% + 0.58em);
+  height: calc(100% + 0.3em);
+}
+.atrio-score-rows {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.atrio-score-rows li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3.4em 1.6em;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.64em;
+}
+.atrio-score-rows li > :last-child {
+  text-align: right;
+}
+.atrio-score-bar {
+  display: block;
+  height: 0.4em;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--demo-sunken);
+}
+.atrio-score-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--demo-accent);
+  transform-origin: left center;
+  animation: atrio-grow-x 0.9s var(--demo-ease) 0.2s both;
+}
+@keyframes atrio-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+.atrio-score-note {
+  grid-column: 1 / -1;
+  color: var(--demo-ok);
+  font-size: 0.64em;
+}
+
+/* Chat (tutor + site): a notebook page for the conversation */
+.atrio-chat {
+  --chat-bg: var(--demo-sunken);
+  --chat-head: var(--demo-surface);
+  --chat-in: var(--demo-surface);
+  --chat-in-ink: var(--demo-ink);
+  --chat-out: var(--demo-accent);
+  --chat-out-ink: var(--demo-accent-ink);
+  --chat-note: color-mix(in oklab, var(--demo-ok) 14%, var(--demo-surface));
+  --chat-note-ink: var(--demo-ok);
+  --chat-radius: 0.7em;
+  --chat-pattern: repeating-linear-gradient(to bottom, transparent 0 1.55em, color-mix(in oklab, var(--demo-ink) 4%, transparent) 1.55em calc(1.55em + 1px));
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-chat .demo-chat-log {
+  background-size: 100% calc(1.55em + 1px);
+}
+.atrio-chat .demo-chat-avatar {
+  border-radius: 0.55em;
+}
+.atrio-chat .demo-chat-chip {
+  border-radius: 0.5em;
+  background: var(--demo-surface);
+  color: var(--demo-ink);
+  font-family: var(--font-mono);
+  font-weight: 550;
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+}
+.atrio-chat .demo-chat-chip:hover {
+  box-shadow: inset 0 0 0 1px var(--demo-accent);
+}
+.atrio-chat .demo-msg-card {
+  font-size: 0.82em;
+}
+.atrio-chat-wait {
+  align-self: center;
+  max-width: 18em;
+  margin: auto 0;
+  padding: 0.8em 1em;
+  border-radius: 0.6em;
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  color: var(--demo-muted);
+  font-size: 0.72em;
+  line-height: 1.45;
+  text-align: center;
+}
+.atrio-fix {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.22em;
+  line-height: 1.35;
+}
+.atrio-del {
+  color: var(--demo-accent-2-text);
+  text-decoration: line-through;
+  text-decoration-thickness: 0.12em;
+}
+.atrio-good {
+  color: var(--demo-accent-text);
+  font-style: italic;
+}
+.atrio-why {
+  display: block;
+  margin-top: 0.4em;
+  padding-top: 0.35em;
+  border-top: 1px dashed var(--demo-line-strong);
+  color: var(--demo-muted);
+  font-size: 0.92em;
+}
+.atrio-quiz-k {
+  display: block;
+  color: var(--demo-accent-2-text);
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.atrio-quiz {
+  display: block;
+  margin-top: 0.2em;
+  font-family: var(--font-serif);
+  font-size: 1.2em;
+  line-height: 1.3;
+}
+.atrio-gap {
+  display: inline-block;
+  min-width: 3em;
+  border-bottom: 0.12em solid var(--demo-accent);
+  color: transparent;
+  line-height: 1;
+}
+.atrio-tutorview {
+  gap: 0.6em;
+}
+.atrio-tutorview .atrio-chat {
+  min-height: 0;
+  flex: 1;
+}
+
+/* Class: rank + roster + stickers */
+.atrio-rankcard {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  padding: 0.7em 0.85em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-rank {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1em;
+  font-size: 2em;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+}
+.atrio-rank-of {
+  margin-left: 0.5em;
+  color: var(--demo-muted);
+  font-size: 0.38em;
+  letter-spacing: 0;
+}
+.atrio-rank-circle {
+  position: absolute;
+  inset: -0.2em -0.35em -0.1em -0.35em;
+  width: calc(100% + 0.7em);
+  height: calc(100% + 0.3em);
+}
+.atrio-board .demo-board-row {
+  border-radius: 0.45em;
+  background: transparent;
+  box-shadow: inset 0 -1px 0 var(--demo-line);
+}
+.atrio-board .demo-board-row[data-me] {
+  background: color-mix(in oklab, var(--demo-accent) 14%, transparent);
+  box-shadow: inset 0.2em 0 0 var(--demo-accent);
+}
+.atrio-board .demo-board-rank {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+.atrio-board .demo-board-row[data-rank='1'] .demo-board-rank {
+  background: var(--demo-accent-2);
+  color: var(--demo-accent-2-ink);
+}
+.atrio-board .demo-board-points {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+.atrio-board .demo-board-trend[data-dir='up'] {
+  color: var(--demo-ok);
+}
+
+/* Stickers: earned badges are die-cut stickers, slightly crooked */
+.atrio-stickers {
+  margin-top: 0.6em;
+  gap: 0.9em 0.4em;
+}
+.atrio-stickers .demo-medal {
+  width: 3.1em;
+  height: 3.1em;
+  overflow: visible;
+  border-radius: 0.9em;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--demo-ink) 25%, transparent);
+}
+.atrio-stickers .demo-badge-item:not([data-earned]) .demo-medal {
+  box-shadow: none;
+  background-image: none;
+}
+.atrio-stickers .demo-badge-item:not([data-earned]) .demo-medal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px dashed color-mix(in oklab, var(--demo-ink) 30%, transparent);
+}
+.atrio-stickers .demo-medal-ring {
+  inset: -0.25em;
+  width: calc(100% + 0.5em);
+  height: calc(100% + 0.5em);
+}
+.atrio-stickers .demo-badge-item[data-earned] .demo-medal {
+  background: var(--tone-solid);
+  color: var(--tone-on);
+  box-shadow:
+    0 0 0 0.17em #f3f0e6,
+    0 0.45em 0.8em -0.3em rgb(0 0 0 / 0.75);
+}
+.atrio-stickers .demo-badge-item[data-earned]:nth-child(3n + 1) .demo-medal {
+  transform: rotate(-5deg);
+}
+.atrio-stickers .demo-badge-item[data-earned]:nth-child(3n + 2) .demo-medal {
+  transform: rotate(4deg);
+}
+.atrio-stickers .demo-badge-item[data-earned]:nth-child(3n) .demo-medal {
+  transform: rotate(-2deg);
+}
+.atrio-stickers .demo-medal-glint {
+  border-radius: inherit;
+  overflow: hidden;
+}
+.atrio-stickers .demo-badge-label {
+  margin-top: 0.15em;
+}
+
+/* Lesson complete / level up */
+.atrio-levelup {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  padding: 2em 1.4em 2.6em;
+  text-align: center;
+  background:
+    radial-gradient(90% 55% at 50% 30%, rgb(124 200 245 / 0.12), transparent 70%),
+    repeating-linear-gradient(to right, transparent 0 1.8em, rgb(243 240 230 / 0.035) 1.8em calc(1.8em + 1px)),
+    repeating-linear-gradient(to bottom, transparent 0 1.8em, rgb(243 240 230 / 0.035) 1.8em calc(1.8em + 1px)),
+    var(--demo-bg);
+}
+.atrio-levelup-close {
+  position: absolute;
+  top: 0.8em;
+  right: 0.8em;
+  display: grid;
+  width: 2.5em;
+  height: 2.5em;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--demo-muted);
+}
+.atrio-levelup-close svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.atrio-levelup-hero {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0.6em 0 0.4em;
+}
+.atrio-levelup-from {
+  color: var(--demo-muted);
+  font-size: 1.6em;
+  text-decoration: line-through;
+  text-decoration-color: var(--demo-accent-2);
+  text-decoration-thickness: 0.08em;
+  animation: atrio-fade-in 0.5s ease 0.2s both;
+}
+.atrio-levelup-arrow {
+  color: var(--demo-muted);
+  font-size: 1.4em;
+  animation: atrio-fade-in 0.5s ease 0.45s both;
+}
+.atrio-sticker {
+  position: relative;
+  display: grid;
+  width: 6.4em;
+  height: 6.4em;
+  place-items: center;
+  animation: atrio-stick 0.9s var(--demo-ease) 0.55s both;
+}
+.atrio-sticker::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--demo-accent-2);
+  clip-path: polygon(50% 0, 61% 12%, 77% 6%, 80% 22%, 96% 26%, 89% 41%, 100% 54%, 87% 63%, 91% 80%, 74% 81%, 66% 96%, 52% 87%, 37% 98%, 30% 82%, 13% 84%, 15% 67%, 0 58%, 10% 45%, 3% 29%, 19% 25%, 22% 9%, 38% 13%);
+  filter: drop-shadow(0 0 0 #f3f0e6);
+}
+.atrio-sticker::after {
+  content: '';
+  position: absolute;
+  inset: 11%;
+  border-radius: 999px;
+  border: 1.5px dashed rgb(26 23 48 / 0.35);
+}
+.atrio-sticker[data-tone='sky']::before {
+  background: var(--demo-accent);
+}
+.atrio-sticker-face {
+  position: relative;
+  z-index: 1;
+  color: var(--demo-accent-2-ink);
+  font-size: 2.2em;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+.atrio-sticker-glint {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  clip-path: circle(46% at 50% 50%);
+}
+.atrio-sticker-glint::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(115deg, transparent 38%, rgb(255 255 255 / 0.7) 50%, transparent 62%);
+  transform: translateX(-120%);
+  animation: atrio-glint 1.1s ease-out 1.3s both;
+}
+@keyframes atrio-glint {
+  to {
+    transform: translateX(120%);
+  }
+}
+@keyframes atrio-stick {
+  0% {
+    transform: scale(1.6) rotate(-24deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.95) rotate(-4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-7deg);
+  }
+}
+@keyframes atrio-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.atrio-levelup-title {
+  font-size: 1.65em;
+  line-height: 1.05;
+  animation: atrio-line-in 0.6s var(--demo-ease) 0.7s both;
+}
+.atrio-levelup-body {
+  max-width: 19em;
+  color: var(--demo-muted);
+  font-size: 0.8em;
+  line-height: 1.45;
+  animation: atrio-line-in 0.6s var(--demo-ease) 0.8s both;
+}
+.atrio-levelup-stats {
+  display: grid;
+  width: 100%;
+  max-width: 20em;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0.4em 0 0.6em;
+  border-top: 1px solid var(--demo-line);
+  border-bottom: 1px solid var(--demo-line);
+  animation: atrio-line-in 0.6s var(--demo-ease) 0.9s both;
+}
+.atrio-levelup-stats > div {
+  padding: 0.55em 0.2em;
+}
+.atrio-levelup-stats > div + div {
+  border-left: 1px solid var(--demo-line);
+}
+.atrio-levelup-stats dt {
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.54em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.atrio-levelup-stats dd {
+  margin-top: 0.15em;
+  font-size: 0.95em;
+}
+.atrio-levelup .atrio-btn {
+  animation: atrio-line-in 0.6s var(--demo-ease) 1s both;
+}
+.atrio-levelup-booked {
+  font-size: 0.72em;
+}
+
+/* Chat cards */
+.atrio-coursecard {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+  padding: 0.55em 0.6em;
+  border-radius: 0.55em;
+  background: var(--demo-sunken);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-coursecard-level {
+  display: grid;
+  width: 2.3em;
+  height: 2.3em;
+  flex: none;
+  place-items: center;
+  border-radius: 0.5em;
+  background: var(--demo-accent-2);
+  color: var(--demo-accent-2-ink);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  transform: rotate(-4deg);
+}
+.atrio-coursecard-price {
+  display: inline-block;
+  margin-top: 0.3em;
+  color: var(--demo-accent-text);
+}
+.atrio-receipt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  padding: 0.5em 0.6em;
+  border-radius: 0.5em;
+  background: var(--demo-sunken);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-receipt-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6em;
+}
+.atrio-receipt-meta {
+  color: var(--demo-ok);
+  font-size: 0.9em;
+}
+.atrio-receipt svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.atrio-express {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.5em 0.55em;
+  border-radius: 0.55em;
+  background: #172338;
+  color: #f3f0e6;
+}
+.atrio-express-icon,
+.atrio-express-play {
+  display: grid;
+  width: 2em;
+  height: 2em;
+  flex: none;
+  place-items: center;
+  border-radius: 0.45em;
+  background: #7cc8f5;
+  color: #0e1a2b;
+}
+.atrio-express-play {
+  border-radius: 999px;
+  background: #ff9f87;
+}
+.atrio-express svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+/* ------------------------------------------------------------------ */
+/* School panel                                                         */
+/* ------------------------------------------------------------------ */
+.atrio-school-phone {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  padding-bottom: 0.6em;
+}
+.atrio-today {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85em;
+}
+.atrio-today-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  gap: 0.75em;
+}
+.atrio-feed2 .demo-feed-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6em 1.2em;
+}
+
+/* The school's numbers as a ledger (label · dotted leader · mono readout) */
+.atrio-kledger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.35em 1em;
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-krow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.55em;
+  padding: 0.55em 0 0.5em;
+}
+.atrio-krow + .atrio-krow {
+  border-top: 1px solid var(--demo-line);
+}
+.atrio-krow > dt {
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.58em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.atrio-krow-main {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.45em;
+}
+.atrio-krow-leader {
+  flex: 1;
+  min-width: 1em;
+  border-bottom: 1.5px dotted var(--demo-line-strong);
+}
+.atrio-krow-value {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 1.45em;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.atrio-krow[data-row='fees'] .atrio-krow-value {
+  font-size: 1em;
+  letter-spacing: -0.04em;
+}
+.atrio-krow-note {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6em;
+  margin-top: 0.3em;
+  color: var(--demo-muted);
+  font-size: 0.62em;
+  text-align: right;
+}
+.atrio-krow-note[data-tone='ok'] {
+  color: var(--demo-ok);
+}
+.atrio-krow-note[data-tone='bad'] {
+  color: var(--demo-bad);
+}
+.atrio-krow-meter {
+  flex: 1;
+  max-width: 9em;
+}
+.atrio-kledger[data-compact] {
+  padding: 0.2em 0.85em;
+}
+
+/* The key number: a big chalk "82 %", circled */
+.atrio-key {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr auto;
+  column-gap: 1em;
+  padding: 0.95em 1em 0.85em;
+  border-radius: var(--demo-radius);
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgb(255 159 135 / 0.09), transparent 60%),
+    var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+  text-align: left;
+}
+.atrio-key-label {
+  grid-column: 1 / -1;
+}
+.atrio-key-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.05em;
+  margin-top: 0.3em;
+  font-size: 3.9em;
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 1;
+}
+.atrio-key-pct {
+  color: var(--demo-muted);
+  font-size: 0.42em;
+  letter-spacing: 0;
+}
+.atrio-key-circle {
+  position: absolute;
+  inset: -0.14em -0.2em -0.1em -0.24em;
+  width: calc(100% + 0.44em);
+  height: calc(100% + 0.24em);
+}
+.atrio-key-sub {
+  grid-column: 1;
+  margin-top: 0.4em;
+  color: var(--demo-muted);
+  font-size: 0.66em;
+  line-height: 1.35;
+}
+.atrio-key-chart {
+  grid-column: 2;
+  grid-row: 2 / 4;
+  display: flex;
+  min-height: 5em;
+  align-items: flex-end;
+  align-self: stretch;
+  gap: 0.22em;
+  margin-top: 0.6em;
+  border-bottom: 1px solid var(--demo-line-strong);
+}
+.atrio-key-col {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+.atrio-key-before,
+.atrio-key-now {
+  position: absolute;
+  inset: 0;
+  transform-origin: bottom center;
+  transition: transform 0.9s var(--demo-ease);
+}
+.atrio-key-before {
+  border-radius: 0.15em 0.15em 0 0;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-ink) 34%, transparent);
+  background: repeating-linear-gradient(-45deg, transparent 0 0.18em, color-mix(in oklab, var(--demo-ink) 10%, transparent) 0.18em 0.3em);
+}
+.atrio-key-now {
+  inset: 0 22%;
+  border-radius: 0.15em 0.15em 0 0;
+  background: var(--demo-accent);
+  animation: atrio-grow-y 0.9s var(--demo-ease) both;
+  animation-delay: calc(var(--i) * 45ms + 0.15s);
+}
+.atrio-key-now[data-week3] {
+  background: var(--demo-accent-2);
+}
+@keyframes atrio-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+.atrio-key-foot {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
+  margin-top: 0.65em;
+  color: var(--demo-muted);
+  font-size: 0.6em;
+}
+.atrio-key-foot[data-compact] {
+  display: none;
+}
+.atrio-key-legend {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 0.15em;
+  background: var(--demo-accent);
+}
+.atrio-key-legend[data-k='before'] {
+  margin-left: 0.6em;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-ink) 40%, transparent);
+}
+.atrio-key-alert {
+  color: var(--demo-bad);
+  font-weight: 600;
+}
+.atrio-key[data-fell] .atrio-key-value {
+  color: var(--demo-bad);
+}
+.atrio-key-open {
+  position: absolute;
+  top: 0.8em;
+  right: 0.8em;
+  color: var(--demo-muted);
+}
+.atrio-key-open svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.atrio-key[data-compact] {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+}
+.atrio-key[data-compact] .atrio-key-sub {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 0.4em;
+}
+.atrio-key[data-compact] .atrio-key-value {
+  font-size: 3em;
+}
+
+/* Lanes: three live stories as steps on a line */
+.atrio-lanes {
+  display: flex;
+  flex-direction: column;
+}
+.atrio-lane {
+  display: grid;
+  grid-template-columns: 9.6em minmax(0, 1fr) 6.2em;
+  align-items: start;
+  gap: 0.55em 0.9em;
+  padding: 0.6em 0 0.45em;
+  border-top: 1px solid var(--demo-line);
+}
+.atrio-lane > .atrio-lane-who,
+.atrio-lane > .atrio-lane-out {
+  padding-top: 0.05em;
+}
+.atrio-lane:first-child {
+  border-top: 0;
+  padding-top: 0.2em;
+}
+.atrio-lane-who {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55em;
+}
+.atrio-lane-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.atrio-step {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.25em;
+  padding-right: 0.3em;
+}
+.atrio-step::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: 1.3em;
+  right: 0.1em;
+  height: 1px;
+  background: repeating-linear-gradient(to right, var(--demo-line-strong) 0 0.25em, transparent 0.25em 0.45em);
+}
+.atrio-step:last-child::before {
+  display: none;
+}
+.atrio-step[data-done]::before {
+  background: color-mix(in oklab, var(--demo-ok) 55%, transparent);
+}
+.atrio-step-node {
+  position: relative;
+  display: grid;
+  width: 1.25em;
+  height: 1.25em;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1.5px var(--demo-line-strong);
+}
+.atrio-step[data-done] .atrio-step-node {
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--demo-ok) 60%, transparent);
+}
+.atrio-step[data-now] .atrio-step-node {
+  box-shadow: inset 0 0 0 1.5px var(--demo-accent);
+}
+.atrio-step[data-off] .atrio-step-node {
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--demo-bad) 60%, transparent);
+  background: repeating-linear-gradient(45deg, transparent 0 0.15em, color-mix(in oklab, var(--demo-bad) 35%, transparent) 0.15em 0.25em);
+}
+.atrio-step[data-tone='bad'][data-done] .atrio-step-node {
+  background: var(--demo-bad);
+  box-shadow: none;
+}
+.atrio-step-x {
+  color: var(--demo-bg);
+  font-size: 0.9em;
+  font-weight: 800;
+  line-height: 1;
+}
+.atrio-step-node .atrio-chalk-tick {
+  width: 1.25em;
+  height: 1.25em;
+}
+.atrio-step-pulse {
+  position: absolute;
+  inset: 0.28em;
+  border-radius: 999px;
+  background: var(--demo-accent);
+  animation: atrio-pulse 1.4s ease-in-out infinite;
+}
+@keyframes atrio-pulse {
+  50% {
+    transform: scale(0.55);
+    opacity: 0.5;
+  }
+}
+.atrio-step-label {
+  overflow: hidden;
+  font-size: 0.62em;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color: var(--demo-muted);
+}
+.atrio-step[data-done] .atrio-step-label,
+.atrio-step[data-now] .atrio-step-label {
+  color: var(--demo-ink);
+}
+.atrio-step[data-off] .atrio-step-label {
+  color: var(--demo-bad);
+}
+.atrio-step-time {
+  min-height: 1.2em;
+  color: var(--demo-muted);
+  font-size: 0.54em;
+}
+.atrio-lane-out {
+  display: flex;
+  justify-content: flex-end;
+}
+.atrio-outcome {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.38em 0.6em;
+  border-radius: 0.4em;
+  background: var(--tone-solid, var(--demo-sunken));
+  color: var(--tone-on, var(--demo-muted));
+  font-size: 0.62em;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  transform: rotate(-3deg);
+  box-shadow:
+    0 0 0 0.14em #f3f0e6,
+    0 0.4em 0.7em -0.3em rgb(0 0 0 / 0.7);
+  animation: atrio-stick-small 0.6s var(--demo-ease) both;
+}
+.atrio-outcome[data-tone='pending'] {
+  --tone-solid: transparent;
+  --tone-on: var(--demo-muted);
+  font-weight: 500;
+  transform: none;
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  animation: none;
+}
+.atrio-outcome[data-tone='accent2'] {
+  --tone-solid: var(--demo-accent-2);
+  --tone-on: var(--demo-accent-2-ink);
+}
+.atrio-outcome[data-tone='ok'] {
+  --tone-solid: var(--demo-ok);
+  --tone-on: #1a1730;
+}
+.atrio-outcome[data-tone='warn'] {
+  --tone-solid: var(--demo-warn);
+  --tone-on: #1a1730;
+}
+.atrio-outcome[data-tone='bad'] {
+  --tone-solid: var(--demo-bad);
+  --tone-on: #1a1730;
+}
+@keyframes atrio-stick-small {
+  0% {
+    transform: scale(1.5) rotate(-14deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(-3deg);
+    opacity: 1;
+  }
+}
+/* Phone: who + outcome on top, the steps under them, no times */
+.atrio-lanes[data-vertical] .atrio-lane {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+.atrio-lanes[data-vertical] .atrio-lane > .atrio-lane-steps {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+.atrio-lanes[data-vertical] .atrio-lane > .atrio-lane-out {
+  grid-column: 2;
+  grid-row: 1;
+}
+.atrio-lanes[data-vertical] .atrio-step-time {
+  display: none;
+}
+
+/* Students */
+.atrio-cols-students {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 0.8em;
+}
+.atrio-roster-head,
+.atrio-roster-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) 7em;
+  align-items: center;
+  gap: 0.8em;
+}
+.atrio-roster-row[data-compact] {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.atrio-roster-head {
+  padding: 0 0.35em 0.35em;
+  border-bottom: 1px solid var(--demo-line);
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.54em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.atrio-roster-row {
+  padding: 0.45em 0.35em;
+  border-bottom: 1px solid var(--demo-line);
+  transition: background-color 0.4s ease;
+}
+.atrio-roster-row[data-status='risk'],
+.atrio-roster-row[data-status='sent'] {
+  background: color-mix(in oklab, var(--demo-warn) 6%, transparent);
+}
+.atrio-roster-row[data-status='dropped'] {
+  opacity: 0.6;
+}
+.atrio-roster-who {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5em;
+}
+.atrio-roster-progress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.6em;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.66em;
+}
+.atrio-roster-progress > :last-child {
+  text-align: right;
+}
+.atrio-auto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+}
+.atrio-auto-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+}
+.atrio-auto-icon {
+  display: grid;
+  width: 2.1em;
+  height: 2.1em;
+  flex: none;
+  place-items: center;
+  border-radius: 0.5em;
+  background: color-mix(in oklab, var(--demo-accent) 16%, var(--demo-surface));
+  color: var(--demo-accent-text);
+}
+.atrio-auto-icon svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.atrio-auto-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px dashed var(--demo-line-strong);
+  padding-top: 0.55em;
+}
+.atrio-auto-stats dt {
+  color: var(--demo-muted);
+  font-size: 0.56em;
+  line-height: 1.25;
+}
+.atrio-auto-stats dd {
+  margin-top: 0.15em;
+  font-size: 1.05em;
+}
+.atrio-wa {
+  height: 19em;
+}
+.atrio-wa-phone {
+  height: 21em;
+}
+.atrio-wa-empty {
+  display: flex;
+  min-height: 7em;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 1em;
+  border-radius: var(--demo-radius);
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  color: var(--demo-muted);
+  text-align: center;
+  font-size: 0.74em;
+}
+.atrio-wa-empty svg {
+  width: 1.5em;
+  height: 1.5em;
+}
+.atrio-wa-empty[data-dropped] {
+  color: var(--demo-bad);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-bad) 45%, transparent);
+}
+.atrio-fees {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+}
+.atrio-fees-total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5em;
+  font-size: 1.15em;
+}
+.atrio-fees-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.atrio-fees-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.66em;
+}
+.atrio-fees-list svg {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+  color: var(--demo-ok);
+}
+
+/* Courses */
+.atrio-retention-legend {
+  display: flex;
+  gap: 0.9em;
+  color: var(--demo-muted);
+  font-size: 0.6em;
+}
+.atrio-retention-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+.atrio-retention-legend span::before {
+  content: '';
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 0.15em;
+  background: var(--demo-accent);
+}
+.atrio-retention-legend span[data-k='before']::before {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-ink) 45%, transparent);
+}
+.atrio-retention-plot {
+  margin: 0;
+}
+.atrio-retention-cols {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.45em;
+  height: 8.5em;
+  padding-bottom: 1.2em;
+  border-bottom: 1px solid var(--demo-line-strong);
+}
+.atrio-retention-plot[data-compact] .atrio-retention-cols {
+  height: 7em;
+  gap: 0.25em;
+}
+.atrio-retention-col {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+.atrio-retention-before,
+.atrio-retention-now {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.2em 0.2em 0 0;
+  transform-origin: bottom center;
+  transition: transform 0.9s var(--demo-ease);
+}
+.atrio-retention-before {
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-ink) 32%, transparent);
+  background: repeating-linear-gradient(-45deg, transparent 0 0.2em, color-mix(in oklab, var(--demo-ink) 7%, transparent) 0.2em 0.35em);
+}
+.atrio-retention-now {
+  inset: 0 24%;
+  background: var(--demo-accent);
+  animation: atrio-grow-y 0.9s var(--demo-ease) both;
+  animation-delay: calc(var(--i) * 50ms + 0.1s);
+}
+.atrio-retention-col[data-week3] .atrio-retention-now {
+  background: var(--demo-accent-2);
+}
+.atrio-retention-w {
+  position: absolute;
+  bottom: -1.75em;
+  left: 0;
+  right: 0;
+  color: var(--demo-muted);
+  font-size: 0.56em;
+  text-align: center;
+}
+.atrio-retention-col[data-week3] .atrio-retention-w {
+  color: var(--demo-accent-2-text);
+  font-weight: 650;
+}
+.atrio-retention-note {
+  position: absolute;
+  top: 0.2em;
+  left: calc((var(--x) + 0.5) / 12 * 100%);
+  padding: 0.25em 0.5em;
+  border-radius: 0.35em;
+  background: var(--demo-bg);
+  box-shadow: inset 0 0 0 1px var(--demo-accent-2);
+  color: var(--demo-accent-2-text);
+  font-size: 0.58em;
+  white-space: nowrap;
+}
+.atrio-retention-cap {
+  margin-top: 0.9em;
+  color: var(--demo-muted);
+  font-size: 0.68em;
+  line-height: 1.4;
+}
+.atrio-ledger-list {
+  display: flex;
+  flex-direction: column;
+}
+.atrio-ledger-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) 5.2em minmax(0, 1.4fr) 3em;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.45em 0.1em;
+  border-top: 1px solid var(--demo-line);
+}
+.atrio-ledger-row[data-compact] {
+  grid-template-columns: minmax(0, 1fr) auto 3em;
+}
+.atrio-ledger-name {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55em;
+  font-size: 0.76em;
+  font-weight: 600;
+}
+.atrio-ledger-level {
+  display: grid;
+  width: 2.1em;
+  height: 1.7em;
+  flex: none;
+  place-items: center;
+  border-radius: 0.35em;
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+  font-size: 0.86em;
+}
+.atrio-ledger-level[data-lang='pt'] {
+  background: var(--demo-accent-2);
+  color: var(--demo-accent-2-ink);
+}
+.atrio-ledger-students {
+  color: var(--demo-muted);
+  font-size: 0.66em;
+}
+.atrio-ledger-units {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.18em;
+  height: 1.5em;
+}
+.atrio-ledger-units > span {
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--demo-line-strong);
+}
+.atrio-ledger-units > span > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.12em 0.12em 0 0;
+  background: color-mix(in oklab, var(--demo-ink) 38%, transparent);
+  transform-origin: bottom;
+  animation: atrio-grow-y 0.8s var(--demo-ease) both;
+}
+.atrio-ledger-units > span[data-avg] > span {
+  background: var(--demo-accent);
+}
+.atrio-ledger-pct {
+  font-size: 0.74em;
+  text-align: right;
+}
+
+/* Live classes */
+.atrio-cols-live {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 0.8em;
+}
+.atrio-calcard {
+  padding: 0.75em 0.7em 0.55em;
+}
+.atrio-onair {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgb(255 159 135 / 0.12), transparent 60%),
+    var(--demo-surface);
+}
+.atrio-onair-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-bottom: 0.4em;
+  color: var(--demo-accent-2-text);
+}
+.atrio-onair-k svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.atrio-onair-count {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  margin-top: 0.5em;
+  font-size: 0.7em;
+}
+.atrio-onair-count svg {
+  width: 1.15em;
+  height: 1.15em;
+  color: var(--demo-muted);
+}
+.atrio-club .atrio-label {
+  margin-bottom: 0.35em;
+}
+.atrio-club-new {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  margin-top: 0.55em;
+  padding: 0.35em 0.45em;
+  border-radius: 0.5em;
+  background: color-mix(in oklab, var(--demo-accent-2) 14%, transparent);
+  font-size: 0.66em;
+}
+.atrio-club-new svg {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+  color: var(--demo-accent-2-text);
+}
+
+/* A readout strip: one card, cells split by hairlines */
+.atrio-strip {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  border-radius: var(--demo-radius);
+  background: var(--demo-surface);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+}
+.atrio-strip[data-cols='2'] {
+  --cols: 2;
+}
+.atrio-strip > div {
+  min-width: 0;
+  padding: 0.75em 0.9em 0.8em;
+}
+.atrio-strip > div + div {
+  border-left: 1px solid var(--demo-line);
+}
+.atrio-strip dt {
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.58em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.atrio-strip-n {
+  margin-top: 0.3em;
+  font-family: var(--font-mono);
+  font-size: 1.75em;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+.atrio-strip > div[data-key] .atrio-strip-n {
+  color: var(--demo-accent-text);
+}
+.atrio-strip-hint {
+  margin-top: 0.45em;
+  color: var(--demo-muted);
+  font-size: 0.62em;
+  line-height: 1.35;
+}
+
+/* Tutor */
+.atrio-cols-tutor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 0.8em;
+}
+.atrio-chat-laptop {
+  height: 23.5em;
+}
+.atrio-errors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-top: 0.6em;
+}
+.atrio-errors-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 2.6em;
+  align-items: center;
+  gap: 0.6em;
+  font-size: 0.68em;
+}
+.atrio-errors-list li > :last-child {
+  text-align: right;
+}
+.atrio-errors-name {
+  min-width: 0;
+  line-height: 1.25;
+}
+.atrio-errors-bar {
+  display: block;
+  height: 0.55em;
+  overflow: hidden;
+  border-radius: 0.15em;
+  background: var(--demo-sunken);
+}
+.atrio-errors-bar > span {
+  display: block;
+  height: 100%;
+  background: color-mix(in oklab, var(--demo-ink) 45%, transparent);
+  transform-origin: left center;
+  animation: atrio-grow-x 0.9s var(--demo-ease) both;
+}
+.atrio-errors-list li[data-top] .atrio-errors-bar > span {
+  background: var(--demo-accent-2);
+}
+
+/* Site + enrollments */
+.atrio-cols-site {
+  display: grid;
+  grid-template-columns: minmax(0, 2.45fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 0.8em;
+}
+.atrio-browser {
+  --browser-chrome: var(--demo-sunken);
+  --site-bg: #f3f0e6;
+  height: calc(100cqh - 7.6em);
+  min-height: 24em;
+}
+.atrio-browser-phone {
+  height: auto;
+  min-height: 0;
+  border-radius: var(--demo-radius);
+  box-shadow: inset 0 0 0 1px var(--demo-line);
+  overflow: hidden;
+}
+.atrio-browser-phone .demo-browser-body {
+  max-height: 34em;
+}
+/* The school's public site is printed on chalk-white paper (its own light page). */
+.atrio-site {
+  --demo-ink: #172338;
+  --demo-muted: #4a5670;
+  --demo-surface: #fffdf7;
+  --demo-sunken: #e9e5d9;
+  --demo-line: rgb(23 35 56 / 0.12);
+  --demo-line-strong: rgb(23 35 56 / 0.22);
+  --demo-accent-text: #1d5f8a;
+  --demo-accent-2-text: #b04a32;
+  background: #f3f0e6;
+  color: #172338;
+}
+.atrio-site .demo-site-nav {
+  border-bottom: 1px solid rgb(23 35 56 / 0.1);
+}
+.atrio-site .demo-site-brand {
+  gap: 0.45em;
+  font-size: 0.86em;
+}
+.atrio-site-mark {
+  width: 1.4em;
+  height: 1.4em;
+  color: #172338;
+}
+.atrio-site-cta {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  min-height: 2.2em;
+  padding: 0 0.8em;
+  border-radius: 0.5em;
+  background: #172338;
+  color: #f3f0e6;
+  font-size: 0.7em;
+  font-weight: 650;
+}
+.atrio-site {
+  --site-pad: 1.5em;
+}
+.atrio-site .demo-site-nav {
+  gap: 1em;
+}
+.atrio-site .demo-site-brand,
+.atrio-site .demo-site-links {
+  white-space: nowrap;
+}
+.atrio-site .demo-site-links {
+  gap: 1em;
+  font-size: 0.7em;
+}
+.atrio-site .demo-site-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  align-items: start;
+  gap: 1.2em;
+  padding-top: 1.1em;
+}
+.atrio-site .demo-site-title {
+  font-size: 1.75em;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+.atrio-site[data-compact] .demo-site-title {
+  font-size: 1.75em;
+}
+.atrio-site .demo-site-body {
+  font-size: 0.76em;
+}
+.atrio-site .atrio-mark {
+  white-space: normal;
+}
+.atrio-site-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 2.4em;
+  padding: 0 0.9em;
+  border-radius: 0.55em;
+  box-shadow: inset 0 0 0 1px rgb(23 35 56 / 0.25);
+  font-size: 0.72em;
+  font-weight: 650;
+}
+.atrio-site-btn[data-primary] {
+  background: #ff9f87;
+  color: #1a1730;
+  box-shadow: 0 0.12em 0 #c86a52;
+}
+.atrio-site-btn svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.atrio-site-chatblock {
+  padding: 0 var(--site-pad) 1.2em;
+}
+.atrio-site-courses {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.6em;
+}
+.atrio-site-courses li {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.55em 0;
+  border-top: 1px solid rgb(23 35 56 / 0.12);
+  font-size: 0.76em;
+}
+.atrio-site-level {
+  display: grid;
+  width: 2.3em;
+  height: 2.3em;
+  flex: none;
+  place-items: center;
+  border-radius: 0.5em;
+  background: #172338;
+  color: #f3f0e6;
+  font-weight: 600;
+}
+.atrio-site-price {
+  flex: none;
+  font-size: 0.92em;
+}
+/* The test chat is the board itself, set into the paper page */
+.atrio-testchat {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.35em;
+}
+.atrio-testchat-who {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: #4a5670;
+  font-family: var(--font-mono);
+  font-size: 0.56em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.atrio-testchat-who svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.atrio-sitechat {
+  --demo-ink: #f3f0e6;
+  --demo-muted: #9da9be;
+  --demo-surface: #1e2c45;
+  --demo-sunken: #121c2d;
+  --demo-line: rgb(243 240 230 / 0.12);
+  --demo-line-strong: rgb(243 240 230 / 0.24);
+  --demo-accent-text: #7cc8f5;
+  --demo-accent-2-text: #ff9f87;
+  height: 21em;
+  color: #f3f0e6;
+  box-shadow: 0 1.2em 2em -1.2em rgb(23 35 56 / 0.6);
+}
+.atrio-site[data-compact] .atrio-sitechat {
+  height: 22em;
+}
+.atrio-enrols .atrio-panel-head {
+  margin-bottom: 0.4em;
+}
+.atrio-enrol-list {
+  display: flex;
+  flex-direction: column;
+}
+.atrio-enrol {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.45em 0.1em;
+  border-top: 1px solid var(--demo-line);
+}
+.atrio-enrol:first-child {
+  border-top: 0;
+}
+.atrio-enrol-fresh {
+  margin: 0 -0.4em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border-radius: 0.5em;
+  background: color-mix(in oklab, var(--demo-ok) 12%, transparent);
+}
+.atrio-enrol-anon {
+  display: grid;
+  width: 1.6em;
+  height: 1.6em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--demo-sunken);
+  color: var(--demo-muted);
+}
+.atrio-enrol-anon svg {
+  width: 1em;
+  height: 1em;
+}
+.atrio-enrol-pay svg {
+  width: 1.05em;
+  height: 1.05em;
+  color: var(--demo-muted);
+}
+.atrio-enrol-time {
+  width: 3.3em;
+  flex: none;
+  color: var(--demo-muted);
+  font-size: 0.6em;
+  text-align: right;
+}
+.atrio-funnel ol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin-top: 0.55em;
+}
+.atrio-funnel li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.35em 0.5em;
+  font-size: 0.66em;
+}
+.atrio-funnel-bar {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.3em;
+  background: color-mix(in oklab, var(--demo-accent) 18%, transparent);
+  transform: scaleX(var(--w));
+  transform-origin: left center;
+}
+.atrio-funnel li > :not(.atrio-funnel-bar) {
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atrio-chalk[data-draw],
+  .atrio-btn[data-pressing],
+  .atrio-ring[data-done],
+  .atrio-unit[data-state='open'] .atrio-unit-node,
+  .atrio-speak-rings,
+  .atrio-speak-rings::before,
+  .atrio-line,
+  .atrio-word,
+  .atrio-score,
+  .atrio-score-bar > span,
+  .atrio-sticker,
+  .atrio-sticker-glint::after,
+  .atrio-levelup-from,
+  .atrio-levelup-arrow,
+  .atrio-levelup-title,
+  .atrio-levelup-body,
+  .atrio-levelup-stats,
+  .atrio-levelup .atrio-btn,
+  .atrio-key-now,
+  .atrio-step-pulse,
+  .atrio-outcome,
+  .atrio-retention-now,
+  .atrio-ledger-units > span > span,
+  .atrio-errors-bar > span {
+    animation: none;
+  }
+  .atrio-sticker {
+    transform: rotate(-7deg);
+  }
+  .atrio-outcome:not([data-tone='pending']) {
+    transform: rotate(-3deg);
+  }
+  .atrio-cefr-fill,
+  .atrio-cefr-marker,
+  .atrio-key-before,
+  .atrio-key-now,
+  .atrio-retention-before,
+  .atrio-retention-now {
+    transition: none;
+  }
+}
+
+/* The visitor's avatar carries a word ("Vos", "You") */
+.atrio-av-you {
+  width: 2.58em;
+  height: 2.58em;
+  font-size: 0.62em;
+  letter-spacing: -0.02em;
+}
+/* Initials on the class ranking: board ink on the chalk colors */
+.atrio-board .demo-avatar {
+  --avatar-ink: #172338;
+}

@@ -2063,6 +2063,26 @@
         "items": "{count, plural, one {# produto} other {# produtos}}",
         "of": "{count} de {total}"
       }
+    },
+    "academy": {
+      "problem1": "Eles se matriculam animados.",
+      "problem2": "Na terceira semana, desistem.",
+      "pain": "alunos que desistem por semana",
+      "feature": "Sequências, uma tutora IA e um WhatsApp quando alguém se afasta.",
+      "screen": {
+        "title": "Alunos de hoje",
+        "today": "Qui · 20:12",
+        "valentina": "Valentina R.",
+        "valentinaSub": "Inglês A2 · lição 6.3",
+        "martin": "Mateus S.",
+        "martinSub": "5 dias sem entrar",
+        "streak": "{count, plural, one {# dia} other {# dias}}",
+        "risk": "Em risco",
+        "back": "Voltou",
+        "nudge": "WhatsApp para o Mateus: lição de 5 min",
+        "levelUp": "Valentina subiu para B1",
+        "completion": "Concluem o curso"
+      }
     }
   },
   "founders": {
@@ -3316,6 +3336,554 @@
         "composer": "Mensagem",
         "left": "{name} deixou {count, plural, one {# produto} other {# produtos}} no carrinho"
       }
+    }
+  },
+  "demoAcademy": {
+    "people": {
+      "valentina": "Valentina Rocha",
+      "camila": "Camila M.",
+      "bruno": "Bruno A.",
+      "sofia": "Sofia L.",
+      "lucas": "Lucas D.",
+      "martin": "Mateus Souza",
+      "julieta": "Júlia P.",
+      "tomas": "Thiago G.",
+      "renata": "Renata V.",
+      "joaquin": "João M.",
+      "you": "Você",
+      "youInitials": "VC"
+    },
+    "first": {
+      "valentina": "Valentina",
+      "camila": "Camila",
+      "bruno": "Bruno",
+      "sofia": "Sofia",
+      "lucas": "Lucas",
+      "martin": "Mateus",
+      "julieta": "Júlia",
+      "tomas": "Thiago",
+      "renata": "Renata",
+      "joaquin": "João",
+      "you": "Você"
+    },
+    "langs": {
+      "en": "Inglês",
+      "pt": "Espanhol"
+    },
+    "courseName": "{lang} {level}",
+    "teachers": {
+      "carla": "Prof.ª Carla F.",
+      "diego": "Prof. Diego R.",
+      "ana": "Prof.ª Ana V."
+    },
+    "pay": {
+      "card": "cartão",
+      "transfer": "Pix"
+    },
+    "feed": {
+      "reminders": "Lembrete de mensalidade enviado para {count} alunos",
+      "lesson": "{name} abriu a lição de hoje",
+      "speaking": "{name} terminou o speaking: {score}/100",
+      "complete": "{name} concluiu a lição 6.3",
+      "levelUp": "{name} subiu para o {level}",
+      "review": "{name} tem 1 exercício para revisar amanhã",
+      "booked": "{name} reservou o Conversation Club B1",
+      "test": "{name} começou o teste de nível no site",
+      "level": "{name} fez o teste: nível {level}",
+      "levelYou": "Você fez o teste: nível {level}",
+      "enrolled": "{name} se matriculou em {course} e pagou com {pay}",
+      "enrolledYou": "Você se matriculou em {course} e pagou com {pay}",
+      "flagged": "{name} está há 5 dias sem entrar: em risco",
+      "nudge": "WhatsApp para {name} com uma lição de 5 minutos",
+      "replied": "{name} respondeu: vai fazer a lição agora",
+      "later": "{name} deixou para amanhã às 19h",
+      "back": "{name} fez a lição expressa e voltou",
+      "dropped": "{name} cancelou o curso",
+      "paid": "{name} pagou a mensalidade de outubro com {pay}"
+    },
+    "toast": {
+      "enrolled": "Nova matrícula",
+      "levelUp": "Subiu de nível",
+      "back": "Um aluno voltou",
+      "dropped": "Cancelamento",
+      "review": "Lição concluída"
+    },
+    "nav": {
+      "today": "Hoje",
+      "students": "Alunos",
+      "courses": "Cursos",
+      "live": "Aulas ao vivo",
+      "tutor": "Tutor IA",
+      "site": "Matrículas",
+      "groupSchool": "Escola",
+      "groupGrowth": "IA e crescimento",
+      "todayShort": "Hoje",
+      "studentsShort": "Alunos",
+      "siteShort": "Site"
+    },
+    "top": {
+      "online": "{count} alunos online",
+      "coordInitials": "LM"
+    },
+    "side": {
+      "title": "Acompanhamento",
+      "on": "Ativo · {count} em risco",
+      "off": "Desligado"
+    },
+    "mode": {
+      "label": "Ver como",
+      "student": "Aluna",
+      "school": "Escola"
+    },
+    "student": {
+      "tabs": {
+        "home": "Hoje",
+        "course": "Curso",
+        "speak": "Falar",
+        "tutor": "Tutor",
+        "class": "Turma"
+      },
+      "done": "feito",
+      "now": "agora",
+      "pending": "pendente",
+      "hello": "Boa noite, {name}.",
+      "yourLevel": "Seu nível",
+      "levelLeft": "Faltam {pct}% para o B1",
+      "levelPending": "B1: 1 revisão pendente",
+      "levelNew": "Novo nível: B1",
+      "rulerLabel": "Nível {level}, {pct}% concluído",
+      "lessonKicker": "Lição de hoje · 12 min",
+      "lessonSteps": "Lição 6.3, passo a passo",
+      "step1": "Speaking",
+      "step2": "Escrita",
+      "step3": "Exercício",
+      "lessonTitle": "Passado simples: os verbos irregulares",
+      "act1": "Speaking com sua tutora IA",
+      "act2": "Escrita com correção",
+      "act3": "Exercício rápido",
+      "start": "Começar",
+      "continue": "Continuar",
+      "complete": "Lição concluída",
+      "completeB1": "Lição concluída · A2 fechado",
+      "streakLabel": "{count, plural, one {# dia de sequência} other {# dias de sequência}}",
+      "goal": "Meta da semana",
+      "goalLabel": "{value} de {goal} minutos nesta semana",
+      "goalDone": "Batida. Mandou bem.",
+      "goalLeft": "{count, plural, one {Falta # minuto} other {Faltam # minutos}}",
+      "nextClass": "Próxima aula ao vivo",
+      "today": "Hoje",
+      "booked": "Reservado",
+      "book": "Reservar",
+      "seats": "{count, plural, one {Resta # vaga} other {Restam # vagas}}",
+      "classes": {
+        "en-a2": "Inglês A2 · ter e qui",
+        "club-b1": "Conversation Club B1",
+        "en-b1": "Inglês B1 · ter e qui",
+        "en-b2": "Inglês B2",
+        "pt-a1": "Espanhol A1",
+        "en-a1": "Inglês A1",
+        "pt-a2": "Espanhol A2"
+      }
+    },
+    "course": {
+      "kicker": "Inglês · nível {level}",
+      "title": "Seu curso",
+      "syllabus": "Unidades do curso",
+      "unit": "U{n}",
+      "units": {
+        "u1": "Apresentações",
+        "u2": "Rotina e horários",
+        "u3": "Comida e compras",
+        "u4": "Viagens",
+        "u5": "Experiências",
+        "u6": "Passado simples"
+      },
+      "nextOpen": "B1 liberado",
+      "nextLocked": "B1 · libera quando fechar o A2",
+      "b1": {
+        "u1": "Planos e previsões",
+        "u2": "Trabalho e estudo"
+      },
+      "live": "Suas aulas ao vivo",
+      "bookClub": "Reservar o clube das {time}",
+      "calendarLabel": "Suas aulas ao vivo desta semana e da próxima"
+    },
+    "speak": {
+      "kicker": "Atividade 1 de 3 · Speaking",
+      "title": "Fale 2 minutos com sua tutora",
+      "pick": "Escolha o assunto",
+      "topic": "Tema",
+      "topicLabel": "Tema da sessão",
+      "question": {
+        "weekend": "What did you do last weekend?",
+        "series": "Tell me about the last series you watched."
+      },
+      "again": "Praticar de novo",
+      "prompts": {
+        "weekend": "Seu último fim de semana",
+        "series": "A última série que você viu"
+      },
+      "tutor": "Tutora IA · speaking",
+      "tutorTag": "Tutora",
+      "status": {
+        "idle": "Pronta quando você quiser",
+        "connecting": "Conectando…",
+        "talking": "Sua tutora está falando",
+        "listening": "Ouvindo {name}",
+        "analyzing": "Analisando a pronúncia",
+        "ended": "Sessão encerrada"
+      },
+      "connecting": "Sua tutora está se conectando…",
+      "label": "Prática de speaking de {name} com a tutora IA",
+      "duration": "Duração {time}",
+      "transcript": "Transcrição ao vivo",
+      "score": "Nota",
+      "scores": {
+        "pron": "Pronúncia",
+        "fluency": "Fluência",
+        "grammar": "Gramática"
+      },
+      "improved": "Você corrigiu o som /θ/ na primeira tentativa.",
+      "badWord": "sink",
+      "goodWord": "think",
+      "weekend": {
+        "l0": "Hi Valentina! What did you do last weekend?",
+        "l1": "I sink I went to the cinema with my brother.",
+        "l2": "«sink» → «think» · som /θ/",
+        "l3": "Nice past tense! Now «think»: tongue between your teeth.",
+        "l4": "I think… I think it was great!",
+        "l5": "/θ/ certo · nota 92"
+      },
+      "series": {
+        "l0": "Hi Valentina! Tell me about the last series you watched.",
+        "l1": "I sink it was a Korean series. I watched three episodes.",
+        "l2": "«sink» → «think» · som /θ/",
+        "l3": "Good! Careful with «think»: tongue between your teeth.",
+        "l4": "I think… I think I loved it!",
+        "l5": "/θ/ certo · nota 90"
+      }
+    },
+    "tutor": {
+      "kicker": "Atividade 2 de 3 · Escrita",
+      "title": "Tutora IA",
+      "subtitle": "Corrige e explica em uma linha",
+      "date": "Hoje",
+      "label": "Chat da Valentina com a tutora IA",
+      "composer": "Escreva uma frase em inglês…",
+      "waiting": "Depois do speaking, me escreva uma frase em inglês: eu corrijo e explico o porquê em uma linha.",
+      "msg": "Yesterday I buyed a new jacket for the trip.",
+      "fix": "Yesterday I <bad>buyed</bad> <good>bought</good> a new jacket for the trip.",
+      "why": "«Buy» é irregular: buy → bought. Sem -ed.",
+      "quizKicker": "Exercício rápido",
+      "quiz": "Last week she <gap>___</gap> a new phone.",
+      "replies": {
+        "bought": "bought",
+        "buyed": "buyed",
+        "buys": "buys"
+      },
+      "right": "Isso: «bought». +{points} pts e a lição está fechada.",
+      "wrong": "Quase: é «bought» (buy → bought). Guardei para revisar amanhã. +{points} pts."
+    },
+    "site": {
+      "path": "teste-de-nivel",
+      "index": "Site público · teste de nível",
+      "title": "Matrículas",
+      "botName": "Atri · assistente",
+      "botSub": "Teste de nível em 2 minutos",
+      "chatLabel": "Chat do site: teste de nível",
+      "composer": "Digite sua resposta…",
+      "taking": "{name} está fazendo o teste",
+      "takingYou": "Você está fazendo o teste",
+      "tryIt": "Faça o teste você",
+      "again": "Fazer de novo",
+      "hi": "Oi! Eu sou o Atri, assistente da Atrio. Vamos fazer o teste de nível? São 3 perguntas.",
+      "courses": "Temos inglês do A1 ao C1 e espanhol do A1 ao B2. Mensalidade: {price}, com aulas ao vivo e tutora IA. Vamos descobrir seu nível primeiro?",
+      "q1": "1/3 · Complete: She ___ to work by bus.",
+      "q2": "2/3 · Yesterday we ___ a great film.",
+      "q3": "3/3 · I ___ here since 2020.",
+      "result": "Seu nível: <b>{level}</b>. Eu recomendo <b>{course}</b>: 12 semanas, 2 aulas ao vivo por semana e tutora IA a qualquer hora.",
+      "courseMeta": "12 semanas · 2 aulas ao vivo por semana",
+      "perMonth": "{price}/mês",
+      "doubt": "A primeira aula ao vivo é experimental: se não gostar, você não paga. Posso fazer sua matrícula?",
+      "pay": "Como você quer pagar a primeira mensalidade?",
+      "paid": "Pronto, {name}! Pagamento aprovado. Sua primeira aula é terça às 19h. Mandamos tudo pelo WhatsApp.",
+      "paidYou": "Pronto! Pagamento aprovado. Sua primeira aula é terça às 19h. Mandamos tudo pelo WhatsApp.",
+      "approved": "Aprovado",
+      "alias": "Aqui está a chave Pix da escola: atrio.idiomas.demo. Assim que cair, seu acesso é liberado.",
+      "paidTransfer": "Pix recebido · acesso liberado",
+      "replies": {
+        "start": "Começar o teste",
+        "courses": "Ver cursos e preços",
+        "go": "go",
+        "goes": "goes",
+        "going": "going",
+        "see": "see",
+        "saw": "saw",
+        "seen": "seen",
+        "live": "live",
+        "have": "have lived",
+        "am": "am living",
+        "enroll": "Quero me matricular",
+        "doubt": "Tenho uma dúvida",
+        "card": "Cartão",
+        "transfer": "Pix"
+      },
+      "links": {
+        "courses": "Cursos",
+        "live": "Aulas ao vivo",
+        "prices": "Preços"
+      },
+      "cta": "Teste de nível",
+      "kicker": "Inglês e espanhol online",
+      "heroA": "Fale em 12 semanas, com alguém que",
+      "heroB": "sempre te corrige.",
+      "heroBody": "Aulas ao vivo duas vezes por semana, uma tutora IA que corrige a qualquer hora e um plano no seu ritmo.",
+      "testCta": "Faça o teste (2 min)",
+      "seeCourses": "Ver cursos",
+      "coursesKicker": "Cursos",
+      "coursesTitle": "Comece no seu nível",
+      "enrolLine": "Teste {level} → {course}",
+      "payShort": {
+        "card": "Pagou com cartão",
+        "transfer": "Pagou com Pix"
+      },
+      "enrolledToday": "Matrículas de hoje",
+      "enrolledCount": "{count} em outubro",
+      "leads": {
+        "lead1": "Fernanda D.",
+        "lead2": "Rodrigo C."
+      },
+      "funnel": "Teste de nível · outubro",
+      "funnelSteps": {
+        "visits": "Visitas ao site",
+        "tests": "Fizeram o teste",
+        "enrolled": "Se matricularam"
+      }
+    },
+    "wa": {
+      "nudge": "Oi {name}, tudo bem? Faz 5 dias que você não entra. Preparei uma lição expressa de 5 minutos para você retomar de onde parou.",
+      "cardTitle": "Lição expressa · Rotina",
+      "cardMeta": "5 min · 8 frases",
+      "replies": {
+        "yes": "Bora, vou fazer agora",
+        "later": "Hoje não dá"
+      },
+      "go": "Boa! São 8 frases curtas. Te espero lá.",
+      "done": "{name} concluiu a lição expressa · 5 min",
+      "tomorrow": "Sem problema. Guardo para amanhã e te lembro às 19h.",
+      "noteLater": "Lembrete agendado · amanhã 19h",
+      "waiting": "Mensagem agendada para {name}",
+      "noNudge": "Sem acompanhamento: ninguém escreve para {name}",
+      "dropped": "{name} cancelou. Ninguém escreveu para ele.",
+      "label": "WhatsApp de {name} com a escola",
+      "date": "Hoje"
+    },
+    "class": {
+      "kicker": "Inglês A2 · turma ter e qui",
+      "title": "Sua turma · semana",
+      "you": "você",
+      "martinBack": "Voltou hoje",
+      "rankLabel": "Posição {rank} de {count}",
+      "pts": "pts",
+      "climbed": "{count, plural, one {Subiu # posição hoje} other {Subiu # posições hoje}}",
+      "keepGoing": "Mais uma lição e você sobe",
+      "boardLabel": "Ranking semanal da sua turma",
+      "stickers": "Adesivos"
+    },
+    "badges": {
+      "levelB1": "Nível B1",
+      "speak10": "10 speakings",
+      "streak7": "7 dias seguidos",
+      "firstLive": "Primeira aula ao vivo",
+      "words": "100 palavras",
+      "streak30": "30 dias seguidos"
+    },
+    "levelUp": {
+      "close": "Fechar",
+      "kicker": "Lição 6.3 · concluída",
+      "titleB1": "A2 fechado. Agora você é B1.",
+      "title": "Lição concluída.",
+      "bodyB1": "Na próxima aula você já entra na turma de Inglês B1. A sequência continua.",
+      "body": "Falta 1 exercício para fechar o A2: amanhã você revisa com sua tutora.",
+      "streak": "Sequência",
+      "days": "{count, plural, one {# dia} other {# dias}}",
+      "points": "Pontos",
+      "speaking": "Speaking",
+      "book": "Reservar o clube das {time}",
+      "booked": "Reservado · clube das {time}",
+      "continue": "Continuar"
+    },
+    "today": {
+      "greeting": "Hoje na escola",
+      "completion": "Concluem o curso · turma de agosto",
+      "completionSub": "<b>{n}</b> de {total} alunos seguem firmes",
+      "completionFell": "Caiu: {name} cancelou e ninguém escreveu para ele.",
+      "withNudges": "Com acompanhamento",
+      "before": "Antes: {pct}",
+      "fees": "Mensalidades · outubro",
+      "feesHint": "{paid} de {total} alunos em dia",
+      "active": "Alunos ativos",
+      "activeHint": "Em 6 cursos",
+      "atRisk": "Em risco",
+      "atRiskHint": "3 dias ou mais sem entrar",
+      "atRiskDelta": "{count, plural, one {# voltou hoje} other {# voltaram hoje}}",
+      "atRiskDropped": "1 cancelou",
+      "enrollments": "Matrículas · outubro",
+      "enrollmentsDelta": "+{count} hoje",
+      "enrollmentsHint": "Vindas do teste de nível",
+      "now": "Agora na Atrio",
+      "openStudents": "Ver alunos",
+      "activity": "Atividade"
+    },
+    "lanes": {
+      "label": "O que está acontecendo agora",
+      "done": "feito",
+      "now": "em andamento",
+      "pending": "pendente",
+      "inProgress": "Em andamento",
+      "valentina": {
+        "context": "Inglês A2 · lição 6.3",
+        "s1": "Abriu a lição",
+        "s2": "Speaking · {score}/100",
+        "s2pending": "Speaking",
+        "s3": "Escrita corrigida",
+        "s3wrong": "Errou o exercício",
+        "s4": "Lição concluída",
+        "outB1": "Subiu para B1",
+        "outReview": "Revisa amanhã"
+      },
+      "lead": {
+        "context": "Teste de nível no site",
+        "s1": "Abriu o chat",
+        "s2": "Nível {level}",
+        "s2pending": "Teste em andamento",
+        "s3": "Escolheu o curso",
+        "s4": "Pagou com {pay}",
+        "s4pending": "Pagamento",
+        "out": "Matriculada",
+        "outYou": "Matrícula feita"
+      },
+      "martin": {
+        "context": "5 dias sem entrar",
+        "s1": "Marcado em risco",
+        "s2": "WhatsApp + lição de 5 min",
+        "s2off": "Sem acompanhamento",
+        "s3": "Respondeu",
+        "s3later": "Deixou para amanhã",
+        "s3off": "Ninguém escreveu",
+        "s4": "Voltou",
+        "s4off": "Cancelou",
+        "outBack": "Voltou",
+        "outDropped": "Cancelou",
+        "outLater": "Amanhã 19h"
+      }
+    },
+    "students": {
+      "index": "Alunos · {count} ativos",
+      "title": "Alunos",
+      "sub": "Quem se afasta recebe uma lição de 5 minutos pelo WhatsApp. Sem ninguém precisar correr atrás.",
+      "roster": "Acompanhamento de hoje",
+      "rosterCount": "{shown} de {total}",
+      "cols": {
+        "student": "Aluno",
+        "progress": "Progresso do nível",
+        "status": "Status"
+      },
+      "lastToday": "Hoje",
+      "lastDays": "{count, plural, one {Há # dia} other {Há # dias}}",
+      "status": {
+        "ok": "Em dia",
+        "risk": "Em risco",
+        "sent": "WhatsApp enviado",
+        "back": "Voltou",
+        "later": "Amanhã",
+        "dropped": "Cancelou",
+        "lesson": "Em lição",
+        "b1": "Subiu para B1"
+      },
+      "nudge": {
+        "title": "Resgate pelo WhatsApp",
+        "rule": "3 dias sem entrar → WhatsApp com uma lição de 5 minutos.",
+        "off": "Desligado: quem se afasta não recebe nada.",
+        "sentWeek": "Enviados na semana",
+        "backWeek": "Voltaram",
+        "avg": "Voltam em",
+        "avgValue": "38 min"
+      },
+      "fees": {
+        "title": "Lembrete de mensalidade",
+        "rule": "Vence dia 10 · hoje saíram {count} lembretes",
+        "of": "{paid} de {total} pagaram",
+        "firstFee": "{name} · primeira mensalidade",
+        "via": {
+          "card": "cartão",
+          "transfer": "Pix"
+        }
+      }
+    },
+    "courses": {
+      "index": "Cursos · {count} ativos",
+      "title": "Cursos",
+      "sub": "Onde os alunos ficam. Neste trimestre, o acompanhamento resgatou {rescued}.",
+      "retention": "Alunos ativos por semana · turma de agosto",
+      "legendNow": "Com acompanhamento",
+      "legendBefore": "Antes (turma de 2025)",
+      "week3": "Semana 3: {now} seguem (antes {before})",
+      "caption": "A semana 3 era o precipício. Hoje <b>{last}</b> de {total} concluem; antes, {before}.",
+      "srSummary": "Com acompanhamento, {pct} da turma conclui; antes, {before}.",
+      "ledger": "Cursos",
+      "ledgerHint": "Alunos por unidade (1–8)",
+      "students": "{count} alunos",
+      "unitsLabel": "Alunos espalhados em 8 unidades; a média está na unidade {unit}"
+    },
+    "live": {
+      "index": "Aulas ao vivo · quinta",
+      "title": "Aulas ao vivo",
+      "sub": "6 aulas hoje, 3 professores. Cada aluno reserva a vaga pelo app.",
+      "seats": "{taken}/{seats} vagas",
+      "onAir": "Ao vivo · {count} conectados",
+      "done": "Encerrada",
+      "upcoming": "Mais tarde",
+      "onAirTitle": "No ar",
+      "connected": "conectados",
+      "nextTitle": "Lotando",
+      "bookedBy": "{name} reservou (acabou de subir para B1)",
+      "clubHint": "Só para alunos do B1 em diante",
+      "attendance": "Presença na semana",
+      "attendanceHint": "Com lembrete no WhatsApp 1 h antes",
+      "calendarLabel": "Aulas ao vivo de hoje por professor",
+      "subjects": {
+        "carla": "Inglês",
+        "diego": "Inglês",
+        "ana": "Espanhol"
+      }
+    },
+    "tutorView": {
+      "index": "Tutor IA · 24/7",
+      "title": "Tutor IA",
+      "sub": "Corrige, explica em uma linha e faz praticar. Os professores veem onde cada turma erra.",
+      "corrections": "Correções hoje",
+      "correctionsHint": "Escritas e faladas",
+      "sessions": "Sessões de speaking",
+      "sessionsHint": "De 2 minutos, com nota",
+      "solved": "Dúvidas resolvidas sem professor",
+      "solvedHint": "O resto vai para o professor com contexto",
+      "errors": "O que mais se corrige hoje",
+      "errorsLabel": "Erros mais frequentes de hoje",
+      "errorNames": {
+        "th": "Som /θ/ (th)",
+        "past": "Passado irregular",
+        "prep": "Preposições",
+        "third": "-s da terceira pessoa"
+      },
+      "errorEx": {
+        "th": "sink → think",
+        "past": "buyed → bought",
+        "prep": "in Monday → on Monday",
+        "third": "she go → she goes"
+      },
+      "liveSpeaking": "Speaking ao vivo · {name}",
+      "liveWriting": "Escrita ao vivo · {name}"
     }
   }
 }
