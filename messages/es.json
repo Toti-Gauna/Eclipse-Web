@@ -78,13 +78,13 @@
   "hero": {
     "eyebrow": "Desarrollo · IA · Automatización",
     "title": "Antes de hablar, te mostramos <em>tu negocio</em> funcionando.",
-    "subtitle": "Webs, sistemas y agentes de IA para negocios que no pueden esperar. Elegí tu rubro y miralo.",
-    "pickVertical": "Elegí tu rubro",
+    "subtitle": "Webs, sistemas y agentes de IA para negocios que no pueden esperar.",
+    "pickVertical": "Elegí tu rubro y miralo",
     "ctaDemo": "Pedí tu demo",
     "ctaPlan": "Armá tu plan",
     "seeAnother": "Ver otro rubro",
-    "scroll": "Bajá para ver más",
-    "wantThis": "Quiero esto para mi negocio"
+    "wantThis": "Quiero esto para mi negocio",
+    "pickOptional": "Opcional"
   },
   "whatsapp": {
     "greeting": "Hola Eclipse.",
@@ -4434,5 +4434,9 @@
         }
       }
     }
+  },
+  "shortcuts": {
+    "label": "Atajos",
+    "plan": "Armar plan"
   }
 }

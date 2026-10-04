@@ -78,13 +78,13 @@
   "hero": {
     "eyebrow": "Development · AI · Automation",
     "title": "Before we talk, we show you <em>your business</em> already working.",
-    "subtitle": "Websites, systems and AI agents for businesses that can't wait. Pick your industry and see it.",
-    "pickVertical": "Pick your industry",
+    "subtitle": "Websites, systems and AI agents for businesses that can't wait.",
+    "pickVertical": "Pick your industry and see it",
     "ctaDemo": "Get your demo",
     "ctaPlan": "Build your plan",
     "seeAnother": "See another industry",
-    "scroll": "Scroll to see more",
-    "wantThis": "I want this for my business"
+    "wantThis": "I want this for my business",
+    "pickOptional": "Optional"
   },
   "whatsapp": {
     "greeting": "Hi Eclipse.",
@@ -4434,5 +4434,9 @@
         }
       }
     }
+  },
+  "shortcuts": {
+    "label": "Shortcuts",
+    "plan": "Build a plan"
   }
 }

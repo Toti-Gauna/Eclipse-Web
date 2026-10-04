@@ -2,10 +2,13 @@
 
 import { useEffect, useId, useRef } from 'react';
 import { useTranslations } from 'next-intl';
+import { ScrollTrigger } from '@/components/motion/gsap';
 import { useReducedMotion } from '@/components/motion/useReducedMotion';
 
 /** Where the moon ends up (viewBox units) once it has fully left the sun. */
 const MOON_PATH = { x: -12.6, y: 6.4 };
+/** Drawn in 1/150 steps of the page (~0.1 px of moon travel at 22 px: invisible). */
+const STEPS = 150;
 
 /**
  * The logo's eclipse doubles as the reading-progress indicator. At the top of the
@@ -13,8 +16,12 @@ const MOON_PATH = { x: -12.6, y: 6.4 };
  * moon away toward the lower left and the sun comes out, glowing, by the bottom
  * ("dawn"). The moon is a mask, so the uncovered sun reads on any header theme.
  *
- * Updates go straight to SVG attributes (transform / opacity), at most once per
- * frame, without re-rendering React. With reduced motion it stays at totality.
+ * Updates go straight to SVG attributes (transform / opacity) without re-rendering
+ * React, and only when the drawing actually changes (each change repaints the SVG).
+ * The progress comes from a ScrollTrigger (start 0 → end 'max'): one shared scroll
+ * read per frame and the page height measured on refresh — v2 read scrollHeight on
+ * every scroll frame, which forced a style + layout pass right after GSAP's writes.
+ * With reduced motion it stays at totality.
  */
 export function MiniEclipse({ size = 22 }: { size?: number }) {
   const t = useTranslations('header');
@@ -28,7 +35,11 @@ export function MiniEclipse({ size = 22 }: { size?: number }) {
   const lastStep = useRef(-1);
 
   useEffect(() => {
-    const draw = (p: number) => {
+    let drawn = -1;
+    const draw = (progress: number) => {
+      const p = Math.round(progress * STEPS) / STEPS;
+      if (p === drawn) return;
+      drawn = p;
       moon.current?.setAttribute('transform', `translate(${(p * MOON_PATH.x).toFixed(2)} ${(p * MOON_PATH.y).toFixed(2)})`);
       ring.current?.setAttribute('opacity', Math.max(0, 1 - p * 3.2).toFixed(3));
       glint.current?.setAttribute('opacity', Math.max(0, 1 - p * 7).toFixed(3));
@@ -42,26 +53,15 @@ export function MiniEclipse({ size = 22 }: { size?: number }) {
       root.current.setAttribute('aria-valuetext', t('progress', { value: step }));
     };
 
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - window.innerHeight;
-      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    const update = (self: ScrollTrigger) => {
+      // A page shorter than the screen has nothing to read: totality.
+      const p = self.end > self.start ? self.progress : 0;
       announce(p);
       draw(reduced ? 0 : p);
     };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
-    };
+    const st = ScrollTrigger.create({ start: 0, end: 'max', onUpdate: update, onRefresh: update });
+    update(st);
+    return () => st.kill();
   }, [reduced, t]);
 
   return (

@@ -6,8 +6,14 @@ import { loaderRemainingMs } from '@/components/loader/loaderState';
 import type { HeroMotionBus } from './HeroState';
 import { DISC_RADIUS, MOON_DIR, SCROLL_MOON } from './geometry';
 
-/** Where the hero is pinned (if it fits the screen; the section then gets [data-pinned]). */
-const HERO_PIN_QUERY = '(min-width: 768px) and (min-height: 600px)';
+/**
+ * Where the hero is pinned (if it fits the screen; the section then gets [data-pinned]):
+ * wide, tall screens driven by a mouse or trackpad. Touch screens (phones, iPads) are
+ * never pinned: a pin fights momentum scrolling and the browser toolbars there.
+ */
+const HERO_PIN_QUERY = '(min-width: 768px) and (min-height: 600px) and (hover: hover) and (pointer: fine)';
+/** How long the WebGL corona keeps moving after each scroll update (it rests otherwise). */
+const CORONA_WAKE_MS = 700;
 
 /** Below this the loader is not covering the hero anymore: never hide what's painted. */
 const MIN_COVER_MS = 160;
@@ -22,13 +28,14 @@ const MIN_COVER_MS = 160;
  * repeat visits (no loader) nothing is hidden and there is no entrance.
  *
  * Scroll (gsap.matchMedia):
- * - ≥768px wide and ≥600px tall (and the hero fits the screen): the hero is
- *   pinned for 100vh with its own spacer; scrubbed, the moon slides diagonally
- *   (toward third contact), the corona/bloom brighten, the sky warms and the copy
- *   drifts up a little.
- * - Phones / short screens: same timeline, scrubbed while the hero scrolls away,
- *   no pin (pinning on touch fights momentum scrolling and the iOS toolbar, and a
- *   pin would cut the demo reveal, which is taller than the screen there).
+ * - ≥768px wide and ≥600px tall with a mouse/trackpad (and the hero fits the
+ *   screen): the hero is pinned for 100vh with its own spacer; scrubbed, the moon
+ *   slides diagonally (toward third contact), the corona/bloom brighten, the sky warms
+ *   and the copy drifts up a little.
+ * - Touch screens (phones, tablets) and short screens: same timeline, scrubbed while
+ *   the hero scrolls away, no pin (pinning on touch fights momentum scrolling and the
+ *   toolbars, and a pin would cut the demo reveal, which is taller than the screen on
+ *   phones).
  * - Reduced motion: nothing.
  * The reveal lives on its own layers ([data-eclipse-moon], the light) so the two
  * never animate the same property.
@@ -77,23 +84,24 @@ export function useHeroMotion(stageRef: RefObject<HTMLElement | null>, bus: RefO
 
       const mm = gsap.matchMedia();
       mm.add(
-        {
-          pin: `${HERO_PIN_QUERY} and (prefers-reduced-motion: no-preference)`,
-          scrub: '(max-width: 767px) and (prefers-reduced-motion: no-preference), (max-height: 599px) and (prefers-reduced-motion: no-preference)',
-        },
+        { pinnable: HERO_PIN_QUERY, motion: '(prefers-reduced-motion: no-preference)' },
         (ctx) => {
-          const conditions = ctx.conditions as { pin: boolean; scrub: boolean };
-          if (!conditions.pin && !conditions.scrub) return;
+          const conditions = ctx.conditions as { pinnable: boolean; motion: boolean };
+          if (!conditions.motion) return;
           // Only pin what fits the screen (hero.css/Hero.tsx size the copy for it),
           // so the pinned stretch never hides the CTAs or slips under the header.
-          const pin = conditions.pin && section.offsetHeight <= window.innerHeight + 2;
+          const pin = conditions.pinnable && section.offsetHeight <= window.innerHeight + 2;
           // The header's light zone (HeroReveal) adds the pin distance from CSS.
           section.toggleAttribute('data-pinned', pin);
           const b = bus.current;
           const q = <T extends Element>(root: Element, sel: string) => root.querySelector<T>(sel);
           const moonPct = SCROLL_MOON * DISC_RADIUS * 100; // % of the eclipse square
 
-          const tl = gsap.timeline({ defaults: { ease: 'none', duration: 1 } });
+          const tl = gsap.timeline({
+            defaults: { ease: 'none', duration: 1 },
+            // The WebGL corona rests between events: each scroll update keeps it moving a bit.
+            onUpdate: () => b.wake?.(CORONA_WAKE_MS),
+          });
           tl.fromTo(
             q(stage, '[data-eclipse-moon-scroll]'),
             { xPercent: 0, yPercent: 0 },
@@ -112,8 +120,6 @@ export function useHeroMotion(stageRef: RefObject<HTMLElement | null>, bus: RefO
               { y: pin ? -56 : -24, ease: 'power1.in' },
               0,
             );
-          const hint = q(section, '[data-hero-scroll-hint]');
-          if (hint) tl.fromTo(hint, { opacity: 1 }, { opacity: 0, duration: 0.15 }, 0);
 
           const spacer = section.parentElement?.matches('[data-hero-pin-spacer]') ? section.parentElement : undefined;
           ScrollTrigger.create({

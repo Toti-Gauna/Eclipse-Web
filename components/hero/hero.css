@@ -33,7 +33,9 @@
   );
 }
 
-/* Rays: two conic layers rotating in opposite directions, masked to a ring */
+/* Rays: two conic layers, masked to a ring. Still (v3: no permanent decorative
+   animation; the v2 spin + breathe kept the compositor drawing a blurred, masked layer
+   on every frame). The WebGL corona, where it runs, moves only when something happens. */
 .eclipse-corona {
   -webkit-mask-image: radial-gradient(closest-side, transparent 38%, #000 42%, rgb(0 0 0 / 0.6) 62%, transparent 100%);
   mask-image: radial-gradient(closest-side, transparent 38%, #000 42%, rgb(0 0 0 / 0.6) 62%, transparent 100%);
@@ -55,7 +57,6 @@
     rgb(245 185 66 / 0.35) 15deg,
     rgb(255 232 176 / 0) 18deg 24deg
   );
-  animation: eclipse-spin 140s linear infinite;
 }
 .eclipse-corona::after {
   background: repeating-conic-gradient(
@@ -64,7 +65,6 @@
     rgb(245 185 66 / 0.4) 8deg,
     rgb(245 185 66 / 0) 11deg 19deg
   );
-  animation: eclipse-spin 210s linear infinite reverse;
   opacity: 0.8;
 }
 
@@ -72,7 +72,7 @@
 .eclipse-inner {
   inset: calc((100% - var(--disc)) / 2 - 7%);
 }
-/* The breathing lives on the pseudo-element so the layer itself can crossfade. */
+/* The ring lives on the pseudo-element so the layer itself can crossfade. */
 .eclipse-inner::before {
   content: '';
   position: absolute;
@@ -86,7 +86,7 @@
     rgb(245 185 66 / 0.15) 94%,
     transparent 100%
   );
-  animation: eclipse-breathe 6s ease-in-out infinite;
+  opacity: 0.85;
 }
 
 /* The sun disc (visible when the moon moves) */
@@ -120,28 +120,6 @@
   width: 100%;
   height: 100%;
 }
-.starfield .twinkle {
-  animation: eclipse-twinkle 4.5s ease-in-out infinite;
-}
-
-/* Scroll hint */
-.scroll-hint-line {
-  position: relative;
-  width: 1px;
-  height: 36px;
-  overflow: hidden;
-  background: rgb(244 239 230 / 0.12);
-}
-.scroll-hint-line::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1px;
-  height: 40%;
-  background: var(--corona);
-  animation: eclipse-scroll-hint 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
 
 
 /* ------------------------------------------------------------------ */
@@ -172,21 +150,14 @@
   opacity: 0;
 }
 
-/* Paused while off-screen, in a hidden tab or covered by the demo light. */
-[data-hero-stage][data-paused] *,
-[data-hero-stage][data-paused] *::before,
-[data-hero-stage][data-paused] *::after {
-  animation-play-state: paused !important;
-}
-
 /* ------------------------------------------------------------------ */
 /* Hero layout                                                          */
 /* Stacked (eclipse above the copy): phones and portrait tablets.       */
 /* Side by side (eclipse on the right): landscape from 768px and        */
-/* everything from 1024px — the copy never runs into the disc.          */
+/* everything from 1024px — the copy column ends before the dial.       */
 /* ------------------------------------------------------------------ */
 .hero {
-  --hero-eclipse-size: min(54vw, 30svh, 300px);
+  --hero-eclipse-size: min(48vw, 25svh, 260px);
   /* One cell; minmax(0, …) so wide content (the rubro scroller) never widens the page. */
   grid-template-columns: minmax(0, 1fr);
 }
@@ -195,9 +166,10 @@
   min-height: 100svh;
   flex-direction: column;
   justify-content: flex-end;
-  /* The dial reaches 8% of the eclipse beyond its square on every side. */
-  padding-top: calc(var(--header-h) + 1svh + var(--hero-eclipse-size) * 1.16 + 0.75rem);
-  padding-bottom: 3rem;
+  /* The dial reaches 8% of the eclipse beyond its square on every side; the gap keeps
+     the copy clear of it while the scrub scales the eclipse up a little. */
+  padding-top: calc(var(--header-h) + 1svh + var(--hero-eclipse-size) * 1.16 + 1.25rem);
+  padding-bottom: 2rem;
 }
 .hero-eclipse-anchor {
   position: absolute;
@@ -205,17 +177,30 @@
   top: calc(var(--header-h) + 1svh + var(--hero-eclipse-size) * 0.08);
   translate: -50% 0;
 }
-/* Phones: a tighter rhythm so "Pedí tu demo" shows on the first screen. */
-@media (max-width: 767.98px) {
-  .hero-pick-wrap {
-    margin-top: 1.5rem;
+.hero-copy-inner {
+  max-width: 36rem;
+}
+.hero-title {
+  font-size: 2.55rem;
+}
+.hero-sub {
+  max-width: 32rem;
+}
+.hero-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.hero-pick-wrap {
+  margin-top: 1.75rem;
+}
+@media (min-width: 640px) {
+  .hero-title {
+    font-size: 3.75rem;
   }
   .hero-ctas {
-    margin-top: 1.25rem;
+    flex-direction: row;
   }
-}
-.hero-scroll-hint {
-  display: none;
 }
 @media (min-width: 768px) {
   .hero {
@@ -224,51 +209,82 @@
 }
 @media (min-width: 768px) and (orientation: landscape), (min-width: 1024px) {
   .hero {
-    --hero-eclipse-size: min(42vw, 70svh, 620px);
+    --hero-eclipse-size: min(40vw, 70svh, 620px);
+    /* Center of the eclipse, in % of the hero's width. */
+    --hero-anchor: 74;
+    /* The copy column runs from the container's edge to 0.58 × the eclipse left of its
+       center (just past the dial's outer marks, the scrub's scale-up included), minus a
+       gap, and never wider than 42rem: the eclipse never sits on the text or the CTAs. */
+    --hero-copy-max: min(
+      42rem,
+      calc(
+        var(--hero-anchor) * 1vw - var(--hero-eclipse-size) * 0.58 - max(var(--gutter), (100vw - 1240px) / 2 + var(--gutter)) -
+          1.5rem
+      )
+    );
   }
   .hero-copy-cell {
     justify-content: center;
-    padding-top: calc(var(--header-h) + 2rem);
-    padding-bottom: 5rem;
+    padding-top: calc(var(--header-h) + 1.5rem);
+    padding-bottom: 2.5rem;
+  }
+  .hero-copy-inner {
+    max-width: var(--hero-copy-max);
+  }
+  /* "negocio funcionando." is ~7em wide: the headline keeps its three lines inside the column. */
+  .hero-title {
+    font-size: min(5.4rem, 11.5svh, 7.6vw, var(--hero-copy-max) / 7.2);
   }
   .hero-eclipse-anchor {
-    left: 73%;
+    left: calc(var(--hero-anchor) * 1%);
     top: 50%;
     translate: -50% -50%;
   }
-  .hero-scroll-hint {
-    display: flex;
-  }
   .hero-sky {
-    --sky-x: 73%;
+    --sky-x: calc(var(--hero-anchor) * 1%);
     --sky-y: 50%;
   }
 }
 /* Narrow side-by-side screens (1024–1279px, landscape tablets): a smaller dial further
-   right, so its ring and numbers never cross the headline. */
+   right, and tighter rubro keys so they keep to two rows in the narrower column. */
 @media (min-width: 768px) and (max-width: 1279.98px) and (orientation: landscape),
   (min-width: 1024px) and (max-width: 1279.98px) {
   .hero {
-    --hero-eclipse-size: min(36vw, 64svh, 620px);
+    --hero-eclipse-size: min(34vw, 64svh, 620px);
+    --hero-anchor: 77;
   }
-  .hero-eclipse-anchor {
-    left: 76%;
+  /* (.hero: specific enough to beat the key styles further down.) */
+  .hero .hero-chips {
+    gap: 0.375rem;
   }
-  .hero-sky {
-    --sky-x: 76%;
+  .hero .hero-chip {
+    gap: 0.45rem;
+    padding: 0 0.7rem 0 0.6rem;
   }
 }
-/* Short laptops (1366×657…): the whole copy stays on the pinned screen. */
-@media (min-width: 768px) and (orientation: landscape) and (max-height: 760px),
-  (min-width: 1024px) and (max-height: 760px) {
+/* Short laptops (1366×657…): a smaller eclipse (clear of the header)… */
+@media (min-width: 1280px) and (max-height: 800px) {
+  .hero {
+    --hero-eclipse-size: min(40vw, 66svh, 620px);
+  }
+}
+/* …and a tighter rhythm so the copy still fits the pinned screen. */
+@media (min-width: 768px) and (orientation: landscape) and (max-height: 800px),
+  (min-width: 1024px) and (max-height: 800px) {
   .hero-copy-cell {
-    padding-bottom: 2rem;
+    padding-top: calc(var(--header-h) + 1rem);
+    padding-bottom: 1.25rem;
   }
-}
-/* …and on narrow ones the hint would sit next to the CTAs: drop it. */
-@media (max-width: 1023px) and (max-height: 760px) {
-  .hero-scroll-hint {
-    display: none;
+  .hero-title {
+    font-size: min(5.4rem, 9.6svh, 7.6vw, var(--hero-copy-max) / 7.2);
+  }
+  .hero-sub {
+    font-size: 1rem;
+  }
+  .hero-sub,
+  .hero-ctas,
+  .hero-pick-wrap {
+    margin-top: 0.9rem;
   }
 }
 
@@ -366,29 +382,71 @@
     var(--dawn);
 }
 
-/* Device size inside the reveal. Phones: the phone (9 / 19.5 outside) fills the
-   height left under the header, the top bar (≈ 108px) and a 16px margin, never
-   under 240px wide (still usable; the page scrolls a bit on very short screens).
-   From md up the laptop + phone ("both" ≈ 0.651 × its width tall) fit the screen. */
+/* Showcase size inside the reveal (<DemoShowcase>, geometry in components/demos/showcase.css).
+   Phones: its tabs layout, as tall as the phone view; that view fills the height left under
+   the header and the top bar (≈ 124px), never under 240px wide (the page scrolls a little on
+   very short screens). Portrait tablets: tabs too, the phone view sized to the screen.
+   Desktop (SPLIT_QUERY in HeroReveal): both views side by side — height =
+   (width − 20px) × 0.4851 + 28px —, as wide as the screen's height allows under the header,
+   the top bar (≈ 152px with the hint) and the bottom padding. */
 .hero-reveal-showcase {
   width: clamp(240px, calc((100svh - var(--header-h) - 124px) * 9 / 19.5), min(340px, calc(100vw - 2 * var(--gutter))));
 }
 @media (min-width: 768px) {
   .hero-reveal-showcase {
-    width: min(1040px, 100%, calc((100svh - var(--header-h) - 200px) * 1.536));
+    --sc-phone-w: max(240px, calc((100svh - var(--header-h) - 200px) * 9 / 19.5));
+    width: min(1040px, 100%);
   }
 }
 @media (min-width: 1024px) {
   .hero-reveal-showcase {
-    width: min(1040px, 100%, calc((100svh - var(--header-h) - 150px) * 1.536));
+    width: min(100%, calc((100svh - var(--header-h) - 152px - 28px) / 0.4851 + 20px));
+  }
+}
+/* Short laptops: the hint goes, so the views keep a legible size on the pinned screen. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  .hero-reveal-hint {
+    display: none;
+  }
+  .hero-reveal-showcase {
+    width: min(100%, calc((100svh - var(--header-h) - 126px - 28px) / 0.4851 + 20px));
   }
 }
 /* Landscape phones and other very short screens: nothing usable fits one screen,
-   so the devices take the width and the hero grows (it is not pinned there). */
+   so the showcase takes the width and the hero grows (it is not pinned there). */
 @media (min-width: 768px) and (max-height: 599px) {
   .hero-reveal-showcase {
     width: min(760px, 100%);
   }
+}
+
+/* Loading state while the showcase chunk downloads: the same footprint. */
+.hero-reveal-skeleton {
+  display: grid;
+  gap: 20px;
+  align-items: end;
+}
+.hero-reveal-skeleton[data-layout='split'] {
+  grid-template-columns: minmax(0, 16fr) minmax(0, 4.615fr);
+  padding-top: 28px;
+}
+.hero-reveal-skeleton-screen {
+  display: block;
+  border-radius: 12px;
+  background: rgb(17 17 20 / 0.08);
+}
+.hero-reveal-skeleton-screen[data-kind='laptop'] {
+  aspect-ratio: 16 / 10;
+}
+.hero-reveal-skeleton-screen[data-kind='phone'] {
+  aspect-ratio: 9 / 19.5;
+}
+.hero-reveal-skeleton[data-layout='tabs'] .hero-reveal-skeleton-screen[data-kind='laptop'] {
+  display: none;
+}
+.hero-reveal-skeleton[data-layout='tabs'] .hero-reveal-skeleton-screen[data-kind='phone'] {
+  width: min(100%, var(--sc-phone-w, 100%));
+  justify-self: center;
 }
 
 /* Soft glow riding just outside the light's edge while it grows/shrinks
@@ -445,16 +503,6 @@
 .hero-dial-bezel {
   position: absolute;
   inset: 0;
-  animation: hero-dial-drift 240s linear infinite;
-  will-change: transform;
-}
-.hero-dial-bezel[data-aimed] {
-  animation: none;
-}
-@keyframes hero-dial-drift {
-  to {
-    transform: rotate(360deg);
-  }
 }
 .hero-dial-svg {
   position: absolute;
@@ -558,8 +606,11 @@
   height: 1px;
   background: var(--line-strong);
 }
-.hero-pick-count {
-  color: var(--fg);
+.hero-pick-optional {
+  padding: 0 0.5rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  line-height: 1.25rem;
 }
 .hero-chips {
   display: flex;
@@ -661,15 +712,88 @@
   }
 }
 
-/* Short laptops (1366×657…): tighter rhythm so the copy still fits the pinned screen. */
-@media (min-width: 768px) and (orientation: landscape) and (max-height: 760px),
-  (min-width: 1024px) and (max-height: 760px) {
-  .hero h1 {
-    font-size: min(5.4rem, 10.4svh, 7.6vw);
+/* ------------------------------------------------------------------ */
+/* Shortcuts row (HeroShortcuts.tsx): closes the hero, replaces the     */
+/* v2 "scroll" hint. An instrument scale: hairline, mono index, name.   */
+/* ------------------------------------------------------------------ */
+.hero-shortcuts {
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--line);
+}
+.hero-shortcuts-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hero-shortcuts-list > li {
+  display: flex;
+}
+.hero-shortcut {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 0.75rem 0 0;
+  color: var(--fg);
+  font-size: 0.875rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+.hero-shortcut-index {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  transition: color 0.25s ease;
+}
+.hero-shortcut-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex: none;
+  color: var(--fg-muted);
+  transition:
+    color 0.25s ease,
+    transform 0.35s var(--ease-expo);
+}
+.hero-shortcut-icon--plan {
+  color: var(--corona);
+}
+.hero-shortcut:hover,
+.hero-shortcut:focus-visible {
+  color: var(--accent);
+}
+.hero-shortcut:hover .hero-shortcut-index,
+.hero-shortcut:focus-visible .hero-shortcut-index,
+.hero-shortcut:hover .hero-shortcut-icon,
+.hero-shortcut:focus-visible .hero-shortcut-icon {
+  color: var(--accent);
+}
+.hero-shortcut:hover .hero-shortcut-icon:not(.hero-shortcut-icon--plan) {
+  transform: translateY(2px);
+}
+/* From sm up the four sit in one row (they wrap if the column is narrow). */
+@media (min-width: 640px) {
+  .hero-shortcuts-list {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1.5rem;
   }
-  .hero-sub,
-  .hero-pick-wrap,
-  .hero-ctas {
-    margin-top: 1.1rem;
+  .hero-shortcut {
+    flex: none;
+    padding-right: 0;
+  }
+}
+@media (min-width: 768px) and (orientation: landscape) and (max-height: 800px),
+  (min-width: 1024px) and (max-height: 800px) {
+  .hero-shortcuts {
+    margin-top: 1rem;
+  }
+  .hero-shortcut {
+    min-height: 44px;
   }
 }

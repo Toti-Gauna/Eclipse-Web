@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef } from 'react';
-import { gsap, useGSAP, type ScrollTrigger } from './gsap';
+import { useLayoutEffect, useRef } from 'react';
+import { gsap, type ScrollTrigger } from './gsap';
+import { observeEnter } from './observeEnter';
 import { prefersReducedMotion } from './useReducedMotion';
 
 export type DrawAxis = 'x' | 'y';
@@ -23,6 +24,8 @@ const ORIGIN: Record<DrawAxis, Record<DrawOrigin, string>> = {
  * The line is a decorative <span aria-hidden> styled by `.draw-line` (globals,
  * "v2 · motion signature"): 1px of `--line-strong`; size / color / position come
  * from `className`. Visible without JS; reduced motion → drawn immediately.
+ * A CSS transition started by a pooled IntersectionObserver (no ScrollTrigger, no
+ * computed-style reads while the section hydrates).
  */
 export function DrawLine({
   axis = 'x',
@@ -36,7 +39,7 @@ export function DrawLine({
   axis?: DrawAxis;
   origin?: DrawOrigin;
   className?: string;
-  /** ScrollTrigger start (of `trigger`, or of the line itself). */
+  /** Reading line, "top NN%" (of `trigger`, or of the line itself). */
   start?: string;
   duration?: number;
   delay?: number;
@@ -45,14 +48,31 @@ export function DrawLine({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
 
-  useGSAP(
-    () => {
-      const el = ref.current;
-      if (!el || prefersReducedMotion()) return;
-      drawIn(el, { axis, origin, duration, delay, scrollTrigger: { trigger: trigger ?? el, start, once: true } });
-    },
-    { scope: ref, dependencies: [axis, origin, start, duration, delay, trigger] },
-  );
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    const target = (typeof trigger === 'string' ? document.querySelector(trigger) : trigger) ?? el;
+    el.style.setProperty('--draw-origin', ORIGIN[axis][origin]);
+    el.style.setProperty('--draw-duration', `${duration}s`);
+    el.style.setProperty('--draw-delay', `${delay}s`);
+    el.setAttribute('data-draw-state', 'hidden');
+    let timer = 0;
+    const done = () => {
+      el.removeAttribute('data-draw-state');
+      el.style.removeProperty('--draw-origin');
+      el.style.removeProperty('--draw-duration');
+      el.style.removeProperty('--draw-delay');
+    };
+    const stop = observeEnter(target, start, () => {
+      el.setAttribute('data-draw-state', 'drawing');
+      timer = window.setTimeout(done, (duration + delay) * 1000 + 50);
+    });
+    return () => {
+      stop();
+      window.clearTimeout(timer);
+      done();
+    };
+  }, [axis, origin, start, duration, delay, trigger]);
 
   return <span ref={ref} aria-hidden data-draw={axis} className={`draw-line ${className}`} />;
 }

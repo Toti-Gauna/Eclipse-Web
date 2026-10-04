@@ -12,6 +12,7 @@ import { l, verticalById } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
 import { useHeroState, type DemoVertical, type RevealPhase } from './HeroState';
 import { DISC, LIMB_POINT, MOON_DIR, REVEAL_MOON_DIAMOND } from './geometry';
+import { LIGHT_ZONES_EVENT } from '@/components/ui/EphemerisRail';
 
 // Showcase + demos are only downloaded when a vertical is picked (or hovered).
 const DemoShowcase = lazy(() =>
@@ -28,6 +29,9 @@ const MOON_PCT_PER_RADIUS = 50 * (DISC / (DISC + 0.008));
 
 /** The header flips theme once the light covers this share of the way to its far end. */
 const HEADER_COVER = 0.8;
+
+/** Where the reveal shows both demo views side by side (must match hero.css). */
+const SPLIT_QUERY = '(min-width: 1024px)';
 
 type Direction = 'opening' | 'closing';
 
@@ -48,8 +52,9 @@ interface Running {
  *
  * Opening (motion): moon slides diagonally → diamond ring (point + 400 ms
  * horizontal flare) at the exposed limb → circular clip-path light expands from
- * the eclipse until it covers the whole hero (copy included) → top bar and
- * devices rise in. Closing plays the way back and returns focus to the chip.
+ * the eclipse until it covers the whole hero (copy included) → top bar and the
+ * demo's views (desktop + phone side by side on desktop, tabs below) rise in.
+ * Closing plays the way back and returns focus to the chip.
  * Changing course mid-way (Esc while it opens, a chip while it closes) reverses
  * the running timeline instead of jumping.
  * Reduced motion: a quick crossfade, no moon, no diamond ring.
@@ -105,7 +110,10 @@ function RevealLayer({
 }) {
   const t = useTranslations();
   const locale = useLocale() as Locale;
-  const wide = useMediaQuery('(min-width: 768px)');
+  // Desktop: the two views side by side (sized to fit the screen, hero.css); narrower
+  // screens get the showcase's own tabs (Celular | Escritorio). 'both' is the showcase's
+  // name for the split layout that every version of it accepts.
+  const wide = useMediaQuery(SPLIT_QUERY);
   const root = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const halo = useRef<HTMLDivElement>(null);
@@ -169,6 +177,8 @@ function RevealLayer({
       const st = ScrollTrigger.getAll().find((s) => s.trigger === z) as Placeable | undefined;
       if (st?.setPositions) st.setPositions(st.start, st.start + (on ? z.offsetHeight : 0));
       else ScrollTrigger.refresh();
+      // The page index rail caches the light zones: tell it this one changed.
+      window.dispatchEvent(new Event(LIGHT_ZONES_EVENT));
     };
 
     const finish = (reached: Direction) => {
@@ -236,6 +246,9 @@ function RevealLayer({
     };
     gsap.set(el, { opacity: 1 });
     paint();
+
+    // The WebGL corona rests between events: keep it drawing while the moon slides.
+    b.wake?.(2200);
 
     if (target === 'opening') {
       const moonTo = REVEAL_MOON_DIAMOND * MOON_PCT_PER_RADIUS;
@@ -389,7 +402,7 @@ function RevealLayer({
                   <span className="text-fg-muted"> — {t('common.demo')}</span>
                 </h2>
               </div>
-              <p className="mt-1.5 hidden text-sm text-fg-muted md:block">{t('heroReveal.hint')}</p>
+              <p className="hero-reveal-hint mt-1.5 hidden text-sm text-fg-muted md:block">{t('heroReveal.hint')}</p>
             </div>
             <div data-reveal-item className="col-start-1 row-start-1 justify-self-start">
               <button type="button" onClick={reset} className="btn btn-ghost btn-sm">
@@ -405,7 +418,7 @@ function RevealLayer({
           <div data-reveal-item className="mt-4 flex flex-1 items-start justify-center md:mt-5 md:items-center">
             <div data-reveal-showcase className="hero-reveal-showcase">
               <Suspense fallback={<ShowcaseSkeleton wide={wide} label={t('heroReveal.loading', { business })} />}>
-                <DemoShowcase demo={v.demo} business={business} active={active} fit />
+                <DemoShowcase demo={v.demo} business={business} active={active} forceLayout={wide ? 'both' : undefined} fit />
               </Suspense>
             </div>
           </div>
@@ -422,15 +435,16 @@ function RevealLayer({
 
 const flip = (dir: Direction): Direction => (dir === 'opening' ? 'closing' : 'opening');
 
-/** Same footprint as the devices, so nothing jumps when the showcase chunk lands. */
+/**
+ * Same footprint as the showcase (split: desktop + phone views; tabs: the phone view),
+ * so nothing jumps when its chunk lands. Geometry in hero.css (.hero-reveal-skeleton).
+ */
 function ShowcaseSkeleton({ wide, label }: { wide: boolean; label: string }) {
   return (
-    <div role="status" className={`relative w-full ${wide ? 'aspect-[1/0.651]' : 'aspect-[9/19.5]'}`}>
+    <div role="status" data-layout={wide ? 'split' : 'tabs'} className="hero-reveal-skeleton">
       <span className="sr-only">{label}</span>
-      <div
-        aria-hidden
-        className={`absolute animate-pulse bg-ink/10 ${wide ? 'bottom-[10%] left-0 right-[12%] top-0 rounded-[2.2%/3.4%]' : 'inset-0 rounded-[13%/6%]'}`}
-      />
+      <span aria-hidden className="hero-reveal-skeleton-screen" data-kind="laptop" />
+      <span aria-hidden className="hero-reveal-skeleton-screen" data-kind="phone" />
     </div>
   );
 }

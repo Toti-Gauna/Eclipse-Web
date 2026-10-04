@@ -9,6 +9,9 @@ import type { CoronaHandle } from './coronaGL';
 /** Extra canvas size on each side of the eclipse square (matches .eclipse-gl-host in hero.css). */
 export const CORONA_BLEED = 0.15;
 
+/** The corona moves for this long once it appears, then rests until something wakes it. */
+const ENTRANCE_MS = 6000;
+
 type NavigatorWithHints = Navigator & { connection?: { saveData?: boolean } };
 
 /**
@@ -42,9 +45,14 @@ type IdleWindow = Window & {
 
 /**
  * Lazily mounts the WebGL corona inside `host` once the page is idle (after the
- * loader's iris opened). Returns `sync(active)` to run/pause the render loop.
+ * loader's iris opened). Returns `setActive(active)` to allow/forbid drawing
+ * (off-screen, hidden tab, covered by the demo light).
  * The CSS corona crossfades out when the first GL frame is drawn
  * (`data-corona="gl"` on the .eclipse element).
+ *
+ * The corona only moves when there is a reason: for ENTRANCE_MS after it appears and
+ * whenever `bus.current.wake(ms)` is called (the scroll scrub, the reveal and the dial
+ * call it); the rest of the time it holds its last frame and costs nothing.
  */
 export function useCorona(host: RefObject<HTMLDivElement | null>, bus: RefObject<HeroMotionBus>) {
   const handle = useRef<CoronaHandle | null>(null);
@@ -76,7 +84,9 @@ export function useCorona(host: RefObject<HTMLDivElement | null>, bus: RefObject
           return;
         }
         handle.current = h;
+        bus.current.wake = h.wake;
         h.setActive(active.current);
+        h.wake(ENTRANCE_MS);
       } catch {
         // Chunk failed to load (offline, blocked): the CSS corona stays.
       }
@@ -90,12 +100,14 @@ export function useCorona(host: RefObject<HTMLDivElement | null>, bus: RefObject
       loaderRemainingMs() + 900,
     );
 
+    const b = bus.current;
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
       if (idleId) w.cancelIdleCallback?.(idleId);
       handle.current?.dispose();
       handle.current = null;
+      b.wake = undefined;
       eclipse.removeAttribute('data-corona');
     };
   }, [host, bus]);

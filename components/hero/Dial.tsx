@@ -9,9 +9,9 @@ import { verticals } from '@/lib/content';
  * viewBox is −58…58 and the disc radius is 21.
  *
  * - Bezel (rotates): a ring of 2° ticks just inside the square, longer ticks every
- *   10°, and one position per rubro with its number (01…07). It drifts slowly
- *   (CSS); hovering / focusing a rubro's chip turns it until that rubro's number
- *   sits under the pointer (useDial).
+ *   10°, and one position per rubro with its number (01…07). Still at rest;
+ *   hovering / focusing a rubro's chip turns it until that rubro's number sits under
+ *   the pointer (useDial).
  * - Fixed: the pointer at the exposed limb (where the diamond ring fires), four
  *   registration marks and the readout of the rubro the dial points at.
  */

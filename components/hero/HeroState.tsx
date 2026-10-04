@@ -25,6 +25,11 @@ export interface HeroMotionBus {
   scrollMoon: { x: number; y: number };
   /** Moon offset from the reveal timeline, in disc radii (+x right, +y down). */
   revealMoon: { x: number; y: number };
+  /**
+   * Set by the WebGL corona while it is mounted: keeps it moving for `ms` (it rests on
+   * its last frame otherwise). Called by the scroll scrub, the reveal and the dial.
+   */
+  wake?: (ms: number) => void;
 }
 
 interface HeroStateValue {
@@ -42,7 +47,7 @@ interface HeroStateValue {
   /**
    * Points the dial at a rubro while its chip is hovered or focused (null releases
    * that source). Hover wins over focus; with neither, the dial holds the revealed
-   * rubro, or drifts.
+   * rubro, or rests where it is.
    */
   aim: (id: VerticalId | null, source: 'hover' | 'focus') => void;
   /** The stage registers its <Dial> controller here (null on unmount). */
@@ -81,6 +86,8 @@ export function HeroStateProvider({ children }: { children: ReactNode }) {
     (id: VerticalId | null, source: 'hover' | 'focus') => {
       aimed.current[source] = id;
       syncDial();
+      // The instrument comes alive while the dial turns (the corona rests otherwise).
+      if (id) bus.current.wake?.(1600);
     },
     [syncDial],
   );

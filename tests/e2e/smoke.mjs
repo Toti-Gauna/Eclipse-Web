@@ -42,6 +42,11 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   check('no horizontal overflow at 360px', overflow <= 0, `${overflow}px`);
   check('hero H1 rendered', (await page.locator('h1#hero-title').count()) === 1);
+  const ctaBox = await page.locator('[data-hero-cta]').first().boundingBox();
+  const ctaBottom = ctaBox ? Math.round(ctaBox.y + ctaBox.height) : NaN;
+  check('hero CTAs on the first screen at 360×780', ctaBottom <= 780, `${ctaBottom}px`);
+  const shortcutHrefs = await page.getByRole('navigation', { name: 'Atajos' }).locator('a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  check('hero shortcuts to demos, soluciones and precios', ['#ejemplos', '#servicios', '#precios'].every((h) => shortcutHrefs.includes(h)), shortcutHrefs.join(' '));
 
   // Sections hydrate lazily: the calculator reacts once it is reached.
   await page.evaluate(() => document.getElementById('problema')?.scrollIntoView());
@@ -90,6 +95,14 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const { ctx, page, errors } = await newPage(1440, 900);
   await page.goto(`${BASE}/es/`);
   await page.waitForTimeout(1800);
+  // One solid amber button per viewport: the header's CTA is quiet while the hero's is on screen.
+  const hdrCta = page.getByRole('banner').locator('.hdr-cta').first();
+  check('header CTA quiet next to the hero CTA', /hdr-cta-quiet/.test((await hdrCta.getAttribute('class')) ?? ''));
+  await page.evaluate(() => document.getElementById('servicios')?.scrollIntoView());
+  await page.waitForTimeout(1200);
+  check('header CTA solid when no page CTA is on screen', /btn-primary/.test((await hdrCta.getAttribute('class')) ?? ''));
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(800);
   await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('link', { name: 'Precios' }).first().click();
   // Smooth scroll: wait until the position settles (up to 6 s) before measuring.
   let top = 9999;

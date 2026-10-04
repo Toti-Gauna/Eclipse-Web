@@ -19,9 +19,11 @@ import type { Locale } from '@/i18n/routing';
 /**
  * Full-bleed visual layer of the hero (behind the copy, decorative).
  *
- * Layers, back to front: warm sky (scroll) · stars (parallax) · bloom (scroll) ·
+ * Layers, back to front: warm sky (scroll) · stars (mouse parallax) · bloom (scroll) ·
  * eclipse (CSS corona first paint → WebGL corona when supported) · the dial
  * (instrument bezel, aimed by the rubro chips) · diamond ring (reveal only).
+ * Nothing here moves on its own (v3): the entrance, the scroll scrub, the pointer, the
+ * chips and the reveal move it; at rest it is a still picture that costs no frames.
  * Wrappers keep every motion on its own element:
  *   [data-hero-eclipse-motion] parallax x/y + scroll scale
  *   [data-hero-eclipse]        entrance (opacity + scale)
@@ -50,8 +52,8 @@ export function HeroStage() {
   useStarParallax(stage, motion);
   useHeroMotion(stage, bus, motion);
 
-  // Pause the corona (WebGL loop and CSS animations) when nobody can see it:
-  // hero off-screen, tab hidden or the stage covered by the demo light.
+  // The WebGL corona never draws when nobody can see it: hero off-screen, tab
+  // hidden or the stage covered by the demo light.
   const coveredRef = useRef(covered);
   useEffect(() => {
     coveredRef.current = covered;
@@ -60,11 +62,7 @@ export function HeroStage() {
     const el = stage.current;
     if (!el) return;
     let inView = true;
-    const sync = () => {
-      const visible = inView && !document.hidden;
-      el.toggleAttribute('data-paused', !visible || coveredRef.current);
-      setCoronaActive(visible && !coveredRef.current);
-    };
+    const sync = () => setCoronaActive(inView && !document.hidden && !coveredRef.current);
     const io = new IntersectionObserver((entries) => {
       const entry = entries[entries.length - 1];
       inView = entry.isIntersecting;
