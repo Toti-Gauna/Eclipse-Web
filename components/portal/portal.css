@@ -788,19 +788,19 @@ a.pt-crumb:hover {
   vertical-align: bottom;
 }
 .pt-table thead th:nth-child(1) {
-  width: 19%;
+  width: 21%;
 }
 .pt-table thead th:nth-child(2) {
-  width: 14%;
-}
-.pt-table thead th:nth-child(3) {
   width: 17%;
 }
+.pt-table thead th:nth-child(3) {
+  width: 15%;
+}
 .pt-table thead th:nth-child(4) {
-  width: 11%;
+  width: 20%;
 }
 .pt-table thead th:nth-child(5) {
-  width: 26%;
+  width: 17%;
 }
 .pt-table tbody th,
 .pt-table tbody td {
@@ -814,6 +814,10 @@ a.pt-crumb:hover {
 }
 .pt-table tbody tr:hover {
   background: rgb(255 255 255 / 0.45);
+}
+/* Waiting on the client: a corona tick on the row's edge (the column says it in words). */
+.pt-table tbody tr[data-turn] > :first-child {
+  box-shadow: inset 2px 0 0 var(--corona);
 }
 .pt-table tbody tr > :first-child {
   padding-left: 10px;
@@ -862,13 +866,52 @@ a.pt-crumb:hover {
   line-height: 1.45;
   color: var(--fg-muted);
 }
-.pt-table-action {
-  display: inline-grid;
-  justify-items: end;
-  gap: 8px;
+/* "Tu acción": the tag says it in words; under it, what to do (or who's working). */
+.pt-turn {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
 }
-.pt-table .btn-sm {
+.pt-turn-what {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--fg);
+}
+.pt-turn-none {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--fg);
+}
+.pt-turn-none svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--fg-muted);
+}
+.pt-turn .pt-meta {
+  margin-top: 0;
+}
+/* "Ver proyecto": the row's/card's one clear way in. */
+.pt-open {
+  gap: 8px;
   white-space: nowrap;
+}
+.pt-open svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform 0.25s var(--ease-expo);
+}
+.pt-open:hover svg {
+  transform: translateX(3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pt-open svg {
+    transition: none;
+  }
 }
 
 /* Projects cards (<1024px). */
@@ -965,19 +1008,15 @@ a.pt-crumb:hover {
   margin-top: auto;
   padding-top: 14px;
 }
-.pt-card-go {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: auto;
-  min-height: 32px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--fg);
+.pt-card-foot .pt-open {
+  width: 100%;
 }
-.pt-card-go svg {
-  width: 16px;
-  height: 16px;
+/* The stretched link is a button here: keep its own colors. */
+.pt-card-foot .pt-btn-ink.pt-stretched {
+  color: var(--dawn);
+}
+.pt-card-turn {
+  font-weight: 500;
 }
 
 /* Empty state (no projects). */

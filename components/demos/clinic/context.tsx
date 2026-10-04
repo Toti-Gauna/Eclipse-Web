@@ -23,6 +23,10 @@ export interface ClinicCtx {
   go: (tab: ClinicTab) => void;
   /** Phone: open / close the patient's view of the public site. */
   openSite: () => void;
+  /** Opens the agenda on a day (e.g. after booking on the site). */
+  openAgenda: (day: number) => void;
+  /** The day the agenda opens on (TODAY unless `openAgenda` chose another). */
+  agendaDay: number;
 }
 
 const Ctx = createContext<ClinicCtx | null>(null);

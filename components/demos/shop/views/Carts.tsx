@@ -6,9 +6,9 @@ import { Clock3, MessageCircle, Ticket } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { l, verticalById } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
-import { Card, ChatWidget, Pill, Readout, Switch, runChat, type Tone } from '../../kit';
+import { Card, ChatWidget, Pill, Readout, Switch, type Tone } from '../../kit';
 import { COUPON, OTHER_CARTS, type CustomerId, type Line } from '../data';
-import { act, mineCartStatus, steeredPicks, type CartStatus } from '../story';
+import { act, inesWaRun, mineCartStatus, type CartStatus } from '../story';
 import { useShop } from '../context';
 import { useShopScripts } from '../scripts';
 import { BagStack, BrumaMark, PersonAvatar, useShopMoney, useShopText, ViewHead } from '../ui';
@@ -34,7 +34,7 @@ export function RecoverySwitch({ compact = false }: { compact?: boolean }) {
   const descId = useId();
   const on = view.recoveryOn;
   return (
-    <div className="shop-switch" data-off={on ? undefined : ''} data-compact={compact ? '' : undefined}>
+    <div className="shop-switch" data-off={on ? undefined : ''} data-compact={compact ? '' : undefined} data-tour="recovery">
       <span className="shop-switch-icon" aria-hidden>
         <MessageCircle strokeWidth={1.8} />
       </span>
@@ -52,7 +52,6 @@ export function RecoverySwitch({ compact = false }: { compact?: boolean }) {
         describedBy={descId}
         onChange={() => {
           store.update(act.toggleRecovery());
-          store.engage();
           if (active) play('toggle');
         }}
       />
@@ -108,7 +107,7 @@ interface CartRow {
 }
 
 function useCartRows(): CartRow[] {
-  const { view, state } = useShop();
+  const { view, state, recent } = useShop();
   const { fmt, t } = useShopText();
   const rows: CartRow[] = [];
   const ines = view.ines;
@@ -120,7 +119,7 @@ function useCartRows(): CartRow[] {
       status: ines.status,
       time: fmt.time(view.clock),
       live: ines.status !== 'recovered' && ines.status !== 'lost',
-      fresh: ines.statusAt >= 0 && view.t - ines.statusAt < 2400,
+      fresh: recent(ines.statusAt, 2400),
     });
   }
   const mine = mineCartStatus(state.mine);
@@ -190,14 +189,14 @@ export function RuleCard() {
 /** Inés's recovery thread as the owner sees it (read-only), or the template before it goes out. */
 export function MessagePanel() {
   const t = useTranslations('demoShop.carts');
-  const { view, state, business, reduced } = useShop();
+  const { view, state, business } = useShop();
   const { person } = useShopText();
   const scripts = useShopScripts();
   const ines = view.ines;
   const sent = !!ines.sent && ines.pushAt !== null && view.t >= ines.pushAt;
   if (sent && ines.pushAt !== null) {
     const script = scripts.wa(person('ines'), ines.lines, true);
-    const run = runChat(script, view.t - ines.pushAt, steeredPicks(script, state.wa), { instant: reduced });
+    const run = inesWaRun(script, view.t - ines.pushAt, state.wa);
     return (
       <div className="shop-msg">
         <p className="shop-msg-cap">

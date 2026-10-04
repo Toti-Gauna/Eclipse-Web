@@ -1,14 +1,14 @@
 'use client';
 
 import { useId, useMemo } from 'react';
-import { PhoneCall, Star, Wheat } from 'lucide-react';
+import { Star, Wheat } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { Switch } from '../../kit';
-import { CATEGORIES, MENU, SITE_URL, type Dish } from '../data';
-import { act, isSoldOut } from '../story';
+import { CATEGORIES, MENU, SITE_URL, type Dish, type DishId } from '../data';
+import { act, isSoldOut, substitute } from '../story';
 import { useRestaurant } from '../context';
 import { useRestaurantText } from '../text';
-import { MenuLine, ViewHead } from '../ui';
+import { MenuLine, SimCue, ViewHead } from '../ui';
 
 /** A decorative QR (finder squares + a deterministic pattern). */
 export function QrMark({ seed = 7, className = '' }: { seed?: number; className?: string }) {
@@ -60,7 +60,6 @@ function StockSwitch({ dish }: { dish: Dish }) {
         describedBy={id}
         onChange={() => {
           store.update(act.toggleStock(dish.id));
-          store.engage(18_000);
           if (active) play('toggle');
         }}
       />
@@ -103,37 +102,32 @@ function Carta({ columns = 1 }: { columns?: 1 | 2 }) {
   );
 }
 
-/** What the AI does with the dish the visitor just marked out of stock. */
+/** What the AI phone does with the dishes the visitor marked out of stock (in the calls still ahead). */
 function SoldOutEffect() {
-  const { state, view, go } = useRestaurant();
+  const { state, beat } = useRestaurant();
   const x = useRestaurantText();
   const { t } = x;
-  const extra = state.extra?.kind === 'alt' ? state.extra : null;
-  if (!extra) {
-    return (
-      <div className="rl-effect">
-        <p className="rl-rubric">{t('menu.effect.title')}</p>
-        <p className="rl-effect-body">{t('menu.effect.idle')}</p>
-      </div>
-    );
-  }
-  const call = view.calls.find((c) => c.id === `extra-${extra.at}`);
-  const line = call?.line ?? 1;
-  const phase = call ? (call.start > view.t ? 'soon' : call.voice.phase) : 'line1';
-  const alt = call?.subs?.[0]?.[1] ?? null;
+  const out = (Object.keys(state.soldOut) as DishId[]).filter((d) => isSoldOut(state.soldOut, d));
+  const callsAhead = beat < 1;
   return (
-    <div className="rl-effect demo-pop" key={extra.at}>
+    <div className="rl-effect" aria-live="polite">
       <p className="rl-rubric">{t('menu.effect.title')}</p>
-      <p className="rl-effect-body">
-        {t('menu.effect.body', { dish: x.dish(extra.dish), alt: alt ? x.dish(alt) : x.dish(extra.dish) })}
-      </p>
-      <p className="rl-effect-status demo-mono" data-phase={phase}>
-        {t(`menu.effect.${phase === 'ringing' || phase === 'live' || phase === 'ended' || phase === 'missed' || phase === 'soon' ? phase : 'line1'}`, { n: line })}
-      </p>
-      <button type="button" className="rl-linkbtn" onClick={() => go('phone', line)}>
-        <PhoneCall aria-hidden strokeWidth={1.8} />
-        {t('menu.effect.listen', { n: line })}
-      </button>
+      {out.length ? (
+        <ul className="rl-effect-list">
+          {out.map((d) => {
+            const alt = substitute(state, d, Infinity);
+            return (
+              <li key={d} className="rl-effect-body">
+                {alt ? t('menu.effect.body', { dish: x.dish(d), alt: x.dish(alt) }) : t('menu.effect.none', { dish: x.dish(d) })}
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p className="rl-effect-body">{t('menu.effect.idle')}</p>
+      )}
+      <p className="rl-effect-status">{callsAhead ? t('menu.effect.ahead') : t('menu.effect.after')}</p>
+      {callsAhead ? beat < 0 ? <SimCue beat="order" /> : <SimCue beat="rush" /> : null}
     </div>
   );
 }

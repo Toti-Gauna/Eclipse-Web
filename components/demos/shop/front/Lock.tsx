@@ -71,7 +71,6 @@ export function LockScreen() {
             body={t('push', { name: person('ines'), code: COUPON.code, pct: Math.round(COUPON.pct * 100) })}
             onOpen={() => {
               store.update(act.openWa());
-              store.engage();
               if (active) play('open');
             }}
             openLabel={t('openPush')}

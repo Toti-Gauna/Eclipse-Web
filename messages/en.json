@@ -82,8 +82,6 @@
     "pickVertical": "Pick your industry and see it",
     "ctaDemo": "Get your demo",
     "ctaPlan": "Build your plan",
-    "seeAnother": "See another industry",
-    "wantThis": "I want this for my business",
     "pickOptional": "Optional"
   },
   "whatsapp": {
@@ -119,7 +117,8 @@
     "localeCurrency": "Language: {language} · Currency: {currency}",
     "usdRef": "({amount})",
     "perMonth": "per month",
-    "perYear": "per year"
+    "perYear": "per year",
+    "bonusLine": "Included at no charge: {name} (package bonus)"
   },
   "problem": {
     "title": "What does <em>not having</em> this cost you?",
@@ -211,7 +210,12 @@
     "miniLabel": "You lose a month",
     "miniJump": "See the estimate in detail",
     "rangeMax": "Max {value}: we use that number.",
-    "rangeMin": "Min {value}: we use that number."
+    "rangeMin": "Min {value}: we use that number.",
+    "perYearLabel": "a year",
+    "splitTitle": "Where it comes from",
+    "mathYear": "Per year (× 12)",
+    "resultAnnounceYear": "With your numbers you lose about {amount} a month: {year} a year.",
+    "verticalHint": "Changing the business loads typical values for it. You can edit all of them."
   },
   "services": {
     "title": "What we build, <em>piece by piece</em>.",
@@ -481,7 +485,13 @@
     "catChosen": "{chosen} of {total} selected",
     "careSuggestedNote": "We checked {name} because it’s the one we suggest for your plan. Change it or pick “{none}”.",
     "proposalLabel": "Proposal request",
-    "proposalText": "Not a quote: we confirm scope and price in writing."
+    "proposalText": "Not a quote: we confirm scope and price in writing.",
+    "bonusTag": "Bonus",
+    "bonusIncluded": "Included at no charge: {name}",
+    "bonusIn": "Bonus of the {plan} package: no extra charge",
+    "bonusFree": "no charge",
+    "bonusDetect": "It also comes with a gift: {name}.",
+    "bonusShort": "+ Bonus: {name}, at no charge"
   },
   "pricing": {
     "title": "What it costs,<br></br> and how you pay.",
@@ -588,17 +598,16 @@
       "audienceLabel": "Who it's for",
       "maintenanceLabel": "Suggested maintenance",
       "maintenanceValue": "{name} · {price} {period}",
-      "maintenanceNone": "None (optional)"
+      "maintenanceNone": "None (optional)",
+      "bonusBadge": "Premium landing page included",
+      "bonusLabel": "Bonus included",
+      "bonusNote": "The package price stays the same."
     },
     "noneFits": "No package fits?",
     "noneFitsCta": "Build it piece by piece",
     "notes": {
       "from": "“From” is the starting price: the final one depends on scope, and we confirm it in writing before we start."
     }
-  },
-  "heroReveal": {
-    "hint": "Interactive demo: try it as if it were yours.",
-    "loading": "Loading the {business} demo…"
   },
   "demoShowcase": {
     "laptopLabel": "{business}: interactive demo, desktop version",
@@ -708,7 +717,14 @@
         "sol": "Facial"
       },
       "hintPhone": "Tap an open time to book it.",
-      "hintLaptop": "Pick an open time in the grid to book it."
+      "hintLaptop": "Pick an open time in the grid to book it.",
+      "dayLabel": "Schedule for {day} by practitioner",
+      "weekLabel": "{pro}'s week, {from} to {to}",
+      "freeSlotDay": "{day}, {time} · {pro}: open, book",
+      "summaryPast": "{day} · {count} appointments seen",
+      "weekSummary": "Week by practitioner · tap an open slot to book",
+      "hintPast": "Past day: read only.",
+      "localNote": "Demo booking: it only stays on this screen."
     },
     "chat": {
       "composer": "Message",
@@ -772,14 +788,10 @@
     },
     "top": {
       "liveCall": "AI on a call · {time}",
-      "live": "Live",
       "site": "Site",
-      "ringing": "Incoming call…"
-    },
-    "side": {
-      "aiTitle": "AI receptionist",
-      "aiBody": "On · answers 24/7",
-      "aiOff": "Off · not answering"
+      "ringing": "Incoming call…",
+      "ai": "AI front desk on",
+      "aiOff": "AI front desk off"
     },
     "fullNames": {
       "julian": "Julián Pérez"
@@ -796,7 +808,8 @@
       "voice": "The AI receptionist booked {patient} at {time}",
       "missed": "Missed call: the AI receptionist was off",
       "you": "You booked {treatment}: {time} · {pro}",
-      "afterHours": "After hours: the AI receptionist booked an ortho consult"
+      "afterHours": "After hours: the AI receptionist booked an ortho consult",
+      "youDay": "You booked {treatment}: {day}, {time} · {pro}"
     },
     "toast": {
       "online": "New online booking",
@@ -808,7 +821,7 @@
     "today": {
       "greeting": "Good morning",
       "recovered": "Appointments recovered this week",
-      "recoveredToday": "{count, plural, =0 {live now} other {+# today}}",
+      "recoveredToday": "{count, plural, =0 {none today} other {+# today}}",
       "recoveredMoney": "in revenue kept",
       "recoveredTrend": "Recovered so far this week: {count}",
       "next": "Up next",
@@ -817,7 +830,7 @@
       "occupancyShort": "{pct}% booked",
       "confirmed": "Confirmed",
       "pending": "{count, plural, =0 {No one pending} one {# without a reply} other {# without a reply}}",
-      "activity": "Live activity",
+      "activity": "Today's activity",
       "siteTitle": "Your booking site",
       "calls": "Calls today",
       "callsHint": "All answered · 7 after hours",
@@ -950,7 +963,7 @@
       "title": "No-shows",
       "subtitle": "Appointments that were about to be lost, recovered.",
       "heroLabel": "Recovered this week",
-      "heroToday": "{count, plural, =0 {Nothing yet today} other {+# today, live}}",
+      "heroToday": "{count, plural, =0 {Nothing yet today} other {+# today}}",
       "money": "in revenue kept",
       "arcLabel": "Recovered per day: {days}",
       "sourcesTitle": "Where they came from",
@@ -965,7 +978,7 @@
       "week": "W{n}",
       "before": "Before",
       "after": "With automations",
-      "boardTitle": "Live recovery",
+      "boardTitle": "Recovery board",
       "empty": "Nothing yet",
       "today": "Today",
       "columns": {
@@ -981,7 +994,8 @@
         "byWaitlist": "{patient} · waitlist",
         "byVoice": "{patient} · call with the AI",
         "byYou": "Taken by you"
-      }
+      },
+      "boardHint": "Drag a card or use Move to sort the board."
     },
     "site": {
       "nav": {
@@ -1021,7 +1035,9 @@
         "booked": "Done! You're booked",
         "bookedCamila": "Done, {name}! You're booked",
         "sentWhatsApp": "Confirmation sent on WhatsApp",
-        "again": "Book another"
+        "again": "Book another",
+        "seeAgenda": "See it in the schedule",
+        "pickDay": "Pick a day"
       },
       "chat": {
         "title": "Virtual assistant",
@@ -1041,7 +1057,15 @@
       "push": "Done, {name}! You're confirmed: today {time}, {treatment}.",
       "pushYou": "Done! You're confirmed: {time} · {pro}.",
       "openPush": "Open the confirmation in WhatsApp",
-      "backToApp": "Back to the clinic app"
+      "backToApp": "Back to the clinic app",
+      "openThread": "See the confirmation"
+    },
+    "sim": {
+      "online": "An online booking comes in",
+      "reminder": "WhatsApp reminder",
+      "freed": "Cancellation and waitlist",
+      "call": "A call to the AI front desk",
+      "note": "Bookings, messages and calls are simulated with demo data; nothing is sent."
     }
   },
   "demoGym": {
@@ -1078,7 +1102,7 @@
     },
     "missions": {
       "friend": {
-        "title": "Bring someone with your guest pass"
+        "title": "Share your guest pass"
       },
       "comeback": {
         "kicker": "Comeback mission",
@@ -1185,7 +1209,8 @@
       "tomas": {
         "name": "Tom Lewis",
         "short": "Tom"
-      }
+      },
+      "you": "You"
     },
     "classes": {
       "functional": "Functional",
@@ -1202,7 +1227,8 @@
     },
     "class": {
       "spots": "{count, plural, one {# spot left} other {# spots left}}",
-      "full": "Full"
+      "full": "Full",
+      "went": "{count, plural, one {# came} other {# came}}"
     },
     "app": {
       "player": "{name}'s profile",
@@ -1228,14 +1254,23 @@
       "awayTitle": "{count} days away",
       "awayBody": "Your record is {best} days. Come back and we'll light it again.",
       "missions": "This week's missions",
-      "passSent": "Pass sent",
       "sendPass": "Send pass",
       "streakRule": "Resting up to 2 days in a row doesn't break your streak.",
       "pickDay": "Pick a day",
       "checkedIn": "Checked in",
       "booked": "Booked",
       "bookLabel": "Book {kind} on {day} at {time}",
-      "badges": "Badges"
+      "badges": "Badges",
+      "reward": "Level {level} · see reward",
+      "checkinLabel": "Check in to {kind}",
+      "seeClasses": "See classes",
+      "waArrived": "We sent you a mission on WhatsApp",
+      "openWa": "Open",
+      "pastDay": "Past day: read only.",
+      "over": "Over",
+      "closed": "{day}: closed.",
+      "bookNote": "Booking and checking in are simulated: they only change this demo's data.",
+      "leagueHint": "Every check-in and mission adds XP to the table right away."
     },
     "league": {
       "name": "Silver League",
@@ -1302,7 +1337,12 @@
       "label": "Chat on the gym's site",
       "open": "Open the chat",
       "minimize": "Minimize the chat",
-      "composer": "Type your question"
+      "subtitleYou": "try it yourself",
+      "idle": "Nobody has opened the chat yet. Try it yourself or simulate a prospect's question.",
+      "start": "Start chat",
+      "again": "Start over",
+      "tryYou": "Try it yourself",
+      "youName": "Visitor"
     },
     "levelUp": {
       "kicker": "Level up",
@@ -1310,11 +1350,13 @@
       "gain": {
         "comeback": "Comeback mission",
         "streak3": "3-day streak",
-        "friend": "Guest pass"
+        "friend": "Guest pass",
+        "newClass": "New class"
       },
-      "badge": "New badge: Comeback",
       "reward": "You unlocked a post-workout shake",
-      "cta": "See my league"
+      "cta": "See my league",
+      "badgeLevel": "Level {level} unlocked",
+      "close": "Continue"
     },
     "top": {
       "timelapse": "Time-lapse",
@@ -1351,10 +1393,12 @@
       "trialIn": "{name} showed up for the trial class",
       "churn": "{name} cancelled. Nobody wrote to her.",
       "manual": "Comeback mission sent to {name}",
-      "friend": "{name}'s guest showed up: mission complete",
+      "friend": "{name} shared her guest pass: mission complete",
       "aCheckin": "{name} checked in · {count}-day streak",
       "aMission": "{name} completed “3 classes this week”",
-      "aBadge": "{name} earned the Early bird badge"
+      "aBadge": "{name} earned the Early bird badge",
+      "trialYou": "You booked a trial class through the site's chat: {class}",
+      "newClass": "{name} tried a new class: mission complete"
     },
     "toast": {
       "booked": "Class booked",
@@ -1362,7 +1406,15 @@
       "back": "Came back",
       "levelup": "Level up",
       "league": "Climbing the league",
-      "churn": "Cancellation"
+      "churn": "Cancellation",
+      "checkin2": "Checked in",
+      "mission": "Mission complete",
+      "newClass": "New class",
+      "friend": "Pass shared",
+      "off": "Automation off",
+      "on": "Automation on",
+      "declined": "Replied",
+      "manual": "Message sent"
     },
     "win": {
       "on": "On",
@@ -1396,7 +1448,8 @@
       "churnHint": "{after} a month, down from {before}",
       "classes": "Classes · {day}",
       "classesAll": "See the week",
-      "live": "Live"
+      "feedTitle": "Activity",
+      "feedEmpty": "Nothing yet. Tap “Simulate” to play the week."
     },
     "journey": {
       "title": "{name}'s comeback",
@@ -1440,12 +1493,14 @@
     "classesView": {
       "index": "Classes",
       "title": "The week",
-      "sub": "Live capacity: bookings from the app, WhatsApp or the site's chat show up here.",
-      "caption": "This week's class grid with capacity",
+      "sub": "Bookings from the app, WhatsApp or the site's chat show up here.",
+      "caption": "Class grid, week of {week}",
       "trial": "Trial class",
-      "live": "In progress",
       "trialOf": "{name}'s trial",
-      "pickDay": "Pick a day"
+      "pickDay": "Pick a day",
+      "now": "Now",
+      "subPast": "Past week: how many came to each class.",
+      "note": "Members book from their app; the owner sees capacity for any week."
     },
     "leagueView": {
       "index": "Game",
@@ -1509,7 +1564,9 @@
       "step3": "No-show: we write the next day",
       "step3done": "Came to the trial class",
       "waiting": "Waiting for the next question…",
-      "rate": "Trial → member: 38% this quarter"
+      "rate": "Trial → member: 38% this quarter",
+      "you": "You (visitor)",
+      "youInitials": "Y"
     },
     "siteView": {
       "index": "Site & leads",
@@ -1534,10 +1591,12 @@
       "member": "Member",
       "owner": "Owner"
     },
-    "side": {
-      "title": "Auto win-back",
-      "on": "On · 7+ days away",
-      "off": "Off: nobody gets their mission"
+    "sim": {
+      "lead": "A prospect asks for a trial class",
+      "winback": "Lucy hits 9 days without coming",
+      "tuesday": "Tuesday: Lucy is back at the gym",
+      "thursday": "Thursday: mission done, level up",
+      "note": "Members, messages and bookings are simulated with demo data; nothing is sent."
     }
   },
   "demoRealEstate": {
@@ -1574,7 +1633,8 @@
       "days": "{count} days listed",
       "available": "Available",
       "reserved": "Reserved",
-      "photo": "Facade of {street}, illustration"
+      "photo": "Facade of {street}, illustration",
+      "photoN": "Front of {street}, illustration {n} of {total}"
     },
     "listings": {
       "title": "Listings",
@@ -1603,7 +1663,8 @@
       "andres": "Andrés Paz",
       "pablo": "Pablo Núñez",
       "sofia": "Sofía Arce",
-      "you": "You"
+      "you": "You",
+      "marcosFirst": "Marcos"
     },
     "stages": {
       "new": "New",
@@ -1669,7 +1730,9 @@
       "botLabel": "Lumi · AI",
       "humanLabel": "{name} · team",
       "noReply": "No reply",
-      "channel": "Conversation channel"
+      "channel": "Conversation channel",
+      "emptyTitle": "No one has written yet.",
+      "emptyBody": "Tap “Simulate” above: at 11:40 PM Carolina's inquiry arrives and Lumi takes it."
     },
     "lead": {
       "title": "Lead file",
@@ -1721,8 +1784,8 @@
       "on": "Answers 24/7 on the site and WhatsApp",
       "offShort": "Off: inquiries wait",
       "switch": "24/7 assistant",
-      "hint": "Turn it off and watch what happens to the 11:40 PM inquiry.",
-      "hintOff": "Turn it back on and the inquiry is answered in seconds."
+      "hint": "Turn it off: the demo goes back to 11:40 PM and you simulate the same night without the assistant.",
+      "hintOff": "Turn it on: the demo goes back to 11:40 PM and the inquiry is answered in seconds."
     },
     "kinds": {
       "apartment": "Apartment",
@@ -1774,7 +1837,9 @@
       "openPush": "Open the WhatsApp message",
       "backToSite": "Site",
       "backToApp": "Back to the app",
-      "jump": "{date} · after the viewing"
+      "jump": "{date} · after the viewing",
+      "you": "You, on the website",
+      "openThread": "Open WhatsApp"
     },
     "time": {
       "late": "{hours} h {minutes} min",
@@ -1792,7 +1857,10 @@
       "reserved": "Reserved {street}",
       "similar": "Got 2 similar options",
       "think": "Thinking it over · reminder Tuesday",
-      "you": "Your viewing · {slot}"
+      "you": "Your viewing · {slot}",
+      "youNew": "Your inquiry · Lumi is qualifying you",
+      "youQualified": "{budget} · wants {listing}",
+      "moved": "Moved by you"
     },
     "today": {
       "kicker": "Today · {date}",
@@ -1811,7 +1879,7 @@
       "reserves": "Reservations",
       "reservesHint": "This week",
       "now": "Now",
-      "nowEmpty": "Waiting for the next inquiry…",
+      "nowEmpty": "Nothing yet. Simulate the 11:40 PM inquiry.",
       "pipeline": "Pipeline",
       "openPipeline": "Open pipeline",
       "openInbox": "Open conversation",
@@ -1827,13 +1895,12 @@
       "label": "Sales pipeline: {count} leads",
       "value": "USD {amount}",
       "empty": "No leads",
-      "note": "Lumi moves the cards on its own: it qualifies, books the viewing and follows up."
+      "note": "Lumi moves the cards as it qualifies and books. So can you: drag them or use “Move”."
     },
     "visits": {
       "title": "Viewings",
-      "label": "Viewings calendar, Friday 9 to Monday 12",
       "free": "Free",
-      "freeLabel": "Book a viewing on {day} at {time}",
+      "freeLabel": "{day}, {time}: free, book a viewing",
       "next": "Next viewing",
       "nextEmpty": "No new viewings tonight",
       "reminder": "WhatsApp reminder 2 h before",
@@ -1848,7 +1915,21 @@
       "you": "Your viewing",
       "done": "Done",
       "booked": "Viewing booked: {slot}",
-      "legendLive": "Booked by Lumi"
+      "legendLive": "Booked by Lumi",
+      "freeLabelWith": "{time} with {advisor}: free, book a viewing",
+      "dayLabel": "Viewings on {day}, by agent",
+      "weekLabel": "Viewings this week, {from} to {to}",
+      "summary": "{day} · {count, plural, =0 {no viewings} one {# viewing} other {# viewings}}",
+      "summaryPast": "{day} · {count, plural, =0 {no viewings} one {# viewing done} other {# viewings done}}",
+      "weekSummary": "{count, plural, one {# viewing} other {# viewings}} this week · tap a free time to book",
+      "closed": "{day} · no viewings that day",
+      "hintLaptop": "Switch between week and day, browse past and future weeks, and tap a free time to book.",
+      "hintPast": "Past day: read only.",
+      "bookTitle": "Book a viewing",
+      "property": "Property",
+      "confirm": "Book viewing",
+      "cancel": "Cancel",
+      "localNote": "Demo viewing: it only stays on this screen."
     },
     "followups": {
       "title": "Follow-ups",
@@ -1889,24 +1970,23 @@
     },
     "site": {
       "nav": {
-        "buy": "Buy",
-        "rent": "Rent",
-        "sell": "Sell",
-        "contact": "Contact"
+        "all": "Properties ({count})"
       },
       "kicker": "Real estate · La Arboleda and around",
       "title": "Homes with good light, <em>in plain sight.</em>",
       "body": "Search, check the floor plan and book a viewing at any hour.",
       "search": {
-        "op": "Looking to",
-        "opValue": "Buy",
         "zone": "Area",
         "zoneAll": "All",
         "rooms": "Rooms",
         "roomsAny": "Any",
         "roomsMin": "{count}+",
-        "go": "Search",
-        "results": "{count, plural, one {# property} other {# properties}}"
+        "results": "{count, plural, one {# property} other {# properties}}",
+        "label": "Search properties",
+        "price": "Price",
+        "priceAny": "Any",
+        "priceMax": "Up to USD {amount}",
+        "none": "Nothing with those filters. Try another area or a higher budget."
       },
       "crumbs": "Buy · {zone}",
       "back": "Results",
@@ -1931,9 +2011,15 @@
         "confirm": "Confirm viewing",
         "booked": "Viewing booked",
         "bookedBody": "{slot} · {street}. The confirmation arrives on WhatsApp.",
-        "again": "Book another"
+        "again": "Book another",
+        "pickDay": "Pick a day",
+        "seeAgenda": "See it in the calendar",
+        "note": "Demo viewing: nothing is sent."
       },
-      "url": "Website address"
+      "url": "Website address",
+      "prevPhoto": "Previous photo",
+      "nextPhoto": "Next photo",
+      "viewSub": "{url} · search, open a property, book a viewing or chat with Lumi"
     },
     "toast": {
       "inquiry": "New inquiry · 11:40 PM",
@@ -1965,7 +2051,44 @@
       "opens": "The office opens",
       "human": "{advisor} replied {late} later",
       "lost": "{name} went with another agency",
-      "you": "You booked a viewing: {slot}"
+      "you": "You booked a viewing: {slot}",
+      "youLead": "Your inquiry is in the CRM: {listing}"
+    },
+    "sim": {
+      "inquiry": "An inquiry arrives at 11:40 PM",
+      "qualify": "Lumi qualifies Carolina",
+      "visit": "Lumi books the viewing",
+      "followup": "Follow-up after the viewing",
+      "reply": "Carolina answers the follow-up",
+      "note": "Inquiries, viewings and messages are simulated with demo data; nothing is sent.",
+      "off": {
+        "inquiry": "An inquiry arrives at 11:40 PM",
+        "qualify": "The night goes by unanswered",
+        "visit": "The office opens: Julia replies",
+        "followup": "Carolina answers",
+        "reply": "The lead is lost"
+      }
+    },
+    "own": {
+      "label": "Your chat with Lumi on the {business} website",
+      "steps": {
+        "hi": "Hi! I'm Lumi, Lumen's assistant. What are you looking for?",
+        "pay": "How are you planning to pay?",
+        "budget": "What's your budget, at most?",
+        "match_two": "For 2 rooms, take a look at this loft on {street}. Want to see it?",
+        "match_three": "I have one that fits: {street}. Want to see it?",
+        "match_house": "Take a look at this house on {street}, with a garden and a pool. Want to see it?",
+        "booked": "Done: viewing on {slot} with {advisor}. The confirmation arrives on WhatsApp.",
+        "note": "Lead qualified · details and viewing saved to the CRM",
+        "later": "Sure. I'll message you on WhatsApp if the price drops or something similar comes in.",
+        "laterNote": "Lead qualified · follow-up scheduled"
+      },
+      "replies": {
+        "two": "2 rooms",
+        "three": "3 rooms",
+        "house": "House with a garden",
+        "later": "Not now"
+      }
     }
   },
   "examples": {
@@ -1973,14 +2096,8 @@
     "sub": "{count} demo businesses, each facing the costliest problem in its industry. Pick one: watch its {seconds}-second trailer or open the demo and use it.",
     "pain": "The problem",
     "result": "In the demo",
-    "openDemo": "Open demo",
-    "openDemoLabel": "Open demo: {business}",
-    "modal": {
-      "close": "Close the demo",
-      "hint": "Interactive demo: tap around and try everything.",
-      "loading": "Loading the {business} demo…",
-      "wantThis": "I want this for my business"
-    },
+    "openDemo": "See demo",
+    "openDemoLabel": "See demo: {business}",
     "notListed": {
       "title": "Don't see your industry? <em>We build it in {hours} h.</em>",
       "body": "Tell us what your business does and we'll show you your demo.",
@@ -2318,21 +2435,55 @@
       "earned": "Earned",
       "progress": "{pct}% complete",
       "rank": "Rank {n}"
+    },
+    "sim": {
+      "title": "Simulation",
+      "note": "Actions are simulated with demo data; nothing is sent.",
+      "play": "Simulate: {label}",
+      "playing": "Simulating: {label}",
+      "skip": "Skip to the end",
+      "reset": "Restart",
+      "resetAll": "Restart the demo",
+      "counter": "Event {current} of {total}",
+      "counterIdle": "{total} events to simulate",
+      "events": "Simulated events",
+      "close": "Close",
+      "landed": "Done: {label}. {counter}.",
+      "state": {
+        "done": "Done",
+        "playing": "Simulating",
+        "next": "Next",
+        "pending": "Pending"
+      }
+    },
+    "calendar": {
+      "prevDay": "Previous day",
+      "nextDay": "Next day",
+      "prevWeek": "Previous week",
+      "nextWeek": "Next week",
+      "today": "Today",
+      "view": "View",
+      "day": "Day",
+      "week": "Week"
+    },
+    "kanban": {
+      "hint": "Drag a card to another column or use its Move button.",
+      "moveCard": "Move “{card}”",
+      "moveTo": "Move to {column}",
+      "moved": "“{card}” moved to {column}."
     }
   },
   "demoRestaurant": {
     "nav": {
       "service": "Service",
-      "groupTonight": "Tonight",
       "phone": "AI phone",
       "phoneShort": "Phone",
       "kitchen": "Kitchen",
       "floor": "Floor & bookings",
       "floorShort": "Floor",
-      "groupRoom": "The room",
       "menu": "Menu",
       "numbers": "Numbers",
-      "groupBiz": "Business"
+      "qr": "QR menu"
     },
     "top": {
       "live": "{count, plural, one {# call in progress} other {# calls in progress}}",
@@ -2340,11 +2491,6 @@
       "aiOff": "AI phone off",
       "customer": "Customer",
       "tonight": "{day} · night shift"
-    },
-    "side": {
-      "aiTitle": "AI phone",
-      "aiOn": "{count, plural, =0 {Waiting for calls} one {Answering # call} other {Answering # calls}}",
-      "aiOff": "Off: it rings at the counter"
     },
     "people": {
       "you": "You",
@@ -2385,6 +2531,30 @@
       },
       "rider": {
         "name": "Tomás"
+      },
+      "acosta": {
+        "name": "Valeria Acosta",
+        "first": "Valeria"
+      },
+      "vidal": {
+        "name": "Martín Vidal",
+        "first": "Martín"
+      },
+      "herrera": {
+        "name": "The Herrera family",
+        "first": "Herrera"
+      },
+      "molina": {
+        "name": "Paula Molina",
+        "first": "Paula"
+      },
+      "castro": {
+        "name": "Diego Castro",
+        "first": "Diego"
+      },
+      "navarro": {
+        "name": "Inés Navarro",
+        "first": "Inés"
       }
     },
     "dishes": {
@@ -2484,7 +2654,8 @@
         "free": "Free",
         "seated": "Seated",
         "bill": "Asked for the bill",
-        "reserved": "Reserved"
+        "reserved": "Reserved",
+        "done": "Served"
       }
     },
     "calls": {
@@ -2512,8 +2683,7 @@
         "order": "Order · delivery",
         "booking": "Booking · 4 people",
         "gf": "Question · gluten-free",
-        "alt": "Order · pickup",
-        "info": "Question · hours"
+        "alt": "Order · pickup"
       },
       "order": {
         "hello": "Bodegón Lucero, good evening. Order or booking?",
@@ -2568,25 +2738,16 @@
         "ticket": "Ticket #{num} → kitchen · pickup",
         "bye": "Done. I'll text you on WhatsApp when it's ready."
       },
-      "info": {
-        "hello": "Bodegón Lucero, good evening.",
-        "ask": "Hi, until what time do you take orders?",
-        "answer": "The kitchen is open until {time}. Want to order now?",
-        "no": "Not yet, later. Thanks.",
-        "bye": "Sure. Good night!"
-      },
       "outcome": {
         "missed": "Missed call",
         "lost": {
           "order": "A delivery order that never came in.",
           "booking": "A booking for 4 that never happened.",
           "gf": "A question (and an order) with no answer.",
-          "alt": "A pickup order that never came in.",
-          "info": "A question with no answer."
+          "alt": "A pickup order that never came in."
         },
         "booking": "Table {table} · {time} · {people} people",
         "waitlist": "On the waitlist",
-        "info": "Question answered",
         "none": "No order",
         "delivery": "Order #{num} · delivery · arrives {time}",
         "pickup": "Order #{num} · pickup {time}"
@@ -2649,11 +2810,12 @@
         "missed": "Missed calls"
       },
       "customer": "What the customer sees",
-      "customerSub": "QR menu, online orders and bookings"
+      "customerSub": "QR menu, online orders and bookings",
+      "switchboard": "AI phone · 3 lines"
     },
     "kitchen": {
       "rubric": "Kitchen display",
-      "title": "Kitchen, live",
+      "title": "Tickets",
       "subtitle": "Every order lands on its own, from the floor, the site or the phone. No paper slips, no shouting.",
       "ticketLabel": "Ticket {num}, {channel}, {stage}: {items}",
       "age": "{min} min",
@@ -2667,11 +2829,22 @@
         "orders": "Orders today",
         "late": "Running late"
       },
-      "footnote": "What the AI phone takes and what comes in from the site goes straight to the screen, with notes like “gluten-free”."
+      "footnote": "What the AI phone takes and what comes in from the site goes straight to the screen, with notes like “gluten-free”.",
+      "cols": {
+        "new": "New",
+        "cooking": "Cooking",
+        "ready": "Ready",
+        "out": "Out"
+      },
+      "boardLabel": "Kitchen display",
+      "hint": "You're the kitchen: drag a ticket to the next column or use its Move button.",
+      "bumpLabel": "Ticket {num}: move to {stage}",
+      "yoursShort": "Yours",
+      "gfShort": "GF"
     },
     "floor": {
       "rubric": "Floor & bookings",
-      "title": "The floor, live",
+      "title": "The floor, tonight",
       "titleShort": "The floor",
       "subtitle": "{seated} of {total} tables taken · {people} guests seated.",
       "mapLabel": "Floor plan",
@@ -2691,7 +2864,9 @@
         "people": "People",
         "time": "Time",
         "book": "Book table {n}",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "title": "Book table {n}",
+        "tonight": "Tonight"
       },
       "pending": "Confirming…",
       "via": {
@@ -2706,11 +2881,25 @@
         "conf": "Hi {name}. Your table is confirmed: tonight at {time}, {people} people, table {table}. If plans change, just reply here.",
         "confYou": "Done! Your table is confirmed: tonight at {time}, {people} people, table {table}. If plans change, just reply here.",
         "note": "Automatic reminder 2 hours before",
-        "label": "Booking confirmation on WhatsApp"
+        "label": "Booking confirmation on WhatsApp",
+        "confDay": "Hi {name}. Your table is confirmed: {day} at {time}, {people} people, table {table}. If plans change, just reply here.",
+        "confYouDay": "Done! Your table is confirmed: {day} at {time}, {people} people, table {table}. If plans change, just reply here."
       },
       "hint": "Tap a free table to book it: the confirmation goes out on WhatsApp by itself.",
-      "hintPhone": "Tap a free table to book it.",
-      "listTitle": "Tonight's bookings"
+      "listTitle": "Tonight's bookings",
+      "titleBook": "Bookings book",
+      "subtitleDay": "{count, plural, =0 {No bookings} one {# booking} other {# bookings}} that night.",
+      "listDay": "That night's bookings",
+      "noBookings": "No bookings for that night yet.",
+      "more": "and {count} more",
+      "attended": "Served",
+      "pastNote": "A past night: read-only. {count, plural, =0 {No bookings} one {# booking served} other {# bookings served}}.",
+      "hintAhead": "Tap a free table to book it for that night.",
+      "period": {
+        "tonight": "tonight",
+        "past": "past night",
+        "ahead": "upcoming"
+      }
     },
     "menu": {
       "rubric": "Menu & stock",
@@ -2724,15 +2913,11 @@
       "gf": "Gluten-free",
       "effect": {
         "title": "When something runs out",
-        "idle": "Try it: mark a dish as sold out. The next caller who asks for it hears an alternative.",
+        "idle": "Try it: mark a dish as sold out. It disappears from the QR menu and the site, and the AI phone offers an alternative.",
         "body": "{dish} is sold out. The AI offers {alt} instead.",
-        "soon": "A call is coming in on line {n}…",
-        "ringing": "Line {n}: ringing",
-        "live": "Line {n}: the AI is offering the alternative",
-        "ended": "Line {n}: order taken with the alternative",
-        "missed": "Line {n}: missed call (the AI is off)",
-        "line1": "Line {n} is already offering it",
-        "listen": "Listen to line {n}"
+        "none": "{dish} and anything like it are sold out: the AI says it's off for tonight.",
+        "ahead": "The calls you simulate from now on take it into account.",
+        "after": "The QR menu and the site no longer offer it."
       },
       "qr": {
         "title": "A QR on every table",
@@ -2780,7 +2965,8 @@
       },
       "backToMenu": "Back to the menu",
       "menu": {
-        "hello": "What are we having tonight?"
+        "hello": "What are we having tonight?",
+        "qr": "Table {n} QR · lucero.demo/carta"
       },
       "add": "Add {dish}",
       "less": "One less {dish}",
@@ -2795,10 +2981,15 @@
         "deliveryEta": "40 min",
         "pickupEta": "25 min",
         "direct": "Ordered straight from the bodegón: no delivery-app commission in between.",
-        "confirm": "Place order · {total}"
+        "confirm": "Place order · {total}",
+        "table": "At table {n}",
+        "tableEta": "QR",
+        "note": "Note for the kitchen",
+        "notePlaceholder": "E.g. no salt, well done",
+        "qr": "It goes straight to the kitchen with your table number.",
+        "demo": "Demo: the order only changes this demo's data; nothing is charged or sent."
       },
       "status": {
-        "sending": "Sending your order…",
         "title": "Your order",
         "arrives": "Arrives at",
         "ready": "Ready at",
@@ -2808,7 +2999,8 @@
           "cooking": "Cooking",
           "ready": "Ready",
           "out": "On the way",
-          "picked": "Pick it up"
+          "picked": "Pick it up",
+          "served": "At your table"
         },
         "whatsapp": "We'll text you on WhatsApp at every step.",
         "again": "Place another order",
@@ -2817,25 +3009,35 @@
           "to": "Your place",
           "rider": "{name} is on the way",
           "riderWait": "The rider leaves when it’s ready"
-        }
+        },
+        "atTable": "To table {n}",
+        "now": "Status: {step}",
+        "kitchenHint": "Move the ticket on the kitchen display and watch it change here."
       },
       "book": {
         "title": "Book your table",
-        "tonight": "{day}, tonight",
         "fewer": "One person less",
         "more": "One person more",
         "table": "Table {n} is yours.",
         "full": "No free tables for that many people.",
         "confirm": "Book",
         "doneTitle": "Table booked!",
-        "whatsapp": "The confirmation is on its way on WhatsApp."
+        "whatsapp": "The confirmation is on its way on WhatsApp.",
+        "when": "Which night?",
+        "tonightShort": "Tonight",
+        "late": "No times left for tonight.",
+        "again": "Make another booking"
       },
       "push": {
         "app": "WhatsApp",
         "now": "now",
         "out": "Your order #{num} is on its way: it arrives at {time}.",
-        "ready": "Your order #{num} is ready for pickup ({time})."
-      }
+        "ready": "Your order #{num} is ready for pickup ({time}).",
+        "readySalon": "Your order #{num} is ready.",
+        "picked": "Thanks for picking up order #{num}.",
+        "served": "Your order #{num} is at your table."
+      },
+      "addMore": "Add another {dish} ({count} so far)"
     },
     "feed": {
       "ring": "Line {line}: incoming call",
@@ -2852,7 +3054,7 @@
       "altSame": "Line {line}: {dish} for pickup",
       "youOrder": "Your order #{num} is in the kitchen",
       "youBooking": "You booked table {table} at {time}",
-      "webBooking": "Web booking: table {table} at {time}"
+      "webBooking": "Web booking: table {table}, {day} at {time}"
     },
     "toast": {
       "aiOrder": "Phone order",
@@ -2865,6 +3067,33 @@
       "youBooking": "Your booking",
       "webBooking": "Web booking",
       "out": "On the way"
+    },
+    "sim": {
+      "order": "A call to order",
+      "rush": "3 calls at once",
+      "qr": "A table orders by QR",
+      "web": "An order and a booking on the site",
+      "note": "Calls, orders and bookings are simulated with demo data; nothing is sent."
+    },
+    "simCue": "Simulate: {label}",
+    "stageOut": {
+      "salon": "Served",
+      "delivery": "On the way",
+      "pickup": "Picked up"
+    },
+    "qr": {
+      "rubric": "QR & site",
+      "title": "The menu, as guests see it",
+      "subtitle": "The same menu on every table's QR and on the site. Order here: it reaches the kitchen with your note.",
+      "steps": {
+        "scan": "Guests scan the QR or open the site and pick.",
+        "kitchen": "The order lands on the kitchen display, note included.",
+        "whatsapp": "They get a WhatsApp message when it's out."
+      },
+      "yours": "Your latest order",
+      "count": "{count, plural, one {# order of yours} other {# orders of yours}}",
+      "empty": "You haven't ordered yet. Pick dishes from the menu on the left.",
+      "toKitchen": "See it in the kitchen"
     }
   },
   "demoShop": {
@@ -2881,13 +3110,8 @@
       "groupChannel": "Channel"
     },
     "top": {
-      "live": "{count} people in the store",
-      "store": "Store"
-    },
-    "side": {
-      "title": "Carts",
-      "on": "Recovery on",
-      "off": "Recovery off"
+      "store": "Store",
+      "open": "Store open"
     },
     "products": {
       "niebla": {
@@ -2994,9 +3218,10 @@
       "restock": "Monday roast scheduled: {product}",
       "levelup": "{name} hit 6 months in the club and leveled up",
       "faq": "The bot answered a shipping question on its own",
-      "mineAbandon": "You left your cart: recovery is off, no message went out",
+      "mineAbandon": "You left your cart at checkout",
       "mineSent": "We wrote to you on WhatsApp with a coupon",
-      "mineOrder": "Your order #{id} reached the panel · {total}"
+      "mineOrder": "Your order #{id} reached the panel · {total}",
+      "mineUnsent": "Recovery is off: nobody wrote to you"
     },
     "toast": {
       "order": "New order",
@@ -3007,7 +3232,8 @@
       "stock": "Low stock",
       "mineOrder": "Your order",
       "mineSent": "Recovery sent",
-      "lost": "Cart lost"
+      "lost": "Cart lost",
+      "mineUnsent": "No recovery"
     },
     "today": {
       "title": "Today",
@@ -3025,7 +3251,7 @@
       "stock": "{count} in stock",
       "stockSr": "{count} bags in stock",
       "restock": "Schedule a {name} roast (+{count})",
-      "live": "Live orders",
+      "live": "Latest orders",
       "recovered": "Carts recovered this week",
       "of": "of",
       "open": "See carts",
@@ -3048,7 +3274,14 @@
         "club": "Club",
         "recovered": "Recovered"
       },
-      "items": "{count, plural, one {# item} other {# items}}"
+      "items": "{count, plural, one {# item} other {# items}}",
+      "hint": "Move each order along as you roast it, ship it and it arrives.",
+      "advance": {
+        "roasting": "Roast",
+        "shipping": "Ship",
+        "delivered": "Delivered"
+      },
+      "advanceLabel": "Move order #{id} to {stage}"
     },
     "carts": {
       "title": "Abandoned carts",
@@ -3138,7 +3371,7 @@
         "shipping": "Do you ship to my city?"
       },
       "states": {
-        "live": "Live",
+        "live": "Open",
         "bot": "Bot",
         "sale": "Bought",
         "human": "For you"
@@ -3371,7 +3604,26 @@
         "threadLabel": "Messages from {business}",
         "today": "Today",
         "composer": "Message",
-        "left": "{name} left {count, plural, one {# item} other {# items}} in the cart"
+        "left": "{name} left {count, plural, one {# item} other {# items}} in the cart",
+        "later": "30 min later"
+      },
+      "later": {
+        "label": "Your abandoned cart",
+        "left": "You left your cart at checkout.",
+        "simulate": "Simulate: 30 min later",
+        "unsent": "Recovery is off: nobody wrote to you. The cart is lost."
+      }
+    },
+    "sim": {
+      "bot": "Inés asks the bot which coffee to buy",
+      "abandon": "Inés reaches checkout and leaves",
+      "recovery": "30 min later: WhatsApp with a coupon",
+      "paid": "Inés comes back and pays",
+      "club": "Tomás levels up in the club",
+      "note": "Orders, carts and messages are simulated with demo data; nothing is charged or sent.",
+      "off": {
+        "recovery": "30 min later: nobody writes to her",
+        "paid": "Inés's cart is lost"
       }
     }
   },
@@ -3436,14 +3688,21 @@
       "later": "{name} is leaving it for tomorrow at 7 PM",
       "back": "{name} did the express lesson and is back",
       "dropped": "{name} dropped out of the course",
-      "paid": "{name} paid the October fee by {pay}"
+      "paid": "{name} paid the October fee by {pay}",
+      "moved": "{name} → {column} (moved by hand)"
     },
     "toast": {
       "enrolled": "New enrollment",
       "levelUp": "Level up",
       "back": "A student is back",
       "dropped": "Dropped out",
-      "review": "Lesson complete"
+      "review": "Lesson complete",
+      "complete": "Lesson complete",
+      "booked": "Class booked",
+      "level": "Level test",
+      "replied": "Replied",
+      "later": "Saved for tomorrow",
+      "moved": "Board updated"
     },
     "nav": {
       "today": "Today",
@@ -3520,7 +3779,8 @@
         "pt-a1": "Portuguese A1",
         "en-a1": "English A1",
         "pt-a2": "Portuguese A2"
-      }
+      },
+      "seeResult": "See result"
     },
     "course": {
       "kicker": "English · level {level}",
@@ -3573,7 +3833,7 @@
       "connecting": "Your tutor is connecting…",
       "label": "{name}'s speaking practice with the AI tutor",
       "duration": "Duration {time}",
-      "transcript": "Live transcript",
+      "transcript": "Transcript",
       "score": "Score",
       "scores": {
         "pron": "Pronunciation",
@@ -3598,7 +3858,9 @@
         "l3": "Good! Careful with «think»: tongue between your teeth.",
         "l4": "I think… I think I loved it!",
         "l5": "/θ/ right · score 90"
-      }
+      },
+      "start": "Start practicing",
+      "againNote": "Each new practice shows its result right away."
     },
     "tutor": {
       "kicker": "Activity 2 of 3 · Writing",
@@ -3606,7 +3868,6 @@
       "subtitle": "Corrects you and explains in one line",
       "date": "Today",
       "label": "Valentina's chat with the AI tutor",
-      "composer": "Write a sentence in English…",
       "waiting": "After the speaking, write me a sentence in English: I'll correct it and explain why in one line.",
       "msg": "Yesterday I buyed a new jacket for the trip.",
       "fix": "Yesterday I <bad>buyed</bad> <good>bought</good> a new jacket for the trip.",
@@ -3619,7 +3880,24 @@
         "buys": "buys"
       },
       "right": "Exactly: «bought». +{points} pts and the lesson is done.",
-      "wrong": "Almost: it's «bought» (buy → bought). I'll save it for tomorrow's review. +{points} pts."
+      "wrong": "Almost: it's «bought» (buy → bought). I'll save it for tomorrow's review. +{points} pts.",
+      "askLabel": "Quick questions for the tutor",
+      "askKicker": "Ask the tutor",
+      "playWriting": "Simulate: Valentina writes",
+      "asks": {
+        "past": {
+          "q": "When do I use the simple past?",
+          "a": "For something finished at a point in the past: “Yesterday I bought…”. With “yesterday”, “last week” or “in 2020”, use the simple past."
+        },
+        "th": {
+          "q": "How do I say “th”?",
+          "a": "Tip of the tongue between your teeth, then blow softly: “think”, “three”. If it sounds like “s”, it’s “sink”: a different word."
+        },
+        "more": {
+          "q": "Give me another exercise",
+          "a": "Fill in: “Two days ago we ___ (go) to the beach.” Answer: went. I’ll add it to tomorrow’s practice."
+        }
+      }
     },
     "site": {
       "path": "level-test",
@@ -3628,7 +3906,6 @@
       "botName": "Atri · assistant",
       "botSub": "Level test in 2 minutes",
       "chatLabel": "Site chat: level test",
-      "composer": "Type your answer…",
       "taking": "{name} is taking the test",
       "takingYou": "You're taking the test",
       "tryIt": "Take the test yourself",
@@ -3644,7 +3921,7 @@
       "doubt": "Your first live class is a trial: if you don't like it, you don't pay. Shall I enroll you?",
       "pay": "How would you like to pay the first fee?",
       "paid": "Done, {name}! Payment approved. Your first class is Tuesday at 7 PM. We'll send everything on WhatsApp.",
-      "paidYou": "Done! Payment approved. Your first class is Tuesday at 7 PM. We'll send everything on WhatsApp.",
+      "paidYou": "Done! Simulated payment approved. Your first class would be Tuesday at 7 PM.",
       "approved": "Approved",
       "alias": "Here's the school's account alias: atrio.idiomas.demo. Your access opens as soon as the transfer clears.",
       "paidTransfer": "Transfer received · access open",
@@ -3695,7 +3972,11 @@
         "visits": "Site visits",
         "tests": "Took the test",
         "enrolled": "Enrolled"
-      }
+      },
+      "idleWho": "Nobody is taking the test",
+      "idle": "Take the test yourself (3 questions) or simulate a prospect from the simulation bar.",
+      "localNote": "Enrollment and payment are simulated: nothing is charged or sent.",
+      "paidTransferYou": "Simulated transfer · access open in the demo"
     },
     "wa": {
       "nudge": "Hi {name}, how's it going? You haven't logged in for 5 days. I made you a 5-minute express lesson to pick up where you left off.",
@@ -3709,11 +3990,11 @@
       "done": "{name} completed the express lesson · 5 min",
       "tomorrow": "No problem. I'll keep it for tomorrow and remind you at 7 PM.",
       "noteLater": "Reminder scheduled · tomorrow 7 PM",
-      "waiting": "Message scheduled for {name}",
       "noNudge": "No follow-up: nobody writes to {name}",
       "dropped": "{name} dropped out. Nobody wrote to him.",
       "label": "{name}'s WhatsApp with the school",
-      "date": "Today"
+      "date": "Today",
+      "waitingBeat": "If {name} hits 5 days away, the follow-up writes to them."
     },
     "class": {
       "kicker": "English A2 · Tue & Thu group",
@@ -3770,7 +4051,8 @@
       "enrollmentsHint": "From the level test",
       "now": "Now at Atrio",
       "openStudents": "See students",
-      "activity": "Activity"
+      "activity": "Activity",
+      "feedEmpty": "Nothing yet. Tap “Simulate” to play the school’s evening."
     },
     "lanes": {
       "label": "What's happening now",
@@ -3813,7 +4095,8 @@
         "outBack": "Back",
         "outDropped": "Dropped",
         "outLater": "Tomorrow 7 PM"
-      }
+      },
+      "notStarted": "Not started"
     },
     "students": {
       "index": "Students · {count} active",
@@ -3921,6 +4204,32 @@
       },
       "liveSpeaking": "Live speaking · {name}",
       "liveWriting": "Live writing · {name}"
+    },
+    "sim": {
+      "speak": "Valentina practices speaking with the AI tutor",
+      "writing": "The AI tutor corrects her sentence",
+      "levelup": "Valentina finishes the lesson and moves up to B1",
+      "lead": "A prospect takes the level test and enrolls",
+      "nudge": "Martín hasn't logged in for 5 days",
+      "note": "Lessons, messages, enrollments and payments are simulated with demo data; nothing is sent or charged."
+    },
+    "board": {
+      "title": "Students falling behind",
+      "hint": "Drag or use “Move”",
+      "label": "Student follow-up board",
+      "empty": "Nobody here",
+      "dropped": "Dropped out: nobody wrote to them",
+      "columns": {
+        "risk": "At risk",
+        "nudged": "Message sent",
+        "back": "Back"
+      },
+      "notes": {
+        "martin": "5 days away · English A2",
+        "tomas": "4 days away · Portuguese A1",
+        "joaquin": "Express lesson sent yesterday",
+        "renata": "Came back yesterday with the express lesson"
+      }
     }
   },
   "faq": {
@@ -4007,15 +4316,14 @@
       "tableCaption": "Your projects with Eclipse (fictional data)",
       "columns": {
         "project": "Project",
-        "service": "Service",
         "stage": "Current stage",
         "updated": "Last update",
         "milestone": "Next milestone",
-        "action": "Action"
+        "action": "Your action",
+        "open": "Open the project"
       },
       "milestoneMeta": "{owner} · estimated <d>{date}</d>",
       "view": "View project",
-      "review": "Review",
       "actionNeeded": "Needs your action",
       "states": {
         "label": "Demo view",
@@ -4030,6 +4338,11 @@
         "body": "Your projects show up here once the team links them to your account, after the deposit. If you've already confirmed one, message us.",
         "cta": "Message us on WhatsApp",
         "message": "Hi Eclipse. I signed in to the portal and can't see my project yet."
+      },
+      "nothingPending": "Nothing pending on your side",
+      "whoWorks": {
+        "active": "Eclipse is working on it",
+        "support": "Support active"
       }
     },
     "people": {
@@ -4222,7 +4535,11 @@
         "delivered": "Delivered {date}",
         "deliveryPaused": "Recalculated when work resumes"
       },
-      "others": "Other projects"
+      "others": "Other projects",
+      "follow": {
+        "title": "Follow-up",
+        "intro": "Every dated update, what the scope includes, requested changes and documents."
+      }
     },
     "demo": {
       "projects": {
@@ -4433,10 +4750,291 @@
           }
         }
       }
+    },
+    "info": {
+      "more": "More information: {topic}",
+      "close": "Close",
+      "legend": "How to read this list",
+      "stages": {
+        "chip": "Stages",
+        "title": "The 5 stages",
+        "body": "Every project goes through Preparation, Build, Eclipse review, Client review and Delivery. \"2 of 5\" means it's on the second one. Support comes after delivery and only exists with a maintenance plan."
+      },
+      "estimate": {
+        "chip": "Estimated date",
+        "title": "Estimated date",
+        "body": "It's our forecast with what we know today: an estimate, not a commitment. It can move if a scope change is accepted or if the project is paused."
+      },
+      "action": {
+        "chip": "Your action",
+        "title": "Your action",
+        "body": "When something depends on you — approving, confirming a detail or sending a file — the project says \"Needs your action\" and explains what's needed. Otherwise it says \"Nothing pending on your side\"."
+      },
+      "clientReview": {
+        "title": "Client review",
+        "body": "It's stage 4: the work has passed our review and it's your turn to look at it. You approve it or ask for tweaks within scope. Once your approval is recorded, it moves to Delivery."
+      },
+      "support": {
+        "title": "Support",
+        "body": "It starts after delivery and only exists with a maintenance plan. While it's active we look after hosting, backups and the changes your plan includes."
+      },
+      "changes": {
+        "title": "Accepted change or open request",
+        "body": "An open request is something you asked for that we're evaluating or estimating: it isn't part of the scope yet. An accepted change has its acceptance recorded: it joins the scope with its impact noted."
+      }
+    },
+    "guide": {
+      "projects": {
+        "label": "My projects guide",
+        "list": {
+          "title": "Your projects",
+          "body": "All your projects with Eclipse are here. Each one shows its stage, what's next, whether you need to do something and the latest update."
+        },
+        "stage": {
+          "title": "Current stage",
+          "body": "\"2 of 5 · Build\" means it's on the second of 5 stages. Below it, in a few words, what happens in that stage."
+        },
+        "next": {
+          "title": "What's next and what's yours",
+          "body": "The next milestone says what comes next, who does it and the estimated date. If something depends on you, you'll see \"Needs your action\" and what's needed."
+        },
+        "open": {
+          "title": "View project",
+          "body": "Opens the detail: stage, timeline, activity, scope and documents."
+        },
+        "help": {
+          "title": "Help",
+          "body": "See this guide again whenever you want; the (i) buttons explain each term. In this demo it's remembered only in this browser; in the real portal, in your account."
+        }
+      },
+      "project": {
+        "label": "Project guide",
+        "current": {
+          "title": "Current stage",
+          "body": "Which stage the project is in, what it means and what it takes to move to the next one."
+        },
+        "next": {
+          "title": "Next milestone and your action",
+          "body": "What's next, who does it and by when. If it's your turn, you'll see it here with the details. In this demo the buttons are disabled."
+        },
+        "timeline": {
+          "title": "Timeline",
+          "body": "The 5 stages with their status in words — done, current, next or pending — and their dates."
+        },
+        "follow": {
+          "title": "Follow-up",
+          "body": "Dated updates, scope and changes, documents and how each stage works, in tabs."
+        },
+        "help": {
+          "title": "Help",
+          "body": "See this guide again whenever you want. It's remembered only in this browser; in the real portal, in your account."
+        }
+      }
     }
   },
   "shortcuts": {
     "label": "Shortcuts",
     "plan": "Build a plan"
+  },
+  "tour": {
+    "label": "Guide",
+    "labelFor": "{name} guide",
+    "next": "Next",
+    "prev": "Back",
+    "done": "Done",
+    "skip": "Skip",
+    "close": "Close the guide",
+    "progress": "Step {current} of {total}",
+    "help": "Help",
+    "withGuide": "Take the guided tour",
+    "onMyOwn": "Explore on my own",
+    "replay": "Replay the guide",
+    "dontShowAgain": "Don't show this again",
+    "tagDesktop": "Desktop view",
+    "tagMobile": "Phone view",
+    "tagBoth": "Both views"
+  },
+  "demoTours": {
+    "clinic": {
+      "sim": {
+        "title": "You decide what happens",
+        "body": "Nothing moves on its own. Tap “Simulate” to see one event of the clinic's day: an online booking, a reminder, a cancellation or a call."
+      },
+      "booking": {
+        "title": "Online booking, no phone calls",
+        "body": "Patients pick a treatment, day and time on the site. Try it: the appointment lands in the schedule and the confirmation goes out on WhatsApp."
+      },
+      "agenda": {
+        "title": "A schedule that fills itself",
+        "body": "All three practitioners on one grid. Switch between day and week, look at past and future dates, and tap an open slot to book it."
+      },
+      "reception": {
+        "title": "An AI front desk, 24/7",
+        "body": "It answers the phone, checks the schedule and books while it talks. Simulate Julián's call and read the transcript."
+      },
+      "reminders": {
+        "title": "WhatsApp reminders",
+        "body": "Every patient gets a reminder and confirms, reschedules or cancels in one tap. Freed slots are offered again."
+      },
+      "recovered": {
+        "title": "No-shows that don't cost you",
+        "body": "How many appointments were recovered this week and where they came from: reminders, the waitlist and the AI front desk."
+      }
+    },
+    "restaurant": {
+      "sim": {
+        "title": "You run the shift",
+        "body": "Nothing moves on its own. Tap “Simulate” to see a moment of the night: one call, three at once, a table ordering by QR or a web order."
+      },
+      "order": {
+        "title": "QR menu and online orders",
+        "body": "Pick dishes, quantities and a note for the kitchen, then place the order. It lands on the kitchen display without a waiter or a delivery app's commission."
+      },
+      "voice": {
+        "title": "The AI phone answers every call",
+        "body": "It takes orders and bookings on three lines at once, with the menu and the floor up to date. Simulate the three calls and read each conversation."
+      },
+      "kitchen": {
+        "title": "The kitchen display",
+        "body": "Every ticket lands on its own, from the QR, the site or the phone. Move it from New to Out: the guest sees the status on their phone."
+      },
+      "floor": {
+        "title": "Floor and bookings",
+        "body": "The plan shows who's seated, who's coming and which tables are free. Look at past or upcoming nights and book a table: the confirmation goes out on WhatsApp."
+      }
+    },
+    "realEstate": {
+      "sim": {
+        "title": "You decide what happens tonight",
+        "body": "Nothing moves on its own. Tap “Simulate” and follow the 11:40 PM inquiry: reply, qualification, viewing and follow-up. Switch the assistant off to see the same night without it."
+      },
+      "chat": {
+        "title": "Every inquiry, answered in seconds",
+        "body": "Lumi replies at any hour, asks how they'll pay and their budget, and leaves the lead file ready. You can answer for Carolina."
+      },
+      "site": {
+        "title": "Your website searches and books",
+        "body": "Filters by area, rooms and price, a listing page with the floor plan and “Book a viewing”. Book one: it shows up in the calendar and the pipeline."
+      },
+      "pipeline": {
+        "title": "A pipeline that sorts itself",
+        "body": "Each lead goes from New to Qualified, Viewing and Reserved as Lumi moves forward. Drag a card or use “Move” to sort it by hand."
+      },
+      "visits": {
+        "title": "Viewings without the back-and-forth",
+        "body": "Both agents in one calendar. Switch between week and day, browse past and future weeks and tap a free time to book."
+      },
+      "followups": {
+        "title": "A follow-up after every viewing",
+        "body": "Confirmation, reminder and “how did you like it?” on WhatsApp, with the property and their name. That is how a viewing turns into a reservation."
+      }
+    },
+    "shop": {
+      "sim": {
+        "title": "You decide what happens in the store",
+        "body": "Nothing moves on its own. Tap “Simulate” and follow Inés's evening: she asks the bot, leaves her cart, gets the coupon and comes back to pay."
+      },
+      "store": {
+        "title": "A store that sells on its own",
+        "body": "Catalog, product page with grind and size, cart and checkout. Buy something: the order lands in the panel with its total."
+      },
+      "bot": {
+        "title": "A bot that recommends the right coffee",
+        "body": "It asks how you brew and shows a bag with its price. One tap and it's in the cart."
+      },
+      "recovery": {
+        "title": "Carts that come back",
+        "body": "Half an hour after an abandoned checkout, a WhatsApp with a coupon goes out. Switch recovery off and watch the cart get lost."
+      },
+      "orders": {
+        "title": "Orders from start to finish",
+        "body": "New, roasting, on the way and delivered. Move each order along with one tap; club and recovered orders stand out on their own."
+      },
+      "club": {
+        "title": "A club that subscribes and retains",
+        "body": "Points per purchase, monthly streaks and roast levels with perks. Tomás completes six months and levels up."
+      }
+    },
+    "gym": {
+      "sim": {
+        "title": "Play the gym's week",
+        "body": "Nothing moves on its own. Tap “Simulate” for four moments: a trial class, Lucy at 9 days away, her comeback on Tuesday and her mission on Thursday."
+      },
+      "winback": {
+        "title": "Automatic win-back",
+        "body": "After 7 days without coming, the app texts members on WhatsApp with a personal mission and bonus XP. Switch it off and see what happens to Lucy."
+      },
+      "missions": {
+        "title": "Missions you can play",
+        "body": "Share the guest pass or check in to a new class: XP, streak and level update right away."
+      },
+      "classes": {
+        "title": "Classes and capacity",
+        "body": "Browse past and future days and book a spot from the app: the owner sees it on the grid."
+      },
+      "league": {
+        "title": "Weekly league",
+        "body": "Eight members per league; the top three move up. Every class adds points and a reason to come back."
+      },
+      "lead": {
+        "title": "Trial classes from the site",
+        "body": "The site's chat answers, suggests a class and books the free trial. Try it: the lead shows up in the panel."
+      }
+    },
+    "academy": {
+      "sim": {
+        "title": "Play the school’s evening",
+        "body": "Nothing moves on its own. Tap “Simulate” for five moments: AI speaking practice, a written correction, a move up to B1, an enrollment and a student who comes back."
+      },
+      "speaking": {
+        "title": "Speaking with the AI tutor",
+        "body": "Pick a topic and start: the tutor listens, flags pronunciation (sink → think) and gives a score."
+      },
+      "tutor": {
+        "title": "A tutor that answers right away",
+        "body": "It corrects every sentence and explains it in one line. Ask it something: it answers instantly, any time."
+      },
+      "ranking": {
+        "title": "Streaks, levels and a class ranking",
+        "body": "Every lesson adds points. Valentina moves up to B1 and climbs her class ranking."
+      },
+      "followup": {
+        "title": "Nobody falls behind",
+        "body": "After 5 days away, a WhatsApp goes out with a 5-minute lesson. Move students on the board, or switch the follow-up off and watch completion."
+      },
+      "enroll": {
+        "title": "Level test, enrollment and payment",
+        "body": "The site’s chat runs the test, recommends a course and takes the first fee. Try it: it’s simulated, nothing is charged."
+      }
+    }
+  },
+  "demoExperience": {
+    "hint": "Interactive demo: try it as if it were yours.",
+    "loading": "Loading the {business} demo…",
+    "wantThis": "I want this for my business",
+    "guideSoon": "The guide for this demo isn't ready yet.",
+    "choice": {
+      "title": "How do you want to see it?",
+      "guideText": "We show you what matters, step by step.",
+      "exploreText": "Tap and try everything, at your own pace."
+    },
+    "whatsapp": {
+      "plan": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}): the {plan} package.",
+      "planExtras": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}): the {plan} package, plus {pieces}.",
+      "pieces": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}), with {pieces}."
+    },
+    "project": {
+      "label": "The complete project",
+      "title": "What you see is a sample of a complete project.",
+      "leadPlan": "To have it in your business: the {plan} package, with everything in this demo.",
+      "leadPlanExtras": "To have it in your business: the {plan} package, {count, plural, one {plus # piece that also shows up in this demo} other {plus # pieces that also show up in this demo}}.",
+      "leadPieces": "It's built with {count, plural, one {# piece} other {# pieces}}, each with its published price. We confirm the price of the complete project in writing, after the demo and the call.",
+      "package": "Package",
+      "covered": "From this demo, the package already includes: {pieces}.",
+      "extras": "Also in this demo",
+      "pieces": "The pieces in this demo",
+      "piecesNote": "published price of each piece. We confirm the project total in writing.",
+      "build": "Build this project"
+    }
   }
 }

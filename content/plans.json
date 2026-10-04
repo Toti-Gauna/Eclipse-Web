@@ -1,5 +1,5 @@
 {
-  "$comment": "Planes (paquetes) con rango de precio en USD. 'tier' agrupa los paquetes en la sección de precios: starter = Para empezar, complete = Sistemas completos. 'items' referencia ids de items.json (se usa para detectar planes en 'Armá tu plan' y para la línea 'Por separado'). 'maintenance' es el mantenimiento sugerido por defecto (null = ninguno).",
+  "$comment": "Planes (paquetes) con rango de precio en USD. 'tier' agrupa los paquetes en la sección de precios: starter = Para empezar, complete = Sistemas completos. 'items' referencia ids de items.json (se usa para detectar planes en 'Armá tu plan' y para la línea 'Por separado'). 'maintenance' es el mantenimiento sugerido por defecto (null = ninguno). 'bonus' (v3) es una pieza de regalo sin precio (Voz y Automatiza → landing premium): no va en 'items', así que no cambia la detección de paquetes ni el ahorro; solo describe lo que el ítem promete hoy.",
   "featured": "sistema",
   "plans": [
     {
@@ -99,6 +99,19 @@
           "Agenda horários no seu calendário",
           "Configuração e testes incluídos"
         ]
+      },
+      "bonus": {
+        "itemId": "landing",
+        "title": {
+          "es": "Landing premium con motion graphics",
+          "en": "Premium landing page with motion graphics",
+          "pt": "Landing page premium com motion graphics"
+        },
+        "text": {
+          "es": "Una página que se mueve, carga rápido y convierte. Viene con el paquete Voz, sin cargo extra.",
+          "en": "One page that moves, loads fast and converts. It comes with the Voice package at no extra cost.",
+          "pt": "Uma página que se move, carrega rápido e converte. Vem com o pacote Voz, sem custo extra."
+        }
       }
     },
     {
@@ -133,6 +146,19 @@
           "E-mails automáticos",
           "Follow-up de clientes sem fazer à mão"
         ]
+      },
+      "bonus": {
+        "itemId": "landing",
+        "title": {
+          "es": "Landing premium con motion graphics",
+          "en": "Premium landing page with motion graphics",
+          "pt": "Landing page premium com motion graphics"
+        },
+        "text": {
+          "es": "Una página que se mueve, carga rápido y convierte. Viene con el paquete Automatiza, sin cargo extra.",
+          "en": "One page that moves, loads fast and converts. It comes with the Automate package at no extra cost.",
+          "pt": "Uma página que se move, carrega rápido e converte. Vem com o pacote Automatiza, sem custo extra."
+        }
       }
     },
     {

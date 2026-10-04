@@ -1,38 +1,39 @@
 /**
- * Bruma Tostadores — the live story and everything derived from it.
+ * Bruma Tostadores — the story and everything derived from it.
  *
- * One store per showcase (laptop + phone share it) holds only what the visitor did;
- * every screen DERIVES the evening from (story time t, that state) with `deriveShop`,
- * which is pure: pausing, looping, reduced motion (t = end) and two screens in sync
- * come for free.
+ * One store per showcase (laptop + phone share it) holds only what the visitor did; every
+ * screen DERIVES the evening from (story time t, that state) with `deriveShop`, which is pure:
+ * pausing, reduced motion (the store jumps to the end of a beat) and two screens in sync come free.
  *
- * The 30 s loop (18:05 → ~18:50): Inés asks the site bot "what coffee for my moka?",
- * adds its pick, reaches the checkout and leaves · half an hour later the cart-recovery
- * automation writes to her on WhatsApp with a coupon · she comes back and pays → the
- * panel counts a recovered cart (2 → 3 of 15: one in five). Around it: orders arrive,
- * Sidamo runs low, Tomás completes six months in the club and levels up, the bot answers
- * a shipping question on its own.
- *
- * The visitor can steer Inés (bot chips, WhatsApp buttons), switch the recovery off
- * (her cart stays lost), schedule a roast for the low stock, and shop on their own
- * (cart, bot, abandonment → their own WhatsApp, checkout, order) — "mine".
+ * Nothing plays on its own (v3). The visitor plays five beats from the SimBar (18:05 → ~18:55):
+ * 1 bot — Inés asks the site bot what coffee suits her moka pot; it answers with a pick (and
+ *   Tomás's club order lands) · 2 abandon — she adds it, reaches the checkout and leaves (Carla's
+ *   order empties the Sidamo shelf) · 3 recovery — half an hour later the cart-recovery
+ *   automation writes to her on WhatsApp with a coupon · 4 paid — she comes back and pays: a
+ *   recovered cart (one in five) · 5 club — Tomás completes six months and levels up, the bot
+ *   answers a shipping question, Diego orders, the board moves.
+ * With the recovery off, beats 3–4 show the cart getting lost.
+ * At rest the visitor can tap for Inés, switch the recovery, schedule a roast, advance orders,
+ * and shop on their own (cart, bot, checkout, their own abandonment + "30 minutes later") — "mine".
  */
 import { createDemoStore, runChat, type ChatPick, type ChatRun, type ChatScript, type DemoStore } from '../kit';
 import {
   AFTER_ADD,
   AFTER_BACK,
   BASE_ORDERS,
+  BEATS,
   BOARD,
   CHATS_BEFORE,
   CLUB,
+  INES_BACK,
+  INES_DECIDES,
   JUMP_MINUTES,
-  LOOP_MS,
-  LOST_AFTER_LEAVE,
   LOW_STOCK,
   MINUTE_MS,
   NOW_START,
   PRODUCTS,
   RESTOCK_BAGS,
+  STAGES,
   STORY,
   VISITS_BEFORE,
   VISIT_EVERY,
@@ -55,7 +56,7 @@ export interface Range {
 }
 
 export interface MineOrder {
-  /** Story time it was placed (−1: an earlier loop). */
+  /** Story time it was placed. */
   at: number;
   lines: Line[];
   pay: PayId;
@@ -64,14 +65,15 @@ export interface MineOrder {
   recovered: boolean;
 }
 
-/** The visitor's own session in the store. Chat / WhatsApp times are real time (ms). */
+/** The visitor's own session in the store (everything answers at once; nothing runs on a timer). */
 export interface Mine {
   lines: Line[];
-  /** Their conversation with the site bot: when it started (Date.now()) + picks (ms since). */
-  chat: { start: number; picks: Record<string, ChatPick> } | null;
-  /** They left a full cart: when the recovery was due (Date.now() + story t) and whether it went out. */
-  abandoned: { wall: number; at: number; sent: boolean } | null;
-  /** Their WhatsApp thread picks (ms since `abandoned.wall`). */
+  /** Their conversation with the site bot (null: not started). */
+  chat: Record<string, ChatPick> | null;
+  /** They left a full cart at the checkout (story time). */
+  abandoned: { at: number } | null;
+  /** They simulated "30 minutes later": the recovery message went out (or not, if the automation is off). */
+  recovery: { at: number; sent: boolean } | null;
   waPicks: Record<string, ChatPick>;
   waOpened: boolean;
   /** The recovery coupon applies to their cart. */
@@ -80,40 +82,32 @@ export interface Mine {
 }
 
 export interface ShopState {
-  /** Inés's site-bot picks (chat time). */
+  /** Inés's site-bot answers the visitor gave for her (chat time). */
   bot: Record<string, ChatPick>;
-  /** Inés's WhatsApp picks (thread time, from the push). */
+  /** Inés's WhatsApp answers the visitor gave for her (thread time, from the push). */
   wa: Record<string, ChatPick>;
   /** She opened the push early (the visitor tapped it), story time. */
   waOpen: number | null;
   /** When the cart-recovery automation was off (story time). */
   off: Range[];
-  /** The visitor took over the customer's phone (their own session from now on). */
-  manual: boolean;
+  /** Story time the visitor took over the customer's phone (it shows their session until a beat plays). */
+  manual: number | null;
   /** Story time the visitor scheduled a roast for the low-stock coffee. */
   restock: number | null;
+  /** Orders the visitor advanced on the board (stage + story time). */
+  moved: Record<string, { stage: Stage; at: number }>;
   mine: Mine;
 }
 
-const emptyMine = (): Mine => ({ lines: [], chat: null, abandoned: null, waPicks: {}, waOpened: false, coupon: false, orders: [] });
-const fresh = (): ShopState => ({ bot: {}, wa: {}, waOpen: null, off: [], manual: false, restock: null, mine: emptyMine() });
-/** A switch left off stays off in the next loop. */
-const carry = (ranges: Range[]): Range[] => (ranges.some((r) => r.to === null) ? [{ from: -1, to: null }] : []);
+const emptyMine = (): Mine => ({ lines: [], chat: null, abandoned: null, recovery: null, waPicks: {}, waOpened: false, coupon: false, orders: [] });
+const fresh = (): ShopState => ({ bot: {}, wa: {}, waOpen: null, off: [], manual: null, restock: null, moved: {}, mine: emptyMine() });
 
 export type ShopStore = DemoStore<ShopState>;
 
-/** Module-level (stable) factory for usePairedStore. */
+/** Module-level (stable) factory for usePairedStore. Beats: no autoplay; "Reiniciar" = a fresh evening. */
 export function createShopStore(paired: boolean): ShopStore {
-  return createDemoStore<ShopState>(fresh(), {
-    loopMs: LOOP_MS,
-    paired,
-    onLoop: (s) => ({
-      ...fresh(),
-      off: carry(s.off),
-      // The visitor keeps their cart and their orders (as "earlier").
-      mine: { ...emptyMine(), lines: s.mine.lines, coupon: s.mine.coupon, orders: s.mine.orders.map((o) => ({ ...o, at: -1 })) },
-    }),
-  });
+  // The recovery switch survives "Reiniciar" (as a setting, it's on or off from the start).
+  return createDemoStore<ShopState>(fresh(), { beats: BEATS, paired, reset: (s) => ({ ...fresh(), off: isOffNow(s.off) ? [{ from: -1, to: null }] : [] }) });
 }
 
 export const isOn = (ranges: Range[], at: number) => !ranges.some((r) => at >= r.from && (r.to === null || at < r.to));
@@ -130,11 +124,11 @@ const withMine = (s: ShopState, fn: (m: Mine) => Mine): ShopState => ({ ...s, mi
 export const act = {
   pickBot: (step: string, reply: string) => (s: ShopState, t: number): ShopState => ({
     ...s,
-    bot: { ...s.bot, [step]: { reply, at: t - STORY.chatStart } },
+    bot: { ...s.bot, [step]: { reply, at: Math.max(0, t - STORY.chatStart) } },
   }),
   pickWa: (step: string, reply: string, pushAt: number) => (s: ShopState, t: number): ShopState => ({
     ...s,
-    wa: { ...s.wa, [step]: { reply, at: t - pushAt } },
+    wa: { ...s.wa, [step]: { reply, at: Math.max(0, t - pushAt) } },
   }),
   openWa: () => (s: ShopState, t: number): ShopState => (s.waOpen === null ? { ...s, waOpen: t } : s),
   toggleRecovery: () => (s: ShopState, t: number): ShopState => {
@@ -142,31 +136,37 @@ export const act = {
     return { ...s, off: next };
   },
   /** The visitor takes over the customer's phone; their cart starts as the one on screen (if theirs is empty). */
-  takeOver: (seed: Line[]) => (s: ShopState): ShopState =>
-    s.manual ? s : { ...s, manual: true, mine: s.mine.lines.length ? s.mine : { ...s.mine, lines: seed.map((l) => ({ ...l })) } },
+  takeOver: (seed: Line[]) => (s: ShopState, t: number): ShopState => ({
+    ...s,
+    manual: t,
+    mine: s.mine.lines.length || s.mine.orders.length ? s.mine : { ...s.mine, lines: seed.map((l) => ({ ...l })) },
+  }),
   restock: () => (s: ShopState, t: number): ShopState => (s.restock === null ? { ...s, restock: t } : s),
+  advance: (key: string, stage: Stage) => (s: ShopState, t: number): ShopState => ({ ...s, moved: { ...s.moved, [key]: { stage, at: t } } }),
 
   mineAdd: (line: Line) => (s: ShopState) => withMine(s, (m) => ({ ...m, lines: addLine(m.lines, line) })),
   mineQty: (index: number, qty: number) => (s: ShopState) =>
     withMine(s, (m) => ({ ...m, lines: qty <= 0 ? m.lines.filter((_, i) => i !== index) : m.lines.map((l, i) => (i === index ? { ...l, qty: Math.min(9, qty) } : l)) })),
-  mineChat: (wall: number) => (s: ShopState) => withMine(s, (m) => (m.chat ? m : { ...m, chat: { start: wall, picks: {} } })),
-  mineChatPick: (step: string, reply: string, wall: number) => (s: ShopState) =>
-    withMine(s, (m) => (m.chat ? { ...m, chat: { ...m.chat, picks: { ...m.chat.picks, [step]: { reply, at: wall - m.chat.start } } } } : m)),
-  /** Their recovery came due (real-time timer in the storefront): it goes out if the automation is on. */
-  mineAbandon: (wall: number) => (s: ShopState, t: number): ShopState =>
-    s.mine.abandoned || !s.mine.lines.length ? s : withMine(s, (m) => ({ ...m, abandoned: { wall, at: t, sent: isOn(s.off, t) }, waPicks: {}, waOpened: false })),
+  mineChatPick: (step: string, reply: string) => (s: ShopState) => withMine(s, (m) => ({ ...m, chat: { ...(m.chat ?? {}), [step]: { reply, at: 0 } } })),
+  /** They left the checkout with a full cart (no message yet: they simulate "30 minutes later" themselves). */
+  mineLeave: () => (s: ShopState, t: number): ShopState =>
+    s.mine.abandoned || !s.mine.lines.length ? s : withMine(s, (m) => ({ ...m, abandoned: { at: t }, recovery: null, waPicks: {}, waOpened: false })),
+  /** "30 minutes later": the automation writes to them (if it's on). */
+  mineRecover: () => (s: ShopState, t: number): ShopState =>
+    !s.mine.abandoned || s.mine.recovery ? s : withMine(s, (m) => ({ ...m, recovery: { at: t, sent: isOn(s.off, t) } })),
   mineWaOpen: () => (s: ShopState) => withMine(s, (m) => (m.waOpened ? m : { ...m, waOpened: true })),
-  mineWaPick: (step: string, reply: string, wall: number) => (s: ShopState) =>
-    withMine(s, (m) => ({ ...m, waPicks: { ...m.waPicks, [step]: { reply, at: wall - (m.abandoned?.wall ?? wall) } }, coupon: m.coupon || reply === 'back' })),
+  mineWaPick: (step: string, reply: string) => (s: ShopState) =>
+    withMine(s, (m) => ({ ...m, waOpened: true, waPicks: { ...m.waPicks, [step]: { reply, at: 0 } }, coupon: m.coupon || reply === 'back' })),
   minePay: (pay: PayId) => (s: ShopState, t: number): ShopState =>
     !s.mine.lines.length
       ? s
       : withMine(s, (m) => ({
           ...m,
-          orders: [...m.orders, { at: t, lines: m.lines, pay, coupon: m.coupon, recovered: !!m.abandoned?.sent }],
+          orders: [...m.orders, { at: t, lines: m.lines, pay, coupon: m.coupon, recovered: !!m.recovery?.sent }],
           lines: [],
           coupon: false,
           abandoned: null,
+          recovery: null,
           waPicks: {},
           waOpened: false,
         })),
@@ -182,10 +182,10 @@ type Shape = { from: 'bot' | 'user' | 'note'; typingMs?: number; next?: string; 
 export const BOT_FLOW: { start: string; steps: Record<string, Shape> } = {
   start: 'hi',
   steps: {
-    hi: { from: 'bot', typingMs: 600, replies: ['moka', 'fruity', 'gift'], auto: 'moka', autoMs: 2400 },
-    moka: { from: 'bot', typingMs: 1400, replies: ['add', 'other'], auto: 'add', autoMs: 1500 },
-    fruity: { from: 'bot', typingMs: 1400, replies: ['add', 'other'], auto: 'add', autoMs: 1500 },
-    gift: { from: 'bot', typingMs: 1400, replies: ['add', 'other'], auto: 'add', autoMs: 1500 },
+    hi: { from: 'bot', typingMs: 600, replies: ['moka', 'fruity', 'gift'], auto: 'moka', autoMs: INES_DECIDES.need - 600 },
+    moka: { from: 'bot', typingMs: 1400, replies: ['add', 'other'], auto: 'add', autoMs: 2750 },
+    fruity: { from: 'bot', typingMs: 1400, replies: ['add', 'other'], auto: 'add', autoMs: 2750 },
+    gift: { from: 'bot', typingMs: 1400, replies: ['add', 'other'], auto: 'add', autoMs: 2750 },
     alt_moka: { from: 'bot', typingMs: 1200, replies: ['add'], auto: 'add', autoMs: 1500 },
     alt_fruity: { from: 'bot', typingMs: 1200, replies: ['add'], auto: 'add', autoMs: 1500 },
     alt_gift: { from: 'bot', typingMs: 1200, replies: ['add'], auto: 'add', autoMs: 1500 },
@@ -200,14 +200,14 @@ export const PICK_STEPS = ['moka', 'fruity', 'gift', 'alt_moka', 'alt_fruity', '
 export const WA_FLOW: { start: string; steps: Record<string, Shape> } = {
   start: 'msg',
   steps: {
-    msg: { from: 'bot', typingMs: 0, replies: ['back', 'doubt'], auto: 'back', autoMs: 3700 },
+    msg: { from: 'bot', typingMs: 0, replies: ['back', 'doubt'], auto: 'back', autoMs: INES_BACK },
     doubt: { from: 'bot', typingMs: 1200, replies: ['back'], auto: 'back', autoMs: 2200 },
     opening: { from: 'note', typingMs: 300 },
   },
 };
 export const waGoto = (_step: string, reply: string) => (reply === 'back' ? 'opening' : 'doubt');
 
-/** Chat script from a flow shape + per-locale content. `auto: false` removes the autoplay (the visitor's own chats). */
+/** Chat script from a flow shape + per-locale content. `auto: false` removes the automatic replies (the visitor's own chats). */
 export function buildScript(
   flow: { start: string; steps: Record<string, Shape> },
   goto: (step: string, reply: string) => string,
@@ -251,23 +251,30 @@ export function botPick(chosen: Record<string, string>): Line | null {
   if (!need || !RECO[need]) return null;
   return chosen[need] === 'other' ? RECO[need].alt : RECO[need].main;
 }
+
 /**
- * Inés keeps going after the visitor steers her chat: the kit stops automatic replies once
- * someone taps, so every step still waiting gets its automatic reply here, a beat later.
- * (A real tap on that step later replaces it.)
+ * Inés's conversation once the visitor answered for her: every step still waiting gets her
+ * scripted answer at its scripted time (`decides(step)`, or right away if it shows up later),
+ * and each answer is followed at once (the clock is stopped at rest).
  */
-export function steeredPicks(script: ChatScript, picks: Record<string, ChatPick>): Record<string, ChatPick> {
-  if (!Object.keys(picks).length) return picks;
+export function steeredRun(script: ChatScript, elapsed: number, picks: Record<string, ChatPick>, decides: (step: string) => number): ChatRun {
+  if (!Object.keys(picks).length) return runChat(script, elapsed, {});
   const out = { ...picks };
   for (let guard = 0; guard < 8; guard++) {
-    const full = runChat(script, 600_000, out);
+    const full = runChat(script, 600_000, out, { instantAfterPick: true });
     const waiting = full.awaiting?.step;
     const step = waiting ? script.steps[waiting] : undefined;
     if (!waiting || !step?.auto) break;
-    out[waiting] = { reply: step.auto, at: (full.at[waiting] ?? 0) + (step.autoMs ?? 2600) };
+    out[waiting] = { reply: step.auto, at: Math.max(full.at[waiting] ?? 0, decides(waiting)) };
   }
-  return out;
+  // Her scripted answers only count once their time has come (runChat applies a pick as soon as its step shows).
+  const due = Object.fromEntries(Object.entries(out).filter(([step, p]) => picks[step] || p.at <= elapsed));
+  return runChat(script, elapsed, due, { instantAfterPick: true });
 }
+const botDecides = (step: string) => (step === 'hi' ? INES_DECIDES.need : INES_DECIDES.add);
+const waDecides = () => INES_BACK;
+/** Inés's WhatsApp thread (any locale) at thread time `elapsed`. */
+export const inesWaRun = (script: ChatScript, elapsed: number, picks: Record<string, ChatPick>) => steeredRun(script, elapsed, picks, waDecides);
 
 /** Chat time of the "add" tap (null: not yet). */
 export function addTime(run: ChatRun): number | null {
@@ -327,9 +334,29 @@ export interface OrderView {
   coupon: boolean;
   via?: Via;
   changedAt: number;
+  /** The visitor moved it last. */
+  byYou?: boolean;
 }
 
-export type EventKind = 'order' | 'chat' | 'checkout' | 'abandon' | 'sent' | 'unsent' | 'read' | 'back' | 'recovered' | 'lost' | 'stock' | 'restock' | 'levelup' | 'faq' | 'mineAbandon' | 'mineSent' | 'mineOrder';
+export type EventKind =
+  | 'order'
+  | 'chat'
+  | 'checkout'
+  | 'abandon'
+  | 'sent'
+  | 'unsent'
+  | 'read'
+  | 'back'
+  | 'recovered'
+  | 'lost'
+  | 'stock'
+  | 'restock'
+  | 'levelup'
+  | 'faq'
+  | 'mineAbandon'
+  | 'mineSent'
+  | 'mineUnsent'
+  | 'mineOrder';
 export interface ShopEvent {
   id: string;
   at: number;
@@ -339,6 +366,8 @@ export interface ShopEvent {
   /** order events */
   orderKey?: string;
   clock: number;
+  /** The visitor did it (no story toast; their own feedback shows at once). */
+  mine?: boolean;
 }
 
 export interface BoardRow {
@@ -385,38 +414,45 @@ const MOVES: { at: number; id: number; stage: Stage }[] = [
   { at: STORY.move3, id: 1045, stage: 'roasting' },
 ];
 
+/** The stage after `stage` (null: delivered). */
+export const nextStage = (stage: Stage): Stage | null => STAGES[STAGES.indexOf(stage) + 1] ?? null;
+
 /**
  * The evening at story time `t`. `bot` / `wa` are the chat scripts (any locale: only
  * their structure matters here).
  */
-export function deriveShop(state: ShopState, t: number, instant: boolean, bot: ChatScript, wa: ChatScript): ShopView {
+export function deriveShop(state: ShopState, t: number, bot: ChatScript, wa: ChatScript): ShopView {
   /* Inés ---------------------------------------------------------------- */
-  const chat = runChat(bot, t - STORY.chatStart, steeredPicks(bot, state.bot), { instant });
+  const chat = steeredRun(bot, t - STORY.chatStart, state.bot, botDecides);
   const pick = botPick(chat.chosen);
   const addRel = addTime(chat);
   const addAt = addRel === null ? null : STORY.chatStart + addRel;
+  // When the visitor tapped "add" for her, her cart opens at once (nothing waits for the clock at rest).
+  const addByYou = PICK_STEPS.some((s) => state.bot[s]?.reply === 'add');
+  const cartAt = addAt === null ? null : addAt + (addByYou ? 0 : AFTER_ADD.cart);
   const leaveAt = addAt === null ? null : addAt + AFTER_ADD.leave;
-  const jumpAt = addAt === null ? null : addAt + AFTER_ADD.jump;
-  const pushAt = addAt === null ? null : addAt + AFTER_ADD.push;
+  const jumpAt = leaveAt === null ? null : Math.max(STORY.jump, leaveAt + 1000);
+  const pushAt = jumpAt === null ? null : jumpAt + AFTER_ADD.push;
   const sent = jumpAt !== null && t >= jumpAt ? isOn(state.off, jumpAt) : null;
-  const openAt = pushAt === null || !sent ? null : Math.max(pushAt, Math.min(addAt! + AFTER_ADD.open, state.waOpen ?? Infinity));
-  const waRun = sent && pushAt !== null && t >= pushAt ? runChat(wa, t - pushAt, steeredPicks(wa, state.wa), { instant }) : null;
+  const openAt = pushAt === null || !sent ? null : Math.max(pushAt, Math.min(pushAt + AFTER_ADD.open, state.waOpen ?? Infinity));
+  const waRun = sent && pushAt !== null && t >= pushAt ? inesWaRun(wa, t - pushAt, state.wa) : null;
   const backRel = waRun ? backTime(waRun) : null;
   const backAt = backRel === null || pushAt === null ? null : Math.max(pushAt + backRel, openAt ?? 0);
+  const backByYou = state.wa.msg?.reply === 'back' || state.wa.doubt?.reply === 'back';
   const paidAt = backAt === null ? null : backAt + AFTER_BACK.paid;
 
   let phase: InesPhase = 'catalog';
   if (t >= STORY.chatOpen) phase = 'chat';
-  if (addAt !== null && t >= addAt + AFTER_ADD.cart) phase = 'cart';
+  if (cartAt !== null && t >= cartAt) phase = 'cart';
   if (addAt !== null && t >= addAt + AFTER_ADD.checkout) phase = 'checkout';
   if (leaveAt !== null && t >= leaveAt) phase = 'locked';
   if (openAt !== null && t >= openAt) phase = 'whatsapp';
-  if (backAt !== null && t >= backAt + AFTER_BACK.checkout) phase = 'checkout2';
+  if (backAt !== null && t >= backAt + (backByYou ? 0 : AFTER_BACK.checkout)) phase = 'checkout2';
   if (backAt !== null && t >= backAt + AFTER_BACK.press) phase = 'paying';
   if (paidAt !== null && t >= paidAt) phase = 'paid';
 
   const lines = pick && addAt !== null && t >= addAt ? [INES_START, pick] : [INES_START];
-  const lostAt = leaveAt === null ? null : leaveAt + LOST_AFTER_LEAVE;
+  const lostAt = sent === false ? Math.max(STORY.lost, (jumpAt ?? 0) + 4000) : null;
   let status: CartStatus = 'browsing';
   let statusAt = -Infinity;
   const mark = (s: CartStatus, at: number | null) => {
@@ -450,9 +486,9 @@ export function deriveShop(state: ShopState, t: number, instant: boolean, bot: C
   if (leaveAt !== null) push({ id: 'abandon-ines', at: leaveAt, kind: 'abandon', customer: 'ines' });
   if (sent && jumpAt !== null) push({ id: 'sent-ines', at: jumpAt, kind: 'sent', customer: 'ines' });
   if (sent === false && jumpAt !== null) push({ id: 'unsent-ines', at: jumpAt, kind: 'unsent', customer: 'ines' });
-  if (sent && openAt !== null) push({ id: 'read-ines', at: openAt, kind: 'read', customer: 'ines' });
-  if (backAt !== null) push({ id: 'back-ines', at: backAt, kind: 'back', customer: 'ines' });
-  if (sent === false && lostAt !== null) push({ id: 'lost-ines', at: lostAt, kind: 'lost', customer: 'ines' });
+  if (sent && openAt !== null) push({ id: 'read-ines', at: openAt, kind: 'read', customer: 'ines', mine: state.waOpen !== null && openAt === state.waOpen });
+  if (backAt !== null) push({ id: 'back-ines', at: backAt, kind: 'back', customer: 'ines', mine: backByYou });
+  if (lostAt !== null) push({ id: 'lost-ines', at: lostAt, kind: 'lost', customer: 'ines' });
   push({ id: 'levelup-tomas', at: STORY.levelUp, kind: 'levelup', customer: 'tomas' });
   push({ id: 'faq', at: STORY.faq, kind: 'faq' });
 
@@ -466,23 +502,20 @@ export function deriveShop(state: ShopState, t: number, instant: boolean, bot: C
   }
   state.mine.orders.forEach((o, i) => {
     if (o.at > t) return;
-    placed.push({
-      key: `mine-${i}`,
-      customer: 'you',
-      lines: o.lines,
-      pay: o.pay,
-      stage: 'new',
-      at: o.at,
-      clock: o.at < 0 ? NOW_START - 1 : clock(o.at),
-      coupon: o.coupon,
-      via: 'you',
-      changedAt: o.at,
-    });
+    placed.push({ key: `mine-${i}`, customer: 'you', lines: o.lines, pay: o.pay, stage: 'new', at: o.at, clock: clock(o.at), coupon: o.coupon, via: 'you', changedAt: o.at });
   });
   placed.sort((a, b) => a.at - b.at);
   const newOrders: OrderView[] = placed.map((o, i) => ({ ...o, id: 1046 + i }));
   for (const o of newOrders) {
-    events.push({ id: `order-${o.key}`, at: o.at, kind: o.customer === 'you' ? 'mineOrder' : o.via === 'recovered' ? 'recovered' : 'order', customer: o.customer, orderKey: o.key, clock: o.clock });
+    events.push({
+      id: `order-${o.key}`,
+      at: o.at,
+      kind: o.customer === 'you' ? 'mineOrder' : o.via === 'recovered' ? 'recovered' : 'order',
+      customer: o.customer,
+      orderKey: o.key,
+      clock: o.clock,
+      mine: o.customer === 'you',
+    });
   }
   const base: OrderView[] = BASE_ORDERS.map((b) => {
     let stage = b.stage;
@@ -495,7 +528,12 @@ export function deriveShop(state: ShopState, t: number, instant: boolean, bot: C
     }
     return { key: `o${b.id}`, id: b.id, customer: b.customer, lines: b.lines, pay: b.pay, stage, at: -Infinity, clock: b.clock, coupon: false, changedAt };
   });
-  const orders = [...newOrders.slice().reverse(), ...base.slice().reverse()];
+  // The visitor's moves on the board win until the story moves that order again.
+  const withMoves = (o: OrderView): OrderView => {
+    const m = state.moved[o.key];
+    return m && m.at >= o.changedAt ? { ...o, stage: m.stage, changedAt: m.at, byYou: true } : o;
+  };
+  const orders = [...newOrders.slice().reverse(), ...base.slice().reverse()].map(withMoves);
 
   /* Stock + shelf ------------------------------------------------------ */
   const stock = Object.fromEntries(PRODUCTS.map((p) => [p.id, p.stock])) as Record<ProductId, number>;
@@ -508,12 +546,11 @@ export function deriveShop(state: ShopState, t: number, instant: boolean, bot: C
   }
   const low = PRODUCTS.find((p) => p.kind === 'coffee' && stock[p.id] <= LOW_STOCK);
   let lowStock: ProductId | null = low?.id ?? null;
-  const lowAt = STORY.orderCarla;
-  if (lowStock === 'sidamo' && t >= lowAt) push({ id: 'stock-sidamo', at: lowAt, kind: 'stock', product: 'sidamo' });
+  if (lowStock === 'sidamo' && t >= STORY.orderCarla) push({ id: 'stock-sidamo', at: STORY.orderCarla, kind: 'stock', product: 'sidamo' });
   const restockAt = state.restock !== null && state.restock <= t ? state.restock : null;
   if (restockAt !== null) {
     stock.sidamo += RESTOCK_BAGS;
-    events.push({ id: 'restock', at: restockAt, kind: 'restock', product: 'sidamo', clock: clock(restockAt) });
+    events.push({ id: 'restock', at: restockAt, kind: 'restock', product: 'sidamo', clock: clock(restockAt), mine: true });
     if (lowStock === 'sidamo') lowStock = null;
   }
 
@@ -527,8 +564,11 @@ export function deriveShop(state: ShopState, t: number, instant: boolean, bot: C
   if (paidAt !== null && t >= paidAt) week.paid += 1;
   if (mine.abandoned) {
     week.abandoned += 1;
-    events.push({ id: 'mine-abandon', at: mine.abandoned.at, kind: mine.abandoned.sent ? 'mineSent' : 'mineAbandon', customer: 'you', clock: clock(mine.abandoned.at) });
-    if (mine.abandoned.sent) week.sent += 1;
+    events.push({ id: 'mine-abandon', at: mine.abandoned.at, kind: 'mineAbandon', customer: 'you', clock: clock(mine.abandoned.at), mine: true });
+    if (mine.recovery) {
+      events.push({ id: 'mine-recovery', at: mine.recovery.at, kind: mine.recovery.sent ? 'mineSent' : 'mineUnsent', customer: 'you', clock: clock(mine.recovery.at) + JUMP_MINUTES, mine: true });
+      if (mine.recovery.sent) week.sent += 1;
+    }
     if (mine.waOpened) week.read += 1;
     if (mine.coupon) week.back += 1;
   }
@@ -595,5 +635,6 @@ export function mineCartStatus(m: Mine): CartStatus | null {
   if (!m.abandoned) return null;
   if (m.coupon) return 'back';
   if (m.waOpened) return 'read';
-  return m.abandoned.sent ? 'sent' : 'unsent';
+  if (!m.recovery) return 'abandoned';
+  return m.recovery.sent ? 'sent' : 'unsent';
 }

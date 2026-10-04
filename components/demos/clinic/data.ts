@@ -115,10 +115,14 @@ export const STEP = 30;
 export const NOW_START = 581;
 export const storyClock = (t: number) => NOW_START + Math.floor(Math.max(0, t) / 2500);
 
-/** Monday of the demo week (UTC); today is Thursday. */
+/** Monday of the demo week (UTC); today is Thursday. Days are indices from that Monday (negative = earlier). */
 export const WEEK_START = Date.UTC(2026, 9, 5);
 export const TODAY = 3;
 export const dayDate = (day: number) => new Date(WEEK_START + day * 86_400_000);
+/** The clinic opens Monday to Saturday. */
+export const isOpenDay = (weekday: number) => weekday < 6;
+/** Days the public site offers (today, Fri, Sat, Mon). */
+export const SITE_DAYS = [TODAY, 4, 5, 7];
 
 export type Status = 'done' | 'now' | 'confirmed' | 'reminded' | 'new' | 'freed' | 'waitlist' | 'voice' | 'you';
 
@@ -155,24 +159,35 @@ export const BASE_DAY: BaseAppt[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* The story (ms on a ~31 s loop)                                       */
+/* The story: four simulations the visitor plays (no autoplay)          */
 /* ------------------------------------------------------------------ */
-export const LOOP_MS = 31_000;
-
+/**
+ * Story times (ms). Nothing runs on its own: each beat is a segment the visitor plays from the
+ * SimBar ("Simular: …"); the clock stops at the beat's `at`, always on a calm frame (no toast,
+ * typing or "just now" halo left on screen).
+ */
 export const STORY = {
-  /** Camila books online (the patient phone's widget plays it). */
-  site: { pick: 900, day: 1800, time: 2700, confirm: 3500, booked: 4000, push: 4800, open: 7600, faq: 16_500 },
+  /** Beat "online": Camila books on the site (the patient phone plays her taps), WhatsApp confirms. */
+  site: { pick: 900, day: 1800, time: 2700, confirm: 3500, booked: 4000, push: 4800, open: 6400 },
   camila: { pro: 'sofia' as ProId, start: 630, treatment: 'facial' as TreatmentId },
-  /** Valentina confirms her reminder. */
-  valentina: { at: 6800, pro: 'tomas' as ProId, start: 690 },
-  /** Nicolás cancels → the waitlist refills it with Paula. */
-  nicolas: { cancel: 8000, offer: 9000, refill: 11_000, pro: 'tomas' as ProId, start: 720, refillTreatment: 'braces' as TreatmentId },
-  /** Martina's WhatsApp reminder conversation. */
-  chatStart: 5200,
+  /** Beat "reminder": Valentina confirms; Martina answers her reminder and moves to another day. */
+  valentina: { at: 10_000, pro: 'tomas' as ProId, start: 690 },
+  chatStart: 11_000,
   martina: { pro: 'lucia' as ProId, start: 690, treatment: 'cleaning' as TreatmentId },
-  /** Julián calls; the AI receptionist books him. */
-  callStart: 14_000,
+  /** Beat "freed": Nicolás cancels → the waitlist refills his slot with Paula. */
+  nicolas: { cancel: 24_500, offer: 25_500, refill: 27_500, pro: 'tomas' as ProId, start: 720, refillTreatment: 'braces' as TreatmentId },
+  /** Beat "call": Julián calls; the AI receptionist books him (into Martina's freed 11:30). */
+  callStart: 32_500,
 } as const;
+
+/** The SimBar's beats (labels: demoClinic.sim.<id>). `at` = where each segment ends. */
+export const BEATS = [
+  { id: 'online', at: 9_000 },
+  { id: 'reminder', at: 23_500 },
+  { id: 'freed', at: 31_500 },
+  { id: 'call', at: 48_500 },
+] as const;
+export const LOOP_MS = BEATS[BEATS.length - 1].at;
 
 /** Rescheduling options offered to Martina (day index + minutes). */
 export const MARTINA_OPTIONS = [

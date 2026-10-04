@@ -2917,6 +2917,155 @@
   position: relative;
 }
 
+/* ------------------------------------------------------------------ */
+/* v3: shell (notebook index + notebook tabs) and the visitor's controls */
+/* ------------------------------------------------------------------ */
+/* Desktop sidebar: a notebook's index — the current section gets a sky margin line, not a fill. */
+.demo-root:has(.atrio) .demo-side-item[aria-current='page']::before {
+  background: transparent;
+  box-shadow: inset 0.18em 0 0 var(--demo-accent);
+  border-radius: 0;
+}
+.demo-root:has(.atrio) .demo-side-item[aria-current='page'] {
+  color: var(--demo-ink);
+}
+.demo-root:has(.atrio) .demo-side-group {
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+}
+/* Phone: notebook tabs under the app bar (square tops, the current one sits on the page). */
+.demo-root:has(.atrio) .demo-toptabs {
+  gap: 0.25em;
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--demo-line-strong);
+}
+.demo-root:has(.atrio) .demo-toptabs-item {
+  border-radius: 0.55em 0.55em 0 0;
+  box-shadow: none;
+  font-weight: 600;
+}
+.demo-root:has(.atrio) .demo-toptabs-item[aria-current='page'] {
+  background: var(--demo-surface);
+  box-shadow:
+    inset 0 -0.16em 0 var(--demo-accent),
+    inset 0 0 0 1px var(--demo-line);
+  color: var(--demo-ink);
+}
+
+/* Students online (top bar): a static chalk dot, no pulse. */
+.atrio-toppill-dot {
+  width: 0.5em;
+  height: 0.5em;
+  flex: none;
+  border-radius: 999px;
+  background: var(--demo-accent);
+}
+
+/* Speaking: start button and the "practice again" note */
+.atrio-start {
+  align-self: flex-start;
+  margin-top: 0.7em;
+}
+.atrio-topic-note {
+  margin-top: 0.5em;
+  color: var(--demo-muted);
+  font-size: 0.62em;
+}
+.atrio-notebook-see {
+  align-self: flex-start;
+  margin-top: 0.55em;
+}
+
+/* Tutor: quick questions, answered at once */
+.atrio-asks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+  padding: 0.2em 0.6em 0.7em;
+}
+.atrio-ask {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+.atrio-ask-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+  padding-top: 0.4em;
+  border-top: 1px dashed var(--demo-line-strong);
+}
+.atrio-ask-k {
+  width: 100%;
+  color: var(--demo-muted);
+  font-family: var(--font-mono);
+  font-size: 0.56em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.atrio-ask-chips .atrio-prompt {
+  min-height: 2.6em;
+}
+div.atrio-chat-wait {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6em;
+}
+div.atrio-chat-wait .atrio-btn {
+  font-size: 0.9em;
+}
+
+/* Site: the test chat's local note; CTAs are buttons */
+.atrio-testchat-note {
+  padding: 0.2em 0.9em 0.7em;
+  color: var(--demo-muted);
+  font-size: 0.62em;
+}
+button.atrio-site-btn {
+  cursor: pointer;
+}
+
+/* Follow-up board: chalk columns */
+.atrio-followup .atrio-kanban {
+  margin-top: 0.6em;
+}
+.atrio-kanban .demo-kanban-col {
+  background: color-mix(in oklab, var(--demo-ink) 4%, transparent);
+}
+
+/* Phone touch targets (≥ 44px ≈ 3.7em of the content): our controls grow on the phone; the
+   app-bar switch, which can't, gets an invisible hit area. */
+.demo-root[data-screen='phone'] .atrio-btn {
+  min-height: 4.65em;
+}
+.demo-root[data-screen='phone'] .atrio-prompt {
+  min-height: 5em;
+}
+.demo-root[data-screen='phone'] .atrio-chat-wait .atrio-btn {
+  min-height: 5.7em;
+}
+.demo-root[data-screen='phone'] .atrio-site-btn {
+  min-height: 5.2em;
+}
+/* The kit's "Mover" button on the follow-up board (phone) */
+.demo-root[data-screen='phone'] .atrio-kanban .demo-kanban-move {
+  width: 3.7em;
+  height: 3.7em;
+  margin: -0.65em -0.55em -0.65em 0;
+}
+.demo-root[data-screen='phone'] .atrio-link {
+  min-height: 6.2em;
+}
+.atrio-mode button {
+  position: relative;
+}
+.demo-root[data-screen='phone'] .atrio-mode button::after {
+  content: '';
+  position: absolute;
+  inset: -2.1em 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .atrio-chalk[data-draw],
   .atrio-btn[data-pressing],

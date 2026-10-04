@@ -188,6 +188,28 @@ describe('calculatorDefaults', () => {
     expect(calculatorDefaults('clinicas', list)).toEqual({ lostPerWeek: 200, ticketUsd: 1, hoursPerWeek: 5 });
   });
 
+  it('every business in the selector, "Otro" included, runs the same formula on its own defaults', () => {
+    // v3: the business field (a native select) offers exactly these; free text is not accepted.
+    expect(verticals.map((v) => v.id)).toContain('otro');
+    const expected: Record<string, number> = {
+      clinicas: 10 * 30 * 4.3 + 8 * 4.3 * 5,
+      inmobiliarias: 15 * 40 * 4.3 + 10 * 4.3 * 5,
+      gimnasios: 3 * 30 * 4.3 + 6 * 4.3 * 5,
+      tiendas: 15 * 35 * 4.3 + 8 * 4.3 * 5,
+      restaurantes: 20 * 20 * 4.3 + 10 * 4.3 * 5,
+      academias: 3 * 50 * 4.3 + 10 * 4.3 * 5,
+      otro: 5 * 30 * 4.3 + 6 * 4.3 * 5,
+    };
+    for (const v of verticals) {
+      const values = calculatorDefaults(v.id);
+      const r = monthlyLoss(values);
+      const manual = values.lostPerWeek * values.ticketUsd * WEEKS_PER_MONTH + values.hoursPerWeek * WEEKS_PER_MONTH * DEFAULT_HOURLY_USD;
+      expect(r.totalUsd, v.id).toBeCloseTo(manual, 2);
+      expect(r.totalUsd, v.id).toBeCloseTo(expected[v.id], 2);
+      expect(perYear(r.totalUsd), v.id).toBeCloseTo(manual * 12, 1);
+    }
+  });
+
   it('clinic defaults → USD 1.462 per month, ≈ $ 2.120.000 in ARS', () => {
     const r = monthlyLoss(calculatorDefaults('clinicas'));
     expect(r.totalUsd).toBe(1462);

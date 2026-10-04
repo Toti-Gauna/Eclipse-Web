@@ -2,11 +2,12 @@
 
 import { useId, useMemo, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { ArrowUpRight, Check, ChevronDown, SlidersHorizontal } from 'lucide-react';
+import { ArrowUpRight, Check, ChevronDown, Gift, SlidersHorizontal } from 'lucide-react';
 import { formatAmount, formatMoney, maintenanceSuggestion, planSavings, quote, type Billing } from '@/lib/pricing';
 import { isApproximate } from '@/lib/currency';
 import { l, offerById, verticalById, type Plan } from '@/lib/content';
 import { buildPlanMessage, type Translate } from '@/lib/plan-message';
+import { withBonus } from '@/components/plan-builder/message';
 import { track } from '@/lib/analytics';
 import type { Locale } from '@/i18n/routing';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
@@ -15,6 +16,7 @@ import { useSound } from '@/components/sound/SoundContext';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { CountUp } from '@/components/motion/CountUp';
 import { PriceReadout } from './PriceReadout';
+import { BonusMock } from './BonusMock';
 import { planAnchor } from './anchors';
 
 /**
@@ -66,20 +68,26 @@ export function PlanRow({
     return offer ? [l(offer.label, locale)] : [];
   });
   const v = verticalById(vertical);
-  const message = buildPlanMessage(
-    {
-      source: 'card',
-      locale,
-      currency,
-      rates,
-      quote: q,
-      names: { [plan.id]: name },
-      maintenanceName: q.maintenance.plan ? l(q.maintenance.plan.name, locale) : null,
-      offers: offerLabels,
-      verticalName: v && v.id !== 'otro' ? l(v.name, locale) : null,
-      languageName: tl(locale),
-    },
-    translate,
+  // The package's gift piece (Voz / Automatiza → premium landing): shown and asked for, never priced.
+  const bonus = plan.bonus && !plan.items.includes(plan.bonus.itemId) ? plan.bonus : null;
+  const bonusTitle = bonus ? l(bonus.title, locale) : null;
+  const message = withBonus(
+    buildPlanMessage(
+      {
+        source: 'card',
+        locale,
+        currency,
+        rates,
+        quote: q,
+        names: { [plan.id]: name },
+        maintenanceName: q.maintenance.plan ? l(q.maintenance.plan.name, locale) : null,
+        offers: offerLabels,
+        verticalName: v && v.id !== 'otro' ? l(v.name, locale) : null,
+        languageName: tl(locale),
+      },
+      translate,
+    ),
+    bonusTitle ? tm('bonusLine', { name: bonusTitle }) : '',
   );
 
   // ---- range: "US$ 1.000 · hasta 1.500 según alcance" (local) / "Hasta US$ 1.500 según alcance" (USD)
@@ -120,11 +128,21 @@ export function PlanRow({
       className={`pr-plan ${featured ? 'ticks' : ''}`}
     >
       <div className="pr-plan-top">
-        {featured ? (
-          <p className="pr-plan-badge">
-            <span aria-hidden className="pr-plan-badge-dot" />
-            {t('featured')}
-          </p>
+        {featured || bonus ? (
+          <div className="pr-plan-badges">
+            {featured ? (
+              <p className="pr-plan-badge">
+                <span aria-hidden className="pr-plan-badge-dot" />
+                {t('featured')}
+              </p>
+            ) : null}
+            {bonus ? (
+              <p className="pr-plan-bonus-tag">
+                <Gift aria-hidden strokeWidth={1.5} />
+                {t('plan.bonusBadge')}
+              </p>
+            ) : null}
+          </div>
         ) : null}
         <h4 id={`${uid}-name`} className="pr-plan-name">
           <button type="button" aria-expanded={open} aria-controls={bodyId} onClick={toggle} className="pr-plan-toggle">
@@ -161,14 +179,33 @@ export function PlanRow({
           ) : null}
         </div>
 
-        <ul aria-label={t('plan.includes')} className="pr-plan-includes">
-          {l(plan.includes, locale).map((line) => (
-            <li key={line}>
-              <Check aria-hidden strokeWidth={1.75} />
-              <span>{line}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="pr-plan-what">
+          <ul aria-label={t('plan.includes')} className="pr-plan-includes">
+            {l(plan.includes, locale).map((line) => (
+              <li key={line}>
+                <Check aria-hidden strokeWidth={1.75} />
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+
+          {bonus && bonusTitle ? (
+            <div className="pr-bonus" data-bonus={bonus.itemId}>
+              <BonusMock />
+              <div className="pr-bonus-text">
+                <p className="pr-bonus-label">
+                  <Gift aria-hidden strokeWidth={1.5} />
+                  {t('plan.bonusLabel')}
+                </p>
+                <h5 id={`${uid}-bonus`} className="pr-bonus-title">
+                  {bonusTitle}
+                </h5>
+                <p className="pr-bonus-body">{l(bonus.text, locale)}</p>
+                <p className="pr-bonus-note">{t('plan.bonusNote')}</p>
+              </div>
+            </div>
+          ) : null}
+        </div>
 
         <div className="pr-plan-care">
           <p className="pr-plan-care-label">{t('plan.maintenanceLabel')}</p>

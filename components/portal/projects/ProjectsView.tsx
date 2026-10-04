@@ -1,6 +1,7 @@
 import { PEOPLE, PORTAL_COMPANY, PORTAL_PROJECTS, PORTAL_VIEWER } from '@/lib/portal/fixtures';
 import { portalPaths } from '@/lib/portal/routes';
-import { Breadcrumbs } from '../Breadcrumbs';
+import { InfoTip } from '../InfoTip';
+import { PageBar } from '../PageBar';
 import { usePortal } from '../usePortal';
 import { EmptyProjects } from './EmptyProjects';
 import { Overview } from './Overview';
@@ -11,12 +12,14 @@ import { ProjectsTable } from './ProjectsTable';
 
 /** /[locale]/portal/proyectos/ — "Mis proyectos" for the fictional demo client. */
 export function ProjectsView() {
-  const { t } = usePortal();
+  const p = usePortal();
+  const { t } = p;
   const firstName = PEOPLE[PORTAL_VIEWER].name.split(' ')[0];
 
   return (
     <div className="container-x pt-page">
-      <Breadcrumbs
+      <PageBar
+        tour="projects"
         items={[
           { label: t('nav.site'), href: '/' },
           { label: t('nav.portal'), href: portalPaths.login },
@@ -44,11 +47,17 @@ export function ProjectsView() {
           <>
             <Overview />
             <section className="pt-list" aria-labelledby="pt-list-title">
-              <div className="pt-list-head">
+              <div className="pt-list-head" data-tour="pt-list-head">
                 <h2 id="pt-list-title" className="pt-h2">
                   {t('projects.listTitle')}
                 </h2>
                 <span className="pt-count">{PORTAL_PROJECTS.length}</span>
+              </div>
+              <div className="pt-legend">
+                <p className="label pt-legend-label">{t('info.legend')}</p>
+                <InfoTip copy={p.info('stages', true)} />
+                <InfoTip copy={p.info('estimate', true)} />
+                <InfoTip copy={p.info('action', true)} />
               </div>
               <ProjectsTable />
               <ProjectCards />

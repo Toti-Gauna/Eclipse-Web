@@ -4,15 +4,16 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Plus } from 'lucide-react';
 import { verticals, l } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
-import { useSound } from '@/components/sound/SoundContext';
+import { useExperience } from '@/components/providers/ExperienceProvider';
+import { openerKey, preloadDemoExperience } from '@/components/demo-experience/store';
 import { useHeroState } from './HeroState';
-import { preloadHeroDemo } from './preload';
 
 /**
  * "Elegí tu rubro y miralo" (optional — the hero's actions don't depend on it): one
  * instrument key per rubro (01 Clínicas … 07 Otro). Hovering or focusing a key turns
- * the dial around the eclipse to its number; pressing it reveals the demo (or, for
- * "Otro", opens "Armá tu plan").
+ * the dial around the eclipse to its number; pressing it records the rubro and opens its
+ * demo in the "Ver demo" layer, born from the key (or, for "Otro", opens "Armá tu plan").
+ * The last chosen rubro stays lit (`data-chosen`, not a second solid amber button).
  *
  * Phones: two tidy rows that scroll sideways (snap, edge fade). From md up the
  * keys simply wrap in the copy column.
@@ -20,8 +21,8 @@ import { preloadHeroDemo } from './preload';
 export function VerticalChips() {
   const t = useTranslations('hero');
   const locale = useLocale() as Locale;
-  const { revealed, choose, aim } = useHeroState();
-  const { play } = useSound();
+  const { choose, aim } = useHeroState();
+  const { vertical } = useExperience();
 
   return (
     <div role="group" aria-labelledby="hero-pick-vertical">
@@ -36,16 +37,17 @@ export function VerticalChips() {
       <div className="hero-chips-scroller no-scrollbar">
         <ul className="hero-chips" onPointerLeave={() => aim(null, 'hover')}>
           {verticals.map((v, i) => {
-            const pressed = revealed === v.id;
             const other = v.id === 'otro';
-            const preload = v.demo ? () => preloadHeroDemo(v.demo!) : undefined;
+            const demo = v.demo;
+            const preload = demo ? () => preloadDemoExperience(demo, locale) : undefined;
             return (
               <li key={v.id} data-hero-enter>
                 <button
                   type="button"
                   data-hero-chip={v.id}
-                  aria-pressed={other ? undefined : pressed}
-                  aria-haspopup={other ? 'dialog' : undefined}
+                  data-demo-opener={demo ? openerKey('hero', demo) : undefined}
+                  data-chosen={vertical === v.id && !other ? '' : undefined}
+                  aria-haspopup="dialog"
                   onPointerEnter={(e) => {
                     preload?.();
                     if (e.pointerType === 'mouse') aim(v.id, 'hover');
@@ -56,10 +58,7 @@ export function VerticalChips() {
                     aim(v.id, 'focus');
                   }}
                   onBlur={() => aim(null, 'focus')}
-                  onClick={() => {
-                    play('select');
-                    choose(v.id);
-                  }}
+                  onClick={(e) => choose(v.id, e.currentTarget, e)}
                   className="hero-chip"
                 >
                   <span aria-hidden className="hero-chip-index">

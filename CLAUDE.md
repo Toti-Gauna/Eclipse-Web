@@ -86,6 +86,21 @@ reachable (folded is fine, deleted is not).
 - **Demos:** desktop preview on the left and mobile preview on the right as two independent, labeled,
   frameless views (no laptop/phone shells, no overlap). On phones: tabs with readable sizes. Load near the
   viewport with a static poster first; never more than one live experience at a time.
+- **"Ver demo" = one light layer** (`components/demo-experience/`): hero chips and the demos section open the
+  same warm/illuminated `<dialog>` from the click point (eclipse → light → circle reveal; reduced motion = fade).
+  It has its own scroll; the page never moves (`lockScroll`, keeps the scrollbar gutter); Volver / Escape /
+  browser Back restore the exact scroll and focus (`data-demo-opener`). First open offers "Ver con guía" /
+  "Ver por mi cuenta" (remembered locally); the guide never starts by itself. Under the views: the complete
+  project from `vertical.project` (package only when its approved audience names the vertical; otherwise the
+  pieces with their published prices and no invented total), maintenance, process, CTAs.
+- **Demos are manual:** nothing animates, plays sound or advances by itself. Stories run on beats played from
+  the SimBar ("Simular: …") and end still; every visible control works on local demo data. Each demo has its
+  own AppShell structure (`layout.nav/density/icons`, `phoneNav`) and 4–6 guide steps (`<demo>/tour.ts`,
+  `data-tour` marks in both views, copy in `demoTours`). See components/demos/README.md.
+- **Builder:** always enters from the right; its surface follows the section it was opened from
+  (`builder.theme`, `openBuilder(source, preset?, { theme?, from? })`).
+- **Package bonus:** `plan.bonus` (Voz, Automatiza: the premium landing) is shown only as "incluido": never in
+  `plan.items`, never with a price, strikethrough or saving.
 - **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in
   `/content` and `messages`. FAQ and conditions only reuse existing approved copy. A project starts after
   the seña. The builder summary is a proposal request, not a binding quote; the calculator is indicative.
@@ -101,6 +116,8 @@ reachable (folded is fine, deleted is not).
   (re-exported as `PORTAL_ROUTES`), `chromeRoute()` picks the header mode, `<LandingOnly>` drops sales blocks
   from the footer, and the `portal` namespace is server-only (`PORTAL_NAMESPACES`, left out of the client
   messages like `DEMO_NAMESPACES`): portal client components receive plain strings as props.
+  First-visit guides on the list and the detail (`lib/portal/tour.ts`), remembered only in localStorage
+  (`useTourSeen`); "Ayuda" restarts them; "Más información" popovers (`InfoTip`) explain stage concepts.
 
 ## Art direction v2 — "Efemérides" (read before touching any UI)
 
@@ -192,7 +209,9 @@ agents, gamification, e-commerce, dashboards, automations, apps.
   `<AnimatedMoney usd>` (rolls on change). Pricing logic: `lib/pricing.ts` (`quote`,
   `addonsForPlan`, `detectPlans`, `planSavings`, `maintenanceSuggestion`, `annualize`,
   `applyOffers`, `isOfferActive`, `formatMoney`). Never re-implement pricing in components.
-- Experience: `useExperience()` → `{ vertical, selectVertical, builder, openBuilder(source, preset?), closeBuilder }`.
+- Experience: `useExperience()` → `{ vertical, selectVertical, builder, openBuilder(source, preset?, opts?), closeBuilder }`.
+- Guides: `<Tour>` + `useTourSeen(key)` + `useTourCopy(label)` from `components/ui/tour` (spotlight, arrow, card;
+  works inside a `<dialog>` via `host`; Escape closes only the tour).
 - WhatsApp: `<WhatsAppLink message origin>` (real `<a>` + tracking), `<DemoCta origin>`,
   `lib/whatsapp.ts`. Analytics: `track(event, props)` from `lib/analytics.ts`.
 - Modal: `<Sheet open onClose variant="drawer|fullscreen|center" labelledBy>` (native dialog).

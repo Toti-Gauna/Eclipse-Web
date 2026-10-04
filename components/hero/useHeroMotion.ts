@@ -91,7 +91,6 @@ export function useHeroMotion(stageRef: RefObject<HTMLElement | null>, bus: RefO
           // Only pin what fits the screen (hero.css/Hero.tsx size the copy for it),
           // so the pinned stretch never hides the CTAs or slips under the header.
           const pin = conditions.pinnable && section.offsetHeight <= window.innerHeight + 2;
-          // The header's light zone (HeroReveal) adds the pin distance from CSS.
           section.toggleAttribute('data-pinned', pin);
           const b = bus.current;
           const q = <T extends Element>(root: Element, sel: string) => root.querySelector<T>(sel);

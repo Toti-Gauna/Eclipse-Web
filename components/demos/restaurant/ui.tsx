@@ -2,7 +2,9 @@
 
 import type { CSSProperties, ReactNode } from 'react';
 import {
+  ArrowRight,
   Bike,
+  Play,
   CalendarCheck,
   ChefHat,
   Globe,
@@ -19,8 +21,9 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { ToastStack, type Tone, type ToastItem } from '../kit';
-import { itemList, type Channel, type Source, type Stage } from './data';
-import type { LineId, RestaurantEvent, Ticket } from './story';
+import { BEATS, STAGES, itemList, type BeatId, type Channel, type Source, type Stage } from './data';
+import { act, isMine, type LineId, type RestaurantEvent, type Ticket } from './story';
+import { useSound } from '@/components/sound/SoundContext';
 import { useRestaurant } from './context';
 import { useRestaurantText } from './text';
 
@@ -69,50 +72,67 @@ export function MenuLine({ name, price, desc, tags, off = false, className = '',
   );
 }
 
-export const STAGE_TONE: Record<Stage, Tone> = { new: 'accent', cooking: 'warn', ready: 'accent2', out: 'info', done: 'neutral' };
+export const STAGE_TONE: Record<Stage, Tone> = { new: 'accent', cooking: 'warn', ready: 'accent2', out: 'info' };
 export const CHANNEL_ICON: Record<Channel, LucideIcon> = { salon: UtensilsCrossed, delivery: Bike, pickup: ShoppingBag };
 export const SOURCE_ICON: Record<Source, LucideIcon> = { qr: QrCode, web: Globe, ai: PhoneIncoming, waiter: HandPlatter };
 
-/** The ticket's stage as a small stamp. */
-export function StageStamp({ stage, className = '' }: { stage: Stage; className?: string }) {
+/** A stage's name; "out" depends on the channel (served · on the way · picked up). */
+export function useStageLabel() {
   const { t } = useRestaurantText();
+  return (stage: Stage, channel?: Channel) => (stage === 'out' && channel ? t(`stageOut.${channel}`) : t(`stage.${stage}`));
+}
+
+/** The ticket's stage as a small stamp. */
+export function StageStamp({ stage, channel, className = '' }: { stage: Stage; channel?: Channel; className?: string }) {
+  const label = useStageLabel();
   return (
     <span className={`rl-stage ${className}`} data-stage={stage}>
-      {t(`stage.${stage}`)}
+      {label(stage, channel)}
     </span>
   );
 }
 
-/**
- * A kitchen ticket printed on paper: number, channel, items, who / table, timer.
- * `variant="mini"` is the one-line strip used on the service view and the phone.
- */
-export function TicketCard({ ticket, variant = 'board', fresh = false, className = '' }: { ticket: Ticket; variant?: 'board' | 'mini'; fresh?: boolean; className?: string }) {
+/** Where a ticket goes: the table, the customer, or the channel. */
+export function useTicketWhere() {
   const x = useRestaurantText();
-  const { view } = useRestaurant();
+  return (ticket: Ticket) =>
+    ticket.channel === 'salon'
+      ? x.t('table.label', { n: ticket.table ?? '' })
+      : ticket.who
+        ? ticket.who === 'you'
+          ? x.t('people.you')
+          : x.person(ticket.who)
+        : x.t(`channel.${ticket.channel}`);
+}
+
+/**
+ * A kitchen ticket printed on paper: number, channel, items, note, who / table, timer.
+ * `variant="mini"` is the one-line strip used on the phone's service view. With `bump`
+ * a button moves it to the next stage (what the cook taps on a kitchen display).
+ */
+export function TicketCard({ ticket, variant = 'board', fresh = false, bump = false, className = '' }: { ticket: Ticket; variant?: 'board' | 'mini'; fresh?: boolean; bump?: boolean; className?: string }) {
+  const x = useRestaurantText();
+  const { view, store, active } = useRestaurant();
+  const { play } = useSound();
   const { t, fmt } = x;
+  const stageLabel = useStageLabel();
+  const whereOf = useTicketWhere();
   const Channel = CHANNEL_ICON[ticket.channel];
   const Src = SOURCE_ICON[ticket.source];
   const age = Math.max(0, view.clock - ticket.clock);
-  const where =
-    ticket.channel === 'salon'
-      ? t('table.label', { n: ticket.table ?? '' })
-      : ticket.who
-        ? ticket.who === 'you'
-          ? t('people.you')
-          : x.person(ticket.who)
-        : t(`channel.${ticket.channel}`);
+  const where = whereOf(ticket);
   const items = itemList(ticket.items);
   const label = t('kitchen.ticketLabel', {
     num: ticket.num,
     channel: t(`channel.${ticket.channel}`),
-    stage: t(`stage.${ticket.stage}`),
+    stage: stageLabel(ticket.stage, ticket.channel),
     items: x.spoken(ticket.items),
   });
+  const next = STAGES[STAGES.indexOf(ticket.stage) + 1] as Stage | undefined;
 
   if (variant === 'mini') {
     return (
-      <article className={`rl-ticket rl-ticket-mini ${fresh ? 'rl-fresh' : ''} ${className}`} data-stage={ticket.stage} aria-label={label}>
+      <article className={`rl-ticket rl-ticket-mini ${fresh ? 'rl-fresh' : ''} ${className}`} data-stage={ticket.stage} data-mine={ticket.mine ? '' : undefined} aria-label={label}>
         <p className="rl-ticket-num demo-mono">#{ticket.num}</p>
         <p className="rl-ticket-mini-items">{items.map(([d, n]) => `${n}× ${x.dishShort(d)}`).join(' · ')}</p>
         <Channel aria-hidden className="rl-ticket-mini-icon" strokeWidth={1.7} />
@@ -124,7 +144,7 @@ export function TicketCard({ ticket, variant = 'board', fresh = false, className
     <article className={`rl-ticket ${fresh ? 'rl-fresh' : ''} ${className}`} data-stage={ticket.stage} data-mine={ticket.mine ? '' : undefined} aria-label={label}>
       <header className="rl-ticket-head">
         <span className="rl-ticket-num demo-mono">#{ticket.num}</span>
-        <span className="rl-ticket-age demo-mono" data-late={age >= 15 ? '' : undefined}>
+        <span className="rl-ticket-age demo-mono" data-late={age >= 15 && ticket.stage !== 'out' ? '' : undefined}>
           {t('kitchen.age', { min: age })}
         </span>
       </header>
@@ -143,6 +163,7 @@ export function TicketCard({ ticket, variant = 'board', fresh = false, className
           </li>
         ))}
       </ul>
+      {ticket.note ? <p className="rl-ticket-note">«{ticket.note}»</p> : null}
       {ticket.gf || ticket.mine ? (
         <p className="rl-ticket-stamps">
           {ticket.gf ? (
@@ -162,7 +183,39 @@ export function TicketCard({ ticket, variant = 'board', fresh = false, className
         <span>{fmt.time(ticket.clock)}</span>
         {ticket.eta !== undefined ? <span>{t(ticket.channel === 'delivery' ? 'kitchen.arrives' : 'kitchen.pickupAt', { time: fmt.time(ticket.eta) })}</span> : null}
       </footer>
+      {bump && next ? (
+        <button
+          type="button"
+          className="rl-bump"
+          data-to={next}
+          onClick={() => {
+            store.update(act.move(ticket.id, next));
+            if (active) play(next === 'out' ? 'success' : 'select');
+          }}
+          aria-label={t('kitchen.bumpLabel', { num: ticket.num, stage: stageLabel(next, ticket.channel) })}
+        >
+          <span>{stageLabel(next, ticket.channel)}</span>
+          <ArrowRight aria-hidden strokeWidth={2} />
+        </button>
+      ) : null}
     </article>
+  );
+}
+
+/**
+ * A contextual "Simular: …" button for a beat that is still ahead (same as the SimBar).
+ */
+export function SimCue({ beat, className = '' }: { beat: BeatId; className?: string }) {
+  const ctx = useRestaurant();
+  const { t } = useRestaurantText();
+  const index = BEATS.findIndex((b) => b.id === beat);
+  // Hidden once reached, and while any beat plays (the SimBar shows that one).
+  if (index <= ctx.beat || ctx.playing) return null;
+  return (
+    <button type="button" className={`rl-simcue ${className}`} onClick={() => ctx.playBeat(beat)}>
+      <Play aria-hidden strokeWidth={2} />
+      <span className="min-w-0">{t('simCue', { label: t(`sim.${beat}`) })}</span>
+    </button>
   );
 }
 
@@ -233,6 +286,7 @@ export function useEventText() {
       table: e.table ?? '',
       people: e.people ?? 0,
       time: e.time !== undefined ? x.fmt.time(e.time) : '',
+      day: e.day !== undefined ? x.dayOf(e.day, 'short') : '',
       dish: e.dish ? x.dish(e.dish) : '',
       alt: e.alt ? x.dish(e.alt) : '',
       who: e.who ? x.first(e.who) : '',
@@ -249,7 +303,7 @@ export function RestaurantToasts({ placement }: { placement: 'top' | 'bottom-rig
   const { t } = useRestaurantText();
   if (reduced) return null;
   const items: ToastItem[] = view.events
-    .filter((e) => e.at >= 0 && isLoud(e) && view.t - e.at < 3200)
+    .filter((e) => e.at >= 0 && isLoud(e) && !isMine(e) && view.t - e.at < 3200)
     .slice(-2)
     .map((e) => ({
       id: e.id,
@@ -267,7 +321,7 @@ export function Announcer() {
   const { view, announce } = useRestaurant();
   const text = useEventText();
   if (!announce) return null;
-  const latest = [...view.events].reverse().find((e) => e.at >= 0 && isLoud(e) && view.t - e.at < 2600);
+  const latest = [...view.events].reverse().find((e) => e.at >= 0 && isLoud(e) && !isMine(e) && view.t - e.at < 2600);
   return (
     <p className="sr-only" aria-live="polite" aria-atomic="true">
       {latest ? text(latest) : ''}

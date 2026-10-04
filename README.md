@@ -11,6 +11,21 @@ nos escriba por WhatsApp.
 - **Portal de clientes (mockup v3):** `/[locale]/portal/` dentro de la misma web, solo frontend y con datos ficticios
   rotulados; no tiene backend, login real ni persistencia (ver [Portal de clientes](#portal-de-clientes-mockup)).
 
+## Qué cambió en la v3 · fase 2 (demos, armador, calculadora y portal)
+
+- **Una sola experiencia de «Ver demo»** (`components/demo-experience/`): clara y cálida, se abre desde el punto del
+  clic con el motivo del eclipse, tiene su propio scroll (la página de fondo no se mueve) y «Volver», Escape o Atrás
+  devuelven la posición exacta y el foco. Al entrar, «Ver con guía» o «Ver por mi cuenta». Debajo de las vistas, el
+  proyecto completo con su precio (`content/verticals.json` → `project`).
+- **Demos manuales:** nada se mueve ni suena solo; cada historia avanza con «Simular: …» y termina quieta. Agenda,
+  reservas, Kanban (arrastrar y soltar accesible), compras y pedidos funcionan con datos locales. Cada demo tiene su
+  propia estructura y una guía de 4–6 pasos.
+- **Guía reutilizable** (`components/ui/tour/`): foco iluminado, flecha y card; la usan las demos y el portal.
+- **Armador** siempre desde la derecha y con el tema de la sección desde la que se abre.
+- **Calculadora** con el rubro como campo editable y la pérdida por mes y por año como protagonistas.
+- **Voz y Automatiza** muestran la landing premium incluida como bonus (sin cambiar precios ni mostrar ahorro).
+- **Portal:** guía de primera visita (se recuerda solo en este navegador), «Más información» y jerarquía más clara.
+
 ## Qué cambió en la v3
 
 Objetivo: que una persona nueva entienda en ~30 s qué hace Eclipse y encuentre una demo de su rubro, el precio de
@@ -69,7 +84,7 @@ npm run typecheck            # tsc --noEmit
 npm run lint                 # ESLint
 npm run build                # export estático → out/
 npm run start                # sirve out/ en local
-npm run test:e2e             # 44 chequeos e2e con Playwright sobre el export (ver abajo)
+npm run test:e2e             # 54 chequeos e2e con Playwright sobre el export (ver abajo)
 ```
 
 ### Prueba e2e del export

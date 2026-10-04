@@ -3,7 +3,7 @@ import type { DemoId } from '@/lib/content';
 
 const load = () => import('@/components/demos/DemoShowcase');
 
-/** <DemoShowcase>, downloaded only when a live demo is about to show (stage or modal). */
+/** <DemoShowcase>, downloaded only when the stage's live demo is about to show. */
 export const LazyShowcase = lazy(() => load().then((m) => ({ default: m.DemoShowcase })));
 
 /** Warms the showcase + one demo's code (hover / focus with intent). Mounts nothing. */

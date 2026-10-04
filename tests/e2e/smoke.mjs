@@ -115,17 +115,25 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   check('nav link scrolls to #precios', Math.abs(top) < 200, `${Math.round(top)}px`);
   check('hash updated', page.url().endsWith('#precios'));
 
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.waitForTimeout(500);
-  await page.locator('#inicio button', { hasText: 'Clínicas' }).first().click();
-  await page.waitForTimeout(3500);
-  const region = page.locator('[role="region"]', { hasText: 'Clínica Aurora' }).first();
-  check('hero chip reveals the clinic demo', (await region.count()) > 0 && (await region.isVisible()));
-  const back = page.locator('button', { hasText: 'Ver otro rubro' }).first();
-  if (await back.count()) {
-    await back.click();
-    await page.waitForTimeout(1800);
-  }
+  // "Ver demo" opens one light layer from where the click happened: the page never scrolls,
+  // and closing restores the exact position and focus.
+  // A wheel is user input: it ends the anchor re-aim from the jump above (it never fights the visitor).
+  await page.mouse.wheel(0, -30000);
+  await page.waitForTimeout(800);
+  const chip = page.locator('#inicio [data-hero-chip="clinicas"]');
+  await chip.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  const yBefore = await page.evaluate(() => window.scrollY);
+  await chip.click();
+  await page.waitForSelector('dialog[data-demo-layer][open]');
+  check('hero chip opens the demo layer', await page.locator('dialog[data-demo-layer] h2', { hasText: 'Clínica Aurora' }).isVisible());
+  check('opening a demo does not scroll the page', (await page.evaluate(() => window.scrollY)) === yBefore);
+  await page.waitForTimeout(1200);
+  check('demo layer shows the complete project with its price', (await page.locator('[data-dx-project] [data-dx-price]').count()) > 0);
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('dialog[data-demo-layer]', { state: 'detached' });
+  check('layer closes, scroll kept', (await page.evaluate(() => window.scrollY)) === yBefore);
+  check('focus returns to the opener', await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener') === 'hero:clinic'));
   // Sound is opt-in; the preferences popover explains the currency.
   await page.getByRole('banner').getByRole('button', { name: /Idioma, moneda/ }).first().click();
   await page.waitForTimeout(600);
@@ -256,7 +264,16 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   check('demo login clears the password', (await page.getByLabel('Contraseña').inputValue()) === '');
   await page.getByRole('link', { name: /Ver portal de ejemplo/ }).first().click();
   await page.waitForURL(/\/es\/portal\/proyectos\/$/);
-  await page.waitForTimeout(800);
+  // First visit: the onboarding opens by itself; Escape closes it and it's remembered (localStorage only).
+  const guide = await page.waitForSelector('.tour', { timeout: 4000 }).then(() => true, () => false);
+  check('Mis proyectos: first visit opens the guide', guide);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(400);
+  check(
+    'portal guide closes and is remembered',
+    (await page.locator('.tour').count()) === 0 &&
+      (await page.evaluate(() => localStorage.getItem('eclipse:tour:portal-projects-v1'))) === '1',
+  );
   const row = page.locator('table[data-portal-projects-table] tr[data-portal-project="sitio-web"]');
   const rowText = await row.evaluate((el) => el.textContent?.replace(/\s+/g, ' ') ?? '');
   check('Mis proyectos: example site in 2 de 5 · Construcción', /2 de 5 · Construcción/.test(rowText));

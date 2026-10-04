@@ -61,6 +61,8 @@
   /* Keeps the demo's z-indices inside its view. */
   isolation: isolate;
   overflow: hidden;
+  /* Never scrollable, not even by focus() / scrollIntoView (hidden still allows that). */
+  overflow: clip;
   background: var(--demo-bg);
   color: var(--demo-ink);
   font-family: var(--demo-font-body);
@@ -409,7 +411,7 @@
   width: 100%;
   align-items: center;
   gap: 0.8em;
-  height: 2.55em;
+  height: var(--demo-item-h, 2.55em);
   padding: 0 0.75em;
   border-radius: var(--demo-radius-sm);
   color: var(--demo-side-muted, var(--demo-muted));
@@ -441,11 +443,13 @@
   opacity: 1;
 }
 .demo-side-item > svg,
+.demo-side-item > .demo-navicon,
 .demo-side-item > .demo-side-label,
 .demo-side-item > .demo-side-badge {
   position: relative;
 }
-.demo-side-item > svg {
+.demo-side-item > svg,
+.demo-side-item > .demo-navicon svg {
   flex: none;
   width: 1.3em;
   height: 1.3em;
@@ -524,13 +528,13 @@
   flex: none;
   align-items: center;
   gap: 0.7em;
-  min-height: 3.4em;
+  min-height: var(--demo-top-h, 3.4em);
   padding: 0.5em 1.2em 0.5em 0.75em;
   border-bottom: 1px solid var(--demo-line);
   background: var(--demo-top-bg, var(--demo-bg));
 }
 /* Keeps the bar continuous while the panel slides (sidebar FLIP). */
-.demo-top::after {
+.demo-root[data-nav='sidebar'] .demo-top::after {
   content: '';
   position: absolute;
   top: 0;
@@ -587,13 +591,372 @@
   gap: 0.7em;
 }
 .demo-content {
-  padding: 1.15em 1.2em 1.3em;
+  padding: var(--demo-pad-y, 1.15em) var(--demo-pad-x, 1.2em) 1.3em;
 }
 .demo-root[data-screen='phone'] .demo-content {
   padding: 0 1em 1em;
 }
 .demo-root .demo-content[data-padded='false'] {
   padding: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell variants (v3): layout.nav · density · icons · phoneNav · sim   */
+/* ------------------------------------------------------------------ */
+.demo-root[data-density='airy'] {
+  --demo-top-h: 4.1em;
+  --demo-pad-y: 1.5em;
+  --demo-pad-x: 1.7em;
+  --demo-item-h: 2.8em;
+}
+.demo-root[data-density='compact'] {
+  --demo-top-h: 2.9em;
+  --demo-pad-y: 0.85em;
+  --demo-pad-x: 0.95em;
+  --demo-item-h: 2.2em;
+}
+
+/* At rest (beats store, nothing playing) loops don't run: no fake "live" motion. */
+.demo-root[data-idle] .demo-loop,
+.demo-root[data-idle] .demo-loop *,
+.demo-root[data-idle] .demo-loop::before,
+.demo-root[data-idle] .demo-loop::after {
+  animation: none !important;
+}
+
+/* Simulation strip (kit/SimBar.tsx): above the laptop app, under the phone status bar */
+.demo-root[data-screen='laptop'][data-sim] {
+  --demo-sim-h: 2.7em;
+}
+.demo-root[data-screen='laptop'] > .demo-sim {
+  position: absolute;
+  inset: 0 0 auto 0;
+}
+.demo-root[data-sim] > .demo-side,
+.demo-root[data-sim] > .demo-main,
+.demo-root[data-screen='laptop'][data-sim] > .demo-overlay {
+  top: var(--demo-sim-h);
+}
+.demo-root[data-screen='phone'] {
+  --demo-sim-ph: 4.15em;
+}
+.demo-root[data-screen='phone'] > .demo-sim {
+  height: var(--demo-sim-ph);
+}
+.demo-root[data-screen='phone'] > .demo-overlay {
+  top: 2.35em;
+}
+.demo-root[data-screen='phone'][data-sim] > .demo-overlay {
+  top: calc(2.35em + var(--demo-sim-ph));
+}
+
+/* Nav icons: line (default) · chip · none */
+.demo-navicon {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+}
+.demo-navicon svg {
+  width: 1.3em;
+  height: 1.3em;
+}
+.demo-root[data-icons='chip'] .demo-navicon {
+  width: 2em;
+  height: 2em;
+  border-radius: calc(var(--demo-radius-sm) * 0.85);
+  background: var(--demo-sunken);
+  color: var(--demo-ink);
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+.demo-root[data-icons='chip'] .demo-navicon svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.demo-root[data-icons='chip'] [aria-current='page'] > .demo-navicon {
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.demo-root[data-icons='chip'] .demo-side-item {
+  padding-left: 0.45em;
+}
+.demo-root[data-icons='none'] .demo-side .demo-navicon,
+.demo-root[data-icons='none'] .demo-topnav .demo-navicon {
+  display: none;
+}
+.demo-navlabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.demo-navbadge-slot {
+  display: inline-flex;
+  align-items: center;
+}
+
+/*
+ * Icon rail (layout.nav 'rail', and the collapsed sidebar): only the icon column is
+ * interactive. Items are as narrow as the rail, so nothing hidden under the main panel takes
+ * clicks and the focus ring is fully visible. With 'rail' the panel itself is rail-wide.
+ */
+.demo-root[data-side='collapsed'] .demo-side-list {
+  width: calc(var(--demo-rail-w) - 1.3em);
+}
+.demo-root[data-nav='rail'] .demo-side {
+  width: var(--demo-rail-w);
+}
+/* The label stays in the accessibility tree (visually hidden): the icon alone has no name. */
+.demo-root[data-nav='rail'] .demo-side-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.demo-root[data-nav='rail'] .demo-side-badge,
+.demo-root[data-nav='rail'] .demo-side-foot,
+.demo-root[data-nav='rail'] .demo-side-name {
+  display: none;
+}
+.demo-root[data-nav='rail'] .demo-side-head {
+  margin-left: 0;
+  justify-content: center;
+}
+.demo-root[data-nav='rail'] .demo-side-group {
+  overflow: hidden;
+  height: 0.6em;
+  margin: 0.45em 0;
+}
+
+/*
+ * Phone touch targets (≥ 44px at the usual scale). Where the layout can't grow, an invisible
+ * hit area extends the control: bottom tabs reach into the bar's padding, app-bar icon buttons
+ * grow around themselves.
+ */
+.demo-root[data-screen='phone'] .demo-tab::after {
+  content: '';
+  position: absolute;
+  top: -0.6em;
+  right: 0;
+  bottom: -2.25em;
+  left: 0;
+}
+.demo-appbar .demo-side-toggle {
+  position: relative;
+}
+.demo-root[data-screen='phone'] .demo-appbar .demo-side-toggle::after,
+.demo-root[data-screen='phone'] .demo-drawer-panel > .demo-side-toggle::after {
+  content: '';
+  position: absolute;
+  inset: -0.6em;
+}
+.demo-root[data-screen='phone'] .demo-drawer-panel .demo-side-item {
+  height: 4.2em;
+}
+
+/* Laptop without a sidebar (top / dock) */
+.demo-root[data-side='none'] .demo-main {
+  left: 0;
+  box-shadow: none;
+}
+.demo-top-brand-full {
+  display: flex;
+  min-width: 0;
+  flex: none;
+  margin-left: 0.4em;
+  font-size: 0.94em;
+}
+
+/* Laptop · top: pills in the top bar */
+.demo-topnav {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  justify-content: center;
+  gap: 0.15em;
+  overflow-x: auto;
+  padding: 0.15em;
+}
+.demo-topnav-item {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.45em;
+  height: 2.5em;
+  padding: 0 0.85em 0 0.6em;
+  border-radius: 999px;
+  color: var(--demo-muted);
+  font-size: 0.8em;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.demo-topnav-item:hover {
+  background: var(--demo-sunken);
+  color: var(--demo-ink);
+}
+.demo-topnav-item[aria-current='page'] {
+  background: var(--demo-accent-soft);
+  color: var(--demo-accent-text);
+  font-weight: 650;
+}
+.demo-root[data-icons='chip'] .demo-topnav-item {
+  padding-left: 0.3em;
+}
+.demo-root[data-icons='chip'] .demo-topnav-item[aria-current='page'] {
+  background: var(--demo-surface);
+  box-shadow: 0 0 0 1px var(--demo-line), var(--demo-shadow);
+}
+.demo-topnav-item .demo-navicon svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+.demo-root[data-nav='top'] .demo-top-right,
+.demo-root[data-nav='dock'] .demo-top-right {
+  flex: none;
+}
+.demo-root[data-nav='dock'] .demo-top-title {
+  flex: 1;
+}
+.demo-subbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.5em var(--demo-pad-x, 1.2em);
+  border-bottom: 1px solid var(--demo-line);
+  font-size: 0.9em;
+}
+
+/* Dock: floating pill (laptop: icons + labels · phone: icons, the current one with its label) */
+.demo-dock {
+  position: absolute;
+  bottom: 1em;
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  max-width: calc(100% - 2em);
+  gap: 0.2em;
+  padding: 0.35em;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--demo-surface) 94%, transparent);
+  box-shadow:
+    0 0 0 1px var(--demo-line),
+    var(--demo-shadow-lg);
+  transform: translateX(-50%);
+}
+.demo-dock-item {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  height: 2.7em;
+  padding: 0 0.95em 0 0.75em;
+  border-radius: 999px;
+  color: var(--demo-muted);
+  font-size: 0.8em;
+  font-weight: 550;
+  white-space: nowrap;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+.demo-dock-item:hover {
+  color: var(--demo-ink);
+}
+.demo-dock-item[aria-current='page'] {
+  background: var(--demo-accent);
+  color: var(--demo-accent-ink);
+}
+.demo-dock-item .demo-navicon svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.demo-root[data-icons='chip'] .demo-dock-item .demo-navicon {
+  background: none;
+  color: inherit;
+}
+.demo-root[data-nav='dock'] .demo-content {
+  padding-bottom: 5em;
+}
+.demo-dock[data-phone] {
+  bottom: 1.45em;
+  max-width: calc(100% - 1.4em);
+  padding: 0.3em;
+}
+.demo-dock[data-phone] .demo-dock-item {
+  min-width: 4.75em;
+  height: 4.75em;
+  padding: 0 1em;
+  font-size: 0.78em;
+}
+.demo-dock[data-phone] .demo-dock-item .demo-navicon svg {
+  width: 1.55em;
+  height: 1.55em;
+}
+.demo-dock[data-phone] .demo-dock-item:not([aria-current='page']) .demo-navlabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.demo-dock[data-phone] .demo-livedot {
+  position: absolute;
+  top: 0.55em;
+  right: 0.6em;
+}
+.demo-root[data-phone-nav='dock'] .demo-content {
+  padding-bottom: 5.6em;
+}
+
+/* Phone · top: scrollable pills under the app bar */
+.demo-toptabs {
+  display: flex;
+  flex: none;
+  gap: 0.35em;
+  overflow-x: auto;
+  padding: 0 1em 0.6em;
+}
+.demo-toptabs-item {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.4em;
+  /* ≈ 44px at the usual phone scale */
+  height: 4.7em;
+  padding: 0 0.9em 0 0.7em;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  color: var(--demo-muted);
+  font-size: 0.78em;
+  font-weight: 550;
+  white-space: nowrap;
+}
+.demo-toptabs-item .demo-navicon svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+.demo-toptabs-item[aria-current='page'] {
+  background: var(--demo-ink);
+  box-shadow: none;
+  color: var(--demo-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-topnav-item,
+  .demo-dock-item,
+  .demo-root[data-icons='chip'] .demo-navicon {
+    transition: none;
+  }
 }
 
 /* Overlay layer (patient view, call screen…): revealed by a passing disc */

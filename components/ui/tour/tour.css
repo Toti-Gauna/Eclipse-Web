@@ -1,0 +1,316 @@
+/* Guided tour (<Tour>): veil (dim + blur with holes), rings, leader, card.
+   Geometry is written inline by the engine (transform / clip-path); motion is
+   transform + opacity only, var(--ease-expo); reduced motion → a short fade at most. */
+
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  container-type: size;
+  pointer-events: none;
+  font-family: var(--font-sans);
+}
+
+/* Everything but the lit targets: dimmed and softly blurred, still recognizable. */
+.tour-veil {
+  position: absolute;
+  inset: 0;
+  background: rgb(5 5 10 / 0.5);
+  -webkit-backdrop-filter: blur(3px) saturate(0.75);
+  backdrop-filter: blur(3px) saturate(0.75);
+  transition: opacity 0.35s var(--ease-soft);
+}
+@starting-style {
+  .tour-veil {
+    opacity: 0;
+  }
+}
+
+/* Swallows pointer input over the UI (holes too, unless allowTargetInteraction). */
+.tour-catch {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+
+.tour-rings,
+.tour-leader,
+.tour-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.tour-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.tour-ring > div {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 2px var(--corona),
+    0 0 0 5px rgb(5 5 10 / 0.38),
+    0 0 32px 4px rgb(245 185 66 / 0.32);
+  transition:
+    opacity 0.4s var(--ease-soft),
+    scale 0.5s var(--ease-expo);
+}
+@starting-style {
+  .tour-ring > div {
+    opacity: 0;
+    scale: 1.06;
+  }
+}
+
+/* Leader: a hairline from the arrow tip to the anchor, ending in a registration dot. */
+.tour-leader {
+  height: 1.5px;
+  margin-top: -0.75px;
+  transform-origin: 0 50%;
+  background: var(--flare);
+  box-shadow: 0 0 0 1px rgb(5 5 10 / 0.35);
+  opacity: 0;
+}
+.tour-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--corona);
+  box-shadow: 0 0 0 2px rgb(5 5 10 / 0.55);
+  opacity: 0;
+}
+.tour[data-phase='shown'][data-leader='on'] :is(.tour-leader, .tour-dot) {
+  opacity: 1;
+  transition: opacity 0.3s var(--ease-soft) 0.18s;
+}
+.tour[data-tracking][data-leader='on'] :is(.tour-leader, .tour-dot) {
+  transition: none;
+}
+
+/* ---- card ------------------------------------------------------------------------ */
+.tour-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: min(380px, calc(100% - 24px));
+  max-height: calc(100% - 24px);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem 1rem;
+  border-radius: 18px;
+  background: var(--dawn);
+  color: var(--ink);
+  box-shadow:
+    0 0 0 1px rgb(17 17 20 / 0.08),
+    0 28px 70px -22px rgb(0 0 0 / 0.7);
+  pointer-events: auto;
+  opacity: 0;
+  translate: 0 8px;
+  transition:
+    transform 0.45s var(--ease-expo),
+    translate 0.45s var(--ease-expo),
+    opacity 0.3s var(--ease-soft);
+}
+.tour[data-ready] .tour-card {
+  opacity: 1;
+  translate: none;
+}
+.tour[data-tracking] .tour-card {
+  transition-property: translate, opacity;
+}
+/* The card is a script focus target (tabindex=-1): no ring around the whole card (globals). */
+.tour-card[data-edge='none'] .tour-arrow {
+  display: none;
+}
+
+/* Arrow: a notch on the edge facing the anchor (--tour-arrow: offset along that edge). */
+.tour-arrow {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--dawn);
+  rotate: 45deg;
+  border-radius: 2px;
+}
+.tour-card[data-edge='top'] .tour-arrow {
+  top: -6px;
+  left: calc(var(--tour-arrow) - 7px);
+}
+.tour-card[data-edge='bottom'] .tour-arrow {
+  bottom: -6px;
+  left: calc(var(--tour-arrow) - 7px);
+}
+.tour-card[data-edge='left'] .tour-arrow {
+  left: -6px;
+  top: calc(var(--tour-arrow) - 7px);
+}
+.tour-card[data-edge='right'] .tour-arrow {
+  right: -6px;
+  top: calc(var(--tour-arrow) - 7px);
+}
+/* On very short screens the text scrolls inside the card (the notch must stay unclipped). */
+.tour-main {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 6px;
+}
+
+.tour-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.6rem;
+  min-height: 28px;
+  padding-right: 2.5rem;
+}
+.tour-glyph {
+  flex: none;
+  color: var(--corona-deep);
+}
+.tour-progress {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums slashed-zero;
+  color: var(--mist-ink);
+}
+.tour-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid rgb(17 17 20 / 0.18);
+  border-radius: 999px;
+  color: var(--ink);
+}
+.tour-title {
+  margin-top: 0.6rem;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.tour-body {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--mist-ink);
+  text-wrap: pretty;
+}
+
+/* Progress as a ruler: one tick per step, the current one lit. */
+.tour-scale {
+  flex: none;
+  display: flex;
+  gap: 4px;
+  margin-top: 1rem;
+}
+.tour-scale > span {
+  flex: 1 1 0;
+  height: 2px;
+  border-radius: 1px;
+  background: rgb(17 17 20 / 0.14);
+}
+.tour-scale > span[data-state='past'] {
+  background: rgb(17 17 20 / 0.55);
+}
+.tour-scale > span[data-state='now'] {
+  background: var(--corona-deep);
+}
+
+.tour-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.tour-btn {
+  padding: 0 1rem;
+}
+.tour-skip {
+  min-height: 44px;
+  margin-right: auto;
+  margin-left: -0.5rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: var(--mist-ink);
+  text-decoration: underline;
+  text-decoration-color: rgb(17 17 20 / 0.25);
+  text-underline-offset: 4px;
+}
+.tour-skip:hover {
+  color: var(--ink);
+  text-decoration-color: currentColor;
+}
+.tour-close {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  color: var(--mist-ink);
+  transition: background-color 0.2s ease;
+}
+.tour-close:hover {
+  background: rgb(17 17 20 / 0.06);
+  color: var(--ink);
+}
+
+.tour-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Phones: a sheet docked to the bottom (or top) of the screen. */
+@container (max-width: 639.98px) {
+  .tour-card {
+    width: calc(100% - 24px);
+    padding: 0.9rem 1rem calc(0.9rem + env(safe-area-inset-bottom, 0px));
+  }
+  .tour-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Exit: everything fades together. */
+.tour[data-state='closing'] > * {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.22s var(--ease-soft) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour,
+  .tour * {
+    transition: opacity 0.12s linear !important;
+  }
+  .tour-card {
+    translate: none;
+  }
+  .tour-ring > div {
+    scale: none;
+  }
+}

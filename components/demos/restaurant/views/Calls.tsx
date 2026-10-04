@@ -9,7 +9,7 @@ import { act, isOffNow, type CallPlan, type LineId } from '../story';
 import { useRestaurant } from '../context';
 import { useCallScripts } from '../scripts';
 import { useRestaurantText } from '../text';
-import { Lamp, LineLamps, ViewHead, lampState } from '../ui';
+import { Lamp, LineLamps, SimCue, ViewHead, lampState } from '../ui';
 
 /** What the call produced (inside the full card, under the transcript). */
 export function CallOutcome({ call }: { call: CallPlan }) {
@@ -39,14 +39,6 @@ export function CallOutcome({ call }: { call: CallPlan }) {
       <p className="rl-outcome">
         <Info aria-hidden strokeWidth={1.8} />
         <b>{t('calls.outcome.waitlist')}</b>
-      </p>
-    );
-  }
-  if (call.kind === 'info') {
-    return (
-      <p className="rl-outcome">
-        <Info aria-hidden strokeWidth={1.8} />
-        <b>{t('calls.outcome.info')}</b>
       </p>
     );
   }
@@ -131,7 +123,7 @@ export function LineCard({
           label={t('calls.label', { n: line })}
           announce={announce}
           outcome={<CallOutcome call={call} />}
-          sent={call.missed || call.kind === 'info' || (call.kind === 'booking' && !call.table) ? false : t(`calls.sent.${call.kind}`)}
+          sent={call.missed || (call.kind === 'booking' && !call.table) ? false : t(`calls.sent.${call.kind}`)}
           variant={variant}
           onOpen={onOpen}
           openLabel={t('calls.open')}
@@ -174,7 +166,6 @@ export function LineRow({ line }: { line: LineId }) {
   if (call && (phase === 'ended' || phase === 'missed')) {
     if (call.missed) done = t('calls.outcome.missed');
     else if (call.kind === 'booking') done = call.table ? t('calls.outcome.booking', { table: call.table, time: fmt.time(AI_BOOKING.time), people: AI_BOOKING.people }) : t('calls.outcome.waitlist');
-    else if (call.kind === 'info') done = t('calls.outcome.info');
     else if (call.items && Object.keys(call.items).length) done = t(call.kind === 'order' ? 'calls.outcome.delivery' : 'calls.outcome.pickup', { num: call.ticket ?? '', time: call.eta !== undefined ? fmt.time(call.eta) : '' });
     else done = t('calls.outcome.none');
   }
@@ -229,10 +220,21 @@ function AiSwitch({ compact = false }: { compact?: boolean }) {
         describedBy={`${id}-d`}
         onChange={() => {
           store.update(act.toggleAi());
-          store.engage(18_000);
           if (active) play('toggle');
         }}
       />
+    </div>
+  );
+}
+
+/** The call beats still ahead, as buttons ("Simular: llamada para pedir", "… 3 llamadas a la vez"). */
+function CallCues() {
+  const { beat } = useRestaurant();
+  if (beat >= 1) return null;
+  return (
+    <div className="flex flex-wrap gap-[0.45em]">
+      {beat < 0 ? <SimCue beat="order" /> : null}
+      <SimCue beat="rush" />
     </div>
   );
 }
@@ -290,7 +292,10 @@ export function PhoneCalls() {
           {t('phone.liveNow', { count: s.live })}
         </span>
       </div>
-      <LineCard key={focusLine} line={focusLine} announce={announce} />
+      <div data-tour="voice">
+        <LineCard key={focusLine} line={focusLine} announce={announce} />
+      </div>
+      <CallCues />
       <AiSwitch />
       <div className="grid grid-cols-2 gap-[0.55em]">
         <Kpi label={t('phone.kpis.calls')} value={s.calls} />
@@ -323,7 +328,8 @@ export function LaptopCalls() {
         <Kpi label={t('phone.kpis.peak')} value={s.peak} suffix={t('phone.kpis.peakSuffix')} hint={t('phone.kpis.peakHint')} />
         <Kpi label={t('phone.kpis.missed')} value={s.missed} hint={s.missed ? t('phone.kpis.missedHintOff') : t('phone.kpis.missedHint')} />
       </div>
-      <div className="rl-switchboard">
+      <CallCues />
+      <div className="rl-switchboard" data-tour="voice">
         {([1, 2, 3] as LineId[]).map((line) => (
           <LineCard key={line} line={line} announce={announce && line === 1} maxLines={4} />
         ))}

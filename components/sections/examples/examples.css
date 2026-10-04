@@ -588,83 +588,6 @@
   color: var(--fg-muted);
 }
 
-/* ---- Fullscreen demo modal ----------------------------------------- */
-.ex-modal {
-  background:
-    radial-gradient(70% 55% at 50% 60%, rgb(245 185 66 / 0.08), transparent 72%),
-    var(--night);
-  color: var(--fg);
-}
-.ex-modal-inner {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-.ex-modal-bar {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 12px var(--gutter);
-  border-bottom: 1px solid var(--line);
-  background: rgb(12 12 20 / 0.82);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-}
-.ex-modal-close {
-  order: 3;
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
-  color: var(--fg);
-  transition:
-    border-color 0.25s ease,
-    background-color 0.25s ease;
-}
-.ex-modal-close:hover {
-  border-color: var(--accent);
-  background: var(--surface);
-}
-.ex-modal-stage {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  padding: 20px var(--gutter) 24px;
-}
-/*
- * Sized so the views fit the screen under the bar (see components/demos/showcase.css):
- * phones/tablets use the tabs (Celular height budget: --sc-phone-w), desktop the split
- * (width from the height left: panes = (width − 20px) × 0.4851, + 28px of labels).
- */
-.ex-modal-showcase {
-  width: 100%;
-  --sc-phone-w: min(360px, calc((100dvh - 225px) * 9 / 19.5));
-}
-@media (min-width: 768px) {
-  .ex-modal-showcase {
-    --sc-phone-w: min(380px, calc((100dvh - 150px) * 9 / 19.5));
-  }
-}
-@media (min-width: 1024px) {
-  .ex-modal-showcase {
-    width: min(100%, 1480px, calc((100dvh - 170px) * 2.0615 + 20px));
-  }
-}
-.ex-modal-cta {
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-  padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom));
-  background: linear-gradient(0deg, var(--night) 55%, rgb(12 12 20 / 0));
-}
-
 @media (prefers-reduced-motion: reduce) {
   .ex-tab,
   .ex-tab::before,
@@ -672,8 +595,7 @@
   .ex-tab-name,
   .ex-view-option,
   .ex-more-card,
-  .ex-more-link svg,
-  .ex-modal-close {
+  .ex-more-link svg {
     transition: none;
   }
 }

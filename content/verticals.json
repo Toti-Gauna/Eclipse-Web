@@ -1,5 +1,5 @@
 {
-  "$comment": "Rubros del hero, la calculadora y la sección Ejemplos. Los negocios son ficticios y siempre se rotulan como Demo. 'calculator' son los valores por defecto (ticket en USD). 'otro' no tiene demo: abre 'Armá tu plan'.",
+  "$comment": "Rubros del hero, la calculadora y la sección Ejemplos. Los negocios son ficticios y siempre se rotulan como Demo. 'calculator' son los valores por defecto (ticket en USD). 'otro' no tiene demo: abre 'Armá tu plan'. 'project' (v3): piezas que muestra la demo y, solo si el 'audience' aprobado de un paquete nombra el rubro, ese paquete (si no, null; a validar por Ignacio).",
   "verticals": [
     {
       "id": "clinicas",
@@ -46,7 +46,8 @@
           "en": "Average appointment value",
           "pt": "Valor médio de um atendimento"
         }
-      }
+      },
+      "project": { "plan": "sistema", "items": ["landing", "turnos", "voz", "automatizacion", "dashboard"] }
     },
     {
       "id": "inmobiliarias",
@@ -89,7 +90,8 @@
           "en": "Average value of an inquiry",
           "pt": "Valor médio de um contato"
         }
-      }
+      },
+      "project": { "plan": null, "items": ["web-multi", "chatbot", "crm", "automatizacion"] }
     },
     {
       "id": "gimnasios",
@@ -128,7 +130,8 @@
           "en": "Average monthly fee",
           "pt": "Mensalidade média"
         }
-      }
+      },
+      "project": { "plan": "sistema", "items": ["turnos", "gamificacion", "automatizacion", "dashboard"] }
     },
     {
       "id": "tiendas",
@@ -175,7 +178,8 @@
           "en": "Average order value",
           "pt": "Ticket médio de uma compra"
         }
-      }
+      },
+      "project": { "plan": "comercio", "items": ["ecommerce", "chatbot", "automatizacion", "dashboard"] }
     },
     {
       "id": "restaurantes",
@@ -222,7 +226,8 @@
           "en": "Average order value",
           "pt": "Ticket médio por pedido"
         }
-      }
+      },
+      "project": { "plan": null, "items": ["pedidos", "voz", "turnos", "dashboard"] }
     },
     {
       "id": "academias",
@@ -269,7 +274,8 @@
           "en": "Average monthly fee",
           "pt": "Mensalidade média"
         }
-      }
+      },
+      "project": { "plan": null, "items": ["landing", "chatbot", "voz", "gamificacion", "automatizacion", "dashboard"] }
     },
     {
       "id": "otro",

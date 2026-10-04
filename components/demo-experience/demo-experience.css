@@ -1,0 +1,659 @@
+/*
+ * The "Ver demo" layer (DemoExperienceHost / DemoLayerBody / ProjectBlock).
+ * A native <dialog> filling the viewport, lit and warm (theme-light on dawn with the corona's
+ * glow, born where the click happened: --dx-x / --dx-y). One scroll container inside.
+ * Motion is WAAPI (motion.ts): transform / opacity / clip-path only.
+ */
+.dx-layer {
+  --dx-bar-h: 64px;
+  position: fixed;
+  inset: 0;
+  /* 100vw: also covers the page's scrollbar gutter (kept while locked, see lib/scroll-lock.ts). */
+  width: 100vw;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .dx-layer {
+    --dx-bar-h: 76px;
+  }
+}
+.dx-layer::backdrop {
+  background: transparent;
+}
+.dx-layer[data-phase='closing'] {
+  pointer-events: none;
+}
+
+.dx-panel {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  background-color: var(--dawn);
+}
+.dx-light {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle 110vmax at var(--dx-x, 50%) var(--dx-y, 0%),
+      #fffdf8 0%,
+      #fff6e2 8%,
+      rgb(255 232 176 / 0.85) 20%,
+      rgb(247 236 214 / 0.95) 40%,
+      var(--dawn) 68%
+    ),
+    var(--dawn);
+}
+
+/* The one scroll container: the page behind is locked; no chaining at the edges. */
+.dx-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+/* Scrollers inside the demo views (chats, lists) keep the default and hand their overscroll
+   to the layer's scroller, which stops it there (contain) — a finger on the phone view still
+   reaches the project below, and nothing ever reaches the page (measured: qa.mjs). */
+
+/* ---- Header (sticky, compact) ------------------------------------- */
+.dx-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-bottom: 1px solid var(--line);
+  background: var(--dawn);
+}
+.dx-bar-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--dx-bar-h);
+  padding: 8px var(--gutter);
+}
+.dx-bar-cta {
+  display: none;
+}
+@media (min-width: 768px) {
+  .dx-bar-inner {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    gap: 16px;
+  }
+  .dx-bar-cta {
+    display: block;
+  }
+}
+.dx-title {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 10px;
+  min-width: 0;
+}
+.dx-heading {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dx-heading:focus {
+  outline: none;
+}
+.dx-heading-suffix {
+  color: var(--fg-muted);
+}
+.dx-hint {
+  display: none;
+  grid-column: 1 / -1;
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--fg-muted);
+}
+@media (min-width: 768px) {
+  .dx-heading {
+    font-size: 1.75rem;
+  }
+  .dx-hint {
+    display: block;
+  }
+}
+@media (max-width: 559.98px) {
+  .dx-heading-suffix {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+.dx-guide-short {
+  display: none;
+}
+/* Phones: back and help become 44px round icon buttons (their names stay for AT). */
+@media (max-width: 479.98px) {
+  .dx-back,
+  .dx-guide {
+    width: 44px;
+    padding: 0;
+  }
+  .dx-back span,
+  .dx-guide span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+@media (min-width: 480px) and (max-width: 1023.98px) {
+  .dx-guide-long {
+    display: none;
+  }
+  .dx-guide-short {
+    display: inline;
+  }
+}
+.dx-guide:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Views -------------------------------------------------------- */
+.dx-stage {
+  padding: 16px var(--gutter) 24px;
+}
+/*
+ * Phones / tablets: the showcase's tabs; the phone view is sized so the whole showcase
+ * (tab row included = --sc-phone-w × 19.5 / 9) fits under the header.
+ * Desktop: both views side by side, as wide as the height left allows
+ * (height = (width − 20px) × 0.4851 + 28px, components/demos/showcase.css).
+ */
+.dx-views {
+  --sc-phone-w: min(360px, max(220px, calc((100dvh - var(--dx-bar-h) - 44px) * 9 / 19.5)));
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
+}
+@media (min-width: 768px) {
+  .dx-views {
+    --sc-phone-w: min(380px, max(240px, calc((100dvh - var(--dx-bar-h) - 52px) * 9 / 19.5)));
+  }
+}
+@media (min-width: 1024px) {
+  .dx-views {
+    width: min(100%, 1480px, max(880px, calc((100dvh - var(--dx-bar-h) - 48px - 28px) / 0.4851 + 20px)));
+  }
+}
+.dx-skeleton {
+  height: calc(100dvh - var(--dx-bar-h) - 44px);
+  max-height: 780px;
+  border-radius: 14px;
+  background: rgb(17 17 20 / 0.06);
+}
+
+/* ---- "¿Cómo querés verla?" over both views ------------------------ */
+.dx-choice {
+  position: absolute;
+  inset: -6px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgb(17 17 20 / 0.24);
+  -webkit-backdrop-filter: blur(5px) saturate(0.92);
+  backdrop-filter: blur(5px) saturate(0.92);
+}
+.dx-choice-card {
+  width: min(560px, 100%);
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--dawn);
+  box-shadow: 0 30px 80px -30px rgb(17 17 20 / 0.5);
+}
+.dx-choice-title {
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+.dx-choice-options {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+@media (min-width: 560px) {
+  .dx-choice-card {
+    padding: 28px;
+  }
+  .dx-choice-title {
+    font-size: 2rem;
+  }
+  .dx-choice-options {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.dx-choice-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: start;
+  gap: 2px 10px;
+  min-height: 44px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.7);
+  text-align: left;
+  color: var(--fg);
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+.dx-choice-option:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: #fff;
+}
+.dx-choice-option:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.dx-choice-icon {
+  grid-row: span 2;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  color: var(--accent);
+}
+.dx-choice-name {
+  font-weight: 600;
+  line-height: 1.35;
+}
+.dx-choice-text {
+  grid-column: 2;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+.dx-choice-soon {
+  margin-top: 12px;
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+}
+
+/* Phones: "Quiero esto" right under the views (the header has no room for it). */
+.dx-after {
+  margin: 16px auto 0;
+  max-width: 420px;
+}
+@media (min-width: 768px) {
+  .dx-after {
+    display: none;
+  }
+}
+
+/* ---- The complete project ----------------------------------------- */
+.dx-project {
+  max-width: 1240px;
+  margin: 24px auto 0;
+  padding: 40px var(--gutter) 64px;
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 1280px) {
+  .dx-project {
+    padding-inline: 0;
+  }
+}
+.dx-project-title {
+  max-width: 18ch;
+  margin-top: 12px;
+  font-size: clamp(2rem, 6vw, 3.75rem);
+  line-height: 1.02;
+}
+.dx-project-lead {
+  max-width: 62ch;
+  margin-top: 14px;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+.dx-project-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 28px;
+}
+@media (min-width: 900px) {
+  .dx-project-grid {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 24px;
+  }
+}
+.dx-pack,
+.dx-care {
+  padding: 22px;
+  border: 1px solid var(--line);
+  background-color: rgb(255 255 255 / 0.5);
+}
+.dx-care {
+  border-radius: 20px;
+}
+@media (min-width: 640px) {
+  .dx-pack,
+  .dx-care {
+    padding: 28px;
+  }
+}
+.dx-pack-name,
+.dx-care-name {
+  margin-top: 6px;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+.dx-pack-audience {
+  margin-top: 8px;
+  color: var(--fg-muted);
+}
+.dx-pack-price {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.dx-pack-from {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(2.2rem, 7vw, 3rem);
+  line-height: 1;
+}
+.dx-pack-range {
+  margin-top: 6px;
+  font-size: 0.9375rem;
+  color: var(--fg-muted);
+}
+.dx-sub {
+  margin-top: 22px;
+}
+.dx-includes {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+.dx-includes li {
+  display: flex;
+  gap: 0.55rem;
+}
+.dx-includes svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  color: var(--accent);
+}
+.dx-bonus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
+  margin-top: 18px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line-strong);
+  font-size: 0.9375rem;
+}
+.dx-bonus-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.dx-pieces {
+  display: grid;
+  gap: 4px;
+  margin-top: 10px;
+}
+.dx-piece {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 6px 0;
+}
+.dx-piece-name {
+  min-width: 0;
+}
+.dx-piece-price {
+  flex: none;
+  font-size: 1.05rem;
+}
+.dx-note {
+  margin-top: 10px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.dx-note strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.dx-covered {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 0.875rem;
+  color: var(--fg-muted);
+}
+.dx-care-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 12px 0 6px;
+}
+.dx-care-readout {
+  font-size: 2rem;
+  line-height: 1;
+}
+.dx-care-period {
+  color: var(--fg-muted);
+}
+
+.dx-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+@media (min-width: 560px) {
+  .dx-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+/* "Cómo trabajamos": the process section's five steps, compact. */
+.dx-process {
+  margin-top: 48px;
+}
+.dx-process-groups {
+  display: grid;
+  gap: 18px;
+  margin-top: 12px;
+}
+@media (min-width: 1024px) {
+  .dx-process-groups {
+    grid-template-columns: 2fr 3fr;
+    gap: 24px;
+  }
+}
+.dx-process-phase {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.dx-process-group[data-phase='project'] .dx-process-phase {
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+}
+.dx-process-steps {
+  display: grid;
+}
+.dx-process-step {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.dx-process-index,
+.dx-process-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-muted);
+}
+.dx-process-glyph {
+  color: var(--accent);
+}
+.dx-process-title {
+  font-size: 0.9375rem;
+  line-height: 1.3;
+}
+.dx-process-meta {
+  text-align: right;
+}
+@media (min-width: 1024px) {
+  .dx-process-steps {
+    grid-template-columns: repeat(var(--dx-span, 1), minmax(0, 1fr));
+    gap: 16px;
+  }
+  .dx-process-step {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-content: start;
+    row-gap: 6px;
+    border-bottom: 0;
+  }
+  .dx-process-title,
+  .dx-process-meta {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}
+
+/* ---- Opening eclipse + light (positioned and played by motion.ts) - */
+.dx-ecl {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 64px;
+  height: 64px;
+  pointer-events: none;
+  opacity: 0;
+}
+.dx-ecl > span {
+  position: absolute;
+  border-radius: 50%;
+}
+.dx-ecl-corona {
+  inset: -45%;
+  background: radial-gradient(
+    closest-side,
+    rgb(255 248 230 / 0.95) 34%,
+    rgb(255 232 176 / 0.7) 42%,
+    rgb(245 185 66 / 0.32) 58%,
+    rgb(245 185 66 / 0.1) 78%,
+    transparent 100%
+  );
+}
+.dx-ecl-sun {
+  inset: 29%;
+  background: radial-gradient(circle, #fffaf0 0%, var(--flare) 55%, var(--corona) 100%);
+}
+.dx-ecl-moon {
+  inset: 28.4%;
+  background: radial-gradient(circle at 38% 34%, #0d0d16 0%, #050509 60%, #020204 100%);
+  box-shadow: inset 0 0 6px rgb(0 0 0 / 0.9);
+}
+/* The diamond ring: at the limb the moon uncovers (up-right; MOON slides down-left). */
+.dx-ecl-diamond,
+.dx-ecl-flare {
+  left: 64.85%;
+  top: 35.15%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+}
+.dx-ecl-diamond {
+  width: 28px;
+  height: 28px;
+  background: radial-gradient(
+    closest-side,
+    #fff 0%,
+    #fff 12%,
+    rgb(255 232 176 / 0.9) 34%,
+    rgb(245 185 66 / 0.4) 62%,
+    transparent 100%
+  );
+}
+.dx-ecl-flare {
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(245 185 66 / 0.35) 22%,
+    rgb(255 232 176 / 0.85) 42%,
+    #fff 50%,
+    rgb(255 232 176 / 0.85) 58%,
+    rgb(245 185 66 / 0.35) 78%,
+    transparent 100%
+  );
+}
+.dx-glow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  width: 640px;
+  height: 640px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    closest-side,
+    rgb(255 253 248 / 0.9) 0%,
+    rgb(255 244 215 / 0.7) 35%,
+    rgb(255 226 160 / 0.32) 62%,
+    rgb(245 185 66 / 0.1) 82%,
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dx-choice-option {
+    transition: none;
+  }
+}

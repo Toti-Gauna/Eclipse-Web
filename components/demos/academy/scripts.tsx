@@ -10,11 +10,14 @@ import { useAcademy } from './context';
 import { Marked, useAcademyText } from './ui';
 
 /** The recommended course in the site chat (reads the level the test produced). */
-function CourseCard() {
+type Who = 'julieta' | 'you';
+const levelOf = (view: ReturnType<typeof useAcademy>['view'], who: Who) => (who === 'you' ? view.mineLevel : view.leadLevel) ?? 'A2';
+
+function CourseCard({ who }: { who: Who }) {
   const { view, ticketUsd } = useAcademy();
   const { t, course } = useAcademyText();
   const { format } = useCurrency();
-  const level = view.siteLevel ?? 'A2';
+  const level = levelOf(view, who);
   return (
     <span className="atrio-coursecard">
       <span className="atrio-coursecard-level" aria-hidden>
@@ -29,24 +32,23 @@ function CourseCard() {
   );
 }
 
-function ResultText() {
+function ResultText({ who }: { who: Who }) {
   const { view } = useAcademy();
   const { t, course } = useAcademyText();
-  const level = view.siteLevel ?? 'A2';
+  const level = levelOf(view, who);
   return <>{t.rich('site.result', { level, course: course('en', NEXT_LEVEL[level]), b: (c) => <b className="atrio-strong">{c}</b> })}</>;
 }
 
-function PaidText() {
-  const { view } = useAcademy();
+function PaidText({ who }: { who: Who }) {
   const { t } = useAcademyText();
-  return <>{view.siteMine ? t('site.paidYou') : t('site.paid', { name: t('first.julieta') })}</>;
+  return <>{who === 'you' ? t('site.paidYou') : t('site.paid', { name: t('first.julieta') })}</>;
 }
 
-function Receipt({ pay }: { pay: 'card' | 'transfer' }) {
+function Receipt({ pay, who }: { pay: 'card' | 'transfer'; who: Who }) {
   const { view, ticketUsd } = useAcademy();
   const { t, course } = useAcademyText();
   const { format } = useCurrency();
-  const level = view.siteLevel ?? 'A2';
+  const level = levelOf(view, who);
   const Icon = pay === 'card' ? CreditCard : Landmark;
   return (
     <span className="atrio-receipt">
@@ -130,23 +132,25 @@ export function useAcademyScripts(ticketUsd: number): AcademyScripts {
     };
     const tutor = scriptFrom(TUTOR_FLOW, tutorContent, (_s, id) => t(`tutor.replies.${id}`));
 
-    const siteContent = (step: string): Partial<ChatScript['steps'][string]> => {
-      switch (step) {
-        case 'courses':
-          return { text: t('site.courses', { price: format(ticketUsd) }) };
-        case 'result':
-          return { text: <ResultText />, card: <CourseCard /> };
-        case 'paidCard':
-          return { text: <PaidText />, card: <Receipt pay="card" /> };
-        case 'paidTransfer':
-          return { text: t('site.paidTransfer') };
-        default:
-          return { text: t(`site.${step}`) };
-      }
-    };
+    const siteContent =
+      (who: Who) =>
+      (step: string): Partial<ChatScript['steps'][string]> => {
+        switch (step) {
+          case 'courses':
+            return { text: t('site.courses', { price: format(ticketUsd) }) };
+          case 'result':
+            return { text: <ResultText who={who} />, card: <CourseCard who={who} /> };
+          case 'paidCard':
+            return { text: <PaidText who={who} />, card: <Receipt pay="card" who={who} /> };
+          case 'paidTransfer':
+            return { text: t(who === 'you' ? 'site.paidTransferYou' : 'site.paidTransfer') };
+          default:
+            return { text: t(`site.${step}`) };
+        }
+      };
     const siteLabel = (_s: string, id: string) => t(`site.replies.${id}`);
-    const site = scriptFrom(SITE_FLOW, siteContent, siteLabel);
-    const siteMine = scriptFrom(SITE_FLOW, siteContent, siteLabel, { auto: false });
+    const site = scriptFrom(SITE_FLOW, siteContent('julieta'), siteLabel);
+    const siteMine = scriptFrom(SITE_FLOW, siteContent('you'), siteLabel);
 
     const wa = scriptFrom(
       WA_FLOW,

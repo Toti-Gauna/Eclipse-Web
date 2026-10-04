@@ -32,6 +32,7 @@ export function StepSummary({
   offersById,
   message,
   shareUrl,
+  bonusName = null,
   Sub,
 }: {
   quote: Quote;
@@ -45,6 +46,8 @@ export function StepSummary({
   offersById: Partial<Record<string, Offer>>;
   message: string;
   shareUrl: () => string;
+  /** The chosen package's bonus piece (no price): "Incluido sin cargo: …". */
+  bonusName?: string | null;
   Sub: 'h3' | 'h4';
 }) {
   const t = useTranslations('builder');
@@ -113,6 +116,16 @@ export function StepSummary({
                 </span>
               </li>
             ))}
+            {bonusName ? (
+              <li className="pb-ledger-line pb-ledger-bonus">
+                <span className="pb-ledger-name">
+                  {t('bonusIncluded', { name: bonusName })}
+                  <span className="pb-tag pb-tag--accent">{t('bonusTag')}</span>
+                </span>
+                <span aria-hidden className="leader" />
+                <span className="pb-ledger-amount pb-row-free readout">{t('bonusFree')}</span>
+              </li>
+            ) : null}
             {founderApplied && founder ? (
               <li className="pb-ledger-line pb-ledger-discount">
                 <span className="pb-ledger-name">{l(founder.offer.label, locale)}</span>

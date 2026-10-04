@@ -77,8 +77,19 @@ export interface ChatRun {
  * Plays `script` up to `elapsed` ms. Pure: call it with the story time so two screens
  * (or a reduced-motion render with `instant`) always agree.
  */
-export function runChat(script: ChatScript, elapsed: number, picks: Record<string, ChatPick> = {}, options: { instant?: boolean } = {}): ChatRun {
+export interface RunChatOptions {
+  /** Everything up to the next question shows at once (reduced motion, or a chat the visitor opened). */
+  instant?: boolean;
+  /**
+   * v3 (beats): after the visitor taps a reply, the bot's answer shows at once instead of typing
+   * on the story clock — the clock is stopped at rest, so a timed answer would never arrive.
+   */
+  instantAfterPick?: boolean;
+}
+
+export function runChat(script: ChatScript, elapsed: number, picks: Record<string, ChatPick> = {}, options: RunChatOptions = {}): ChatRun {
   const instant = !!options.instant;
+  let fast = false;
   const manual = Object.keys(picks).length > 0;
   const run: ChatRun = { items: [], typing: false, awaiting: null, done: false, at: {}, chosen: {}, manual };
   if (elapsed < 0) return run;
@@ -87,7 +98,7 @@ export function runChat(script: ChatScript, elapsed: number, picks: Record<strin
   for (let guard = 0; id && guard < 80; guard++) {
     const step: ChatStep | undefined = script.steps[id];
     if (!step) break;
-    const wait = instant ? 0 : (step.typingMs ?? (step.from === 'bot' ? 1100 : step.from === 'note' ? 450 : 900));
+    const wait = instant || fast ? 0 : (step.typingMs ?? (step.from === 'bot' ? 1100 : step.from === 'note' ? 450 : 900));
     if (elapsed < clock + wait) {
       run.typing = step.from === 'bot' && elapsed >= clock;
       return run;
@@ -103,9 +114,11 @@ export function runChat(script: ChatScript, elapsed: number, picks: Record<strin
       const pick: ChatPick | undefined = picks[id];
       let chosen: string | undefined;
       let pickedAt = clock;
+      fast = false;
       if (pick) {
         chosen = pick.reply;
         pickedAt = Math.max(clock, pick.at);
+        fast = !!options.instantAfterPick;
       } else if (step.auto && !manual) {
         const autoAt = clock + (instant ? 0 : (step.autoMs ?? 2600));
         if (elapsed >= autoAt) {
@@ -124,7 +137,7 @@ export function runChat(script: ChatScript, elapsed: number, picks: Record<strin
       run.items.push({ id: `${id}:reply`, step: id, from: 'user', text: reply?.label, at: clock });
       nextId = reply?.goto ?? step.next;
     }
-    clock += instant ? 0 : (step.pauseMs ?? 350);
+    clock += instant || fast ? 0 : (step.pauseMs ?? 350);
     id = nextId;
   }
   run.done = true;

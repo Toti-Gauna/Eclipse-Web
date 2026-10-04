@@ -10,6 +10,7 @@ import {
   CircleAlert,
   CircleDollarSign,
   GraduationCap,
+  KanbanSquare,
   Mic,
   MessageCircle,
   NotebookPen,
@@ -23,7 +24,7 @@ import {
 } from 'lucide-react';
 import { Avatar, ToastStack, upperFirst, useDemoFormat, type FeedItem, type ToastItem, type Tone } from '../kit';
 import { CEFR, CLASSMATES, HERO_COLOR, TEACHERS, TODAY, dayDate, storyClock, type CefrLevel, type StudentId, type TeacherId } from './data';
-import type { AcademyEvent, EventKind } from './story';
+import { isFreshEvent, type AcademyEvent, type EventKind } from './story';
 import { useAcademy } from './context';
 
 /* ------------------------------------------------------------------ */
@@ -203,6 +204,7 @@ const EVENT_ICON: Record<EventKind, { icon: LucideIcon; tone: Tone }> = {
   back: { icon: UserRoundCheck, tone: 'ok' },
   dropped: { icon: UserMinus, tone: 'bad' },
   paid: { icon: CircleDollarSign, tone: 'ok' },
+  moved: { icon: KanbanSquare, tone: 'accent' },
 };
 /** Human sentence for an event (feed, toasts, announcements). */
 export function useEventText() {
@@ -215,6 +217,7 @@ export function useEventText() {
       pay: e.pay ? t(`pay.${e.pay}`) : '',
       score: e.score ?? 0,
       count: 7,
+      column: e.column ? t(`board.columns.${e.column}`) : '',
     });
 }
 
@@ -232,30 +235,35 @@ export function useFeedItems(limit = 6, filter?: (e: AcademyEvent) => boolean): 
     .filter((e) => (filter ? filter(e) : true))
     .reverse()
     .slice(0, limit)
-    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], text: text(e), time: time(e), fresh: e.at >= 0 && view.t - e.at < 2600 }));
+    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], text: text(e), time: time(e), fresh: isFreshEvent(view.t, e) }));
 }
 
 const TOASTY = new Set<EventKind>(['enrolled', 'levelUp', 'back', 'dropped', 'review']);
 
-/** Live toasts (decorative: the Announcer speaks). */
-export function AcademyToasts({ placement }: { placement: 'top' | 'bottom-right' }) {
-  const { view, reduced } = useAcademy();
+/**
+ * Toasts: story events while a beat plays (they leave before it ends), and the visitor's own
+ * latest action (`flash`, cleared by the timer their click started). Decorative: the Announcer speaks.
+ */
+export function AcademyToasts({ placement, only }: { placement: 'top' | 'bottom-right'; only?: (e: AcademyEvent) => boolean }) {
+  const { view, reduced, flash: last } = useAcademy();
   const text = useEventText();
   const t = useTranslations('demoAcademy.toast');
   if (reduced) return null;
+  const flash = last && (!only || only(last)) ? last : null;
   const items: ToastItem[] = view.events
-    .filter((e) => e.at >= 0 && TOASTY.has(e.kind) && view.t - e.at < 3400)
+    .filter((e) => TOASTY.has(e.kind) && isFreshEvent(view.t, e, 3400) && (!only || only(e)))
     .slice(-2)
     .map((e) => ({ id: e.id, icon: EVENT_ICON[e.kind].icon, tone: EVENT_ICON[e.kind].tone, title: t(e.kind), body: text(e), leaving: view.t - e.at >= 2900 }));
-  return <ToastStack items={items} placement={placement} className="atrio-toasts" />;
+  if (flash) items.push({ id: `flash-${flash.id}`, icon: EVENT_ICON[flash.kind].icon, tone: EVENT_ICON[flash.kind].tone, title: t(flash.kind), body: text(flash) });
+  return <ToastStack items={items.slice(-2)} placement={placement} className="atrio-toasts" />;
 }
 
-/** One polite announcement of the latest live change (one instance per pair). */
+/** One polite announcement of the latest change (one instance per pair). */
 export function Announcer() {
-  const { view, announce } = useAcademy();
+  const { view, announce, flash } = useAcademy();
   const text = useEventText();
   if (!announce) return null;
-  const latest = [...view.events].reverse().find((e) => e.at >= 0 && view.t - e.at < 2600);
+  const latest = flash ?? [...view.events].reverse().find((e) => isFreshEvent(view.t, e));
   return (
     <p className="sr-only" aria-live="polite" aria-atomic="true">
       {latest ? text(latest) : ''}

@@ -8,13 +8,5 @@ export const DISC_RADIUS = DISC / 2;
 /** The moon always slides down-left (toward the copy on desktop). */
 export const MOON_DIR = { x: -Math.SQRT1_2, y: Math.SQRT1_2 } as const;
 
-/** Where the sun first peeks out: the limb opposite to the moon's motion (fractions of the square). */
-export const LIMB_POINT = {
-  x: 0.5 - MOON_DIR.x * DISC_RADIUS,
-  y: 0.5 - MOON_DIR.y * DISC_RADIUS,
-} as const;
-
 /** Moon travel at the end of the pinned scroll (third contact: a thin crescent). */
 export const SCROLL_MOON = 0.16;
-/** Moon travel when the diamond ring fires (the light is born there). */
-export const REVEAL_MOON_DIAMOND = 0.2;

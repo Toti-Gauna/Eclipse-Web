@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useId, useMemo, type CSSProperties, type ReactNode } from 'react';
+import { memo, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   BellRing,
@@ -297,6 +297,7 @@ const EVENT_ICON: Record<EventKind, { icon: LucideIcon; tone: Tone }> = {
   faq: { icon: MessageCircleQuestion, tone: 'info' },
   mineAbandon: { icon: ShoppingCart, tone: 'bad' },
   mineSent: { icon: BellRing, tone: 'ok' },
+  mineUnsent: { icon: XCircle, tone: 'bad' },
   mineOrder: { icon: PackageCheck, tone: 'accent' },
 };
 export const eventIcon = (kind: EventKind) => EVENT_ICON[kind];
@@ -324,35 +325,57 @@ export function useEventTime() {
 }
 
 export function useFeedItems(limit = 6, filter?: (e: ShopEvent) => boolean): FeedItem[] {
-  const { view } = useShop();
+  const { view, recent } = useShop();
   const text = useEventText();
   const time = useEventTime();
   return [...view.events]
     .filter((e) => (filter ? filter(e) : e.kind !== 'checkout'))
     .reverse()
     .slice(0, limit)
-    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], text: text(e), time: time(e), fresh: e.at >= 0 && view.t - e.at < 2600 }));
+    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], text: text(e), time: time(e), fresh: !e.mine && recent(e.at, 2600) }));
 }
 
-/** Events worth a toast (live, decorative; the Announcer speaks). */
-const TOAST_KINDS: EventKind[] = ['order', 'abandon', 'sent', 'recovered', 'levelup', 'stock', 'mineOrder', 'mineSent', 'lost'];
+/** Events worth a toast. Story ones show while their beat plays (beats end after they leave). */
+const TOAST_KINDS: EventKind[] = ['order', 'abandon', 'sent', 'recovered', 'levelup', 'stock', 'lost'];
+/** The visitor's own: a toast for a few seconds after their click (a local timer, never the story clock). */
+const OWN_KINDS: EventKind[] = ['mineOrder', 'mineSent', 'mineUnsent'];
 export function useToastItems(): ToastItem[] {
-  const { view, reduced } = useShop();
+  const { view, reduced, recent } = useShop();
   const text = useEventText();
   const t = useTranslations('demoShop.toast');
+  const ids = view.events
+    .filter((e) => OWN_KINDS.includes(e.kind))
+    .map((e) => e.id)
+    .join('|');
+  const known = useRef<Set<string> | null>(null);
+  const timers = useRef<number[]>([]);
+  const [own, setOwn] = useState<string[]>([]);
+  useEffect(() => {
+    const now = ids ? ids.split('|') : [];
+    const before = known.current;
+    known.current = new Set(now);
+    const added = before ? now.filter((id) => !before.has(id)) : [];
+    if (!added.length) return;
+    setOwn((r) => [...r, ...added]);
+    timers.current.push(window.setTimeout(() => setOwn((r) => r.filter((x) => !added.includes(x))), 3400));
+  }, [ids]);
+  useEffect(() => {
+    const list = timers.current;
+    return () => list.forEach((id) => window.clearTimeout(id));
+  }, []);
   if (reduced) return [];
   return view.events
-    .filter((e) => e.at >= 0 && TOAST_KINDS.includes(e.kind) && view.t - e.at < 3400)
+    .filter((e) => (OWN_KINDS.includes(e.kind) ? own.includes(e.id) : !e.mine && TOAST_KINDS.includes(e.kind) && recent(e.at, 3400)))
     .slice(-2)
-    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], title: t(e.kind), body: text(e), leaving: view.t - e.at >= 2900 }));
+    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], title: t(e.kind), body: text(e), leaving: !OWN_KINDS.includes(e.kind) && view.t - e.at >= 2900 }));
 }
 
-/** One polite announcement of the latest live change (one instance per pair). */
+/** One polite announcement of the latest change (one instance per pair). */
 export function Announcer() {
-  const { view, announce } = useShop();
+  const { view, announce, recent } = useShop();
   const text = useEventText();
   if (!announce) return null;
-  const latest = [...view.events].reverse().find((e) => e.at >= 0 && view.t - e.at < 2600 && e.kind !== 'checkout');
+  const latest = [...view.events].reverse().find((e) => e.at >= 0 && e.kind !== 'checkout' && (e.mine ? e.at === view.t : recent(e.at, 2600)));
   return (
     <p className="sr-only" aria-live="polite" aria-atomic="true">
       {latest ? text(latest) : ''}

@@ -59,6 +59,17 @@
   background: var(--demo-ok-soft);
   color: var(--demo-ok);
 }
+.clinic-toppill[data-off] {
+  background: var(--demo-sunken);
+  color: var(--demo-muted);
+}
+/* A still status dot (the AI receptionist's state, not fake live activity) */
+.clinic-toppill-dot {
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 999px;
+  background: currentColor;
+}
 .clinic-livecall {
   background: var(--demo-ink);
   color: var(--demo-bg);
@@ -94,30 +105,6 @@
   height: 1.15em;
 }
 
-/* Sidebar footer: the AI receptionist is on duty */
-.clinic-sidefoot {
-  display: flex;
-  align-items: center;
-  gap: 0.6em;
-  padding: 0.65em;
-  border-radius: var(--demo-radius);
-  background: var(--demo-bg);
-  white-space: nowrap;
-}
-.clinic-sidefoot-ai {
-  display: grid;
-  width: 2.1em;
-  height: 2.1em;
-  flex: none;
-  place-items: center;
-  border-radius: 999px;
-  background: var(--demo-ink);
-  color: var(--demo-accent-2);
-}
-.clinic-sidefoot[data-off] .clinic-sidefoot-ai {
-  background: var(--demo-sunken);
-  color: var(--demo-muted);
-}
 .clinic-missed {
   padding: 0.75em 0.85em;
   border-radius: var(--demo-radius-sm);
@@ -125,11 +112,6 @@
   font-size: 0.78em;
   line-height: 1.45;
 }
-.clinic-sidefoot-ai svg {
-  width: 1.3em;
-  height: 1.3em;
-}
-
 .clinic-now-dot {
   position: relative;
   display: block;
@@ -942,9 +924,31 @@ button.clinic-recovered:hover .clinic-recovered-open {
   font-weight: 600;
   box-shadow: var(--demo-shadow-lg);
 }
-.clinic-site-chatbtn svg {
+.clinic-site-chatbtn svg,
+.clinic-site-wabtn svg {
   width: 1.2em;
   height: 1.2em;
+}
+/* After booking: back to the WhatsApp confirmation */
+.clinic-site-wabtn {
+  position: absolute;
+  left: 0.8em;
+  bottom: 1.5em;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  height: 2.6em;
+  padding: 0 1em;
+  border-radius: 999px;
+  background: var(--demo-surface);
+  color: var(--demo-ink);
+  font-size: 0.74em;
+  font-weight: 600;
+  box-shadow:
+    0 0 0 1px var(--demo-line),
+    var(--demo-shadow-lg);
+  animation: demo-pop 0.4s var(--demo-ease) both;
 }
 
 /* Patient phone */

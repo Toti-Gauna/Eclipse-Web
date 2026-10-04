@@ -87,7 +87,23 @@ export const itemList = (items: Items) => (Object.entries(items) as [DishId, num
 /* ------------------------------------------------------------------ */
 /* People (names, numbers and addresses are message keys)               */
 /* ------------------------------------------------------------------ */
-export type PersonId = 'marta' | 'ramiro' | 'lucia' | 'sofia' | 'gomez' | 'ledesma' | 'paz' | 'rios';
+export type PersonId =
+  | 'marta'
+  | 'ramiro'
+  | 'lucia'
+  | 'sofia'
+  | 'gomez'
+  | 'ledesma'
+  | 'paz'
+  | 'rios'
+  | 'acosta'
+  | 'vidal'
+  | 'herrera'
+  | 'molina'
+  | 'castro'
+  | 'navarro';
+/** Names used for the reservations of other days (seeded). */
+export const GUESTS: PersonId[] = ['acosta', 'vidal', 'herrera', 'molina', 'castro', 'navarro', 'gomez', 'ledesma', 'paz', 'rios', 'sofia', 'marta'];
 
 /* ------------------------------------------------------------------ */
 /* The salón: a floor plan in a 100 × 62 box (landscape; the phone      */
@@ -148,12 +164,25 @@ export const BASE_BOOKINGS: BaseBooking[] = [
   { table: 9, time: 22 * 60, people: 2, name: 'ledesma', via: 'ai' },
   { table: 11, time: 22 * 60 + 15, people: 2, name: 'paz', via: 'phone' },
 ];
-/** Times offered to book tonight. */
-export const BOOK_TIMES = [22 * 60, 22 * 60 + 30, 23 * 60, 23 * 60 + 30];
+/** Times a table can be booked for (tonight only the ones still ahead). */
+export const BOOK_TIMES = [20 * 60 + 30, 21 * 60, 21 * 60 + 30, 22 * 60, 22 * 60 + 30, 23 * 60];
 /** The AI's 22:30 booking for 4: first table in this order without a reservation. */
 export const AI_TABLES = [12, 3, 5, 7, 4, 13];
 /** What Ramiro asks for on line 2. */
 export const AI_BOOKING = { time: 22 * 60 + 30, people: 4 } as const;
+
+/* ------------------------------------------------------------------ */
+/* Days (reservations book): integers, 0 = Monday 5 Oct 2026            */
+/* ------------------------------------------------------------------ */
+/** Tonight: Friday 9 October 2026. */
+export const TODAY = 4;
+/** Friday, October 9 2026 (UTC). */
+export const TONIGHT = Date.UTC(2026, 9, 9);
+export const dayDate = (day: number) => new Date(TONIGHT + (day - TODAY) * 86_400_000);
+/** The bodegón opens Tuesday to Sunday (closed on Mondays). */
+export const isOpenDay = (weekday: number) => weekday !== 0;
+/** Julieta books from the site for tomorrow (beat "web"). */
+export const WEB_BOOKING = { day: TODAY + 1, table: 12, time: 21 * 60 + 30, people: 2, name: 'rios' as PersonId };
 
 /* ------------------------------------------------------------------ */
 /* Kitchen                                                              */
@@ -161,8 +190,12 @@ export const AI_BOOKING = { time: 22 * 60 + 30, people: 4 } as const;
 export type Channel = 'salon' | 'delivery' | 'pickup';
 /** Where the order came in: table QR, the bodegón's own site, the AI phone, the waiter. */
 export type Source = 'qr' | 'web' | 'ai' | 'waiter';
-export type Stage = 'new' | 'cooking' | 'ready' | 'out' | 'done';
-export const BOARD_STAGES: Exclude<Stage, 'done'>[] = ['new', 'cooking', 'ready', 'out'];
+/** Kitchen display stages. `out` = it left the pass (served · on the way · picked up). */
+export type Stage = 'new' | 'cooking' | 'ready' | 'out';
+export const STAGES: Stage[] = ['new', 'cooking', 'ready', 'out'];
+export const stageIndex = (s: Stage) => STAGES.indexOf(s);
+/** The "out" column keeps only the latest few tickets (the rest are archived). */
+export const OUT_SHOWN = 4;
 
 export interface TicketPlan {
   channel: Channel;
@@ -171,56 +204,58 @@ export interface TicketPlan {
   items: Items;
   /** Story ms (negative: before the story starts). */
   placed: number;
-  cook: number;
-  ready: number;
-  /** Delivery leaves the kitchen ("en camino"). */
-  out?: number;
-  /** Served / picked up / delivered: leaves the board. */
-  done?: number;
+  /** Stage at placement (default new). */
+  stage?: Stage;
+  /** Scripted bumps by the kitchen inside the beats (story ms, increasing). */
+  bumps?: [Stage, number][];
   /** Clock minute it was placed (tickets from before the story). */
   clock?: number;
 }
 
-/** On the board at 21:30, numbered from 141. */
+/** On the board at 21:30, numbered from 141. Their bumps happen inside the beats. */
 export const BASE_TICKETS: TicketPlan[] = [
-  { channel: 'salon', source: 'qr', table: 5, items: { napolitana: 2, provoleta: 1 }, placed: -1, clock: 21 * 60 + 12, cook: -1, ready: -1, done: 3000 },
-  { channel: 'delivery', source: 'web', items: { empanadas: 2, bife: 1 }, placed: -1, clock: 21 * 60 + 8, cook: -1, ready: -1, out: -1, done: 9500 },
-  { channel: 'salon', source: 'qr', table: 8, items: { bife: 3, ravioles: 2, provoleta: 2 }, placed: -1, clock: 21 * 60 + 18, cook: -1, ready: 6500, done: 13_000 },
-  { channel: 'pickup', source: 'ai', items: { ravioles: 2 }, placed: -1, clock: 21 * 60 + 21, cook: -1, ready: 10_000, done: 17_500 },
-  { channel: 'salon', source: 'waiter', table: 13, items: { suprema: 2, napolitana: 1, flan: 2 }, placed: -1, clock: 21 * 60 + 27, cook: 2000, ready: 15_500, done: 23_000 },
-  { channel: 'salon', source: 'qr', table: 10, items: { empanadas: 1, ravioles: 1 }, placed: -1, clock: 21 * 60 + 29, cook: 4500, ready: 12_500, done: 20_500 },
+  { channel: 'salon', source: 'qr', table: 5, items: { napolitana: 2, provoleta: 1 }, placed: -1, clock: 21 * 60 + 12, stage: 'ready', bumps: [['out', 3000]] },
+  { channel: 'delivery', source: 'web', items: { empanadas: 2, bife: 1 }, placed: -1, clock: 21 * 60 + 8, stage: 'out' },
+  { channel: 'salon', source: 'qr', table: 8, items: { bife: 3, ravioles: 2, provoleta: 2 }, placed: -1, clock: 21 * 60 + 18, stage: 'cooking', bumps: [['ready', 6000], ['out', 42_500]] },
+  { channel: 'pickup', source: 'ai', items: { ravioles: 2 }, placed: -1, clock: 21 * 60 + 21, stage: 'cooking', bumps: [['ready', 24_000]] },
+  { channel: 'salon', source: 'waiter', table: 13, items: { suprema: 2, napolitana: 1, flan: 2 }, placed: -1, clock: 21 * 60 + 27, stage: 'new', bumps: [['cooking', 9000]] },
+  { channel: 'salon', source: 'qr', table: 10, items: { empanadas: 1, ravioles: 1 }, placed: -1, clock: 21 * 60 + 29, stage: 'new', bumps: [['cooking', 40_000]] },
 ];
 export const FIRST_TICKET = 141;
 
-/** Stage durations after a story ticket is placed. */
-export const TICKET_FLOW = { cook: 2400, ready: 9000, out: 12_000, pickupDone: 18_000, salonDone: 15_000 } as const;
+/* ------------------------------------------------------------------ */
+/* The story: four beats the visitor plays (no autoplay)                */
+/* ------------------------------------------------------------------ */
+/**
+ * Each beat's `at` is where its segment ENDS (story ms). Every segment ends on a calm frame:
+ * calls hung up, no toast or "just printed" ticket left (≥ 3.5 s after the last event).
+ * Labels: demoRestaurant.sim.<id>.
+ */
+export const BEATS = [
+  { id: 'order', at: 18_000 },
+  { id: 'rush', at: 37_000 },
+  { id: 'qr', at: 50_500 },
+  { id: 'web', at: 59_500 },
+] as const;
+export type BeatId = (typeof BEATS)[number]['id'];
+export const STORY_END = BEATS[BEATS.length - 1].at;
 
-/* ------------------------------------------------------------------ */
-/* The story (ms on a 28 s loop)                                        */
-/* ------------------------------------------------------------------ */
-export const LOOP_MS = 28_000;
-/** While the visitor is engaged the clock may run this far past the loop (their actions play out). */
-export const OVERRUN_MS = 14_000;
-/** Friday 21:30; the story clock advances one minute every 2 s. */
+/** Friday 21:30; the story clock advances one minute every 2 s of a beat. */
 export const CLOCK_START = 21 * 60 + 30;
 export const storyClock = (t: number) => CLOCK_START + Math.floor(Math.max(0, t) / 2000);
-/** Friday, October 9 2026 (UTC). */
-export const TONIGHT = Date.UTC(2026, 9, 9);
 
 export const STORY = {
-  /** Rush hour: three lines ring almost at once. */
-  ring: { order: 800, booking: 1600, gf: 2400 },
-  /** Sofía orders from the site (the paired customer phone plays it). */
-  web: { add1: 2200, add2: 3300, cart: 4300, mode: 4900, place: 5500 },
-  /** A couple walks in and sits at a free 2-top; they order by QR. */
-  walkIn: { at: 7000, order: 12_600 },
-  /** Table 3 asks for the bill, then leaves. */
-  bill: { table: 3, at: 18_000, free: 23_500 },
-  /** Dessert rounds by QR. */
-  desserts: [
-    { at: 19_400, table: 4, items: { flan: 2, panqueque: 1 } as Items },
-    { at: 24_600, table: 7, items: { panqueque: 2 } as Items },
-  ],
+  /** Beat 1: Marta calls line 1 to order delivery. */
+  order: { ring: 600, line: 1 as const },
+  /** Beat 2: three lines ring almost at once (pickup · booking · gluten-free). */
+  rush: { alt: 18_600, booking: 19_000, gf: 19_400, altDish: 'suprema' as DishId },
+  /** Beat 3: a couple walks in and orders by QR; table 3 asks for the bill and leaves; desserts by QR. */
+  qr: { walkIn: 37_600, bill: 39_000, order: 41_500, dessert: 44_000, left: 46_500, dessertTable: 4, dessertItems: { flan: 2, panqueque: 1 } as Items },
+  billTable: 3,
+  /** Beat 4: Sofía orders delivery on the site; Julieta books tomorrow's table on the site. */
+  web: { order: 52_500, booking: 55_500 },
+  /** Marta's ticket goes to the stove during the rush. */
+  martaCooks: 26_000,
 } as const;
 
 /** Before the story (tonight since 20:00): orders, sales, calls, covers. */
@@ -234,10 +269,13 @@ export const TONIGHT_BASE = {
 /** Tonight's orders by channel before the story (sums to TONIGHT_BASE.orders). */
 export const TONIGHT_CHANNELS = { salon: 23, delivery: 11, pickup: 7 } as const;
 
-/** Orders per half hour tonight (20:00, 20:30, 21:00); the 21:30 bar is the story's (it grows live). */
+/** Orders per half hour tonight (20:00, 20:30, 21:00); the 21:30 bar is the story's. */
 export const ORDERS_BY_SLOT = [6, 11, 15] as const;
 /** Weekly orders/bookings lost by phone: 4 weeks before the AI agent (≈ the rubro default), then with it. */
 export const LOST_WEEKS_BEFORE = 4;
 /** Week-to-week wobble around the rubro's default before the AI agent. */
 export const LOST_BEFORE_WOBBLE = [1, -2, 2, -1] as const;
 export const LOST_AFTER = [3, 1, 0, 1] as const;
+
+/** The table a QR customer sits at (the customer's phone scanned it). */
+export const QR_TABLE = 7;

@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Award, LayoutDashboard, MessageCircleQuestion, Package, ShoppingCart, Store } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, LiveDot, upperFirst, usePairedStore, useStory, type NavItem } from '../kit';
+import { AppShell, upperFirst, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { SHOP_THEME } from './data';
 import { createShopStore, deriveShop } from './story';
@@ -31,13 +31,21 @@ const VIEWS: Record<ShopTab, Record<DemoProps['screen'], () => ReactNode>> = {
 };
 
 /**
+ * Shell variant: a shop owner's app, playful and product-first — no sidebar, the content uses the
+ * full width and the sections sit in a floating pill dock at the bottom (desktop); on the phone a
+ * classic shopping-app tab bar, with the store one tap away in the app bar.
+ */
+const LAYOUT: ShellLayout = { nav: 'dock', density: 'regular', icons: 'line' };
+
+/**
  * Bruma Tostadores (vertical "tiendas", specialty coffee sold online).
- * - laptop: the owner's panel (collapsible sidebar): today's sales and shelf, the
- *   fulfillment board, abandoned carts + WhatsApp recovery, Club Bruma, the site bot,
- *   and the live store in a browser.
- * - phone next to the laptop: the CUSTOMER's phone — Inés's evening plays on it.
- * - phone alone: the store first (same story), with the owner's app one tap away.
- * One story (30 s loop, see story.ts) drives every screen.
+ * - laptop: the owner's panel: today's sales and shelf, the fulfillment board (advance orders),
+ *   abandoned carts + WhatsApp recovery, the site bot, Club Bruma, and the store in a browser
+ *   (catalog → product → cart → checkout, all local).
+ * - phone next to the laptop: the CUSTOMER's phone — Inés's evening plays on it beat by beat;
+ *   touching it turns it into the visitor's own session until the next beat.
+ * - phone alone: the owner's app, with the store one tap away ("Tienda").
+ * Nothing plays on its own: the visitor plays five beats from the SimBar (see story.ts).
  */
 export default function ShopDemo({ screen, active }: DemoProps) {
   const vertical = verticalById('tiendas')!;
@@ -50,35 +58,23 @@ export default function ShopDemo({ screen, active }: DemoProps) {
   const { store, paired, ref } = usePairedStore('shop', createShopStore);
   const snap = useStory(store, active);
   const scripts = useShopScripts();
-  const view = useMemo(() => deriveShop(snap.state, snap.t, snap.reduced, scripts.bot, scripts.waShape), [snap.state, snap.t, snap.reduced, scripts]);
+  const view = useMemo(() => deriveShop(snap.state, snap.t, scripts.bot, scripts.waShape), [snap.state, snap.t, scripts]);
 
   const [tab, setTab] = useState<ShopTab>('today');
-  const [storeOpen, setStoreOpen] = useState(true);
+  const [storeOpen, setStoreOpen] = useState(false);
   const customerPhone = screen === 'phone' && paired;
   const announce = screen === 'laptop' || !paired;
+  const playing = !!snap.playing;
+  const segFrom = snap.segment?.from ?? null;
 
-  // Sound: an order / a recovered cart / a level-up lands (one instance per pair, only while visible).
-  const last = view.events[view.events.length - 1];
-  const heard = useRef<string | null>(null);
-  useEffect(() => {
-    const id = last?.id ?? null;
-    const first = heard.current === null;
-    heard.current = id ?? '';
-    if (first || !active || !announce || !last || last.at < 0) return;
-    if (['order', 'recovered', 'levelup'].includes(last.kind)) play('success', { volume: last.kind === 'order' ? 0.5 : 1 });
-  }, [last, active, announce, play]);
-
-  const ines = view.ines;
-  const cartLive = ['abandoned', 'sent', 'read', 'back'].includes(ines.status);
   const newOrders = view.orders.filter((o) => o.stage === 'new').length;
   const nav: NavItem[] = [
     { id: 'today', label: t('nav.today'), icon: LayoutDashboard },
-    { id: 'orders', label: t('nav.orders'), icon: Package, badge: newOrders || undefined },
-    { id: 'carts', label: t('nav.carts'), icon: ShoppingCart, badge: cartLive ? 'live' : undefined, group: screen === 'laptop' ? t('nav.groupAuto') : undefined },
-    ...(screen === 'laptop' ? [{ id: 'chat', label: t('nav.chat'), icon: MessageCircleQuestion, badge: ines.phase === 'chat' ? ('live' as const) : undefined }] : []),
-    { id: 'club', label: t('nav.club'), icon: Award, group: screen === 'laptop' ? t('nav.groupClients') : undefined },
-    ...(screen === 'phone' ? [{ id: 'chat', label: t('nav.chatShort'), icon: MessageCircleQuestion, badge: ines.phase === 'chat' ? ('live' as const) : undefined }] : []),
-    ...(screen === 'laptop' ? [{ id: 'site', label: t('nav.site'), icon: Store, group: t('nav.groupChannel') }] : []),
+    { id: 'orders', label: t('nav.orders'), icon: Package, badge: newOrders || undefined, tour: 'orders' },
+    { id: 'carts', label: t('nav.carts'), icon: ShoppingCart, tour: 'recovery' },
+    { id: 'chat', label: t(screen === 'phone' ? 'nav.chatShort' : 'nav.chat'), icon: MessageCircleQuestion, tour: 'bot' },
+    { id: 'club', label: t('nav.club'), icon: Award, tour: 'club' },
+    ...(screen === 'laptop' ? [{ id: 'site', label: t('nav.site'), icon: Store, tour: 'store' }] : []),
   ];
 
   const ctx: ShopCtx = {
@@ -91,6 +87,8 @@ export default function ShopDemo({ screen, active }: DemoProps) {
     loop: snap.loop,
     reduced: snap.reduced,
     active,
+    playing,
+    recent: (at, ms = 2600) => playing && segFrom !== null && at != null && at > segFrom && snap.t - at < ms,
     announce,
     business,
     ticketUsd,
@@ -106,12 +104,19 @@ export default function ShopDemo({ screen, active }: DemoProps) {
   };
 
   const clock = fmt.time(view.clock);
+  const sim = {
+    store,
+    label: (id: string) => t(!view.recoveryOn && (id === 'recovery' || id === 'paid') ? `sim.off.${id}` : `sim.${id}`),
+    note: t('sim.note'),
+    tour: 'sim',
+    announce,
+  };
 
   if (customerPhone) {
     return (
       <ShopProvider value={ctx}>
-        <AppShell screen="phone" chrome="bare" theme={SHOP_THEME} business={business} logo={<BrumaMark />} active={active} rootRef={ref} statusTime={clock}>
-          <Storefront variant="phone" />
+        <AppShell screen="phone" chrome="bare" theme={SHOP_THEME} business={business} logo={<BrumaMark />} active={active} rootRef={ref} statusTime={clock} sim={sim}>
+          <Storefront key={snap.loop} variant="phone" />
         </AppShell>
       </ShopProvider>
     );
@@ -123,8 +128,8 @@ export default function ShopDemo({ screen, active }: DemoProps) {
     screen === 'laptop' ? (
       <>
         <span className="shop-toppill">
-          <LiveDot color="var(--demo-ok)" />
-          {t('top.live', { count: 14 + Math.round(Math.sin(view.t / 5000) * 3) })}
+          <span aria-hidden className="shop-toppill-dot" />
+          {t('top.open')}
         </span>
         <button type="button" className="shop-topbtn" onClick={() => setTab('site')}>
           <Store aria-hidden strokeWidth={1.8} />
@@ -132,7 +137,7 @@ export default function ShopDemo({ screen, active }: DemoProps) {
         </button>
       </>
     ) : (
-      <button type="button" className="shop-topbtn" onClick={ctx.openStore} aria-haspopup="dialog">
+      <button type="button" className="shop-topbtn" onClick={ctx.openStore} aria-haspopup="dialog" data-tour="store">
         <Store aria-hidden strokeWidth={1.8} />
         {t('top.store')}
       </button>
@@ -159,11 +164,14 @@ export default function ShopDemo({ screen, active }: DemoProps) {
           ) : undefined
         }
         headerRight={headerRight}
-        sidebarFooter={<SidebarFooter on={view.recoveryOn} />}
+        layout={LAYOUT}
+        phoneNav="tabs"
+        maxTabs={5}
         active={active}
         rootRef={ref}
         statusTime={clock}
-        overlay={screen === 'phone' ? <Storefront variant="phone" onPanel={ctx.closeStore} homeIndicator /> : undefined}
+        sim={sim}
+        overlay={screen === 'phone' ? <Storefront key={snap.loop} variant="phone" onPanel={ctx.closeStore} homeIndicator /> : undefined}
         overlayOpen={screen === 'phone' && storeOpen}
         overlayOrigin={['80%', '5%']}
       >
@@ -179,17 +187,3 @@ export default function ShopDemo({ screen, active }: DemoProps) {
   );
 }
 
-function SidebarFooter({ on }: { on: boolean }) {
-  const t = useTranslations('demoShop');
-  return (
-    <div className="shop-sidefoot" data-off={on ? undefined : ''}>
-      <span className="shop-sidefoot-icon" aria-hidden>
-        <ShoppingCart strokeWidth={1.8} />
-      </span>
-      <span className="min-w-0 leading-[1.25]">
-        <span className="block truncate text-[0.74em] font-semibold">{t('side.title')}</span>
-        <span className="shop-sidefoot-sub block truncate text-[0.64em]">{on ? t('side.on') : t('side.off')}</span>
-      </span>
-    </div>
-  );
-}

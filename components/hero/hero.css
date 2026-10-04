@@ -317,180 +317,6 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Diamond ring (mounted only while the reveal plays)                   */
-/* ------------------------------------------------------------------ */
-.eclipse-diamond {
-  position: absolute;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  z-index: 2;
-}
-.eclipse-diamond-core,
-.eclipse-diamond-flare {
-  position: absolute;
-  left: 0;
-  top: 0;
-  translate: -50% -50%;
-  mix-blend-mode: screen;
-}
-.eclipse-diamond-core {
-  width: calc(var(--hero-eclipse-size) * 0.2);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    #fff 0%,
-    #fff 8%,
-    #fffaf0 18%,
-    rgb(255 232 176 / 0.9) 32%,
-    rgb(245 185 66 / 0.42) 56%,
-    rgb(245 185 66 / 0.12) 78%,
-    transparent 100%
-  );
-}
-.eclipse-diamond-flare {
-  width: calc(var(--hero-eclipse-size) * 2.6);
-  height: max(2px, calc(var(--hero-eclipse-size) * 0.014));
-  border-radius: 50%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgb(245 185 66 / 0.35) 22%,
-    rgb(255 232 176 / 0.85) 42%,
-    #fff 50%,
-    rgb(255 232 176 / 0.85) 58%,
-    rgb(245 185 66 / 0.35) 78%,
-    transparent 100%
-  );
-  box-shadow: 0 0 calc(var(--hero-eclipse-size) * 0.05) rgb(255 232 176 / 0.55);
-}
-
-/* ------------------------------------------------------------------ */
-/* Demo reveal light                                                    */
-/* ------------------------------------------------------------------ */
-.hero-reveal-light {
-  background:
-    radial-gradient(
-      circle at var(--reveal-x, 50%) var(--reveal-y, 30%),
-      #fffdf8 0%,
-      #fff6e2 9%,
-      rgb(255 232 176 / 0.9) 22%,
-      rgb(247 236 214 / 0.95) 42%,
-      var(--dawn) 72%
-    ),
-    var(--dawn);
-}
-
-/* Showcase size inside the reveal (<DemoShowcase>, geometry in components/demos/showcase.css).
-   Phones: its tabs layout, as tall as the phone view; that view fills the height left under
-   the header and the top bar (≈ 124px), never under 240px wide (the page scrolls a little on
-   very short screens). Portrait tablets: tabs too, the phone view sized to the screen.
-   Desktop (SPLIT_QUERY in HeroReveal): both views side by side — height =
-   (width − 20px) × 0.4851 + 28px —, as wide as the screen's height allows under the header,
-   the top bar (≈ 152px with the hint) and the bottom padding. */
-.hero-reveal-showcase {
-  width: clamp(240px, calc((100svh - var(--header-h) - 124px) * 9 / 19.5), min(340px, calc(100vw - 2 * var(--gutter))));
-}
-@media (min-width: 768px) {
-  .hero-reveal-showcase {
-    --sc-phone-w: max(240px, calc((100svh - var(--header-h) - 200px) * 9 / 19.5));
-    width: min(1040px, 100%);
-  }
-}
-@media (min-width: 1024px) {
-  .hero-reveal-showcase {
-    width: min(100%, calc((100svh - var(--header-h) - 152px - 28px) / 0.4851 + 20px));
-  }
-}
-/* Short laptops: the hint goes, so the views keep a legible size on the pinned screen. */
-@media (min-width: 1024px) and (max-height: 760px) {
-  .hero-reveal-hint {
-    display: none;
-  }
-  .hero-reveal-showcase {
-    width: min(100%, calc((100svh - var(--header-h) - 126px - 28px) / 0.4851 + 20px));
-  }
-}
-/* Landscape phones and other very short screens: nothing usable fits one screen,
-   so the showcase takes the width and the hero grows (it is not pinned there). */
-@media (min-width: 768px) and (max-height: 599px) {
-  .hero-reveal-showcase {
-    width: min(760px, 100%);
-  }
-}
-
-/* Loading state while the showcase chunk downloads: the same footprint. */
-.hero-reveal-skeleton {
-  display: grid;
-  gap: 20px;
-  align-items: end;
-}
-.hero-reveal-skeleton[data-layout='split'] {
-  grid-template-columns: minmax(0, 16fr) minmax(0, 4.615fr);
-  padding-top: 28px;
-}
-.hero-reveal-skeleton-screen {
-  display: block;
-  border-radius: 12px;
-  background: rgb(17 17 20 / 0.08);
-}
-.hero-reveal-skeleton-screen[data-kind='laptop'] {
-  aspect-ratio: 16 / 10;
-}
-.hero-reveal-skeleton-screen[data-kind='phone'] {
-  aspect-ratio: 9 / 19.5;
-}
-.hero-reveal-skeleton[data-layout='tabs'] .hero-reveal-skeleton-screen[data-kind='laptop'] {
-  display: none;
-}
-.hero-reveal-skeleton[data-layout='tabs'] .hero-reveal-skeleton-screen[data-kind='phone'] {
-  width: min(100%, var(--sc-phone-w, 100%));
-  justify-self: center;
-}
-
-/* Soft glow riding just outside the light's edge while it grows/shrinks
-   (sized and scaled from JS; transform + opacity only). */
-.hero-reveal-halo {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 20;
-  border-radius: 50%;
-  pointer-events: none;
-  visibility: hidden;
-  /* The light's edge sits at 1 / HALO (1.35) ≈ 74% of the radius. */
-  background: radial-gradient(
-    closest-side,
-    rgb(255 244 215 / 0) 70%,
-    rgb(255 244 215 / 0.95) 74.2%,
-    rgb(255 226 160 / 0.5) 80%,
-    rgb(245 185 66 / 0.18) 89%,
-    rgb(245 185 66 / 0) 100%
-  );
-}
-
-/* Header light zone: empty until the light covers the hero. While pinned
-   ([data-pinned], useHeroMotion) the hero stays on screen for one more
-   viewport (end '+=100%'). */
-.hero-light-zone {
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 0;
-  pointer-events: none;
-  /* Measured right after it changes: the global reduced-motion rule would
-     otherwise turn the height change into a (0.01 ms, but async) transition. */
-  transition: none !important;
-}
-.hero-light-zone[data-on] {
-  height: 100%;
-}
-[data-pinned] > .hero-light-zone[data-on] {
-  height: calc(100% + 100vh);
-}
-
-/* ------------------------------------------------------------------ */
 /* The dial (Dial.tsx): bezel + fixed pointer, marks and readout.       */
 /* Box = the eclipse square + 8% on each side. Strokes stay 1px.        */
 /* ------------------------------------------------------------------ */
@@ -662,16 +488,16 @@
 .hero-chip:focus-visible .hero-chip-index {
   color: var(--corona);
 }
-/* Pressed: a lit key (amber edge + LED), not a second solid amber button. */
-.hero-chip[aria-pressed='true'] {
+/* The chosen rubro: a lit key (amber edge + LED), not a second solid amber button. */
+.hero-chip[data-chosen] {
   border-color: var(--corona);
   background: rgb(245 185 66 / 0.1);
   box-shadow: 0 0 26px -10px rgb(245 185 66 / 0.85);
 }
-.hero-chip[aria-pressed='true'] .hero-chip-index {
+.hero-chip[data-chosen] .hero-chip-index {
   color: var(--corona);
 }
-.hero-chip[aria-pressed='true']::before {
+.hero-chip[data-chosen]::before {
   content: '';
   position: absolute;
   top: 6px;

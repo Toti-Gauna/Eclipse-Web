@@ -74,7 +74,10 @@ export function useClinicScripts() {
       };
     };
 
-    /** The WhatsApp thread a patient gets after booking (Camila in the story, or the visitor). */
+    /**
+     * The WhatsApp thread a patient gets after booking: Camila's plays on the story clock inside
+     * the "online" beat; the visitor's shows at once (it is the answer to their own booking).
+     */
     const patient = (b: { name: string | null; day: number; start: number; treatment: TreatmentId; pro: ProId }): ChatScript => ({
       start: 'conf',
       steps: {
@@ -94,8 +97,6 @@ export function useClinicScripts() {
             { id: 'change', label: t('chat.patient.replies.change'), goto: 'change' },
             { id: 'bye', label: t('chat.patient.replies.bye'), goto: 'bye' },
           ],
-          auto: b.name ? 'map' : undefined,
-          autoMs: 4200,
         },
         map: {
           from: 'bot',
@@ -111,6 +112,7 @@ export function useClinicScripts() {
       },
     });
 
+    /** The site's chatbot: opened by the visitor, it answers at once (no automatic replies). */
     const faq: ChatScript = {
       start: 'hi',
       steps: {
@@ -123,8 +125,6 @@ export function useClinicScripts() {
             { id: 'insurance', label: t('chat.faq.replies.insurance'), goto: 'insurance' },
             { id: 'book', label: t('chat.faq.replies.book'), goto: 'offer' },
           ],
-          auto: 'whitening',
-          autoMs: 2600,
         },
         whitening: { from: 'bot', typingMs: 1300, text: t('chat.faq.whitening'), next: 'offer' },
         insurance: { from: 'bot', typingMs: 1300, text: t('chat.faq.insurance'), next: 'offer' },
@@ -136,8 +136,6 @@ export function useClinicScripts() {
             { id: 'yes', label: t('chat.faq.replies.yes'), goto: 'slots' },
             { id: 'later', label: t('chat.faq.replies.later'), goto: 'later' },
           ],
-          auto: 'yes',
-          autoMs: 2400,
         },
         slots: {
           from: 'bot',

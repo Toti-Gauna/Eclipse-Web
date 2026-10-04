@@ -2,7 +2,7 @@
 
 import './inline-select.css';
 import type { ChangeEvent } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, PencilLine } from 'lucide-react';
 
 export interface InlineSelectOption<T extends string> {
   value: T;
@@ -10,10 +10,14 @@ export interface InlineSelectOption<T extends string> {
 }
 
 /**
- * A native <select> that reads as part of a sentence: "Tengo [una clínica ▾]."
- * The visible text is the current option (so the pill hugs it); the real select sits
- * on top, transparent, and gives native pickers on phones, keyboard and screen
- * readers for free. Styles: inline-select.css. Also used by the plan builder.
+ * A native <select> that reads as part of a sentence: "Tengo [✎ una clínica ⌄]."
+ * The visible text is the current option (so the field hugs it); the real select sits
+ * on top, transparent, and gives native pickers on phones, keyboard (arrows, type-ahead)
+ * and screen readers for free.
+ * - variant "field" (default): a bordered field token with an edit pencil and a chevron
+ *   cap, like the number fields around it — it has to look editable at a glance.
+ * - variant "inline": the v2 dashed-underline word (kept for denser contexts).
+ * Styles: inline-select.css. Also used by the plan builder.
  */
 export function InlineSelect<T extends string>({
   value,
@@ -22,6 +26,8 @@ export function InlineSelect<T extends string>({
   label,
   className = '',
   id,
+  describedBy,
+  variant = 'field',
 }: {
   value: T;
   options: readonly InlineSelectOption<T>[];
@@ -30,17 +36,24 @@ export function InlineSelect<T extends string>({
   label: string;
   className?: string;
   id?: string;
+  /** Id of a hint read after the name (e.g. what changing it does). */
+  describedBy?: string;
+  variant?: 'field' | 'inline';
 }) {
   const current = options.find((o) => o.value === value) ?? options[0];
   return (
-    <span className={`isel ${className}`}>
+    <span className={`isel isel--${variant} ${className}`} data-isel>
+      {variant === 'field' ? <PencilLine aria-hidden className="isel-edit" strokeWidth={1.5} /> : null}
       <span aria-hidden className="isel-text">
         {current?.label}
       </span>
-      <ChevronDown aria-hidden className="isel-caret" strokeWidth={1.5} />
+      <span aria-hidden className="isel-cap">
+        <ChevronDown className="isel-caret" strokeWidth={1.5} />
+      </span>
       <select
         id={id}
         aria-label={label}
+        aria-describedby={describedBy}
         value={value}
         onChange={(e: ChangeEvent<HTMLSelectElement>) => onChange(e.currentTarget.value as T)}
         className="isel-native"

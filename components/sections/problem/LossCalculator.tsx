@@ -82,11 +82,18 @@ const fresh = (vertical: VerticalId, load = 0): CalcState => ({
 
 /**
  * "¿Cuánto te cuesta no tener esto?" — the visitor completes a sentence with their
- * numbers ("Tengo [una clínica]. Cada semana pierdo [10] turnos…") and a compact readout
- * shows the monthly loss in their currency (the year and the USD reference smaller).
- * "Ver la cuenta" unfolds the rest — lost revenue vs. team time with the exact
- * arithmetic, and the assumptions — so nothing is lost, only folded. All maths in
- * lib/calculator.ts; the result is labelled as an estimate with the visitor's numbers.
+ * numbers ("Tengo [✎ una clínica ⌄]. Cada semana pierdo [10] turnos…") and the readout
+ * shows the estimated loss per month and per year, both as large readings in their
+ * currency (the USD reference smaller). Right under them, "De dónde sale" compares lost
+ * revenue vs. team time to scale (bar + amounts + shares); "Ver la cuenta" unfolds each
+ * part's exact arithmetic, the totals and the assumptions. All maths in lib/calculator.ts;
+ * the result is labelled as an estimate with the visitor's numbers — no invented figure.
+ *
+ * The business is a native <select> styled as an editable field (InlineSelect "field"):
+ * every vertical in content/verticals.json, "Otro" included with its own generic
+ * defaults. No free text: a typed business would only relabel "Otro" and could read as
+ * tailored assumptions we don't have. Changing it loads that business's defaults and the
+ * rest of the sentence ("lost.{vertical}") — the formula never changes.
  *
  * Layout: header + sentence | readout (lg+); on phones the readout follows the sentence
  * and a light sticky mini reading keeps the number on screen while the full one is out
@@ -164,7 +171,8 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
   // ---- aria-live: the final total once the visitor stops editing. Silent until the
   // calculator is touched, so load-time changes (stored currency, live rates) aren't read.
   const [live, setLive] = useState(false);
-  const announceText = t('resultAnnounce', { amount: moneyPlain(loss.totalUsd) });
+  const yearUsd = perYear(loss.totalUsd);
+  const announceText = t('resultAnnounceYear', { amount: moneyPlain(loss.totalUsd), year: moneyPlain(yearUsd) });
   const [announced, setAnnounced] = useState(announceText);
   useEffect(() => {
     const id = window.setTimeout(() => setAnnounced(announceText), ANNOUNCE_DELAY_MS);
@@ -252,6 +260,8 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
     readout: `${uid}-readout`,
     math: `${uid}-math`,
     range: `${uid}-range`,
+    verticalHint: `${uid}-vertical-hint`,
+    split: `${uid}-split`,
   };
   const flashKey = current.load ? String(current.load) : undefined;
   const describedBy = (field: CalculatorField) => (rangeNote?.field === field ? ids.range : undefined);
@@ -268,7 +278,16 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
 
   const verticalOptions = verticals.map((x) => ({ value: x.id, label: t(`verticalOption.${x.id}`) }));
   const sentence = {
-    vertical: () => <InlineSelect value={verticalId} options={verticalOptions} onChange={pickVertical} label={t('verticalLegend')} />,
+    vertical: () => (
+      <InlineSelect
+        value={verticalId}
+        options={verticalOptions}
+        onChange={pickVertical}
+        label={t('verticalLegend')}
+        describedBy={ids.verticalHint}
+        className="calc-isel"
+      />
+    ),
     lost: () => (
       <ValueField
         id={ids.lost}
@@ -357,6 +376,7 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
   const waMessage = verticalName ? t('whatsapp', { ...waValues, vertical: verticalName }) : t('whatsappNoVertical', waValues);
   const rateText = currency === 'USD' ? localFmt(hourlyLocal) : `${formatMoney(DEFAULT_HOURLY_USD, 'USD', rates, locale)} ${tc('approxPrefix')} ${localFmt(hourlyLocal)}`;
   const totalText = moneyPlain(loss.totalUsd);
+  const yearText = moneyPlain(yearUsd);
   const glow = 0.35 + 0.65 * Math.min(1, loss.totalUsd / GLOW_FULL_USD);
   const [mathOpen, setMathOpen] = useState(false);
   const miniIdle = totalOnScreen || !intoSentence;
@@ -402,6 +422,9 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
           <p data-reveal className="calc-sentence">
             {t.rich('lead', sentence)} {t.rich(`lost.${verticalId}`, sentence)} {t.rich('hours', sentence)}
           </p>
+          <p id={ids.verticalHint} className="sr-only">
+            {t('verticalHint')}
+          </p>
 
           <div data-reveal className="calc-presets" role="group" aria-label={t('presetsFor', { label: fieldLabel[presetField] })}>
             <p aria-hidden className="calc-presets-label label">
@@ -436,19 +459,66 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
             <p className="calc-honest">{t('honest')}</p>
           </header>
 
+          {/* The two readings that matter, both large: per month, then per year (× 12). */}
           <div className="calc-reading">
-            <p className="label calc-reading-unit">{t('perMonth')}</p>
-            <p ref={totalRef} aria-hidden className="calc-total readout" style={{ '--chars': (approx ? 1 : 0) + totalText.length } as CSSProperties}>
-              {approx ? <span className="calc-approx">{tc('approxPrefix')}</span> : null}
-              <RollingNumber value={loss.totalUsd} format={moneyPlain} started={started} srOnly={false} introDuration={1.8} />
-            </p>
-            <p className="calc-reading-sub readout">
-              <span>{t('perYear', { amount: money(perYear(loss.totalUsd)) })}</span>
-              {currency !== 'USD' ? <span className="calc-usd">{t('usdRef', { amount: formatMoney(loss.totalUsd, 'USD', rates, locale) })}</span> : null}
-            </p>
+            <div className="calc-reading-row">
+              <p className="label calc-reading-unit">{t('perMonth')}</p>
+              <p ref={totalRef} aria-hidden className="calc-total readout" style={{ '--chars': (approx ? 1 : 0) + totalText.length } as CSSProperties}>
+                {approx ? <span className="calc-approx">{tc('approxPrefix')}</span> : null}
+                <RollingNumber value={loss.totalUsd} format={moneyPlain} started={started} srOnly={false} introDuration={1.8} />
+              </p>
+            </div>
+            <div className="calc-reading-row calc-reading-row--year">
+              <p className="label calc-reading-unit">{t('perYearLabel')}</p>
+              <p aria-hidden className="calc-year readout" style={{ '--chars': (approx ? 1 : 0) + yearText.length } as CSSProperties}>
+                {approx ? <span className="calc-approx">{tc('approxPrefix')}</span> : null}
+                <RollingNumber value={yearUsd} format={moneyPlain} started={started} srOnly={false} introDuration={2.1} />
+              </p>
+            </div>
+            {currency !== 'USD' ? (
+              <p className="calc-reading-sub readout">
+                <span className="calc-usd">{t('usdRef', { amount: formatMoney(loss.totalUsd, 'USD', rates, locale) })}</span>
+              </p>
+            ) : null}
             <p className="sr-only" aria-live={live ? 'polite' : 'off'} aria-atomic="true">
               {announced}
             </p>
+          </div>
+
+          {/* Where it comes from: lost revenue (solid) vs. team time (hatched), to scale. */}
+          <div className="calc-split" role="group" aria-labelledby={ids.split} data-on={started || undefined}>
+            <p id={ids.split} className="label calc-split-title">
+              {t('splitTitle')}
+            </p>
+            <div aria-hidden className="calc-bar" style={{ '--a': shares.revenue, '--b': shares.time } as CSSProperties}>
+              <span className="calc-bar-a" />
+              <span className="calc-bar-b" />
+            </div>
+            <div aria-hidden className="calc-ruler" />
+            <dl className="calc-break">
+              <div className="calc-break-row">
+                <dt className="calc-break-name">
+                  <span aria-hidden className="calc-swatch calc-swatch--a" />
+                  <span>{t('lostRevenue')}</span>
+                  <span aria-hidden className="leader" />
+                </dt>
+                <dd className="calc-break-amount readout">
+                  {money(loss.lostRevenueUsd)}
+                  <span className="calc-break-pct"> · {pctFmt.format(shares.revenue)}</span>
+                </dd>
+              </div>
+              <div className="calc-break-row">
+                <dt className="calc-break-name">
+                  <span aria-hidden className="calc-swatch calc-swatch--b" />
+                  <span>{t('timeCost')}</span>
+                  <span aria-hidden className="leader" />
+                </dt>
+                <dd className="calc-break-amount readout">
+                  {money(loss.timeCostUsd)}
+                  <span className="calc-break-pct"> · {pctFmt.format(shares.time)}</span>
+                </dd>
+              </div>
+            </dl>
           </div>
 
           <div className="calc-math-block">
@@ -465,37 +535,23 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
               <span>{mathOpen ? t('hideMath') : t('showMath')}</span>
               <ChevronDown aria-hidden className="calc-math-caret" strokeWidth={1.5} />
             </button>
+            {/* The exact arithmetic of each part, the totals and the assumptions. */}
             <div id={ids.math} className="calc-math" hidden={!mathOpen}>
-              {/* Lost revenue (solid) + team time (hatched) on a ruler; the rows below carry the numbers. */}
-              <div aria-hidden className="calc-bar" style={{ '--a': shares.revenue, '--b': shares.time } as CSSProperties}>
-                <span className="calc-bar-a" />
-                <span className="calc-bar-b" />
-              </div>
-              <div aria-hidden className="calc-ruler" />
-              {/* Each part: name ··· amount, then its exact arithmetic and share. */}
-              <dl className="calc-break">
-                <div className="calc-break-row">
-                  <dt className="calc-break-name">
-                    <span aria-hidden className="calc-swatch calc-swatch--a" />
-                    <span>{t('lostRevenue')}</span>
-                    <span aria-hidden className="leader" />
-                  </dt>
-                  <dd className="calc-break-amount readout">{money(loss.lostRevenueUsd)}</dd>
-                  <dd className="calc-break-math readout">
+              <dl className="calc-math-lines">
+                <div className="calc-math-line">
+                  <dt>{t('lostRevenue')}</dt>
+                  <dd className="readout">
                     {t('mathLost', { count: decFmt.format(loss.lostPerMonth), unit: unit(loss.lostPerMonth), ticket: localFmt(ticket.local) })}
-                    <span className="calc-break-pct"> · {pctFmt.format(shares.revenue)}</span>
+                    {' = '}
+                    <span className="calc-math-result">{money(loss.lostRevenueUsd)}</span>
                   </dd>
                 </div>
-                <div className="calc-break-row">
-                  <dt className="calc-break-name">
-                    <span aria-hidden className="calc-swatch calc-swatch--b" />
-                    <span>{t('timeCost')}</span>
-                    <span aria-hidden className="leader" />
-                  </dt>
-                  <dd className="calc-break-amount readout">{money(loss.timeCostUsd)}</dd>
-                  <dd className="calc-break-math readout">
+                <div className="calc-math-line">
+                  <dt>{t('timeCost')}</dt>
+                  <dd className="readout">
                     {t('mathTime', { count: decFmt.format(loss.hoursPerMonth), rate: localFmt(hourlyLocal) })}
-                    <span className="calc-break-pct"> · {pctFmt.format(shares.time)}</span>
+                    {' = '}
+                    <span className="calc-math-result">{money(loss.timeCostUsd)}</span>
                   </dd>
                 </div>
               </dl>
@@ -503,6 +559,11 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
                 <span>{t('mathTotal')}</span>
                 <span aria-hidden className="leader" />
                 <span className="readout">{money(loss.totalUsd)}</span>
+              </p>
+              <p className="calc-math-total calc-math-total--year">
+                <span>{t('mathYear')}</span>
+                <span aria-hidden className="leader" />
+                <span className="readout">{money(yearUsd)}</span>
               </p>
               <p className="calc-assumptions">{t('assumptions', { weeks: decFmt.format(WEEKS_PER_MONTH), rate: rateText })}</p>
             </div>
