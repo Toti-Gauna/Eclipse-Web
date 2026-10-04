@@ -2,7 +2,7 @@ import { MessageCircle } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { TOTAL_STAGES } from '@/lib/portal/project';
-import { whatsappUrl } from '@/lib/whatsapp';
+import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { usePortal } from '../usePortal';
 
 /**
@@ -24,15 +24,10 @@ export function EmptyProjects() {
       </h2>
       <p className="pt-empty-body">{t('projects.empty.body')}</p>
       <div className="pt-empty-actions">
-        <a
-          href={whatsappUrl(t('projects.empty.message'))}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-ghost btn-sm"
-        >
+        <WhatsAppLink message={t('projects.empty.message')} origin="portal" extra={{ from: 'empty' }} className="btn btn-ghost btn-sm">
           <MessageCircle aria-hidden className="size-4" strokeWidth={1.6} />
           {t('projects.empty.cta')}
-        </a>
+        </WhatsAppLink>
         <Link href="/" className="pt-link">
           {t('nav.backToSite')}
         </Link>

@@ -13,11 +13,14 @@ export function StageMark({
   project,
   size = 18,
   layout = 'inline',
+  meaning = false,
   className = '',
 }: {
   project: PortalProject;
   size?: number;
   layout?: 'inline' | 'stack';
+  /** Adds what the stage means ("Ejecución del alcance") as a muted line. */
+  meaning?: boolean;
   className?: string;
 }) {
   const { t, stage } = usePortal();
@@ -39,6 +42,12 @@ export function StageMark({
           </>
         ) : null}
         <span className="pt-stage-name">{stage(project.stage)}</span>
+        {meaning ? (
+          <>
+            <span className="pt-stage-sep"> · </span>
+            <span className="pt-stage-meaning">{t(`stages.${project.stage}.short`)}</span>
+          </>
+        ) : null}
       </span>
     </span>
   );

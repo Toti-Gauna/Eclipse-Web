@@ -2,7 +2,7 @@ import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { portalPaths } from '@/lib/portal/routes';
-import { whatsappUrl } from '@/lib/whatsapp';
+import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { Breadcrumbs } from './Breadcrumbs';
 import { LoginForm } from './LoginForm';
 import { usePortal } from './usePortal';
@@ -64,10 +64,10 @@ export function LoginView() {
           <div className="pt-help">
             <p className="pt-help-title">{t('login.helpTitle')}</p>
             <p className="pt-fine">{t('login.help')}</p>
-            <a href={whatsappUrl(t('login.helpMessage'))} target="_blank" rel="noopener noreferrer" className="pt-link">
+            <WhatsAppLink message={t('login.helpMessage')} origin="portal" extra={{ from: 'login' }} className="pt-link">
               <MessageCircle aria-hidden strokeWidth={1.6} />
               {t('login.helpCta')}
-            </a>
+            </WhatsAppLink>
           </div>
         </div>
       </div>

@@ -16,8 +16,9 @@ const clamp = (n: number) => Math.max(-1, Math.min(1, n));
  * Star parallax, mouse only: the stars and the eclipse follow the pointer a little.
  * - rAF-throttled, eased, depth-weighted transforms on [data-star-layer] (gsap
  *   quickSetter, so it composes with the scroll/entrance tweens on other props).
- *   The layers are compositor layers on fine pointers (hero.css), so a move is a
- *   compositor update, never a repaint of the stars.
+ * - While the loop runs, the moving layers get `will-change: transform` (a move is then
+ *   a compositor update, never a repaint of the stars); it is dropped once the loop
+ *   settles, so scrolling and rest don't carry three extra full-screen layers.
  * - The loop stops as soon as it settles, and while the hero is off-screen.
  * - Touch devices get no parallax (v3: no permanent decorative animation): the v2
  *   device-orientation version kept the loop running for as long as the phone was
@@ -37,10 +38,17 @@ export function useStarParallax(stageRef: RefObject<HTMLElement | null>, enabled
       })),
       ...Array.from(stage.querySelectorAll<HTMLElement>('[data-hero-eclipse-motion]')).map((el) => ({ el, depth: ECLIPSE_DEPTH })),
     ].map(({ el, depth }) => ({
+      el,
       depth,
       setX: gsap.quickSetter(el, 'x', 'px') as (v: number) => void,
       setY: gsap.quickSetter(el, 'y', 'px') as (v: number) => void,
     }));
+    let layered = false;
+    const layer = (on: boolean) => {
+      if (on === layered) return;
+      layered = on;
+      for (const t of targets) t.el.style.willChange = on ? 'transform' : '';
+    };
 
     const target = { x: 0, y: 0 };
     const current = { x: 0, y: 0 };
@@ -56,15 +64,19 @@ export function useStarParallax(stageRef: RefObject<HTMLElement | null>, enabled
       }
       const settled = Math.abs(target.x - current.x) < 0.0005 && Math.abs(target.y - current.y) < 0.0005;
       raf = settled || !inView ? 0 : requestAnimationFrame(tick);
+      if (!raf) layer(false);
     };
     const kick = () => {
-      if (!raf && inView) raf = requestAnimationFrame(tick);
+      if (raf || !inView) return;
+      layer(true);
+      raf = requestAnimationFrame(tick);
     };
 
     const io = new IntersectionObserver((entries) => {
       const entry = entries[entries.length - 1];
       inView = entry.isIntersecting;
-      if (inView) kick();
+      // Back on screen with a move still pending: finish it.
+      if (inView && (Math.abs(target.x - current.x) > 0.0005 || Math.abs(target.y - current.y) > 0.0005)) kick();
     });
     io.observe(section);
 
@@ -80,6 +92,7 @@ export function useStarParallax(stageRef: RefObject<HTMLElement | null>, enabled
       io.disconnect();
       cancelAnimationFrame(raf);
       window.removeEventListener('pointermove', onMove);
+      layer(false);
       for (const t of targets) {
         t.setX(0);
         t.setY(0);

@@ -304,6 +304,13 @@
 .svc-panel[hidden] {
   display: none;
 }
+/* The default family has no `hidden` attribute so desktop shows it before hydration too
+   (see ServicesIndex); phones keep it closed until tapped. */
+@media (max-width: 1023.98px) {
+  .svc-row[data-default]:not([data-open]) .svc-panel {
+    display: none;
+  }
+}
 @media (min-width: 1024px) {
   .svc-panel {
     padding: 0 0 34px calc(1.75rem + 1rem + 28px);

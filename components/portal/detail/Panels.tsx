@@ -21,6 +21,7 @@ export function UpdatesLog({ project }: { project: PortalProject }) {
               {u.stageChange ? (
                 <p className="pt-log-change">
                   {u.stageChange.from ? t('detail.updates.stageChange') : t('detail.updates.projectStart')}
+                  <span className="sr-only">: </span>
                   <b>
                     {u.stageChange.from ? `${p.stage(u.stageChange.from)} → ` : ''}
                     {p.stage(u.stageChange.to)}
@@ -238,7 +239,7 @@ export function StagesGuide({ project }: { project: PortalProject }) {
       <li key={stage} className="pt-guide-item" data-current={current ? '' : undefined}>
         <div className="pt-guide-head">
           <PhaseGlyph phase={phase} size={20} />
-          {n ? <span className="pt-guide-n">{t('stage.position', { n, total: TOTAL_STAGES })}</span> : null}
+          {n ? <span className="pt-guide-n">{t('stage.position', { n, total: TOTAL_STAGES })}</span> : null}{' '}
           <h3 className="pt-h3">{t(`stages.${stage}.name`)}</h3>
           <span className="pt-guide-short">{t(`stages.${stage}.short`)}</span>
           {current ? <span className="pt-tag pt-tag-turn">{t('detail.stagesTab.current')}</span> : null}

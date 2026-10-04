@@ -1,7 +1,8 @@
 /**
  * Synthetic fixtures for the client portal mockup — nothing here is a real client, project,
- * person, document or credential. The company and the people are fictional; every screen
- * shows the "Demo" badge and the demo notice next to them.
+ * person, document or credential. The company and its people are fictional; Eclipse's side
+ * appears by role only (no invented team members). Every screen shows the "Demo" badge and
+ * the demo notice next to them.
  *
  * One organization ("Ferretería La Muestra") signed in as its admin, with four projects in
  * different public stages: a website in 2 de 5 · Construcción, a chatbot waiting for the
@@ -18,15 +19,15 @@ export const PORTAL_COMPANY = 'Ferretería La Muestra';
 export const PEOPLE = {
   lucia: { name: 'Lucía Ferro', side: 'client', role: 'clientAdmin' },
   martin: { name: 'Martín Ferro', side: 'client', role: 'clientCollaborator' },
-  abril: { name: 'Abril Sur', side: 'eclipse', role: 'projectLead' },
-  tomas: { name: 'Tomás Luna', side: 'eclipse', role: 'developer' },
-  nina: { name: 'Nina Vega', side: 'eclipse', role: 'designer' },
+  lead: { side: 'eclipse', role: 'projectLead' },
+  dev: { side: 'eclipse', role: 'developer' },
+  design: { side: 'eclipse', role: 'designer' },
 } as const satisfies Record<string, Person>;
 
 export type PersonId = keyof typeof PEOPLE;
 
 /** Who is "signed in" to the demo: owners equal to this person read as "vos". */
-export const PORTAL_VIEWER: PersonId = 'lucia';
+export const PORTAL_VIEWER = 'lucia' satisfies PersonId;
 
 export const PORTAL_PROJECTS: readonly PortalProject[] = [
   {
@@ -35,20 +36,20 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
     items: ['web-multi'],
     stage: 'build',
     startedOn: '2026-09-15',
-    lead: 'abril',
+    lead: 'lead',
     history: [
       { stage: 'preparation', start: '2026-09-15', end: '2026-09-22' },
       { stage: 'build', start: '2026-09-23' },
     ],
-    nextMilestone: { owner: 'tomas', due: '2026-10-16' },
+    nextMilestone: { owner: 'dev', due: '2026-10-16' },
     deliveryEstimate: '2026-11-06',
     updates: [
-      { id: 'home', date: '2026-10-02', author: 'tomas' },
-      { id: 'faq', date: '2026-09-29', author: 'abril' },
-      { id: 'design', date: '2026-09-25', author: 'nina' },
-      { id: 'build', date: '2026-09-23', author: 'abril', stageChange: { from: 'preparation', to: 'build' } },
-      { id: 'inputs', date: '2026-09-19', author: 'abril' },
-      { id: 'start', date: '2026-09-15', author: 'abril', stageChange: { from: null, to: 'preparation' } },
+      { id: 'home', date: '2026-10-02', author: 'dev' },
+      { id: 'faq', date: '2026-09-29', author: 'lead' },
+      { id: 'design', date: '2026-09-25', author: 'design' },
+      { id: 'build', date: '2026-09-23', author: 'lead', stageChange: { from: 'preparation', to: 'build' } },
+      { id: 'inputs', date: '2026-09-19', author: 'lead' },
+      { id: 'start', date: '2026-09-15', author: 'lead', stageChange: { from: null, to: 'preparation' } },
     ],
     scope: {
       version: '1.0',
@@ -60,11 +61,11 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
       { id: 'faq', status: 'accepted', requestedOn: '2026-09-25', requestedBy: 'lucia', decidedOn: '2026-09-29' },
     ],
     documents: [
-      { id: 'faq', category: 'decision', version: '1.0', date: '2026-09-29', author: 'abril' },
-      { id: 'sitemap', category: 'deliverable', version: '1.1', date: '2026-09-24', author: 'nina' },
-      { id: 'kickoff', category: 'record', version: '1.0', date: '2026-09-23', author: 'abril' },
+      { id: 'faq', category: 'decision', version: '1.0', date: '2026-09-29', author: 'lead' },
+      { id: 'sitemap', category: 'deliverable', version: '1.1', date: '2026-09-24', author: 'design' },
+      { id: 'kickoff', category: 'record', version: '1.0', date: '2026-09-23', author: 'lead' },
       { id: 'assets', category: 'input', version: '2', date: '2026-09-19', author: 'martin' },
-      { id: 'proposal', category: 'proposal', version: '1.0', date: '2026-09-15', author: 'abril' },
+      { id: 'proposal', category: 'proposal', version: '1.0', date: '2026-09-15', author: 'lead' },
     ],
   },
   {
@@ -73,7 +74,7 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
     items: ['chatbot'],
     stage: 'clientReview',
     startedOn: '2026-08-25',
-    lead: 'abril',
+    lead: 'lead',
     history: [
       { stage: 'preparation', start: '2026-08-25', end: '2026-08-29' },
       { stage: 'build', start: '2026-09-01', end: '2026-09-19' },
@@ -84,12 +85,12 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
     action: { kind: 'approve', requestedOn: '2026-09-30' },
     deliveryEstimate: '2026-10-14',
     updates: [
-      { id: 'estimate', date: '2026-10-01', author: 'abril' },
-      { id: 'review', date: '2026-09-30', author: 'abril', stageChange: { from: 'eclipseReview', to: 'clientReview' } },
-      { id: 'tone', date: '2026-09-26', author: 'nina' },
-      { id: 'qa', date: '2026-09-22', author: 'tomas', stageChange: { from: 'build', to: 'eclipseReview' } },
-      { id: 'build', date: '2026-09-01', author: 'abril', stageChange: { from: 'preparation', to: 'build' } },
-      { id: 'start', date: '2026-08-25', author: 'abril', stageChange: { from: null, to: 'preparation' } },
+      { id: 'estimate', date: '2026-10-01', author: 'lead' },
+      { id: 'review', date: '2026-09-30', author: 'lead', stageChange: { from: 'eclipseReview', to: 'clientReview' } },
+      { id: 'tone', date: '2026-09-26', author: 'design' },
+      { id: 'qa', date: '2026-09-22', author: 'dev', stageChange: { from: 'build', to: 'eclipseReview' } },
+      { id: 'build', date: '2026-09-01', author: 'lead', stageChange: { from: 'preparation', to: 'build' } },
+      { id: 'start', date: '2026-08-25', author: 'lead', stageChange: { from: null, to: 'preparation' } },
     ],
     scope: {
       version: '1.0',
@@ -98,10 +99,10 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
     },
     changes: [{ id: 'orders', status: 'estimated', requestedOn: '2026-09-24', requestedBy: 'lucia' }],
     documents: [
-      { id: 'estimate', category: 'decision', version: '1.0', date: '2026-10-01', author: 'abril' },
-      { id: 'answers', category: 'deliverable', version: '3', date: '2026-09-30', author: 'nina' },
-      { id: 'qa', category: 'record', version: '1.0', date: '2026-09-29', author: 'tomas' },
-      { id: 'proposal', category: 'proposal', version: '1.0', date: '2026-08-25', author: 'abril' },
+      { id: 'estimate', category: 'decision', version: '1.0', date: '2026-10-01', author: 'lead' },
+      { id: 'answers', category: 'deliverable', version: '3', date: '2026-09-30', author: 'design' },
+      { id: 'qa', category: 'record', version: '1.0', date: '2026-09-29', author: 'dev' },
+      { id: 'proposal', category: 'proposal', version: '1.0', date: '2026-08-25', author: 'lead' },
     ],
   },
   {
@@ -111,7 +112,7 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
     maintenance: 'esencial',
     stage: 'support',
     startedOn: '2026-07-06',
-    lead: 'abril',
+    lead: 'lead',
     history: [
       { stage: 'preparation', start: '2026-07-06', end: '2026-07-10' },
       { stage: 'build', start: '2026-07-13', end: '2026-07-31' },
@@ -120,14 +121,14 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
       { stage: 'delivery', start: '2026-08-10', end: '2026-08-11' },
       { stage: 'support', start: '2026-08-12' },
     ],
-    nextMilestone: { owner: 'tomas', due: '2026-11-02' },
+    nextMilestone: { owner: 'dev', due: '2026-11-02' },
     updates: [
-      { id: 'september', date: '2026-10-01', author: 'tomas' },
-      { id: 'restock', date: '2026-09-08', author: 'abril' },
-      { id: 'august', date: '2026-09-01', author: 'tomas' },
-      { id: 'support', date: '2026-08-12', author: 'abril', stageChange: { from: 'delivery', to: 'support' } },
-      { id: 'delivery', date: '2026-08-10', author: 'abril', stageChange: { from: 'clientReview', to: 'delivery' } },
-      { id: 'start', date: '2026-07-06', author: 'abril', stageChange: { from: null, to: 'preparation' } },
+      { id: 'september', date: '2026-10-01', author: 'dev' },
+      { id: 'restock', date: '2026-09-08', author: 'lead' },
+      { id: 'august', date: '2026-09-01', author: 'dev' },
+      { id: 'support', date: '2026-08-12', author: 'lead', stageChange: { from: 'delivery', to: 'support' } },
+      { id: 'delivery', date: '2026-08-10', author: 'lead', stageChange: { from: 'clientReview', to: 'delivery' } },
+      { id: 'start', date: '2026-07-06', author: 'lead', stageChange: { from: null, to: 'preparation' } },
     ],
     scope: {
       version: '1.0',
@@ -138,10 +139,10 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
       { id: 'restock', status: 'accepted', requestedOn: '2026-09-04', requestedBy: 'lucia', decidedOn: '2026-09-08' },
     ],
     documents: [
-      { id: 'september', category: 'deliverable', version: '1.0', date: '2026-10-01', author: 'tomas' },
-      { id: 'manual', category: 'manual', version: '1.0', date: '2026-08-11', author: 'nina' },
-      { id: 'handover', category: 'record', version: '1.0', date: '2026-08-11', author: 'abril' },
-      { id: 'proposal', category: 'proposal', version: '1.0', date: '2026-07-06', author: 'abril' },
+      { id: 'september', category: 'deliverable', version: '1.0', date: '2026-10-01', author: 'dev' },
+      { id: 'manual', category: 'manual', version: '1.0', date: '2026-08-11', author: 'design' },
+      { id: 'handover', category: 'record', version: '1.0', date: '2026-08-11', author: 'lead' },
+      { id: 'proposal', category: 'proposal', version: '1.0', date: '2026-07-06', author: 'lead' },
     ],
   },
   {
@@ -152,7 +153,7 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
     pausedIn: 'build',
     pause: { since: '2026-09-24', owner: 'lucia' },
     startedOn: '2026-09-01',
-    lead: 'abril',
+    lead: 'lead',
     history: [
       { stage: 'preparation', start: '2026-09-01', end: '2026-09-04' },
       { stage: 'build', start: '2026-09-07' },
@@ -160,10 +161,10 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
     nextMilestone: { owner: 'lucia', due: '2026-10-09' },
     action: { kind: 'confirm', requestedOn: '2026-09-24' },
     updates: [
-      { id: 'paused', date: '2026-09-24', author: 'abril', stageChange: { from: 'build', to: 'paused' } },
-      { id: 'calls', date: '2026-09-18', author: 'tomas' },
-      { id: 'build', date: '2026-09-07', author: 'abril', stageChange: { from: 'preparation', to: 'build' } },
-      { id: 'start', date: '2026-09-01', author: 'abril', stageChange: { from: null, to: 'preparation' } },
+      { id: 'paused', date: '2026-09-24', author: 'lead', stageChange: { from: 'build', to: 'paused' } },
+      { id: 'calls', date: '2026-09-18', author: 'dev' },
+      { id: 'build', date: '2026-09-07', author: 'lead', stageChange: { from: 'preparation', to: 'build' } },
+      { id: 'start', date: '2026-09-01', author: 'lead', stageChange: { from: null, to: 'preparation' } },
     ],
     scope: {
       version: '1.0',
@@ -172,8 +173,8 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
     },
     changes: [],
     documents: [
-      { id: 'script', category: 'deliverable', version: '2', date: '2026-09-18', author: 'tomas' },
-      { id: 'proposal', category: 'proposal', version: '1.0', date: '2026-09-01', author: 'abril' },
+      { id: 'script', category: 'deliverable', version: '2', date: '2026-09-18', author: 'dev' },
+      { id: 'proposal', category: 'proposal', version: '1.0', date: '2026-09-01', author: 'lead' },
     ],
   },
 ];

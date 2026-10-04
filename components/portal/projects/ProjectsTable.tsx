@@ -35,12 +35,12 @@ export function ProjectsTable() {
                 <th scope="row">
                   <Link href={href} className="pt-table-name">
                     {name}
-                  </Link>
+                  </Link>{' '}
                   <span className="pt-table-code">{project.code}</span>
                 </th>
                 <td>{p.service(project)}</td>
                 <td>
-                  <StageMark project={project} layout="stack" />
+                  <StageMark project={project} layout="stack" meaning />
                 </td>
                 <td>
                   {last ? (
@@ -61,7 +61,7 @@ export function ProjectsTable() {
                 </td>
                 <td>
                   <div className="pt-table-action">
-                    {project.action ? <span className="pt-tag pt-tag-attn">{t('projects.actionNeeded')}</span> : null}
+                    {project.action ? <span className="pt-tag pt-tag-attn">{t('projects.actionNeeded')}</span> : null}{' '}
                     <Link href={href} className="btn btn-ghost btn-sm">
                       {project.action ? t('projects.review') : t('projects.view')}
                       <span className="sr-only">: {name}</span>

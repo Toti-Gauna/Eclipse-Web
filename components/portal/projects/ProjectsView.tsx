@@ -25,7 +25,7 @@ export function ProjectsView() {
       />
       <header className="pt-dash-head">
         <p className="pt-kicker">
-          <span className="badge-demo">{t('badge')}</span>
+          <span className="badge-demo">{t('badge')}</span>{' '}
           <span className="label">{t('projects.label')}</span>
         </p>
         <h1 className="display pt-hello">{t('projects.hello', { name: firstName })}</h1>

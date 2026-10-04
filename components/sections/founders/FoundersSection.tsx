@@ -107,6 +107,7 @@ export function FoundersSection({ data = foundersContent, demoFilled = false }: 
                   track('founder_cta_clicked', { slot: nextSlot >= 0 ? slots[nextSlot].id : 'none', position: nextSlot + 1 });
                 }}
                 className="btn btn-primary w-full sm:w-auto"
+                data-page-cta
               >
                 {t('slot.cta')}
                 <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.75} />
@@ -125,6 +126,7 @@ export function FoundersSection({ data = foundersContent, demoFilled = false }: 
                 aria-label={t('slot.ctaLabel', { n: nextSlot + 1, total })}
                 onClick={() => track('founder_cta_clicked', { slot: nextSlot >= 0 ? slots[nextSlot].id : 'none', position: nextSlot + 1 })}
                 className="btn btn-primary w-full sm:w-auto"
+                data-page-cta
               >
                 {t('slot.cta')}
                 <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.75} />

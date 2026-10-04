@@ -34,8 +34,8 @@ export function StageTimeline({ project }: { project: PortalProject }) {
               aria-current={step.status === 'current' || step.status === 'paused' ? 'step' : undefined}
             >
               <PhaseGlyph phase={step.n / TOTAL_STAGES} size={28} className="pt-rail-mark" />
-              <span className="pt-rail-n">{t('stage.position', { n: step.n, total: TOTAL_STAGES })}</span>
-              <span className="pt-rail-name">{p.stage(step.stage)}</span>
+              <span className="pt-rail-n">{t('stage.position', { n: step.n, total: TOTAL_STAGES })}</span>{' '}
+              <span className="pt-rail-name">{p.stage(step.stage)}</span>{' '}
               <span className="pt-rail-status">
                 <strong>{t(`stage.status.${step.status}`)}</strong>
                 {date ? (
@@ -52,7 +52,7 @@ export function StageTimeline({ project }: { project: PortalProject }) {
       {support ? (
         <p className="pt-rail-extra">
           <PhaseGlyph phase={1} size={20} />
-          <strong>{plan ? t('detail.supportWith', { plan: plan.name }) : p.stage('support')}</strong>
+          <strong>{plan ? t('detail.supportWith', { plan: plan.name }) : p.stage('support')}</strong>{' '}
           <span className="pt-fine">
             {t('stage.status.current')} · <span className="pt-date">{t('stage.since', { date: p.date(support.start) })}</span>
           </span>

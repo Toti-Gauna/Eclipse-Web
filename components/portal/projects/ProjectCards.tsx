@@ -24,7 +24,7 @@ export function ProjectCards() {
               aria-labelledby={titleId}
             >
               <div className="pt-card-top">
-                <span className="pt-code">{project.code}</span>
+                <span className="pt-code">{project.code}</span>{' '}
                 {project.action ? <span className="pt-tag pt-tag-attn">{t('projects.actionNeeded')}</span> : null}
               </div>
               <h3 id={titleId} className="pt-card-title">
@@ -37,7 +37,7 @@ export function ProjectCards() {
                 <div>
                   <dt>{t('projects.columns.stage')}</dt>
                   <dd>
-                    <StageMark project={project} layout="stack" />
+                    <StageMark project={project} layout="stack" meaning />
                   </dd>
                 </div>
                 <div>

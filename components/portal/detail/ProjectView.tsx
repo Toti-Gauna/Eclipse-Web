@@ -30,8 +30,8 @@ export function ProjectView({ project }: { project: PortalProject }) {
       />
       <header className="pt-detail-head">
         <p className="pt-detail-meta">
-          <span className="badge-demo">{t('badge')}</span>
-          <span className="pt-detail-code">{project.code}</span>
+          <span className="badge-demo">{t('badge')}</span>{' '}
+          <span className="pt-detail-code">{project.code}</span>{' '}
           <span>{PORTAL_COMPANY}</span>
         </p>
         <h1 className="display pt-detail-title">{name}</h1>

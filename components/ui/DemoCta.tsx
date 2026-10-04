@@ -12,18 +12,21 @@ import type { WhatsAppOrigin } from '@/lib/whatsapp';
 
 /**
  * "Pedí tu demo": opens WhatsApp with a prefilled message that includes the
- * vertical chosen in the hero (if any).
+ * vertical chosen in the hero (if any). `pageCta` marks a section's solid amber
+ * CTA ([data-page-cta]): while it is on screen the header's CTA turns quiet.
  */
 export function DemoCta({
   origin,
   className = 'btn btn-primary',
   children,
   icon = true,
+  pageCta = false,
 }: {
   origin: WhatsAppOrigin;
   className?: string;
   children?: ReactNode;
   icon?: boolean;
+  pageCta?: boolean;
 }) {
   const t = useTranslations();
   const locale = useLocale() as Locale;
@@ -37,6 +40,7 @@ export function DemoCta({
       origin={origin}
       extra={{ vertical: vertical ?? 'none' }}
       className={className}
+      data-page-cta={pageCta || undefined}
       onClick={() => play('glint')}
     >
       {icon ? <MessageCircle aria-hidden className="size-[1.1em]" strokeWidth={1.8} /> : null}

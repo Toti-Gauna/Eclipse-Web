@@ -10,6 +10,7 @@ import { baseMetadata } from '@/lib/seo';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { Header } from '@/components/layout/Header';
 import { DEMO_NAMESPACES } from '@/components/demos/namespaces';
+import { PORTAL_NAMESPACES } from '@/lib/portal/namespaces';
 import { Footer } from '@/components/layout/Footer';
 import { LazyHydrate } from '@/components/motion/LazyHydrate';
 import { Loader, LOADER_HEAD_SCRIPT } from '@/components/loader/Loader';
@@ -49,12 +50,13 @@ export default async function LocaleLayout({
   const tLoader = await getTranslations('loader');
   // Demo copy is loaded with the demo code (<DemoMessages>). In development it stays in the
   // payload so drafts (messages/drafts, overlaid server-side only) reach the demos too.
+  // The portal translates on the server (its client components get plain strings), so its
+  // namespace stays out of every page's payload as well.
+  const serverOnly: readonly string[] = [...DEMO_NAMESPACES, ...PORTAL_NAMESPACES];
   const clientMessages =
     process.env.NODE_ENV === 'development'
       ? messages
-      : Object.fromEntries(
-          Object.entries(messages).filter(([ns]) => !(DEMO_NAMESPACES as readonly string[]).includes(ns)),
-        );
+      : Object.fromEntries(Object.entries(messages).filter(([ns]) => !serverOnly.includes(ns)));
 
   return (
     <html lang={localeTags[locale as Locale]} suppressHydrationWarning className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable}`}>

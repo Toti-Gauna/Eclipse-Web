@@ -93,7 +93,12 @@
 .hdr-cta-quiet svg {
   color: var(--accent);
 }
+/* Below 360px (not a target, but no spill): no glyph, a tighter pill. */
 @media (max-width: 359.98px) {
+  .hdr-cta {
+    padding-inline: 0.65rem;
+    font-size: 0.8rem;
+  }
   .hdr-cta svg {
     display: none;
   }

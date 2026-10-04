@@ -566,9 +566,12 @@
 
 /* ------------------------------------------------------------------ */
 /* v2 · motion signature                                                */
-/* Occultation (components/motion/Occult) and readouts live in JS;      */
-/* here: the drawn hairline (<DrawLine>) and the primary-button glint.  */
-/* In @layer components so utilities (absolute, w-full…) still win.     */
+/* The once-only entrances are CSS transitions/animations started by a  */
+/* pooled IntersectionObserver (components/motion/observeEnter): the    */
+/* drawn hairline (<DrawLine>), <Reveal>, <Occult>, <LightSweep>; plus  */
+/* the primary-button glint. No ScrollTrigger, no style reads (v3).     */
+/* Base styles in @layer components so utilities (absolute, w-full…)    */
+/* still win; the entrance states sit outside it (see below).           */
 /* ------------------------------------------------------------------ */
 @layer components {
   .draw-line {
@@ -585,7 +588,6 @@
     width: 1px;
     height: 100%;
   }
-
   /* Glint: a diamond-ring sparkle (bright point + cross flare) runs along the pill's upper
      rim once on hover / keyboard focus, clear of the label. The pseudo-element is the
      button's own box with the sparkle painted 18px from its left edge, translated across:
@@ -614,6 +616,60 @@
   .btn-primary:hover::after,
   .btn-primary:focus-visible::after {
     animation: btn-glint 0.9s var(--ease-soft) backwards;
+  }
+}
+
+/* Entrance states (outside the layer: like the inline styles GSAP used to write, they
+   win over utilities while they apply; they're removed when the entrance ends). */
+.draw-line[data-draw-state] {
+  transform-origin: var(--draw-origin, 0% 50%);
+}
+.draw-line[data-draw='x'][data-draw-state='hidden'] {
+  transform: scaleX(0);
+}
+.draw-line[data-draw='y'][data-draw-state='hidden'] {
+  transform: scaleY(0);
+}
+.draw-line[data-draw-state='drawing'] {
+  transition: transform var(--draw-duration, 0.9s) var(--ease-expo) var(--draw-delay, 0s);
+}
+
+/* <Reveal>: children rise 24px and fade in, staggered (--reveal-delay per child). */
+[data-reveal-root='hidden'] [data-reveal] {
+  opacity: 0;
+  translate: 0 24px;
+}
+[data-reveal-root='playing'] [data-reveal] {
+  transition:
+    opacity 0.9s var(--ease-expo) var(--reveal-delay, 0ms),
+    translate 0.9s var(--ease-expo) var(--reveal-delay, 0ms);
+}
+
+/* <Occult>: a disc or an edge of light uncovers the block (expo in-out). */
+[data-occult='hidden'] {
+  clip-path: var(--occult-from);
+}
+[data-occult='playing'] {
+  clip-path: var(--occult-to);
+  transition: clip-path var(--occult-duration, 0.9s) cubic-bezier(0.87, 0, 0.13, 1) var(--occult-delay, 0s);
+}
+
+/* <LightSweep>: the beam crosses once (power2 in-out). */
+.light-sweep-beam[data-sweep] {
+  animation: light-sweep 1.4s cubic-bezier(0.45, 0, 0.55, 1) both;
+}
+
+@keyframes light-sweep {
+  from {
+    opacity: 1;
+    transform: translateX(-120%);
+  }
+  99% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(120%);
   }
 }
 

@@ -310,9 +310,8 @@ a.pt-crumb:hover {
 .pt-stage[data-layout='stack'] .pt-stage-pos {
   display: block;
   margin-bottom: 1px;
-  font-size: 0.6875rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
 }
 .pt-stage[data-layout='stack'] .pt-stage-sep {
   position: absolute;
@@ -324,6 +323,13 @@ a.pt-crumb:hover {
 }
 .pt-stage[data-layout='stack'] .pt-stage-name {
   font-weight: 500;
+}
+.pt-stage-meaning {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--fg-muted);
 }
 
 /* ---- Login ------------------------------------------------------------------ */
@@ -631,9 +637,10 @@ a.pt-crumb:hover {
     gap: 2px;
   }
   .pt-seg-option span {
-    padding: 4px 2px;
+    padding: 4px 6px;
     font-size: 0.75rem;
     line-height: 1.2;
+    white-space: nowrap;
   }
 }
 .pt-seg-option input {
@@ -648,7 +655,7 @@ a.pt-crumb:hover {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 14px;
   text-align: center;
   border-radius: 999px;

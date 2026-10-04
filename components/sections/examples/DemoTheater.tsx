@@ -330,6 +330,7 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
               aria-haspopup="dialog"
               aria-label={t('openDemoLabel', { business: v.business })}
               className="btn btn-primary ex-open"
+              data-page-cta
               onClick={openDemo}
               onPointerEnter={() => preloadShowcase(v.demo)}
               onFocus={() => preloadShowcase(v.demo)}

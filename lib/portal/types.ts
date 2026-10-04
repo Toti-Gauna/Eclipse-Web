@@ -24,12 +24,14 @@ export type IsoDate = string;
 export type PersonSide = 'eclipse' | 'client';
 export type RoleId = 'projectLead' | 'developer' | 'designer' | 'clientAdmin' | 'clientCollaborator';
 
-/** A fictional person. Names are proper nouns (same in every locale); roles are messages. */
-export interface Person {
-  name: string;
-  side: PersonSide;
-  role: RoleId;
-}
+/**
+ * A fictional person. Client-side names are proper nouns (same in every locale); roles are
+ * messages. Eclipse's side shows only its role ("Eclipse · Desarrollo"): the mockup never
+ * invents members of the real team (they come from the backend once it exists).
+ */
+export type Person =
+  | { side: Extract<PersonSide, 'client'>; name: string; role: RoleId }
+  | { side: Extract<PersonSide, 'eclipse'>; role: RoleId };
 
 /** A span of the timeline: a main stage (or Soporte) with its start and, once left, its end. */
 export interface StageSpan {

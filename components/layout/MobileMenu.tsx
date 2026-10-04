@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowLeft, LogIn, Menu, X } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -41,6 +41,7 @@ export function MobileMenu({
   const dialog = useRef<HTMLDialogElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const tl = useRef<gsap.core.Timeline | null>(null);
+  const portalLabelId = useId();
 
   const origin = () => {
     const r = button.current?.getBoundingClientRect();
@@ -157,8 +158,8 @@ export function MobileMenu({
           </div>
 
           {portal ? (
-            <nav aria-label={t('header.portal')} className="container-x pt-6">
-              <p data-menu-item className="label mb-3 text-fg-muted">
+            <nav aria-labelledby={portalLabelId} className="container-x pt-6">
+              <p id={portalLabelId} data-menu-item className="label mb-3 text-fg-muted">
                 {t('header.portal')}
               </p>
               <ul className="border-t border-line">

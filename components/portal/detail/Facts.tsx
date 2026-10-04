@@ -37,7 +37,7 @@ export function ProjectFacts({ project }: { project: PortalProject }) {
         </div>
         <div>
           <dt>{t('detail.facts.lead')}</dt>
-          <dd>{p.byline(project.lead)}</dd>
+          <dd>{p.role(project.lead)}</dd>
         </div>
         <div>
           <dt>{delivered ? p.stage('delivery') : t('detail.facts.delivery')}</dt>
@@ -102,7 +102,7 @@ export function OtherProjects({ current }: { current: PortalProject }) {
         {others.map((project) => (
           <li key={project.id}>
             <Link href={portalPaths.project(project.id)}>
-              <span className="pt-others-name">{p.text(project, 'name')}</span>
+              <span className="pt-others-name">{p.text(project, 'name')}</span>{' '}
               <StageMark project={project} size={14} />
             </Link>
           </li>

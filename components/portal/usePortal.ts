@@ -3,7 +3,7 @@ import type { Locale } from '@/i18n/routing';
 import { itemById, l, maintenanceById } from '@/lib/content';
 import { formatDate } from '@/lib/portal/format';
 import { isViewer, personById } from '@/lib/portal/project';
-import type { IsoDate, PortalProject, StageId } from '@/lib/portal/types';
+import type { IsoDate, PortalProject, RoleId, StageId } from '@/lib/portal/types';
 
 /**
  * Words for the portal screens, resolved on the server (no `'use client'`): every portal
@@ -17,21 +17,35 @@ export function usePortal() {
   /** "02 oct 2026" — calendar dates, formatted on the server only (no hydration drift). */
   const date = (iso: IsoDate) => formatDate(iso, locale);
 
-  /** "Vos", "Tomás Luna · Eclipse" or "Martín Ferro · tu equipo". */
+  /** Eclipse's side by role only: "Eclipse · Desarrollo". */
+  const eclipse = (role: RoleId) => t('people.eclipse', { role: t(`roles.${role}`) });
+
+  /** "Vos", "Eclipse · Desarrollo" or "Martín Ferro · tu equipo". */
   const person = (id: string) => {
     const p = personById(id);
     if (!p) return id;
     if (isViewer(id)) return t('people.you');
-    return t(p.side === 'eclipse' ? 'people.eclipse' : 'people.team', { name: p.name });
+    return p.side === 'eclipse' ? eclipse(p.role) : t('people.team', { name: p.name });
   };
 
-  /** "Abril Sur · Líder de proyecto". */
+  /** "Eclipse · Líder de proyecto" or "Lucía Ferro · Administradora". */
   const byline = (id: string) => {
     const p = personById(id);
-    return p ? `${p.name} · ${t(`roles.${p.role}`)}` : id;
+    if (!p) return id;
+    return p.side === 'eclipse' ? eclipse(p.role) : `${p.name} · ${t(`roles.${p.role}`)}`;
   };
 
-  const name = (id: string) => personById(id)?.name ?? id;
+  /** Just the role ("Líder de proyecto"), where the label already says who. */
+  const role = (id: string) => {
+    const p = personById(id);
+    return p ? t(`roles.${p.role}`) : id;
+  };
+
+  const name = (id: string) => {
+    const p = personById(id);
+    if (!p) return id;
+    return p.side === 'eclipse' ? eclipse(p.role) : p.name;
+  };
 
   /** Fixture copy: portal.demo.projects.<id>.<key>. */
   const text = (project: PortalProject, key: string) => t(`demo.projects.${project.id}.${key}`);
@@ -51,7 +65,7 @@ export function usePortal() {
     return plan ? { name: l(plan.name, locale), includes: l(plan.includes, locale) } : null;
   };
 
-  return { t, locale, date, person, byline, name, text, stage, service, maintenance };
+  return { t, locale, date, person, byline, role, name, text, stage, service, maintenance };
 }
 
 export type PortalText = ReturnType<typeof usePortal>;

@@ -29,7 +29,11 @@ export interface CoronaHandle {
   dispose: () => void;
 }
 
-const MAX_DPR = 1.5;
+/**
+ * The corona is soft: rendered at 1.25 device px per CSS px it looks the same as at 1.5
+ * (side-by-side check on a 2× screen, hero/gltest) with ~31 % fewer pixels to shade.
+ */
+const MAX_DPR = 1.25;
 /** How fast the corona's clock speeds up when woken / slows to a stop at rest (per 60 Hz frame). */
 const EASE_PER_FRAME = 0.06;
 

@@ -21,11 +21,8 @@ export const SECTION_IDS = {
   agent: 'contacto',
 } as const;
 
-/** Client portal mockup routes (locale-less paths for the next-intl Link). */
-export const PORTAL_ROUTES = {
-  login: '/portal/',
-  projects: '/portal/proyectos/',
-} as const;
+/** Client portal mockup routes (locale-less paths for the next-intl Link); defined in lib/portal/routes. */
+export { portalPaths as PORTAL_ROUTES } from '@/lib/portal/routes';
 
 export type ChromeMode = 'landing' | 'plan' | 'portal';
 

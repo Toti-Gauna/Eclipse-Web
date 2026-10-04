@@ -514,6 +514,7 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
               origin="calculator"
               extra={{ vertical: verticalId, monthly_loss_usd: Math.round(loss.totalUsd) }}
               className="btn btn-primary calc-cta"
+              data-page-cta
             >
               <MessageCircle aria-hidden className="size-[1.1em] shrink-0" strokeWidth={1.8} />
               {t('cta')}

@@ -1,5 +1,5 @@
 import { useLocale, useTranslations } from 'next-intl';
-import { Mail, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Mail, MessageCircle } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { units, l } from '@/lib/content';
 import { CONTACT_EMAIL } from '@/lib/env';
@@ -7,6 +7,7 @@ import type { Locale } from '@/i18n/routing';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { DemoCta } from '@/components/ui/DemoCta';
 import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
+import { LandingOnly } from './LandingOnly';
 import { PrefsDisclosure } from './PrefsDisclosure';
 import { NAV_LINKS, PORTAL_ROUTES } from './navLinks';
 
@@ -19,6 +20,8 @@ const BUILD_YEAR = new Date().getFullYear();
  *
  * The CTA's wrapper is a page-level primary CTA ([data-page-cta]): while it is on screen
  * the header's "Pedí tu demo" turns quiet, so the footer never shows two amber buttons.
+ * In the client portal the sales blocks (CTA, landing links, units teaser) give way to
+ * "Volver al sitio" (<LandingOnly>); contact, preferences and the notices stay.
  */
 export function Footer() {
   const t = useTranslations();
@@ -38,38 +41,49 @@ export function Footer() {
               ECLIPSE
             </p>
             <p className="mt-5 text-fg-muted">{t('footer.tagline')}</p>
-            <div data-page-cta className="mt-7 flex">
-              <DemoCta origin="footer" />
-            </div>
+            <LandingOnly
+              fallback={
+                <Link href="/" className={`${link} mt-5`}>
+                  <ArrowLeft aria-hidden className="size-4 shrink-0" strokeWidth={1.6} />
+                  {t('header.backToSite')}
+                </Link>
+              }
+            >
+              <div data-page-cta className="mt-7 flex">
+                <DemoCta origin="footer" />
+              </div>
+            </LandingOnly>
           </div>
 
           <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 md:max-w-xl lg:max-w-none">
-            <nav aria-labelledby="footer-explore">
-              <h2 id="footer-explore" className="eyebrow mb-3">
-                {t('footer.explore')}
-              </h2>
-              {/* Phones: two columns of links, so the list stays short. */}
-              <ul className="grid grid-cols-2 gap-x-6 sm:grid-cols-1">
-                {NAV_LINKS.map((item) => (
-                  <li key={item.id}>
-                    <Link href={`/#${item.hash}`} className={link}>
-                      {t(`nav.${item.id}`)}
+            <LandingOnly>
+              <nav aria-labelledby="footer-explore">
+                <h2 id="footer-explore" className="eyebrow mb-3">
+                  {t('footer.explore')}
+                </h2>
+                {/* Phones: two columns of links, so the list stays short. */}
+                <ul className="grid grid-cols-2 gap-x-6 sm:grid-cols-1">
+                  {NAV_LINKS.map((item) => (
+                    <li key={item.id}>
+                      <Link href={`/#${item.hash}`} className={link}>
+                        {t(`nav.${item.id}`)}
+                      </Link>
+                    </li>
+                  ))}
+                  <li>
+                    <BuildPlanButton source="footer" className={`${link} text-start`}>
+                      {t('header.buildPlan')}
+                    </BuildPlanButton>
+                  </li>
+                  <li>
+                    <Link href={PORTAL_ROUTES.login} prefetch={false} className={link}>
+                      {t('header.login')}
+                      <span className="sr-only"> {t('header.loginContext')}</span>
                     </Link>
                   </li>
-                ))}
-                <li>
-                  <BuildPlanButton source="footer" className={`${link} text-start`}>
-                    {t('header.buildPlan')}
-                  </BuildPlanButton>
-                </li>
-                <li>
-                  <Link href={PORTAL_ROUTES.login} prefetch={false} className={link}>
-                    {t('header.login')}
-                    <span className="sr-only"> {t('header.loginContext')}</span>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
+                </ul>
+              </nav>
+            </LandingOnly>
 
             <div>
               <h2 className="eyebrow mb-3">{t('footer.contact')}</h2>
@@ -94,22 +108,24 @@ export function Footer() {
         {/* Same content as the header popover and the phone menu, folded. */}
         <PrefsDisclosure layout="band" />
 
-        <div className="grid gap-6 border-b border-line py-10 md:grid-cols-2 md:items-end md:gap-8 md:py-12">
-          <p className="display text-3xl md:text-4xl">{t.rich('footer.teaser', { em })}</p>
-          <ul className="flex flex-wrap gap-x-8 gap-y-3 md:justify-end">
-            {active.map((u) => (
-              <li key={u.id} className="text-sm font-medium uppercase tracking-[0.18em]">
-                {u.name}
-                {u.tagline ? <span className="sr-only"> — {l(u.tagline, locale)}</span> : null}
-              </li>
-            ))}
-            {soon.map((u) => (
-              <li key={u.id} className="text-sm uppercase tracking-[0.18em] text-fg-muted">
-                {u.name} <span className="ml-1 text-[0.65rem] normal-case tracking-normal">· {t('footer.comingSoon')}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <LandingOnly>
+          <div className="grid gap-6 border-b border-line py-10 md:grid-cols-2 md:items-end md:gap-8 md:py-12">
+            <p className="display text-3xl md:text-4xl">{t.rich('footer.teaser', { em })}</p>
+            <ul className="flex flex-wrap gap-x-8 gap-y-3 md:justify-end">
+              {active.map((u) => (
+                <li key={u.id} className="text-sm font-medium uppercase tracking-[0.18em]">
+                  {u.name}
+                  {u.tagline ? <span className="sr-only"> — {l(u.tagline, locale)}</span> : null}
+                </li>
+              ))}
+              {soon.map((u) => (
+                <li key={u.id} className="text-sm uppercase tracking-[0.18em] text-fg-muted">
+                  {u.name} <span className="ml-1 text-[0.65rem] normal-case tracking-normal">· {t('footer.comingSoon')}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </LandingOnly>
 
         <div className="flex flex-col gap-3 pt-8 text-sm text-fg-muted md:flex-row md:items-start md:justify-between">
           <div className="space-y-1">

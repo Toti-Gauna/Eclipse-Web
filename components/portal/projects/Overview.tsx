@@ -23,7 +23,7 @@ export function Overview() {
         <div>
           <dt>{t('projects.overall')}</dt>
           <dd>
-            <span className="pt-overview-strong">{t('projects.waiting', { count: s.waiting.length })}</span>
+            <span className="pt-overview-strong">{t('projects.waiting', { count: s.waiting.length })}</span>{' '}
             <span className="pt-fine">{buckets.join(' · ')}</span>
           </dd>
         </div>
@@ -33,7 +33,7 @@ export function Overview() {
             <dd>
               <time className="pt-date" dateTime={s.last.update.date}>
                 {p.date(s.last.update.date)}
-              </time>
+              </time>{' '}
               <span>
                 <Link href={portalPaths.project(s.last.project.id)}>{p.text(s.last.project, 'name')}</Link>
                 {': '}
@@ -46,10 +46,10 @@ export function Overview() {
           <div>
             <dt>{t('projects.nextStep')}</dt>
             <dd>
-              {nextIsClients ? <span className="pt-tag pt-tag-turn">{t('projects.yourTurn')}</span> : null}
+              {nextIsClients ? <span className="pt-tag pt-tag-turn">{t('projects.yourTurn')}</span> : null}{' '}
               <span>
                 <Link href={portalPaths.project(next.id)}>{p.text(next, 'milestone')}</Link>
-              </span>
+              </span>{' '}
               <span className="pt-fine">
                 {p.text(next, 'name')} ·{' '}
                 {t.rich('projects.milestoneMeta', {

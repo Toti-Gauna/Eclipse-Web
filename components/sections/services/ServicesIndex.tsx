@@ -27,7 +27,11 @@ const DESKTOP = '(min-width: 1024px)';
  * packages that include it and "Sumar". One family open at a time.
  * Phones: all rows start closed (a short index). Desktop: one family is always
  * open and a static preview of it sits in a sticky stage on the right
- * (decorative: everything it shows is also in the list).
+ * (decorative: everything it shows is also in the list). The media query reads
+ * false until React runs, so the default family is marked `data-default` and
+ * skips the `hidden` attribute (Tailwind's preflight makes it !important): CSS
+ * keeps it open on desktop and closed on phones, also in the server markup, so
+ * the row doesn't grow on hydration.
  */
 export function ServicesIndex() {
   const t = useTranslations('services');
@@ -79,13 +83,19 @@ export function ServicesIndex() {
       <ol className="svc-list">
         {FAMILIES.map((family, index) => {
           const isOpen = openIndex === index;
+          const isDefault = open === null && index === shown;
           const name = l(familyCategory(family)?.name, locale) ?? family.id;
           const pieces = familyItems(family);
           const fromUsd = familyFromUsd(family);
           const headId = `${uid}-${family.id}-head`;
           const panelId = `${uid}-${family.id}-panel`;
           return (
-            <li key={family.id} className="svc-row" data-open={isOpen || undefined}>
+            <li
+              key={family.id}
+              className="svc-row"
+              data-open={isOpen || undefined}
+              data-default={isDefault || undefined}
+            >
               <div className="svc-row-top">
                 <h3 className="svc-head">
                   <button
@@ -120,7 +130,13 @@ export function ServicesIndex() {
                   {t(`families.${family.id}.result`)}
                 </p>
               </div>
-              <div id={panelId} role="region" aria-labelledby={headId} hidden={!isOpen} className="svc-panel">
+              <div
+                id={panelId}
+                role="region"
+                aria-labelledby={headId}
+                hidden={!isOpen && !isDefault}
+                className="svc-panel"
+              >
                 <p className="svc-desc">{t(`families.${family.id}.description`)}</p>
                 <PiecesLedger pieces={pieces} />
               </div>
