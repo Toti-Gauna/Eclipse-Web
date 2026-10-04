@@ -185,3 +185,24 @@
     animation: none;
   }
 }
+
+/* Narrow columns (e.g. a 4-column board inside a dashboard panel): the name must stay readable.
+   Below ~11em the icon chip goes and the score + move button drop under the name. */
+.demo-kanban-col {
+  container-type: inline-size;
+}
+@container (max-width: 11em) {
+  .demo-kanban-card {
+    flex-wrap: wrap;
+    row-gap: 0.3em;
+  }
+  .demo-kanban-card .demo-icon-chip {
+    display: none;
+  }
+  .demo-kanban-card > .min-w-0 {
+    flex-basis: calc(100% - 1.6em);
+  }
+  .demo-kanban-meta {
+    margin-left: auto;
+  }
+}

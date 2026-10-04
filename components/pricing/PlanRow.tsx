@@ -190,7 +190,7 @@ export function PlanRow({
           </ul>
 
           {bonus && bonusTitle ? (
-            <section aria-labelledby={`${uid}-bonus`} className="pr-bonus" data-bonus={bonus.itemId}>
+            <div className="pr-bonus" data-bonus={bonus.itemId}>
               <BonusMock />
               <div className="pr-bonus-text">
                 <p className="pr-bonus-label">
@@ -203,7 +203,7 @@ export function PlanRow({
                 <p className="pr-bonus-body">{l(bonus.text, locale)}</p>
                 <p className="pr-bonus-note">{t('plan.bonusNote')}</p>
               </div>
-            </section>
+            </div>
           ) : null}
         </div>
 

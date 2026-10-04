@@ -707,7 +707,15 @@
 .demo-root[data-nav='rail'] .demo-side {
   width: var(--demo-rail-w);
 }
-.demo-root[data-nav='rail'] .demo-side-label,
+/* The label stays in the accessibility tree (visually hidden): the icon alone has no name. */
+.demo-root[data-nav='rail'] .demo-side-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .demo-root[data-nav='rail'] .demo-side-badge,
 .demo-root[data-nav='rail'] .demo-side-foot,
 .demo-root[data-nav='rail'] .demo-side-name {
