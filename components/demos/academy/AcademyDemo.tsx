@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { BookOpenText, CalendarDays, Globe, House, LayoutDashboard, MessageSquareText, Mic, Route, Smartphone, Sparkles, Users, UsersRound } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import type { SoundName } from '@/lib/sound/types';
 import { verticalById } from '@/lib/content';
-import { AppShell, LiveDot, usePairedStore, useStory, type NavItem } from '../kit';
+import { AppShell, nextBeat, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { ATRIO_THEME } from './data';
-import { createAcademyStore, deriveAcademy, isOffNow, type StudentTab } from './story';
+import { createAcademyStore, deriveAcademy, isOffNow, type AcademyEvent, type StudentTab } from './story';
 import { AcademyProvider, type AcademyCtx, type SchoolTab } from './context';
 import { useAcademyScripts } from './scripts';
 import { AcademyToasts, Announcer, AtrioMark, useAcademyText } from './ui';
@@ -37,32 +37,59 @@ const STUDENT_VIEWS: Record<StudentTab, () => ReactNode> = {
   tutor: StudentTutor,
   class: StudentClass,
 };
-const STUDENT_TABS: { id: StudentTab; icon: NavItem['icon'] }[] = [
+const STUDENT_TABS: { id: StudentTab; icon: NavItem['icon']; tour?: string }[] = [
   { id: 'home', icon: House },
   { id: 'course', icon: Route },
-  { id: 'speak', icon: Mic },
-  { id: 'tutor', icon: MessageSquareText },
-  { id: 'class', icon: UsersRound },
+  { id: 'speak', icon: Mic, tour: 'speaking' },
+  { id: 'tutor', icon: MessageSquareText, tour: 'tutor' },
+  { id: 'class', icon: UsersRound, tour: 'ranking' },
 ];
 
-/** Where the visitor took Valentina's phone (null: the story drives it). Reset every loop. */
+/**
+ * Shell variant: a school's notebook — an index of sections down the side (the sidebar with thin
+ * line icons, roomy rows) on desktop; on the phone, notebook tabs: scrollable pills under the app
+ * bar instead of a bottom bar (student app and school panel alike).
+ */
+const LAYOUT: ShellLayout = { nav: 'sidebar', density: 'airy', icons: 'line' };
+
+/** Where the visitor took Valentina's phone (reset with the story). */
 interface PhoneNav {
   loop: number;
   tab: StudentTab;
-  /** The visitor closed the lesson-complete layer. */
-  dismissed: boolean;
+  overlay: boolean;
 }
 
-const SUCCESS = new Set(['enrolled', 'levelUp', 'back', 'review']);
+/**
+ * The visitor's latest own action (store events marked `mine`), shown as a short local toast:
+ * it appears when their click changes the store and a timer that the change started clears it.
+ */
+function useFlash(events: AcademyEvent[], loop: number): AcademyEvent | null {
+  const ids = events.map((e) => e.id).join('|');
+  const [seen, setSeen] = useState({ loop, ids });
+  const [flash, setFlash] = useState<AcademyEvent | null>(null);
+  if (seen.loop !== loop || seen.ids !== ids) {
+    const before = new Set(seen.ids.split('|'));
+    const added = seen.loop === loop ? events.filter((e) => e.mine && !before.has(e.id)) : [];
+    setSeen({ loop, ids });
+    setFlash(added.length ? added[added.length - 1] : seen.loop !== loop ? null : flash);
+  }
+  useEffect(() => {
+    if (!flash) return;
+    const id = window.setTimeout(() => setFlash(null), 3000);
+    return () => window.clearTimeout(id);
+  }, [flash]);
+  return flash;
+}
 
 /**
  * Atrio Idiomas (vertical "academias"): an online language school.
- * - laptop: the school's panel (collapsible sidebar): today, students + nudges, courses,
+ * - laptop: the school's panel (sidebar): today, students + follow-up board + nudges, courses,
  *   live classes, the AI tutor, enrollments + the public site with its level-test bot.
- * - phone alone: Valentina's student app (lesson, speaking with the AI, tutor chat,
- *   course map, class ranking) with a switch to the school's panel.
+ * - phone alone: Valentina's student app (lesson, speaking with the AI, tutor chat, course
+ *   map, class ranking) with a switch to the school's panel.
  * - phone next to the laptop: Valentina's phone, paired with the panel.
- * One 30 s story (story.ts) drives every screen.
+ * Nothing plays on its own: five beats from the SimBar (story.ts). The student's "Empezar"
+ * starts the speaking beat; everything else the visitor does is local demo data, shown at once.
  */
 export default function AcademyDemo({ screen, active }: DemoProps) {
   const vertical = verticalById('academias')!;
@@ -79,40 +106,15 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
   const view = useMemo(() => deriveAcademy(snap.state, snap.t, snap.reduced, scripts), [snap.state, snap.t, snap.reduced, scripts]);
   const announce = screen === 'laptop' || !paired;
   const studentOnly = screen === 'phone' && paired;
+  const flash = useFlash(view.events, snap.loop);
 
   const [tab, setTab] = useState<SchoolTab>('today');
   const [mode, setMode] = useState<'student' | 'school'>('student');
-  const [nav, setNav] = useState<PhoneNav | null>(null);
-
-  /* ---- Valentina's phone: the story drives it until the visitor takes over ---- */
-  const mine = nav && nav.loop === snap.loop ? nav : null;
-  const sTab = mine ? mine.tab : view.scene.tab;
-  const sOverlay = view.scene.overlay && !mine?.dismissed;
-  const takeOver = (patch: Partial<PhoneNav>) => {
-    store.engage();
-    setNav((cur) => {
-      const base: PhoneNav = cur && cur.loop === snap.loop ? cur : { loop: snap.loop, tab: sTab, dismissed: false };
-      return { ...base, ...patch };
-    });
-  };
+  const [navState, setNav] = useState<PhoneNav | null>(null);
+  const nav = navState && navState.loop === snap.loop ? navState : { loop: snap.loop, tab: 'home' as StudentTab, overlay: false };
+  const patchNav = (patch: Partial<PhoneNav>) => setNav({ ...nav, ...patch });
   const studentApp = screen === 'phone' && (studentOnly || mode === 'student');
-
-  /* ---- sound: one instance per pair, only while visible ---- */
-  const last = view.events[view.events.length - 1];
-  const lastId = last?.id ?? '';
-  const lastKind = last?.kind;
-  const heard = useRef<string | null>(null);
-  useEffect(() => {
-    const first = heard.current === null;
-    heard.current = lastId;
-    if (first || !active || !announce || !lastKind) return;
-    if (SUCCESS.has(lastKind)) play('success', { volume: lastKind === 'review' ? 0.5 : 1 });
-  }, [lastId, lastKind, active, announce, play]);
-  const siteOpen = (screen === 'laptop' || mode === 'school') && tab === 'site';
-  const waOpen = (screen === 'laptop' || mode === 'school') && tab === 'students';
-  useBubbleSound(view.tutor.items.filter((i) => i.from === 'bot').length, active && announce, play);
-  useBubbleSound(view.site.items.filter((i) => i.from === 'bot').length, active && announce && siteOpen, play);
-  useBubbleSound(view.martin.wa?.items.filter((i) => i.from === 'bot').length ?? 0, active && announce && waOpen, play);
+  const upcoming = nextBeat(store, snap);
 
   const ctx: AcademyCtx = {
     screen,
@@ -128,39 +130,53 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
     business,
     ticketUsd,
     keyNumber,
+    flash,
+    nextBeat: upcoming?.id ?? null,
+    playing: !!snap.playing,
     go: (id) => {
       setTab(id);
       if (active) play('select');
     },
     student: {
-      tab: sTab,
-      overlay: sOverlay,
-      open: (id) => takeOver({ tab: id }),
+      tab: nav.tab,
+      overlay: nav.overlay,
+      open: (id) => patchNav({ tab: id, overlay: false }),
+      openOverlay: () => {
+        patchNav({ overlay: true });
+        if (active) play('open');
+      },
       closeOverlay: () => {
-        takeOver({ dismissed: true, tab: view.scene.overlay ? 'class' : sTab });
+        patchNav({ overlay: false });
         if (active) play('close');
       },
     },
+    playBeat: (id) => {
+      store.play?.(id);
+      if (active) play('select');
+    },
     run: (fn, sound) => {
+      const before = view.completeAt;
       store.update(fn);
-      store.engage();
-      if (studentApp) takeOver({});
+      const next = store.getSnapshot();
+      const after = deriveAcademy(next.state, next.t, snap.reduced, scripts);
+      // The visitor's own answer completed the lesson (B1 or not): celebrate it (a reaction to their click).
+      if (before === null && after.completeAt !== null && studentApp) {
+        patchNav({ overlay: true });
+        if (active) play('success');
+        return;
+      }
       if (active && sound) play(sound);
     },
   };
 
   const clock = fmt.time(view.clock);
   const nudgesOn = !isOffNow(snap.state.off);
+  const sim = { store, label: (id: string) => t(`sim.${id}`), note: t('sim.note'), tour: 'sim', announce };
 
   /* ---- phone: Valentina's student app (alone, or paired with the laptop) ---- */
   if (studentApp) {
-    const View = STUDENT_VIEWS[sTab];
-    const studentNav: NavItem[] = STUDENT_TABS.map((s) => ({
-      id: s.id,
-      label: t(`student.tabs.${s.id}`),
-      icon: s.icon,
-      badge: s.id === 'speak' && (view.speak.state.phase === 'live' || view.speak.state.phase === 'ringing') ? 'live' : undefined,
-    }));
+    const View = STUDENT_VIEWS[nav.tab];
+    const studentNav: NavItem[] = STUDENT_TABS.map((s) => ({ id: s.id, label: t(`student.tabs.${s.id}`), icon: s.icon, tour: s.tour }));
     return (
       <AcademyProvider value={ctx}>
         <AppShell
@@ -170,19 +186,22 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
           logo={<AtrioMark />}
           logoStyle="plain"
           nav={studentNav}
-          current={sTab}
+          current={nav.tab}
           onNavigate={(id) => ctx.student.open(id as StudentTab)}
+          phoneNav="top"
           headerRight={studentOnly ? <StudentAvatarChip /> : <ModeSwitch mode="student" onChange={setModeWithSound(setMode, active, play)} />}
           active={active}
           rootRef={ref}
           statusTime={clock}
+          sim={sim}
           contentClassName="atrio-board"
           overlay={<LevelUp key={snap.loop} />}
-          overlayOpen={sOverlay}
+          overlayOpen={nav.overlay}
           overlayOrigin={['50%', '45%']}
         >
           <div className="atrio" data-screen="phone" data-app="student">
-            <div key={`${sTab}-${snap.loop}`} className="demo-view">
+            <AcademyToasts placement="top" only={(e) => e.who === 'valentina'} />
+            <div key={`${nav.tab}-${snap.loop}`} className="demo-view">
               <View />
             </div>
             <Announcer />
@@ -193,25 +212,23 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
   }
 
   /* ---- the school's panel (laptop, or the phone alone in school mode) ---- */
-  const live = view.speak.state.phase === 'live' || view.speak.state.phase === 'ringing' || view.tutor.typing;
-  const testing = view.site.items.length > 0 && !view.site.done;
   const schoolNav: NavItem[] =
     screen === 'laptop'
       ? [
           { id: 'today', label: t('nav.today'), icon: LayoutDashboard },
-          { id: 'students', label: t('nav.students'), icon: Users, badge: view.kpi.atRisk, group: t('nav.groupSchool') },
+          { id: 'students', label: t('nav.students'), icon: Users, badge: view.kpi.atRisk, group: t('nav.groupSchool'), tour: 'followup' },
           { id: 'courses', label: t('nav.courses'), icon: BookOpenText },
           { id: 'live', label: t('nav.live'), icon: CalendarDays },
-          { id: 'tutor', label: t('nav.tutor'), icon: Sparkles, badge: live ? 'live' : undefined, group: t('nav.groupGrowth') },
-          { id: 'site', label: t('nav.site'), icon: Globe, badge: testing ? 'live' : undefined },
+          { id: 'tutor', label: t('nav.tutor'), icon: Sparkles, group: t('nav.groupGrowth'), tour: 'tutor' },
+          { id: 'site', label: t('nav.site'), icon: Globe, tour: 'enroll' },
         ]
       : [
           { id: 'today', label: t('nav.todayShort'), icon: LayoutDashboard },
-          { id: 'students', label: t('nav.studentsShort'), icon: Users, badge: view.kpi.atRisk },
-          { id: 'site', label: t('nav.siteShort'), icon: Globe, badge: testing ? 'live' : undefined },
+          { id: 'students', label: t('nav.studentsShort'), icon: Users, badge: view.kpi.atRisk, tour: 'followup' },
+          { id: 'site', label: t('nav.siteShort'), icon: Globe, tour: 'enroll' },
           { id: 'courses', label: t('nav.courses'), icon: BookOpenText },
           { id: 'live', label: t('nav.live'), icon: CalendarDays },
-          { id: 'tutor', label: t('nav.tutor'), icon: Sparkles, badge: live ? 'live' : undefined },
+          { id: 'tutor', label: t('nav.tutor'), icon: Sparkles, tour: 'tutor' },
         ];
   const View = SCHOOL_VIEWS[tab][screen];
   return (
@@ -225,6 +242,8 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
         nav={schoolNav}
         current={tab}
         onNavigate={(id) => setTab(id as SchoolTab)}
+        layout={LAYOUT}
+        phoneNav="top"
         title={
           screen === 'laptop' ? (
             <>
@@ -239,7 +258,7 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
           screen === 'laptop' ? (
             <>
               <span className="atrio-toppill">
-                <LiveDot color="var(--demo-accent)" />
+                <span aria-hidden className="atrio-toppill-dot" />
                 {t('top.online', { count: view.kpi.online })}
               </span>
               <span className="atrio-coord" aria-hidden>
@@ -254,8 +273,7 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
         active={active}
         rootRef={ref}
         statusTime={clock}
-        phoneNav="tabs"
-        maxTabs={5}
+        sim={sim}
         contentClassName="atrio-board"
       >
         <div className="atrio" data-screen={screen} data-app="school">
@@ -268,17 +286,6 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
       </AppShell>
     </AcademyProvider>
   );
-}
-
-/** A soft "type" when a new bot bubble appears (not when the count jumps because a view opened). */
-function useBubbleSound(count: number, enabled: boolean, play: (s: SoundName, o?: { volume?: number }) => void) {
-  const heard = useRef<number | null>(null);
-  useEffect(() => {
-    const before = heard.current;
-    heard.current = count;
-    if (before === null || count !== before + 1 || !enabled) return;
-    play('type', { volume: 0.6 });
-  }, [count, enabled, play]);
 }
 
 const setModeWithSound =

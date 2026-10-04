@@ -4,8 +4,8 @@
  * (namespace `demoAcademy`) so each locale names them. Nothing here is a real school,
  * exam brand or app.
  *
- * Time: minutes from midnight on Thursday 8 Oct 2026; the story starts at 20:10 and
- * the clock advances one minute every 2 s.
+ * Time: minutes from midnight on Thursday 8 Oct 2026; the story starts at 20:10 and its
+ * clock advances one minute every 2 s of story time — only while the visitor plays a beat.
  */
 import type { DemoTheme, Tone } from '../kit';
 
@@ -36,7 +36,30 @@ export const ATRIO_THEME: DemoTheme = {
 /* ------------------------------------------------------------------ */
 /* The day and the story clock                                          */
 /* ------------------------------------------------------------------ */
-export const LOOP_MS = 30_000;
+/** A reply the story gives on its own inside a beat (absolute story time), unless the visitor answered first. */
+export interface StoryPick {
+  step: string;
+  reply: string;
+  at: number;
+}
+
+/**
+ * v3 beats (labels: demoAcademy.sim.<id>): nothing plays on its own. Each `at` is where the
+ * segment ends, on a calm frame (no toast, typing, live session or "just now" left).
+ * 1 speak — Valentina's speaking practice with the AI tutor (her "Empezar" button plays it too)
+ * 2 writing — she writes, the tutor corrects her and leaves a mini exercise (it waits for an answer)
+ * 3 levelup — she answers, finishes the lesson, moves up to B1 and books the B1 club
+ * 4 lead — a prospect takes the level test on the site, enrolls and pays
+ * 5 nudge — Martín, 5 days away, gets a WhatsApp with a 5-minute lesson and comes back
+ */
+export const BEATS = [
+  { id: 'speak', at: 15_000 },
+  { id: 'writing', at: 21_500 },
+  { id: 'levelup', at: 30_000 },
+  { id: 'lead', at: 46_500 },
+  { id: 'nudge', at: 59_000 },
+] as const;
+export const STORY_END = BEATS[BEATS.length - 1].at;
 /** 20:10 when the story starts. */
 export const CLOCK_START = 20 * 60 + 10;
 export const storyClock = (t: number) => CLOCK_START + Math.floor(Math.max(0, t) / 2000);
@@ -46,31 +69,38 @@ export const dayDate = (offset: number) => new Date(TODAY + offset * 86_400_000)
 /** Index of today in a Monday-first week. */
 export const WEEKDAY = 3;
 
-/** Story beats (ms on the loop). */
+/** Story times (ms). */
 export const STORY = {
-  /** Valentina taps "Start" on today's lesson. */
-  open: 2600,
-  /** The speaking prompt is picked on its own (unless the visitor picked one). */
-  promptAuto: 3400,
-  /** The speaking session connects. */
-  call: 3700,
-  /** Written practice with the AI tutor. */
-  writing: 15_100,
-  /** Lesson complete → level up overlay → class ranking (relative to the tutor's last line). */
+  /** The lesson's speaking session starts ringing (beat 1). */
+  call: 600,
+  /** Valentina's written practice with the AI tutor starts (beat 2). */
+  writing: 15_000,
+  /** She answers the mini exercise at the start of beat 3 (unless the visitor did). */
+  quizPick: { step: 'quiz', reply: 'bought', at: 22_300 } as StoryPick,
+  /** Lesson complete after the result; the level up right after. */
   completeDelay: 700,
-  levelUpFor: 3600,
-  /** Valentina books the B1 conversation club (auto, after the level up). */
-  book: 25_600,
-  /** A lead opens the site chat and takes the level test. */
-  lead: 2600,
-  /** Martín: flagged after 5 days away → WhatsApp nudge → (automation off) drops out. */
-  flag: 4700,
-  nudge: 5500,
-  drop: 17_600,
+  levelUpDelay: 400,
+  /** She books the B1 conversation club (unless the visitor did). */
+  book: 26_000,
+  /** A prospect (Julieta) opens the site chat and takes the level test (beat 4). */
+  lead: 30_500,
+  leadPicks: [
+    { step: 'hi', reply: 'start', at: 31_900 },
+    { step: 'q1', reply: 'goes', at: 33_400 },
+    { step: 'q2', reply: 'saw', at: 34_800 },
+    { step: 'q3', reply: 'live', at: 36_200 },
+    { step: 'result', reply: 'enroll', at: 38_600 },
+    { step: 'pay', reply: 'card', at: 40_000 },
+  ] as StoryPick[],
+  /** Martín: flagged after 5 days away → WhatsApp nudge (automation on) → back; off → drops out (beat 5). */
+  flag: 47_200,
+  nudge: 48_000,
+  waPick: { step: 'nudge', reply: 'yes', at: 50_400 } as StoryPick,
+  drop: 53_000,
   /** Monthly fees arriving after this morning's reminder. */
   paid: [
-    { id: 'bruno', at: 11_000, via: 'transfer' },
-    { id: 'sofia', at: 23_200, via: 'card' },
+    { id: 'bruno', at: 31_200, via: 'transfer' },
+    { id: 'sofia', at: 48_600, via: 'card' },
   ],
 } as const;
 

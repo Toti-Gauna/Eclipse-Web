@@ -4,9 +4,9 @@ import { useId } from 'react';
 import { useTranslations } from 'next-intl';
 import { BellRing, CircleDollarSign, Clock4, MessageCircle } from 'lucide-react';
 import { Money } from '@/components/ui/Money';
-import { Card, ChatWidget, Meter, Pill, Switch, type Tone } from '../../kit';
+import { Card, ChatWidget, Kanban, Meter, Pill, Switch, type KanbanCard, type KanbanColumn, type Tone } from '../../kit';
 import { ROSTER, SCHOOL, STORY, storyClock } from '../data';
-import { act, isOffNow } from '../story';
+import { act, isFreshEvent, isOffNow, type BoardColumn } from '../story';
 import { useAcademy } from '../context';
 import { AtrioMark, PersonAvatar, ViewHead, useAcademyText } from '../ui';
 
@@ -22,7 +22,7 @@ function useRoster() {
     let points = r.points;
     let last = r.lastDays;
     if (r.id === 'valentina') {
-      status = view.level === 'B1' ? 'b1' : view.t >= STORY.open && (view.completeAt === null || view.t < view.completeAt) ? 'lesson' : 'ok';
+      status = view.level === 'B1' ? 'b1' : view.t >= STORY.call && (view.completeAt === null || view.t < view.completeAt) ? 'lesson' : 'ok';
       progress = view.level === 'B1' ? 1 : view.progress;
       points = view.points;
     }
@@ -91,7 +91,7 @@ function NudgeCard() {
   const id = useId();
   const on = !isOffNow(state.off);
   return (
-    <Card className="atrio-panel atrio-auto" as="section" >
+    <Card className="atrio-panel atrio-auto" as="section" tour="followup">
       <div className="atrio-auto-row">
         <span className="atrio-auto-icon" aria-hidden>
           <MessageCircle strokeWidth={1.8} />
@@ -109,7 +109,7 @@ function NudgeCard() {
       <dl className="atrio-auto-stats">
         <div>
           <dt>{t('sentWeek')}</dt>
-          <dd className="demo-mono">{12 + (view.martin.nudged && view.t >= STORY.nudge ? 1 : 0)}</dd>
+          <dd className="demo-mono">{12 + (view.martin.sentAt !== null ? 1 : 0)}</dd>
         </div>
         <div>
           <dt>{t('backWeek')}</dt>
@@ -134,7 +134,13 @@ function MartinThread({ className = '' }: { className?: string }) {
     return (
       <div className={`atrio-wa-empty ${className}`} data-dropped={view.martin.status === 'dropped' ? '' : undefined}>
         <Clock4 aria-hidden strokeWidth={1.7} />
-        <p>{view.martin.status === 'dropped' ? t('dropped', { name: first('martin') }) : view.martin.nudged ? t('waiting', { name: first('martin') }) : t('noNudge', { name: first('martin') })}</p>
+        <p>
+          {view.martin.status === 'dropped'
+            ? t('dropped', { name: first('martin') })
+            : view.martin.nudged
+              ? t('waitingBeat', { name: first('martin') })
+              : t('noNudge', { name: first('martin') })}
+        </p>
       </div>
     );
   }
@@ -147,8 +153,8 @@ function MartinThread({ className = '' }: { className?: string }) {
       label={t('label', { name: first('martin') })}
       announce={announce}
       dateLabel={t('date')}
-      stamp={(at) => fmt.time(storyClock(STORY.nudge + at))}
-      onPick={(step, reply) => run(act.pickWa(wa, step, reply), 'select')}
+      stamp={(at) => fmt.time(storyClock((view.martin.sentAt ?? STORY.nudge) + at))}
+      onPick={(step, reply) => run(act.pickWa(step, reply, view.martin.sentAt ?? STORY.nudge), 'select')}
       composer={false}
       className={`atrio-wa ${className}`}
     />
@@ -179,7 +185,7 @@ function FeesCard() {
       {paid.length ? (
         <ul className="atrio-fees-list">
           {paid.slice(0, 3).map((e) => (
-            <li key={e.id} className={view.t - e.at < 2400 ? 'demo-pop' : ''}>
+            <li key={e.id} className={isFreshEvent(view.t, e, 2400) ? 'demo-pop' : ''}>
               <CircleDollarSign aria-hidden strokeWidth={1.8} />
               <span className="min-w-0 flex-1 truncate">{e.kind === 'enrolled' ? t('firstFee', { name: name(e.who) }) : name(e.who)}</span>
               <span className="text-[var(--demo-muted)]">{e.pay ? t(`via.${e.pay}`) : ''}</span>
@@ -191,19 +197,59 @@ function FeesCard() {
   );
 }
 
+/** Follow-up board: students falling behind, from "at risk" to "back". The visitor moves cards (local data). */
+function FollowUp({ compact = false }: { compact?: boolean }) {
+  const t = useTranslations('demoAcademy.board');
+  const { view, run } = useAcademy();
+  const { name } = useAcademyText();
+  const columns: KanbanColumn[] = [
+    { id: 'risk', title: t('columns.risk'), tone: 'warn' },
+    { id: 'nudged', title: t('columns.nudged'), tone: 'accent' },
+    { id: 'back', title: t('columns.back'), tone: 'ok' },
+  ];
+  const cards: KanbanCard[] = view.cards.map((c) => ({
+    id: c.id,
+    column: c.column,
+    title: name(c.id),
+    sub: c.dropped ? t('dropped') : t(`notes.${c.id}`),
+    tone: c.dropped ? 'bad' : undefined,
+    fresh: c.fresh,
+  }));
+  return (
+    <Card className="atrio-panel atrio-followup" as="section" tour="followup">
+      <div className="atrio-panel-head">
+        <h3 className="atrio-h3">{t('title')}</h3>
+        <span className="atrio-label">{t('hint')}</span>
+      </div>
+      <Kanban
+        columns={columns}
+        cards={cards}
+        label={t('label')}
+        layout={compact ? 'stack' : 'columns'}
+        empty={t('empty')}
+        onMove={(id, column) => run(act.moveCard(id, column as BoardColumn), 'select')}
+        className="atrio-kanban"
+      />
+    </Card>
+  );
+}
+
 export function LaptopStudents() {
   const t = useTranslations('demoAcademy.students');
   const { view } = useAcademy();
   return (
-    <div className="atrio-cols-students">
-      <div className="flex min-w-0 flex-col gap-[0.8em]">
-        <ViewHead index={t('index', { count: view.kpi.active })} title={t('title')} sub={t('sub')} />
-        <Roster />
-        <FeesCard />
-      </div>
-      <div className="flex min-w-0 flex-col gap-[0.8em]">
-        <NudgeCard />
-        <MartinThread className="atrio-wa-laptop" />
+    <div className="flex flex-col gap-[0.8em]">
+      <ViewHead index={t('index', { count: view.kpi.active })} title={t('title')} sub={t('sub')} />
+      <FollowUp />
+      <div className="atrio-cols-students">
+        <div className="flex min-w-0 flex-col gap-[0.8em]">
+          <Roster />
+          <FeesCard />
+        </div>
+        <div className="flex min-w-0 flex-col gap-[0.8em]">
+          <NudgeCard />
+          <MartinThread className="atrio-wa-laptop" />
+        </div>
       </div>
     </div>
   );
@@ -217,6 +263,7 @@ export function PhoneStudents() {
       <ViewHead index={t('index', { count: view.kpi.active })} title={t('title')} />
       <NudgeCard />
       <MartinThread className="atrio-wa-phone" />
+      <FollowUp compact />
       <Roster compact />
       <FeesCard />
     </div>

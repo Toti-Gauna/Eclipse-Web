@@ -94,11 +94,11 @@ interface Lane {
 
 function useLanes(): Lane[] {
   const t = useTranslations('demoAcademy.lanes');
-  const { view, state } = useAcademy();
+  const { view } = useAcademy();
   const { t: root } = useAcademyText();
   const find = (kind: AcademyEvent['kind'], who?: string) => view.events.find((e) => e.kind === kind && (who === undefined || e.who === who))?.at ?? null;
 
-  const quizAt = view.answer ? STORY.writing + (view.tutor.at.right ?? view.tutor.at.wrong ?? 0) : null;
+  const quizAt = view.answerAt;
   const leveled = find('levelUp');
   const review = find('review');
   const valentina: Lane = {
@@ -114,19 +114,22 @@ function useLanes(): Lane[] {
     outcome: leveled !== null && view.t >= leveled ? { label: t('valentina.outB1'), tone: 'accent2' } : review !== null && view.t >= review ? { label: t('valentina.outReview'), tone: 'warn' } : null,
   };
 
-  const siteAt = (rel: number | undefined) => (rel === undefined ? null : (view.siteMine ? state.site.start : STORY.lead) + rel);
-  const enrolled = view.events.find((e) => e.kind === 'enrolled' && e.at >= 0 && (view.siteMine ? e.who === 'you' : e.who === 'julieta'));
+  const mine = view.siteMine !== null;
+  const site = view.siteMine ?? view.lead;
+  const level = mine ? view.mineLevel : view.leadLevel;
+  const siteAt = (rel: number | undefined) => (rel === undefined ? null : (mine ? (view.siteMineStart ?? 0) : STORY.lead) + rel);
+  const enrolled = mine ? view.mineEnrollment : view.enrollments.find((e) => e.who === 'julieta');
   const lead: Lane = {
     id: 'lead',
-    who: view.siteMine ? 'you' : 'julieta',
+    who: mine ? 'you' : 'julieta',
     context: t('lead.context'),
     steps: [
-      { label: t('lead.s1'), at: siteAt(view.site.at.hi) },
-      { label: view.siteLevel ? t('lead.s2', { level: view.siteLevel }) : t('lead.s2pending'), at: siteAt(view.site.at.result) },
-      { label: t('lead.s3'), at: siteAt(view.site.at.pay) },
+      { label: t('lead.s1'), at: siteAt(site.at.hi) },
+      { label: level ? t('lead.s2', { level }) : t('lead.s2pending'), at: siteAt(site.at.result) },
+      { label: t('lead.s3'), at: siteAt(site.at.pay) },
       { label: enrolled?.pay ? t('lead.s4', { pay: root(`pay.${enrolled.pay}`) }) : t('lead.s4pending'), at: enrolled?.at ?? null },
     ],
-    outcome: enrolled ? { label: view.siteMine ? t('lead.outYou') : t('lead.out'), tone: 'ok' } : null,
+    outcome: enrolled ? { label: mine ? t('lead.outYou') : t('lead.out'), tone: 'ok' } : null,
   };
 
   const m = view.martin;
@@ -189,7 +192,7 @@ export function NowLanes({ vertical = false }: { vertical?: boolean }) {
                 </span>
               ) : (
                 <span className="atrio-outcome" data-tone="pending">
-                  {t('inProgress')}
+                  {doneCount ? t('inProgress') : t('notStarted')}
                 </span>
               )}
             </div>
@@ -280,7 +283,7 @@ export function LaptopToday() {
         <NowLanes />
       </Card>
       <Card className="atrio-panel atrio-feed2">
-        <ActivityFeed title={t('activity')} live items={feed} />
+        <ActivityFeed title={t('activity')} items={feed} empty={t('feedEmpty')} />
       </Card>
     </div>
   );
@@ -304,7 +307,7 @@ export function PhoneToday() {
         <NowLanes vertical />
       </Card>
       <Card className="atrio-panel">
-        <ActivityFeed title={t('activity')} live items={feed} />
+        <ActivityFeed title={t('activity')} items={feed} empty={t('feedEmpty')} />
       </Card>
     </div>
   );

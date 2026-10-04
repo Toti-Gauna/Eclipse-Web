@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { CalendarDays, Globe, HeartPulse, LayoutDashboard, Smartphone, Trophy, Users } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, LiveDot, usePairedStore, useStory, type NavItem } from '../kit';
+import { AppShell, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { HERO, ORBITA_THEME } from './model';
-import { createGymStore, deriveGym, isOffNow, type MemberTab, type PhoneOverlay } from './story';
+import { createGymStore, deriveGym, isOffNow, type GymEvent, type MemberTab, type PhoneOverlay } from './story';
 import { GymProvider, useGymText, type GymCtx, type OwnerTab } from './hooks';
 import { Announcer, DayDial, GymToasts, MemberAvatar, OrbitaMark } from './parts';
 import { DayCut, LevelUp, MEMBER_TABS, MemberClasses, MemberHome, MemberLeague, MemberPush, WaThread } from './views/Member';
@@ -30,25 +30,51 @@ const OWNER_VIEWS: Record<OwnerTab, Record<DemoProps['screen'], () => ReactNode>
 };
 const MEMBER_VIEWS: Record<MemberTab, () => ReactNode> = { home: MemberHome, classes: MemberClasses, league: MemberLeague };
 
-/** Where the visitor took Lucía's phone (null: the story drives it). Reset every loop. */
+/**
+ * Shell variant: a game HUD, not a back office — no sidebar; a floating dock of chip icons at the
+ * bottom and a compact top bar with the time-lapse dial (desktop). The member app on the phone
+ * has a bottom tab bar like a game's (Inicio · Clases · Liga).
+ */
+const LAYOUT: ShellLayout = { nav: 'dock', density: 'compact', icons: 'chip' };
+
+/** Where the visitor took Lucía's phone (reset with the story). */
 interface PhoneNav {
   loop: number;
   tab: MemberTab;
-  day: number | null;
   overlay: PhoneOverlay | null;
-  dismissed: PhoneOverlay[];
 }
 
-const TOASTY = new Set(['booked', 'trial', 'back', 'levelup', 'league']);
+/**
+ * The visitor's latest own action (store events marked `mine`), shown as a short local toast:
+ * it appears when their click changes the store and a timer that the change started clears it.
+ */
+function useFlash(events: GymEvent[], loop: number): GymEvent | null {
+  const ids = events.map((e) => e.id).join('|');
+  const [seen, setSeen] = useState({ loop, ids });
+  const [flash, setFlash] = useState<GymEvent | null>(null);
+  if (seen.loop !== loop || seen.ids !== ids) {
+    const before = new Set(seen.ids.split('|'));
+    const added = seen.loop === loop ? events.filter((e) => e.mine && !before.has(e.id)) : [];
+    setSeen({ loop, ids });
+    setFlash(added.length ? added[added.length - 1] : seen.loop !== loop ? null : flash);
+  }
+  useEffect(() => {
+    if (!flash) return;
+    const id = window.setTimeout(() => setFlash(null), 3000);
+    return () => window.clearTimeout(id);
+  }, [flash]);
+  return flash;
+}
 
 /**
  * Órbita Fitness (vertical "gimnasios"): a training studio whose members play.
- * - laptop: the owner's panel (collapsible sidebar): today, retention + win-back
- *   automation, members, classes, leagues and missions, site + lead chatbot.
- * - phone alone: Lucía's member app (XP, streak, missions, classes, league) with a
- *   switch to the owner's panel, so every module is one tap away.
+ * - laptop: the owner's panel (dock): today, retention + win-back automation, members,
+ *   classes (week navigation), leagues and missions, site + trial-class chatbot.
+ * - phone alone: Lucía's member app (XP, streak, missions, classes, league) with a switch to
+ *   the owner's panel, so every module is one tap away.
  * - phone next to the laptop: Lucía's phone, paired with the owner's panel.
- * One ~28 s story (story.ts) drives every screen.
+ * Nothing plays on its own: four beats from the SimBar (story.ts); everything the visitor does
+ * (book, check in, answer, send) is local demo data and shows at once.
  */
 export default function GymDemo({ screen, active }: DemoProps) {
   const vertical = verticalById('gimnasios')!;
@@ -63,47 +89,17 @@ export default function GymDemo({ screen, active }: DemoProps) {
   const view = useMemo(() => deriveGym(snap.state, snap.t, snap.reduced), [snap.state, snap.t, snap.reduced]);
   const announce = screen === 'laptop' || !paired;
   const memberOnly = screen === 'phone' && paired;
+  const flash = useFlash(view.events, snap.loop);
 
   const [tab, setTab] = useState<OwnerTab>('today');
   const [mode, setMode] = useState<'member' | 'owner'>('member');
-  const [nav, setNav] = useState<PhoneNav | null>(null);
-
-  /* ---- Lucía's phone: the story drives it until the visitor takes over ---- */
-  const scene = view.scene;
-  const mine = nav && nav.loop === snap.loop ? nav : null;
-  const mTab = mine ? mine.tab : scene.tab;
-  const mDay = mine?.day ?? scene.day;
-  const dismissed = mine?.dismissed ?? [];
-  let mOverlay: PhoneOverlay | null = mine ? mine.overlay : null;
-  if (!mOverlay && scene.overlay && !dismissed.includes(scene.overlay) && (!mine || scene.overlay === 'levelup')) mOverlay = scene.overlay;
+  const [navState, setNav] = useState<PhoneNav | null>(null);
+  const nav = navState && navState.loop === snap.loop ? navState : { loop: snap.loop, tab: 'home' as MemberTab, overlay: null };
   // Keep the last overlay's content while it closes.
   const [lastOverlay, setLastOverlay] = useState<PhoneOverlay | null>(null);
-  if (mOverlay && mOverlay !== lastOverlay) setLastOverlay(mOverlay);
-
-  /** The visitor touched Lucía's phone: from now on (this loop) it stays where they are. */
-  const takeOver = (patch: Partial<PhoneNav>) => {
-    store.engage();
-    setNav((cur) => {
-      const base: PhoneNav = cur && cur.loop === snap.loop ? cur : { loop: snap.loop, tab: mTab, day: null, overlay: mOverlay, dismissed };
-      return { ...base, ...patch };
-    });
-  };
+  if (nav.overlay && nav.overlay !== lastOverlay) setLastOverlay(nav.overlay);
+  const patchNav = (patch: Partial<PhoneNav>) => setNav({ ...nav, ...patch });
   const memberApp = screen === 'phone' && (memberOnly || mode === 'member');
-
-  /* ---- sound: one instance per pair, only while visible ---- */
-  const last = view.events[view.events.length - 1];
-  const lastId = last?.id ?? '';
-  const lastKind = last?.kind;
-  const heard = useRef<string | null>(null);
-  useEffect(() => {
-    const first = heard.current === null;
-    heard.current = lastId;
-    if (first || !active || !announce || !lastKind) return;
-    if (TOASTY.has(lastKind)) play('success');
-  }, [lastId, lastKind, active, announce, play]);
-  // Chat bubbles: Lucía's WhatsApp always; the site's chat only while its section is open here.
-  useBubbleSound(view.wa.items.filter((i) => i.from === 'bot').length, active && announce, play);
-  useBubbleSound(view.lead.items.filter((i) => i.from === 'bot').length, active && announce && screen === 'laptop' && tab === 'site', play);
 
   const ctx: GymCtx = {
     screen,
@@ -118,46 +114,49 @@ export default function GymDemo({ screen, active }: DemoProps) {
     announce,
     business,
     keyNumber,
+    flash,
     go: (id) => {
       setTab(id);
       if (active) play('select');
     },
     member: {
-      tab: mTab,
-      day: mDay,
-      overlay: mOverlay,
-      open: (id) => takeOver({ tab: id, overlay: null }),
-      pickDay: (d) => {
-        takeOver({ day: d });
-        if (active) play('select');
-      },
+      tab: nav.tab,
+      overlay: nav.overlay,
+      open: (id) => patchNav({ tab: id, overlay: null }),
       openOverlay: (o) => {
-        takeOver({ overlay: o });
+        patchNav({ overlay: o });
         if (active) play('open');
       },
       closeOverlay: () => {
-        takeOver({ overlay: null, dismissed: mOverlay ? [...dismissed, mOverlay] : dismissed });
+        patchNav({ overlay: null });
         if (active) play('close');
       },
     },
     setMode: memberOnly ? undefined : setMode,
     run: (fn, sound) => {
+      const before = view.level;
       store.update(fn);
-      store.engage();
-      if (memberApp) takeOver({});
+      const next = store.getSnapshot();
+      const after = deriveGym(next.state, next.t, snap.reduced).level;
+      // The visitor's own action made Lucía level up: celebrate it (a reaction to their click).
+      if (after > before && memberApp) {
+        patchNav({ overlay: 'levelup' });
+        if (active) play('success');
+        return;
+      }
       if (active && sound) play(sound);
     },
   };
 
   const clock = fmt.time(view.clock);
   const winOn = !isOffNow(snap.state.off);
-  const siteLive = view.lead.typing || (view.lead.items.length > 0 && !view.lead.done);
+  const sim = { store, label: (id: string) => t(`sim.${id}`), note: t('sim.note'), tour: 'sim', announce };
 
   /* ---- phone: Lucía's member app (alone, or paired with the laptop) ---- */
   if (memberApp) {
-    const View = MEMBER_VIEWS[mTab];
-    const memberNav: NavItem[] = MEMBER_TABS.map((m) => ({ id: m.id, label: t(`app.tabs.${m.id}`), icon: m.icon }));
-    const overlayKind = mOverlay ?? lastOverlay;
+    const View = MEMBER_VIEWS[nav.tab];
+    const memberNav: NavItem[] = MEMBER_TABS.map((m) => ({ id: m.id, label: t(`app.tabs.${m.id}`), icon: m.icon, tour: m.tour }));
+    const overlayKind = nav.overlay ?? lastOverlay;
     return (
       <GymProvider value={ctx}>
         <AppShell
@@ -166,20 +165,24 @@ export default function GymDemo({ screen, active }: DemoProps) {
           business={business}
           logo={<OrbitaMark />}
           nav={memberNav}
-          current={mTab}
+          current={nav.tab}
           onNavigate={(id) => ctx.member.open(id as MemberTab)}
+          phoneNav="tabs"
           headerRight={memberOnly ? <MemberAvatar id={HERO} /> : <ModeSwitch mode="member" onChange={setModeWithSound(setMode, active, play)} />}
           active={active}
           rootRef={ref}
           statusTime={clock}
+          sim={sim}
           overlay={overlayKind === 'wa' ? <WaThread key={snap.loop} /> : overlayKind === 'levelup' ? <LevelUp key={snap.loop} /> : undefined}
-          overlayOpen={mOverlay !== null}
+          overlayOpen={nav.overlay !== null}
           overlayOrigin={overlayKind === 'levelup' ? ['50%', '58%'] : ['50%', '7%']}
         >
           <div className="gym" data-screen="phone">
             <DayCut />
-            <MemberPush kind={mOverlay === 'wa' ? null : scene.push} />
-            <div key={`${mTab}-${snap.loop}`} className="demo-view">
+            <MemberPush kind={nav.overlay === 'wa' ? null : view.push} />
+            {/* Lucía's phone only hears about Lucía (the owner's actions toast on the panel). */}
+            <GymToasts placement="top" only={(e) => e.member === HERO && e.kind !== 'churn'} />
+            <div key={`${nav.tab}-${snap.loop}`} className="demo-view">
               <View />
             </div>
             <Announcer />
@@ -190,23 +193,14 @@ export default function GymDemo({ screen, active }: DemoProps) {
   }
 
   /* ---- owner's panel (laptop, or the phone alone in owner mode) ---- */
-  const ownerNav: NavItem[] =
-    screen === 'laptop'
-      ? [
-          { id: 'today', label: t('nav.today'), icon: LayoutDashboard },
-          { id: 'retention', label: t('nav.retention'), icon: HeartPulse, badge: view.kpi.atRisk, group: t('nav.groupMembers') },
-          { id: 'members', label: t('nav.members'), icon: Users },
-          { id: 'classes', label: t('nav.classes'), icon: CalendarDays },
-          { id: 'league', label: t('nav.league'), icon: Trophy, group: t('nav.groupGrowth') },
-          { id: 'site', label: t('nav.site'), icon: Globe, badge: siteLive ? 'live' : undefined },
-        ]
-      : [
-          { id: 'today', label: t('nav.todayShort'), icon: LayoutDashboard },
-          { id: 'retention', label: t('nav.retentionShort'), icon: HeartPulse, badge: view.kpi.atRisk },
-          { id: 'members', label: t('nav.members'), icon: Users },
-          { id: 'classes', label: t('nav.classes'), icon: CalendarDays },
-          { id: 'site', label: t('nav.siteShort'), icon: Globe, badge: siteLive ? 'live' : undefined },
-        ];
+  const ownerNav: NavItem[] = [
+    { id: 'today', label: t(screen === 'phone' ? 'nav.todayShort' : 'nav.today'), icon: LayoutDashboard },
+    { id: 'retention', label: t(screen === 'phone' ? 'nav.retentionShort' : 'nav.retention'), icon: HeartPulse, badge: view.kpi.atRisk, tour: 'winback' },
+    { id: 'members', label: t('nav.members'), icon: Users },
+    { id: 'classes', label: t('nav.classes'), icon: CalendarDays, tour: 'classes' },
+    ...(screen === 'laptop' ? [{ id: 'league', label: t('nav.league'), icon: Trophy, tour: 'league' }] : []),
+    { id: 'site', label: t(screen === 'phone' ? 'nav.siteShort' : 'nav.site'), icon: Globe, tour: 'lead' },
+  ];
   const current = screen === 'phone' && tab === 'league' ? 'today' : tab;
   const View = OWNER_VIEWS[current][screen];
   return (
@@ -219,6 +213,8 @@ export default function GymDemo({ screen, active }: DemoProps) {
         nav={ownerNav}
         current={current}
         onNavigate={(id) => setTab(id as OwnerTab)}
+        layout={LAYOUT}
+        phoneNav="tabs"
         title={
           screen === 'laptop' ? (
             <span className="gym-toptitle">
@@ -230,10 +226,10 @@ export default function GymDemo({ screen, active }: DemoProps) {
         headerRight={
           screen === 'laptop' ? (
             <>
-              <span className="gym-toppill" data-off={winOn ? undefined : ''}>
-                <LiveDot color={winOn ? 'var(--demo-accent)' : 'var(--demo-accent-2)'} />
+              <button type="button" className="gym-toppill" data-off={winOn ? undefined : ''} onClick={() => ctx.go('retention')}>
+                <span aria-hidden className="gym-toppill-dot" />
                 {winOn ? t('top.winOn') : t('top.winOff')}
-              </span>
+              </button>
               <span className="gym-owner" aria-hidden>
                 {t('top.ownerInitials')}
               </span>
@@ -242,14 +238,15 @@ export default function GymDemo({ screen, active }: DemoProps) {
             <ModeSwitch mode="owner" onChange={setModeWithSound(setMode, active, play)} />
           )
         }
-        sidebarFooter={<SidebarFooter on={winOn} />}
         active={active}
         rootRef={ref}
         statusTime={clock}
+        sim={sim}
       >
         <div className="gym" data-screen={screen}>
           {screen === 'phone' ? <DayCut /> : null}
-          <GymToasts placement={screen === 'phone' ? 'top' : 'bottom-right'} />
+          {/* Top: the desktop dock owns the bottom edge. */}
+          <GymToasts placement="top" />
           <div key={current} className="demo-view">
             <View />
           </div>
@@ -258,17 +255,6 @@ export default function GymDemo({ screen, active }: DemoProps) {
       </AppShell>
     </GymProvider>
   );
-}
-
-/** A soft "type" when a new bot bubble appears (not when the count jumps because a view opened). */
-function useBubbleSound(count: number, enabled: boolean, play: (s: 'type') => void) {
-  const heard = useRef<number | null>(null);
-  useEffect(() => {
-    const before = heard.current;
-    heard.current = count;
-    if (before === null || count !== before + 1 || !enabled) return;
-    play('type');
-  }, [count, enabled, play]);
 }
 
 const setModeWithSound =
@@ -292,20 +278,5 @@ function ModeSwitch({ mode, onChange }: { mode: 'member' | 'owner'; onChange: (m
         <span>{t('owner')}</span>
       </button>
     </span>
-  );
-}
-
-function SidebarFooter({ on }: { on: boolean }) {
-  const t = useTranslations('demoGym.side');
-  return (
-    <div className="gym-sidefoot" data-off={on ? undefined : ''}>
-      <span className="gym-sidefoot-mark" aria-hidden>
-        <OrbitaMark />
-      </span>
-      <span className="min-w-0 leading-[1.25]">
-        <span className="block truncate text-[0.74em] font-semibold">{t('title')}</span>
-        <span className="block truncate text-[0.64em] text-[var(--demo-muted)]">{on ? t('on') : t('off')}</span>
-      </span>
-    </div>
   );
 }

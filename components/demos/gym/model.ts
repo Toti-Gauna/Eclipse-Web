@@ -165,8 +165,38 @@ export const SESSIONS: Session[] = [
   S(4, 1140, 'spinning', 'vale', 18, 12),
   S(5, 480, 'functional', 'nico', 14, 7),
 ];
-export const sessionById = (id: string) => SESSIONS.find((s) => s.id === id);
-export const sessionAt = (day: number, start: number) => SESSIONS.find((s) => s.day === day && s.start === start);
+/** The timetable repeats every week (Mon–Sat); Sunday is closed. */
+export const weekdayOf = (day: number) => ((day % 7) + 7) % 7;
+/** A stable pseudo-random number in [0, 1) for a seed. */
+function hash(seed: number) {
+  let x = Math.imul(seed ^ 0x9e3779b9, 0x85ebca6b);
+  x ^= x >>> 13;
+  x = Math.imul(x, 0xc2b2ae35);
+  x ^= x >>> 16;
+  return (x >>> 0) / 4294967296;
+}
+/**
+ * Any session of any week: the demo week (0–6) is the hand-written one; other weeks repeat the
+ * timetable with deterministic attendance (past weeks fuller, later weeks emptier).
+ */
+export function sessionAt(day: number, start: number): Session | undefined {
+  const wd = weekdayOf(day);
+  const base = SESSIONS.find((s) => s.day === wd && s.start === start);
+  if (!base) return undefined;
+  if (day >= 0 && day < 7) return base;
+  const weeks = Math.floor(day / 7);
+  const ratio = weeks < 0 ? 0.62 + 0.38 * hash(day * 31 + start) : Math.max(0.15, 0.55 - 0.12 * weeks) * (0.6 + 0.6 * hash(day * 17 + start));
+  return { ...base, id: `${day}-${start}`, day, booked: Math.min(base.cap, Math.round(base.cap * ratio)) };
+}
+/** Session ids are `${day}-${start}` (day may be negative: earlier weeks). */
+export const sessionById = (id: string) => {
+  const m = /^(-?\d+)-(\d+)$/.exec(id);
+  return m ? sessionAt(Number(m[1]), Number(m[2])) : undefined;
+};
+/** Sessions of a day (any week), in time order. */
+export const sessionsOn = (day: number) => SLOTS.map((m) => sessionAt(day, m)).filter((s): s is Session => !!s);
+/** Kinds Lucía already trained before the story (a "new class" is any other). */
+export const KNOWN_KINDS: ClassKind[] = ['functional', 'hiit', 'yoga'];
 
 /** The two Tuesday classes the win-back WhatsApp offers (first = automatic pick). */
 export const WA_OPTIONS = ['1-420', '1-1140'] as const;
@@ -208,42 +238,67 @@ export const LEAGUE_XP: Record<StoryDay, Partial<Record<MemberId, number>>> = {
 };
 
 /* ------------------------------------------------------------------ */
-/* Story timing (ms of story time)                                      */
+/* Story timing (ms of story time) — v3 beats, nothing plays on its own  */
 /* ------------------------------------------------------------------ */
-export const LOOP_MS = 28_000;
+/**
+ * The visitor plays four beats from the SimBar (labels: demoGym.sim.<id>). Each `at` is where
+ * its segment ends, on a calm frame (no toast, push, typing or "just now" left).
+ * 1 lead — Tomás asks the site's chatbot for a free trial (Mon 9:00)
+ * 2 winback — Lucía, 9 days away, is flagged; the automation sends her WhatsApp mission
+ * 3 tuesday — she answers and books; Tuesday 7:00 she checks in; the app books Thursday
+ * 4 thursday — second check-in: mission done, level up, she climbs in her league
+ */
+export const BEATS = [
+  { id: 'lead', at: 14_500 },
+  { id: 'winback', at: 22_000 },
+  { id: 'tuesday', at: 34_000 },
+  { id: 'thursday', at: 44_000 },
+] as const;
+export const STORY_END = BEATS[BEATS.length - 1].at;
+
+/** A reply the story gives on its own inside a beat (absolute story time), unless the visitor answered first. */
+export interface StoryPick {
+  step: string;
+  reply: string;
+  at: number;
+}
 export const AT = {
-  /** The daily check flags Lucía (9 days without coming). */
-  flag: 700,
-  /** The win-back automation sends her WhatsApp (if it's on). */
-  win: 2_800,
-  /** Lucía quits if nobody wrote to her. */
-  churn: 20_000,
-  /** The lead opens the site's chat. */
-  lead: 500,
-  /** Ambient events of other members: ms after their day of the time-lapse starts. */
+  /** Tomás opens the site's chat (beat 1) and answers it. */
+  lead: 600,
+  leadPicks: [
+    { step: 'hi', reply: 'try', at: 2_600 },
+    { step: 'goal', reply: 'unsure', at: 4_800 },
+    { step: 'pick', reply: 'opt0', at: 7_200 },
+  ] as StoryPick[],
+  /** The daily check flags Lucía (beat 2). */
+  flag: 15_200,
+  /** The win-back automation sends her WhatsApp (if it's on at that moment). */
+  win: 16_500,
+  /** Lucía answers at the start of beat 3 (unless the visitor answered as her). */
+  waPicks: [
+    { step: 'mission', reply: 'book', at: 22_600 },
+    { step: 'slots', reply: 'opt0', at: 24_600 },
+  ] as StoryPick[],
+  /** Time-lapse cuts: Tuesday morning, Thursday evening. */
+  tue: 27_500,
+  thu: 35_000,
+  /** Other members, inside the beats. */
   ambient: [
-    { offset: 1_500, member: 'ramiro' as MemberId, kind: 'checkin' as const, day: 0 },
-    { offset: 7_400, member: 'agus' as MemberId, kind: 'mission' as const, day: 0 },
-    { offset: 900, member: 'caro' as MemberId, kind: 'checkin' as const, day: 1 },
-    { offset: 900, member: 'fede' as MemberId, kind: 'badge' as const, day: 3 },
+    { at: 15_700, member: 'ramiro' as MemberId, kind: 'checkin' as const, day: 0 },
+    { at: 18_000, member: 'agus' as MemberId, kind: 'mission' as const, day: 0 },
+    { at: 28_100, member: 'caro' as MemberId, kind: 'checkin' as const, day: 1 },
+    { at: 35_900, member: 'fede' as MemberId, kind: 'badge' as const, day: 3 },
   ],
 };
-/** Offsets from the moment the win-back was sent (the chain shifts if it's sent late). */
-export const CHAIN = {
-  overlay: 1_300,
-  tue: 9_000,
-  check1: 11_000,
-  book2: 12_600,
-  thu: 14_000,
-  check2: 15_800,
-  mission: 16_400,
-  league: 20_200,
-} as const;
+/** Offsets from the Tuesday cut. */
+export const TUE = { checkin: 1_500, churn: 2_000, book2: 3_000 } as const;
+/** Offsets from the Thursday cut (mission: after the check-in; league: the climb, after the celebration). */
+export const THU = { checkin: 1_500, trialIn: 2_300, mission: 600, league: 3_000 } as const;
 /** Story clock: minutes per ms in each day of the time-lapse. */
 export const CLOCK = {
   mon: { start: 540, msPerMin: 1500 },
-  tue: { lead: 2, msPerMin: 1000 },
-  thu: { lead: 2, msPerMin: 900 },
+  tue: { lead: 1, msPerMin: 1000 },
+  thu: { lead: 1, msPerMin: 900 },
 } as const;
 
 /* ------------------------------------------------------------------ */

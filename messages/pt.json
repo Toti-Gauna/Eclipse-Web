@@ -1102,7 +1102,7 @@
     },
     "missions": {
       "friend": {
-        "title": "Traga alguém com seu passe de convidado"
+        "title": "Compartilhe seu passe de convidado"
       },
       "comeback": {
         "kicker": "Missão de volta",
@@ -1209,7 +1209,8 @@
       "tomas": {
         "name": "Thiago Lima",
         "short": "Thiago"
-      }
+      },
+      "you": "Você"
     },
     "classes": {
       "functional": "Funcional",
@@ -1226,7 +1227,8 @@
     },
     "class": {
       "spots": "{count, plural, one {resta # vaga} other {restam # vagas}}",
-      "full": "Lotada"
+      "full": "Lotada",
+      "went": "{count, plural, one {# veio} other {# vieram}}"
     },
     "app": {
       "player": "Perfil de {name}",
@@ -1252,14 +1254,23 @@
       "awayTitle": "{count} dias sem vir",
       "awayBody": "Seu recorde é de {best} dias. Volta que a gente acende de novo.",
       "missions": "Missões da semana",
-      "passSent": "Passe enviado",
       "sendPass": "Enviar passe",
       "streakRule": "Descansar até 2 dias seguidos não quebra a sequência.",
       "pickDay": "Escolha o dia",
       "checkedIn": "Presente",
       "booked": "Reservada",
       "bookLabel": "Reservar {kind} de {day} às {time}",
-      "badges": "Medalhas"
+      "badges": "Medalhas",
+      "reward": "Nível {level} · ver recompensa",
+      "checkinLabel": "Fazer check-in em {kind}",
+      "seeClasses": "Ver aulas",
+      "waArrived": "Mandamos uma missão no seu WhatsApp",
+      "openWa": "Abrir",
+      "pastDay": "Dia passado: só leitura.",
+      "over": "Encerrada",
+      "closed": "{day}: fechado.",
+      "bookNote": "Reservar e fazer check-in é simulado: só muda os dados desta demo.",
+      "leagueHint": "Cada check-in e cada missão somam XP na tabela na hora."
     },
     "league": {
       "name": "Liga Prata",
@@ -1326,7 +1337,12 @@
       "label": "Chat do site da academia",
       "open": "Abrir o chat",
       "minimize": "Minimizar o chat",
-      "composer": "Digite sua dúvida"
+      "subtitleYou": "teste você",
+      "idle": "Ninguém abriu o chat ainda. Teste você ou simule a conversa de um interessado.",
+      "start": "Começar chat",
+      "again": "Começar de novo",
+      "tryYou": "Teste você",
+      "youName": "Visitante"
     },
     "levelUp": {
       "kicker": "Subiu de nível",
@@ -1334,11 +1350,13 @@
       "gain": {
         "comeback": "Missão de volta",
         "streak3": "Sequência de 3 dias",
-        "friend": "Passe de convidado"
+        "friend": "Passe de convidado",
+        "newClass": "Aula nova"
       },
-      "badge": "Medalha nova: Volta",
       "reward": "Você desbloqueou um shake pós-treino",
-      "cta": "Ver minha liga"
+      "cta": "Ver minha liga",
+      "badgeLevel": "Nível {level} desbloqueado",
+      "close": "Continuar"
     },
     "top": {
       "timelapse": "Câmera rápida",
@@ -1375,10 +1393,12 @@
       "trialIn": "{name} veio à aula experimental",
       "churn": "{name} cancelou. Ninguém escreveu pra ela.",
       "manual": "Missão de volta enviada para {name}",
-      "friend": "O convidado de {name} veio: missão cumprida",
+      "friend": "{name} compartilhou o passe de convidado: missão cumprida",
       "aCheckin": "{name} fez check-in · sequência de {count} dias",
       "aMission": "{name} cumpriu “3 aulas nesta semana”",
-      "aBadge": "{name} ganhou a medalha Madrugada"
+      "aBadge": "{name} ganhou a medalha Madrugada",
+      "trialYou": "Você reservou uma aula experimental pelo chat do site: {class}",
+      "newClass": "{name} experimentou uma aula nova: missão cumprida"
     },
     "toast": {
       "booked": "Aula reservada",
@@ -1386,7 +1406,15 @@
       "back": "Voltou",
       "levelup": "Subiu de nível",
       "league": "Subindo na liga",
-      "churn": "Cancelamento"
+      "churn": "Cancelamento",
+      "checkin2": "Check-in",
+      "mission": "Missão cumprida",
+      "newClass": "Aula nova",
+      "friend": "Passe compartilhado",
+      "off": "Automação desligada",
+      "on": "Automação ligada",
+      "declined": "Respondeu",
+      "manual": "Mensagem enviada"
     },
     "win": {
       "on": "Ligado",
@@ -1420,7 +1448,8 @@
       "churnHint": "{after} por mês, antes {before}",
       "classes": "Aulas · {day}",
       "classesAll": "Ver a semana",
-      "live": "Ao vivo"
+      "feedTitle": "Atividade",
+      "feedEmpty": "Nada ainda. Toque em “Simular” para ver a semana."
     },
     "journey": {
       "title": "A volta de {name}",
@@ -1464,12 +1493,14 @@
     "classesView": {
       "index": "Aulas",
       "title": "A semana",
-      "sub": "Vagas ao vivo: o que se reserva pelo app, WhatsApp ou chat do site aparece aqui.",
-      "caption": "Grade de aulas da semana com vagas",
+      "sub": "O que se reserva pelo app, WhatsApp ou chat do site aparece aqui.",
+      "caption": "Grade de aulas, semana de {week}",
       "trial": "Aula experimental",
-      "live": "Acontecendo",
       "trialOf": "Experimental de {name}",
-      "pickDay": "Escolha o dia"
+      "pickDay": "Escolha o dia",
+      "now": "Agora",
+      "subPast": "Semana passada: quantos vieram em cada aula.",
+      "note": "Os alunos reservam pelo app; o dono vê as vagas de qualquer semana."
     },
     "leagueView": {
       "index": "Jogo",
@@ -1533,7 +1564,9 @@
       "step3": "Se não vier: a gente escreve no dia seguinte",
       "step3done": "Veio à aula experimental",
       "waiting": "Esperando a próxima conversa…",
-      "rate": "Experimental → aluno: 38% neste trimestre"
+      "rate": "Experimental → aluno: 38% neste trimestre",
+      "you": "Você (visitante)",
+      "youInitials": "V"
     },
     "siteView": {
       "index": "Site e leads",
@@ -1558,10 +1591,12 @@
       "member": "Aluna",
       "owner": "Dono"
     },
-    "side": {
-      "title": "Retorno automático",
-      "on": "Ligado · 7+ dias sem vir",
-      "off": "Desligado: ninguém recebe a missão"
+    "sim": {
+      "lead": "Um interessado pede uma aula experimental",
+      "winback": "Luíza completa 9 dias sem vir",
+      "tuesday": "Terça: Luíza volta à academia",
+      "thursday": "Quinta: missão cumprida e sobe de nível",
+      "note": "Alunos, mensagens e reservas simulados com dados de demonstração; nada é enviado."
     }
   },
   "demoRealEstate": {
@@ -3653,14 +3688,21 @@
       "later": "{name} deixou para amanhã às 19h",
       "back": "{name} fez a lição expressa e voltou",
       "dropped": "{name} cancelou o curso",
-      "paid": "{name} pagou a mensalidade de outubro com {pay}"
+      "paid": "{name} pagou a mensalidade de outubro com {pay}",
+      "moved": "{name} → {column} (movido manualmente)"
     },
     "toast": {
       "enrolled": "Nova matrícula",
       "levelUp": "Subiu de nível",
       "back": "Um aluno voltou",
       "dropped": "Cancelamento",
-      "review": "Lição concluída"
+      "review": "Lição concluída",
+      "complete": "Lição completa",
+      "booked": "Aula reservada",
+      "level": "Teste de nível",
+      "replied": "Respondeu",
+      "later": "Fica pra amanhã",
+      "moved": "Quadro atualizado"
     },
     "nav": {
       "today": "Hoje",
@@ -3737,7 +3779,8 @@
         "pt-a1": "Espanhol A1",
         "en-a1": "Inglês A1",
         "pt-a2": "Espanhol A2"
-      }
+      },
+      "seeResult": "Ver resultado"
     },
     "course": {
       "kicker": "Inglês · nível {level}",
@@ -3790,7 +3833,7 @@
       "connecting": "Sua tutora está se conectando…",
       "label": "Prática de speaking de {name} com a tutora IA",
       "duration": "Duração {time}",
-      "transcript": "Transcrição ao vivo",
+      "transcript": "Transcrição",
       "score": "Nota",
       "scores": {
         "pron": "Pronúncia",
@@ -3815,7 +3858,9 @@
         "l3": "Good! Careful with «think»: tongue between your teeth.",
         "l4": "I think… I think I loved it!",
         "l5": "/θ/ certo · nota 90"
-      }
+      },
+      "start": "Começar a prática",
+      "againNote": "Cada nova prática mostra o resultado na hora."
     },
     "tutor": {
       "kicker": "Atividade 2 de 3 · Escrita",
@@ -3823,7 +3868,6 @@
       "subtitle": "Corrige e explica em uma linha",
       "date": "Hoje",
       "label": "Chat da Valentina com a tutora IA",
-      "composer": "Escreva uma frase em inglês…",
       "waiting": "Depois do speaking, me escreva uma frase em inglês: eu corrijo e explico o porquê em uma linha.",
       "msg": "Yesterday I buyed a new jacket for the trip.",
       "fix": "Yesterday I <bad>buyed</bad> <good>bought</good> a new jacket for the trip.",
@@ -3836,7 +3880,24 @@
         "buys": "buys"
       },
       "right": "Isso: «bought». +{points} pts e a lição está fechada.",
-      "wrong": "Quase: é «bought» (buy → bought). Guardei para revisar amanhã. +{points} pts."
+      "wrong": "Quase: é «bought» (buy → bought). Guardei para revisar amanhã. +{points} pts.",
+      "askLabel": "Perguntas rápidas para a tutora",
+      "askKicker": "Pergunte à tutora",
+      "playWriting": "Simular: Valentina escreve",
+      "asks": {
+        "past": {
+          "q": "Quando eu uso o past simple?",
+          "a": "Pra algo terminado num momento do passado: “Yesterday I bought…”. Com “yesterday”, “last week” ou “in 2020”, vai past simple."
+        },
+        "th": {
+          "q": "Como eu pronuncio o “th”?",
+          "a": "Ponta da língua entre os dentes e sopra de leve: “think”, “three”. Se soar como “s”, vira “sink”: outra palavra."
+        },
+        "more": {
+          "q": "Me dá outro exercício",
+          "a": "Complete: “Two days ago we ___ (go) to the beach.” Resposta: went. Vou somar no treino de amanhã."
+        }
+      }
     },
     "site": {
       "path": "teste-de-nivel",
@@ -3845,7 +3906,6 @@
       "botName": "Atri · assistente",
       "botSub": "Teste de nível em 2 minutos",
       "chatLabel": "Chat do site: teste de nível",
-      "composer": "Digite sua resposta…",
       "taking": "{name} está fazendo o teste",
       "takingYou": "Você está fazendo o teste",
       "tryIt": "Faça o teste você",
@@ -3861,7 +3921,7 @@
       "doubt": "A primeira aula ao vivo é experimental: se não gostar, você não paga. Posso fazer sua matrícula?",
       "pay": "Como você quer pagar a primeira mensalidade?",
       "paid": "Pronto, {name}! Pagamento aprovado. Sua primeira aula é terça às 19h. Mandamos tudo pelo WhatsApp.",
-      "paidYou": "Pronto! Pagamento aprovado. Sua primeira aula é terça às 19h. Mandamos tudo pelo WhatsApp.",
+      "paidYou": "Pronto! Pagamento simulado aprovado. Sua primeira aula seria terça às 19h.",
       "approved": "Aprovado",
       "alias": "Aqui está a chave Pix da escola: atrio.idiomas.demo. Assim que cair, seu acesso é liberado.",
       "paidTransfer": "Pix recebido · acesso liberado",
@@ -3912,7 +3972,11 @@
         "visits": "Visitas ao site",
         "tests": "Fizeram o teste",
         "enrolled": "Se matricularam"
-      }
+      },
+      "idleWho": "Ninguém está fazendo o teste",
+      "idle": "Faça o teste você (3 perguntas) ou simule uma interessada pela barra de simulação.",
+      "localNote": "Matrícula e pagamento simulados: nada é cobrado nem enviado.",
+      "paidTransferYou": "Pix simulado · acesso liberado na demo"
     },
     "wa": {
       "nudge": "Oi {name}, tudo bem? Faz 5 dias que você não entra. Preparei uma lição expressa de 5 minutos para você retomar de onde parou.",
@@ -3926,11 +3990,11 @@
       "done": "{name} concluiu a lição expressa · 5 min",
       "tomorrow": "Sem problema. Guardo para amanhã e te lembro às 19h.",
       "noteLater": "Lembrete agendado · amanhã 19h",
-      "waiting": "Mensagem agendada para {name}",
       "noNudge": "Sem acompanhamento: ninguém escreve para {name}",
       "dropped": "{name} cancelou. Ninguém escreveu para ele.",
       "label": "WhatsApp de {name} com a escola",
-      "date": "Hoje"
+      "date": "Hoje",
+      "waitingBeat": "Se {name} completar 5 dias sem entrar, o acompanhamento escreve."
     },
     "class": {
       "kicker": "Inglês A2 · turma ter e qui",
@@ -3987,7 +4051,8 @@
       "enrollmentsHint": "Vindas do teste de nível",
       "now": "Agora na Atrio",
       "openStudents": "Ver alunos",
-      "activity": "Atividade"
+      "activity": "Atividade",
+      "feedEmpty": "Nada ainda. Toque em “Simular” para ver a noite da escola."
     },
     "lanes": {
       "label": "O que está acontecendo agora",
@@ -4030,7 +4095,8 @@
         "outBack": "Voltou",
         "outDropped": "Cancelou",
         "outLater": "Amanhã 19h"
-      }
+      },
+      "notStarted": "Não começou"
     },
     "students": {
       "index": "Alunos · {count} ativos",
@@ -4138,6 +4204,32 @@
       },
       "liveSpeaking": "Speaking ao vivo · {name}",
       "liveWriting": "Escrita ao vivo · {name}"
+    },
+    "sim": {
+      "speak": "Valentina pratica speaking com a tutora IA",
+      "writing": "A tutora IA corrige a frase dela",
+      "levelup": "Valentina termina a lição e sobe para B1",
+      "lead": "Uma interessada faz o teste de nível e se matricula",
+      "nudge": "Mateus está há 5 dias sem entrar",
+      "note": "Aulas, mensagens, matrículas e pagamentos simulados com dados de demonstração; nada é enviado nem cobrado."
+    },
+    "board": {
+      "title": "Alunos que estão se afastando",
+      "hint": "Arraste ou use “Mover”",
+      "label": "Quadro de acompanhamento de alunos",
+      "empty": "Ninguém aqui",
+      "dropped": "Cancelou: ninguém escreveu",
+      "columns": {
+        "risk": "Em risco",
+        "nudged": "Mensagem enviada",
+        "back": "Voltou"
+      },
+      "notes": {
+        "martin": "5 dias sem entrar · inglês A2",
+        "tomas": "4 dias sem entrar · espanhol A1",
+        "joaquin": "Lição expressa enviada ontem",
+        "renata": "Voltou ontem com a lição expressa"
+      }
     }
   },
   "faq": {
@@ -4861,6 +4953,58 @@
       "club": {
         "title": "Um clube que assina e fideliza",
         "body": "Grãos por compra, sequências por mês e níveis de torra com benefícios. O Thiago completa seis meses e sobe de nível."
+      }
+    },
+    "gym": {
+      "sim": {
+        "title": "Simule a semana da academia",
+        "body": "Nada se mexe sozinho. Toque em “Simular” e veja quatro momentos: uma aula experimental, Luíza com 9 dias sem vir, a volta dela na terça e a missão na quinta."
+      },
+      "winback": {
+        "title": "Retorno automático",
+        "body": "Depois de 7 dias sem vir, o app manda um WhatsApp com uma missão pessoal e XP extra. Desligue e veja o que acontece com a Luíza."
+      },
+      "missions": {
+        "title": "Missões que dá pra jogar",
+        "body": "Compartilhe o passe de convidado ou faça check-in numa aula nova: XP, sequência e nível mudam na hora."
+      },
+      "classes": {
+        "title": "Aulas e vagas",
+        "body": "Navegue por dias passados e futuros e reserve uma vaga pelo app: o dono vê na grade."
+      },
+      "league": {
+        "title": "Liga semanal",
+        "body": "Oito alunos por liga e os três primeiros sobem. Cada aula soma pontos e dá um motivo pra voltar."
+      },
+      "lead": {
+        "title": "Aulas experimentais pelo site",
+        "body": "O chat do site responde, indica uma aula e reserva a experimental grátis. Teste: o lead aparece no painel."
+      }
+    },
+    "academy": {
+      "sim": {
+        "title": "Simule a noite da escola",
+        "body": "Nada se mexe sozinho. Toque em “Simular” e veja cinco momentos: speaking com a IA, a correção escrita, a subida para B1, uma matrícula e um aluno que volta."
+      },
+      "speaking": {
+        "title": "Speaking com a tutora IA",
+        "body": "Escolha um tema e comece: a tutora escuta, marca a pronúncia (sink → think) e dá uma nota."
+      },
+      "tutor": {
+        "title": "Uma tutora que responde na hora",
+        "body": "Corrige cada frase e explica em uma linha. Pergunte algo: ela responde na hora, a qualquer momento."
+      },
+      "ranking": {
+        "title": "Sequência, níveis e ranking da turma",
+        "body": "Cada lição soma pontos. Valentina sobe para B1 e no ranking da turma."
+      },
+      "followup": {
+        "title": "Ninguém fica pra trás",
+        "body": "Com 5 dias sem entrar, sai um WhatsApp com uma lição de 5 minutos. Mova alunos no quadro ou desligue o acompanhamento e veja a taxa de conclusão."
+      },
+      "enroll": {
+        "title": "Teste de nível, matrícula e pagamento",
+        "body": "O chat do site aplica o teste, indica o curso e cobra a primeira mensalidade. Faça você: é simulado, nada é cobrado."
       }
     }
   },

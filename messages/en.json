@@ -1102,7 +1102,7 @@
     },
     "missions": {
       "friend": {
-        "title": "Bring someone with your guest pass"
+        "title": "Share your guest pass"
       },
       "comeback": {
         "kicker": "Comeback mission",
@@ -1209,7 +1209,8 @@
       "tomas": {
         "name": "Tom Lewis",
         "short": "Tom"
-      }
+      },
+      "you": "You"
     },
     "classes": {
       "functional": "Functional",
@@ -1226,7 +1227,8 @@
     },
     "class": {
       "spots": "{count, plural, one {# spot left} other {# spots left}}",
-      "full": "Full"
+      "full": "Full",
+      "went": "{count, plural, one {# came} other {# came}}"
     },
     "app": {
       "player": "{name}'s profile",
@@ -1252,14 +1254,23 @@
       "awayTitle": "{count} days away",
       "awayBody": "Your record is {best} days. Come back and we'll light it again.",
       "missions": "This week's missions",
-      "passSent": "Pass sent",
       "sendPass": "Send pass",
       "streakRule": "Resting up to 2 days in a row doesn't break your streak.",
       "pickDay": "Pick a day",
       "checkedIn": "Checked in",
       "booked": "Booked",
       "bookLabel": "Book {kind} on {day} at {time}",
-      "badges": "Badges"
+      "badges": "Badges",
+      "reward": "Level {level} · see reward",
+      "checkinLabel": "Check in to {kind}",
+      "seeClasses": "See classes",
+      "waArrived": "We sent you a mission on WhatsApp",
+      "openWa": "Open",
+      "pastDay": "Past day: read only.",
+      "over": "Over",
+      "closed": "{day}: closed.",
+      "bookNote": "Booking and checking in are simulated: they only change this demo's data.",
+      "leagueHint": "Every check-in and mission adds XP to the table right away."
     },
     "league": {
       "name": "Silver League",
@@ -1326,7 +1337,12 @@
       "label": "Chat on the gym's site",
       "open": "Open the chat",
       "minimize": "Minimize the chat",
-      "composer": "Type your question"
+      "subtitleYou": "try it yourself",
+      "idle": "Nobody has opened the chat yet. Try it yourself or simulate a prospect's question.",
+      "start": "Start chat",
+      "again": "Start over",
+      "tryYou": "Try it yourself",
+      "youName": "Visitor"
     },
     "levelUp": {
       "kicker": "Level up",
@@ -1334,11 +1350,13 @@
       "gain": {
         "comeback": "Comeback mission",
         "streak3": "3-day streak",
-        "friend": "Guest pass"
+        "friend": "Guest pass",
+        "newClass": "New class"
       },
-      "badge": "New badge: Comeback",
       "reward": "You unlocked a post-workout shake",
-      "cta": "See my league"
+      "cta": "See my league",
+      "badgeLevel": "Level {level} unlocked",
+      "close": "Continue"
     },
     "top": {
       "timelapse": "Time-lapse",
@@ -1375,10 +1393,12 @@
       "trialIn": "{name} showed up for the trial class",
       "churn": "{name} cancelled. Nobody wrote to her.",
       "manual": "Comeback mission sent to {name}",
-      "friend": "{name}'s guest showed up: mission complete",
+      "friend": "{name} shared her guest pass: mission complete",
       "aCheckin": "{name} checked in · {count}-day streak",
       "aMission": "{name} completed “3 classes this week”",
-      "aBadge": "{name} earned the Early bird badge"
+      "aBadge": "{name} earned the Early bird badge",
+      "trialYou": "You booked a trial class through the site's chat: {class}",
+      "newClass": "{name} tried a new class: mission complete"
     },
     "toast": {
       "booked": "Class booked",
@@ -1386,7 +1406,15 @@
       "back": "Came back",
       "levelup": "Level up",
       "league": "Climbing the league",
-      "churn": "Cancellation"
+      "churn": "Cancellation",
+      "checkin2": "Checked in",
+      "mission": "Mission complete",
+      "newClass": "New class",
+      "friend": "Pass shared",
+      "off": "Automation off",
+      "on": "Automation on",
+      "declined": "Replied",
+      "manual": "Message sent"
     },
     "win": {
       "on": "On",
@@ -1420,7 +1448,8 @@
       "churnHint": "{after} a month, down from {before}",
       "classes": "Classes · {day}",
       "classesAll": "See the week",
-      "live": "Live"
+      "feedTitle": "Activity",
+      "feedEmpty": "Nothing yet. Tap “Simulate” to play the week."
     },
     "journey": {
       "title": "{name}'s comeback",
@@ -1464,12 +1493,14 @@
     "classesView": {
       "index": "Classes",
       "title": "The week",
-      "sub": "Live capacity: bookings from the app, WhatsApp or the site's chat show up here.",
-      "caption": "This week's class grid with capacity",
+      "sub": "Bookings from the app, WhatsApp or the site's chat show up here.",
+      "caption": "Class grid, week of {week}",
       "trial": "Trial class",
-      "live": "In progress",
       "trialOf": "{name}'s trial",
-      "pickDay": "Pick a day"
+      "pickDay": "Pick a day",
+      "now": "Now",
+      "subPast": "Past week: how many came to each class.",
+      "note": "Members book from their app; the owner sees capacity for any week."
     },
     "leagueView": {
       "index": "Game",
@@ -1533,7 +1564,9 @@
       "step3": "No-show: we write the next day",
       "step3done": "Came to the trial class",
       "waiting": "Waiting for the next question…",
-      "rate": "Trial → member: 38% this quarter"
+      "rate": "Trial → member: 38% this quarter",
+      "you": "You (visitor)",
+      "youInitials": "Y"
     },
     "siteView": {
       "index": "Site & leads",
@@ -1558,10 +1591,12 @@
       "member": "Member",
       "owner": "Owner"
     },
-    "side": {
-      "title": "Auto win-back",
-      "on": "On · 7+ days away",
-      "off": "Off: nobody gets their mission"
+    "sim": {
+      "lead": "A prospect asks for a trial class",
+      "winback": "Lucy hits 9 days without coming",
+      "tuesday": "Tuesday: Lucy is back at the gym",
+      "thursday": "Thursday: mission done, level up",
+      "note": "Members, messages and bookings are simulated with demo data; nothing is sent."
     }
   },
   "demoRealEstate": {
@@ -3653,14 +3688,21 @@
       "later": "{name} is leaving it for tomorrow at 7 PM",
       "back": "{name} did the express lesson and is back",
       "dropped": "{name} dropped out of the course",
-      "paid": "{name} paid the October fee by {pay}"
+      "paid": "{name} paid the October fee by {pay}",
+      "moved": "{name} → {column} (moved by hand)"
     },
     "toast": {
       "enrolled": "New enrollment",
       "levelUp": "Level up",
       "back": "A student is back",
       "dropped": "Dropped out",
-      "review": "Lesson complete"
+      "review": "Lesson complete",
+      "complete": "Lesson complete",
+      "booked": "Class booked",
+      "level": "Level test",
+      "replied": "Replied",
+      "later": "Saved for tomorrow",
+      "moved": "Board updated"
     },
     "nav": {
       "today": "Today",
@@ -3737,7 +3779,8 @@
         "pt-a1": "Portuguese A1",
         "en-a1": "English A1",
         "pt-a2": "Portuguese A2"
-      }
+      },
+      "seeResult": "See result"
     },
     "course": {
       "kicker": "English · level {level}",
@@ -3790,7 +3833,7 @@
       "connecting": "Your tutor is connecting…",
       "label": "{name}'s speaking practice with the AI tutor",
       "duration": "Duration {time}",
-      "transcript": "Live transcript",
+      "transcript": "Transcript",
       "score": "Score",
       "scores": {
         "pron": "Pronunciation",
@@ -3815,7 +3858,9 @@
         "l3": "Good! Careful with «think»: tongue between your teeth.",
         "l4": "I think… I think I loved it!",
         "l5": "/θ/ right · score 90"
-      }
+      },
+      "start": "Start practicing",
+      "againNote": "Each new practice shows its result right away."
     },
     "tutor": {
       "kicker": "Activity 2 of 3 · Writing",
@@ -3823,7 +3868,6 @@
       "subtitle": "Corrects you and explains in one line",
       "date": "Today",
       "label": "Valentina's chat with the AI tutor",
-      "composer": "Write a sentence in English…",
       "waiting": "After the speaking, write me a sentence in English: I'll correct it and explain why in one line.",
       "msg": "Yesterday I buyed a new jacket for the trip.",
       "fix": "Yesterday I <bad>buyed</bad> <good>bought</good> a new jacket for the trip.",
@@ -3836,7 +3880,24 @@
         "buys": "buys"
       },
       "right": "Exactly: «bought». +{points} pts and the lesson is done.",
-      "wrong": "Almost: it's «bought» (buy → bought). I'll save it for tomorrow's review. +{points} pts."
+      "wrong": "Almost: it's «bought» (buy → bought). I'll save it for tomorrow's review. +{points} pts.",
+      "askLabel": "Quick questions for the tutor",
+      "askKicker": "Ask the tutor",
+      "playWriting": "Simulate: Valentina writes",
+      "asks": {
+        "past": {
+          "q": "When do I use the simple past?",
+          "a": "For something finished at a point in the past: “Yesterday I bought…”. With “yesterday”, “last week” or “in 2020”, use the simple past."
+        },
+        "th": {
+          "q": "How do I say “th”?",
+          "a": "Tip of the tongue between your teeth, then blow softly: “think”, “three”. If it sounds like “s”, it’s “sink”: a different word."
+        },
+        "more": {
+          "q": "Give me another exercise",
+          "a": "Fill in: “Two days ago we ___ (go) to the beach.” Answer: went. I’ll add it to tomorrow’s practice."
+        }
+      }
     },
     "site": {
       "path": "level-test",
@@ -3845,7 +3906,6 @@
       "botName": "Atri · assistant",
       "botSub": "Level test in 2 minutes",
       "chatLabel": "Site chat: level test",
-      "composer": "Type your answer…",
       "taking": "{name} is taking the test",
       "takingYou": "You're taking the test",
       "tryIt": "Take the test yourself",
@@ -3861,7 +3921,7 @@
       "doubt": "Your first live class is a trial: if you don't like it, you don't pay. Shall I enroll you?",
       "pay": "How would you like to pay the first fee?",
       "paid": "Done, {name}! Payment approved. Your first class is Tuesday at 7 PM. We'll send everything on WhatsApp.",
-      "paidYou": "Done! Payment approved. Your first class is Tuesday at 7 PM. We'll send everything on WhatsApp.",
+      "paidYou": "Done! Simulated payment approved. Your first class would be Tuesday at 7 PM.",
       "approved": "Approved",
       "alias": "Here's the school's account alias: atrio.idiomas.demo. Your access opens as soon as the transfer clears.",
       "paidTransfer": "Transfer received · access open",
@@ -3912,7 +3972,11 @@
         "visits": "Site visits",
         "tests": "Took the test",
         "enrolled": "Enrolled"
-      }
+      },
+      "idleWho": "Nobody is taking the test",
+      "idle": "Take the test yourself (3 questions) or simulate a prospect from the simulation bar.",
+      "localNote": "Enrollment and payment are simulated: nothing is charged or sent.",
+      "paidTransferYou": "Simulated transfer · access open in the demo"
     },
     "wa": {
       "nudge": "Hi {name}, how's it going? You haven't logged in for 5 days. I made you a 5-minute express lesson to pick up where you left off.",
@@ -3926,11 +3990,11 @@
       "done": "{name} completed the express lesson · 5 min",
       "tomorrow": "No problem. I'll keep it for tomorrow and remind you at 7 PM.",
       "noteLater": "Reminder scheduled · tomorrow 7 PM",
-      "waiting": "Message scheduled for {name}",
       "noNudge": "No follow-up: nobody writes to {name}",
       "dropped": "{name} dropped out. Nobody wrote to him.",
       "label": "{name}'s WhatsApp with the school",
-      "date": "Today"
+      "date": "Today",
+      "waitingBeat": "If {name} hits 5 days away, the follow-up writes to them."
     },
     "class": {
       "kicker": "English A2 · Tue & Thu group",
@@ -3987,7 +4051,8 @@
       "enrollmentsHint": "From the level test",
       "now": "Now at Atrio",
       "openStudents": "See students",
-      "activity": "Activity"
+      "activity": "Activity",
+      "feedEmpty": "Nothing yet. Tap “Simulate” to play the school’s evening."
     },
     "lanes": {
       "label": "What's happening now",
@@ -4030,7 +4095,8 @@
         "outBack": "Back",
         "outDropped": "Dropped",
         "outLater": "Tomorrow 7 PM"
-      }
+      },
+      "notStarted": "Not started"
     },
     "students": {
       "index": "Students · {count} active",
@@ -4138,6 +4204,32 @@
       },
       "liveSpeaking": "Live speaking · {name}",
       "liveWriting": "Live writing · {name}"
+    },
+    "sim": {
+      "speak": "Valentina practices speaking with the AI tutor",
+      "writing": "The AI tutor corrects her sentence",
+      "levelup": "Valentina finishes the lesson and moves up to B1",
+      "lead": "A prospect takes the level test and enrolls",
+      "nudge": "Martín hasn't logged in for 5 days",
+      "note": "Lessons, messages, enrollments and payments are simulated with demo data; nothing is sent or charged."
+    },
+    "board": {
+      "title": "Students falling behind",
+      "hint": "Drag or use “Move”",
+      "label": "Student follow-up board",
+      "empty": "Nobody here",
+      "dropped": "Dropped out: nobody wrote to them",
+      "columns": {
+        "risk": "At risk",
+        "nudged": "Message sent",
+        "back": "Back"
+      },
+      "notes": {
+        "martin": "5 days away · English A2",
+        "tomas": "4 days away · Portuguese A1",
+        "joaquin": "Express lesson sent yesterday",
+        "renata": "Came back yesterday with the express lesson"
+      }
     }
   },
   "faq": {
@@ -4861,6 +4953,58 @@
       "club": {
         "title": "A club that subscribes and retains",
         "body": "Points per purchase, monthly streaks and roast levels with perks. Tomás completes six months and levels up."
+      }
+    },
+    "gym": {
+      "sim": {
+        "title": "Play the gym's week",
+        "body": "Nothing moves on its own. Tap “Simulate” for four moments: a trial class, Lucy at 9 days away, her comeback on Tuesday and her mission on Thursday."
+      },
+      "winback": {
+        "title": "Automatic win-back",
+        "body": "After 7 days without coming, the app texts members on WhatsApp with a personal mission and bonus XP. Switch it off and see what happens to Lucy."
+      },
+      "missions": {
+        "title": "Missions you can play",
+        "body": "Share the guest pass or check in to a new class: XP, streak and level update right away."
+      },
+      "classes": {
+        "title": "Classes and capacity",
+        "body": "Browse past and future days and book a spot from the app: the owner sees it on the grid."
+      },
+      "league": {
+        "title": "Weekly league",
+        "body": "Eight members per league; the top three move up. Every class adds points and a reason to come back."
+      },
+      "lead": {
+        "title": "Trial classes from the site",
+        "body": "The site's chat answers, suggests a class and books the free trial. Try it: the lead shows up in the panel."
+      }
+    },
+    "academy": {
+      "sim": {
+        "title": "Play the school’s evening",
+        "body": "Nothing moves on its own. Tap “Simulate” for five moments: AI speaking practice, a written correction, a move up to B1, an enrollment and a student who comes back."
+      },
+      "speaking": {
+        "title": "Speaking with the AI tutor",
+        "body": "Pick a topic and start: the tutor listens, flags pronunciation (sink → think) and gives a score."
+      },
+      "tutor": {
+        "title": "A tutor that answers right away",
+        "body": "It corrects every sentence and explains it in one line. Ask it something: it answers instantly, any time."
+      },
+      "ranking": {
+        "title": "Streaks, levels and a class ranking",
+        "body": "Every lesson adds points. Valentina moves up to B1 and climbs her class ranking."
+      },
+      "followup": {
+        "title": "Nobody falls behind",
+        "body": "After 5 days away, a WhatsApp goes out with a 5-minute lesson. Move students on the board, or switch the follow-up off and watch completion."
+      },
+      "enroll": {
+        "title": "Level test, enrollment and payment",
+        "body": "The site’s chat runs the test, recommends a course and takes the first fee. Try it: it’s simulated, nothing is charged."
       }
     }
   },

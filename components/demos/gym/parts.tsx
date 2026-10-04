@@ -15,6 +15,7 @@ import {
   PowerOff,
   ScanLine,
   Send,
+  Sparkles,
   Target,
   TriangleAlert,
   Trophy,
@@ -24,8 +25,8 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { Avatar, Switch, ToastStack, type FeedItem, type Tone, type ToastItem } from '../kit';
-import { CLOCK, memberById, sessionById, tint, type MemberId } from './model';
-import { act, isOffNow, type EventKind, type GymEvent, type GymView } from './story';
+import { memberById, tint, type MemberId } from './model';
+import { act, isFreshEvent, isOffNow, storyClockAt, type EventKind, type GymEvent } from './story';
 import { useGym, useGymText } from './hooks';
 
 /** Órbita's mark: a planet on a tilted orbit with its moon. */
@@ -42,7 +43,8 @@ export function OrbitaMark({ className = '' }: { className?: string }) {
 export function MemberAvatar({ id, className = '' }: { id: MemberId; className?: string }) {
   const m = memberById(id);
   const c = tint(m.tint);
-  return <Avatar initials={m.initials} color={`color-mix(in oklab, ${c} 24%, #14161B)`} ink={c} className={`gym-avatar ${className}`} />;
+    // Initials a touch lighter than the tint so they read on its dark chip (AA).
+  return <Avatar initials={m.initials} color={`color-mix(in oklab, ${c} 24%, #14161B)`} ink={`color-mix(in oklab, ${c} 62%, #FFFFFF)`} className={`gym-avatar ${className}`} />;
 }
 
 /** Owner section header: mono index + condensed caps title + one line. */
@@ -73,16 +75,7 @@ export function Segments({ value, goal, className = '' }: { value: number; goal:
   );
 }
 
-/** Story time → that moment's day and clock (feeds, chat stamps). */
-export function storyClockAt(view: GymView, at: number): { day: number; clock: number } {
-  if (at < view.tueAt) return { day: 0, clock: CLOCK.mon.start + Math.floor(Math.max(0, at) / CLOCK.mon.msPerMin) };
-  if (at < view.thuAt) {
-    const s1 = view.book1 ? sessionById(view.book1.session) : undefined;
-    return { day: 1, clock: (s1?.day === 1 ? s1.start : 420) - CLOCK.tue.lead + Math.floor((at - view.tueAt) / CLOCK.tue.msPerMin) };
-  }
-  const s2 = view.book2 ? sessionById(view.book2.session) : undefined;
-  return { day: 3, clock: (s2?.start ?? 1140) - CLOCK.thu.lead + Math.floor((at - view.thuAt) / CLOCK.thu.msPerMin) };
-}
+export { storyClockAt };
 
 const EVENT: Record<EventKind, { icon: LucideIcon; tone: Tone }> = {
   flag: { icon: TriangleAlert, tone: 'bad' },
@@ -96,6 +89,7 @@ const EVENT: Record<EventKind, { icon: LucideIcon; tone: Tone }> = {
   book2: { icon: CalendarPlus, tone: 'accent' },
   checkin2: { icon: ScanLine, tone: 'ok' },
   mission: { icon: Target, tone: 'accent' },
+  newClass: { icon: Sparkles, tone: 'accent' },
   levelup: { icon: ChevronsUp, tone: 'accent' },
   league: { icon: Trophy, tone: 'accent2' },
   trialIn: { icon: UserCheck, tone: 'info' },
@@ -112,14 +106,15 @@ export function useEventText() {
   const { t, short, session } = useGymText();
   return (e: GymEvent): string => {
     const values = {
-      name: e.member ? short(e.member) : '',
+      name: e.member === 'you' ? t('people.you') : e.member ? short(e.member) : '',
       class: session(e.session),
       count: e.n ?? 0,
       level: e.n ?? 0,
       rank: e.n ?? 0,
     };
     if ((e.kind === 'booked' || e.kind === 'book2') && e.via) return t(`feed.${e.kind}.${e.via === 'wa' ? 'wa' : 'app'}`, values);
-    if (e.kind === 'aCheckin') return t('feed.aCheckin', { ...values, count: e.member ? memberById(e.member).streak : 0 });
+    if (e.kind === 'aCheckin') return t('feed.aCheckin', { ...values, count: e.member && e.member !== 'you' ? memberById(e.member).streak : 0 });
+    if (e.kind === 'trial' && e.member === 'you') return t('feed.trialYou', values);
     return t(`feed.${e.kind}`, values);
   };
 }
@@ -139,32 +134,37 @@ export function useFeedItems(limit = 6): FeedItem[] {
         ...EVENT[e.kind],
         text: text(e),
         time: at.day === view.day ? fmt.time(at.clock) : dayShort(at.day),
-        fresh: view.t - e.at < 2600,
+        fresh: isFreshEvent(view, e),
       };
     });
 }
 
 const TOASTED: EventKind[] = ['booked', 'trial', 'back', 'levelup', 'league', 'churn'];
 
-/** Live toasts on top of the owner's screen (decorative: the Announcer speaks). */
-export function GymToasts({ placement }: { placement: 'top' | 'bottom-right' }) {
-  const { view, reduced } = useGym();
+/**
+ * Toasts: story events while a beat plays (they leave before it ends), and the visitor's own
+ * latest action (`flash`, cleared by the timer their click started). Decorative: the Announcer speaks.
+ */
+export function GymToasts({ placement, only }: { placement: 'top' | 'bottom-right'; only?: (e: GymEvent) => boolean }) {
+  const { view, reduced, flash: last } = useGym();
   const text = useEventText();
   const t = useTranslations('demoGym.toast');
   if (reduced) return null;
+  const flash = last && (!only || only(last)) ? last : null;
   const items: ToastItem[] = view.events
-    .filter((e) => TOASTED.includes(e.kind) && view.t - e.at < 3400)
+    .filter((e) => TOASTED.includes(e.kind) && isFreshEvent(view, e, 3400) && (!only || only(e)))
     .slice(-2)
     .map((e) => ({ id: e.id, icon: EVENT[e.kind].icon, tone: EVENT[e.kind].tone, title: t(e.kind), body: text(e), leaving: view.t - e.at >= 2900 }));
-  return <ToastStack items={items} placement={placement} />;
+  if (flash) items.push({ id: `flash-${flash.id}`, icon: EVENT[flash.kind].icon, tone: EVENT[flash.kind].tone, title: t(flash.kind), body: text(flash) });
+  return <ToastStack items={items.slice(-2)} placement={placement} />;
 }
 
-/** One polite announcement of the latest live change (one instance per pair). */
+/** One polite announcement of the latest change (one instance per pair). */
 export function Announcer() {
-  const { view, announce } = useGym();
+  const { view, announce, flash } = useGym();
   const text = useEventText();
   if (!announce) return null;
-  const latest = [...view.events].reverse().find((e) => view.t - e.at < 2600);
+  const latest = flash ?? [...view.events].reverse().find((e) => isFreshEvent(view, e));
   return (
     <p className="sr-only" aria-live="polite" aria-atomic="true">
       {latest ? text(latest) : ''}
