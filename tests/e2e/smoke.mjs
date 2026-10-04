@@ -90,8 +90,14 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.goto(`${BASE}/es/`);
   await page.waitForTimeout(1800);
   await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('link', { name: 'Precios' }).first().click();
-  await page.waitForTimeout(1500);
-  const top = await page.evaluate(() => document.getElementById('precios')?.getBoundingClientRect().top ?? 9999);
+  // Smooth scroll: wait until the position settles (up to 6 s) before measuring.
+  let top = 9999;
+  for (let i = 0, last = NaN; i < 30; i++) {
+    await page.waitForTimeout(200);
+    top = await page.evaluate(() => document.getElementById('precios')?.getBoundingClientRect().top ?? 9999);
+    if (Math.abs(top - last) < 1) break;
+    last = top;
+  }
   check('nav link scrolls to #precios', Math.abs(top) < 200, `${Math.round(top)}px`);
   check('hash updated', page.url().endsWith('#precios'));
 
