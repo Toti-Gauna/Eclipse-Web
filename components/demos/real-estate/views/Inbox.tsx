@@ -107,7 +107,8 @@ function Transcript() {
     from === 'user' ? t('people.carolinaFirst') : from === 'bot' ? (view.botOff ? t('inbox.humanLabel', { name: t('people.juliaFirst') }) : t('inbox.botLabel')) : '';
   return (
     <section className="re-transcript" aria-label={t('inbox.transcript')}>
-      <ol ref={list} className="re-lines">
+      {/* Scrolls on its own (long conversations): reachable with the keyboard. */}
+      <ol ref={list} className="re-lines" tabIndex={0} aria-label={t('inbox.transcript')}>
         {run.items.map((it) => {
           const tag = note(it.id);
           return (
