@@ -81,6 +81,12 @@ export interface Plan {
   name: Localized;
   audience: Localized;
   includes: Localized<string[]>;
+  /**
+   * A piece given at no extra cost on top of `items` (v3: the premium landing in Voz and
+   * Automatiza). It does NOT count in `items` (so detection and "ahorrás" stay as they were)
+   * and never carries a price, a strikethrough or a saving: only what can be promised today.
+   */
+  bonus?: { itemId: ItemId; title: Localized; text: Localized };
 }
 
 export interface Addon {
@@ -157,6 +163,14 @@ export interface Vertical {
     lostLabel: Localized;
     ticketLabel: Localized;
   };
+  /**
+   * The complete project the demo shows (v3, "Oferta debajo de cada demo").
+   * `items`: the pieces visible in the demo (each has a published price in items.json).
+   * `plan`: only when a package's approved audience names this vertical (plans.json
+   * `audience`); otherwise null — no package or price is inferred, the pieces are listed
+   * one by one and the builder opens with them.
+   */
+  project?: { plan: PlanId | null; items: ItemId[] };
 }
 
 export interface FounderSlot {
