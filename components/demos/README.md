@@ -18,6 +18,7 @@ components/demos/
   kit.tsx            ← import everything from here:  import { AppShell, … } from '../kit'
   kit/theme.ts       DemoTheme → --demo-* CSS variables
   kit/store.ts       createDemoStore (beats) · useStory · usePairedStore · nextBeat · useStoreSnapshot · useBeatFocus
+  kit/reveal.ts      revealInDemo · contentToTop · keepChatFocus (scroll/focus inside a device only)
   kit/SimBar.tsx     the simulation controls (rendered by AppShell's `sim` prop)
   kit/format.ts      useDemoFormat (times, durations, %, dates per locale)
   kit/AppShell.tsx   shell + structural variants (layout.nav · density · icons · phoneNav)
@@ -194,6 +195,11 @@ Rules that make "no autoplay" hold:
   the story enters a beat (a jump through several beats visits each), for the beat reached with
   reduced motion, never on reset or when a view mounts later. Keep the targets as data next to
   `BEATS` (per beat and per view: laptop, phone alone, phone paired) and test that each one exists.
+  To show the element, use `revealInDemo(from, selector, { smooth })` / `contentToTop(from)`
+  (`kit/reveal.ts`): they scroll only inside the device, never the page or the layer
+  (no `scrollIntoView`). Mind the floating dock: never pin a widget to the bottom of a tall,
+  non-scrolling box — the dock can cover it (the gym chat's quick replies were tapped through
+  to the dock on touch screens).
 
 **Legacy loop (deprecated)**: without `beats`, `createDemoStore` still runs a `loopMs` story on
 its own (`onLoop`, `engage`) so demos not migrated yet keep working. Don't use it in new code.
