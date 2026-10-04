@@ -177,3 +177,47 @@ describe('tour · centerDelta', () => {
     expect(centerDelta(rect(500, 0, 100, 10), rect(0, -100, 400, 220)).dx).toBe(350);
   });
 });
+
+describe('tour · the card always fits on screen', () => {
+  const small = { width: 360, height: 640 };
+  const tallSheet = { width: 336, height: 700 }; // long copy: taller than the screen
+
+  it('caps the card to the visible height and keeps it inside the margins (docked sheet)', () => {
+    const anchor = rect(20, 560, 320, 60); // last item of a list, near the bottom
+    const p = computePlacement({ anchor, card: tallSheet, viewport: small });
+    expect(p.maxHeight).toBe(640 - 2 * TOUR_MARGIN);
+    const shown = cardOf(p, { width: 336, height: Math.min(700, p.maxHeight) });
+    expect(inside(shown, small)).toBe(true);
+    // No room around the target: covering part of it beats pushing the buttons off screen.
+    expect(p.covers).toBe(true);
+  });
+
+  it('a docked sheet with little room still ends 12px above the bottom edge', () => {
+    const anchor = rect(20, 300, 320, 120);
+    const sheetCard = { width: 336, height: 420 };
+    const p = computePlacement({ anchor, card: sheetCard, viewport: { width: 360, height: 780 } });
+    expect(inside(cardOf(p, sheetCard), { width: 360, height: 780 })).toBe(true);
+  });
+
+  it('caps a floating card too', () => {
+    const anchor = rect(600, 860, 120, 30);
+    const p = computePlacement({ anchor, card: { width: 380, height: 1200 }, viewport: desktop });
+    expect(p.maxHeight).toBe(900 - 2 * TOUR_MARGIN);
+    expect(inside(cardOf(p, { width: 380, height: p.maxHeight }), desktop)).toBe(true);
+  });
+
+  it('fits the visual viewport when it is smaller than the layer (browser bars, zoom)', () => {
+    const bounds = rect(0, 0, 360, 560); // layer 780 tall, only 560 visible
+    const anchor = rect(20, 380, 320, 60);
+    const p = computePlacement({ anchor, card: sheet, viewport: phone, bounds });
+    expect(p.maxHeight).toBe(560 - 2 * TOUR_MARGIN);
+    expect(p.y + Math.min(sheet.height, p.maxHeight)).toBeLessThanOrEqual(560 - TOUR_MARGIN);
+    expect(p.y).toBeGreaterThanOrEqual(TOUR_MARGIN);
+  });
+
+  it('places relative to an offset visual viewport', () => {
+    const bounds = rect(0, 200, 360, 500);
+    const p = computePlacement({ anchor: null, card: sheet, viewport: phone, bounds });
+    expect(p.y).toBe(200 + (500 - 240) / 2);
+  });
+});

@@ -111,6 +111,7 @@ function TourLayer(props: TourProps & { closing: boolean }) {
   const leaderRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
   const liveRef = useRef<HTMLParagraphElement>(null);
   const api = useRef<Api | null>(null);
   const propsRef = useRef(props);
@@ -187,14 +188,30 @@ function TourLayer(props: TourProps & { closing: boolean }) {
       return out;
     }
 
+    /**
+     * The layer's box and the part of it actually visible (the visual viewport: mobile browser
+     * bars, on-screen keyboard, pinch zoom), both in viewport coordinates.
+     */
+    function frameBoxes(): { box: Rect; view: Rect } {
+      const box = toRect(layer!.getBoundingClientRect());
+      const vv = win.visualViewport;
+      const visual = vv ? { x: vv.offsetLeft, y: vv.offsetTop, width: vv.width, height: vv.height } : box;
+      return { box, view: intersect(box, visual) ?? box };
+    }
+
+    /** Caps the card to the visible height (its text scrolls inside; progress + buttons stay visible). */
+    function capCard(view: Rect) {
+      card!.style.maxHeight = `${Math.max(0, Math.floor(view.height - 2 * TOUR_MARGIN))}px`;
+    }
+
     /** The part of `el` actually on screen, in layer coordinates (null when none). */
-    function visibleRect(el: Element, box: Rect): Rect | null {
+    function visibleRect(el: Element, box: Rect, view: Rect): Rect | null {
       let r: Rect | null = toRect(el.getBoundingClientRect());
       for (const a of clipAncestors(el)) {
         r = intersect(r, toRect(a.getBoundingClientRect()));
         if (!r) return null;
       }
-      r = intersect(r, box);
+      r = intersect(r, view);
       return r && { x: r.x - box.x, y: r.y - box.y, width: r.width, height: r.height };
     }
 
@@ -225,7 +242,8 @@ function TourLayer(props: TourProps & { closing: boolean }) {
      */
     function scrollToAnchor(el: HTMLElement, targets: HTMLElement[]): boolean {
       const behavior: ScrollBehavior = prefersReducedMotion() ? 'instant' : 'smooth';
-      const box = toRect(layer!.getBoundingClientRect());
+      const { view: box } = frameBoxes();
+      capCard(box);
       // On phones the card docks as a sheet: keep the anchor in the part it doesn't cover.
       const reserve = box.width < TOUR_NARROW ? card!.offsetHeight + TOUR_MARGIN + TOUR_GAP : 0;
       const chain = scrollChain(el);
@@ -242,8 +260,13 @@ function TourLayer(props: TourProps & { closing: boolean }) {
         if (!scroller) continue;
         let region = c === 'window' ? box : intersect(toRect(c.getBoundingClientRect()), box);
         if (!region) continue;
+        // Respect the container's scroll-padding (the page's sticky header sets it on <html>).
+        const pad = win.getComputedStyle(c === 'window' ? doc.documentElement : c);
+        const padTop = parseFloat(pad.scrollPaddingTop) || 0;
+        const freeTop = c === 'window' ? Math.max(region.y, box.y + padTop) : region.y + padTop;
         const freeBottom = Math.min(region.y + region.height, box.y + box.height - reserve);
-        if (freeBottom - region.y > 80) region = { ...region, height: freeBottom - region.y };
+        if (freeBottom - freeTop > 80) region = { ...region, y: freeTop, height: freeBottom - freeTop };
+        else if (freeBottom - region.y > 80) region = { ...region, height: freeBottom - region.y };
         const { dx, dy } = centerDelta(a, region);
         const maxTop = scroller.scrollHeight - scroller.clientHeight;
         const maxLeft = scroller.scrollWidth - scroller.clientWidth;
@@ -304,22 +327,26 @@ function TourLayer(props: TourProps & { closing: boolean }) {
 
     /** Measures targets and card and writes the spotlight, the rings, the card and the leader. */
     function apply(animate: boolean) {
-      const boxDom = layer!.getBoundingClientRect();
-      const box = toRect(boxDom);
+      const { box, view } = frameBoxes();
       const vp = { width: box.width, height: box.height };
+      const bounds = { ...view, x: view.x - box.x, y: view.y - box.y };
       const step = stepAt(current);
       const rects: Rect[] = [];
       for (const el of resolve(step)) {
-        const r = visibleRect(el, box);
+        const r = visibleRect(el, box, view);
         if (r) rects.push(r);
       }
       const holes = mergeHoles(rects);
       const anchor = rects[0] ? inflate(rects[0], TOUR_PAD) : null;
       const anchorHole = anchor ? holes.find((h) => overlaps(h, anchor)) : undefined;
+      capCard(view);
       const size = { width: card!.offsetWidth, height: card!.offsetHeight };
+      // Text cut by the cap scrolls: then it is a keyboard stop too.
+      const main = mainRef.current;
+      if (main) main.tabIndex = main.scrollHeight > main.clientHeight + 1 ? 0 : -1;
       // While tracking (scroll, resize, content shifts) keep the current side as long as it fits.
       const placement = !animate && lastSide ? lastSide : step?.placement;
-      const input = { card: size, viewport: vp, placement, avoid: holes.filter((h) => h !== anchorHole) };
+      const input = { card: size, viewport: vp, bounds, placement, avoid: holes.filter((h) => h !== anchorHole) };
       let p = computePlacement({ ...input, anchor });
       // Docked sheet with several lit targets: point at the nearest one so the leader doesn't cross the others.
       if (p.mode === 'dock' && holes.length > 1) {
@@ -332,7 +359,7 @@ function TourLayer(props: TourProps & { closing: boolean }) {
         }
       }
       const clip = veilClipPath(vp, holes);
-      const key = `${clip}|${p.x}|${p.y}|${p.mode}|${p.arrow?.edge}|${p.arrow?.offset}|${JSON.stringify(p.leader)}`;
+      const key = `${clip}|${p.maxHeight}|${p.x}|${p.y}|${p.mode}|${p.arrow?.edge}|${p.arrow?.offset}|${JSON.stringify(p.leader)}`;
       if (!animate && key === lastKey) return;
       lastKey = key;
       // A jump to another side glides even while tracking, and so does an update that lands while
@@ -531,6 +558,7 @@ function TourLayer(props: TourProps & { closing: boolean }) {
     doc.addEventListener('focusin', onFocusIn, true);
     win.addEventListener('resize', schedule);
     win.visualViewport?.addEventListener('resize', schedule);
+    win.visualViewport?.addEventListener('scroll', schedule);
     doc.addEventListener('scroll', schedule, { capture: true, passive: true });
 
     function stop() {
@@ -552,6 +580,7 @@ function TourLayer(props: TourProps & { closing: boolean }) {
       doc.removeEventListener('focusin', onFocusIn, true);
       win.removeEventListener('resize', schedule);
       win.visualViewport?.removeEventListener('resize', schedule);
+      win.visualViewport?.removeEventListener('scroll', schedule);
       doc.removeEventListener('scroll', schedule, true);
       release();
       api.current = null;
@@ -591,7 +620,7 @@ function TourLayer(props: TourProps & { closing: boolean }) {
         data-edge="none"
       >
         <span className="tour-arrow" aria-hidden="true" />
-        <div className="tour-main">
+        <div ref={mainRef} className="tour-main" role="group" aria-labelledby={titleId}>
           <div className="tour-head">
           <PhaseGlyph phase={(index + 1) / total} size={18} className="tour-glyph" />
           <p id={progressId} className="tour-progress">

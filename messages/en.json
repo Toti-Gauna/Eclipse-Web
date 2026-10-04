@@ -82,8 +82,6 @@
     "pickVertical": "Pick your industry and see it",
     "ctaDemo": "Get your demo",
     "ctaPlan": "Build your plan",
-    "seeAnother": "See another industry",
-    "wantThis": "I want this for my business",
     "pickOptional": "Optional"
   },
   "whatsapp": {
@@ -610,10 +608,6 @@
     "notes": {
       "from": "“From” is the starting price: the final one depends on scope, and we confirm it in writing before we start."
     }
-  },
-  "heroReveal": {
-    "hint": "Interactive demo: try it as if it were yours.",
-    "loading": "Loading the {business} demo…"
   },
   "demoShowcase": {
     "laptopLabel": "{business}: interactive demo, desktop version",
@@ -2003,14 +1997,8 @@
     "sub": "{count} demo businesses, each facing the costliest problem in its industry. Pick one: watch its {seconds}-second trailer or open the demo and use it.",
     "pain": "The problem",
     "result": "In the demo",
-    "openDemo": "Open demo",
-    "openDemoLabel": "Open demo: {business}",
-    "modal": {
-      "close": "Close the demo",
-      "hint": "Interactive demo: tap around and try everything.",
-      "loading": "Loading the {business} demo…",
-      "wantThis": "I want this for my business"
-    },
+    "openDemo": "See demo",
+    "openDemoLabel": "See demo: {business}",
     "notListed": {
       "title": "Don't see your industry? <em>We build it in {hours} h.</em>",
       "body": "Tell us what your business does and we'll show you your demo.",
@@ -4637,6 +4625,35 @@
         "title": "No-shows that don't cost you",
         "body": "How many appointments were recovered this week and where they came from: reminders, the waitlist and the AI front desk."
       }
+    }
+  },
+  "demoExperience": {
+    "hint": "Interactive demo: try it as if it were yours.",
+    "loading": "Loading the {business} demo…",
+    "wantThis": "I want this for my business",
+    "guideSoon": "The guide for this demo isn't ready yet.",
+    "choice": {
+      "title": "How do you want to see it?",
+      "guideText": "We show you what matters, step by step.",
+      "exploreText": "Tap and try everything, at your own pace."
+    },
+    "whatsapp": {
+      "plan": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}): the {plan} package.",
+      "planExtras": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}): the {plan} package, plus {pieces}.",
+      "pieces": "Hi Eclipse. I saw the {business} demo and I want something like it for my business ({vertical}), with {pieces}."
+    },
+    "project": {
+      "label": "The complete project",
+      "title": "What you see is a sample of a complete project.",
+      "leadPlan": "To have it in your business: the {plan} package, with everything in this demo.",
+      "leadPlanExtras": "To have it in your business: the {plan} package, {count, plural, one {plus # piece that also shows up in this demo} other {plus # pieces that also show up in this demo}}.",
+      "leadPieces": "It's built with {count, plural, one {# piece} other {# pieces}}, each with its published price. We confirm the price of the complete project in writing, after the demo and the call.",
+      "package": "Package",
+      "covered": "From this demo, the package already includes: {pieces}.",
+      "extras": "Also in this demo",
+      "pieces": "The pieces in this demo",
+      "piecesNote": "published price of each piece. We confirm the project total in writing.",
+      "build": "Build this project"
     }
   }
 }
