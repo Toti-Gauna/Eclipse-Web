@@ -1,11 +1,12 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useSound } from '@/components/sound/SoundContext';
 import { AudioLines, CalendarClock, CalendarX2, Hourglass, Send, Sparkles, Users, type LucideIcon } from 'lucide-react';
 import { Money } from '@/components/ui/Money';
 import { Bars, Card, Donut, Kanban, Legend, Pill, Readout, type KanbanCard } from '../../kit';
 import { NO_SHOWS, NO_SHOWS_BEFORE_WEEKS, RECOVERED_BY_DAY, TODAY, WAITLIST_OFFERED } from '../data';
-import type { RecoveryCard } from '../story';
+import { act, type KanbanColumnId, type RecoveryCard } from '../story';
 import { useClinic } from '../context';
 import { useClinicText, ViewHead } from '../ui';
 
@@ -53,7 +54,7 @@ export function RecoveredHero() {
   const t = useTranslations('demoClinic.recovered');
   const { view, ticketUsd } = useClinic();
   return (
-    <section className="clinic-hero">
+    <section className="clinic-hero" data-tour="recovered">
       <div className="min-w-0">
         <p className="clinic-hero-label">{t('heroLabel')}</p>
         <p className="clinic-hero-value demo-display">
@@ -142,7 +143,8 @@ const NOTE_ICON: Record<RecoveryCard['note'], LucideIcon> = {
 
 function Board({ layout }: { layout: 'columns' | 'stack' }) {
   const t = useTranslations('demoClinic.recovered');
-  const { view } = useClinic();
+  const { view, store, active } = useClinic();
+  const { play } = useSound();
   const { fmt, proShort, patient, day } = useClinicText();
   const cards: KanbanCard[] = view.cards
     .slice()
@@ -159,7 +161,10 @@ function Board({ layout }: { layout: 'columns' | 'stack' }) {
     }));
   return (
     <div className="flex flex-col gap-[0.55em]">
-      <h3 className="demo-card-title px-[0.2em]">{t('boardTitle')}</h3>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-[0.8em] px-[0.2em]">
+        <h3 className="demo-card-title">{t('boardTitle')}</h3>
+        <p className="text-[0.62em] text-[var(--demo-muted)]">{t('boardHint')}</p>
+      </div>
       <Kanban
         label={t('boardTitle')}
         layout={layout}
@@ -170,6 +175,10 @@ function Board({ layout }: { layout: 'columns' | 'stack' }) {
           { id: 'won', title: t('columns.won'), tone: 'ok' },
         ]}
         cards={cards}
+        onMove={(id, column) => {
+          store.update(act.moveCard(id, column as KanbanColumnId));
+          if (active) play('select');
+        }}
       />
     </div>
   );

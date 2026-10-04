@@ -20,7 +20,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { Avatar, useDemoFormat, upperFirst, type CalendarEvent, type FeedItem, type Tone } from '../kit';
-import { MARTINA_OPTIONS, REMINDERS_TODAY, WAITLIST_OFFERED, dayDate, proById, type ProId, type Status } from './data';
+import { MARTINA_OPTIONS, REMINDERS_TODAY, TODAY, WAITLIST_OFFERED, dayDate, proById, type ProId, type Status } from './data';
 import type { Appt, ClinicEvent } from './story';
 import { useClinic } from './context';
 
@@ -122,9 +122,10 @@ export const eventIcon = (kind: ClinicEvent['kind']) => EVENT_ICON[kind];
 
 /** Human sentence for an event (feed, toasts, announcements). */
 export function useEventText() {
-  const { t, fmt, patient, proShort, treatment, option } = useClinicText();
+  const { t, fmt, patient, proShort, treatment, option, day } = useClinicText();
   return (e: ClinicEvent): string =>
-    t(`feed.${e.kind}`, {
+    t(e.kind === 'you' && e.day !== undefined && e.day !== TODAY ? 'feed.youDay' : `feed.${e.kind}`, {
+      day: e.day !== undefined ? day(e.day) : '',
       patient: patient(e.patient),
       time: e.start !== undefined ? fmt.time(e.start) : '',
       pro: e.pro ? proShort(e.pro) : '',

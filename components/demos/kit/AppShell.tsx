@@ -1,12 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Ellipsis, Menu, PanelLeftClose, PanelLeftOpen, X, type LucideIcon } from 'lucide-react';
 import { prefersReducedMotion, useReducedMotion } from '@/components/motion/useReducedMotion';
 import { useSound } from '@/components/sound/SoundContext';
 import { legacyTheme, themeVars, type DemoTheme } from './theme';
 import { BrandName, LiveDot } from './primitives';
+import { SimBar, type SimConfig } from './SimBar';
 
 export interface NavItem {
   id: string;
@@ -16,6 +17,27 @@ export interface NavItem {
   badge?: number | 'live';
   /** Laptop sidebar: caption printed above this item (starts a group). */
   group?: string;
+  /** Guide hook: `data-tour` on this item's button in every nav (sidebar, tabs, dock, drawer). */
+  tour?: string;
+}
+
+/**
+ * Structural variants (v3): each demo picks the shell that fits its vertical, so demos don't
+ * read as the same app with another logo. Desktop and phone of one demo stay consistent.
+ */
+export interface ShellLayout {
+  /**
+   * Laptop navigation.
+   * - `sidebar` (default): full panel with labels, collapsible to an icon rail (toggle in the top bar).
+   * - `rail`: a slim icon rail only (tooltips), brand in the top bar — dense tools, dashboards.
+   * - `top`: no sidebar, horizontal pills in the top bar; content uses the full width — calm, airy.
+   * - `dock`: no sidebar, a floating dock at the bottom of the screen — app-like, playful.
+   */
+  nav?: 'sidebar' | 'rail' | 'top' | 'dock';
+  /** Top bar height, content padding and nav item size. */
+  density?: 'airy' | 'regular' | 'compact';
+  /** Nav icons: thin line (default) · in soft tinted chips · none (labels only; sidebar/top only). */
+  icons?: 'line' | 'chip' | 'none';
 }
 /** v1 name. */
 export type DemoTab = NavItem;
@@ -42,8 +64,16 @@ export interface AppShellProps {
   sidebarFooter?: ReactNode;
   /** Laptop: start on the icon rail. */
   defaultCollapsed?: boolean;
-  /** Phone: bottom tab bar (overflow goes to a "More" drawer) or a drawer only. */
-  phoneNav?: 'tabs' | 'drawer';
+  /**
+   * Phone navigation: `tabs` bottom tab bar (overflow → "More" drawer) · `drawer` menu only ·
+   * `dock` floating pill dock (current item shows its label; overflow → "More") ·
+   * `top` scrollable pills under the app bar.
+   */
+  phoneNav?: 'tabs' | 'drawer' | 'dock' | 'top';
+  /** Structural variant of the laptop shell (see ShellLayout). */
+  layout?: ShellLayout;
+  /** Simulation controls (v3 beats): a strip above the laptop app / under the phone status bar. */
+  sim?: SimConfig & { announce?: boolean };
   /** Phone tab bar: at most this many tabs (the last one becomes "More" when there are more). */
   maxTabs?: number;
   /** Phone: `bare` keeps only the status bar (the children draw their own chrome, e.g. a browser). */
@@ -123,11 +153,34 @@ function NavBadge({ badge, rail = false }: { badge: NavItem['badge']; rail?: boo
   return <span className="demo-navbadge">{badge}</span>;
 }
 
+const noop = () => () => {};
+const notPlaying = () => false;
+/** True while the sim store plays a segment (false without a sim). */
+function useSimPlaying(sim: AppShellProps['sim']): boolean {
+  const store = sim?.store;
+  return useSyncExternalStore(
+    store ? store.subscribe : noop,
+    store ? () => !!store.getSnapshot().playing : notPlaying,
+    notPlaying,
+  );
+}
+
+/** A nav icon in the variant's treatment. */
+function NavIcon({ item, on }: { item: NavItem; on: boolean }) {
+  const Icon = item.icon;
+  return (
+    <span aria-hidden className="demo-navicon">
+      <Icon strokeWidth={on ? 2 : 1.6} />
+    </span>
+  );
+}
+
 /**
  * App chrome shared by every demo.
- * - laptop: collapsible sidebar (labels ↔ icon rail, remembered for the instance) + top bar.
+ * - laptop: navigation per `layout.nav` (sidebar ↔ rail, rail, top pills, bottom dock) + top bar.
  *   The showcase shows it next to the phone, never under it (v3), so it uses its full width.
- * - phone: status bar, app bar (brand + "Demo"), content, bottom tab bar (or a drawer).
+ * - phone: status bar, app bar (brand + "Demo"), content, navigation per `phoneNav`.
+ * - `sim`: the simulation strip (v3 beats) on both screens.
  * Sizes are `em` (see demo.css); colors come from `theme`.
  */
 export function AppShell(props: AppShellProps) {
@@ -153,11 +206,16 @@ export function AppShell(props: AppShellProps) {
     contentClassName = '',
     active: on = true,
     rootRef,
+    layout = {},
+    sim,
     children,
   } = props;
   const nav = props.nav ?? props.tabs ?? [];
   const current = props.current ?? props.activeTab;
   const navigate = props.onNavigate ?? props.onTab;
+  const navKind = layout.nav ?? 'sidebar';
+  const density = layout.density ?? 'regular';
+  const icons = layout.icons ?? 'line';
 
   const t = useTranslations('demoKit.shell');
   const tc = useTranslations('common');
@@ -167,7 +225,8 @@ export function AppShell(props: AppShellProps) {
   const sideId = `${uid}-side`;
   const navLabel = `${td(screen === 'laptop' ? 'laptopLabel' : 'phoneLabel', { business })} — ${tc('sections')}`;
 
-  const [collapsed, setCollapsed] = useState(defaultCollapsed);
+  const [collapsedState, setCollapsed] = useState(defaultCollapsed);
+  const collapsed = navKind === 'rail' || (navKind === 'sidebar' && collapsedState);
   const [drawer, setDrawer] = useState(false);
   const rootEl = useRef<HTMLDivElement | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -176,6 +235,7 @@ export function AppShell(props: AppShellProps) {
   const drawerPanel = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const { shown: overlayShown, closing } = useOverlayPresence(overlayOpen && !!overlay, reduced);
+  const simPlaying = useSimPlaying(sim);
 
   // Stable, so pairing only runs when the root mounts.
   const setRoot = useCallback(
@@ -235,6 +295,10 @@ export function AppShell(props: AppShellProps) {
     if (on) play('close');
     if (focusBack) drawerButton.current?.focus({ preventScroll: true });
   };
+  const openDrawer = () => {
+    setDrawer(true);
+    if (on) play('open');
+  };
 
   const style = {
     ...themeVars(theme ?? legacyTheme(accent)),
@@ -242,83 +306,142 @@ export function AppShell(props: AppShellProps) {
   } as CSSProperties;
   const mode = theme?.mode ?? 'light';
   const brand = <BrandName business={business} logo={logo} logoStyle={logoStyle} />;
+  const simBar = sim ? (
+    <SimBar store={sim.store} label={sim.label} note={sim.note} tour={sim.tour} variant={screen} active={on} announce={sim.announce ?? true} />
+  ) : null;
+  const rootAttrs = {
+    ref: setRoot,
+    className: 'demo-root',
+    'data-screen': screen,
+    'data-mode': mode,
+    'data-density': density,
+    'data-icons': icons,
+    'data-sim': sim ? '' : undefined,
+    'data-paused': on ? undefined : '',
+    // v3: nothing loops at rest (live dots, rings, typing dots stay still until a beat plays).
+    'data-idle': sim && !simPlaying ? '' : undefined,
+    style,
+  };
   const overlayLayer = overlayShown ? (
-    <div className="demo-overlay" data-state={closing ? 'closing' : 'open'} inert={closing} style={screen === 'phone' ? { top: '2.35em' } : undefined}>
+    <div className="demo-overlay" data-state={closing ? 'closing' : 'open'} inert={closing}>
       {overlay}
     </div>
   ) : null;
 
-  if (screen === 'laptop') {
+  const navButton = (item: NavItem, className: string, onClick?: () => void, showBadge = true) => {
+    const isOn = item.id === current;
     return (
-      <div
-        ref={setRoot}
-        className="demo-root"
-        data-screen="laptop"
-        data-mode={mode}
-        data-side={collapsed ? 'collapsed' : 'expanded'}
-        data-paused={on ? undefined : ''}
-        style={style}
+      <button
+        type="button"
+        className={className}
+        aria-current={isOn ? 'page' : undefined}
+        data-tour={item.tour}
+        onClick={onClick ?? (() => go(item.id))}
       >
-        <nav id={sideId} aria-label={navLabel} className="demo-side">
-          <div className="demo-side-head">
-            <BrandName business={business} logo={logo} logoStyle={logoStyle} stacked />
-          </div>
-          <ul className="demo-side-list">
-            {nav.map((item) => {
-              const Icon = item.icon;
-              const isOn = item.id === current;
-              return (
-                <li key={item.id}>
-                  {item.group ? <p className="demo-label demo-side-group">{item.group}</p> : null}
-                  <button
-                    type="button"
-                    className="demo-side-item"
-                    aria-current={isOn ? 'page' : undefined}
-                    onClick={() => go(item.id)}
-                  >
-                    <Icon aria-hidden strokeWidth={isOn ? 2 : 1.6} />
-                    <span className="demo-side-label">{item.label}</span>
-                    {item.badge !== undefined ? (
-                      <span className="demo-side-badge">
-                        <NavBadge badge={item.badge} />
+        <NavIcon item={item} on={isOn} />
+        <span className="demo-navlabel">{item.label}</span>
+        {showBadge && item.badge !== undefined ? (
+          <span className="demo-navbadge-slot">
+            <NavBadge badge={item.badge} />
+          </span>
+        ) : null}
+      </button>
+    );
+  };
+
+  if (screen === 'laptop') {
+    const hasSide = navKind === 'sidebar' || navKind === 'rail';
+    return (
+      <div {...rootAttrs} data-nav={navKind} data-side={hasSide ? (collapsed ? 'collapsed' : 'expanded') : 'none'}>
+        {simBar}
+        {hasSide ? (
+          <nav id={sideId} aria-label={navLabel} className="demo-side">
+            <div className="demo-side-head">
+              <BrandName business={business} logo={logo} logoStyle={logoStyle} stacked />
+            </div>
+            <ul className="demo-side-list">
+              {nav.map((item) => {
+                const Icon = item.icon;
+                const isOn = item.id === current;
+                return (
+                  <li key={item.id}>
+                    {item.group ? <p className="demo-label demo-side-group">{item.group}</p> : null}
+                    <button
+                      type="button"
+                      className="demo-side-item"
+                      aria-current={isOn ? 'page' : undefined}
+                      data-tour={item.tour}
+                      onClick={() => go(item.id)}
+                    >
+                      <span aria-hidden className="demo-navicon">
+                        <Icon strokeWidth={isOn ? 2 : 1.6} />
                       </span>
-                    ) : null}
-                    {collapsed && item.badge === 'live' ? <NavBadge badge="live" rail /> : null}
-                    <span aria-hidden className="demo-side-tip">
-                      {item.label}
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          {sidebarFooter ? <div className="demo-side-foot">{sidebarFooter}</div> : null}
-        </nav>
+                      <span className="demo-side-label">{item.label}</span>
+                      {item.badge !== undefined ? (
+                        <span className="demo-side-badge">
+                          <NavBadge badge={item.badge} />
+                        </span>
+                      ) : null}
+                      {collapsed && item.badge === 'live' ? <NavBadge badge="live" rail /> : null}
+                      <span aria-hidden className="demo-side-tip">
+                        {item.label}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+            {sidebarFooter ? <div className="demo-side-foot">{sidebarFooter}</div> : null}
+          </nav>
+        ) : null}
         <div ref={mainRef} className="demo-main">
           <header className="demo-top">
-            <button
-              type="button"
-              className="demo-side-toggle"
-              aria-expanded={!collapsed}
-              aria-controls={sideId}
-              aria-label={collapsed ? t('expand') : t('collapse')}
-              onClick={toggleSidebar}
-            >
-              {collapsed ? <PanelLeftOpen aria-hidden strokeWidth={1.6} /> : <PanelLeftClose aria-hidden strokeWidth={1.6} />}
-            </button>
-            <span className="demo-top-brand" aria-hidden>
-              {brand}
-              <span className="h-[1.2em] w-px bg-[var(--demo-line-strong)]" />
-            </span>
-            {title !== undefined ? <div className="demo-top-title">{title}</div> : null}
+            {navKind === 'sidebar' ? (
+              <button
+                type="button"
+                className="demo-side-toggle"
+                aria-expanded={!collapsed}
+                aria-controls={sideId}
+                aria-label={collapsed ? t('expand') : t('collapse')}
+                onClick={toggleSidebar}
+              >
+                {collapsed ? <PanelLeftOpen aria-hidden strokeWidth={1.6} /> : <PanelLeftClose aria-hidden strokeWidth={1.6} />}
+              </button>
+            ) : null}
+            {hasSide ? (
+              <span className="demo-top-brand" aria-hidden>
+                {brand}
+                <span className="h-[1.2em] w-px bg-[var(--demo-line-strong)]" />
+              </span>
+            ) : (
+              <span className="demo-top-brand-full">{brand}</span>
+            )}
+            {navKind === 'top' && nav.length ? (
+              <nav aria-label={navLabel} className="demo-topnav no-scrollbar">
+                {nav.map((item) => (
+                  <span key={item.id} className="contents">
+                    {navButton(item, 'demo-topnav-item')}
+                  </span>
+                ))}
+              </nav>
+            ) : title !== undefined ? (
+              <div className="demo-top-title">{title}</div>
+            ) : null}
             <div className="demo-top-right">{headerRight}</div>
           </header>
-          <div
-            className={`demo-scroll demo-content ${contentClassName}`}
-            data-padded={padded ? undefined : 'false'}
-          >
+          {navKind === 'top' && title !== undefined ? <div className="demo-subbar">{title}</div> : null}
+          <div className={`demo-scroll demo-content ${contentClassName}`} data-padded={padded ? undefined : 'false'}>
             {children}
           </div>
+          {navKind === 'dock' && nav.length ? (
+            <nav aria-label={navLabel} className="demo-dock">
+              {nav.map((item) => (
+                <span key={item.id} className="contents">
+                  {navButton(item, 'demo-dock-item')}
+                </span>
+              ))}
+            </nav>
+          ) : null}
         </div>
         {overlayLayer}
       </div>
@@ -328,8 +451,9 @@ export function AppShell(props: AppShellProps) {
   // Phone
   if (chrome === 'bare') {
     return (
-      <div ref={setRoot} className="demo-root" data-screen="phone" data-mode={mode} data-paused={on ? undefined : ''} style={style}>
+      <div {...rootAttrs}>
         <StatusBar time={statusTime} />
+        {simBar}
         <div className="relative flex min-h-0 flex-1 flex-col" inert={overlayShown}>
           {children}
         </div>
@@ -339,12 +463,31 @@ export function AppShell(props: AppShellProps) {
     );
   }
   const useDrawer = phoneNav === 'drawer';
-  const overflow = !useDrawer && nav.length > maxTabs;
-  const tabs = overflow ? nav.slice(0, maxTabs - 1) : nav;
+  const bottom = phoneNav === 'tabs' || phoneNav === 'dock';
+  const limit = phoneNav === 'dock' ? Math.min(maxTabs, 5) : maxTabs;
+  const overflow = bottom && nav.length > limit;
+  const tabs = overflow ? nav.slice(0, limit - 1) : nav;
   const inMore = overflow && !tabs.some((n) => n.id === current);
+  const more = overflow ? (
+    <button
+      ref={drawerButton}
+      type="button"
+      className={phoneNav === 'dock' ? 'demo-dock-item' : 'demo-tab'}
+      aria-current={inMore ? 'page' : undefined}
+      aria-expanded={drawer}
+      aria-controls={sideId}
+      onClick={openDrawer}
+    >
+      <span aria-hidden className={phoneNav === 'dock' ? 'demo-navicon' : 'demo-tab-icon'}>
+        <Ellipsis strokeWidth={inMore ? 2 : 1.6} />
+      </span>
+      <span className={phoneNav === 'dock' ? 'demo-navlabel' : 'demo-tab-label'}>{t('more')}</span>
+    </button>
+  ) : null;
   return (
-    <div ref={setRoot} className="demo-root" data-screen="phone" data-mode={mode} data-paused={on ? undefined : ''} style={style}>
+    <div {...rootAttrs} data-phone-nav={phoneNav}>
       <StatusBar time={statusTime} />
+      {simBar}
       <div className="contents" inert={drawer || overlayShown}>
         <header className="demo-appbar">
           {useDrawer && nav.length ? (
@@ -355,10 +498,7 @@ export function AppShell(props: AppShellProps) {
               aria-expanded={drawer}
               aria-controls={sideId}
               aria-label={t('menu')}
-              onClick={() => {
-                setDrawer(true);
-                if (on) play('open');
-              }}
+              onClick={openDrawer}
             >
               <Menu aria-hidden strokeWidth={1.8} />
             </button>
@@ -366,16 +506,32 @@ export function AppShell(props: AppShellProps) {
           {brand}
           {headerRight ? <div className="demo-appbar-right">{headerRight}</div> : null}
         </header>
+        {phoneNav === 'top' && nav.length ? (
+          <nav aria-label={navLabel} className="demo-toptabs no-scrollbar">
+            {nav.map((item) => (
+              <span key={item.id} className="contents">
+                {navButton(item, 'demo-toptabs-item')}
+              </span>
+            ))}
+          </nav>
+        ) : null}
         <div className={`demo-scroll demo-content ${contentClassName}`} data-padded={padded ? undefined : 'false'}>
           {children}
         </div>
-        {!useDrawer && nav.length ? (
+        {phoneNav === 'tabs' && nav.length ? (
           <nav aria-label={navLabel} className="demo-tabbar">
             {tabs.map((item) => {
               const Icon = item.icon;
               const isOn = item.id === current;
               return (
-                <button key={item.id} type="button" className="demo-tab" aria-current={isOn ? 'page' : undefined} onClick={() => go(item.id)}>
+                <button
+                  key={item.id}
+                  type="button"
+                  className="demo-tab"
+                  aria-current={isOn ? 'page' : undefined}
+                  data-tour={item.tour}
+                  onClick={() => go(item.id)}
+                >
                   <span className="demo-tab-icon">
                     <Icon aria-hidden strokeWidth={isOn ? 2 : 1.6} />
                     <NavBadge badge={item.badge} />
@@ -384,27 +540,21 @@ export function AppShell(props: AppShellProps) {
                 </button>
               );
             })}
-            {overflow ? (
-              <button
-                ref={drawerButton}
-                type="button"
-                className="demo-tab"
-                aria-current={inMore ? 'page' : undefined}
-                aria-expanded={drawer}
-                aria-controls={sideId}
-                onClick={() => {
-                  setDrawer(true);
-                  if (on) play('open');
-                }}
-              >
-                <span className="demo-tab-icon">
-                  <Ellipsis aria-hidden strokeWidth={inMore ? 2 : 1.6} />
-                </span>
-                <span className="demo-tab-label">{t('more')}</span>
-              </button>
-            ) : null}
+            {more}
             <span aria-hidden className="demo-home-indicator" />
           </nav>
+        ) : phoneNav === 'dock' && nav.length ? (
+          <>
+            <nav aria-label={navLabel} className="demo-dock" data-phone="">
+              {tabs.map((item) => (
+                <span key={item.id} className="contents">
+                  {navButton(item, 'demo-dock-item')}
+                </span>
+              ))}
+              {more}
+            </nav>
+            <span aria-hidden className="demo-home-indicator" />
+          </>
         ) : (
           <span aria-hidden className="demo-home-indicator" />
         )}
@@ -434,12 +584,15 @@ export function AppShell(props: AppShellProps) {
                       type="button"
                       className="demo-side-item"
                       aria-current={isOn ? 'page' : undefined}
+                      data-tour={item.tour}
                       onClick={() => {
                         go(item.id);
                         closeDrawer(false);
                       }}
                     >
-                      <Icon aria-hidden strokeWidth={isOn ? 2 : 1.6} />
+                      <span aria-hidden className="demo-navicon">
+                        <Icon strokeWidth={isOn ? 2 : 1.6} />
+                      </span>
                       <span className="demo-side-label">{item.label}</span>
                       {item.badge !== undefined ? (
                         <span className="demo-side-badge">

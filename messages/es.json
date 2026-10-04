@@ -723,7 +723,14 @@
         "sol": "Limpieza facial"
       },
       "hintPhone": "Tocá un horario libre para reservarlo.",
-      "hintLaptop": "Elegí un horario libre en la grilla para reservarlo."
+      "hintLaptop": "Elegí un horario libre en la grilla para reservarlo.",
+      "dayLabel": "Agenda del {day} por profesional",
+      "weekLabel": "Semana de {pro}, {from} a {to}",
+      "freeSlotDay": "{day}, {time} · {pro}: libre, reservar",
+      "summaryPast": "{day} · {count} turnos atendidos",
+      "weekSummary": "Semana por profesional · tocá un hueco libre para reservar",
+      "hintPast": "Día pasado: solo lectura.",
+      "localNote": "Reserva de demostración: queda solo en esta pantalla."
     },
     "chat": {
       "composer": "Mensaje",
@@ -787,14 +794,10 @@
     },
     "top": {
       "liveCall": "IA en llamada · {time}",
-      "live": "En vivo",
       "site": "Sitio",
-      "ringing": "Llamada entrante…"
-    },
-    "side": {
-      "aiTitle": "Recepcionista IA",
-      "aiBody": "Activa · atiende 24/7",
-      "aiOff": "Apagada · no atiende"
+      "ringing": "Llamada entrante…",
+      "ai": "Recepcionista IA activa",
+      "aiOff": "Recepcionista IA apagada"
     },
     "fullNames": {
       "julian": "Julián Pérez"
@@ -811,7 +814,8 @@
       "voice": "La recepcionista IA agendó a {patient} a las {time}",
       "missed": "Llamada perdida: la recepcionista IA estaba apagada",
       "you": "Reservaste {treatment}: {time} · {pro}",
-      "afterHours": "Fuera de horario: la recepcionista IA agendó una consulta de ortodoncia"
+      "afterHours": "Fuera de horario: la recepcionista IA agendó una consulta de ortodoncia",
+      "youDay": "Reservaste {treatment}: {day}, {time} · {pro}"
     },
     "toast": {
       "online": "Nueva reserva online",
@@ -823,7 +827,7 @@
     "today": {
       "greeting": "Buen día",
       "recovered": "Turnos recuperados esta semana",
-      "recoveredToday": "{count, plural, =0 {en vivo} other {+# hoy}}",
+      "recoveredToday": "{count, plural, =0 {ninguno hoy} other {+# hoy}}",
       "recoveredMoney": "que no se perdieron",
       "recoveredTrend": "Recuperados en la semana hasta ahora: {count}",
       "next": "Próximos turnos",
@@ -832,7 +836,7 @@
       "occupancyShort": "{pct} % ocupado",
       "confirmed": "Confirmados",
       "pending": "{count, plural, =0 {Nadie sin responder} one {# sin responder} other {# sin responder}}",
-      "activity": "Actividad en vivo",
+      "activity": "Actividad de hoy",
       "siteTitle": "Tu sitio de reservas",
       "calls": "Llamadas hoy",
       "callsHint": "Todas atendidas · 7 fuera de horario",
@@ -965,7 +969,7 @@
       "title": "Ausencias",
       "subtitle": "Turnos que se iban a perder y se recuperaron.",
       "heroLabel": "Recuperados esta semana",
-      "heroToday": "{count, plural, =0 {Todavía nada hoy} other {+# hoy, en vivo}}",
+      "heroToday": "{count, plural, =0 {Todavía nada hoy} other {+# hoy}}",
       "money": "que no se perdieron",
       "arcLabel": "Recuperados por día: {days}",
       "sourcesTitle": "De dónde salieron",
@@ -980,7 +984,7 @@
       "week": "S{n}",
       "before": "Antes",
       "after": "Con automatizaciones",
-      "boardTitle": "Recuperación en vivo",
+      "boardTitle": "Tablero de recuperación",
       "empty": "Nada por ahora",
       "today": "Hoy",
       "columns": {
@@ -996,7 +1000,8 @@
         "byWaitlist": "{patient} · lista de espera",
         "byVoice": "{patient} · llamada con la IA",
         "byYou": "Lo tomaste vos"
-      }
+      },
+      "boardHint": "Arrastrá una tarjeta o usá Mover para ordenar el tablero."
     },
     "site": {
       "nav": {
@@ -1036,7 +1041,9 @@
         "booked": "¡Listo! Turno reservado",
         "bookedCamila": "¡Listo, {name}! Turno reservado",
         "sentWhatsApp": "Confirmación enviada por WhatsApp",
-        "again": "Reservar otro"
+        "again": "Reservar otro",
+        "seeAgenda": "Ver en la agenda",
+        "pickDay": "Elegí un día"
       },
       "chat": {
         "title": "Asistente virtual",
@@ -1056,7 +1063,15 @@
       "push": "¡Listo, {name}! Tu turno quedó confirmado: hoy {time}, {treatment}.",
       "pushYou": "¡Listo! Tu turno quedó confirmado: {time} · {pro}.",
       "openPush": "Abrir la confirmación en WhatsApp",
-      "backToApp": "Volver a la app de la clínica"
+      "backToApp": "Volver a la app de la clínica",
+      "openThread": "Ver la confirmación"
+    },
+    "sim": {
+      "online": "Llega una reserva online",
+      "reminder": "Recordatorio por WhatsApp",
+      "freed": "Cancelación y lista de espera",
+      "call": "Llamada a la recepción IA",
+      "note": "Reservas, mensajes y llamadas simulados con datos de demostración; no se envía nada."
     }
   },
   "demoGym": {
@@ -2333,6 +2348,42 @@
       "earned": "Obtenida",
       "progress": "{pct} % completada",
       "rank": "Puesto {n}"
+    },
+    "sim": {
+      "title": "Simulación",
+      "note": "Las acciones son simuladas con datos de demostración; no se envía nada.",
+      "play": "Simular: {label}",
+      "playing": "Simulando: {label}",
+      "skip": "Saltar al final",
+      "reset": "Reiniciar",
+      "resetAll": "Reiniciar la demo",
+      "counter": "Evento {current} de {total}",
+      "counterIdle": "{total} eventos para simular",
+      "events": "Eventos simulados",
+      "close": "Cerrar",
+      "landed": "Listo: {label}. {counter}.",
+      "state": {
+        "done": "Hecho",
+        "playing": "Simulando",
+        "next": "Siguiente",
+        "pending": "Pendiente"
+      }
+    },
+    "calendar": {
+      "prevDay": "Día anterior",
+      "nextDay": "Día siguiente",
+      "prevWeek": "Semana anterior",
+      "nextWeek": "Semana siguiente",
+      "today": "Hoy",
+      "view": "Vista",
+      "day": "Día",
+      "week": "Semana"
+    },
+    "kanban": {
+      "hint": "Arrastrá una tarjeta a otra columna o usá su botón Mover.",
+      "moveCard": "Mover «{card}»",
+      "moveTo": "Mover a {column}",
+      "moved": "«{card}» pasó a {column}."
     }
   },
   "demoRestaurant": {
@@ -4471,5 +4522,33 @@
     "tagDesktop": "Vista escritorio",
     "tagMobile": "Vista celular",
     "tagBoth": "Las dos vistas"
+  },
+  "demoTours": {
+    "clinic": {
+      "sim": {
+        "title": "Vos decidís qué pasa",
+        "body": "Nada se mueve solo. Tocá «Simular» para ver un evento del día de la clínica: una reserva online, un recordatorio, una cancelación o una llamada."
+      },
+      "booking": {
+        "title": "Reservas online, sin llamar",
+        "body": "El paciente elige tratamiento, día y horario en el sitio. Probalo: el turno aparece en la agenda y la confirmación sale por WhatsApp."
+      },
+      "agenda": {
+        "title": "Una agenda que se completa sola",
+        "body": "Los tres profesionales en una grilla. Pasá de día a semana, mirá días pasados y futuros, y tocá un hueco libre para reservar."
+      },
+      "reception": {
+        "title": "Recepcionista IA, 24/7",
+        "body": "Atiende el teléfono, consulta la agenda y agenda el turno mientras habla. Simulá la llamada de Julián y mirá la transcripción."
+      },
+      "reminders": {
+        "title": "Recordatorios por WhatsApp",
+        "body": "Cada paciente recibe su recordatorio y confirma, reprograma o cancela con un toque. Lo que se libera se vuelve a ofrecer."
+      },
+      "recovered": {
+        "title": "Ausencias que no se pierden",
+        "body": "Cuántos turnos se recuperaron esta semana y de dónde salieron: recordatorios, lista de espera y la recepcionista IA."
+      }
+    }
   }
 }

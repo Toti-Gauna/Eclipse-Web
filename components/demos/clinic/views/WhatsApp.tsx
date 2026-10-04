@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSound } from '@/components/sound/SoundContext';
 import { Card, ChatWidget, Pill, Switch, type ChatRun, type Tone } from '../../kit';
@@ -26,13 +26,6 @@ export function MartinaChat({ className = '' }: { className?: string }) {
         : it,
     ),
   };
-  // A soft "type" when a bubble lands (only the instance that announces, only when active).
-  const count = run.items.length;
-  const seen = useRef(count);
-  useEffect(() => {
-    if (count > seen.current && active && announce) play('type', { volume: 0.6 });
-    seen.current = count;
-  }, [count, active, announce, play]);
 
   return (
     <ChatWidget
@@ -46,7 +39,6 @@ export function MartinaChat({ className = '' }: { className?: string }) {
       stamp={(at) => fmt.time(581 + Math.floor((STORY.chatStart + at) / 2500))}
       onPick={(step, reply) => {
         store.update(act.pickMartina(step, reply));
-        store.engage();
         if (active) play('select');
       }}
       composer={t('chat.composer')}
@@ -122,8 +114,7 @@ function Automations() {
                 onChange={() => {
                   if (r.story) {
                     store.update(act.toggle(r.story));
-                    store.engage();
-                  } else setLocal((l) => ({ ...l, [r.id]: !l[r.id] }));
+                              } else setLocal((l) => ({ ...l, [r.id]: !l[r.id] }));
                   if (active) play('toggle');
                 }}
               />

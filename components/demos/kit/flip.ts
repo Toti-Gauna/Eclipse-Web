@@ -10,11 +10,11 @@ import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
  * Positions are measured relative to the container and corrected for any ancestor
  * scale, so page scroll or a scaling showcase doesn't fake a move.
  */
-export function useFlip(container: RefObject<HTMLElement | null>, signature: string, duration = 700) {
+export function useFlip(container: RefObject<HTMLElement | null>, signature: string, duration = 700): () => void {
   const last = useRef<Map<string, { x: number; y: number }> | null>(null);
-  useLayoutEffect(() => {
+  const measure = () => {
     const root = container.current;
-    if (!root) return;
+    if (!root) return null;
     const box = root.getBoundingClientRect();
     const scale = root.offsetWidth ? box.width / root.offsetWidth : 1;
     const items = [...root.querySelectorAll<HTMLElement>('[data-flip]')];
@@ -23,6 +23,12 @@ export function useFlip(container: RefObject<HTMLElement | null>, signature: str
       const r = el.getBoundingClientRect();
       now.set(el.dataset.flip!, { x: (r.left - box.left) / (scale || 1), y: (r.top - box.top) / (scale || 1) });
     }
+    return { items, now };
+  };
+  useLayoutEffect(() => {
+    const m = measure();
+    if (!m) return;
+    const { items, now } = m;
     const before = last.current;
     last.current = now;
     if (!before || prefersReducedMotion()) return;
@@ -40,5 +46,11 @@ export function useFlip(container: RefObject<HTMLElement | null>, signature: str
         easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `measure` only reads the container ref
   }, [container, signature, duration]);
+  /** Re-measures now (e.g. a dragged card at its drop point) so the next move slides from there. */
+  return () => {
+    const m = measure();
+    if (m) last.current = m.now;
+  };
 }

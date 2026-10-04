@@ -57,7 +57,6 @@ function AgentSwitch() {
         describedBy={`${id}-d`}
         onChange={() => {
           store.update(act.toggle('voice'));
-          store.engage();
           if (active) play('toggle');
         }}
       />

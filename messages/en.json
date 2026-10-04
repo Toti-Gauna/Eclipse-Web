@@ -723,7 +723,14 @@
         "sol": "Facial"
       },
       "hintPhone": "Tap an open time to book it.",
-      "hintLaptop": "Pick an open time in the grid to book it."
+      "hintLaptop": "Pick an open time in the grid to book it.",
+      "dayLabel": "Schedule for {day} by practitioner",
+      "weekLabel": "{pro}'s week, {from} to {to}",
+      "freeSlotDay": "{day}, {time} · {pro}: open, book",
+      "summaryPast": "{day} · {count} appointments seen",
+      "weekSummary": "Week by practitioner · tap an open slot to book",
+      "hintPast": "Past day: read only.",
+      "localNote": "Demo booking: it only stays on this screen."
     },
     "chat": {
       "composer": "Message",
@@ -787,14 +794,10 @@
     },
     "top": {
       "liveCall": "AI on a call · {time}",
-      "live": "Live",
       "site": "Site",
-      "ringing": "Incoming call…"
-    },
-    "side": {
-      "aiTitle": "AI receptionist",
-      "aiBody": "On · answers 24/7",
-      "aiOff": "Off · not answering"
+      "ringing": "Incoming call…",
+      "ai": "AI front desk on",
+      "aiOff": "AI front desk off"
     },
     "fullNames": {
       "julian": "Julián Pérez"
@@ -811,7 +814,8 @@
       "voice": "The AI receptionist booked {patient} at {time}",
       "missed": "Missed call: the AI receptionist was off",
       "you": "You booked {treatment}: {time} · {pro}",
-      "afterHours": "After hours: the AI receptionist booked an ortho consult"
+      "afterHours": "After hours: the AI receptionist booked an ortho consult",
+      "youDay": "You booked {treatment}: {day}, {time} · {pro}"
     },
     "toast": {
       "online": "New online booking",
@@ -823,7 +827,7 @@
     "today": {
       "greeting": "Good morning",
       "recovered": "Appointments recovered this week",
-      "recoveredToday": "{count, plural, =0 {live now} other {+# today}}",
+      "recoveredToday": "{count, plural, =0 {none today} other {+# today}}",
       "recoveredMoney": "in revenue kept",
       "recoveredTrend": "Recovered so far this week: {count}",
       "next": "Up next",
@@ -832,7 +836,7 @@
       "occupancyShort": "{pct}% booked",
       "confirmed": "Confirmed",
       "pending": "{count, plural, =0 {No one pending} one {# without a reply} other {# without a reply}}",
-      "activity": "Live activity",
+      "activity": "Today's activity",
       "siteTitle": "Your booking site",
       "calls": "Calls today",
       "callsHint": "All answered · 7 after hours",
@@ -965,7 +969,7 @@
       "title": "No-shows",
       "subtitle": "Appointments that were about to be lost, recovered.",
       "heroLabel": "Recovered this week",
-      "heroToday": "{count, plural, =0 {Nothing yet today} other {+# today, live}}",
+      "heroToday": "{count, plural, =0 {Nothing yet today} other {+# today}}",
       "money": "in revenue kept",
       "arcLabel": "Recovered per day: {days}",
       "sourcesTitle": "Where they came from",
@@ -980,7 +984,7 @@
       "week": "W{n}",
       "before": "Before",
       "after": "With automations",
-      "boardTitle": "Live recovery",
+      "boardTitle": "Recovery board",
       "empty": "Nothing yet",
       "today": "Today",
       "columns": {
@@ -996,7 +1000,8 @@
         "byWaitlist": "{patient} · waitlist",
         "byVoice": "{patient} · call with the AI",
         "byYou": "Taken by you"
-      }
+      },
+      "boardHint": "Drag a card or use Move to sort the board."
     },
     "site": {
       "nav": {
@@ -1036,7 +1041,9 @@
         "booked": "Done! You're booked",
         "bookedCamila": "Done, {name}! You're booked",
         "sentWhatsApp": "Confirmation sent on WhatsApp",
-        "again": "Book another"
+        "again": "Book another",
+        "seeAgenda": "See it in the schedule",
+        "pickDay": "Pick a day"
       },
       "chat": {
         "title": "Virtual assistant",
@@ -1056,7 +1063,15 @@
       "push": "Done, {name}! You're confirmed: today {time}, {treatment}.",
       "pushYou": "Done! You're confirmed: {time} · {pro}.",
       "openPush": "Open the confirmation in WhatsApp",
-      "backToApp": "Back to the clinic app"
+      "backToApp": "Back to the clinic app",
+      "openThread": "See the confirmation"
+    },
+    "sim": {
+      "online": "An online booking comes in",
+      "reminder": "WhatsApp reminder",
+      "freed": "Cancellation and waitlist",
+      "call": "A call to the AI front desk",
+      "note": "Bookings, messages and calls are simulated with demo data; nothing is sent."
     }
   },
   "demoGym": {
@@ -2333,6 +2348,42 @@
       "earned": "Earned",
       "progress": "{pct}% complete",
       "rank": "Rank {n}"
+    },
+    "sim": {
+      "title": "Simulation",
+      "note": "Actions are simulated with demo data; nothing is sent.",
+      "play": "Simulate: {label}",
+      "playing": "Simulating: {label}",
+      "skip": "Skip to the end",
+      "reset": "Restart",
+      "resetAll": "Restart the demo",
+      "counter": "Event {current} of {total}",
+      "counterIdle": "{total} events to simulate",
+      "events": "Simulated events",
+      "close": "Close",
+      "landed": "Done: {label}. {counter}.",
+      "state": {
+        "done": "Done",
+        "playing": "Simulating",
+        "next": "Next",
+        "pending": "Pending"
+      }
+    },
+    "calendar": {
+      "prevDay": "Previous day",
+      "nextDay": "Next day",
+      "prevWeek": "Previous week",
+      "nextWeek": "Next week",
+      "today": "Today",
+      "view": "View",
+      "day": "Day",
+      "week": "Week"
+    },
+    "kanban": {
+      "hint": "Drag a card to another column or use its Move button.",
+      "moveCard": "Move “{card}”",
+      "moveTo": "Move to {column}",
+      "moved": "“{card}” moved to {column}."
     }
   },
   "demoRestaurant": {
@@ -4471,5 +4522,33 @@
     "tagDesktop": "Desktop view",
     "tagMobile": "Phone view",
     "tagBoth": "Both views"
+  },
+  "demoTours": {
+    "clinic": {
+      "sim": {
+        "title": "You decide what happens",
+        "body": "Nothing moves on its own. Tap “Simulate” to see one event of the clinic's day: an online booking, a reminder, a cancellation or a call."
+      },
+      "booking": {
+        "title": "Online booking, no phone calls",
+        "body": "Patients pick a treatment, day and time on the site. Try it: the appointment lands in the schedule and the confirmation goes out on WhatsApp."
+      },
+      "agenda": {
+        "title": "A schedule that fills itself",
+        "body": "All three practitioners on one grid. Switch between day and week, look at past and future dates, and tap an open slot to book it."
+      },
+      "reception": {
+        "title": "An AI front desk, 24/7",
+        "body": "It answers the phone, checks the schedule and books while it talks. Simulate Julián's call and read the transcript."
+      },
+      "reminders": {
+        "title": "WhatsApp reminders",
+        "body": "Every patient gets a reminder and confirms, reschedules or cancels in one tap. Freed slots are offered again."
+      },
+      "recovered": {
+        "title": "No-shows that don't cost you",
+        "body": "How many appointments were recovered this week and where they came from: reminders, the waitlist and the AI front desk."
+      }
+    }
   }
 }
