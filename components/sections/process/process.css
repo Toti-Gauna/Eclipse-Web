@@ -1,19 +1,10 @@
 /*
- * 05 · "Cómo trabajamos": the steps as phases of the eclipse on a hairline.
- * Vertical below 1024px (the line on the left), horizontal from 1024px.
- * Each step but the last owns the track from its glyph's center to the next
- * one's; <ProcessTimeline> scales the light along it and sets [data-lit] on a
- * step when the light reaches its glyph. --lit is 1 without JS / reduced motion.
+ * 06 · Cómo trabajamos (v3, light theme over --dawn). The five steps as a compact
+ * ledger split in two phases: demo y propuesta → el proyecto (starts with the seña).
+ * Phones: one row per step (number · glyph · name · time) that opens to its detail.
+ * Desktop: five columns, every detail visible, the phases drawn as brackets above.
+ * No scroll-driven motion; only the chevron turns.
  */
-
-.process-ambient {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  /* A low, wide horizon glow on the right, where the light ends up. */
-  background: radial-gradient(70rem 22rem at 78% 70%, rgb(245 185 66 / 0.05), transparent 72%);
-}
 
 /* ---- Header -------------------------------------------------------- */
 .proc-head {
@@ -21,11 +12,11 @@
   gap: 1.5rem;
 }
 .proc-h2 {
-  max-width: 12ch;
+  max-width: 13ch;
   font-size: clamp(2.6rem, 10.5vw, 4.4rem);
 }
 .proc-sub {
-  max-width: 30rem;
+  max-width: 32rem;
   font-size: 1rem;
   line-height: 1.55;
   color: var(--fg-muted);
@@ -49,144 +40,26 @@
   }
 }
 
-/* ---- Timeline (phones: vertical) ------------------------------------ */
-.proc-timeline {
-  position: relative;
-  margin-top: 3.5rem;
+/* ---- Steps (phones: a list of disclosure rows) ---------------------- */
+.proc-body {
+  margin-top: 2.5rem;
 }
-.proc-list {
-  --node: 2.75rem;
-  --proc-gap: 2rem;
-  position: relative;
-  display: grid;
+.proc-steps {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .proc-step {
-  --lit: 1;
-  position: relative;
-  display: grid;
-  grid-template-columns: var(--node) minmax(0, 1fr);
-  grid-template-areas:
-    'node reading'
-    'node body';
-  grid-template-rows: auto 1fr;
-  column-gap: 1.1rem;
-  padding-bottom: 2.75rem;
-}
-.proc-step:last-child {
-  padding-bottom: 0;
-}
-[data-armed] .proc-step {
-  --lit: 0;
-}
-[data-armed] .proc-step[data-lit] {
-  --lit: 1;
+  border-bottom: 1px solid var(--line);
 }
 
-.proc-reading {
-  grid-area: reading;
+/* Phase separators: "DEMO Y PROPUESTA ────" / "◆ PROYECTO · ARRANCA CON LA SEÑA ────". */
+.proc-phase {
   display: flex;
-  min-height: var(--node);
   align-items: center;
-}
-.proc-node {
-  position: relative;
-  z-index: 1;
-  grid-area: node;
-  align-self: start;
-  display: block;
-  width: var(--node);
-  height: var(--node);
-  border-radius: 50%;
-  background: var(--night);
-}
-.proc-glyph {
-  position: absolute;
-  inset: 0;
-  color: var(--fg-muted);
-  opacity: 0.38;
-}
-.proc-glyph.proc-glyph--lit {
-  color: var(--flare);
-  opacity: var(--lit);
-  transform: scale(calc(0.86 + 0.14 * var(--lit)));
-  transition:
-    opacity 0.6s ease,
-    transform 0.9s var(--ease-expo);
-}
-.proc-node-glow {
-  position: absolute;
-  inset: -70%;
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    rgb(255 232 176 / 0.3) 18%,
-    rgb(245 185 66 / 0.14) 44%,
-    rgb(245 185 66 / 0.04) 70%,
-    transparent 100%
-  );
-  opacity: var(--lit);
-  transform: scale(calc(0.5 + 0.5 * var(--lit)));
-  transition:
-    opacity 0.6s ease,
-    transform 1s var(--ease-expo);
-}
-
-/* Track: hairline + the light that fills it. */
-.proc-track {
-  position: absolute;
-  top: calc(var(--node) / 2);
-  bottom: calc(var(--node) / -2);
-  left: calc(var(--node) / 2 - 1px);
-  width: 2px;
-}
-.proc-track::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0.5px;
-  width: 1px;
-  background: var(--line-strong);
-}
-.proc-track-fill {
-  position: absolute;
-  inset: 0;
-  border-radius: 2px;
-  background: linear-gradient(180deg, var(--corona) 0%, var(--flare) 100%);
-  box-shadow: 0 0 12px 1px rgb(245 185 66 / 0.45);
-  transform-origin: 50% 0;
-}
-
-/* The spark riding the light front (positioned by <ProcessTimeline>). */
-.proc-spark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  width: 0.9rem;
-  height: 0.9rem;
-  margin: -0.45rem 0 0 -0.45rem;
-  border-radius: 50%;
-  pointer-events: none;
-  visibility: hidden;
-  opacity: 0;
-  background: radial-gradient(
-    circle,
-    #fffaf0 0%,
-    rgb(255 248 230 / 0.95) 28%,
-    rgb(255 232 176 / 0.7) 46%,
-    rgb(245 185 66 / 0.25) 68%,
-    transparent 72%
-  );
-  box-shadow: 0 0 22px 7px rgb(245 185 66 / 0.45);
-}
-
-/* Readouts: time-boxed steps read as big mono numbers, the rest as a caption. */
-.proc-meta {
+  gap: 0.75rem;
   margin: 0;
+  padding: 1.1rem 0 0.6rem;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   line-height: 1rem;
@@ -194,110 +67,237 @@
   text-transform: uppercase;
   color: var(--fg-muted);
 }
-.proc-meta--time {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.35rem;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--fg);
-  opacity: calc(0.5 + 0.5 * var(--lit));
-  transition: opacity 0.6s ease;
+.proc-phase::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--fg);
+  opacity: 0.55;
 }
-.proc-meta-value {
-  font-size: 2.1rem;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  font-variant-numeric: tabular-nums slashed-zero;
-}
-.proc-meta-unit {
-  font-size: 0.85rem;
+.proc-phase[data-phase='project'] {
   color: var(--accent);
 }
+.proc-phase[data-phase='project']::before {
+  content: '';
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--corona);
+  box-shadow: 0 0 10px rgb(245 185 66 / 0.85);
+  transform: rotate(45deg);
+}
+.proc-phase[data-phase='project']::after {
+  background: var(--corona-deep);
+  opacity: 0.7;
+}
+.proc-step:first-child .proc-phase {
+  padding-top: 0;
+}
 
-.proc-body {
-  grid-area: body;
-  padding-top: 0.6rem;
+.proc-head-row {
+  margin: 0;
+  font: inherit;
+}
+.proc-toggle,
+.proc-static {
+  display: grid;
+  grid-template-columns: 1.6rem 18px minmax(0, 1fr) 20px;
+  grid-template-areas:
+    'idx glyph title chev'
+    '. . meta chev';
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 4px;
+  width: 100%;
+  min-height: 60px;
+  padding: 12px 0;
+  text-align: left;
+  color: var(--fg);
+}
+.proc-static {
+  display: none;
+}
+.proc-index {
+  grid-area: idx;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums slashed-zero;
+  color: var(--fg-muted);
+}
+.proc-glyph {
+  grid-area: glyph;
+  color: var(--accent);
 }
 .proc-title {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  font-size: 1.15rem;
+  grid-area: title;
+  font-size: 1.0625rem;
   font-weight: 500;
   line-height: 1.25;
   letter-spacing: -0.01em;
-  opacity: calc(0.6 + 0.4 * var(--lit));
-  transition: opacity 0.6s ease;
 }
-.proc-index {
-  flex: none;
+.proc-meta {
+  grid-area: meta;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
-  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.proc-meta--time {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--fg);
+}
+.proc-meta-value {
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums slashed-zero;
+  letter-spacing: -0.02em;
+}
+.proc-meta-unit {
+  font-size: 0.75rem;
   color: var(--accent);
 }
-.proc-text {
-  max-width: 30rem;
-  margin-top: 0.55rem;
+.proc-meta-money {
+  color: var(--fg);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.proc-chevron {
+  grid-area: chev;
+  width: 20px;
+  height: 20px;
+  color: var(--fg-muted);
+  transition: transform 0.5s var(--ease-expo);
+}
+.proc-step[data-open] .proc-chevron {
+  transform: rotate(180deg);
+}
+.proc-toggle:focus-visible {
+  border-radius: 10px;
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.proc-detail {
+  display: none;
+  padding: 0 0 1rem calc(1.6rem + 18px + 20px);
+}
+.proc-step[data-open] .proc-detail {
+  display: block;
+  animation: proc-open 0.5s var(--ease-expo) both;
+}
+@keyframes proc-open {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.proc-detail p {
+  max-width: 34rem;
   font-size: 0.95rem;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--fg-muted);
 }
 
-/* ---- Desktop: horizontal ------------------------------------------- */
-@media (min-width: 1024px) {
-  .proc-timeline {
-    margin-top: 5rem;
+@media (min-width: 640px) {
+  /* Room for the time on the right of the name. */
+  .proc-toggle {
+    grid-template-columns: 1.75rem 18px minmax(0, 1fr) auto 20px;
+    grid-template-areas: 'idx glyph title meta chev';
+    column-gap: 14px;
   }
-  .proc-list {
-    --node: 3.25rem;
+  .proc-detail {
+    padding-left: calc(1.75rem + 18px + 28px);
+  }
+}
+
+/* ---- Desktop: five columns, details visible, phases as brackets ------ */
+@media (min-width: 1024px) {
+  .proc-body {
+    margin-top: 4.5rem;
+  }
+  .proc-steps {
+    --gap: 2rem;
+    display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    column-gap: var(--proc-gap);
+    column-gap: var(--gap);
+    padding-top: 2.5rem;
   }
   .proc-step {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 3.4rem var(--node) auto;
-    grid-template-areas:
-      'reading'
-      'node'
-      'body';
-    padding-bottom: 0;
+    position: relative;
+    border-bottom: 0;
   }
-  .proc-reading {
-    min-height: 0;
-    align-items: flex-end;
-    padding-bottom: 1.1rem;
-  }
-  .proc-track {
-    top: calc(3.4rem + var(--node) / 2 - 1px);
-    bottom: auto;
-    left: calc(var(--node) / 2);
-    width: calc(100% + var(--proc-gap));
-    height: 2px;
-  }
-  .proc-track::before {
-    top: 0.5px;
-    bottom: auto;
+  .proc-phase {
+    position: absolute;
+    bottom: 100%;
     left: 0;
-    right: 0;
-    width: auto;
-    height: 1px;
+    padding: 0 0 1.1rem;
   }
-  .proc-track-fill {
-    background: linear-gradient(90deg, var(--corona) 0%, var(--flare) 100%);
-    transform-origin: 0 50%;
+  .proc-step:first-child .proc-phase {
+    padding-top: 0;
   }
-  .proc-body {
-    padding-top: 1.6rem;
+  .proc-phase[data-span='2'] {
+    width: calc(200% + var(--gap));
+  }
+  .proc-phase[data-span='3'] {
+    width: calc(300% + 2 * var(--gap));
+  }
+  .proc-head-row {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line-strong);
+  }
+  .proc-toggle {
+    display: none;
+  }
+  .proc-static {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'idx glyph'
+      'meta meta'
+      'title title';
+    justify-items: start;
+    row-gap: 0;
+    min-height: 0;
+    padding: 0;
+  }
+  .proc-glyph {
+    margin-left: 0.4rem;
+  }
+  .proc-meta {
+    display: flex;
+    align-items: flex-end;
+    min-height: 4.25rem;
+    padding: 0 0 0.9rem;
+  }
+  .proc-meta--time {
+    display: inline-flex;
   }
   .proc-meta-value {
     font-size: 2.6rem;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .proc-meta-unit {
+    font-size: 0.9rem;
+  }
+  .proc-title {
+    font-size: 1.125rem;
+  }
+  .proc-detail,
+  .proc-step[data-open] .proc-detail {
+    display: block;
+    padding: 0.6rem 0 0;
+    animation: none;
   }
 }
 @media (min-width: 1280px) {
-  .proc-list {
-    --proc-gap: 2.5rem;
+  .proc-steps {
+    --gap: 2.5rem;
   }
 }
 
@@ -305,7 +305,7 @@
 .proc-cta {
   display: grid;
   gap: 1.5rem;
-  margin-top: 4rem;
+  margin-top: 3.5rem;
 }
 .proc-cta-lead {
   max-width: 22ch;
@@ -324,13 +324,15 @@
 }
 @media (min-width: 1024px) {
   .proc-cta {
-    margin-top: 6rem;
+    margin-top: 5rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .proc-node-glow,
-  .proc-glyph--lit {
-    transform: none;
+  .proc-step[data-open] .proc-detail {
+    animation: none;
+  }
+  .proc-chevron {
+    transition: none;
   }
 }

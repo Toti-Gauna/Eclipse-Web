@@ -9,14 +9,14 @@ import type { FamilyId } from './services';
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 /**
- * A small animated sketch of what each family looks like working (decorative,
- * aria-hidden). Pure CSS (services.css → "Previews"): transform / opacity /
- * clip-path keyframes that only run while `live`; with reduced motion every
- * scene shows its finished frame. Copy: `services.families.<id>.preview`.
+ * A small static sketch of what each family looks like working (decorative,
+ * aria-hidden: everything it says is also in the index). v3: no looping
+ * animation — every scene is its finished frame (services.css → "Previews").
+ * Copy: `services.families.<id>.preview`.
  */
-export function ServicePreview({ family, live, className = '' }: { family: FamilyId; live: boolean; className?: string }) {
+export function ServicePreview({ family, className = '' }: { family: FamilyId; className?: string }) {
   return (
-    <div aria-hidden className={`pv ${className}`} data-family={family} data-live={live || undefined}>
+    <div aria-hidden className={`pv ${className}`} data-family={family}>
       <div className="pv-scene">
         {family === 'web' ? <WebScene /> : null}
         {family === 'ai' ? <AiScene /> : null}
@@ -26,21 +26,6 @@ export function ServicePreview({ family, live, className = '' }: { family: Famil
         {family === 'strategy' ? <StrategyScene /> : null}
       </div>
     </div>
-  );
-}
-
-const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-/** A mono digit that rolls through `values` (a column moved with transform steps). */
-function Roll({ values, className = '' }: { values: readonly string[]; className?: string }) {
-  return (
-    <span className={`pv-roll ${className}`} style={{ '--n': values.length } as Vars}>
-      <span>
-        {values.map((v, i) => (
-          <span key={i}>{v}</span>
-        ))}
-      </span>
-    </span>
   );
 }
 
@@ -60,10 +45,7 @@ function WebScene() {
           <p className="pv-web-head">{t('headline')}</p>
           <span className="pv-skel pv-web-skel-a" />
           <span className="pv-skel pv-web-skel-b" />
-          <span className="pv-web-cta">
-            {t('cta')}
-            <span className="pv-cursor" />
-          </span>
+          <span className="pv-web-cta">{t('cta')}</span>
           <span className="pv-web-tiles">
             <i />
             <i />
@@ -84,10 +66,7 @@ function AiScene() {
         <p className="pv-call-top">
           <span className="pv-live-dot" />
           <span className="pv-label">{t('call')}</span>
-          <span className="pv-timer">
-            00:4
-            <Roll values={DIGITS} className="pv-roll-seconds" />
-          </span>
+          <span className="pv-timer">00:49</span>
         </p>
         <span className="pv-wave">
           {Array.from({ length: 26 }, (_, i) => (
@@ -137,9 +116,7 @@ function OpsScene() {
       <div className="pv-kpis">
         <div className="pv-kpi">
           <p className="pv-label">{t('kpi')}</p>
-          <p className="pv-kpi-value">
-            1<Roll values={['0', '1', '2']} className="pv-roll-kpi" />
-          </p>
+          <p className="pv-kpi-value">12</p>
         </div>
         <div className="pv-kpi pv-kpi-order">
           <p>{t('order')}</p>
@@ -162,9 +139,7 @@ function SalesScene() {
         <span className="pv-label">{t('store')}</span>
         <span className="pv-cart">
           <ShoppingBag strokeWidth={1.5} />
-          <b>
-            <Roll values={['0', '1', '2']} className="pv-roll-cart" />
-          </b>
+          <b>2</b>
         </span>
       </p>
       <span className="pv-products">
@@ -180,8 +155,6 @@ function SalesScene() {
           </span>
         ))}
       </span>
-      <span className="pv-fly pv-fly-1" />
-      <span className="pv-fly pv-fly-2" />
       <p className="pv-toast">
         <Check strokeWidth={2} />
         {t('paid')}
@@ -218,9 +191,7 @@ function AppsScene() {
           <span className="pv-label">{t('status')}</span>
           <span className="pv-eta">
             {t('eta')}{' '}
-            <b>
-              <Roll values={['8', '6', '4', '2']} className="pv-roll-eta" />
-            </b>{' '}
+            <b>2</b>{' '}
             {t('unit')}
           </span>
           <span className="pv-steps">
@@ -264,7 +235,6 @@ function StrategyScene() {
           </span>
         ))}
       </span>
-      <span className="pv-scan" />
       <p className="pv-priority">
         <ArrowRight strokeWidth={1.75} />
         {t('priority')}

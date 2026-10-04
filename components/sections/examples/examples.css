@@ -1,9 +1,10 @@
 /*
- * 04 · "Sala de demos" (components/sections/examples).
- * Phones: header · snap tabs · stage · facts · "¿No ves tu rubro?" card.
- * Desktop (≥1024px): two-column header; the theater is an index on the left
- * (tabs + the "¿No ves tu rubro?" card) and the stage + facts on the right.
- * Lit effects are opacity / transform only; the stage is uncovered by <Occult>.
+ * 02 · "Sala de demos" (components/sections/examples).
+ * Phones/tablets: header · snap tabs · stage (trailer) · facts · "¿No ves tu rubro?".
+ * Desktop (≥1024px): the rubro index runs across the top, the stage takes the full width
+ * (with a mouse: the live frameless split, desktop left / mobile right, or the trailer),
+ * the facts read as one ledger row and "¿No ves tu rubro?" closes the section.
+ * No permanent animation: one-shot reveals only; transform / opacity / clip-path.
  */
 
 .examples-ambient {
@@ -52,29 +53,16 @@
   }
 }
 
-/* ---- Theater grid -------------------------------------------------- */
+/* ---- Theater ------------------------------------------------------- */
 .ex-theater {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1.75rem;
 }
-@media (min-width: 1024px) {
-  .ex-theater {
-    grid-template-columns: minmax(15.5rem, 19rem) minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
-    column-gap: clamp(2rem, 4vw, 3.75rem);
-    row-gap: 2rem;
-  }
-  .ex-index {
-    grid-area: 1 / 1;
-  }
-  .ex-panel {
-    grid-area: 1 / 2 / 3 / 3;
-  }
-  .ex-more {
-    grid-area: 2 / 1;
-    align-self: end;
-  }
+.ex-panel {
+  display: grid;
+  gap: 1.5rem;
+  min-width: 0;
 }
 
 /* ---- Index (tabs) -------------------------------------------------- */
@@ -192,51 +180,98 @@
     0 0 0 1.5px rgb(244 239 230 / 0.18);
 }
 
+/* Desktop: the index runs across the top, one column per business. */
 @media (min-width: 1024px) {
+  .ex-index-head {
+    border-bottom: 0;
+  }
   .ex-tabs {
-    display: block;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    gap: 0;
     margin: 0;
     padding: 0;
     overflow: visible;
+    border-top: 1px solid var(--line);
     -webkit-mask-image: none;
     mask-image: none;
   }
+  /* index · swatch / name / rubro (the body and meta wrappers step aside). */
   .ex-tab {
-    width: 100%;
-    padding: 1.05rem 0.25rem 1rem 1.1rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto 1fr;
+    align-content: start;
+    gap: 0.55rem 0.75rem;
+    width: auto;
+    padding: 1rem 1rem 1.05rem;
     border: 0;
-    border-bottom: 1px solid var(--line);
     border-radius: 0;
     background: none;
+    box-shadow: inset 1px 0 0 var(--line);
+  }
+  .ex-tab-body,
+  .ex-tab-meta {
+    display: contents;
+  }
+  .ex-tab-index {
+    grid-area: 1 / 1;
+  }
+  .ex-swatch {
+    grid-area: 1 / 2;
+    align-self: center;
+  }
+  .ex-tab-name {
+    grid-area: 2 / 1 / 3 / 3;
+  }
+  .ex-tab-rubro {
+    grid-area: 3 / 1 / 4 / 3;
+    align-self: end;
+    white-space: normal;
+  }
+  .ex-tab:first-child {
+    box-shadow: none;
   }
   .ex-tab[aria-selected='true'] {
-    background: linear-gradient(90deg, rgb(245 185 66 / 0.07), transparent 85%);
+    background: linear-gradient(180deg, rgb(245 185 66 / 0.08), transparent 85%);
   }
-  /* The lit bar: draws in on the selected tab. */
+  /* The lit edge: draws in on the selected business. */
   .ex-tab::before {
     content: '';
     position: absolute;
-    top: 0.9rem;
-    bottom: 0.9rem;
+    top: -1px;
+    right: 0;
     left: 0;
-    width: 2px;
+    height: 2px;
     background: var(--accent);
     box-shadow: 0 0 12px rgb(245 185 66 / 0.6);
-    transform: scaleY(0);
-    transform-origin: 50% 0;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
     transition: transform 0.6s var(--ease-expo);
   }
   .ex-tab[aria-selected='true']::before {
-    transform: scaleY(1);
+    transform: scaleX(1);
+  }
+  .ex-tab-index {
+    padding-top: 0;
   }
   .ex-tab-name {
-    font-size: 1.55rem;
+    white-space: normal;
+    font-size: 1.3rem;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+}
+@media (min-width: 1280px) {
+  .ex-tab-name {
+    font-size: 1.5rem;
   }
 }
 
 /* ---- Stage --------------------------------------------------------- */
 .ex-stage {
   position: relative;
+  min-width: 0;
 }
 .ex-stage-ticks {
   position: absolute;
@@ -247,6 +282,10 @@
 }
 .ex-stage-occult {
   position: relative;
+}
+/* The live split only exists for wide screens with a mouse (LIVE_STAGE in DemoTheater). */
+.ex-stage-demo {
+  display: none;
 }
 .ex-stage .trl {
   --trl-radius: 18px;
@@ -262,12 +301,66 @@
   font-size: clamp(2rem, 9cqw, 4.5rem);
   color: var(--dawn);
 }
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .ex-stage {
+    container: ex-stage / inline-size;
+  }
+  .ex-stage[data-view='demo'] .ex-stage-demo {
+    display: block;
+  }
+  .ex-stage[data-view='demo'] .ex-stage-trailer {
+    display: none;
+  }
+  /* The trailer keeps the split's height, so switching never moves the page. */
+  .ex-stage .trl {
+    width: min(100%, calc(((100cqw - 20px) * 0.4851 + 28px) * 16 / 9));
+    margin-inline: auto;
+  }
+}
+
+/* Skip button over the live stage: hidden (.sr-only-focusable) until it gets the focus. */
+.ex-skip {
+  position: absolute;
+  top: 36px;
+  left: 12px;
+  z-index: 5;
+}
+.ex-skip:focus {
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--night);
+  color: var(--fg);
+  font-size: 0.875rem;
+}
+
+/* Poster plate: the business over the placeholder of its desktop view. */
+.ex-plate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  max-width: 100%;
+  padding: 0.7rem 1.15rem 0.7rem 0.8rem;
+  border-radius: 999px;
+  background: rgb(12 12 20 / 0.82);
+  color: var(--dawn);
+  box-shadow:
+    0 0 0 1px rgb(244 239 230 / 0.14),
+    0 20px 40px -24px rgb(0 0 0 / 0.8);
+}
+.ex-plate-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(1.25rem, 2.6cqw, 2.25rem);
+  line-height: 1.1;
+}
 
 /* ---- Facts --------------------------------------------------------- */
 .ex-facts {
   display: grid;
   gap: 1.25rem;
-  margin-top: 1.5rem;
 }
 .ex-fact-head {
   display: flex;
@@ -323,41 +416,94 @@
   line-height: 1.35;
   color: var(--fg-muted);
 }
+.ex-actions {
+  display: grid;
+  gap: 0.75rem;
+}
 .ex-open {
   width: 100%;
+}
+/* What the stage shows (wide screens with a mouse only). */
+.ex-view {
+  display: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+}
+.ex-view-option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.05rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease;
+}
+.ex-view-option:hover {
+  color: var(--fg);
+}
+.ex-view-option:has(:checked) {
+  background: var(--surface-strong);
+  color: var(--fg);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.ex-view-option:has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.ex-view-input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 @media (min-width: 640px) {
   .ex-fact-list {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
     gap: 2rem;
   }
+  .ex-actions {
+    justify-items: start;
+  }
   .ex-open {
-    justify-self: start;
     width: auto;
   }
 }
 @media (min-width: 1024px) {
+  .ex-panel {
+    gap: 2.25rem;
+  }
+  /* One ledger row: who · the problem and the number · what to do. */
   .ex-facts {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      'head open'
-      'list list';
-    align-items: center;
-    column-gap: 2rem;
-    margin-top: 2rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr) auto;
+    align-items: start;
+    column-gap: clamp(2rem, 3.5vw, 3.5rem);
   }
   .ex-fact-head {
-    grid-area: head;
-  }
-  .ex-fact-rubro {
-    flex-basis: auto;
-    margin-left: 0.25rem;
+    align-self: start;
   }
   .ex-fact-list {
-    grid-area: list;
+    padding-top: 0;
+    border-top: 0;
   }
-  .ex-open {
-    grid-area: open;
+  .ex-number {
+    font-size: clamp(3.4rem, 4.6vw, 4.5rem);
+  }
+  .ex-actions {
+    justify-items: end;
+  }
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .ex-view {
+    display: inline-flex;
   }
 }
 
@@ -422,6 +568,17 @@
 .ex-more-card:hover .ex-more-link svg {
   transform: translate(2px, -2px);
 }
+@media (min-width: 1024px) {
+  .ex-more-card {
+    grid-template-columns: auto minmax(0, 1.25fr) minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 2rem;
+    padding: 1.1rem 1.5rem;
+  }
+  .ex-more-title {
+    font-size: 1.9rem;
+  }
+}
 
 .ex-note {
   max-width: 44rem;
@@ -434,7 +591,7 @@
 /* ---- Fullscreen demo modal ----------------------------------------- */
 .ex-modal {
   background:
-    radial-gradient(70% 55% at 50% 60%, rgb(245 185 66 / 0.09), transparent 72%),
+    radial-gradient(70% 55% at 50% 60%, rgb(245 185 66 / 0.08), transparent 72%),
     var(--night);
   color: var(--fg);
 }
@@ -450,8 +607,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding: 12px var(--gutter);
   border-bottom: 1px solid var(--line);
   background: rgb(12 12 20 / 0.82);
   -webkit-backdrop-filter: blur(12px);
@@ -476,31 +632,29 @@
   background: var(--surface);
 }
 .ex-modal-stage {
-  position: relative;
   display: flex;
   flex: 1;
   align-items: center;
   justify-content: center;
   padding: 20px var(--gutter) 24px;
 }
-.ex-modal-glow {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: min(90vw, 900px);
-  aspect-ratio: 1.6;
-  translate: -50% -50%;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(255 232 176 / 0.12), rgb(245 185 66 / 0.05) 55%, transparent 100%);
-  pointer-events: none;
-}
+/*
+ * Sized so the views fit the screen under the bar (see components/demos/showcase.css):
+ * phones/tablets use the tabs (Celular height budget: --sc-phone-w), desktop the split
+ * (width from the height left: panes = (width − 20px) × 0.4851, + 28px of labels).
+ */
 .ex-modal-showcase {
-  position: relative;
-  width: min(300px, calc(100vw - 2 * var(--gutter) - 12px), calc((100dvh - 230px) * 0.46));
+  width: 100%;
+  --sc-phone-w: min(360px, calc((100dvh - 225px) * 9 / 19.5));
 }
 @media (min-width: 768px) {
   .ex-modal-showcase {
-    width: min(1040px, 100%, calc((100dvh - 150px) * 1.536));
+    --sc-phone-w: min(380px, calc((100dvh - 150px) * 9 / 19.5));
+  }
+}
+@media (min-width: 1024px) {
+  .ex-modal-showcase {
+    width: min(100%, 1480px, calc((100dvh - 170px) * 2.0615 + 20px));
   }
 }
 .ex-modal-cta {
@@ -509,4 +663,17 @@
   z-index: 2;
   padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom));
   background: linear-gradient(0deg, var(--night) 55%, rgb(12 12 20 / 0));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ex-tab,
+  .ex-tab::before,
+  .ex-tab-index,
+  .ex-tab-name,
+  .ex-view-option,
+  .ex-more-card,
+  .ex-more-link svg,
+  .ex-modal-close {
+    transition: none;
+  }
 }

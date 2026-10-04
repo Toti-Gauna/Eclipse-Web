@@ -1,8 +1,9 @@
 /*
- * 03 · "Qué construimos" (components/sections/services). Dark section lit from the
- * right (where the stage is). An index list of families: phones get a disclosure
- * list with inline previews, desktop gets the list + a sticky live stage.
- * Only transform / opacity / clip-path are animated.
+ * 03 · Soluciones (components/sections/services). Dark section lit from the right
+ * (where the stage is). An index of families — each row shows its result and its
+ * "desde" — that opens one family at a time: phones get a plain disclosure list,
+ * desktop gets the list + a sticky stage with a static preview.
+ * Only transform / opacity / clip-path are animated (and only on interaction).
  */
 
 .services-light {
@@ -139,9 +140,46 @@
   transform: scaleX(1);
 }
 
+.svc-row-top {
+  position: relative;
+  padding-bottom: 18px;
+}
 .svc-head {
   margin: 0;
   font: inherit;
+}
+/* The whole top block (name, desde, result) is the toggle's hit area. */
+.svc-head-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.svc-head-btn:focus-visible {
+  outline: none;
+}
+.svc-head-btn:focus-visible::after {
+  border-radius: 12px;
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+/* The family's result: always visible, aligned with the name. */
+.svc-result {
+  max-width: 34rem;
+  margin: 0;
+  padding-left: calc(2.6rem + 20px);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
+  transition: color 0.3s ease;
+}
+.svc-row[data-open] .svc-result {
+  color: var(--fg);
+}
+@media (min-width: 1024px) {
+  .svc-result {
+    padding-left: calc(2.75rem + 28px);
+    font-size: 1rem;
+  }
 }
 
 .svc-head-btn {
@@ -154,8 +192,8 @@
   column-gap: 10px;
   row-gap: 6px;
   width: 100%;
-  min-height: 76px;
-  padding: 18px 0 16px;
+  min-height: 56px;
+  padding: 18px 0 10px;
   text-align: left;
   color: var(--fg);
 }
@@ -244,8 +282,8 @@
     grid-template-columns: 1.75rem 1rem minmax(0, auto) minmax(1rem, 1fr) auto;
     grid-template-areas: 'num glyph name leader from';
     column-gap: 14px;
-    min-height: 84px;
-    padding: 22px 0;
+    min-height: 64px;
+    padding: 22px 0 8px;
   }
   .svc-name {
     font-size: 2.5rem;
@@ -290,49 +328,11 @@
   }
 }
 
-.svc-inline-preview {
-  margin: 0 0 22px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-}
-@media (min-width: 1024px) {
-  .svc-inline-preview {
-    display: none;
-  }
-}
-
 .svc-desc {
   max-width: 36rem;
   font-size: 1rem;
   line-height: 1.55;
   color: var(--fg-muted);
-}
-.svc-result {
-  max-width: 36rem;
-  margin-top: 16px;
-  font-size: 1.0625rem;
-  line-height: 1.45;
-  color: var(--fg);
-}
-.svc-result-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.svc-result-label::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--corona);
-  box-shadow: 0 0 10px 1px rgb(245 185 66 / 0.7);
 }
 
 /* ---- Pieces ledger --------------------------------------------------------- */
@@ -392,7 +392,7 @@
   font-size: 0.9375rem;
   color: var(--fg);
 }
-.svc-piece-usd {
+.svc-piece-price .svc-piece-usd {
   font-size: 0.6875rem;
   color: var(--fg-muted);
 }
@@ -585,14 +585,12 @@
 }
 
 /* ======================================================================== */
-/* Previews (<ServicePreview>): sketches sized in container units (cqw).     */
-/* Each scene loops every 8 s while [data-live]; without it they pause, and  */
-/* with reduced motion they show their finished frame (base styles).         */
+/* Previews (<ServicePreview>): static sketches sized in container units      */
+/* (cqw). v3: no looping animation — each scene is its finished frame.        */
 /* ======================================================================== */
 .pv {
   --pv-surface: #101019;
   --pv-line: rgb(244 239 230 / 0.1);
-  --pv-loop: 8s;
   position: relative;
   aspect-ratio: 16 / 10.5;
   overflow: hidden;
@@ -615,21 +613,6 @@
   position: absolute;
   inset: 0;
 }
-/* Animations only run while [data-live] (on screen): otherwise every scene rests on its
-   finished frame (the base styles), which is also the reduced-motion frame. */
-.pv[data-live] .pv-scene {
-  animation: pv-scene var(--pv-loop) linear infinite;
-}
-@keyframes pv-scene {
-  0%,
-  91% {
-    opacity: 1;
-  }
-  97%,
-  100% {
-    opacity: 0;
-  }
-}
 
 /* Shared bits */
 .pv-label {
@@ -645,23 +628,6 @@
   border-radius: 999px;
   background: rgb(244 239 230 / 0.12);
   transform-origin: 0 50%;
-}
-/* A digit column moved by transform: the last value is the resting frame. */
-/* inline-flex: its baseline is the first digit's, so the rolled digit sits on the text line. */
-.pv-roll {
-  display: inline-flex;
-  align-items: flex-start;
-  height: 1em;
-  overflow: hidden;
-  line-height: 1;
-}
-.pv-roll > span {
-  display: block;
-  transform: translateY(calc(-1em * (var(--n) - 1)));
-}
-.pv-roll > span > span {
-  display: block;
-  height: 1em;
 }
 .pv-toast {
   position: absolute;
@@ -756,17 +722,6 @@
   font-size: 2.31cqw;
   font-weight: 600;
 }
-.pv-cursor {
-  position: absolute;
-  right: -1.6cqw;
-  bottom: -2.2cqw;
-  width: 3.2cqw;
-  height: 3.2cqw;
-  border: 1.5px solid var(--flare);
-  border-radius: 50%;
-  background: rgb(255 232 176 / 0.22);
-  opacity: 0;
-}
 .pv-web-tiles {
   position: absolute;
   right: 4.6cqw;
@@ -797,142 +752,6 @@
   transform-origin: 100% 100%;
 }
 
-.pv[data-live][data-family='web'] .pv-kicker {
-  animation: pv-web-kicker var(--pv-loop) infinite both;
-}
-.pv[data-live][data-family='web'] .pv-web-head {
-  animation: pv-web-head var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='web'] .pv-web-skel-a {
-  animation: pv-web-skel-a var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='web'] .pv-web-skel-b {
-  animation: pv-web-skel-b var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='web'] .pv-web-cta {
-  animation: pv-web-cta var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='web'] .pv-cursor {
-  animation: pv-web-cursor var(--pv-loop) cubic-bezier(0.33, 1, 0.68, 1) infinite both;
-}
-.pv[data-live][data-family='web'] .pv-web-tiles i {
-  animation: pv-web-tiles var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='web'] .pv-bubble {
-  animation: pv-web-bubble var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-@keyframes pv-web-kicker {
-  0%,
-  2% {
-    opacity: 0;
-  }
-  8%,
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes pv-web-head {
-  0%,
-  4% {
-    clip-path: inset(0 100% 0 0);
-  }
-  15%,
-  100% {
-    clip-path: inset(0 0 0 0);
-  }
-}
-@keyframes pv-web-skel-a {
-  0%,
-  11% {
-    transform: scaleX(0);
-  }
-  19%,
-  100% {
-    transform: scaleX(1);
-  }
-}
-@keyframes pv-web-skel-b {
-  0%,
-  14% {
-    transform: scaleX(0);
-  }
-  22%,
-  100% {
-    transform: scaleX(1);
-  }
-}
-@keyframes pv-web-cta {
-  0%,
-  18% {
-    opacity: 0;
-    transform: scale(0.88);
-  }
-  25%,
-  45% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  47% {
-    transform: scale(0.95);
-  }
-  50%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-@keyframes pv-web-cursor {
-  0%,
-  30% {
-    opacity: 0;
-    transform: translate(16cqw, 10cqw);
-  }
-  34% {
-    opacity: 1;
-    transform: translate(16cqw, 10cqw);
-  }
-  44% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  47% {
-    transform: translate(0, 0) scale(0.7);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  58%,
-  100% {
-    opacity: 0;
-    transform: translate(0, 0) scale(1);
-  }
-}
-@keyframes pv-web-tiles {
-  0%,
-  22% {
-    opacity: 0;
-    transform: translateY(2cqw);
-  }
-  31%,
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes pv-web-bubble {
-  0%,
-  50% {
-    opacity: 0;
-    transform: translateY(1.5cqw) scale(0.7);
-  }
-  57%,
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 /* ---- 02 · IA y agentes: a call being answered + the chat beside it -------- */
 .pv-call {
   position: absolute;
@@ -959,9 +778,7 @@
   background: var(--corona);
   box-shadow: 0 0 1.4cqw rgb(245 185 66 / 0.9);
 }
-.pv[data-live] .pv-live-dot {
-  animation: pv-pulse 1.6s ease-in-out infinite;
-}
+
 .pv-timer {
   margin-left: auto;
   font-family: var(--font-mono);
@@ -969,9 +786,7 @@
   font-variant-numeric: tabular-nums;
   color: var(--dawn);
 }
-.pv[data-live] .pv-roll-seconds > span {
-  animation: pv-seconds 10s steps(10) infinite;
-}
+
 .pv-wave {
   display: flex;
   flex: 1;
@@ -986,10 +801,7 @@
   background: linear-gradient(180deg, var(--flare), var(--corona));
   transform: scaleY(var(--h));
 }
-.pv[data-live] .pv-wave i {
-  animation: pv-wave 1.15s ease-in-out infinite alternate;
-  animation-delay: calc(var(--i) * -0.11s);
-}
+
 .pv-call-agent {
   font-family: var(--font-mono);
   font-size: 1.91cqw;
@@ -1044,80 +856,7 @@
   width: 1.9cqw;
   height: 1.9cqw;
 }
-.pv[data-live][data-family='ai'] .pv-msg-in {
-  animation: pv-pop-a var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  transform-origin: 0 100%;
-}
-.pv[data-live][data-family='ai'] .pv-msg-out {
-  animation: pv-pop-b var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  transform-origin: 100% 100%;
-}
-.pv[data-live][data-family='ai'] .pv-chip {
-  animation: pv-pop-c var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-  transform-origin: 100% 50%;
-}
-@keyframes pv-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-@keyframes pv-seconds {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-10em);
-  }
-}
-@keyframes pv-wave {
-  from {
-    transform: scaleY(calc(var(--h) * 0.28));
-  }
-  to {
-    transform: scaleY(var(--h));
-  }
-}
-/* Three staggered pops on the same 8 s loop. */
-@keyframes pv-pop-a {
-  0%,
-  8% {
-    opacity: 0;
-    transform: translateY(1.5cqw) scale(0.85);
-  }
-  15%,
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes pv-pop-b {
-  0%,
-  28% {
-    opacity: 0;
-    transform: translateY(1.5cqw) scale(0.85);
-  }
-  35%,
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes pv-pop-c {
-  0%,
-  50% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  57%,
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
+
 
 /* ---- 03 · Gestión y operación: the week fills up, the day's numbers -------- */
 .pv-cal {
@@ -1169,20 +908,7 @@
   box-shadow: inset 0 0 0 1px var(--flare);
 }
 /* Column by column (row-major DOM: column c = nth-child(5n + c)). */
-.pv[data-live][data-family='ops'] .pv-cal-grid i:nth-child(5n + 1)[data-state]::after,
-.pv[data-live][data-family='ops'] .pv-cal-grid i:nth-child(5n + 2)[data-state]::after {
-  animation: pv-fill-a var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='ops'] .pv-cal-grid i:nth-child(5n + 3)[data-state]::after,
-.pv[data-live][data-family='ops'] .pv-cal-grid i:nth-child(5n + 4)[data-state]::after {
-  animation: pv-fill-b var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='ops'] .pv-cal-grid i:nth-child(5n)[data-state]::after {
-  animation: pv-fill-c var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='ops'] .pv-cal-grid i[data-state='hi']::after {
-  animation: pv-fill-hi var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
+
 .pv-kpis {
   position: absolute;
   top: 8%;
@@ -1218,87 +944,11 @@
   height: 2.4cqw;
   color: var(--corona);
 }
-.pv[data-live][data-family='ops'] .pv-roll-kpi > span {
-  animation: pv-kpi-roll var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='ops'] .pv-kpi-order {
-  animation: pv-pop-b var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
+
 .pv-ops .pv-toast {
   right: 5%;
   bottom: 8%;
   width: 29%;
-}
-.pv[data-live][data-family='ops'] .pv-toast {
-  animation: pv-toast var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-@keyframes pv-fill-a {
-  0%,
-  6% {
-    transform: scaleX(0);
-  }
-  14%,
-  100% {
-    transform: scaleX(1);
-  }
-}
-@keyframes pv-fill-b {
-  0%,
-  13% {
-    transform: scaleX(0);
-  }
-  21%,
-  100% {
-    transform: scaleX(1);
-  }
-}
-@keyframes pv-fill-c {
-  0%,
-  20% {
-    transform: scaleX(0);
-  }
-  28%,
-  100% {
-    transform: scaleX(1);
-  }
-}
-@keyframes pv-fill-hi {
-  0%,
-  36% {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  42%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-@keyframes pv-kpi-roll {
-  0%,
-  14% {
-    transform: translateY(0);
-  }
-  22%,
-  38% {
-    transform: translateY(-1em);
-  }
-  46%,
-  100% {
-    transform: translateY(-2em);
-  }
-}
-@keyframes pv-toast {
-  0%,
-  54% {
-    opacity: 0;
-    transform: translateY(2cqw);
-  }
-  61%,
-  100% {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 /* ---- 04 · Venta online: two products to the cart, payment approved -------- */
@@ -1397,134 +1047,14 @@
   height: 1.5cqw;
   color: var(--corona);
 }
-.pv[data-live][data-family='sales'] .pv-product[data-i='1'] .pv-add {
-  animation: pv-press-1 var(--pv-loop) ease-out infinite both;
-}
-.pv[data-live][data-family='sales'] .pv-product[data-i='2'] .pv-add {
-  animation: pv-press-2 var(--pv-loop) ease-out infinite both;
-}
-.pv-fly {
-  position: absolute;
-  top: 82%;
-  width: 1.8cqw;
-  height: 1.8cqw;
-  border-radius: 50%;
-  background: var(--corona);
-  box-shadow: 0 0 1.6cqw rgb(245 185 66 / 0.9);
-  opacity: 0;
-}
-.pv-fly-1 {
-  left: 42%;
-}
-.pv-fly-2 {
-  left: 73%;
-}
-.pv[data-live][data-family='sales'] .pv-fly-1 {
-  animation: pv-fly-1 var(--pv-loop) cubic-bezier(0.55, 0, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='sales'] .pv-fly-2 {
-  animation: pv-fly-2 var(--pv-loop) cubic-bezier(0.55, 0, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='sales'] .pv-roll-cart > span {
-  animation: pv-cart-roll var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
+
+
 .pv-sales .pv-toast {
   right: 0;
   bottom: 6%;
   left: 0;
   width: fit-content;
   margin-inline: auto;
-}
-.pv[data-live][data-family='sales'] .pv-toast {
-  animation: pv-toast-late var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-@keyframes pv-press-1 {
-  0%,
-  24%,
-  30%,
-  100% {
-    transform: scale(1);
-  }
-  27% {
-    transform: scale(0.88);
-  }
-}
-@keyframes pv-press-2 {
-  0%,
-  46%,
-  52%,
-  100% {
-    transform: scale(1);
-  }
-  49% {
-    transform: scale(0.88);
-  }
-}
-@keyframes pv-fly-1 {
-  0%,
-  27% {
-    opacity: 0;
-    transform: translate(0, 0) scale(1);
-  }
-  29% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  37% {
-    opacity: 1;
-    transform: translate(51cqw, -47cqw) scale(0.6);
-  }
-  39%,
-  100% {
-    opacity: 0;
-    transform: translate(51cqw, -47cqw) scale(0.6);
-  }
-}
-@keyframes pv-fly-2 {
-  0%,
-  49% {
-    opacity: 0;
-    transform: translate(0, 0) scale(1);
-  }
-  51% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  59% {
-    opacity: 1;
-    transform: translate(20cqw, -47cqw) scale(0.6);
-  }
-  61%,
-  100% {
-    opacity: 0;
-    transform: translate(20cqw, -47cqw) scale(0.6);
-  }
-}
-@keyframes pv-cart-roll {
-  0%,
-  37% {
-    transform: translateY(0);
-  }
-  41%,
-  59% {
-    transform: translateY(-1em);
-  }
-  63%,
-  100% {
-    transform: translateY(-2em);
-  }
-}
-@keyframes pv-toast-late {
-  0%,
-  70% {
-    opacity: 0;
-    transform: translateY(2cqw);
-  }
-  77%,
-  100% {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 /* ---- 05 · Apps a medida: dispatch board + the customer's app tracking ------ */
@@ -1628,9 +1158,7 @@
   box-shadow: 0 0 0 0.8cqw rgb(255 232 176 / 0.18);
   translate: -50% -50%;
 }
-.pv[data-live][data-family='apps'] .pv-track {
-  animation: pv-route var(--pv-loop) linear infinite both;
-}
+
 .pv-sheet {
   display: flex;
   flex: 1;
@@ -1649,9 +1177,7 @@
   font-weight: 500;
   color: var(--corona);
 }
-.pv[data-live][data-family='apps'] .pv-roll-eta > span {
-  animation: pv-eta-roll var(--pv-loop) linear infinite both;
-}
+
 .pv-steps {
   display: flex;
   gap: 0.8cqw;
@@ -1675,62 +1201,6 @@
   inset: 0;
   background: var(--corona);
   transform-origin: 0 50%;
-}
-.pv[data-live][data-family='apps'] .pv-steps i[data-now]::after {
-  animation: pv-progress var(--pv-loop) linear infinite both;
-}
-.pv[data-live][data-family='apps'] .pv-board-row[data-i='0'] i {
-  animation: pv-pulse 1.6s ease-in-out infinite;
-}
-@keyframes pv-route {
-  0%,
-  6% {
-    transform: translate(0, 0);
-  }
-  18% {
-    transform: translate(0, -28%);
-  }
-  34% {
-    transform: translate(34%, -28%);
-  }
-  46% {
-    transform: translate(34%, -56%);
-  }
-  60% {
-    transform: translate(62%, -56%);
-  }
-  68%,
-  100% {
-    transform: translate(62%, -70%);
-  }
-}
-@keyframes pv-eta-roll {
-  0%,
-  17% {
-    transform: translateY(0);
-  }
-  18%,
-  33% {
-    transform: translateY(-1em);
-  }
-  34%,
-  59% {
-    transform: translateY(-2em);
-  }
-  60%,
-  100% {
-    transform: translateY(-3em);
-  }
-}
-@keyframes pv-progress {
-  0%,
-  6% {
-    transform: scaleX(0);
-  }
-  68%,
-  100% {
-    transform: scaleX(1);
-  }
 }
 
 /* ---- 06 · Estrategia: the audit runs, the weakest line becomes priority 1 -- */
@@ -1796,16 +1266,6 @@
   width: 2.2cqw;
   height: 2.2cqw;
 }
-.pv-scan {
-  position: absolute;
-  top: 7%;
-  right: -2%;
-  left: -2%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--corona), transparent);
-  box-shadow: 0 0 1.6cqw rgb(245 185 66 / 0.7);
-  opacity: 0;
-}
 .pv-priority {
   display: flex;
   align-items: center;
@@ -1822,57 +1282,6 @@
   width: 2.2cqw;
   height: 2.2cqw;
   color: var(--corona);
-}
-.pv[data-live][data-family='strategy'] .pv-meter i {
-  animation: pv-meter var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-.pv[data-live][data-family='strategy'] .pv-scan {
-  animation: pv-scan var(--pv-loop) cubic-bezier(0.45, 0, 0.55, 1) infinite both;
-}
-.pv[data-live][data-family='strategy'] .pv-meter-row[data-focus]::before {
-  animation: pv-focus var(--pv-loop) ease-out infinite both;
-}
-.pv[data-live][data-family='strategy'] .pv-priority {
-  animation: pv-toast var(--pv-loop) cubic-bezier(0.16, 1, 0.3, 1) infinite both;
-}
-@keyframes pv-meter {
-  0%,
-  4% {
-    transform: scaleX(0);
-  }
-  30%,
-  100% {
-    transform: scaleX(var(--v));
-  }
-}
-@keyframes pv-scan {
-  0%,
-  2% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  5% {
-    opacity: 1;
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(26cqw);
-  }
-  34%,
-  100% {
-    opacity: 0;
-    transform: translateY(26cqw);
-  }
-}
-@keyframes pv-focus {
-  0%,
-  38% {
-    opacity: 0;
-  }
-  46%,
-  100% {
-    opacity: 1;
-  }
 }
 
 /* Reduced motion: every scene rests on its finished frame. */

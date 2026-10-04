@@ -12,6 +12,7 @@ import { l, verticalById } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
 import { useHeroState, type DemoVertical, type RevealPhase } from './HeroState';
 import { DISC, LIMB_POINT, MOON_DIR, REVEAL_MOON_DIAMOND } from './geometry';
+import { LIGHT_ZONES_EVENT } from '@/components/ui/EphemerisRail';
 
 // Showcase + demos are only downloaded when a vertical is picked (or hovered).
 const DemoShowcase = lazy(() =>
@@ -169,6 +170,8 @@ function RevealLayer({
       const st = ScrollTrigger.getAll().find((s) => s.trigger === z) as Placeable | undefined;
       if (st?.setPositions) st.setPositions(st.start, st.start + (on ? z.offsetHeight : 0));
       else ScrollTrigger.refresh();
+      // The page index rail caches the light zones: tell it this one changed.
+      window.dispatchEvent(new Event(LIGHT_ZONES_EVENT));
     };
 
     const finish = (reached: Direction) => {
@@ -236,6 +239,9 @@ function RevealLayer({
     };
     gsap.set(el, { opacity: 1 });
     paint();
+
+    // The WebGL corona rests between events: keep it drawing while the moon slides.
+    b.wake?.(2200);
 
     if (target === 'opening') {
       const moonTo = REVEAL_MOON_DIAMOND * MOON_PCT_PER_RADIUS;

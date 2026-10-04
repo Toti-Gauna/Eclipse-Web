@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "es": {
+      "subtitle": "Webs, sistemas y agentes de IA para negocios que no pueden esperar.",
+      "pickVertical": "Elegí tu rubro y miralo",
+      "pickOptional": "Opcional",
+      "scroll": null
+    },
+    "en": {
+      "subtitle": "Websites, systems and AI agents for businesses that can't wait.",
+      "pickVertical": "Pick your industry and see it",
+      "pickOptional": "Optional",
+      "scroll": null
+    },
+    "pt": {
+      "subtitle": "Sites, sistemas e agentes de IA para negócios que não podem esperar.",
+      "pickVertical": "Escolha seu setor e veja",
+      "pickOptional": "Opcional",
+      "scroll": null
+    }
+  },
+  "shortcuts": {
+    "es": {
+      "label": "Atajos",
+      "plan": "Armar plan"
+    },
+    "en": {
+      "label": "Shortcuts",
+      "plan": "Build a plan"
+    },
+    "pt": {
+      "label": "Atalhos",
+      "plan": "Montar plano"
+    }
+  }
+}

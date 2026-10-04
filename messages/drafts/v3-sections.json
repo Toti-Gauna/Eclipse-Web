@@ -1,0 +1,147 @@
+{
+  "sections": {
+    "es": {
+      "labels": {
+        "services": "Soluciones",
+        "problem": "Calculadora",
+        "agent": "Preguntas y contacto"
+      }
+    },
+    "en": {
+      "labels": {
+        "services": "Solutions",
+        "problem": "Calculator",
+        "agent": "Questions & contact"
+      }
+    },
+    "pt": {
+      "labels": {
+        "services": "Soluções",
+        "problem": "Calculadora",
+        "agent": "Perguntas e contato"
+      }
+    }
+  },
+  "pricing": {
+    "es": {
+      "ways": {
+        "options": "{count, plural, one {# opción} other {# opciones}}"
+      },
+      "plan": {
+        "audienceLabel": "Para quién",
+        "maintenanceLabel": "Mantenimiento sugerido",
+        "maintenanceValue": "{name} · {price} {period}",
+        "maintenanceNone": "Ninguno (opcional)"
+      }
+    },
+    "en": {
+      "ways": {
+        "options": "{count, plural, one {# option} other {# options}}"
+      },
+      "plan": {
+        "audienceLabel": "Who it's for",
+        "maintenanceLabel": "Suggested maintenance",
+        "maintenanceValue": "{name} · {price} {period}",
+        "maintenanceNone": "None (optional)"
+      }
+    },
+    "pt": {
+      "ways": {
+        "options": "{count, plural, one {# opção} other {# opções}}"
+      },
+      "plan": {
+        "audienceLabel": "Para quem",
+        "maintenanceLabel": "Manutenção sugerida",
+        "maintenanceValue": "{name} · {price} {period}",
+        "maintenanceNone": "Nenhuma (opcional)"
+      }
+    }
+  },
+  "process": {
+    "es": {
+      "phases": {
+        "pre": "Demo y propuesta",
+        "project": "Proyecto · arranca con la seña"
+      }
+    },
+    "en": {
+      "phases": {
+        "pre": "Demo and proposal",
+        "project": "Project · starts with the deposit"
+      }
+    },
+    "pt": {
+      "phases": {
+        "pre": "Demo e proposta",
+        "project": "Projeto · começa com o sinal"
+      }
+    }
+  },
+  "faq": {
+    "es": {
+      "title": "Preguntas frecuentes",
+      "items": {
+        "demo": "¿Cómo funciona la demo?",
+        "start": "¿Cuándo arranca el proyecto?",
+        "from": "¿Qué significa «desde»?",
+        "currency": "¿En qué moneda están los precios?",
+        "pieces": "¿Puedo comprar una sola pieza?",
+        "maintenance": "¿El mantenimiento es obligatorio? ¿Qué incluye?",
+        "voice": "¿El agente de voz tiene un costo mensual?",
+        "annual": "¿Hay descuento si pago el mantenimiento anual?",
+        "founder": "¿Qué es el programa fundador?",
+        "referral": "¿Hay algún beneficio por recomendarnos?"
+      }
+    },
+    "en": {
+      "title": "Frequently asked questions",
+      "items": {
+        "demo": "How does the demo work?",
+        "start": "When does the project start?",
+        "from": "What does “From” mean?",
+        "currency": "What currency are the prices in?",
+        "pieces": "Can I buy just one piece?",
+        "maintenance": "Is maintenance required? What does it include?",
+        "voice": "Does the voice agent have a monthly cost?",
+        "annual": "Is there a discount for paying maintenance yearly?",
+        "founder": "What is the founder program?",
+        "referral": "Do I get anything for referring someone?"
+      }
+    },
+    "pt": {
+      "title": "Perguntas frequentes",
+      "items": {
+        "demo": "Como funciona a demo?",
+        "start": "Quando o projeto começa?",
+        "from": "O que significa “a partir de”?",
+        "currency": "Em que moeda estão os preços?",
+        "pieces": "Posso comprar uma peça só?",
+        "maintenance": "A manutenção é obrigatória? O que inclui?",
+        "voice": "O agente de voz tem custo mensal?",
+        "annual": "Tem desconto se eu pagar a manutenção anual?",
+        "founder": "O que é o programa de fundadores?",
+        "referral": "Tenho algum benefício por indicar alguém?"
+      }
+    }
+  },
+  "founders": {
+    "es": {
+      "slot": {
+        "free": null,
+        "emptyTitle": null
+      }
+    },
+    "en": {
+      "slot": {
+        "free": null,
+        "emptyTitle": null
+      }
+    },
+    "pt": {
+      "slot": {
+        "free": null,
+        "emptyTitle": null
+      }
+    }
+  }
+}

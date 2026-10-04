@@ -67,8 +67,9 @@
   }
 }
 
-/* <SoundBadge>: a tiny equalizer on the menu button while sound is on (phones, where
-   the header has no room for the toggle). Decorative: the toggle lives in the menu. */
+/* <SoundBadge>: a tiny equalizer on the menu button (phones, tablets) or after the
+   preferences trigger's readout (desktop) while sound is on. Decorative: the toggle
+   lives in the popover and in the menu. */
 .sound-badge {
   position: absolute;
   top: 6px;
@@ -92,10 +93,13 @@
 .sound-badge[data-state='playing'] i {
   animation: sound-eq calc(0.8s + var(--i) * 0.2s) ease-in-out calc(var(--i) * -0.3s) infinite alternate;
 }
-@media (min-width: 640px) {
-  .sound-badge {
-    display: none;
-  }
+.sound-badge-inline {
+  position: static;
+  height: 9px;
+  gap: 2px;
+}
+.sound-badge-inline i {
+  width: 2px;
 }
 @media (prefers-reduced-motion: reduce) {
   .sound-badge[data-state='playing'] i {

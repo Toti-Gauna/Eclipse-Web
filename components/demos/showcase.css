@@ -1,0 +1,363 @@
+/*
+ * <DemoShowcase> (v3): two frameless, labelled views of one demo. No device shells.
+ *
+ * Geometry (all from the showcase's own width, `.sc` is an inline-size container):
+ * - split (width ≥ 880px — SPLIT_MIN in DemoShowcase.tsx): "Escritorio" 16/10 on the left,
+ *   "Celular" 9/19.5 on the right, same height, side by side, never overlapping:
+ *     height = (width − 20px) × 0.4851 + 28px (caption row).
+ * - tabs (narrower): a "Celular | Escritorio" tab row (52px) and ONE view:
+ *   · Celular: centered, width = min(container, --sc-phone-w [default: fits the viewport]);
+ *     the tab row is taken out of its height, so the whole showcase is exactly as tall as a
+ *     9/19.5 phone of that width (a drop-in for the v2 phone).
+ *   · Escritorio: the 16/10 screen at a readable width (--sc-desk-min, 760px) inside a
+ *     horizontal scroller, with a hint and a ruler that shows the part in view.
+ * Parents size the width (`fit`) and may set --sc-phone-w / --sc-desk-min.
+ * Colors follow the section theme (hairline = --line-strong); the screens are the demos'.
+ */
+.sc {
+  --sc-gap: 20px;
+  --sc-caption-h: 28px;
+  --sc-tabs-h: 52px;
+  --sc-desk-min: 760px;
+  /* Phone view in the tabs layout: never taller than the viewport minus a little chrome. */
+  --sc-phone-w-default: min(360px, max(220px, calc((100svh - 120px) * 9 / 19.5)));
+  --sc-pw: min(100cqw, var(--sc-phone-w, var(--sc-phone-w-default)));
+  container: sc / inline-size;
+  position: relative;
+  width: 100%;
+}
+
+/* ---- Views (panes) ------------------------------------------------- */
+.sc-pane {
+  position: relative;
+  min-width: 0;
+}
+.sc-caption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: var(--sc-caption-h);
+  margin: 0;
+  padding-bottom: 8px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  font-weight: 450;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--fg-muted);
+}
+.sc-caption svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+.sc-screen {
+  position: relative;
+  overflow: hidden;
+  container: screen / size;
+  background: var(--dawn);
+  color: var(--ink);
+  box-shadow:
+    0 0 0 1px var(--line-strong),
+    0 30px 60px -40px rgb(0 0 0 / 0.55);
+}
+.sc-pane[data-kind='laptop'] .sc-screen {
+  aspect-ratio: 16 / 10;
+  border-radius: 1.1% / 1.76%;
+}
+.sc-pane[data-kind='phone'] .sc-screen {
+  aspect-ratio: 9 / 19.5;
+  border-radius: 7% / 3.25%;
+}
+
+/* ---- Split: desktop left (wider), mobile right, same height -------- */
+.sc-split {
+  display: grid;
+  grid-template-columns: minmax(0, 16fr) minmax(0, 4.615fr);
+  column-gap: var(--sc-gap);
+  align-items: end;
+}
+
+/* ---- Tabs: one view at a time -------------------------------------- */
+.sc-tablist {
+  display: flex;
+  height: calc(var(--sc-tabs-h) - 8px);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.sc-tab {
+  position: relative;
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--fg-muted);
+  transition: color 0.25s ease;
+}
+.sc-tab svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.sc-tab:hover,
+.sc-tab[aria-selected='true'],
+.sc-tab[data-on] {
+  color: var(--fg);
+}
+/* The lit edge under the chosen view (drawn in). */
+.sc-tab::after {
+  content: '';
+  position: absolute;
+  right: 18%;
+  bottom: -1px;
+  left: 18%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.5s var(--ease-expo);
+}
+.sc-tab[aria-selected='true']::after,
+.sc-tab[data-on]::after {
+  transform: none;
+}
+.sc-tab:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Celular: centered; the tab row comes out of its height (see the header). */
+.sc-panels {
+  display: grid;
+  min-height: calc(var(--sc-pw) * 19.5 / 9 - var(--sc-tabs-h));
+}
+.sc-panel {
+  min-width: 0;
+}
+/* Same box for both tabs (nothing below jumps); the desktop view sits in its middle. */
+.sc-panel[data-kind='laptop'] {
+  align-self: center;
+}
+.sc-panel[data-kind='phone'] .sc-pane {
+  width: var(--sc-pw);
+  margin-inline: auto;
+}
+.sc-panel[data-kind='phone'] .sc-screen {
+  aspect-ratio: auto;
+  height: calc(var(--sc-pw) * 19.5 / 9 - var(--sc-tabs-h));
+}
+
+/* Escritorio: readable width, panned horizontally. */
+.sc-scroller {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* Room for the hairline + focus ring of the screen. */
+  padding: 3px;
+  margin: -3px;
+}
+.sc-scroller::-webkit-scrollbar {
+  display: none;
+}
+.sc-scroller .sc-pane {
+  width: max(100%, var(--sc-desk-min));
+}
+/* Tablets: the full width is already readable, no panning. */
+@container sc (min-width: 680px) {
+  .sc-scroller .sc-pane {
+    width: 100%;
+  }
+}
+/* A soft edge on the side that has more to see. */
+.sc-scroller[data-edge='start'] {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent);
+}
+.sc-scroller[data-edge='mid'] {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 36px, #000 calc(100% - 36px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 36px, #000 calc(100% - 36px), transparent);
+}
+.sc-scroller[data-edge='end'] {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 36px);
+  mask-image: linear-gradient(90deg, transparent, #000 36px);
+}
+.sc-pan {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 12px;
+}
+.sc-pan:not([data-overflow]) {
+  display: none;
+}
+.sc-hint {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.sc-hint svg {
+  width: 14px;
+  height: 14px;
+}
+/* Ruler: tick marks + the visible part of the screen (transform only). */
+.sc-ruler {
+  position: relative;
+  flex: 1 1 auto;
+  height: 9px;
+  overflow: hidden;
+  background:
+    linear-gradient(var(--line-strong), var(--line-strong)) left bottom / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, var(--line-strong) 0 1px, transparent 1px 10%) left bottom / 100% 5px no-repeat;
+}
+.sc-ruler-thumb {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--sc-thumb, 40%);
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: translateX(var(--sc-thumb-x, 0%));
+}
+
+/* ---- Placeholder screen (while a demo's code loads) ---------------- */
+.sc-ph {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.sc-ph span {
+  position: absolute;
+  display: block;
+  border-radius: 0.5cqw;
+  background: var(--ph-surface);
+  box-shadow: 0 0 0 1px color-mix(in oklab, currentColor 8%, transparent);
+}
+.sc-ph .sc-ph-card--accent {
+  background: var(--ph-accent);
+  opacity: 0.85;
+}
+.sc-ph[data-kind='laptop'] .sc-ph-side {
+  inset: 0 auto 0 0;
+  width: 18%;
+  border-radius: 0;
+}
+.sc-ph[data-kind='laptop'] .sc-ph-top {
+  top: 0;
+  right: 0;
+  left: 18%;
+  height: 7.5%;
+  border-radius: 0;
+  background: transparent;
+}
+.sc-ph[data-kind='laptop'] .sc-ph-grid {
+  inset: 12% 2.5% 4% 20.5%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: 0.8fr 1fr;
+  gap: 1.6cqw;
+  background: none;
+  box-shadow: none;
+}
+.sc-ph[data-kind='laptop'] .sc-ph-grid > span {
+  position: static;
+  border-radius: 1cqw;
+}
+.sc-ph[data-kind='laptop'] .sc-ph-card--wide {
+  grid-column: span 2;
+}
+.sc-ph[data-kind='phone'] .sc-ph-bar {
+  top: 5%;
+  right: 5%;
+  left: 5%;
+  height: 4.5%;
+  background: transparent;
+  box-shadow: inset 0 -1px 0 color-mix(in oklab, currentColor 10%, transparent);
+  border-radius: 0;
+}
+.sc-ph[data-kind='phone'] > .sc-ph-card {
+  right: 5%;
+  left: 5%;
+  border-radius: 3.5cqw;
+}
+.sc-ph[data-kind='phone'] > .sc-ph-card:nth-child(2) {
+  top: 13%;
+  height: 22%;
+}
+.sc-ph[data-kind='phone'] > .sc-ph-card:nth-child(3) {
+  top: 38%;
+  height: 16%;
+}
+.sc-ph[data-kind='phone'] > .sc-ph-card:nth-child(4) {
+  top: 57%;
+  height: 24%;
+}
+.sc-ph[data-kind='phone'] .sc-ph-tabs {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 9%;
+  border-radius: 0;
+}
+
+/* Poster plate over the desktop placeholder (business name + "Demo"). */
+.sc-plate {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 6%;
+}
+
+/* ---- Poster: the live geometry, chosen by width (no JS) ------------ */
+.sc[data-poster] .sc-tablist {
+  display: none;
+}
+@container sc (max-width: 879.98px) {
+  .sc[data-poster] .sc-tablist {
+    display: flex;
+  }
+  .sc[data-poster] .sc-split {
+    display: block;
+  }
+  .sc[data-poster] .sc-pane[data-kind='laptop'],
+  .sc[data-poster] .sc-caption {
+    display: none;
+  }
+  .sc[data-poster] .sc-pane[data-kind='phone'] {
+    width: var(--sc-pw);
+    margin-inline: auto;
+  }
+  .sc[data-poster] .sc-pane[data-kind='phone'] .sc-screen {
+    aspect-ratio: auto;
+    height: calc(var(--sc-pw) * 19.5 / 9 - var(--sc-tabs-h));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-tab::after {
+    transition: none;
+  }
+}

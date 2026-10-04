@@ -9,7 +9,7 @@ import { Reveal } from '@/components/motion/Reveal';
 import { Occult } from '@/components/motion/Occult';
 import { SectionMark } from '@/components/ui/SectionMark';
 import { PayLedger } from './PayLedger';
-import { Packages } from './Packages';
+import { BuyTabs } from './BuyTabs';
 import { OffersLedger } from './OffersLedger';
 import { CarePanel } from './CarePanel';
 import { RateNote } from './RateNote';
@@ -19,10 +19,13 @@ import './pricing.css';
 const offerOf = <K extends Offer['kind']>(kind: K) => offers.find((o) => o.kind === kind) as Extract<Offer, { kind: K }> | undefined;
 
 /**
- * 06 · Precios. Reads top to bottom like a ledger:
- *   how you pay (① project once · ② maintenance monthly, optional · ③ extras whenever)
- *   → two ways to buy (A · packages, B · piece by piece in the builder)
- *   → the live offers on the one-time payment → maintenance (the only Mensual/Anual switch).
+ * 04 · Precios (v3). Everything a buyer needs stays on the surface, in this order:
+ *   the currency, the rate of the day and what "≈" means (RateNote, beside the title)
+ *   → two ways to buy as tabs: A · Paquetes (7) compared field by field /
+ *     B · Pieza por pieza (16) with the builder
+ *   → maintenance (optional, the page's only Mensual/Anual switch, voice usage, referrals)
+ *   → the live offers with their real conditions
+ *   → how you pay (① project once · ② maintenance monthly · ③ extras) and the footnotes.
  * Every number comes from /content through lib/pricing; prices are shown in the active
  * currency with "≈" when converted and the USD reference beside them.
  */
@@ -68,25 +71,30 @@ export function PricingSection() {
         <Reveal>
           <SectionMark section="pricing" className="mb-8 md:mb-10" />
           <div className="pr-head">
-            <Occult as="h2" id="pricing-title" from="left" className="display pr-title">
-              {t.rich('title', { br: () => <br /> })}
-            </Occult>
+            <div className="pr-head-main">
+              <Occult as="h2" id="pricing-title" from="left" className="display pr-title">
+                {t.rich('title', { br: () => <br /> })}
+              </Occult>
+              <p data-reveal className="pr-sub">
+                {t('sub')}
+              </p>
+            </div>
+            {/* Currency, rate of the day and the "≈" rule: next to the title, before any price. */}
             <div data-reveal className="pr-head-side">
-              <p className="pr-sub">{t('sub')}</p>
               <RateNote />
             </div>
           </div>
         </Reveal>
 
-        <Reveal className="pr-block">
+        <Reveal className="pr-block pr-block--tabs" start="top 85%">
           <div data-reveal>
-            <PayLedger freeMonths={annualOn ? annualFreeMonths() : null} />
+            <BuyTabs billing={effectiveBilling} now={now} />
           </div>
         </Reveal>
 
-        <Reveal className="pr-block" start="top 85%">
+        <Reveal className="pr-block">
           <div data-reveal>
-            <Packages billing={effectiveBilling} now={now} />
+            <CarePanel billing={effectiveBilling} onBillingChange={changeBilling} annualOn={annualOn} referral={referralOffer} />
           </div>
         </Reveal>
 
@@ -100,7 +108,7 @@ export function PricingSection() {
 
         <Reveal className="pr-block">
           <div data-reveal>
-            <CarePanel billing={effectiveBilling} onBillingChange={changeBilling} annualOn={annualOn} referral={referralOffer} />
+            <PayLedger freeMonths={annualOn ? annualFreeMonths() : null} />
           </div>
         </Reveal>
 

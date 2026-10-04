@@ -2,25 +2,38 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Menu, X } from 'lucide-react';
-import { Link } from '@/i18n/navigation';
+import { ArrowLeft, LogIn, Menu, X } from 'lucide-react';
+import { Link, usePathname } from '@/i18n/navigation';
 import { gsap } from '@/components/motion/gsap';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { DemoCta } from '@/components/ui/DemoCta';
 import { useSound } from '@/components/sound/SoundContext';
 import { SoundBadge, SoundToggle } from '@/components/sound/SoundToggle';
-import { PrefsPanel } from './PrefsPanel';
-import { NAV_LINKS, navLabelKey } from './navLinks';
+import { PrefsDisclosure } from './PrefsDisclosure';
+import { NAV_LINKS, PORTAL_ROUTES, type ChromeMode } from './navLinks';
 import { lockScroll } from '@/lib/scroll-lock';
+import './header.css';
 
 /**
- * Full-screen menu that opens as an iris from the hamburger button. Below the nav:
- * the plan CTAs, then language / currency / sound (<PrefsPanel>, the same content as
- * the header popover), which is the only place for them on phones.
+ * Phones and tablets (< 1024px): a full-screen menu that opens as a quick iris from the
+ * menu button. Short by design — everything fits the first screen of a 360×640 phone:
+ * - landing / plan: the four section links, "Pedí tu demo" + "Armá tu plan", "Ingresar";
+ * - portal: "Mis proyectos" and "Salir de la demo" (inside /portal/proyectos), "Volver al sitio";
+ * then language / currency / sound folded in one row (<PrefsDisclosure>). The sound
+ * master switch sits next to the close button. Esc, the close button or any link closes it.
  */
-export function MobileMenu({ className = '' }: { className?: string }) {
+export function MobileMenu({
+  mode,
+  projects,
+  className = '',
+}: {
+  mode: ChromeMode;
+  projects: boolean;
+  className?: string;
+}) {
   const t = useTranslations();
+  const pathname = usePathname();
   const { openBuilder } = useExperience();
   const { play } = useSound();
   const [open, setOpen] = useState(false);
@@ -45,17 +58,17 @@ export function MobileMenu({ className = '' }: { className?: string }) {
       const at = origin();
       tl.current = gsap.timeline();
       if (reduced) {
-        tl.current.fromTo(p, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 });
+        tl.current.fromTo(p, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15 });
       } else {
         tl.current
-          .fromTo(p, { clipPath: `circle(0% at ${at})` }, { clipPath: `circle(150% at ${at})`, duration: 0.7, ease: 'expo.inOut' })
-          .from(p.querySelectorAll('[data-menu-item]'), { y: 24, autoAlpha: 0, stagger: 0.06, duration: 0.6, ease: 'expo.out' }, '-=0.35');
+          .fromTo(p, { clipPath: `circle(0% at ${at})` }, { clipPath: `circle(150% at ${at})`, duration: 0.5, ease: 'expo.inOut' })
+          .from(p.querySelectorAll('[data-menu-item]'), { y: 16, autoAlpha: 0, stagger: 0.04, duration: 0.45, ease: 'expo.out' }, '-=0.25');
       }
     } else if (d.open) {
       const at = origin();
       tl.current = gsap.timeline({ onComplete: () => d.close() });
-      if (reduced) tl.current.to(p, { autoAlpha: 0, duration: 0.15 });
-      else tl.current.to(p, { clipPath: `circle(0% at ${at})`, duration: 0.55, ease: 'expo.inOut' });
+      if (reduced) tl.current.to(p, { autoAlpha: 0, duration: 0.12 });
+      else tl.current.to(p, { clipPath: `circle(0% at ${at})`, duration: 0.38, ease: 'expo.in' });
     }
   }, [open]);
 
@@ -78,6 +91,27 @@ export function MobileMenu({ className = '' }: { className?: string }) {
     play('close');
   };
 
+  /** Closes at once, without the iris: for actions that take the visitor elsewhere (a route, the builder). */
+  const closeNow = () => {
+    tl.current?.kill();
+    if (panel.current) gsap.set(panel.current, { clearProps: 'clipPath,opacity,visibility' });
+    dialog.current?.close();
+    setOpen(false);
+  };
+
+  // A client navigation (e.g. "Ingresar" → portal) never leaves the menu open behind.
+  const lastPath = useRef(pathname);
+  useEffect(() => {
+    if (lastPath.current === pathname) return;
+    lastPath.current = pathname;
+    if (dialog.current?.open) {
+      tl.current?.kill();
+      dialog.current.close();
+    }
+  }, [pathname]);
+
+  const portal = mode === 'portal';
+
   return (
     <>
       <button
@@ -90,16 +124,24 @@ export function MobileMenu({ className = '' }: { className?: string }) {
           setOpen(true);
           play('open');
         }}
-        className={`relative grid size-11 place-items-center rounded-full border border-line text-fg transition-colors hover:border-[color:var(--accent)] ${className}`}
+        className={`relative grid size-11 shrink-0 place-items-center rounded-full border border-line text-fg transition-colors hover:border-[color:var(--accent)] ${className}`}
       >
         <Menu aria-hidden className="size-5" strokeWidth={1.6} />
         <SoundBadge />
       </button>
 
-      <dialog ref={dialog} aria-label={t('header.menuDialog')} className="mobile-menu theme-dark">
+      <dialog
+        ref={dialog}
+        aria-label={t('header.menuDialog')}
+        className="mobile-menu theme-dark"
+        // The iris closes before the dialog does; if it was cut short, `open` follows the real state.
+        onClose={() => setOpen(false)}
+      >
         <div ref={panel} className="grain flex min-h-dvh flex-col bg-void">
-          <div className="container-x flex h-[var(--header-h)] items-center justify-between">
-            <span className="text-[0.8rem] font-medium tracking-[0.32em]">ECLIPSE</span>
+          <div className="container-x flex h-[var(--header-h)] shrink-0 items-center justify-between">
+            <span aria-hidden className="text-[0.8rem] font-medium tracking-[0.32em]">
+              ECLIPSE
+            </span>
             <div className="flex items-center gap-2">
               <SoundToggle />
               <button
@@ -107,52 +149,97 @@ export function MobileMenu({ className = '' }: { className?: string }) {
                 autoFocus
                 onClick={close}
                 aria-label={t('header.closeMenu')}
-                className="grid size-11 place-items-center rounded-full border border-line"
+                className="grid size-11 place-items-center rounded-full border border-line transition-colors hover:border-[color:var(--accent)]"
               >
                 <X aria-hidden className="size-5" strokeWidth={1.6} />
               </button>
             </div>
           </div>
 
-          <nav aria-label={t('header.mainNav')} className="container-x flex-1 pt-6">
-            <ul className="space-y-1">
-              {NAV_LINKS.map((link, i) => (
-                <li key={link.id} data-menu-item>
-                  <Link
-                    href={`/#${link.hash}`}
-                    onClick={close}
-                    className="group flex min-h-14 items-baseline gap-4 py-2 font-serif text-5xl leading-none"
-                  >
-                    <span className="font-sans text-xs tabular text-fg-muted">0{i + 1}</span>
-                    <span className="transition-colors group-hover:text-corona">{t(`nav.${navLabelKey(link.id)}`)}</span>
+          {portal ? (
+            <nav aria-label={t('header.portal')} className="container-x pt-6">
+              <p data-menu-item className="label mb-3 text-fg-muted">
+                {t('header.portal')}
+              </p>
+              <ul className="border-t border-line">
+                {projects ? (
+                  <>
+                    <li data-menu-item className="border-b border-line">
+                      <Link
+                        href={PORTAL_ROUTES.projects}
+                        onClick={closeNow}
+                        aria-current={pathname.replace(/\/$/, '') === '/portal/proyectos' ? 'page' : undefined}
+                        className="menu-link"
+                      >
+                        {t('header.myProjects')}
+                      </Link>
+                    </li>
+                    <li data-menu-item className="border-b border-line">
+                      <Link href={PORTAL_ROUTES.login} onClick={closeNow} className="menu-link">
+                        {t('header.exitDemo')}
+                      </Link>
+                    </li>
+                  </>
+                ) : null}
+                <li data-menu-item className="border-b border-line">
+                  <Link href="/" onClick={closeNow} className="menu-link">
+                    <ArrowLeft aria-hidden className="size-5 text-fg-muted" strokeWidth={1.5} />
+                    {t('header.backToSite')}
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </nav>
+              </ul>
+            </nav>
+          ) : (
+            <>
+              <nav aria-label={t('header.mainNav')} className="container-x pt-3">
+                <ul>
+                  {NAV_LINKS.map((link, i) => (
+                    <li key={link.id} data-menu-item>
+                      <Link href={`/#${link.hash}`} onClick={close} className="menu-section-link group">
+                        <span aria-hidden className="menu-index">
+                          0{i + 1}
+                        </span>
+                        <span className="transition-colors group-hover:text-corona">{t(`nav.${link.id}`)}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
 
-          <div className="container-x space-y-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-8">
-            <div data-menu-item className="flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => {
-                  // Close at once, without the iris (the builder covers it anyway): the
-                  // dialog hands focus back to the menu button before the builder opens,
-                  // so closing the builder returns focus there instead of losing it.
-                  tl.current?.kill();
-                  dialog.current?.close();
-                  setOpen(false); // no 'close' sound: the builder opening is the moment
-                  openBuilder('menu');
-                }}
-              >
-                {t('header.buildPlan')}
-              </button>
-              <DemoCta origin="header" className="btn btn-ghost" />
-            </div>
-            <div data-menu-item className="max-w-md">
-              <PrefsPanel />
-            </div>
+              <div className="container-x pt-7">
+                <div data-menu-item className={`grid gap-3 sm:max-w-md ${mode === 'landing' ? 'min-[360px]:grid-cols-2' : ''}`}>
+                  <DemoCta origin="header" className="btn btn-primary !px-4" />
+                  {mode === 'landing' ? (
+                    <button
+                      type="button"
+                      aria-haspopup="dialog"
+                      className="btn btn-ghost !px-4"
+                      onClick={() => {
+                        // The dialog hands focus back to the menu button before the builder
+                        // opens, so closing the builder returns focus there. No 'close' sound:
+                        // the builder opening is the moment.
+                        closeNow();
+                        openBuilder('menu');
+                      }}
+                    >
+                      {t('header.buildPlan')}
+                    </button>
+                  ) : null}
+                </div>
+                <div data-menu-item className="mt-2">
+                  <Link href={PORTAL_ROUTES.login} prefetch={false} onClick={closeNow} className="hdr-login -ml-2 inline-flex">
+                    <LogIn aria-hidden strokeWidth={1.5} />
+                    {t('header.login')}
+                    <span className="sr-only"> {t('header.loginContext')}</span>
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
+
+          <div data-menu-item className="container-x mt-auto pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-8">
+            {/* One column on phones, three from 768px (tablets keep the menu short too). */}
+            <PrefsDisclosure layout="band" />
           </div>
         </div>
       </dialog>

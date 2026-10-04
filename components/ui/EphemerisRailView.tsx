@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ScrollTrigger } from '@/components/motion/gsap';
 import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
+import { LIGHT_ZONES_EVENT } from './EphemerisRail';
 import { foundersState } from '@/lib/founders';
 import { SECTION_KEYS, phaseAt, sectionDomId, type SectionKey } from './sectionIndex';
 import './ephemeris-rail.css';
@@ -11,6 +12,10 @@ import './ephemeris-rail.css';
 const pad = (n: number) => String(n).padStart(2, '0');
 /** Where on the screen a section becomes "current" (fraction of the viewport height). */
 const READING_LINE = 0.5;
+/** Zones that turn the rail light (the same ones that flip the header, plus rail-only ones). */
+const LIGHT_ZONES = '[data-header-theme="light"], [data-rail-theme="light"]';
+/** The glyph's moon moves in 1/120 steps of the whole scale (~0.1 px each: invisible). */
+const PHASE_STEPS = 120;
 
 /**
  * The rail itself (lazy chunk of <EphemerisRail>).
@@ -19,10 +24,11 @@ const READING_LINE = 0.5;
  *   has aria-current. In-page smoothing and focus are <SmoothAnchors>' job.
  * - Readings (straight on the DOM, no React render per frame): the playhead
  *   rides the scale between ticks and the eclipse at the top goes from
- *   totality (01) to full sun (08) as the page scrolls.
- * - Section offsets are measured again on resize, ScrollTrigger refresh (pin
- *   spacers), body size changes and HYDRATED_EVENT (lazy sections re-create
- *   their DOM).
+ *   totality (01) to full sun (08) as the page scrolls. The scroll position comes
+ *   from a ScrollTrigger (one shared read per frame); everything else is cached.
+ * - Section offsets and light zones are measured again on resize, ScrollTrigger
+ *   refresh (pin spacers), body size changes, HYDRATED_EVENT (lazy sections
+ *   re-create their DOM) and LIGHT_ZONES_EVENT (the hero's demo light).
  * - Theme: light while the reading line is over a [data-header-theme="light"]
  *   zone (the same zones that flip the header) or a [data-rail-theme="light"] one
  *   (bright areas the header doesn't care about, e.g. the end of the sunrise).
@@ -43,17 +49,22 @@ export default function EphemerisRailView() {
 
   useEffect(() => {
     let tops: number[] = [];
+    let zones: Array<[number, number]> = [];
     let step = 0;
-    let raf = 0;
+    let vh = window.innerHeight;
+    let end = 0;
+    let scroll = window.scrollY;
     let index = -1;
     let isLight: boolean | null = null;
+    let lastHead = '';
+    let lastPhase = -1;
 
+    // Per scroll frame: arithmetic on cached measurements only. No layout reads (v2 read
+    // scrollY, scrollHeight and every light zone's rect on each frame, forcing a style and
+    // layout pass right after GSAP's writes), and the SVG glyph is only touched when its
+    // moon actually moves (each attribute change repaints it).
     const update = () => {
-      raf = 0;
-      const vh = window.innerHeight;
-      const line = window.scrollY + vh * READING_LINE;
-      const end = document.documentElement.scrollHeight - vh + vh * READING_LINE;
-
+      const line = scroll + vh * READING_LINE;
       let i = 0;
       for (let k = 0; k < tops.length; k++) if (tops[k] <= line) i = k;
       const last = SECTION_KEYS.length - 1;
@@ -62,17 +73,22 @@ export default function EphemerisRailView() {
       const within = to > from ? Math.min(1, Math.max(0, (line - from) / (to - from))) : 1;
       const position = i < last ? i + within : last;
 
-      if (head.current) head.current.style.transform = `translate3d(0, ${(position * step).toFixed(1)}px, 0)`;
-      const phase = phaseAt(position);
-      moon.current?.setAttribute('cx', (12 + (1 - phase) * 16.8).toFixed(2));
-      corona.current?.setAttribute('opacity', Math.min(1, Math.max(0, (phase - 0.9) / 0.08)).toFixed(2));
+      const y = (position * step).toFixed(1);
+      if (head.current && y !== lastHead) {
+        lastHead = y;
+        head.current.style.transform = `translate3d(0, ${y}px, 0)`;
+      }
+      const phase = Math.round(phaseAt(position) * PHASE_STEPS) / PHASE_STEPS;
+      if (phase !== lastPhase) {
+        lastPhase = phase;
+        moon.current?.setAttribute('cx', (12 + (1 - phase) * 16.8).toFixed(2));
+        corona.current?.setAttribute('opacity', Math.min(1, Math.max(0, (phase - 0.9) / 0.08)).toFixed(2));
+      }
 
       // Over a light zone (pricing, founders, final CTA, footer, the hero's demo light)?
-      const mid = vh * READING_LINE;
       let over = false;
-      for (const zone of document.querySelectorAll('[data-header-theme="light"], [data-rail-theme="light"]')) {
-        const r = zone.getBoundingClientRect();
-        if (r.height > 0 && r.top <= mid && r.bottom >= mid) {
+      for (const [a, b] of zones) {
+        if (a <= line && b >= line) {
           over = true;
           break;
         }
@@ -86,18 +102,28 @@ export default function EphemerisRailView() {
         setLight(over);
       }
     };
-    const schedule = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
+
     const measure = () => {
+      vh = window.innerHeight;
+      scroll = window.scrollY;
       tops = SECTION_KEYS.map((key, k) => {
         if (k === 0) return 0;
         const el = document.getElementById(sectionDomId(key));
-        return el ? el.getBoundingClientRect().top + window.scrollY : Number.POSITIVE_INFINITY;
+        return el ? el.getBoundingClientRect().top + scroll : Number.POSITIVE_INFINITY;
       });
+      end = document.documentElement.scrollHeight - vh + vh * READING_LINE;
+      zones = [];
+      for (const zone of document.querySelectorAll<HTMLElement>(LIGHT_ZONES)) {
+        const h = zone.offsetHeight;
+        if (!h) continue;
+        // The pinned hero may be position: fixed right now: measure from its in-flow spacer.
+        const spacer = zone.closest('[data-hero-pin-spacer]');
+        const top = spacer ? spacer.getBoundingClientRect().top + scroll + zone.offsetTop : zone.getBoundingClientRect().top + scroll;
+        zones.push([top, top + h]);
+      }
       const ticks = root.current?.querySelectorAll<HTMLElement>('[data-eph-tick]');
       step = ticks && ticks.length > 1 ? ticks[1].offsetTop - ticks[0].offsetTop : 0;
-      schedule();
+      update();
     };
 
     let measureRaf = 0;
@@ -107,18 +133,27 @@ export default function EphemerisRailView() {
     };
 
     measure();
-    window.addEventListener('scroll', schedule, { passive: true });
+    // ScrollTrigger reads the scroll position once per frame for every trigger on the page.
+    const st = ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate: (self) => {
+        scroll = self.scroll();
+        update();
+      },
+    });
     window.addEventListener('resize', remeasure);
     window.addEventListener(HYDRATED_EVENT, remeasure);
+    window.addEventListener(LIGHT_ZONES_EVENT, remeasure);
     ScrollTrigger.addEventListener('refresh', remeasure);
     const ro = new ResizeObserver(remeasure);
     ro.observe(document.body);
     return () => {
-      cancelAnimationFrame(raf);
       cancelAnimationFrame(measureRaf);
-      window.removeEventListener('scroll', schedule);
+      st.kill();
       window.removeEventListener('resize', remeasure);
       window.removeEventListener(HYDRATED_EVENT, remeasure);
+      window.removeEventListener(LIGHT_ZONES_EVENT, remeasure);
       ScrollTrigger.removeEventListener('refresh', remeasure);
       ro.disconnect();
     };

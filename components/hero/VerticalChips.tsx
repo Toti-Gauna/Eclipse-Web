@@ -9,9 +9,10 @@ import { useHeroState } from './HeroState';
 import { preloadHeroDemo } from './preload';
 
 /**
- * "Elegí tu rubro": one instrument key per rubro (01 Clínicas … 07 Otro).
- * Hovering or focusing a key turns the dial around the eclipse to its number;
- * pressing it reveals the demo (or, for "Otro", opens "Armá tu plan").
+ * "Elegí tu rubro y miralo" (optional — the hero's actions don't depend on it): one
+ * instrument key per rubro (01 Clínicas … 07 Otro). Hovering or focusing a key turns
+ * the dial around the eclipse to its number; pressing it reveals the demo (or, for
+ * "Otro", opens "Armá tu plan").
  *
  * Phones: two tidy rows that scroll sideways (snap, edge fade). From md up the
  * keys simply wrap in the copy column.
@@ -27,7 +28,10 @@ export function VerticalChips() {
       <p id="hero-pick-vertical" className="hero-pick label">
         <span>{t('pickVertical')}</span>
         <span aria-hidden className="hero-pick-rule" />
-        <span aria-hidden className="hero-pick-count">{String(verticals.length).padStart(2, '0')}</span>
+        <span className="hero-pick-optional">
+          <span className="sr-only">, </span>
+          {t('pickOptional')}
+        </span>
       </p>
       <div className="hero-chips-scroller no-scrollbar">
         <ul className="hero-chips" onPointerLeave={() => aim(null, 'hover')}>

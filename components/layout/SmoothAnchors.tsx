@@ -2,7 +2,64 @@
 
 import { useEffect } from 'react';
 import { CV_OFF_CLASS } from '@/components/motion/ContentVisibilitySync';
+import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
+
+/** Any of these from the visitor ends an in-progress re-aim: we never fight their own scrolling. */
+const USER_INPUT = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
+/** Re-aims at most this many times, within this window after the click. */
+const MAX_CORRECTIONS = 4;
+const WINDOW_MS = 4000;
+
+let cancelAlign: (() => void) | null = null;
+
+/**
+ * Keeps an anchor jump on target. Deferred sections (LazyHydrate) hydrate while the page
+ * scrolls past them and can grow above the target (their real content, pin spacers), so
+ * a smooth scroll aimed at the click-time position stops short. Once the scroll has
+ * settled (same position on two checks 160 ms apart) it compares the target with
+ * scroll-padding-top and aims again; a section hydrating later re-arms the check.
+ * Cheap: one debounced timer, removed after the window; any user input stops it.
+ */
+function keepAligned(id: string, behavior: ScrollBehavior) {
+  cancelAlign?.();
+  let timer = 0;
+  let corrections = 0;
+  let lastY = Number.NaN;
+  const started = performance.now();
+  const check = () => {
+    const target = document.getElementById(id);
+    if (!target || performance.now() - started > WINDOW_MS) return stop();
+    // Still moving (or a long task delayed the scroll events): look again shortly.
+    if (window.scrollY !== lastY) {
+      lastY = window.scrollY;
+      return arm();
+    }
+    const pad = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    if (Math.abs(target.getBoundingClientRect().top - pad) <= 4) return; // on target; late hydration re-arms
+    if (corrections++ >= MAX_CORRECTIONS) return stop();
+    lastY = Number.NaN;
+    target.scrollIntoView({ behavior, block: 'start' });
+  };
+  function arm() {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(check, 160);
+  }
+  const hardStop = window.setTimeout(() => stop(), WINDOW_MS);
+  function stop() {
+    window.clearTimeout(timer);
+    window.clearTimeout(hardStop);
+    window.removeEventListener('scroll', arm);
+    window.removeEventListener(HYDRATED_EVENT, arm);
+    USER_INPUT.forEach((type) => window.removeEventListener(type, stop, true));
+    if (cancelAlign === stop) cancelAlign = null;
+  }
+  window.addEventListener('scroll', arm, { passive: true });
+  window.addEventListener(HYDRATED_EVENT, arm);
+  USER_INPUT.forEach((type) => window.addEventListener(type, stop, { capture: true, passive: true }));
+  cancelAlign = stop;
+  arm();
+}
 
 /**
  * Smooth in-page anchor scrolling without `scroll-behavior: smooth` on <html>
@@ -39,7 +96,9 @@ export function SmoothAnchors() {
       // Sections below the fold use content-visibility: auto (estimated heights until they
       // render). Render them all before measuring so the jump lands exactly.
       document.documentElement.classList.add(CV_OFF_CLASS);
-      target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+      const behavior: ScrollBehavior = prefersReducedMotion() ? 'auto' : 'smooth';
+      target.scrollIntoView({ behavior, block: 'start' });
+      keepAligned(id, behavior);
       if (window.location.hash !== url.hash) window.history.pushState(window.history.state, '', url.hash);
       const dialog = link.closest('dialog');
       // Looked up again by id: a deferred section may have re-created its DOM by then.
@@ -47,7 +106,10 @@ export function SmoothAnchors() {
       else focusTarget(id);
     };
     document.addEventListener('click', onClick, true);
-    return () => document.removeEventListener('click', onClick, true);
+    return () => {
+      document.removeEventListener('click', onClick, true);
+      cancelAlign?.();
+    };
   }, []);
   return null;
 }

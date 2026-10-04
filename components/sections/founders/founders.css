@@ -1,8 +1,8 @@
 /*
- * 07 · "Clientes fundadores" (components/sections/founders). Light theme over --dawn:
- * text uses --fg / --fg-muted / --accent (corona-deep). A star chart printed on paper:
- * ink hairlines, hollow stars for free slots, amber light on hover / focus.
- * Only transform / opacity animate (the constellation is uncovered by <Occult>).
+ * 07 · Programa fundador (components/sections/founders), v3. Light theme over --dawn:
+ * text uses --fg / --fg-muted / --accent (corona-deep). Compact: the slots as a
+ * readout (one mark per slot of content/founders.json), the deal as one two-column
+ * ledger ("Lo que recibís / Lo que te pedimos") and one CTA. No looping animation.
  */
 
 .founders-glow {
@@ -16,7 +16,7 @@
   mask-image: linear-gradient(180deg, transparent, #000 min(30%, 20rem), #000 calc(100% - min(25%, 16rem)), transparent);
 }
 
-/* ---- Header + the giant readout ------------------------------------ */
+/* ---- Header + the slots readout ------------------------------------ */
 .fd-head {
   display: grid;
   gap: 1.5rem;
@@ -31,10 +31,24 @@
   line-height: 1.55;
   color: var(--fg-muted);
 }
+/* Phones: [5] QUEDAN / DE 5 LUGARES / ▬▬▬▬▬ in one row. Desktop: the number gets big. */
 .fd-readout {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+.fd-readout-num {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 5.5rem;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  text-shadow: 0 0 60px rgb(245 185 66 / 0.55);
+}
+.fd-readout-text {
   display: grid;
-  justify-items: start;
-  margin-top: 0.5rem;
+  gap: 0.2rem;
 }
 .fd-readout-top,
 .fd-readout-of {
@@ -45,19 +59,10 @@
   text-transform: uppercase;
   color: var(--fg-muted);
 }
-.fd-readout-num {
-  margin: 0.08em 0 0.02em -0.04em;
-  font-family: var(--font-serif);
-  font-size: clamp(8.5rem, 42vw, 13rem);
-  line-height: 0.78;
-  letter-spacing: -0.04em;
-  color: var(--fg);
-  text-shadow: 0 0 80px rgb(245 185 66 / 0.6);
-}
 .fd-readout-scale {
   display: flex;
   gap: 6px;
-  margin-top: 0.9rem;
+  margin-top: 0.5rem;
 }
 .fd-readout-scale > span {
   width: 18px;
@@ -87,192 +92,50 @@
     grid-column: 1;
   }
   .fd-readout {
+    flex-direction: row-reverse;
     grid-column: 2;
     grid-row: 2 / span 2;
-    justify-items: end;
-    margin-top: 0;
+    align-items: flex-end;
+    gap: 1.5rem;
     text-align: right;
   }
+  .fd-readout-text {
+    justify-items: end;
+    padding-bottom: 0.6rem;
+  }
+  .fd-readout-num {
+    font-size: clamp(8rem, 11vw, 11rem);
+  }
 }
 
-/* ---- The constellation --------------------------------------------- */
-.fd-sky-wrap {
-  margin-top: 3.5rem;
-}
-.fd-sky {
-  position: relative;
-  height: calc(var(--n, 5) * 7.25rem);
-}
-/* Taken slots carry more (name, rubro, result, case): more room per star on phones. */
-.fd-sky[data-filled] {
-  height: calc(var(--n, 5) * 11rem);
-}
-@media (min-width: 768px) {
-  .fd-sky,
-  .fd-sky[data-filled] {
-    height: clamp(21rem, 32vw, 26rem);
-  }
-  .fd-sky[data-filled] {
-    height: clamp(24rem, 36vw, 30rem);
-  }
-}
-.fd-sky-ticks {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  --tick: 14px;
-}
-.fd-lines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.fd-lines--wide {
-  display: none;
-}
-@media (min-width: 768px) {
-  .fd-lines--wide {
-    display: block;
-  }
-  .fd-lines--tall {
-    display: none;
-  }
-}
-.fd-line {
-  stroke: rgb(17 17 20 / 0.24);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  transition: stroke 0.4s ease;
-}
-.fd-line[data-lit] {
-  stroke: var(--corona-deep);
-}
-/* Field stars: zero-length round-capped lines stay round under the non-uniform scale. */
-.fd-field {
-  stroke: rgb(17 17 20 / 0.28);
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-}
-
-.fd-stars {
-  margin: 0;
+/* ---- Taken slots (only real ones, from content) ---------------------- */
+.fd-clients {
+  display: grid;
+  gap: 0;
+  margin: 2.5rem 0 0;
   padding: 0;
   list-style: none;
-}
-.fd-star {
-  position: absolute;
-  top: var(--ty);
-  left: var(--tx);
-  z-index: 1;
-  width: max-content;
-}
-.fd-star[data-active] {
-  z-index: 2;
-}
-.fd-star-link {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  translate: -22px -50%;
-  border-radius: 12px;
-  color: var(--fg);
-}
-.fd-star[data-side-tall='left'] .fd-star-link {
-  flex-direction: row-reverse;
-  translate: calc(-100% + 22px) -50%;
-  text-align: right;
+  border-top: 1px solid var(--fg);
 }
 @media (min-width: 768px) {
-  .fd-star {
-    top: var(--wy);
-    left: var(--wx);
-  }
-  .fd-star .fd-star-link,
-  .fd-star[data-side-tall='left'] .fd-star-link {
-    flex-direction: row;
-    translate: -22px -50%;
-    text-align: left;
-  }
-  .fd-star[data-side-wide='left'] .fd-star-link {
-    flex-direction: row-reverse;
-    translate: calc(-100% + 22px) -50%;
-    text-align: right;
+  .fd-clients {
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    column-gap: 2rem;
   }
 }
-
-/* The star: a hollow point (free) inside a slowly turning dashed orbit. */
-.fd-mark {
-  position: relative;
+.fd-clients > li {
+  display: flex;
+}
+.fd-client {
   display: grid;
-  flex: none;
-  width: 44px;
-  height: 44px;
-  place-items: center;
+  flex: 1;
+  align-content: start;
+  gap: 0.3rem;
+  padding: 1.1rem 0 1rem;
+  border-bottom: 1px solid var(--line);
 }
-.fd-mark-glow {
-  position: absolute;
-  inset: -34px;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(255 236 190 / 0.95), rgb(245 185 66 / 0.32) 46%, transparent 76%);
-  opacity: 0;
-  transform: scale(0.5);
-  transition:
-    opacity 0.5s ease,
-    transform 0.8s var(--ease-expo);
-  pointer-events: none;
-}
-.fd-mark-ring {
-  position: absolute;
-  inset: 9px;
-  border-radius: 50%;
-  border: 1px dashed rgb(17 17 20 / 0.32);
-  animation: eclipse-spin 48s linear infinite;
-}
-.fd-mark-core {
-  position: relative;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1.5px solid var(--ink);
-  background: var(--dawn);
-  transition:
-    background-color 0.4s ease,
-    border-color 0.4s ease,
-    box-shadow 0.5s ease,
-    transform 0.6s var(--ease-expo);
-}
-.fd-star[data-active] .fd-mark-glow {
-  opacity: 1;
-  transform: scale(1);
-}
-.fd-star[data-active] .fd-mark-core {
-  border-color: var(--corona-deep);
-  background: var(--corona);
-  box-shadow: 0 0 14px 3px rgb(245 185 66 / 0.85);
-  transform: scale(1.25);
-}
-.fd-star--filled .fd-mark-core {
-  width: 12px;
-  height: 12px;
-  border-color: var(--ink);
-  background: var(--ink);
-  box-shadow: 0 0 0 4px rgb(245 185 66 / 0.35);
-}
-.fd-star--filled .fd-mark-ring {
-  border-style: solid;
-  border-color: rgb(17 17 20 / 0.18);
-  animation: none;
-}
-
-.fd-star-text {
-  display: grid;
-  gap: 0.2rem;
-  justify-items: inherit;
-}
-.fd-star-index {
+.fd-client-index,
+.fd-client-rubro {
   font-family: var(--font-mono);
   font-size: 0.65625rem;
   line-height: 1rem;
@@ -280,59 +143,13 @@
   text-transform: uppercase;
   color: var(--fg-muted);
 }
-.fd-star-title {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 400;
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--fg);
-}
-.fd-star-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-top: 0.15rem;
-  font-size: 0.82rem;
-  font-weight: 500;
-  line-height: 1.2;
-  color: var(--accent);
-  transition:
-    color 0.35s ease,
-    transform 0.5s var(--ease-expo);
-}
-.fd-star[data-side-tall='left'] .fd-star-cta {
-  justify-self: end;
-}
-@media (min-width: 768px) {
-  .fd-star-title {
-    font-size: 1.65rem;
-  }
-  .fd-star[data-side-tall='left'] .fd-star-cta {
-    justify-self: start;
-  }
-  .fd-star[data-side-wide='left'] .fd-star-cta {
-    justify-self: end;
-  }
-}
-@media (hover: hover) and (pointer: fine) {
-  .fd-star--free .fd-star-cta {
-    color: var(--fg-muted);
-  }
-  .fd-star--free[data-active] .fd-star-cta {
-    color: var(--accent);
-    transform: translateX(2px);
-  }
-}
-
-/* Taken slot (content/founders.json): name, rubro, result, case link. */
-.fd-star-name {
+.fd-client-name {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-.fd-star-logo,
-.fd-star-monogram {
+.fd-client-logo,
+.fd-client-monogram {
   display: grid;
   width: 28px;
   height: 28px;
@@ -340,53 +157,83 @@
   place-items: center;
   border-radius: 50%;
 }
-.fd-star-logo {
+.fd-client-logo {
   border: 1px solid var(--line);
   background: #fff;
   object-fit: contain;
   padding: 2px;
 }
-.fd-star-monogram {
+.fd-client-monogram {
   background: var(--ink);
   color: var(--dawn);
   font-family: var(--font-serif);
   font-size: 0.85rem;
 }
-.fd-star-rubro {
-  font-family: var(--font-mono);
-  font-size: 0.65625rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
+.fd-client-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.05;
 }
-.fd-star-result {
-  max-width: 22ch;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  color: var(--fg);
+.fd-client-result {
+  max-width: 34ch;
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
-.fd-star-case {
+.fd-client-case {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
   justify-self: start;
   gap: 0.25rem;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--accent);
 }
-.fd-star[data-side-tall='left'] .fd-star-case,
-.fd-star[data-side-tall='left'] .fd-star-name {
-  justify-self: end;
+
+/* ---- The deal + its one CTA ----------------------------------------- */
+.fd-deal {
+  margin-top: 3rem;
 }
-@media (min-width: 768px) {
-  .fd-star[data-side-tall='left'] .fd-star-case,
-  .fd-star[data-side-tall='left'] .fd-star-name {
-    justify-self: start;
+@media (min-width: 1024px) {
+  .fd-deal {
+    margin-top: 4.5rem;
   }
-  .fd-star[data-side-wide='left'] .fd-star-case,
-  .fd-star[data-side-wide='left'] .fd-star-name {
-    justify-self: end;
+}
+.fd-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: 2rem;
+}
+.fd-cta--plain {
+  margin-top: 2.5rem;
+}
+.fd-cta-note {
+  max-width: 30rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+.fd-next {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+.fd-next-title {
+  font-size: clamp(1.9rem, 6vw, 2.25rem);
+}
+@media (min-width: 640px) {
+  .fd-next {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 
@@ -472,12 +319,3 @@
   color: var(--fg-muted);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .fd-mark-ring {
-    animation: none;
-  }
-  .fd-mark-glow,
-  .fd-star[data-active] .fd-mark-core {
-    transform: none;
-  }
-}

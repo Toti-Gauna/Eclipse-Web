@@ -67,11 +67,11 @@
 }
 
 .pr-block {
-  margin-top: 76px;
+  margin-top: 64px;
 }
 @media (min-width: 1024px) {
   .pr-block {
-    margin-top: 136px;
+    margin-top: 112px;
   }
 }
 
@@ -81,24 +81,26 @@
   font-size: clamp(2.9rem, 12.5vw, 8rem);
   line-height: 0.9;
 }
-.pr-head-side {
+.pr-head {
   display: grid;
   gap: 28px;
-  margin-top: 28px;
-}
-@media (min-width: 1024px) {
-  .pr-head-side {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
-    align-items: end;
-    gap: 72px;
-    margin-top: 44px;
-  }
 }
 .pr-sub {
   max-width: 36rem;
+  margin-top: 24px;
   font-size: 1.0625rem;
   line-height: 1.55;
   color: var(--fg-muted);
+}
+@media (min-width: 1024px) {
+  .pr-head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
+    align-items: end;
+    gap: 64px;
+  }
+  .pr-sub {
+    margin-top: 32px;
+  }
 }
 
 /* The conversion "calibration" box. */
@@ -245,7 +247,7 @@
       '. when'
       '. text'
       '. link';
-    padding-bottom: 30px;
+    padding-bottom: 20px;
   }
   .pr-how-item:last-child {
     padding-bottom: 26px;
@@ -368,104 +370,193 @@
   justify-self: start;
   margin-top: 4px;
 }
+@media (max-width: 899.98px) {
+  .pr-how-title {
+    font-size: 1.7rem;
+  }
+  .pr-how-when {
+    margin-top: 6px;
+  }
+  .pr-how-text {
+    margin-top: 6px;
+    font-size: 0.9rem;
+  }
+}
 
-/* ---- A / B: two ways to buy ------------------------------------------------------- */
-.pr-packages > .pr-label {
-  margin-bottom: 16px;
+/* ---- A / B: two ways to buy, as tabs ----------------------------------------------- */
+.pr-buy > .pr-label {
+  margin-bottom: 14px;
 }
-.pr-ways {
+.pr-tabs {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   border-top: 1px solid var(--fg);
+  border-bottom: 1px solid var(--line-strong);
 }
-@media (min-width: 900px) {
-  .pr-ways {
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-  }
-}
-.pr-way {
+.pr-tab {
+  position: relative;
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   grid-template-areas:
-    'mark title'
-    '. text'
-    '. meta';
-  column-gap: 14px;
-  align-content: start;
-  padding: 24px 0;
-  border-bottom: 1px solid var(--line);
+    'mark count'
+    'title title';
+  align-items: baseline;
+  column-gap: 8px;
+  row-gap: 6px;
+  min-height: 72px;
+  padding: 14px 10px 16px 0;
+  text-align: left;
+  color: var(--fg-muted);
+  transition: color 0.3s ease;
 }
-@media (min-width: 900px) {
-  .pr-way {
-    border-bottom: 0;
-  }
-  .pr-way[data-way='b'] {
-    padding-left: 36px;
-    border-left: 1px solid var(--line);
-  }
-  .pr-way[data-way='a'] {
-    padding-right: 36px;
-  }
+.pr-tab + .pr-tab {
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
 }
-.pr-way-mark {
+.pr-tab-mark {
   grid-area: mark;
-  align-self: center;
   font-family: var(--font-serif);
-  font-size: 2.4rem;
+  font-size: 1.25rem;
   font-style: italic;
-  line-height: 0.8;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+.pr-tab-title {
+  grid-area: title;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.pr-tab-count {
+  grid-area: count;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+/* The selected tab is underlined in ink (drawn with transform). */
+.pr-tab::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.5s var(--ease-expo);
+}
+.pr-tab + .pr-tab::after {
+  left: 16px;
+}
+.pr-tab[aria-selected='true'] {
+  color: var(--fg);
+}
+.pr-tab[aria-selected='true'] .pr-tab-mark {
   color: var(--accent);
 }
-.pr-way-title {
-  grid-area: title;
-  align-self: center;
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: 2.5rem;
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.015em;
+.pr-tab[aria-selected='true']::after {
+  transform: scaleX(1);
 }
-.pr-way-text {
-  grid-area: text;
-  max-width: 30rem;
-  margin-top: 10px;
+@media (hover: hover) {
+  .pr-tab:hover {
+    color: var(--fg);
+  }
+}
+.pr-tab:focus-visible {
+  border-radius: 10px;
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+@media (min-width: 640px) {
+  .pr-tab {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-areas: 'mark title count';
+    column-gap: 12px;
+    min-height: 80px;
+    padding: 20px 16px 20px 0;
+  }
+  .pr-tab + .pr-tab {
+    padding-left: 24px;
+  }
+  .pr-tab + .pr-tab::after {
+    left: 24px;
+  }
+  .pr-tab-mark {
+    font-size: 2rem;
+  }
+  .pr-tab-title {
+    font-size: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .pr-tab {
+    min-height: 96px;
+  }
+  .pr-tab-mark,
+  .pr-tab-title {
+    font-size: 2.6rem;
+  }
+  .pr-tab-count {
+    font-size: 0.875rem;
+  }
+}
+
+.pr-panel {
+  padding-top: 26px;
+}
+.pr-panel[hidden] {
+  display: none;
+}
+.pr-panel-intro {
+  display: grid;
+  gap: 8px;
+  max-width: 40rem;
   font-size: 0.975rem;
   line-height: 1.5;
   color: var(--fg-muted);
 }
-.pr-way-from {
-  color: var(--fg);
-}
-.pr-way-meta {
-  display: inline-flex;
-  grid-area: meta;
-  align-items: center;
-  gap: 6px;
-  margin-top: 14px;
+.pr-panel-meta {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg);
 }
-.pr-way-meta svg {
-  width: 14px;
-  height: 14px;
-  color: var(--accent);
+
+/* Desktop: the comparison's column header (aligned with .pr-plan's columns). */
+.pr-cols {
+  display: none;
 }
-.pr-way-cta {
-  grid-area: meta;
-  justify-self: start;
-  margin-top: 16px;
+@media (min-width: 1024px) {
+  .pr-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr) minmax(0, 16.5rem);
+    column-gap: 40px;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+}
+@media (min-width: 1280px) {
+  .pr-cols {
+    grid-template-columns: minmax(0, 13.5rem) minmax(0, 1fr) minmax(0, 15rem) 10.5rem;
+    column-gap: 36px;
+  }
 }
 
 /* ---- Package groups --------------------------------------------------------------- */
 .pr-group {
-  margin-top: 56px;
+  margin-top: 40px;
 }
 @media (min-width: 1024px) {
   .pr-group {
-    margin-top: 72px;
+    margin-top: 64px;
   }
 }
 .pr-group-head {
@@ -708,6 +799,32 @@
   height: 16px;
 }
 
+/* Mantenimiento sugerido (+ the voice agent's usage): the recurring side of the package. */
+.pr-plan-care {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line-strong);
+}
+.pr-plan-care-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.pr-plan-care-value {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--fg);
+}
+.pr-plan-care-voice {
+  margin-top: 4px;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+
 /* The recommended package: warm panel inside registration marks. */
 .pr-plan[data-featured] {
   --tick: 12px;
@@ -778,11 +895,12 @@
   .pr-plan {
     display: grid;
     grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr) minmax(0, 16.5rem);
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto auto auto 1fr;
     grid-template-areas:
       'badge inc price'
       'name inc price'
       'aud inc terms'
+      'aud inc care'
       'aud inc act';
     column-gap: 40px;
     padding: 28px 0 30px;
@@ -827,6 +945,11 @@
     grid-area: terms;
     margin-top: 8px;
   }
+  .pr-plan-care {
+    grid-area: care;
+    align-self: start;
+    margin-top: 14px;
+  }
   .pr-plan-actions {
     grid-area: act;
     flex-wrap: nowrap;
@@ -850,13 +973,14 @@
 }
 @media (min-width: 1280px) {
   .pr-plan {
-    grid-template-columns: minmax(0, 13.5rem) minmax(0, 1fr) minmax(0, 14.5rem) 10.5rem;
+    grid-template-columns: minmax(0, 13.5rem) minmax(0, 1fr) minmax(0, 15rem) 10.5rem;
     column-gap: 36px;
     grid-template-areas:
       'badge inc price act'
       'name inc price act'
       'aud inc terms act'
-      'aud inc terms act';
+      'aud inc care act'
+      'aud inc care act';
   }
   .pr-plan-includes {
     columns: 2;
@@ -890,6 +1014,138 @@
   margin-top: 28px;
   font-size: 0.975rem;
   color: var(--fg-muted);
+}
+
+/* ---- Tab B · Pieza por pieza ------------------------------------------------------------ */
+.pr-pieces-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 28px;
+}
+.pr-fams {
+  display: grid;
+  gap: 30px;
+  margin-top: 30px;
+}
+@media (min-width: 768px) {
+  .pr-fams {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
+    row-gap: 36px;
+  }
+}
+@media (min-width: 1280px) {
+  .pr-fams {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.pr-fam-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--fg);
+  font-weight: 400;
+}
+.pr-fam-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+.pr-fam-name {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.pr-fam-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--fg-muted);
+}
+.pr-fam-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* name / price on the left, the add pill on the right (wide: name ···· price  [+ Sumar]). */
+.pr-piece {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'name add'
+    'price add';
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 2px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.pr-piece-name {
+  grid-area: name;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+.pr-piece-leader {
+  display: none;
+  grid-area: leader;
+}
+.pr-piece-price {
+  display: flex;
+  grid-area: price;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 10px;
+}
+.pr-piece-price .readout {
+  font-size: 0.9375rem;
+}
+.pr-piece-price .pr-piece-usd {
+  font-size: 0.6875rem;
+  color: var(--fg-muted);
+}
+.pr-piece-add {
+  position: relative;
+  display: inline-flex;
+  grid-area: add;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 13px 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--fg);
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.25s var(--ease-expo);
+}
+/* 44px hit area around a 36px pill. */
+.pr-piece-add::before {
+  content: '';
+  position: absolute;
+  inset: -4px -2px;
+}
+.pr-piece-add svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+.pr-piece-add:hover {
+  border-color: var(--fg);
+  background: rgb(255 255 255 / 0.6);
+}
+.pr-piece-add:active {
+  transform: scale(0.97);
 }
 
 /* ---- Offers ---------------------------------------------------------------------------- */
@@ -1228,5 +1484,11 @@
   .pr-plan[data-open] .pr-plan-body,
   .pr-plan[data-flash]::after {
     animation: none;
+  }
+  .pr-tab,
+  .pr-tab::after,
+  .pr-tab-mark,
+  .pr-plan-chevron {
+    transition: none;
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { startTransition, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 
 /** Fired on window after a deferred section hydrates (its DOM is re-created). */
 export const HYDRATED_EVENT = 'eclipse:hydrated';
@@ -19,6 +19,11 @@ const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tab
  * which React leaves untouched (the server markup stays). Once triggered it
  * renders the real children. If focus was inside, it is restored on the same
  * focusable element (or the same script-focused target, by id) afterwards.
+ *
+ * Woken by the scroll (the section gets close), the render is a transition: React
+ * works on it in short slices between frames instead of one long task, so a scroll
+ * that is still moving (the hero's scrub, for instance) keeps its frames. Woken by
+ * the visitor (focus, a tap, a #hash), it renders right away.
  */
 export function LazyHydrate({
   children,
@@ -41,7 +46,8 @@ export function LazyHydrate({
     const el = ref.current;
     if (!el) return;
     const wake = () => setHydrated(true);
-    const io = new IntersectionObserver((entries) => entries.some((e) => e.isIntersecting) && wake(), { rootMargin });
+    const wakeSoon = () => startTransition(() => setHydrated(true));
+    const io = new IntersectionObserver((entries) => entries.some((e) => e.isIntersecting) && wakeSoon(), { rootMargin });
     io.observe(el);
     const onFocus = (e: FocusEvent) => {
       const target = e.target as HTMLElement | null;
