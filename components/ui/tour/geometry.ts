@@ -121,6 +121,11 @@ export interface PlacementInput {
   anchor: Rect | null;
   card: Size;
   viewport: Size;
+  /**
+   * The part of the layer actually visible (the visual viewport: mobile browser bars, pinch
+   * zoom), in layer coordinates. Default: the whole `viewport`. The card always fits in here.
+   */
+  bounds?: Rect;
   placement?: PlacementPref;
   /** Other lit targets the card should not cover when there is a choice. */
   avoid?: Rect[];
@@ -142,6 +147,11 @@ export interface Placement {
   leader: { x1: number; y1: number; x2: number; y2: number } | null;
   /** True when the card could not avoid covering part of the anchor. */
   covers: boolean;
+  /**
+   * Tallest the card may be (the visible height minus both margins). The card's text scrolls
+   * inside it beyond that, so the progress and the buttons always stay on screen.
+   */
+  maxHeight: number;
 }
 
 function cardRect(x: number, y: number, card: Size): Rect {
@@ -172,13 +182,13 @@ function leaderTo(tip: { x: number; y: number }, anchor: Rect): Placement['leade
 function withArrow(card: Rect, side: Side, anchor: Rect, mode: 'float' | 'dock'): Placement {
   const edge = OPPOSITE[side];
   const covers = overlaps(card, anchor);
-  if (covers) return { mode, side, x: card.x, y: card.y, arrow: null, leader: null, covers };
+  if (covers) return { mode, side, x: card.x, y: card.y, arrow: null, leader: null, covers, maxHeight: 0 };
   const vertical = edge === 'top' || edge === 'bottom';
   const offset = vertical
     ? clamp(cx(anchor) - card.x, ARROW_INSET, card.width - ARROW_INSET)
     : clamp(cy(anchor) - card.y, ARROW_INSET, card.height - ARROW_INSET);
   const leader = leaderTo(arrowTip(card, edge, offset), anchor);
-  return { mode, side, x: card.x, y: card.y, arrow: { edge, offset }, leader, covers };
+  return { mode, side, x: card.x, y: card.y, arrow: { edge, offset }, leader, covers, maxHeight: 0 };
 }
 
 /** Free space between the anchor and the viewport edge on each side, minus what the card needs. */
@@ -217,6 +227,24 @@ function floatRect(side: Side, a: Rect, card: Size, vp: Size, margin: number, ga
  * a sheet docked to the bottom, or to the top when the anchor is low. No anchor: centered.
  */
 export function computePlacement(input: PlacementInput): Placement {
+  const margin = input.margin ?? TOUR_MARGIN;
+  const b = input.bounds ?? { x: 0, y: 0, width: input.viewport.width, height: input.viewport.height };
+  // Never taller than the visible area: if room is short the card may cover part of the
+  // anchor, but its controls are never pushed off screen.
+  const maxHeight = Math.max(0, b.height - 2 * margin);
+  const local = (r: Rect): Rect => ({ ...r, x: r.x - b.x, y: r.y - b.y });
+  const p = placeLocal({
+    ...input,
+    anchor: input.anchor && local(input.anchor),
+    avoid: input.avoid?.map(local),
+    card: { width: input.card.width, height: Math.min(input.card.height, maxHeight) },
+    viewport: { width: b.width, height: b.height },
+  });
+  const leader = p.leader && { x1: p.leader.x1 + b.x, y1: p.leader.y1 + b.y, x2: p.leader.x2 + b.x, y2: p.leader.y2 + b.y };
+  return { ...p, x: p.x + b.x, y: p.y + b.y, leader, maxHeight };
+}
+
+function placeLocal(input: PlacementInput): Placement {
   const { anchor, card, viewport: vp, placement = 'auto', avoid = [] } = input;
   const margin = input.margin ?? TOUR_MARGIN;
   const gap = input.gap ?? TOUR_GAP;
@@ -231,6 +259,7 @@ export function computePlacement(input: PlacementInput): Placement {
       arrow: null,
       leader: null,
       covers: false,
+      maxHeight: 0,
     };
   }
 

@@ -723,7 +723,14 @@
         "sol": "Limpeza de pele"
       },
       "hintPhone": "Toque num horário livre para agendar.",
-      "hintLaptop": "Escolha um horário livre na grade para agendar."
+      "hintLaptop": "Escolha um horário livre na grade para agendar.",
+      "dayLabel": "Agenda de {day} por profissional",
+      "weekLabel": "Semana de {pro}, de {from} a {to}",
+      "freeSlotDay": "{day}, {time} · {pro}: livre, agendar",
+      "summaryPast": "{day} · {count} consultas atendidas",
+      "weekSummary": "Semana por profissional · toque num horário livre para agendar",
+      "hintPast": "Dia passado: só leitura.",
+      "localNote": "Agendamento de demonstração: fica só nesta tela."
     },
     "chat": {
       "composer": "Mensagem",
@@ -787,14 +794,10 @@
     },
     "top": {
       "liveCall": "IA em ligação · {time}",
-      "live": "Ao vivo",
       "site": "Site",
-      "ringing": "Ligação recebida…"
-    },
-    "side": {
-      "aiTitle": "Recepcionista IA",
-      "aiBody": "Ativa · atende 24/7",
-      "aiOff": "Desligada · não atende"
+      "ringing": "Ligação recebida…",
+      "ai": "Recepção IA ligada",
+      "aiOff": "Recepção IA desligada"
     },
     "fullNames": {
       "julian": "Thiago Pereira"
@@ -811,7 +814,8 @@
       "voice": "A recepcionista IA agendou {patient} às {time}",
       "missed": "Ligação perdida: a recepcionista IA estava desligada",
       "you": "Você agendou {treatment}: {time} · {pro}",
-      "afterHours": "Fora do horário: a recepcionista IA agendou uma consulta de ortodontia"
+      "afterHours": "Fora do horário: a recepcionista IA agendou uma consulta de ortodontia",
+      "youDay": "Você agendou {treatment}: {day}, {time} · {pro}"
     },
     "toast": {
       "online": "Novo agendamento online",
@@ -823,7 +827,7 @@
     "today": {
       "greeting": "Bom dia",
       "recovered": "Horários recuperados nesta semana",
-      "recoveredToday": "{count, plural, =0 {ao vivo} other {+# hoje}}",
+      "recoveredToday": "{count, plural, =0 {nenhum hoje} other {+# hoje}}",
       "recoveredMoney": "que não se perderam",
       "recoveredTrend": "Recuperados na semana até agora: {count}",
       "next": "Próximos horários",
@@ -832,7 +836,7 @@
       "occupancyShort": "{pct}% ocupada",
       "confirmed": "Confirmados",
       "pending": "{count, plural, =0 {Ninguém pendente} one {# sem resposta} other {# sem resposta}}",
-      "activity": "Atividade ao vivo",
+      "activity": "Atividade de hoje",
       "siteTitle": "Seu site de agendamento",
       "calls": "Ligações hoje",
       "callsHint": "Todas atendidas · 7 fora do horário",
@@ -965,7 +969,7 @@
       "title": "Faltas",
       "subtitle": "Horários que iam se perder e foram recuperados.",
       "heroLabel": "Recuperados nesta semana",
-      "heroToday": "{count, plural, =0 {Nada ainda hoje} other {+# hoje, ao vivo}}",
+      "heroToday": "{count, plural, =0 {Nada ainda hoje} other {+# hoje}}",
       "money": "que não se perderam",
       "arcLabel": "Recuperados por dia: {days}",
       "sourcesTitle": "De onde vieram",
@@ -980,7 +984,7 @@
       "week": "S{n}",
       "before": "Antes",
       "after": "Com automações",
-      "boardTitle": "Recuperação ao vivo",
+      "boardTitle": "Quadro de recuperação",
       "empty": "Nada por enquanto",
       "today": "Hoje",
       "columns": {
@@ -996,7 +1000,8 @@
         "byWaitlist": "{patient} · lista de espera",
         "byVoice": "{patient} · ligação com a IA",
         "byYou": "Você pegou"
-      }
+      },
+      "boardHint": "Arraste um card ou use Mover para organizar o quadro."
     },
     "site": {
       "nav": {
@@ -1036,7 +1041,9 @@
         "booked": "Pronto! Horário agendado",
         "bookedCamila": "Pronto, {name}! Horário agendado",
         "sentWhatsApp": "Confirmação enviada no WhatsApp",
-        "again": "Agendar outro"
+        "again": "Agendar outro",
+        "seeAgenda": "Ver na agenda",
+        "pickDay": "Escolha um dia"
       },
       "chat": {
         "title": "Assistente virtual",
@@ -1056,7 +1063,15 @@
       "push": "Pronto, {name}! Seu horário está confirmado: hoje {time}, {treatment}.",
       "pushYou": "Pronto! Seu horário está confirmado: {time} · {pro}.",
       "openPush": "Abrir a confirmação no WhatsApp",
-      "backToApp": "Voltar ao app da clínica"
+      "backToApp": "Voltar ao app da clínica",
+      "openThread": "Ver a confirmação"
+    },
+    "sim": {
+      "online": "Chega um agendamento online",
+      "reminder": "Lembrete pelo WhatsApp",
+      "freed": "Cancelamento e lista de espera",
+      "call": "Ligação para a recepção IA",
+      "note": "Agendamentos, mensagens e ligações simulados com dados de demonstração; nada é enviado."
     }
   },
   "demoGym": {
@@ -2333,6 +2348,42 @@
       "earned": "Conquistada",
       "progress": "{pct}% concluída",
       "rank": "Posição {n}"
+    },
+    "sim": {
+      "title": "Simulação",
+      "note": "As ações são simuladas com dados de demonstração; nada é enviado.",
+      "play": "Simular: {label}",
+      "playing": "Simulando: {label}",
+      "skip": "Pular para o fim",
+      "reset": "Reiniciar",
+      "resetAll": "Reiniciar a demo",
+      "counter": "Evento {current} de {total}",
+      "counterIdle": "{total} eventos para simular",
+      "events": "Eventos simulados",
+      "close": "Fechar",
+      "landed": "Pronto: {label}. {counter}.",
+      "state": {
+        "done": "Feito",
+        "playing": "Simulando",
+        "next": "Próximo",
+        "pending": "Pendente"
+      }
+    },
+    "calendar": {
+      "prevDay": "Dia anterior",
+      "nextDay": "Próximo dia",
+      "prevWeek": "Semana anterior",
+      "nextWeek": "Próxima semana",
+      "today": "Hoje",
+      "view": "Visualização",
+      "day": "Dia",
+      "week": "Semana"
+    },
+    "kanban": {
+      "hint": "Arraste um card para outra coluna ou use o botão Mover.",
+      "moveCard": "Mover “{card}”",
+      "moveTo": "Mover para {column}",
+      "moved": "“{card}” foi para {column}."
     }
   },
   "demoRestaurant": {
@@ -4022,15 +4073,14 @@
       "tableCaption": "Seus projetos com a Eclipse (dados fictícios)",
       "columns": {
         "project": "Projeto",
-        "service": "Serviço",
         "stage": "Etapa atual",
         "updated": "Última atualização",
         "milestone": "Próximo marco",
-        "action": "Ação"
+        "action": "Sua ação",
+        "open": "Abrir o projeto"
       },
       "milestoneMeta": "{owner} · previsão <d>{date}</d>",
       "view": "Ver projeto",
-      "review": "Revisar",
       "actionNeeded": "Precisa da sua ação",
       "states": {
         "label": "Visualização da demo",
@@ -4045,6 +4095,11 @@
         "body": "Seus projetos aparecem aqui quando a equipe os vincula à sua conta, depois do sinal. Se você já confirmou um, fale com a gente.",
         "cta": "Fale com a gente no WhatsApp",
         "message": "Olá, Eclipse. Entrei no portal e ainda não vejo meu projeto."
+      },
+      "nothingPending": "Nada pendente do seu lado",
+      "whoWorks": {
+        "active": "A Eclipse está trabalhando",
+        "support": "Suporte ativo"
       }
     },
     "people": {
@@ -4237,7 +4292,11 @@
         "delivered": "Entregue em {date}",
         "deliveryPaused": "Recalculada ao retomar"
       },
-      "others": "Outros projetos"
+      "others": "Outros projetos",
+      "follow": {
+        "title": "Acompanhamento",
+        "intro": "Cada avanço com data, o que o escopo inclui, as mudanças pedidas e os documentos."
+      }
     },
     "demo": {
       "projects": {
@@ -4448,6 +4507,86 @@
           }
         }
       }
+    },
+    "info": {
+      "more": "Mais informações: {topic}",
+      "close": "Fechar",
+      "legend": "Como ler a lista",
+      "stages": {
+        "chip": "Etapas",
+        "title": "As 5 etapas",
+        "body": "Todo projeto passa por Preparação, Construção, Revisão da Eclipse, Revisão do cliente e Entrega. \"2 de 5\" quer dizer que está na segunda. Suporte vem depois da entrega e só existe com manutenção contratada."
+      },
+      "estimate": {
+        "chip": "Data prevista",
+        "title": "Data prevista",
+        "body": "É a nossa previsão com o que sabemos hoje: uma estimativa, não um compromisso. Pode mudar se uma mudança de escopo for aceita ou se o projeto for pausado."
+      },
+      "action": {
+        "chip": "Sua ação",
+        "title": "Sua ação",
+        "body": "Quando algo depende de você — aprovar, confirmar um dado ou mandar um arquivo — o projeto mostra \"Precisa da sua ação\" e explica o que falta. Se não, mostra \"Nada pendente do seu lado\"."
+      },
+      "clientReview": {
+        "title": "Revisão do cliente",
+        "body": "É a etapa 4: o trabalho já passou pela nossa revisão e é a sua vez de olhar. Você aprova ou pede ajustes dentro do escopo. Com a sua aprovação registrada, passa para Entrega."
+      },
+      "support": {
+        "title": "Suporte",
+        "body": "Começa depois da entrega e só existe com manutenção contratada. Enquanto estiver ativa, cuidamos de hospedagem, backups e das alterações que o seu plano inclui."
+      },
+      "changes": {
+        "title": "Mudança aceita ou pedido em andamento",
+        "body": "Um pedido em andamento é algo que você pediu e que estamos avaliando ou estimando: ainda não faz parte do escopo. Uma mudança aceita já tem a aceitação registrada: entra no escopo com o impacto anotado."
+      }
+    },
+    "guide": {
+      "projects": {
+        "label": "Guia de Meus projetos",
+        "list": {
+          "title": "Seus projetos",
+          "body": "Aqui estão todos os seus projetos com a Eclipse. Cada um mostra a etapa, o que vem a seguir, se você precisa fazer algo e a última atualização."
+        },
+        "stage": {
+          "title": "Etapa atual",
+          "body": "\"2 de 5 · Construção\" quer dizer que está na segunda das 5 etapas. Embaixo, em poucas palavras, o que se faz nela."
+        },
+        "next": {
+          "title": "O que vem e o que é com você",
+          "body": "O próximo marco diz o que vem a seguir, quem faz e a data prevista. Se algo depende de você, aparece \"Precisa da sua ação\" com o que falta."
+        },
+        "open": {
+          "title": "Ver projeto",
+          "body": "Abre o detalhe: etapa, cronograma, atividade, escopo e documentos."
+        },
+        "help": {
+          "title": "Ajuda",
+          "body": "Veja este guia de novo quando quiser; os botões (i) explicam cada termo. Nesta demo ele fica lembrado só neste navegador; no portal real, na sua conta."
+        }
+      },
+      "project": {
+        "label": "Guia do projeto",
+        "current": {
+          "title": "Etapa atual",
+          "body": "Em que etapa o projeto está, o que ela significa e o que falta para passar para a próxima."
+        },
+        "next": {
+          "title": "Próximo marco e sua ação",
+          "body": "O que vem a seguir, quem faz e para quando. Se for a sua vez, você vê aqui com os detalhes. Nesta demo os botões estão desativados."
+        },
+        "timeline": {
+          "title": "Cronograma",
+          "body": "As 5 etapas com o status escrito — concluída, atual, próxima ou pendente — e as datas."
+        },
+        "follow": {
+          "title": "Acompanhamento",
+          "body": "Atualizações com data, escopo e mudanças, documentos e como funciona cada etapa, em abas."
+        },
+        "help": {
+          "title": "Ajuda",
+          "body": "Veja este guia de novo quando quiser. Ele fica lembrado só neste navegador; no portal real, na sua conta."
+        }
+      }
     }
   },
   "shortcuts": {
@@ -4471,5 +4610,33 @@
     "tagDesktop": "Versão desktop",
     "tagMobile": "Versão celular",
     "tagBoth": "As duas versões"
+  },
+  "demoTours": {
+    "clinic": {
+      "sim": {
+        "title": "Você decide o que acontece",
+        "body": "Nada se mexe sozinho. Toque em “Simular” para ver um evento do dia da clínica: um agendamento online, um lembrete, um cancelamento ou uma ligação."
+      },
+      "booking": {
+        "title": "Agendamento online, sem ligar",
+        "body": "O paciente escolhe tratamento, dia e horário no site. Teste: a consulta aparece na agenda e a confirmação sai pelo WhatsApp."
+      },
+      "agenda": {
+        "title": "Uma agenda que se preenche sozinha",
+        "body": "Os três profissionais numa grade só. Alterne entre dia e semana, veja datas passadas e futuras e toque num horário livre para agendar."
+      },
+      "reception": {
+        "title": "Recepção com IA, 24 horas",
+        "body": "Atende o telefone, consulta a agenda e marca a consulta enquanto conversa. Simule a ligação do Julián e leia a transcrição."
+      },
+      "reminders": {
+        "title": "Lembretes pelo WhatsApp",
+        "body": "Cada paciente recebe o lembrete e confirma, remarca ou cancela com um toque. O horário liberado é oferecido de novo."
+      },
+      "recovered": {
+        "title": "Faltas que não viram prejuízo",
+        "body": "Quantas consultas foram recuperadas nesta semana e de onde vieram: lembretes, lista de espera e a recepção com IA."
+      }
+    }
   }
 }

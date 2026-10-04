@@ -178,10 +178,8 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
   const cool = () => window.clearTimeout(intent.current);
 
   const openDemo = (e: MouseEvent<HTMLButtonElement>) => {
-    const id = v.id;
-    openDemoExperience({ vertical: id, demo: v.demo, origin: 'examples' }, e.currentTarget, e);
-    // Recording the rubro re-renders the page's experience consumers: after the opening.
-    window.setTimeout(() => selectVertical(id, 'examples'), 900);
+    selectVertical(v.id, 'examples');
+    openDemoExperience({ vertical: v.id, demo: v.demo, origin: 'examples' }, e.currentTarget, e);
   };
   const chooseView = (next: StageView) => {
     if (next === view) return;

@@ -122,7 +122,7 @@ export function DemoShowcase({
   );
 
   return (
-    <div ref={root} data-layout={layout ?? undefined} className={`sc ${fit ? '' : 'mx-auto max-w-[1240px]'} ${className}`}>
+    <div ref={root} data-demo-host data-layout={layout ?? undefined} className={`sc ${fit ? '' : 'mx-auto max-w-[1240px]'} ${className}`}>
       {layout === 'split' ? (
         <div className="sc-split">
           <DeviceFrame kind="laptop" label={laptopLabel} caption={caption('laptop')}>

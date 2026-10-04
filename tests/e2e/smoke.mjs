@@ -256,7 +256,16 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   check('demo login clears the password', (await page.getByLabel('Contraseña').inputValue()) === '');
   await page.getByRole('link', { name: /Ver portal de ejemplo/ }).first().click();
   await page.waitForURL(/\/es\/portal\/proyectos\/$/);
-  await page.waitForTimeout(800);
+  // First visit: the onboarding opens by itself; Escape closes it and it's remembered (localStorage only).
+  const guide = await page.waitForSelector('.tour', { timeout: 4000 }).then(() => true, () => false);
+  check('Mis proyectos: first visit opens the guide', guide);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(400);
+  check(
+    'portal guide closes and is remembered',
+    (await page.locator('.tour').count()) === 0 &&
+      (await page.evaluate(() => localStorage.getItem('eclipse:tour:portal-projects-v1'))) === '1',
+  );
   const row = page.locator('table[data-portal-projects-table] tr[data-portal-project="sitio-web"]');
   const rowText = await row.evaluate((el) => el.textContent?.replace(/\s+/g, ' ') ?? '');
   check('Mis proyectos: example site in 2 de 5 · Construcción', /2 de 5 · Construcción/.test(rowText));

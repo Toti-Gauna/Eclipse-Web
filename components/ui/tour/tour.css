@@ -158,6 +158,7 @@
   flex: 1 1 auto;
   overflow-y: auto;
   overscroll-behavior: contain;
+  border-radius: 6px;
 }
 
 .tour-head {
@@ -212,6 +213,7 @@
 
 /* Progress as a ruler: one tick per step, the current one lit. */
 .tour-scale {
+  flex: none;
   display: flex;
   gap: 4px;
   margin-top: 1rem;
@@ -230,6 +232,7 @@
 }
 
 .tour-actions {
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: flex-end;
