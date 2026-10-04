@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { CalendarDays, ChartNoAxesColumn, Globe, House, MessageCircle, PhoneCall } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, LiveDot, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, contentToTop, revealInDemo, LiveDot, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { BEAT_FOCUS, CLINIC_THEME, SCREEN_TABS, TODAY, type BeatId, type FocusSpot } from './data';
 import { createClinicStore, deriveClinic, isOffNow } from './story';
@@ -18,7 +18,6 @@ import { LaptopCalls, PhoneCalls } from './views/Calls';
 import { LaptopWhatsApp, PhoneWhatsApp } from './views/WhatsApp';
 import { LaptopSite, PatientPhone } from './views/Site';
 import { LaptopRecovered, PhoneRecovered } from './views/Recovered';
-import { revealSpot } from './focus';
 import './clinic.css';
 
 const VIEWS: Record<ClinicTab, Record<DemoProps['screen'], () => ReactNode>> = {
@@ -98,7 +97,10 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
     setTab(f.tab);
   });
   useLayoutEffect(() => {
-    if (reveal) revealSpot(rootEl.current, reveal.spot, !reveal.jump && !snap.reduced);
+    if (!reveal) return;
+    const smooth = !reveal.jump && !snap.reduced;
+    if (reveal.spot === 'top') contentToTop(rootEl.current, smooth);
+    else revealInDemo(rootEl.current, `[data-focus~="${reveal.spot}"]`, { smooth });
     // Only when a beat asks (not on every story tick).
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reveal]);

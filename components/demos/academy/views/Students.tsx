@@ -4,11 +4,10 @@ import { useId } from 'react';
 import { useTranslations } from 'next-intl';
 import { BellRing, CircleDollarSign, Clock4, MessageCircle } from 'lucide-react';
 import { Money } from '@/components/ui/Money';
-import { Card, ChatWidget, Kanban, Meter, Pill, Switch, type KanbanCard, type KanbanColumn, type Tone } from '../../kit';
+import { Card, ChatWidget, Kanban, Meter, Pill, Switch, type KanbanCard, type KanbanColumn, type Tone , keepChatFocus } from '../../kit';
 import { ROSTER, SCHOOL, STORY, storyClock } from '../data';
 import { act, isFreshEvent, isOffNow, type BoardColumn } from '../story';
 import { useAcademy } from '../context';
-import { keepChatFocus } from '../focus';
 import { AtrioMark, PersonAvatar, ViewHead, useAcademyText } from '../ui';
 
 type Status = 'ok' | 'risk' | 'sent' | 'back' | 'later' | 'dropped' | 'lesson' | 'b1';
@@ -156,7 +155,7 @@ function MartinThread({ className = '' }: { className?: string }) {
       dateLabel={t('date')}
       stamp={(at) => fmt.time(storyClock((view.martin.sentAt ?? STORY.nudge) + at))}
       onPick={(step, reply) => {
-        keepChatFocus();
+        keepChatFocus(undefined, '.atrio-prompt');
         run(act.pickWa(step, reply, view.martin.sentAt ?? STORY.nudge), 'select');
       }}
       composer={false}

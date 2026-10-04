@@ -33,11 +33,11 @@ import {
   type CalendarEvent,
   type LeaderRow,
   type WaveLevel,
+  keepChatFocus,
 } from '../../kit';
 import { CLASSMATES, CURRENT_UNIT, HERO, HERO_COLOR, LIVE_CLASSES, NEXT_UNITS, PROMPTS, SPEAK_FLOW, SPEAK_SCALE, SPEAK_SCORE, STORY, UNITS, WEEKDAY, storyClock, type BadgeId } from '../data';
 import { ASKS, act, isFreshEvent } from '../story';
 import { useAcademy } from '../context';
-import { keepChatFocus } from '../focus';
 import { useMarkWords } from '../scripts';
 import { CefrRuler, ChalkCircle, ChalkTick, GoalRing, PersonAvatar, useAcademyText } from '../ui';
 
@@ -597,7 +597,7 @@ function AskTutor() {
           <p className="atrio-ask-k">{t('askKicker')}</p>
           {left.map((id) => (
             <button key={id} type="button" className="atrio-prompt" onClick={() => {
-                keepChatFocus();
+                keepChatFocus(undefined, '.atrio-prompt');
                 run(act.ask(id), 'select');
               }}>
               {t(`asks.${id}.q`)}
@@ -628,7 +628,7 @@ export function TutorChat({ className = '', header = true }: { className?: strin
       label={t('label')}
       announce={announce}
       onPick={(step, reply) => {
-        keepChatFocus();
+        keepChatFocus(undefined, '.atrio-prompt');
         run(act.pickTutor(step, reply), 'select');
       }}
       composer={false}

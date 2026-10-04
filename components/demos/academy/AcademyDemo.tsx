@@ -6,10 +6,9 @@ import { BookOpenText, CalendarDays, Globe, House, LayoutDashboard, MessageSquar
 import { useSound } from '@/components/sound/SoundContext';
 import type { SoundName } from '@/lib/sound/types';
 import { verticalById } from '@/lib/content';
-import { AppShell, nextBeat, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, contentToTop, revealInDemo, nextBeat, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { ATRIO_THEME, BEAT_MARK_SELECTOR, BEAT_SCREENS, type BeatId, type BeatMark } from './data';
-import { contentToTop, revealInDemo } from './focus';
 import { createAcademyStore, deriveAcademy, isOffNow, type AcademyEvent, type StudentTab } from './story';
 import { AcademyProvider, type AcademyCtx, type SchoolTab } from './context';
 import { useAcademyScripts } from './scripts';
@@ -148,7 +147,7 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
     if (!jump) return;
     const id = requestAnimationFrame(() => {
       if (jump.top) contentToTop(box.current);
-      if (jump.mark) revealInDemo(box.current, BEAT_MARK_SELECTOR[jump.mark], snap.reduced);
+      if (jump.mark) revealInDemo(box.current, BEAT_MARK_SELECTOR[jump.mark], { smooth: !snap.reduced });
     });
     return () => cancelAnimationFrame(id);
     // Only when a beat asked for it (not on every story tick).

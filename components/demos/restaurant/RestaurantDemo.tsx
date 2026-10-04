@@ -4,7 +4,7 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState, type ReactNode
 import { BookOpenText, ChartNoAxesColumn, ChefHat, ConciergeBell, LayoutGrid, PhoneCall, QrCode } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, contentToTop, revealInDemo, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { BEAT_FOCUS, RESTAURANT_THEME, SCREEN_TABS, TODAY, type BeatId, type FocusSpot } from './data';
 import { createRestaurantStore, deriveRestaurant, isOffNow, type LineId } from './story';
@@ -19,7 +19,6 @@ import { LaptopMenu, PhoneMenu } from './views/Menu';
 import { LaptopNumbers, PhoneNumbers } from './views/Numbers';
 import { LaptopQr } from './views/Qr';
 import { CustomerApp, type CustomerFocusRequest } from './views/Customer';
-import { revealSpot } from './focus';
 import './restaurant.css';
 
 const VIEWS: Record<RestaurantTab, Record<DemoProps['screen'], () => ReactNode>> = {
@@ -101,7 +100,10 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
     setTab(f.tab);
   });
   useLayoutEffect(() => {
-    if (reveal) revealSpot(rootEl.current, reveal.spot, !reveal.jump && !snap.reduced);
+    if (!reveal) return;
+    const smooth = !reveal.jump && !snap.reduced;
+    if (reveal.spot === 'top') contentToTop(rootEl.current, smooth);
+    else revealInDemo(rootEl.current, `[data-focus~="${reveal.spot}"]`, { smooth });
     // Only when a beat asks (not on every story tick).
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reveal]);

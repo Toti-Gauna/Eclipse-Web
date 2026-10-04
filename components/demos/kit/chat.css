@@ -412,3 +412,9 @@
     animation: none;
   }
 }
+
+/* Quick replies are what a thumb taps on the phone: ≥ 44px there (they're ~24px at the chat's
+   scale otherwise). */
+.demo-root[data-screen='phone'] :is(.demo-chat-chip, .demo-chat-button) {
+  min-height: 4.5em;
+}

@@ -15,12 +15,12 @@ import {
   useCalendarNav,
   type BadgeItem,
   type LeaderRow,
+  keepChatFocus,
 } from '../../kit';
 import { DEMOTE, HERO, HERO_BEST_STREAK, LEAGUE, PROMOTE, SECOND_CLASS, memberById, sessionById, sessionsOn, tint, weekdayOf, type MissionId } from '../model';
 import { act, canBook, canCheckIn, checkedInAt, isPast, taken, type MemberTab } from '../story';
 import { useGym, useGymText } from '../hooks';
 import { useChats } from '../scripts';
-import { keepChatFocus } from '../focus';
 import { MemberAvatar, OrbitaMark, Segments, storyClockAt } from '../parts';
 
 const MISSION_ICON: Record<MissionId, typeof Target> = { comeback: Target, streak3: Flame, friend: Users, newClass: Sparkles };

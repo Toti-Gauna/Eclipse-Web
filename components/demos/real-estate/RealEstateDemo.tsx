@@ -5,10 +5,10 @@ import { useTranslations } from 'next-intl';
 import { Building2, CalendarDays, Columns3, Globe, House, MessagesSquare, Send, Smartphone } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, Avatar, Switch, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, contentToTop, revealInDemo, Avatar, Switch, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { ADVISORS, BEAT_FOCUS, CHAT_SLOTS, LUMEN_THEME, TODAY, type EstateBeatId, type EstateSpot } from './data';
-import { SPOTS, revealSpot } from './focus';
+import { SPOTS } from './focus';
 import { act, createEstateStore, deriveEstate } from './story';
 import { EstateProvider, useEstate, type EstateCtx, type EstateTab } from './context';
 import { Announcer, EstateToasts, LumenMark, useEstateText } from './ui';
@@ -103,7 +103,10 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
   });
   useEffect(() => {
     if (!focus.n || buyerPhone) return;
-    const id = requestAnimationFrame(() => revealSpot(root.current, focus.spot && SPOTS[focus.spot], { top: focus.top, smooth: !snap.reduced }));
+    const id = requestAnimationFrame(() => {
+      if (focus.top) contentToTop(root.current);
+      if (focus.spot) revealInDemo(root.current, SPOTS[focus.spot], { smooth: !snap.reduced && !focus.top });
+    });
     return () => cancelAnimationFrame(id);
     // Only when a beat moved the view (not when the motion preference changes).
     // eslint-disable-next-line react-hooks/exhaustive-deps

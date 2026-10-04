@@ -3,12 +3,11 @@
 import { useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { BellRing, ChevronDown, Flame, MessageCircle, RotateCcw, Target, Trophy, UserCheck, Zap } from 'lucide-react';
-import { BrowserFrame, ChatPeek, ChatWidget, DemoBadge, LandingPreview, Readout, SiteSection } from '../../kit';
+import { BrowserFrame, ChatPeek, ChatWidget, DemoBadge, LandingPreview, Readout, SiteSection , keepChatFocus } from '../../kit';
 import { LEAD, SITE_URL, sessionsOn } from '../model';
 import { act, isFreshEvent, taken } from '../story';
 import { useGym, useGymText } from '../hooks';
 import { useChats } from '../scripts';
-import { keepChatFocus } from '../focus';
 import { HudHead, MemberAvatar, OrbitaMark, storyClockAt } from '../parts';
 
 /** The hero art: an orbit with the app's game pieces riding it. */

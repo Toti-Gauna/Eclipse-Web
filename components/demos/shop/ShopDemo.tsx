@@ -5,11 +5,11 @@ import { useTranslations } from 'next-intl';
 import { Award, LayoutDashboard, MessageCircleQuestion, Package, ShoppingCart, Store } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, upperFirst, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, contentToTop, revealInDemo, upperFirst, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { BEAT_FOCUS, SHOP_THEME, type ShopBeatId, type ShopSpot } from './data';
 import { act, beatVariant, createShopStore, deriveShop } from './story';
-import { SPOTS, revealSpot } from './focus';
+import { SPOTS } from './focus';
 import { ShopProvider, type ShopCtx, type ShopTab } from './context';
 import { useShopScripts } from './scripts';
 import { Announcer, BrumaMark, useShopText } from './ui';
@@ -90,7 +90,10 @@ export default function ShopDemo({ screen, active }: DemoProps) {
   });
   useEffect(() => {
     if (!focus.n) return;
-    const id = requestAnimationFrame(() => revealSpot(root.current, focus.spot && SPOTS[focus.spot], { top: focus.top, smooth: !snap.reduced }));
+    const id = requestAnimationFrame(() => {
+      if (focus.top) contentToTop(root.current);
+      if (focus.spot) revealInDemo(root.current, SPOTS[focus.spot], { smooth: !snap.reduced && !focus.top });
+    });
     return () => cancelAnimationFrame(id);
     // Only when a beat moved the view (not when the motion preference changes).
     // eslint-disable-next-line react-hooks/exhaustive-deps

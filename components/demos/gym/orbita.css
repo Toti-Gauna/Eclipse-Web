@@ -2812,11 +2812,7 @@ button.gym-site-btn {
   }
 }
 
-/* Chat replies on the phone (site chat, peek, Lucía's WhatsApp): ≥ 44px like the other controls —
-   the kit's chips/buttons are ~24px there, too small for a thumb. Same for the WhatsApp's back arrow. */
-.demo-root[data-screen='phone'] :is(.gym-leadchat, .gym-peek, .gym-wa) :is(.demo-chat-chip, .demo-chat-button) {
-  min-height: 4.6em;
-}
+/* (Chat replies on the phone are ≥ 44px in the kit, chat.css.) The WhatsApp's back arrow too. */
 .demo-root[data-screen='phone'] .gym-wa-back {
   width: 3.4em;
   height: 3.4em;

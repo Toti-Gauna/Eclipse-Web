@@ -5,12 +5,11 @@ import { useTranslations } from 'next-intl';
 import { CalendarDays, Globe, HeartPulse, LayoutDashboard, Smartphone, Trophy, Users } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, contentToTop, revealInDemo, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { BEAT_SCREENS, HERO, ORBITA_THEME, OWNER_TABS, type BeatId, type BeatMark, type MemberTab, type OwnerTab, type PhoneOverlay } from './model';
 import { createGymStore, deriveGym, isOffNow, type GymEvent } from './story';
 import { GymProvider, useGymText, type GymCtx } from './hooks';
-import { contentToTop, revealInDemo } from './focus';
 import { Announcer, DayDial, GymToasts, MemberAvatar, OrbitaMark } from './parts';
 import { DayCut, LevelUp, MEMBER_TABS, MemberClasses, MemberHome, MemberLeague, MemberPush, WaThread } from './views/Member';
 import { LaptopToday, PhoneToday } from './views/Today';
@@ -146,7 +145,7 @@ export default function GymDemo({ screen, active }: DemoProps) {
     if (!jump) return;
     const id = requestAnimationFrame(() => {
       if (jump.top) contentToTop(box.current);
-      if (jump.mark) revealInDemo(box.current, jump.mark, snap.reduced);
+      if (jump.mark) revealInDemo(box.current, `[data-beat="${jump.mark}"]`, { smooth: !snap.reduced });
     });
     return () => cancelAnimationFrame(id);
     // Only when a beat asked for it (not on every story tick).

@@ -3121,8 +3121,3 @@ button.atrio-site-btn {
   --avatar-ink: #172338;
 }
 
-/* Chat replies on the phone (tutor exercise, level test, Martín's WhatsApp): ≥ 44px like the other
-   controls — the kit's chips/buttons are ~24px there, too small for a thumb. */
-.demo-root[data-screen='phone'] :is(.atrio-chat, .atrio-wa) :is(.demo-chat-chip, .demo-chat-button) {
-  min-height: 4.5em;
-}

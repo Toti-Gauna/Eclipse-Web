@@ -3,11 +3,10 @@
 import { useTranslations } from 'next-intl';
 import { ArrowRight, BadgeCheck, CreditCard, Landmark, PenLine, RotateCcw } from 'lucide-react';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
-import { BrowserFrame, Card, ChatWidget, LandingPreview, SiteSection } from '../../kit';
+import { BrowserFrame, Card, ChatWidget, LandingPreview, SiteSection , keepChatFocus } from '../../kit';
 import { ENROLLED_TODAY, SITE_URL, STORY, storyClock, type CefrLevel } from '../data';
 import { act, isFreshEvent, type Enrollment } from '../story';
 import { useAcademy } from '../context';
-import { keepChatFocus } from '../focus';
 import { AtrioMark, ChalkUnderline, PersonAvatar, ViewHead, useAcademyText } from '../ui';
 
 /** The site's chatbot: the level test, the recommended course, enroll and pay (Julieta's, or the visitor's own). */
@@ -35,7 +34,7 @@ function TestChat({ className = '' }: { className?: string }) {
         label={t('chatLabel')}
         announce={announce}
         onPick={(step, reply) => {
-          keepChatFocus();
+          keepChatFocus(undefined, '.atrio-prompt');
           run(mine ? act.pickSite(step, reply) : act.pickLead(step, reply), 'select');
         }}
         composer={false}
