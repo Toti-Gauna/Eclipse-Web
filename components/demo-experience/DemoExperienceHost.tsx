@@ -107,6 +107,8 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     sounded: false,
   });
   const token = `eclipse-demo-${request.id}`;
+  const getDialog = useCallback(() => dialog.current, []);
+  const getScroller = useCallback(() => scroller.current, []);
 
   // ---- Guide or explore -------------------------------------------------------------
   const { seen: choiceMade, markSeen: rememberChoice } = useTourSeen(GUIDE_CHOICE_KEY);
@@ -366,6 +368,7 @@ function DemoLayer({ request }: { request: DemoRequest }) {
               vertical={vertical}
               origin={request.origin}
               active={phase !== 'closing'}
+              ready={phase !== 'opening'}
               choice={choice}
               hasGuide={hasGuide}
               guideOpen={guide.open}
@@ -374,8 +377,8 @@ function DemoLayer({ request }: { request: DemoRequest }) {
               onGuide={startGuide}
               onExplore={explore}
               onGuideClose={endGuide}
-              dialog={() => dialog.current}
-              scroller={() => scroller.current}
+              dialog={getDialog}
+              scroller={getScroller}
               wantThis={wantThis}
               blockCtaInView={blockCtaInView}
               onBlockCta={setBlockCtaInView}

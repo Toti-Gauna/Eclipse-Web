@@ -82,11 +82,18 @@ const fresh = (vertical: VerticalId, load = 0): CalcState => ({
 
 /**
  * "¿Cuánto te cuesta no tener esto?" — the visitor completes a sentence with their
- * numbers ("Tengo [una clínica]. Cada semana pierdo [10] turnos…") and a compact readout
- * shows the monthly loss in their currency (the year and the USD reference smaller).
- * "Ver la cuenta" unfolds the rest — lost revenue vs. team time with the exact
- * arithmetic, and the assumptions — so nothing is lost, only folded. All maths in
- * lib/calculator.ts; the result is labelled as an estimate with the visitor's numbers.
+ * numbers ("Tengo [✎ una clínica ⌄]. Cada semana pierdo [10] turnos…") and the readout
+ * shows the estimated loss per month and per year, both as large readings in their
+ * currency (the USD reference smaller). Right under them, "De dónde sale" compares lost
+ * revenue vs. team time to scale (bar + amounts + shares); "Ver la cuenta" unfolds each
+ * part's exact arithmetic, the totals and the assumptions. All maths in lib/calculator.ts;
+ * the result is labelled as an estimate with the visitor's numbers — no invented figure.
+ *
+ * The business is a native <select> styled as an editable field (InlineSelect "field"):
+ * every vertical in content/verticals.json, "Otro" included with its own generic
+ * defaults. No free text: a typed business would only relabel "Otro" and could read as
+ * tailored assumptions we don't have. Changing it loads that business's defaults and the
+ * rest of the sentence ("lost.{vertical}") — the formula never changes.
  *
  * Layout: header + sentence | readout (lg+); on phones the readout follows the sentence
  * and a light sticky mini reading keeps the number on screen while the full one is out

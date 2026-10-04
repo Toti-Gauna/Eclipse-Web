@@ -61,6 +61,8 @@
   /* Keeps the demo's z-indices inside its view. */
   isolation: isolate;
   overflow: hidden;
+  /* Never scrollable, not even by focus() / scrollIntoView (hidden still allows that). */
+  overflow: clip;
   background: var(--demo-bg);
   color: var(--demo-ink);
   font-family: var(--demo-font-body);
@@ -532,7 +534,7 @@
   background: var(--demo-top-bg, var(--demo-bg));
 }
 /* Keeps the bar continuous while the panel slides (sidebar FLIP). */
-.demo-top::after {
+.demo-root[data-nav='sidebar'] .demo-top::after {
   content: '';
   position: absolute;
   top: 0;
@@ -636,7 +638,7 @@
   top: var(--demo-sim-h);
 }
 .demo-root[data-screen='phone'] {
-  --demo-sim-ph: 3.3em;
+  --demo-sim-ph: 4.15em;
 }
 .demo-root[data-screen='phone'] > .demo-sim {
   height: var(--demo-sim-ph);
@@ -713,7 +715,7 @@
   min-width: 0;
   flex: 1 1 auto;
   justify-content: center;
-  gap: 0.3em;
+  gap: 0.15em;
   overflow-x: auto;
   padding: 0.15em;
 }
@@ -721,12 +723,12 @@
   display: inline-flex;
   flex: none;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.45em;
   height: 2.5em;
-  padding: 0 1em 0 0.65em;
+  padding: 0 0.85em 0 0.6em;
   border-radius: 999px;
   color: var(--demo-muted);
-  font-size: 0.84em;
+  font-size: 0.8em;
   font-weight: 500;
   white-space: nowrap;
   transition:
@@ -829,7 +831,8 @@
   padding: 0.3em;
 }
 .demo-dock[data-phone] .demo-dock-item {
-  height: 4.1em;
+  min-width: 4.75em;
+  height: 4.75em;
   padding: 0 1em;
   font-size: 0.78em;
 }

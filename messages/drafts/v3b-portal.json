@@ -53,14 +53,6 @@
         }
       },
       "guide": {
-        "help": "Ayuda",
-        "helpHint": "ver de nuevo la guía de esta pantalla",
-        "next": "Siguiente",
-        "prev": "Anterior",
-        "done": "Listo",
-        "skip": "Saltar guía",
-        "close": "Cerrar guía",
-        "progress": "Paso {current} de {total}",
         "projects": {
           "label": "Guía de Mis proyectos",
           "list": {
@@ -162,14 +154,6 @@
         }
       },
       "guide": {
-        "help": "Help",
-        "helpHint": "see this screen's guide again",
-        "next": "Next",
-        "prev": "Back",
-        "done": "Done",
-        "skip": "Skip guide",
-        "close": "Close guide",
-        "progress": "Step {current} of {total}",
         "projects": {
           "label": "My projects guide",
           "list": {
@@ -271,14 +255,6 @@
         }
       },
       "guide": {
-        "help": "Ajuda",
-        "helpHint": "ver de novo o guia desta tela",
-        "next": "Próximo",
-        "prev": "Anterior",
-        "done": "Pronto",
-        "skip": "Pular guia",
-        "close": "Fechar guia",
-        "progress": "Passo {current} de {total}",
         "projects": {
           "label": "Guia de Meus projetos",
           "list": {

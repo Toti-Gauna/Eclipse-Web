@@ -47,7 +47,7 @@ export function SimBar({
   const uid = useId();
   const panelId = `${uid}-panel`;
   const [open, setOpen] = useState(false);
-  const root = useRef<HTMLElement>(null);
+  const root = useRef<HTMLDivElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
 
   const reached = snap.beat ?? -1;
@@ -123,7 +123,7 @@ export function SimBar({
   );
 
   return (
-    <section ref={root} className="demo-sim" data-variant={variant} aria-label={t('title')} data-tour={tour}>
+    <div ref={root} role="group" className="demo-sim" data-variant={variant} aria-label={t('title')} data-tour={tour}>
       {variant === 'laptop' ? (
         <>
           <p className="demo-sim-tag">{t('title')}</p>
@@ -215,6 +215,6 @@ export function SimBar({
           {playing ? t('playing', { label: playingLabel }) : reached >= 0 ? t('landed', { label: label(beats[reached].id), counter }) : ''}
         </p>
       ) : null}
-    </section>
+    </div>
   );
 }

@@ -49,7 +49,12 @@ export function Sheet({
     const dialog = ref.current;
     if (!dialog) return;
     if (open) {
-      if (!dialog.open) dialog.showModal();
+      if (!dialog.open) {
+        dialog.showModal();
+        // Commit the closed position (off-screen right for the drawer) before switching to
+        // 'open', so the panel always slides in instead of appearing in place. One read per open.
+        void dialog.getBoundingClientRect();
+      }
       const raf = requestAnimationFrame(() => setState('open'));
       return () => cancelAnimationFrame(raf);
     }

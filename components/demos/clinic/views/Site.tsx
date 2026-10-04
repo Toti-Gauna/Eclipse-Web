@@ -243,7 +243,7 @@ function ClinicSite({ compact, auto, onSeeAgenda }: { compact: boolean; auto: bo
             type="button"
             className="demo-btn"
             data-variant="primary"
-            onClick={(e) => e.currentTarget.closest('.demo-site')?.querySelector<HTMLElement>('.clinic-booking button')?.focus()}
+            onClick={(e) => e.currentTarget.closest('.demo-site')?.querySelector<HTMLElement>('.clinic-booking button')?.focus({ preventScroll: true })}
           >
             {t('nav.book')}
           </button>
@@ -310,7 +310,7 @@ function ClinicSite({ compact, auto, onSeeAgenda }: { compact: boolean; auto: bo
 export function PatientPhone({ onClose }: { onClose?: () => void }) {
   const t = useTranslations('demoClinic');
   const { view, state, store, paired, business, active, reduced, openAgenda } = useClinic();
-  const { fmt, treatment, pro } = useClinicText();
+  const { fmt, treatment, pro, day } = useClinicText();
   const scripts = useClinicScripts();
   const { play } = useSound();
   const auto = paired && !onClose && !state.siteManual;
@@ -338,7 +338,6 @@ export function PatientPhone({ onClose }: { onClose?: () => void }) {
   useEffect(() => {
     if (ownAt === null || ownAt === seenAt.current) return;
     seenAt.current = ownAt;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- the visitor just booked: show the push once
     setPushFor(ownAt);
     const id = window.setTimeout(() => setPushFor(null), 4200);
     return () => window.clearTimeout(id);
@@ -415,7 +414,11 @@ export function PatientPhone({ onClose }: { onClose?: () => void }) {
             }
             time={t('patient.now')}
             title={business}
-            body={thread.name ? t('patient.push', { name: thread.name, time: fmt.time(thread.start), treatment: treatment(thread.treatment) }) : t('patient.pushYou', { time: fmt.time(thread.start), pro: pro(thread.pro) })}
+            body={
+              thread.name
+                ? t('patient.push', { name: thread.name, time: fmt.time(thread.start), treatment: treatment(thread.treatment) })
+                : t('patient.pushYou', { time: thread.day === TODAY ? fmt.time(thread.start) : `${day(thread.day)}, ${fmt.time(thread.start)}`, pro: pro(thread.pro) })
+            }
             onOpen={openThread}
             openLabel={t('patient.openPush')}
           />

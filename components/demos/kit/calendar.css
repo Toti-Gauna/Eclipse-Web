@@ -302,15 +302,16 @@
   box-shadow: var(--demo-shadow);
   color: var(--demo-ink);
 }
-.demo-cal-bar[data-compact] .demo-cal-bar-btn,
-.demo-cal-bar[data-compact] .demo-cal-bar-today {
-  height: 2.75em;
-}
+/* Phone: ≈ 44px targets at the usual scale */
 .demo-cal-bar[data-compact] .demo-cal-bar-btn {
-  width: 2.75em;
+  width: 3.7em;
+  height: 3.7em;
+}
+.demo-cal-bar[data-compact] .demo-cal-bar-today {
+  height: 4.7em;
 }
 .demo-cal-bar[data-compact] .demo-cal-bar-seg button {
-  height: 2.5em;
+  height: 4.3em;
 }
 
 @media (prefers-reduced-motion: reduce) {

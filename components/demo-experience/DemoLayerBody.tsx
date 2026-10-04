@@ -20,6 +20,8 @@ export interface DemoLayerBodyProps {
   origin: DemoOrigin;
   /** The demo runs (false while the layer closes). */
   active: boolean;
+  /** The opening reveal is over: mount the live views (the light uncovers their poster). */
+  ready: boolean;
   choice: 'pending' | 'done';
   hasGuide: boolean;
   guideOpen: boolean;
@@ -45,7 +47,7 @@ const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() 
  * A separate chunk: loaded on intent (hover / focus / touch of an opener) or on open.
  */
 export function DemoLayerBody(props: DemoLayerBodyProps) {
-  const { demo, vertical, active, choice, hasGuide, guideOpen, guideRun, steps } = props;
+  const { demo, vertical, active, ready, choice, hasGuide, guideOpen, guideRun, steps } = props;
   const t = useTranslations('demoExperience');
   const tt = useTranslations('tour');
   const ts = useTranslations('demoShowcase');
@@ -92,16 +94,22 @@ export function DemoLayerBody(props: DemoLayerBodyProps) {
       <section className="dx-stage" aria-label={ts('viewsLabel', { business })}>
         <div ref={views} className="dx-views" data-choice={pending ? 'pending' : undefined}>
           <div className="dx-showcase" inert={pending || undefined}>
-            <Suspense fallback={<ShowcasePoster demo={demo} captions={captions} />}>
-              <DemoShowcase
-                demo={demo}
-                business={business}
-                active={active && !pending}
-                fit
-                view={view}
-                onViewChange={setView}
-              />
-            </Suspense>
+            {/* Mounting a demo is the heaviest moment (two views): it waits for the reveal, so the
+                opening never drops frames; the poster has the same geometry. */}
+            {ready ? (
+              <Suspense fallback={<ShowcasePoster demo={demo} captions={captions} />}>
+                <DemoShowcase
+                  demo={demo}
+                  business={business}
+                  active={active && !pending}
+                  fit
+                  view={view}
+                  onViewChange={setView}
+                />
+              </Suspense>
+            ) : (
+              <ShowcasePoster demo={demo} captions={captions} />
+            )}
           </div>
           {pending ? (
             <div className="dx-choice" role="group" aria-labelledby={`${uid}-choice`}>

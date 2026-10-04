@@ -924,9 +924,31 @@ button.clinic-recovered:hover .clinic-recovered-open {
   font-weight: 600;
   box-shadow: var(--demo-shadow-lg);
 }
-.clinic-site-chatbtn svg {
+.clinic-site-chatbtn svg,
+.clinic-site-wabtn svg {
   width: 1.2em;
   height: 1.2em;
+}
+/* After booking: back to the WhatsApp confirmation */
+.clinic-site-wabtn {
+  position: absolute;
+  left: 0.8em;
+  bottom: 1.5em;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  height: 2.6em;
+  padding: 0 1em;
+  border-radius: 999px;
+  background: var(--demo-surface);
+  color: var(--demo-ink);
+  font-size: 0.74em;
+  font-weight: 600;
+  box-shadow:
+    0 0 0 1px var(--demo-line),
+    var(--demo-shadow-lg);
+  animation: demo-pop 0.4s var(--demo-ease) both;
 }
 
 /* Patient phone */

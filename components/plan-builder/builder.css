@@ -683,6 +683,11 @@
   line-height: 1.4;
   color: var(--fg);
 }
+.pb-row-bonus {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--accent);
+}
 .pb-row-free {
   font-family: var(--font-mono);
   font-size: 0.6875rem;

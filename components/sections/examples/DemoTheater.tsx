@@ -76,6 +76,21 @@ function useOnScreen(ref: RefObject<HTMLElement | null>): boolean {
   return on;
 }
 
+/** `value`, but turning false only `ms` after it did (true applies at once). */
+function useSettledFalse(value: boolean, ms: number): boolean {
+  const [held, setHeld] = useState(value);
+  useEffect(() => {
+    if (value) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- mirrors an external store at once
+      setHeld(true);
+      return;
+    }
+    const id = window.setTimeout(() => setHeld(false), ms);
+    return () => window.clearTimeout(id);
+  }, [value, ms]);
+  return value || held;
+}
+
 type ShowcaseVertical = Vertical & { demo: DemoId; business: string; keyNumber: NonNullable<Vertical['keyNumber']> };
 type StageView = 'demo' | 'trailer';
 
@@ -109,8 +124,10 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
   const [selected, setSelected] = useState(0);
   const [changed, setChanged] = useState(false);
   const [view, setView] = useState<StageView>('demo');
-  // The demo layer is open (from here or the hero): one live experience at a time.
-  const open = useDemoExperienceOpen();
+  // The demo layer is open (from here or the hero): one live experience at a time. After it
+  // closes, the stage's live demo comes back once the page has settled (not in the same frames).
+  const layerOpen = useDemoExperienceOpen();
+  const open = useSettledFalse(layerOpen, 500);
   const tabs = useRef<Array<HTMLButtonElement | null>>([]);
   const openButton = useRef<HTMLButtonElement>(null);
   const intent = useRef<number | undefined>(undefined);
@@ -161,8 +178,10 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
   const cool = () => window.clearTimeout(intent.current);
 
   const openDemo = (e: MouseEvent<HTMLButtonElement>) => {
-    selectVertical(v.id, 'examples');
-    openDemoExperience({ vertical: v.id, demo: v.demo, origin: 'examples' }, e.currentTarget, e);
+    const id = v.id;
+    openDemoExperience({ vertical: id, demo: v.demo, origin: 'examples' }, e.currentTarget, e);
+    // Recording the rubro re-renders the page's experience consumers: after the opening.
+    window.setTimeout(() => selectVertical(id, 'examples'), 900);
   };
   const chooseView = (next: StageView) => {
     if (next === view) return;

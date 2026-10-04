@@ -7,7 +7,7 @@ import { usePortal } from './usePortal';
 /**
  * The top line of a portal screen: breadcrumbs and, where the screen has a guide, the
  * "Ayuda" button that restarts it (the guide also opens by itself on the first visit).
- * Steps and copy are resolved here, on the server, and handed over as plain strings.
+ * Step texts are resolved here, on the server, and handed over as plain strings.
  */
 export function PageBar({ items, tour }: { items: Crumb[]; tour?: PortalTourId }) {
   const { t } = usePortal();
@@ -22,21 +22,7 @@ export function PageBar({ items, tour }: { items: Crumb[]; tour?: PortalTourId }
     <div className="pt-pagebar">
       <Breadcrumbs items={items} />
       {tour && steps ? (
-        <PortalGuide
-          tourKey={PORTAL_TOUR_KEYS[tour]}
-          steps={steps}
-          copy={{
-            label: t(`guide.${tour}.label`),
-            next: t('guide.next'),
-            prev: t('guide.prev'),
-            done: t('guide.done'),
-            skip: t('guide.skip'),
-            close: t('guide.close'),
-            progress: t.raw('guide.progress') as string,
-            help: t('guide.help'),
-            helpHint: t('guide.helpHint'),
-          }}
-        />
+        <PortalGuide tourKey={PORTAL_TOUR_KEYS[tour]} label={t(`guide.${tour}.label`)} steps={steps} />
       ) : null}
     </div>
   );

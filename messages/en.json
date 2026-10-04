@@ -119,7 +119,8 @@
     "localeCurrency": "Language: {language} · Currency: {currency}",
     "usdRef": "({amount})",
     "perMonth": "per month",
-    "perYear": "per year"
+    "perYear": "per year",
+    "bonusLine": "Included at no charge: {name} (package bonus)"
   },
   "problem": {
     "title": "What does <em>not having</em> this cost you?",
@@ -211,7 +212,12 @@
     "miniLabel": "You lose a month",
     "miniJump": "See the estimate in detail",
     "rangeMax": "Max {value}: we use that number.",
-    "rangeMin": "Min {value}: we use that number."
+    "rangeMin": "Min {value}: we use that number.",
+    "perYearLabel": "a year",
+    "splitTitle": "Where it comes from",
+    "mathYear": "Per year (× 12)",
+    "resultAnnounceYear": "With your numbers you lose about {amount} a month: {year} a year.",
+    "verticalHint": "Changing the business loads typical values for it. You can edit all of them."
   },
   "services": {
     "title": "What we build, <em>piece by piece</em>.",
@@ -481,7 +487,13 @@
     "catChosen": "{chosen} of {total} selected",
     "careSuggestedNote": "We checked {name} because it’s the one we suggest for your plan. Change it or pick “{none}”.",
     "proposalLabel": "Proposal request",
-    "proposalText": "Not a quote: we confirm scope and price in writing."
+    "proposalText": "Not a quote: we confirm scope and price in writing.",
+    "bonusTag": "Bonus",
+    "bonusIncluded": "Included at no charge: {name}",
+    "bonusIn": "Bonus of the {plan} package: no extra charge",
+    "bonusFree": "no charge",
+    "bonusDetect": "It also comes with a gift: {name}.",
+    "bonusShort": "+ Bonus: {name}, at no charge"
   },
   "pricing": {
     "title": "What it costs,<br></br> and how you pay.",
@@ -588,7 +600,10 @@
       "audienceLabel": "Who it's for",
       "maintenanceLabel": "Suggested maintenance",
       "maintenanceValue": "{name} · {price} {period}",
-      "maintenanceNone": "None (optional)"
+      "maintenanceNone": "None (optional)",
+      "bonusBadge": "Premium landing page included",
+      "bonusLabel": "Bonus included",
+      "bonusNote": "The package price stays the same."
     },
     "noneFits": "No package fits?",
     "noneFitsCta": "Build it piece by piece",

@@ -201,6 +201,7 @@ export function Kanban({
                   <li
                     key={card.id}
                     data-flip={card.id}
+                    data-menu={open ? '' : undefined}
                     className={`demo-kanban-card ${toneClass(card.tone ?? col.tone ?? 'neutral')} ${card.fresh ? 'demo-fresh' : ''}`}
                     onPointerDown={onPointerDown(card)}
                     onPointerMove={onPointerMove}

@@ -119,7 +119,8 @@
     "localeCurrency": "Idioma: {language} · Moeda: {currency}",
     "usdRef": "({amount})",
     "perMonth": "por mês",
-    "perYear": "por ano"
+    "perYear": "por ano",
+    "bonusLine": "Incluído sem custo: {name} (bônus do pacote)"
   },
   "problem": {
     "title": "Quanto custa <em>não ter</em> isso?",
@@ -211,7 +212,12 @@
     "miniLabel": "Você perde por mês",
     "miniJump": "Ver a estimativa em detalhe",
     "rangeMax": "Máximo {value}: usamos esse número.",
-    "rangeMin": "Mínimo {value}: usamos esse número."
+    "rangeMin": "Mínimo {value}: usamos esse número.",
+    "perYearLabel": "por ano",
+    "splitTitle": "De onde vem",
+    "mathYear": "Por ano (× 12)",
+    "resultAnnounceYear": "Com os seus números, você perde cerca de {amount} por mês: {year} por ano.",
+    "verticalHint": "Ao trocar o tipo de negócio, carregamos valores típicos dele. Você pode editar todos."
   },
   "services": {
     "title": "O que construímos, <em>peça por peça</em>.",
@@ -481,7 +487,13 @@
     "catChosen": "{chosen} de {total} escolhidas",
     "careSuggestedNote": "Marcamos {name} porque é o que sugerimos para o seu plano. Troque ou escolha “{none}”.",
     "proposalLabel": "Pedido de proposta",
-    "proposalText": "Não é um orçamento: a gente confirma escopo e preço por escrito."
+    "proposalText": "Não é um orçamento: a gente confirma escopo e preço por escrito.",
+    "bonusTag": "Bônus",
+    "bonusIncluded": "Incluído sem custo: {name}",
+    "bonusIn": "Bônus do pacote {plan}: sem custo extra",
+    "bonusFree": "sem custo",
+    "bonusDetect": "E ainda vem de presente: {name}.",
+    "bonusShort": "+ Bônus: {name}, sem custo"
   },
   "pricing": {
     "title": "Quanto custa<br></br> e como você paga.",
@@ -588,7 +600,10 @@
       "audienceLabel": "Para quem",
       "maintenanceLabel": "Manutenção sugerida",
       "maintenanceValue": "{name} · {price} {period}",
-      "maintenanceNone": "Nenhuma (opcional)"
+      "maintenanceNone": "Nenhuma (opcional)",
+      "bonusBadge": "Landing page premium incluída",
+      "bonusLabel": "Bônus incluído",
+      "bonusNote": "O preço do pacote é o mesmo."
     },
     "noneFits": "Nenhum pacote serve?",
     "noneFitsCta": "Monte peça por peça",

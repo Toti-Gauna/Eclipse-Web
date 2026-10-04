@@ -94,6 +94,9 @@ export function StepGoals({
                       {pressed ? <span className="pb-tag">{t('chosen')}</span> : null}
                     </span>
                     <span className="pb-row-desc">{l(plan.audience, locale)}</span>
+                    {plan.bonus && !plan.items.includes(plan.bonus.itemId) ? (
+                      <span className="pb-row-bonus">{t('bonusShort', { name: l(plan.bonus.title, locale) })}</span>
+                    ) : null}
                   </span>
                   <span className="pb-row-price readout">
                     <span className="pb-row-from">

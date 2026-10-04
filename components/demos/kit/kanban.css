@@ -84,6 +84,9 @@
   cursor: grab;
   user-select: none;
 }
+.demo-kanban-card[data-menu] {
+  z-index: 11;
+}
 .demo-kanban-card[data-dragging] {
   z-index: 10;
   animation: none;

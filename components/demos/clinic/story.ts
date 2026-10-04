@@ -573,7 +573,9 @@ export function scheduleFor(day: number): Appt[] {
     let i = 0;
     while (m < end) {
       const seed = day * 997 + pi * 131 + i++;
-      if (hash(seed) < 0.66) {
+      // Past days were full; the further ahead, the more room is left.
+      const busy = day < TODAY ? 0.72 : Math.max(0.35, 0.62 - 0.06 * (day - TODAY));
+      if (hash(seed) < busy) {
         const treatment = list[Math.floor(hash(seed + 7) * list.length)];
         const minutes = TREATMENTS[treatment].minutes;
         if (m + minutes <= end) {

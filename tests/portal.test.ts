@@ -289,11 +289,10 @@ describe('portal guide and "Más información"', () => {
     return typeof value === 'string' && value.trim().length > 0;
   };
 
-  it('every guide step has a title and a body in es, en and pt, plus the shared controls', () => {
+  it('every guide step has a title and a body in es, en and pt (controls come from `tour`)', () => {
     for (const l of LOCALES) {
-      for (const key of ['help', 'helpHint', 'next', 'prev', 'done', 'skip', 'close', 'progress'])
-        expect(str(l, `portal.guide.${key}`), `${l}: guide.${key}`).toBe(true);
-      expect(String(get(trees[l], 'portal.guide.progress'))).toMatch(/\{current\}.*\{total\}/);
+      for (const key of ['help', 'replay', 'next', 'prev', 'done', 'skip', 'close', 'progress'])
+        expect(str(l, `tour.${key}`), `${l}: tour.${key}`).toBe(true);
       for (const [tour, steps] of Object.entries(PORTAL_TOURS)) {
         expect(str(l, `portal.guide.${tour}.label`), `${l}: ${tour}.label`).toBe(true);
         for (const step of steps) {

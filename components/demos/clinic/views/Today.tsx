@@ -61,6 +61,7 @@ export function ClinicToasts({ placement }: { placement: 'top' | 'bottom-right' 
   const mine = view.events.filter((e) => e.kind === 'you');
   const ids = mine.map((e) => e.id).join('|');
   const known = useRef<Set<string> | null>(null);
+  const timers = useRef<number[]>([]);
   const [recent, setRecent] = useState<string[]>([]);
   useEffect(() => {
     const now = ids ? ids.split('|') : [];
@@ -68,11 +69,13 @@ export function ClinicToasts({ placement }: { placement: 'top' | 'bottom-right' 
     known.current = new Set(now);
     const added = before ? now.filter((id) => !before.has(id)) : [];
     if (!added.length) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- a booking the visitor just made
     setRecent((r) => [...r, ...added]);
-    const id = window.setTimeout(() => setRecent((r) => r.filter((x) => !added.includes(x))), 3400);
-    return () => window.clearTimeout(id);
+    timers.current.push(window.setTimeout(() => setRecent((r) => r.filter((x) => !added.includes(x))), 3400));
   }, [ids]);
+  useEffect(() => {
+    const list = timers.current;
+    return () => list.forEach((id) => window.clearTimeout(id));
+  }, []);
   if (reduced) return null;
   const items: ToastItem[] = view.events
     .filter((e) => (e.kind === 'you' ? recent.includes(e.id) : e.at >= 0 && ['online', 'waitlist', 'voice', 'missed'].includes(e.kind) && view.t - e.at < 3400))

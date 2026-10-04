@@ -44,6 +44,9 @@ interface HeroStateValue {
   registerDial: (controller: DialController | null) => void;
 }
 
+/** The layer's opening lasts ~0.8 s (components/demo-experience/motion.ts). */
+const DEFER_SELECT_MS = 900;
+
 const HeroStateContext = createContext<HeroStateValue | null>(null);
 
 /** Hero-local state: the dial and the motion bus. The demo itself opens in the shared layer. */
@@ -97,13 +100,16 @@ export function HeroStateProvider({ children }: { children: ReactNode }) {
 
   const choose = useCallback<HeroStateValue['choose']>(
     (id, opener, event) => {
-      selectVertical(id, 'hero');
       const demo = verticalById(id)?.demo;
       if (id === 'otro' || !demo) {
+        selectVertical(id, 'hero');
         openBuilder('hero_other');
         return;
       }
       openDemoExperience({ vertical: id, demo, origin: 'hero' }, opener, event);
+      // Recording the rubro re-renders every consumer of the experience on the page: after
+      // the layer's opening, never in the same frames.
+      window.setTimeout(() => selectVertical(id, 'hero'), DEFER_SELECT_MS);
     },
     [selectVertical, openBuilder],
   );

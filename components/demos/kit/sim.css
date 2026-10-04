@@ -108,7 +108,8 @@
 }
 .demo-sim[data-variant='phone'] .demo-sim-play {
   flex: 1;
-  height: 2.75em;
+  /* ≈ 44px at the phone's usual scale */
+  height: 4.6em;
   font-size: 0.8em;
 }
 .demo-sim-play svg {
@@ -150,8 +151,8 @@
   font-size: 0.86em;
 }
 .demo-sim[data-variant='phone'] .demo-sim-icon {
-  min-width: 2.75em;
-  height: 2.75em;
+  min-width: 4.6em;
+  height: 4.6em;
   font-size: 0.8em;
 }
 .demo-sim-icon:hover:not(:disabled) {
@@ -195,6 +196,10 @@
   left: 0.5em;
   width: auto;
   font-size: 0.92em;
+}
+.demo-sim[data-variant='phone'] .demo-sim-item,
+.demo-sim[data-variant='phone'] .demo-sim-reset {
+  min-height: 3.9em;
 }
 .demo-sim-panel-head {
   display: flex;

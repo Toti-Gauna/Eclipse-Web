@@ -120,7 +120,7 @@
       "sim": {
         "online": "Llega una reserva online",
         "reminder": "Recordatorio por WhatsApp",
-        "freed": "Cancelación: la lista de espera reasigna el turno",
+        "freed": "Cancelación y lista de espera",
         "call": "Llamada a la recepción IA",
         "note": "Reservas, mensajes y llamadas simulados con datos de demostración; no se envía nada."
       },
@@ -165,7 +165,7 @@
       "sim": {
         "online": "An online booking comes in",
         "reminder": "WhatsApp reminder",
-        "freed": "Cancellation: the waitlist refills the slot",
+        "freed": "Cancellation and waitlist",
         "call": "A call to the AI front desk",
         "note": "Bookings, messages and calls are simulated with demo data; nothing is sent."
       },
@@ -210,7 +210,7 @@
       "sim": {
         "online": "Chega um agendamento online",
         "reminder": "Lembrete pelo WhatsApp",
-        "freed": "Cancelamento: a lista de espera preenche o horário",
+        "freed": "Cancelamento e lista de espera",
         "call": "Ligação para a recepção IA",
         "note": "Agendamentos, mensagens e ligações simulados com dados de demonstração; nada é enviado."
       },
