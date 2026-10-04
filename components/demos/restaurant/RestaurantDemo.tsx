@@ -1,12 +1,12 @@
 'use client';
 
-import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { BookOpenText, ChartNoAxesColumn, ChefHat, ConciergeBell, LayoutGrid, PhoneCall, QrCode } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, contentToTop, revealInDemo, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
-import { RESTAURANT_THEME } from './data';
+import { BEAT_FOCUS, RESTAURANT_THEME, SCREEN_TABS, TODAY, type BeatId, type FocusSpot } from './data';
 import { createRestaurantStore, deriveRestaurant, isOffNow, type LineId } from './story';
 import { RestaurantProvider, type RestaurantCtx, type RestaurantTab } from './context';
 import { useRestaurantText } from './text';
@@ -18,7 +18,7 @@ import { LaptopFloor, PhoneFloor } from './views/Floor';
 import { LaptopMenu, PhoneMenu } from './views/Menu';
 import { LaptopNumbers, PhoneNumbers } from './views/Numbers';
 import { LaptopQr } from './views/Qr';
-import { CustomerApp } from './views/Customer';
+import { CustomerApp, type CustomerFocusRequest } from './views/Customer';
 import './restaurant.css';
 
 const VIEWS: Record<RestaurantTab, Record<DemoProps['screen'], () => ReactNode>> = {
@@ -32,11 +32,11 @@ const VIEWS: Record<RestaurantTab, Record<DemoProps['screen'], () => ReactNode>>
 };
 
 /**
- * Shell variant: a service tool used mid-rush — a slim icon rail (the kitchen display and the
- * switchboard need the width), compact density, thin icons; on the phone a bottom tab bar.
- * Different from the clinic's airy top pills + dock.
+ * Shell variant: a service tool used mid-rush — a plain sidebar with its labels always visible
+ * (narrower than the kit's default and not collapsible: restaurant.css), compact density, thin
+ * icons; on the phone a bottom tab bar. Different from the clinic's airy top pills + dock.
  */
-const LAYOUT: ShellLayout = { nav: 'rail', density: 'compact', icons: 'line' };
+const LAYOUT: ShellLayout = { nav: 'sidebar', density: 'compact', icons: 'line' };
 
 /**
  * Bodegón Lucero (vertical "restaurantes"): a Buenos Aires bodegón with salón,
@@ -59,10 +59,12 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
   const { play } = useSound();
 
   const { store, paired, ref } = usePairedStore('restaurant', createRestaurantStore);
-  // Scopes the chrome tweaks in restaurant.css (rail, tab bar, paper tokens) to this demo.
+  // Scopes the chrome tweaks in restaurant.css (sidebar, tab bar, paper tokens) to this demo.
+  const rootEl = useRef<HTMLDivElement | null>(null);
   const rootRef = useCallback(
     (el: HTMLDivElement | null) => {
       if (el) el.dataset.demo = 'restaurant';
+      rootEl.current = el;
       ref(el);
     },
     [ref],
@@ -75,19 +77,50 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
   const [customer, setCustomer] = useState(false);
   const customerPhone = screen === 'phone' && paired;
   const announce = screen === 'laptop' || !paired;
+  /** The day "Salón y reservas" opens on; `n` remounts it when a beat asks for a day. */
+  const [floor, setFloor] = useState({ day: TODAY, n: 0 });
+  /** Where the last beat asked this view to scroll (`jump`: it also changed section). */
+  const [reveal, setReveal] = useState<{ spot: FocusSpot; jump: boolean; n: number } | null>(null);
+  const [customerFocus, setCustomerFocus] = useState<CustomerFocusRequest>({ tab: 'order', n: 0 });
+
+  // A beat takes this view to where it happens (data.ts BEAT_FOCUS), once, when the story enters it.
+  useBeatFocus(store, snap, (id) => {
+    const target = BEAT_FOCUS[id as BeatId];
+    if (!target) return;
+    if (customerPhone) {
+      const c = target.customer;
+      if (c !== 'stay') setCustomerFocus((f) => ({ tab: c, n: f.n + 1 }));
+      return;
+    }
+    const f = target[screen];
+    setCustomer(false);
+    if (f.line) setFocusLine(f.line);
+    if (f.day !== undefined) setFloor((d) => ({ day: f.day!, n: d.n + 1 }));
+    setReveal((r) => ({ spot: f.spot, jump: f.tab !== tab || f.day !== undefined, n: (r?.n ?? 0) + 1 }));
+    setTab(f.tab);
+  });
+  useLayoutEffect(() => {
+    if (!reveal) return;
+    const smooth = !reveal.jump && !snap.reduced;
+    if (reveal.spot === 'top') contentToTop(rootEl.current, smooth);
+    else revealInDemo(rootEl.current, `[data-focus~="${reveal.spot}"]`, { smooth });
+    // Only when a beat asks (not on every story tick).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reveal]);
 
   const aiOn = !isOffNow(snap.state.aiOff);
   const newTickets = view.board.filter((tk) => tk.stage === 'new').length;
   const laptop = screen === 'laptop';
-  const nav: NavItem[] = [
-    { id: 'service', label: t('nav.service'), icon: ConciergeBell },
-    { id: 'phone', label: t(laptop ? 'nav.phone' : 'nav.phoneShort'), icon: PhoneCall, badge: view.liveCount ? 'live' : undefined, tour: 'voice' },
-    { id: 'kitchen', label: t('nav.kitchen'), icon: ChefHat, badge: newTickets || undefined, tour: 'kitchen' },
-    { id: 'floor', label: t(laptop ? 'nav.floor' : 'nav.floorShort'), icon: LayoutGrid, tour: 'floor' },
-    ...(laptop ? [{ id: 'qr', label: t('nav.qr'), icon: QrCode, tour: 'order' }] : []),
-    { id: 'menu', label: t('nav.menu'), icon: BookOpenText },
-    { id: 'numbers', label: t('nav.numbers'), icon: ChartNoAxesColumn },
-  ];
+  const items: Record<RestaurantTab, Omit<NavItem, 'id'>> = {
+    service: { label: t('nav.service'), icon: ConciergeBell },
+    phone: { label: t(laptop ? 'nav.phone' : 'nav.phoneShort'), icon: PhoneCall, badge: view.liveCount ? 'live' : undefined, tour: 'voice' },
+    kitchen: { label: t('nav.kitchen'), icon: ChefHat, badge: newTickets || undefined, tour: 'kitchen' },
+    floor: { label: t(laptop ? 'nav.floor' : 'nav.floorShort'), icon: LayoutGrid, tour: 'floor' },
+    qr: { label: t('nav.qr'), icon: QrCode, tour: 'order' },
+    menu: { label: t('nav.menu'), icon: BookOpenText },
+    numbers: { label: t('nav.numbers'), icon: ChartNoAxesColumn },
+  };
+  const nav: NavItem[] = SCREEN_TABS[screen].map((id) => ({ id, ...items[id] }));
 
   const ctx: RestaurantCtx = {
     screen,
@@ -107,6 +140,7 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
     go: (id, line) => {
       if (line) setFocusLine(line);
       if (id !== tab && active) play('select');
+      if (id === 'floor' && tab !== 'floor') setFloor((d) => ({ ...d, day: TODAY }));
       setTab(id);
       setCustomer(false);
     },
@@ -120,6 +154,7 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
       store.play?.(id);
       if (active) play('select');
     },
+    floorDay: floor.day,
   };
 
   const clock = fmt.time(view.clock);
@@ -130,7 +165,7 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
       <RestaurantProvider value={ctx}>
         <AppShell screen="phone" chrome="bare" theme={RESTAURANT_THEME} business={business} logo={<LuceroMark />} active={active} rootRef={rootRef} statusTime={clock} sim={sim}>
           <div className="rl rl-customer-root" data-screen="phone">
-            <CustomerApp key={snap.loop} />
+            <CustomerApp key={snap.loop} focus={customerFocus} />
           </div>
         </AppShell>
       </RestaurantProvider>
@@ -168,7 +203,11 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
         logo={<LuceroMark />}
         nav={nav}
         current={tab}
-        onNavigate={(id) => setTab(id as RestaurantTab)}
+        onNavigate={(id) => {
+          // The visitor's own navigation opens the reservations book on tonight again.
+          if (id === 'floor') setFloor((d) => ({ ...d, day: TODAY }));
+          setTab(id as RestaurantTab);
+        }}
         layout={LAYOUT}
         phoneNav="tabs"
         title={
@@ -203,7 +242,7 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
         <div className="rl" data-screen={screen}>
           {/* The service view already shows every change in place. */}
           {tab === 'service' ? null : <RestaurantToasts placement={laptop ? 'bottom-right' : 'top'} />}
-          <div key={tab} className="demo-view">
+          <div key={tab === 'floor' ? `floor:${floor.n}` : tab} className="demo-view">
             <View />
           </div>
           <Announcer />

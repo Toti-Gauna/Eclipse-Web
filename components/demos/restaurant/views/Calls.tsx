@@ -286,7 +286,7 @@ export function PhoneCalls() {
   return (
     <div className="flex flex-col gap-[0.8em] pt-[0.2em]">
       <ViewHead rubric={t('phone.rubric')} title={t('phone.title')} />
-      <div className="rl-linepick" role="group" aria-label={t('phone.pick')}>
+      <div className="rl-linepick" role="group" aria-label={t('phone.pick')} data-focus="switchboard">
         <LineLamps onPick={(line) => go('phone', line)} />
         <span className="rl-linepick-live demo-mono" aria-live="off">
           {t('phone.liveNow', { count: s.live })}
@@ -329,7 +329,7 @@ export function LaptopCalls() {
         <Kpi label={t('phone.kpis.missed')} value={s.missed} hint={s.missed ? t('phone.kpis.missedHintOff') : t('phone.kpis.missedHint')} />
       </div>
       <CallCues />
-      <div className="rl-switchboard" data-tour="voice">
+      <div className="rl-switchboard" data-tour="voice" data-focus="switchboard">
         {([1, 2, 3] as LineId[]).map((line) => (
           <LineCard key={line} line={line} announce={announce && line === 1} maxLines={4} />
         ))}

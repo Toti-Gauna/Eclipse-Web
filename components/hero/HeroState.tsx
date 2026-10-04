@@ -32,7 +32,7 @@ interface HeroStateValue {
    * A rubro key was pressed: records the vertical (calculator, WhatsApp messages) and opens
    * its demo in the "Ver demo" layer from the key (or "Armá tu plan" for "Otro").
    */
-  choose: (id: VerticalId, opener: HTMLElement, event?: { clientX: number; clientY: number; detail: number }) => void;
+  choose: (id: VerticalId, opener: HTMLElement) => void;
   bus: React.RefObject<HeroMotionBus>;
   /**
    * Points the dial at a rubro while its chip is hovered or focused (null releases
@@ -96,14 +96,14 @@ export function HeroStateProvider({ children }: { children: ReactNode }) {
   );
 
   const choose = useCallback<HeroStateValue['choose']>(
-    (id, opener, event) => {
+    (id, opener) => {
       selectVertical(id, 'hero');
       const demo = verticalById(id)?.demo;
       if (id === 'otro' || !demo) {
         openBuilder('hero_other');
         return;
       }
-      openDemoExperience({ vertical: id, demo, origin: 'hero' }, opener, event);
+      openDemoExperience({ vertical: id, demo, origin: 'hero' }, opener);
     },
     [selectVertical, openBuilder],
   );

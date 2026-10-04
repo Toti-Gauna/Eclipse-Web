@@ -33,6 +33,7 @@ import {
   type CalendarEvent,
   type LeaderRow,
   type WaveLevel,
+  keepChatFocus,
 } from '../../kit';
 import { CLASSMATES, CURRENT_UNIT, HERO, HERO_COLOR, LIVE_CLASSES, NEXT_UNITS, PROMPTS, SPEAK_FLOW, SPEAK_SCALE, SPEAK_SCORE, STORY, UNITS, WEEKDAY, storyClock, type BadgeId } from '../data';
 import { ASKS, act, isFreshEvent } from '../story';
@@ -137,7 +138,7 @@ export function SpeakingSession({ variant = 'full', className = '' }: { variant?
   }, [s.lines.length]);
 
   return (
-    <section className={`atrio-speak ${className}`} data-variant={variant} data-phase={phase} aria-label={t('label', { name: first('valentina') })}>
+    <section className={`atrio-speak ${className}`} data-beat="speak" data-variant={variant} data-phase={phase} aria-label={t('label', { name: first('valentina') })}>
       <header className="atrio-speak-head">
         <span className="atrio-speak-orb" aria-hidden>
           {phase === 'ringing' || phase === 'live' ? <span className="atrio-speak-rings demo-loop" /> : null}
@@ -595,7 +596,10 @@ function AskTutor() {
         <div className="atrio-ask-chips" role="group" aria-label={t('askLabel')} data-tour="tutor">
           <p className="atrio-ask-k">{t('askKicker')}</p>
           {left.map((id) => (
-            <button key={id} type="button" className="atrio-prompt" onClick={() => run(act.ask(id), 'select')}>
+            <button key={id} type="button" className="atrio-prompt" onClick={() => {
+                keepChatFocus(undefined, '.atrio-prompt');
+                run(act.ask(id), 'select');
+              }}>
               {t(`asks.${id}.q`)}
             </button>
           ))}
@@ -623,7 +627,10 @@ export function TutorChat({ className = '', header = true }: { className?: strin
       dateLabel={t('date')}
       label={t('label')}
       announce={announce}
-      onPick={(step, reply) => run(act.pickTutor(step, reply), 'select')}
+      onPick={(step, reply) => {
+        keepChatFocus(undefined, '.atrio-prompt');
+        run(act.pickTutor(step, reply), 'select');
+      }}
       composer={false}
       footer={
         <>

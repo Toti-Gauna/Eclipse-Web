@@ -4,7 +4,7 @@ import { useId } from 'react';
 import { useTranslations } from 'next-intl';
 import { BellRing, CircleDollarSign, Clock4, MessageCircle } from 'lucide-react';
 import { Money } from '@/components/ui/Money';
-import { Card, ChatWidget, Kanban, Meter, Pill, Switch, type KanbanCard, type KanbanColumn, type Tone } from '../../kit';
+import { Card, ChatWidget, Kanban, Meter, Pill, Switch, type KanbanCard, type KanbanColumn, type Tone , keepChatFocus } from '../../kit';
 import { ROSTER, SCHOOL, STORY, storyClock } from '../data';
 import { act, isFreshEvent, isOffNow, type BoardColumn } from '../story';
 import { useAcademy } from '../context';
@@ -154,7 +154,10 @@ function MartinThread({ className = '' }: { className?: string }) {
       announce={announce}
       dateLabel={t('date')}
       stamp={(at) => fmt.time(storyClock((view.martin.sentAt ?? STORY.nudge) + at))}
-      onPick={(step, reply) => run(act.pickWa(step, reply, view.martin.sentAt ?? STORY.nudge), 'select')}
+      onPick={(step, reply) => {
+        keepChatFocus(undefined, '.atrio-prompt');
+        run(act.pickWa(step, reply, view.martin.sentAt ?? STORY.nudge), 'select');
+      }}
       composer={false}
       className={`atrio-wa ${className}`}
     />

@@ -2,9 +2,10 @@
 
 import { createContext, useContext } from 'react';
 import type { SoundName } from '@/lib/sound/types';
+import type { SchoolTab } from './data';
 import type { AcademyEvent, AcademyState, AcademyStore, AcademyView, StudentTab } from './story';
 
-export type SchoolTab = 'today' | 'students' | 'courses' | 'live' | 'tutor' | 'site';
+export type { SchoolTab };
 
 export interface AcademyCtx {
   screen: 'phone' | 'laptop';

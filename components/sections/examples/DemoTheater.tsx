@@ -179,7 +179,7 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
 
   const openDemo = (e: MouseEvent<HTMLButtonElement>) => {
     selectVertical(v.id, 'examples');
-    openDemoExperience({ vertical: v.id, demo: v.demo, origin: 'examples' }, e.currentTarget, e);
+    openDemoExperience({ vertical: v.id, demo: v.demo, origin: 'examples' }, e.currentTarget);
   };
   const chooseView = (next: StageView) => {
     if (next === view) return;

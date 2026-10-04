@@ -237,6 +237,29 @@ export function AppShell(props: AppShellProps) {
   const { shown: overlayShown, closing } = useOverlayPresence(overlayOpen && !!overlay, reduced);
   const simPlaying = useSimPlaying(sim);
 
+  // The overlay makes what's behind it inert (its trigger included): focus moves into it when
+  // it opens and back to the trigger when it closes, so it never drops to the page.
+  const overlayTrigger = useRef<HTMLElement | null>(null);
+  const overlayUp = overlayOpen && !!overlay;
+  useEffect(() => {
+    const root = rootEl.current;
+    const active = document.activeElement as HTMLElement | null;
+    if (!overlayUp || !root || !active || !root.contains(active)) return;
+    overlayTrigger.current = active;
+    const id = requestAnimationFrame(() =>
+      root.querySelector<HTMLElement>('.demo-overlay button:not([disabled]), .demo-overlay a[href], .demo-overlay [tabindex="0"]')?.focus({ preventScroll: true }),
+    );
+    return () => cancelAnimationFrame(id);
+  }, [overlayUp]);
+  // Back once it's gone (its closing animation over, the content behind no longer inert).
+  useEffect(() => {
+    const back = overlayTrigger.current;
+    if (overlayShown || !back) return;
+    overlayTrigger.current = null;
+    const active = document.activeElement;
+    if (back.isConnected && (!active || active === document.body || !rootEl.current?.contains(active))) back.focus({ preventScroll: true });
+  }, [overlayShown]);
+
   // Stable, so pairing only runs when the root mounts.
   const setRoot = useCallback(
     (el: HTMLDivElement | null) => {

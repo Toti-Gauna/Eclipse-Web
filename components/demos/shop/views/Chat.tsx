@@ -173,9 +173,15 @@ function TopQuestions() {
 }
 
 function useSelected() {
-  const { active } = useShop();
+  const { active, focus } = useShop();
   const { play } = useSound();
   const [selected, setSelected] = useState<ConvId>('ines');
+  // A beat about Inés's conversation (BEAT_FOCUS) selects it again.
+  const [seen, setSeen] = useState(focus.n);
+  if (seen !== focus.n) {
+    setSeen(focus.n);
+    if (focus.spot === 'ines-chat') setSelected('ines');
+  }
   return [
     selected,
     (id: ConvId) => {

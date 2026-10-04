@@ -255,6 +255,68 @@ export const BEATS = [
   { id: 'thursday', at: 44_000 },
 ] as const;
 export const STORY_END = BEATS[BEATS.length - 1].at;
+export type BeatId = (typeof BEATS)[number]['id'];
+
+/* ------------------------------------------------------------------ */
+/* Screens + where each beat happens (v3c: a simulation takes you there) */
+/* ------------------------------------------------------------------ */
+/** The owner's panel: every section on the laptop; the phone has no "Ligas" (the member app has it). */
+export const OWNER_TABS = {
+  laptop: ['today', 'retention', 'members', 'classes', 'league', 'site'],
+  phone: ['today', 'retention', 'members', 'classes', 'site'],
+} as const;
+export type OwnerTab = (typeof OWNER_TABS.laptop)[number];
+/** Lucía's member app (phone). */
+export const MEMBER_TAB_IDS = ['home', 'classes', 'league'] as const;
+export type MemberTab = (typeof MEMBER_TAB_IDS)[number];
+export const PHONE_OVERLAYS = ['wa', 'levelup'] as const;
+export type PhoneOverlay = (typeof PHONE_OVERLAYS)[number];
+/** Elements a beat brings into view inside its screen (marked `data-beat="<id>"`). */
+export const BEAT_MARKS = ['chat'] as const;
+export type BeatMark = (typeof BEAT_MARKS)[number];
+
+export type OwnerTarget = { side: 'owner'; tab: OwnerTab; reveal?: BeatMark };
+export type MemberTarget = { side: 'member'; tab: MemberTab; overlay?: PhoneOverlay; reveal?: BeatMark };
+/** Nothing of this beat happens on that screen: it stays where the visitor left it. */
+export type StayTarget = { side: 'stay' };
+export interface BeatScreens {
+  /** The owner's panel (desktop view). */
+  laptop: OwnerTarget;
+  /** The phone alone: the complete product (member app ⇄ owner's panel). */
+  phone: OwnerTarget | MemberTarget;
+  /** The phone next to the laptop: Lucía's phone only. */
+  paired: MemberTarget | StayTarget;
+}
+/**
+ * Where each beat is legible, per screen (`useBeatFocus` in GymDemo takes each view there when
+ * the story enters the beat; the visitor can move away at once):
+ * - lead: the site with its chatbot open (Tomás chats with it). Lucía's phone: nothing happens.
+ * - winback: the owner sees Lucía flagged and the automation send; her phone opens the WhatsApp.
+ * - tuesday: the owner's "Hoy" (her comeback rail, the check-in); her app's home (check-in, 1/2).
+ * - thursday: the leagues (mission done, level 7 reward, she climbs); her app's home (level up).
+ */
+export const BEAT_SCREENS: Record<BeatId, BeatScreens> = {
+  lead: {
+    laptop: { side: 'owner', tab: 'site', reveal: 'chat' },
+    phone: { side: 'owner', tab: 'site', reveal: 'chat' },
+    paired: { side: 'stay' },
+  },
+  winback: {
+    laptop: { side: 'owner', tab: 'retention' },
+    phone: { side: 'member', tab: 'home', overlay: 'wa' },
+    paired: { side: 'member', tab: 'home', overlay: 'wa' },
+  },
+  tuesday: {
+    laptop: { side: 'owner', tab: 'today' },
+    phone: { side: 'member', tab: 'home' },
+    paired: { side: 'member', tab: 'home' },
+  },
+  thursday: {
+    laptop: { side: 'owner', tab: 'league' },
+    phone: { side: 'member', tab: 'home' },
+    paired: { side: 'member', tab: 'home' },
+  },
+};
 
 /** A reply the story gives on its own inside a beat (absolute story time), unless the visitor answered first. */
 export interface StoryPick {

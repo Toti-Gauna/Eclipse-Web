@@ -277,7 +277,7 @@ export function siteResult(run: ChatRun, who: 'julieta' | 'you', start: number, 
 /* ------------------------------------------------------------------ */
 /* Derivation                                                           */
 /* ------------------------------------------------------------------ */
-export type StudentTab = 'home' | 'course' | 'speak' | 'tutor' | 'class';
+export type { StudentTab } from './data';
 
 export type EventKind =
   | 'reminders'
@@ -384,10 +384,16 @@ export interface AcademyView {
   lead: ChatRun;
   siteMine: ChatRun | null;
   siteMineStart: number | null;
+  /**
+   * The site's chat (and the school's lane) show the visitor's own test (else Julieta's): the latest
+   * one started wins — playing the lead beat after testing yourself shows Julieta taking hers.
+   */
+  siteShowMine: boolean;
   leadLevel: 'A1' | 'A2' | 'B1' | null;
   mineLevel: 'A1' | 'A2' | 'B1' | null;
   mineEnrollment: Enrollment | null;
-  enrollments: Enrollment[];
+  /** Today's enrollments, each with a stable `id` (repeat tests at rest share their time). */
+  enrollments: (Enrollment & { id: string })[];
   /* Martín */
   martin: {
     status: 'idle' | 'flagged' | 'nudged' | 'replied' | 'later' | 'back' | 'dropped';
@@ -461,8 +467,13 @@ export function deriveAcademy(state: AcademyState, t: number, instant: boolean, 
   if (siteMine && mineLevel && mineStart !== null && siteMine.at.result !== undefined) {
     push({ id: `level-you-${mineStart}`, at: mineStart + siteMine.at.result, kind: 'level', who: 'you', level: mineLevel, mine: true });
   }
-  const enrollments = [...state.enrolled, ...(leadEnrolled ? [leadEnrolled] : []), ...(mineEnrollment ? [mineEnrollment] : [])].filter((e) => e.at <= t);
-  for (const e of enrollments) push({ id: `enrolled-${e.who}-${e.at}`, at: e.at, kind: 'enrolled', who: e.who, level: e.level, course: e.course, pay: e.pay, mine: e.mine });
+  // Ids by position, not time: at rest the clock is frozen, so the visitor's repeat tests share `at`.
+  const enrollments = [
+    ...state.enrolled.map((e, k) => ({ ...e, id: `you-${k}` })),
+    ...(leadEnrolled ? [{ ...leadEnrolled, id: 'julieta' }] : []),
+    ...(mineEnrollment ? [{ ...mineEnrollment, id: `you-${state.enrolled.length}` }] : []),
+  ].filter((e) => e.at <= t);
+  for (const e of enrollments) push({ id: `enrolled-${e.id}`, at: e.at, kind: 'enrolled', who: e.who, level: e.level, course: e.course, pay: e.pay, mine: e.mine });
 
   /* ---- Martín (beat 5): flagged → nudged (automation on) → back, or drops out ---- */
   const flagged = t >= STORY.flag;
@@ -599,6 +610,7 @@ export function deriveAcademy(state: AcademyState, t: number, instant: boolean, 
     lead,
     siteMine,
     siteMineStart: mineStart,
+    siteShowMine: mineStart !== null && (mineStart >= STORY.lead || t < STORY.lead),
     leadLevel,
     mineLevel,
     mineEnrollment,

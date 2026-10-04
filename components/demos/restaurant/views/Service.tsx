@@ -83,7 +83,7 @@ function StageCounts() {
   const { t } = useRestaurantText();
   const stage = useStageLabel();
   return (
-    <section className="rl-stagecounts" data-tour="kitchen">
+    <section className="rl-stagecounts" data-tour="kitchen" data-focus="pass">
       <header className="rl-section-head">
         <h3 className="rl-rubric">{t('service.kitchen')}</h3>
         <button type="button" className="rl-linkbtn" onClick={() => go('kitchen')}>
@@ -198,7 +198,7 @@ export function LaptopService() {
           ))}
         </div>
       </section>
-      <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-[0.9em]">
+      <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-[0.9em]" data-focus="pass">
         <TicketRail limit={3} />
         <SalonGlance withMap />
       </div>

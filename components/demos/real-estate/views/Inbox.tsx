@@ -107,7 +107,8 @@ function Transcript() {
     from === 'user' ? t('people.carolinaFirst') : from === 'bot' ? (view.botOff ? t('inbox.humanLabel', { name: t('people.juliaFirst') }) : t('inbox.botLabel')) : '';
   return (
     <section className="re-transcript" aria-label={t('inbox.transcript')}>
-      <ol ref={list} className="re-lines">
+      {/* Scrolls on its own (long conversations): reachable with the keyboard. */}
+      <ol ref={list} className="re-lines" tabIndex={0} aria-label={t('inbox.transcript')}>
         {run.items.map((it) => {
           const tag = note(it.id);
           return (
@@ -270,11 +271,17 @@ export function LeadFile({ compact = false }: { compact?: boolean }) {
 /* ------------------------------------------------------------------ */
 export function PhoneInbox() {
   const t = useTranslations('demoRealEstate');
-  const { view, go, loop } = useEstate();
+  const { view, go, loop, focus } = useEstate();
   const x = useEstateText();
   const stamp = useStamp();
-  // After the visit the conversation continues on WhatsApp (shown on its own unless the visitor picks, per loop).
+  // After the visit the conversation continues on WhatsApp (shown on its own unless the visitor picks,
+  // per loop; a beat drops the pick so the story shows where it happens).
   const [picked, setPicked] = useState<{ loop: number; channel: 'site' | 'wa' } | null>(null);
+  const [seen, setSeen] = useState(focus.n);
+  if (seen !== focus.n) {
+    setSeen(focus.n);
+    setPicked(null);
+  }
   const channel = picked?.loop === loop ? picked.channel : view.follow ? 'wa' : 'site';
   const setChannel = (c: 'site' | 'wa') => setPicked({ loop, channel: c });
   const lost = view.lostAt !== null && view.t >= view.lostAt;

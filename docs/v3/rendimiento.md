@@ -141,3 +141,20 @@ Lectura:
   monta recién después del reveal, para que la luz descubra primero el póster.
 
 Mismos límites que arriba: Chromium headless sin GPU, rueda sintética, sin dispositivos ni Safari reales.
+
+## Fase 3 — apertura centrada de «Ver demo» (antes/después)
+
+Misma medición de la apertura (`perf` de la capa): build de producción, CPU 4×, 2 rondas, *antes* = `main`
+(dd90541, apertura de ~0,8 s desde el clic) y *después* = esta rama (eclipse centrado del tamaño del hero, ~2,4 s).
+Ventana de la apertura: del clic a 2,7 s (en *antes* incluye además montar la demo; en *después* la demo se monta
+justo al terminar). Cierre: 1,8 s desde Escape.
+
+| Caso | Del clic a la capa abierta | Apertura: frame p50 · p95 · máx · tareas largas | Cierre: p50 · p95 · máx |
+|---|---|---|---|
+| 1440 desde el hero | 259–435 → 277–343 ms | 17 · 33–50 · 217–317 ms · 431–783 ms → 17 · 33 · 150–200 ms · 264–325 ms | 17 · 67–133 · 200–267 → 17 · 33–50 · 133–217 |
+| 1440 desde Demos | 325–414 → 368–396 ms | 17 · 33–50 · 467–483 ms · 756–917 ms → 17 · 33–50 · 233–267 ms · 361–410 ms | 17 · 167–300 · 350–433 → 17 · 67–117 · 283–317 |
+| 360 desde el hero | 163–199 → 232–297 ms | 17 · 17–33 · 150–183 ms · 223–354 ms → 17 · 17 · 200–283 ms · 197–333 ms | 17 · 17 · 100–133 → 17 · 17–33 · 167–183 |
+
+Lectura: la apertura nueva es más larga pero no más pesada por frame (mediana 17 ms, p95 ≤ 50 ms, como antes); las
+tareas largas dentro de la ventana bajan porque la demo se monta después de la luz. Solo anima transform, opacity y
+clip-path (corona CSS, sin WebGL). Mismos límites: Chromium headless sin GPU, sin dispositivos ni Safari reales.

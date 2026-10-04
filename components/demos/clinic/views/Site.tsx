@@ -22,9 +22,9 @@ interface Pick {
 const EMPTY: Pick = { treatment: null, day: null, start: null, booked: false };
 
 /** Camila's booking, replayed on the patient phone while the "online" beat plays. */
-function autoPick(t: number): Pick & { pressing: boolean; tap: string | null } {
+function autoPick(t: number, camilaStart: number | null): Pick & { pressing: boolean; tap: string | null } {
   const s = STORY.site;
-  const c = STORY.camila;
+  const c = { ...STORY.camila, start: camilaStart ?? STORY.camila.start };
   const tapAt = (at: number) => t >= at && t < at + 650;
   return {
     treatment: t >= s.pick ? c.treatment : null,
@@ -47,7 +47,7 @@ function BookingWidget({ auto, compact = false, onSeeAgenda }: { auto: boolean; 
   const { fmt, treatment, day, pro } = useClinicText();
   const { play } = useSound();
   const [local, setLocal] = useState<Pick>(EMPTY);
-  const a = auto ? autoPick(view.t) : null;
+  const a = auto ? autoPick(view.t, view.camilaStart) : null;
   const s: Pick = a ?? local;
 
   const change = (next: Partial<Pick>) => {
@@ -307,21 +307,30 @@ function ClinicSite({ compact, auto, onSeeAgenda }: { compact: boolean; auto: bo
  * confirmation. Next to the laptop it replays Camila's booking while the "online" beat
  * plays; opened from the phone app (`onClose`), the visitor books for themselves.
  */
-export function PatientPhone({ onClose }: { onClose?: () => void }) {
+export function PatientPhone({ onClose, focus = 0 }: { onClose?: () => void; focus?: number }) {
   const t = useTranslations('demoClinic');
   const { view, state, store, paired, business, active, reduced, openAgenda } = useClinic();
   const { fmt, treatment, pro, day } = useClinicText();
   const scripts = useClinicScripts();
   const { play } = useSound();
-  const auto = paired && !onClose && !state.siteManual;
+  // Camila's booking replays only when she finds a time (the visitor may have taken Sofía's free hour first).
+  const auto = paired && !onClose && !state.siteManual && view.camilaStart !== null;
   const [screenOverride, setScreen] = useState<'site' | 'whatsapp' | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
+  // A beat ("online") hands the phone back to the story: Camila's taps on the site, then her
+  // WhatsApp. Asks from before this mount are not replayed.
+  const [seenFocus, setSeenFocus] = useState(focus);
+  if (focus !== seenFocus) {
+    setSeenFocus(focus);
+    setScreen(null);
+    setChatOpen(false);
+  }
 
   const S = STORY.site;
   const c = STORY.camila;
   const camila = auto && view.t >= S.push;
   const thread = camila
-    ? { at: S.push, name: t('firstNames.camila'), day: TODAY, start: c.start, treatment: c.treatment as TreatmentId, pro: c.pro as ProId }
+    ? { at: S.push, name: t('firstNames.camila'), day: TODAY, start: view.camilaStart ?? c.start, treatment: c.treatment as TreatmentId, pro: c.pro as ProId }
     : !auto && state.patientThread
       ? { ...state.patientThread, name: null }
       : null;

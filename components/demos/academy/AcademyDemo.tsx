@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { BookOpenText, CalendarDays, Globe, House, LayoutDashboard, MessageSquareText, Mic, Route, Smartphone, Sparkles, Users, UsersRound } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import type { SoundName } from '@/lib/sound/types';
 import { verticalById } from '@/lib/content';
-import { AppShell, nextBeat, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, contentToTop, revealInDemo, nextBeat, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
-import { ATRIO_THEME } from './data';
+import { ATRIO_THEME, BEAT_MARK_SELECTOR, BEAT_SCREENS, type BeatId, type BeatMark } from './data';
 import { createAcademyStore, deriveAcademy, isOffNow, type AcademyEvent, type StudentTab } from './story';
 import { AcademyProvider, type AcademyCtx, type SchoolTab } from './context';
 import { useAcademyScripts } from './scripts';
@@ -51,6 +51,13 @@ const STUDENT_TABS: { id: StudentTab; icon: NavItem['icon']; tour?: string }[] =
  * bar instead of a bottom bar (student app and school panel alike).
  */
 const LAYOUT: ShellLayout = { nav: 'sidebar', density: 'airy', icons: 'line' };
+
+/** A beat took this view somewhere: scroll its content to the top and/or reveal one element. */
+interface Jump {
+  n: number;
+  top: boolean;
+  mark?: BeatMark;
+}
 
 /** Where the visitor took Valentina's phone (reset with the story). */
 interface PhoneNav {
@@ -115,6 +122,37 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
   const patchNav = (patch: Partial<PhoneNav>) => setNav({ ...nav, ...patch });
   const studentApp = screen === 'phone' && (studentOnly || mode === 'student');
   const upcoming = nextBeat(store, snap);
+
+  /* ---- v3c: a beat takes each view to where it happens (data.ts BEAT_SCREENS) ---- */
+  const box = useRef<HTMLDivElement>(null);
+  const [jump, setJump] = useState<Jump | null>(null);
+  useBeatFocus(store, snap, (id) => {
+    const where = BEAT_SCREENS[id as BeatId];
+    if (!where) return;
+    const target = screen === 'laptop' ? where.laptop : paired ? where.paired : where.phone;
+    if (target.side === 'stay') return;
+    let moved: boolean;
+    if (target.side === 'school') {
+      moved = studentApp || tab !== target.tab;
+      setMode('school');
+      setTab(target.tab);
+    } else {
+      moved = !studentApp || nav.tab !== target.tab;
+      setMode('student');
+      setNav({ loop: snap.loop, tab: target.tab, overlay: false });
+    }
+    setJump((j) => ({ n: (j?.n ?? 0) + 1, top: moved, mark: target.reveal }));
+  });
+  useEffect(() => {
+    if (!jump) return;
+    const id = requestAnimationFrame(() => {
+      if (jump.top) contentToTop(box.current);
+      if (jump.mark) revealInDemo(box.current, BEAT_MARK_SELECTOR[jump.mark], { smooth: !snap.reduced });
+    });
+    return () => cancelAnimationFrame(id);
+    // Only when a beat asked for it (not on every story tick).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jump]);
 
   const ctx: AcademyCtx = {
     screen,
@@ -199,7 +237,7 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
           overlayOpen={nav.overlay}
           overlayOrigin={['50%', '45%']}
         >
-          <div className="atrio" data-screen="phone" data-app="student">
+          <div ref={box} className="atrio" data-screen="phone" data-app="student">
             <AcademyToasts placement="top" only={(e) => e.who === 'valentina'} />
             <div key={`${nav.tab}-${snap.loop}`} className="demo-view">
               <View />
@@ -276,7 +314,7 @@ export default function AcademyDemo({ screen, active }: DemoProps) {
         sim={sim}
         contentClassName="atrio-board"
       >
-        <div className="atrio" data-screen={screen} data-app="school">
+        <div ref={box} className="atrio" data-screen={screen} data-app="school">
           <AcademyToasts placement={screen === 'phone' ? 'top' : 'bottom-right'} />
           <div key={tab} className="demo-view">
             <View />

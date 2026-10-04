@@ -87,14 +87,17 @@ reachable (folded is fine, deleted is not).
   frameless views (no laptop/phone shells, no overlap). On phones: tabs with readable sizes. Load near the
   viewport with a static poster first; never more than one live experience at a time.
 - **"Ver demo" = one light layer** (`components/demo-experience/`): hero chips and the demos section open the
-  same warm/illuminated `<dialog>` from the click point (eclipse → light → circle reveal; reduced motion = fade).
+  same warm/illuminated `<dialog>`. Opening (motion.ts, ~2.4 s, skippable with a click/key): the page goes dark,
+  THE eclipse takes the center at the hero's size (from the hero, the hero's own glides there), the moon slides,
+  the diamond ring fires and the light floods the screen from it; closing reverses it. Reduced motion = fade.
   It has its own scroll; the page never moves (`lockScroll`, keeps the scrollbar gutter); Volver / Escape /
   browser Back restore the exact scroll and focus (`data-demo-opener`). First open offers "Ver con guía" /
   "Ver por mi cuenta" (remembered locally); the guide never starts by itself. Under the views: the complete
   project from `vertical.project` (package only when its approved audience names the vertical; otherwise the
   pieces with their published prices and no invented total), maintenance, process, CTAs.
 - **Demos are manual:** nothing animates, plays sound or advances by itself. Stories run on beats played from
-  the SimBar ("Simular: …") and end still; every visible control works on local demo data. Each demo has its
+  the SimBar ("Simular: …") and end still; playing one takes each view to where it happens (`useBeatFocus`);
+  every visible control works on local demo data. Each demo has its
   own AppShell structure (`layout.nav/density/icons`, `phoneNav`) and 4–6 guide steps (`<demo>/tour.ts`,
   `data-tour` marks in both views, copy in `demoTours`). See components/demos/README.md.
 - **Builder:** always enters from the right; its surface follows the section it was opened from

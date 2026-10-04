@@ -7,6 +7,7 @@ import './demo.css';
 
 export * from './kit/theme';
 export * from './kit/store';
+export * from './kit/reveal';
 export * from './kit/format';
 export * from './kit/primitives';
 export * from './kit/AppShell';

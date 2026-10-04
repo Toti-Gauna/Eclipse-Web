@@ -2208,8 +2208,10 @@ button.gym-stat:hover {
   position: relative;
   min-width: 0;
 }
+/* The whole frame (and the chat pinned to its bottom) fits above the floating dock: at 27em the
+   chat's quick replies sat under the dock, and a tap on one opened the section under the finger. */
 .gym-site-frame .demo-browser-body {
-  max-height: 27em;
+  max-height: 23em;
 }
 .gym-site {
   background:
@@ -2436,16 +2438,19 @@ button.gym-stat:hover {
   border-radius: var(--demo-radius) var(--demo-radius) 0 0;
   font-size: 0.92em;
 }
+/* Minimized: a narrow card in the corner — wide, it covered the site's own "Reservar" CTA. */
 .gym-peek {
   position: absolute;
   right: 0.6em;
   bottom: 0.6em;
   z-index: 3;
+  width: min(16em, calc(100% - 1.2em));
 }
 .gym-site-frame[data-screen='phone'] .gym-peek {
   position: relative;
   right: auto;
   bottom: auto;
+  width: auto;
   margin-top: 0.6em;
 }
 .gym-site-frame[data-screen='phone'] .demo-browser-body {
@@ -2805,4 +2810,13 @@ button.gym-site-btn {
   .gym-heat > span {
     transition: none;
   }
+}
+
+/* (Chat replies on the phone are ≥ 44px in the kit, chat.css.) The WhatsApp's back arrow too. */
+.demo-root[data-screen='phone'] .gym-wa-back {
+  width: 3.4em;
+  height: 3.4em;
+}
+.demo-root[data-screen='phone'] .gym-wa .demo-chat-head {
+  padding-left: 3.6em;
 }

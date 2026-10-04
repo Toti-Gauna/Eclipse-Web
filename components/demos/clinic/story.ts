@@ -244,6 +244,11 @@ export interface ClinicView {
   call: VoiceState;
   /** Where the AI receptionist books Julián (null if nothing fits). */
   callTarget: { pro: ProId; start: number } | null;
+  /**
+   * The time Camila books on the site ("online"): her 10:30 with Sofía, or the next free one when
+   * the visitor took it before her beat (null: Sofía's day is full). The patient phone replays it.
+   */
+  camilaStart: number | null;
   /** The receptionist was off when the call came in. */
   callMissed: boolean;
   appts: Appt[];
@@ -354,15 +359,26 @@ export function deriveClinic(
 
   const steps: { at: number; run: () => void }[] = [];
   const S = STORY;
+  // Camila looks for her slot before anything else touches Sofía's day (the visitor's earlier bookings count).
+  const camilaStart = (() => {
+    const c = S.camila;
+    const minutes = TREATMENTS[c.treatment].minutes;
+    const busy = [
+      ...BASE_DAY.filter((b) => b.pro === c.pro && b.status !== 'freed').map((b) => [b.start, b.start + TREATMENTS[b.treatment].minutes]),
+      ...state.mine.filter((b) => b.day === TODAY && b.pro === c.pro && b.at <= S.site.booked).map((b) => [b.start, b.start + TREATMENTS[b.treatment].minutes]),
+    ];
+    for (let s = c.start; s + minutes <= DAY_END; s += STEP) if (!busy.some(([a, b]) => s < b && a < s + minutes)) return s;
+    return null;
+  })();
 
   // Camila books on the public site.
   steps.push({
     at: S.site.booked,
     run: () => {
       const c = S.camila;
-      if (!isFree(c.pro, c.start, TREATMENTS[c.treatment].minutes)) return;
-      put({ pro: c.pro, start: c.start, patient: 'camila', treatment: c.treatment, status: 'new', via: 'online', changedAt: S.site.booked }, 'online');
-      events.push({ id: 'online', at: S.site.booked, kind: 'online', pro: c.pro, start: c.start, patient: 'camila', treatment: c.treatment });
+      if (camilaStart === null || !isFree(c.pro, camilaStart, TREATMENTS[c.treatment].minutes)) return;
+      put({ pro: c.pro, start: camilaStart, patient: 'camila', treatment: c.treatment, status: 'new', via: 'online', changedAt: S.site.booked }, 'online');
+      events.push({ id: 'online', at: S.site.booked, kind: 'online', pro: c.pro, start: camilaStart, patient: 'camila', treatment: c.treatment });
     },
   });
   // Valentina confirms her reminder.
@@ -529,6 +545,7 @@ export function deriveClinic(
     martinaOption: option,
     call,
     callTarget,
+    camilaStart,
     callMissed,
     appts,
     events,

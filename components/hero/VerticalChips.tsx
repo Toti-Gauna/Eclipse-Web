@@ -58,7 +58,7 @@ export function VerticalChips() {
                     aim(v.id, 'focus');
                   }}
                   onBlur={() => aim(null, 'focus')}
-                  onClick={(e) => choose(v.id, e.currentTarget, e)}
+                  onClick={(e) => choose(v.id, e.currentTarget)}
                   className="hero-chip"
                 >
                   <span aria-hidden className="hero-chip-index">

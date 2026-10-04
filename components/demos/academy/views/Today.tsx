@@ -114,8 +114,8 @@ function useLanes(): Lane[] {
     outcome: leveled !== null && view.t >= leveled ? { label: t('valentina.outB1'), tone: 'accent2' } : review !== null && view.t >= review ? { label: t('valentina.outReview'), tone: 'warn' } : null,
   };
 
-  const mine = view.siteMine !== null;
-  const site = view.siteMine ?? view.lead;
+  const mine = view.siteShowMine && view.siteMine !== null;
+  const site = (mine ? view.siteMine : null) ?? view.lead;
   const level = mine ? view.mineLevel : view.leadLevel;
   const siteAt = (rel: number | undefined) => (rel === undefined ? null : (mine ? (view.siteMineStart ?? 0) : STORY.lead) + rel);
   const enrolled = mine ? view.mineEnrollment : view.enrollments.find((e) => e.who === 'julieta');
@@ -155,7 +155,7 @@ export function NowLanes({ vertical = false }: { vertical?: boolean }) {
   const time = useEventTime();
   const lanes = useLanes();
   return (
-    <ol className="atrio-lanes" data-vertical={vertical ? '' : undefined} aria-label={t('label')}>
+    <ol className="atrio-lanes" data-beat="lanes" data-vertical={vertical ? '' : undefined} aria-label={t('label')}>
       {lanes.map((lane) => {
         const doneCount = lane.steps.filter((s) => s.at !== null && view.t >= s.at).length;
         return (

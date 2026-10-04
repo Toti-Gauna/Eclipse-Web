@@ -60,6 +60,76 @@ export const BEATS = [
   { id: 'nudge', at: 59_000 },
 ] as const;
 export const STORY_END = BEATS[BEATS.length - 1].at;
+export type BeatId = (typeof BEATS)[number]['id'];
+
+/* ------------------------------------------------------------------ */
+/* Screens + where each beat happens (v3c: a simulation takes you there) */
+/* ------------------------------------------------------------------ */
+/** The school's panel (same sections on the laptop and on the phone, in another order). */
+export const SCHOOL_TABS = ['today', 'students', 'courses', 'live', 'tutor', 'site'] as const;
+export type SchoolTab = (typeof SCHOOL_TABS)[number];
+/** Valentina's student app (phone). */
+export const STUDENT_TAB_IDS = ['home', 'course', 'speak', 'tutor', 'class'] as const;
+export type StudentTab = (typeof STUDENT_TAB_IDS)[number];
+/** Elements a beat brings into view inside its screen. */
+export const BEAT_MARKS = ['speak', 'writing', 'lanes', 'sitechat', 'martin'] as const;
+export type BeatMark = (typeof BEAT_MARKS)[number];
+/** Where each mark is, in any view that shows it (the kit's chats can't take a `data-beat`). */
+export const BEAT_MARK_SELECTOR: Record<BeatMark, string> = {
+  speak: '[data-beat="speak"]',
+  writing: '.atrio-chat:not(.atrio-sitechat)',
+  lanes: '[data-beat="lanes"]',
+  sitechat: '[data-beat="sitechat"]',
+  martin: '.atrio-wa, .atrio-wa-empty',
+};
+
+export type SchoolTarget = { side: 'school'; tab: SchoolTab; reveal?: BeatMark };
+export type StudentTarget = { side: 'student'; tab: StudentTab; reveal?: BeatMark };
+/** Nothing of this beat happens on that screen: it stays where the visitor left it. */
+export type StayTarget = { side: 'stay' };
+export interface BeatScreens {
+  /** The school's panel (desktop view). */
+  laptop: SchoolTarget;
+  /** The phone alone: the complete product (student app ⇄ school's panel). */
+  phone: SchoolTarget | StudentTarget;
+  /** The phone next to the laptop: Valentina's phone only. */
+  paired: StudentTarget | StayTarget;
+}
+/**
+ * Where each beat is legible, per screen (`useBeatFocus` in AcademyDemo takes each view there
+ * when the story enters the beat; the visitor can move away at once):
+ * - speak / writing: the school sees both live on "Tutora IA"; her phone, Speaking / Tutora.
+ * - levelup: the school's "Hoy" (her lane: lesson, B1, club); her app's home (level, streak).
+ * - lead: the site with the level-test chat. Valentina's phone: nothing happens.
+ * - nudge: "Alumnos" (Martín's card on the board, his WhatsApp). Valentina's phone: nothing.
+ */
+export const BEAT_SCREENS: Record<BeatId, BeatScreens> = {
+  speak: {
+    laptop: { side: 'school', tab: 'tutor', reveal: 'speak' },
+    phone: { side: 'student', tab: 'speak', reveal: 'speak' },
+    paired: { side: 'student', tab: 'speak', reveal: 'speak' },
+  },
+  writing: {
+    laptop: { side: 'school', tab: 'tutor', reveal: 'writing' },
+    phone: { side: 'student', tab: 'tutor', reveal: 'writing' },
+    paired: { side: 'student', tab: 'tutor', reveal: 'writing' },
+  },
+  levelup: {
+    laptop: { side: 'school', tab: 'today', reveal: 'lanes' },
+    phone: { side: 'student', tab: 'home' },
+    paired: { side: 'student', tab: 'home' },
+  },
+  lead: {
+    laptop: { side: 'school', tab: 'site', reveal: 'sitechat' },
+    phone: { side: 'school', tab: 'site', reveal: 'sitechat' },
+    paired: { side: 'stay' },
+  },
+  nudge: {
+    laptop: { side: 'school', tab: 'students' },
+    phone: { side: 'school', tab: 'students', reveal: 'martin' },
+    paired: { side: 'stay' },
+  },
+};
 /** 20:10 when the story starts. */
 export const CLOCK_START = 20 * 60 + 10;
 export const storyClock = (t: number) => CLOCK_START + Math.floor(Math.max(0, t) / 2000);

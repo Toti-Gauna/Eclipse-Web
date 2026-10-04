@@ -198,7 +198,9 @@ function BookingForm({ day, table, onDone, onCancel }: { day: number; table: num
   const times = bookTimes(day, view);
   const options = useMemo(() => Array.from({ length: tb.seats }, (_, i) => i + 1).filter((n) => n >= Math.min(2, tb.seats)), [tb.seats]);
   const [people, setPeople] = useState(options[options.length - 1]);
-  const [time, setTime] = useState(times[0]);
+  const [picked, setTime] = useState(times[0]);
+  // A beat moves the clock on: a time that has gone by is no longer offered (nor booked).
+  const time = picked !== undefined && times.includes(picked) ? picked : times[0];
   return (
     <div className="rl-bookform demo-pop" role="group" aria-label={t('floor.form.title', { n: table })}>
       <p className="rl-bookform-title">
@@ -349,8 +351,8 @@ export function BookingWhatsApp({ className = '' }: { className?: string }) {
 
 /** Where the reservations book is looking (any open day; past ones read-only) + the selected table. */
 function useFloorDay() {
-  const { state, view } = useRestaurant();
-  const nav = useCalendarNav({ today: TODAY, open: isOpenDay, initialView: 'day' });
+  const { state, view, floorDay } = useRestaurant();
+  const nav = useCalendarNav({ today: TODAY, initialDay: floorDay, open: isOpenDay, initialView: 'day' });
   const [sel, setSel] = useState<{ day: number; table: number } | null>(null);
   const day = nav.day;
   const tables = dayTables(day, state, view);
@@ -421,7 +423,7 @@ export function LaptopFloor() {
         </div>
         <div className="flex min-w-0 flex-col gap-[0.7em]">
           {f.selected !== null ? <BookingForm key={`${f.day}-${f.selected}`} day={f.day} table={f.selected} onDone={f.clear} onCancel={f.clear} /> : null}
-          <section className="rl-panel">
+          <section className="rl-panel" data-focus="bookings">
             <h3 className="rl-rubric">{tonight ? t('floor.listTitle') : t('floor.listDay')}</h3>
             <Bookings list={f.bookings} limit={f.selected !== null ? 3 : 6} past={f.day < TODAY} />
           </section>
@@ -451,7 +453,7 @@ export function PhoneFloor() {
       </div>
       {f.selected !== null ? <BookingForm key={`${f.day}-${f.selected}`} day={f.day} table={f.selected} onDone={f.clear} onCancel={f.clear} /> : <DayNote day={f.day} count={f.bookings.length} />}
       <FloorLegend tables={f.tables} day={f.day} />
-      <section className="rl-panel">
+      <section className="rl-panel" data-focus="bookings">
         <h3 className="rl-rubric">{tonight ? t('floor.listTitle') : t('floor.listDay')}</h3>
         <Bookings list={f.bookings} limit={6} past={f.day < TODAY} />
       </section>

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { BellRing, ChevronDown, Flame, MessageCircle, RotateCcw, Target, Trophy, UserCheck, Zap } from 'lucide-react';
-import { BrowserFrame, ChatPeek, ChatWidget, DemoBadge, LandingPreview, Readout, SiteSection } from '../../kit';
+import { BrowserFrame, ChatPeek, ChatWidget, DemoBadge, LandingPreview, Readout, SiteSection , keepChatFocus } from '../../kit';
 import { LEAD, SITE_URL, sessionsOn } from '../model';
 import { act, isFreshEvent, taken } from '../story';
 import { useGym, useGymText } from '../hooks';
@@ -36,11 +36,15 @@ function OrbitArt() {
   );
 }
 
-/** The site's CTAs open the chat as the visitor (a fresh conversation, answered at once). */
+/**
+ * The site's CTAs open the chat as the visitor (a fresh conversation, answered at once) and
+ * expand the widget if it was minimized. A conversation of theirs still going on is kept.
+ */
 function useStartChat() {
-  const { run, view } = useGym();
+  const { run, view, siteChat } = useGym();
   return () => {
-    if (!view.leadMine || view.leadMine.done) run(act.startLead(), 'open');
+    siteChat.setOpen(true);
+    if (!view.leadShowMine || !view.leadMine || view.leadMine.done) run(act.startLead(), 'open');
   };
 }
 
@@ -114,32 +118,35 @@ function SiteBody({ compact }: { compact: boolean }) {
 
 function LeadChat({ compact }: { compact: boolean }) {
   const t = useTranslations('demoGym.lead');
-  const { view, run, announce } = useGym();
+  const { view, run, announce, siteChat } = useGym();
   const { fmt } = useGymText();
   const chats = useChats();
   const start = useStartChat();
-  const [open, setOpen] = useState(true);
-  const mine = !!chats.leadMine;
-  const shown = chats.leadMine ?? chats.lead;
-  const pick = (step: string, reply: string) => run(mine ? act.pickLeadMine(step, reply) : act.pickLead(step, reply), 'select');
-  const begin = view.leadMineSource?.start ?? view.leadSource.start;
+  const box = useRef<HTMLDivElement>(null);
+  const mine = view.leadShowMine && !!chats.leadMine;
+  const shown = (mine ? chats.leadMine : null) ?? chats.lead;
+  const pick = (step: string, reply: string) => {
+    keepChatFocus(box.current);
+    run(mine ? act.pickLeadMine(step, reply) : act.pickLead(step, reply), 'select');
+  };
+  const begin = mine ? (view.leadMineSource?.start ?? 0) : view.leadSource.start;
   const idle = !shown.items.length && !shown.typing;
-  if (!open) {
+  if (!siteChat.open) {
     return (
       <ChatPeek
         run={shown}
         title={t('title')}
         avatar={<MessageCircle aria-hidden strokeWidth={1.9} />}
         onPick={pick}
-        onOpen={() => setOpen(true)}
+        onOpen={() => siteChat.setOpen(true)}
         openLabel={t('open')}
         className="gym-peek"
       />
     );
   }
   return (
-    <div className="gym-leadchat" data-compact={compact ? '' : undefined}>
-      <button type="button" className="gym-leadchat-min" onClick={() => setOpen(false)} aria-label={t('minimize')}>
+    <div ref={box} className="gym-leadchat" data-compact={compact ? '' : undefined} data-beat="chat">
+      <button type="button" className="gym-leadchat-min" onClick={() => siteChat.setOpen(false)} aria-label={t('minimize')}>
         <ChevronDown aria-hidden strokeWidth={2} />
       </button>
       <ChatWidget

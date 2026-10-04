@@ -276,6 +276,65 @@ export const BEATS = [
   { id: 'paid', at: 31_000 },
   { id: 'club', at: 38_500 },
 ] as const;
+export type ShopBeatId = (typeof BEATS)[number]['id'];
+
+/* ------------------------------------------------------------------ */
+/* Where each beat happens (v3c: a simulation takes every view there)   */
+/* ------------------------------------------------------------------ */
+/** Sections of the owner's panel (laptop) and app (phone alone; it has no "site" tab). */
+export type ShopTab = 'today' | 'orders' | 'carts' | 'club' | 'chat' | 'site';
+/** Elements a beat brings into view inside its section (`data-beat-focus` in both screens). */
+export type ShopSpot = 'ines-chat' | 'carts' | 'thread' | 'levelup';
+export interface ShopBeatTarget {
+  tab: Exclude<ShopTab, 'site'>;
+  spot: ShopSpot;
+}
+/** What the customer's phone (next to the laptop) shows when the beat lands: the story drives it. */
+export interface CustomerTarget {
+  screen: 'catalog' | 'checkout' | 'lock' | 'whatsapp' | 'order';
+  sheet: 'chat' | 'cart' | null;
+}
+export interface ShopBeatFocus {
+  /** The owner's panel (desktop view). */
+  laptop: ShopBeatTarget;
+  /** The owner's app (phone alone): the store sheet closes, the section opens. */
+  phone: ShopBeatTarget;
+  /** The customer's phone next to the laptop (Inés's evening; a beat takes it back from the visitor). */
+  customer: CustomerTarget;
+}
+
+const at = (tab: ShopBeatTarget['tab'], spot: ShopSpot): ShopBeatTarget => ({ tab, spot });
+const both = (target: ShopBeatTarget, customer: CustomerTarget): ShopBeatFocus => ({ laptop: target, phone: target, customer });
+const LOCKED: CustomerTarget = { screen: 'lock', sheet: null };
+
+/**
+ * Per beat and variant (`on`: the recovery automation sends the message; `off`: it doesn't), the
+ * screen where the action is legible. The panel follows the cart: the bot's conversation with
+ * Inés, her cart going cold in the carts list, the WhatsApp thread (or, without it, the cart that
+ * gets lost), and Tomás's level-up card in the club.
+ */
+export const BEAT_FOCUS: Record<ShopBeatId, Record<'on' | 'off', ShopBeatFocus>> = {
+  bot: {
+    on: both(at('chat', 'ines-chat'), { screen: 'catalog', sheet: 'chat' }),
+    off: both(at('chat', 'ines-chat'), { screen: 'catalog', sheet: 'chat' }),
+  },
+  abandon: {
+    on: both(at('carts', 'carts'), LOCKED),
+    off: both(at('carts', 'carts'), LOCKED),
+  },
+  recovery: {
+    on: both(at('carts', 'thread'), { screen: 'whatsapp', sheet: null }),
+    off: both(at('carts', 'carts'), LOCKED),
+  },
+  paid: {
+    on: both(at('carts', 'thread'), { screen: 'order', sheet: null }),
+    off: both(at('carts', 'carts'), LOCKED),
+  },
+  club: {
+    on: both(at('club', 'levelup'), { screen: 'order', sheet: null }),
+    off: both(at('club', 'levelup'), LOCKED),
+  },
+};
 
 export const SITE_URL = 'brumatostadores.demo';
 export const CUSTOMER_PHONE = '+54 9 11 6•••-4410';

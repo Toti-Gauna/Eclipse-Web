@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { prefersReducedMotion, useReducedMotion } from '@/components/motion/useReducedMotion';
 
 /**
@@ -200,6 +200,63 @@ export function nextBeat<S>(store: DemoStore<S>, snap: StorySnapshot<S>): DemoBe
   const beats = store.beats ?? [];
   const from = snap.segment ? snap.segment.beat : (snap.beat ?? -1);
   return beats[from + 1] ?? null;
+}
+
+/**
+ * Index of the beat whose segment contains story time `t` (segments run from the previous
+ * beat's `at` up to the beat's own `at`). Past the last beat: the last one. −1 without beats.
+ */
+export function beatIndexAt(beats: readonly DemoBeat[], t: number): number {
+  if (!beats.length) return -1;
+  const i = beats.findIndex((b) => t < b.at);
+  return i < 0 ? beats.length - 1 : i;
+}
+
+/** What `useBeatFocus` remembers: the story run and the last beat the view was taken to. */
+export interface BeatFocus {
+  loop: number;
+  beat: number;
+}
+
+/**
+ * Pure step of `useBeatFocus`: the beat to take the view to now (−1: stay), and the memory.
+ * While a segment plays, the beat the clock is in (capped at the segment's target); at rest,
+ * the beat reached, only when it's ahead of the last one (reduced motion lands at once).
+ */
+export function beatFocusStep<S>(
+  beats: readonly DemoBeat[],
+  snap: StorySnapshot<S>,
+  last: BeatFocus,
+): { go: number; last: BeatFocus } {
+  const seg = snap.segment ?? null;
+  const playing = !!snap.playing && !!seg;
+  const reached = snap.beat ?? -1;
+  const mem = last.loop === snap.loop ? last : { loop: snap.loop, beat: -1 };
+  const target = playing ? Math.min(seg.beat, beatIndexAt(beats, snap.t)) : reached;
+  if (target < 0 || target === mem.beat || (!playing && target < mem.beat)) return { go: -1, last: mem };
+  return { go: target, last: { loop: snap.loop, beat: target } };
+}
+
+/**
+ * v3c — a simulation takes the visitor to where it happens. Each view calls this with its own
+ * `go(beatId)` (switch tab, open the chat, the call, the customer app…): while a segment plays,
+ * `go` runs once each time the story ENTERS a beat (a jump over several beats visits each in
+ * turn, as it plays). When a segment lands at once (reduced motion) it runs for the beat reached.
+ * "Reiniciar" doesn't navigate; a view that mounts later (the layer's tabs) doesn't jump to
+ * where the story already is. `go` may change between renders (it's read from a ref).
+ */
+export function useBeatFocus<S>(store: DemoStore<S>, snap: StorySnapshot<S>, go: (beatId: string) => void) {
+  const goRef = useRef(go);
+  useEffect(() => {
+    goRef.current = go;
+  });
+  const last = useRef<BeatFocus>({ loop: snap.loop, beat: snap.beat ?? -1 });
+  useEffect(() => {
+    const beats = store.beats ?? [];
+    const step = beatFocusStep(beats, snap, last.current);
+    last.current = step.last;
+    if (step.go >= 0) goRef.current(beats[step.go].id);
+  }, [store, snap]);
 }
 
 /**
