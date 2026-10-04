@@ -696,6 +696,59 @@
   align-items: center;
 }
 
+/*
+ * Icon rail (layout.nav 'rail', and the collapsed sidebar): only the icon column is
+ * interactive. Items are as narrow as the rail, so nothing hidden under the main panel takes
+ * clicks and the focus ring is fully visible. With 'rail' the panel itself is rail-wide.
+ */
+.demo-root[data-side='collapsed'] .demo-side-list {
+  width: calc(var(--demo-rail-w) - 1.3em);
+}
+.demo-root[data-nav='rail'] .demo-side {
+  width: var(--demo-rail-w);
+}
+.demo-root[data-nav='rail'] .demo-side-label,
+.demo-root[data-nav='rail'] .demo-side-badge,
+.demo-root[data-nav='rail'] .demo-side-foot,
+.demo-root[data-nav='rail'] .demo-side-name {
+  display: none;
+}
+.demo-root[data-nav='rail'] .demo-side-head {
+  margin-left: 0;
+  justify-content: center;
+}
+.demo-root[data-nav='rail'] .demo-side-group {
+  overflow: hidden;
+  height: 0.6em;
+  margin: 0.45em 0;
+}
+
+/*
+ * Phone touch targets (≥ 44px at the usual scale). Where the layout can't grow, an invisible
+ * hit area extends the control: bottom tabs reach into the bar's padding, app-bar icon buttons
+ * grow around themselves.
+ */
+.demo-root[data-screen='phone'] .demo-tab::after {
+  content: '';
+  position: absolute;
+  top: -0.6em;
+  right: 0;
+  bottom: -2.25em;
+  left: 0;
+}
+.demo-appbar .demo-side-toggle {
+  position: relative;
+}
+.demo-root[data-screen='phone'] .demo-appbar .demo-side-toggle::after,
+.demo-root[data-screen='phone'] .demo-drawer-panel > .demo-side-toggle::after {
+  content: '';
+  position: absolute;
+  inset: -0.6em;
+}
+.demo-root[data-screen='phone'] .demo-drawer-panel .demo-side-item {
+  height: 4.2em;
+}
+
 /* Laptop without a sidebar (top / dock) */
 .demo-root[data-side='none'] .demo-main {
   left: 0;
@@ -870,7 +923,8 @@
   flex: none;
   align-items: center;
   gap: 0.4em;
-  height: 2.7em;
+  /* ≈ 44px at the usual phone scale */
+  height: 4.7em;
   padding: 0 0.9em 0 0.7em;
   border-radius: 999px;
   box-shadow: inset 0 0 0 1px var(--demo-line-strong);

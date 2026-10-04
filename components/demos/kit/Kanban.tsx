@@ -25,6 +25,8 @@ export interface KanbanCard {
   icon?: LucideIcon;
   /** Just moved/arrived: halo. */
   fresh?: boolean;
+  /** Lines for `sub` and `meta` (default 1, truncated). The title always stays on one line. */
+  lines?: 1 | 2;
 }
 
 interface Drag {
@@ -202,6 +204,7 @@ export function Kanban({
                     key={card.id}
                     data-flip={card.id}
                     data-menu={open ? '' : undefined}
+                    data-lines={card.lines === 2 ? '2' : undefined}
                     className={`demo-kanban-card ${toneClass(card.tone ?? col.tone ?? 'neutral')} ${card.fresh ? 'demo-fresh' : ''}`}
                     onPointerDown={onPointerDown(card)}
                     onPointerMove={onPointerMove}
@@ -220,7 +223,7 @@ export function Kanban({
                     ) : null}
                     <span className="min-w-0 flex-1 leading-[1.25]">
                       <span className="block truncate text-[0.74em] font-semibold">{card.title}</span>
-                      {card.sub ? <span className="block truncate text-[0.62em] text-[var(--demo-muted)]">{card.sub}</span> : null}
+                      {card.sub ? <span className="demo-kanban-sub block truncate text-[0.62em] text-[var(--demo-muted)]">{card.sub}</span> : null}
                     </span>
                     {card.meta ? <span className="demo-kanban-meta">{card.meta}</span> : null}
                     {onMove ? (

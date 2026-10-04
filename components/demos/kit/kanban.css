@@ -69,6 +69,24 @@
   font-size: 0.62em;
   font-variant-numeric: tabular-nums;
 }
+/* lines={2}: sub and meta may take two lines (the title stays on one) */
+.demo-kanban-card[data-lines='2'] .demo-kanban-sub {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.demo-kanban-card[data-lines='2'] .demo-kanban-meta {
+  display: -webkit-box;
+  max-width: 7em;
+  overflow: hidden;
+  text-align: right;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
 .demo-kanban-empty {
   display: grid;
   min-height: 2.6em;
