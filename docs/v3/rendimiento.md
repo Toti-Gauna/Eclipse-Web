@@ -114,3 +114,30 @@ header nuevo); la diferencia de score está dentro del ruido de Lighthouse en es
 5. Costos que quedan fuera de esta área, con evidencia: los trailers de las demos leen estilos computados al arrancar
    (~40–50 ms por pasada a 4×) y el listener de rueda de ScrollTrigger fuerza una lectura de scroll por evento (solo
    escritorio, interno de GSAP).
+
+---
+
+## Fase 2 (demos manuales, capa de «Ver demo», guía) — antes / después
+
+Mismo arnés, mismos gestos y configuraciones que arriba. *Antes* = `main` con el PR #4 (843b157); *después* = esta
+rama. A/B intercalado, 3 rondas, medianas, CPU 4× (`ab3`).
+
+| Configuración | En reposo: fps · hilo ocupado | Pasada del hero: fps · frames > 33 ms | Primera bajada: fps · tareas largas | Subida: fps |
+|---|---|---|---|---|
+| Celular (corona CSS) | 59,9 → 59,7 · 8,1 → 7,6 % | 47,8 → 45,0 · 6,0 → 7,5 % | 44,7 → 43,4 · 547 → 563 ms | 56,7 → 56,0 |
+| Celular (corona WebGL) | 59,7 → 59,9 · 8,2 → 7,2 % | 41,0 → 41,1 · 10,8 → 10,4 % | 41,0 → 41,6 · 604 → 718 ms | 54,2 → 54,6 |
+| iPad | 59,7 → 59,7 · 7,9 → 7,6 % | 39,1 → 40,0 · 17,5 → 15,1 % | 46,8 → 45,7 · 602 → 1090 ms | 54,6 → 54,1 |
+| Escritorio (WebGL por software) | 59,9 → 59,7 · 6,3 → 6,5 % | 18,4 → 18,2 · 60,6 → 61,2 % | 38,6 → 37,8 · 2150 → 2314 ms | 46,5 → 46,3 |
+
+Lectura:
+- **El motivo Eclipse no empeoró:** en reposo sigue a ~60 fps con el hilo ~7–8 % ocupado (el propio medidor) y la
+  pasada del hero queda igual dentro del ruido en las cuatro configuraciones.
+- **Primera bajada en iPad: +~0,5 s de tareas largas** (957–1296 ms vs. 332–637 ms por corrida; −1 fps). La
+  atribución (LoAF) muestra más trabajo de React al hidratar secciones (`MessagePort.onmessage`: 38 → 50 frames,
+  +121 ms) y más lecturas de layout en scroll (+51 ms). Son secciones con más UI que antes (Precios con el bonus,
+  la calculadora con su barra, la sala de demos). No cambia la fluidez de la subida ni del hero; queda anotado.
+- **Apertura de la capa de demo** (CPU 4×, build de producción): 180–450 ms del clic a la capa abierta; durante el
+  reveal, mediana de frame 17 ms y p95 33–100 ms (1–2 tareas largas: el clic y montar la demo). La demo en vivo se
+  monta recién después del reveal, para que la luz descubra primero el póster.
+
+Mismos límites que arriba: Chromium headless sin GPU, rueda sintética, sin dispositivos ni Safari reales.
