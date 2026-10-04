@@ -115,7 +115,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   check('nav link scrolls to #precios', Math.abs(top) < 200, `${Math.round(top)}px`);
   check('hash updated', page.url().endsWith('#precios'));
 
-  // "Ver demo" opens one light layer from where the click happened: the page never scrolls,
+  // "Ver demo" opens one light layer (the eclipse takes the center, the light floods it): the page never scrolls,
   // and closing restores the exact position and focus.
   // A wheel is user input: it ends the anchor re-aim from the jump above (it never fights the visitor).
   await page.mouse.wheel(0, -30000);

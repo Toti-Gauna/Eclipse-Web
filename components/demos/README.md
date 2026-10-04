@@ -17,7 +17,7 @@ product: books, moves cards, navigates dates. Everything is local demo data; not
 components/demos/
   kit.tsx            ← import everything from here:  import { AppShell, … } from '../kit'
   kit/theme.ts       DemoTheme → --demo-* CSS variables
-  kit/store.ts       createDemoStore (beats) · useStory · usePairedStore · nextBeat · useStoreSnapshot
+  kit/store.ts       createDemoStore (beats) · useStory · usePairedStore · nextBeat · useStoreSnapshot · useBeatFocus
   kit/SimBar.tsx     the simulation controls (rendered by AppShell's `sim` prop)
   kit/format.ts      useDemoFormat (times, durations, %, dates per locale)
   kit/AppShell.tsx   shell + structural variants (layout.nav · density · icons · phoneNav)
@@ -188,6 +188,12 @@ Rules that make "no autoplay" hold:
   view mounted at a time) → the views share a store across tab switches (`paired: false`, so the
   phone is the complete app), found via the showcase root (`[data-demo-host]`, else `.sc`).
 - Clock is coarse (500 ms). Fine motion is CSS.
+- **A simulation takes you where it happens (v3c).** Each view calls
+  `useBeatFocus(store, snap, (beatId) => …)` and goes to the screen (tab, chat, call, customer
+  app…) where that beat's action is legible: the visitor never hunts for it. It fires once when
+  the story enters a beat (a jump through several beats visits each), for the beat reached with
+  reduced motion, never on reset or when a view mounts later. Keep the targets as data next to
+  `BEATS` (per beat and per view: laptop, phone alone, phone paired) and test that each one exists.
 
 **Legacy loop (deprecated)**: without `beats`, `createDemoStore` still runs a `loopMs` story on
 its own (`onLoop`, `engage`) so demos not migrated yet keep working. Don't use it in new code.
