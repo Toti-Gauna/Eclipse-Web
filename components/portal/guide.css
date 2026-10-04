@@ -1,0 +1,253 @@
+/*
+ * Portal guide pieces: the page bar (breadcrumbs + "Ayuda"), the "Más información" cards and
+ * the "Cómo leer la lista" legend. Same instrument language as portal.css: hairlines, mono
+ * labels, ink on dawn; amber stays for the client's turn. No motion beyond a short fade.
+ */
+
+/* ---- Page bar: where you are · Ayuda ------------------------------------------ */
+.pt-pagebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.pt-pagebar > .pt-crumbs {
+  min-width: 0;
+}
+
+.pt-help-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.6);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--fg);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+.pt-help-btn:hover {
+  border-color: var(--fg);
+  background: #fff;
+}
+.pt-help-btn svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+/* Narrow phones: the trail and "Ayuda" share one line. */
+@media (max-width: 399px) {
+  .pt-help-btn {
+    gap: 6px;
+    padding: 0 12px 0 10px;
+  }
+  .pt-pagebar .pt-crumbs li + li::before {
+    margin-inline: 5px;
+  }
+}
+/* 320px: the icon alone (the button keeps its name "Ayuda" for assistive tech). */
+@media (max-width: 359px) {
+  .pt-help-btn {
+    justify-content: center;
+    width: 44px;
+    padding: 0;
+  }
+  .pt-help-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ---- "Más información" -------------------------------------------------------- */
+.pt-info {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+/* Icon-only trigger: a 22px mark with a 44px hit area that doesn't push the line. */
+.pt-info-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -11px -9px;
+  border-radius: 999px;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.pt-info-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.7);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+.pt-info-icon svg {
+  width: 14px;
+  height: 14px;
+}
+.pt-info-btn:hover .pt-info-icon,
+.pt-info-btn[aria-expanded='true'] .pt-info-icon {
+  border-color: var(--fg);
+  color: var(--fg);
+  background: #fff;
+}
+
+/* Chip trigger with visible text (legend). */
+.pt-info-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.5);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--fg);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+.pt-info-chip .pt-info-icon {
+  width: 20px;
+  height: 20px;
+  border: 0;
+  background: transparent;
+  color: var(--fg-muted);
+}
+.pt-info-chip:hover,
+.pt-info-chip[aria-expanded='true'] {
+  border-color: var(--fg);
+  background: #fff;
+}
+
+.pt-info-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -8px;
+  z-index: 30;
+  display: grid;
+  gap: 6px;
+  width: min(300px, calc(100vw - 32px));
+  padding: 14px 44px 16px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: #fffdf9;
+  box-shadow:
+    0 1px 0 rgb(17 17 20 / 0.04),
+    0 14px 36px -12px rgb(17 17 20 / 0.28);
+  translate: var(--shift, 0px) 0;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: normal;
+  font-family: var(--font-sans);
+  cursor: auto;
+}
+.pt-info-panel[hidden] {
+  display: none;
+}
+.pt-info-panel[data-side='top'] {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+.pt-info-panel:focus {
+  outline: none;
+}
+.pt-info-title {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--fg);
+}
+.pt-info-body {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.pt-info-close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--fg-muted);
+}
+.pt-info-close:hover {
+  color: var(--fg);
+}
+.pt-info-close svg {
+  width: 16px;
+  height: 16px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pt-info-panel:not([hidden]) {
+    animation: pt-info-in 0.18s ease-out;
+  }
+}
+@keyframes pt-info-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* A term + its "Más información" on one line (dt, headings' rows). */
+.pt-term {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.pt-rail-name .pt-info {
+  margin-left: 8px;
+}
+
+/* ---- Legend: how to read the list --------------------------------------------- */
+.pt-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 14px 0 18px;
+}
+.pt-legend-label {
+  margin-right: 4px;
+}
+
+/* ---- Detail: "Seguimiento" (updates, scope, documents, stages) ------------------ */
+.pt-follow {
+  min-width: 0;
+}
+.pt-follow-head {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 14px;
+}

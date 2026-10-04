@@ -14,7 +14,18 @@ export interface PortalTab {
  * WAI-ARIA tabs (roving tabindex; ←/→, Home, End). Panels are rendered on the server and
  * passed in; inactive ones are `hidden`. Switching sections is the only thing it does.
  */
-export function PortalTabs({ id, label, tabs }: { id: string; label: string; tabs: PortalTab[] }) {
+export function PortalTabs({
+  id,
+  label,
+  tabs,
+  tourHook,
+}: {
+  id: string;
+  label: string;
+  tabs: PortalTab[];
+  /** `data-tour` hook on the tab list (the detail guide lights it). */
+  tourHook?: string;
+}) {
   const [active, setActive] = useState(tabs[0]?.id);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   const { play } = useSound();
@@ -46,7 +57,7 @@ export function PortalTabs({ id, label, tabs }: { id: string; label: string; tab
 
   return (
     <div className="pt-tabs">
-      <div role="tablist" aria-label={label} className="pt-tablist">
+      <div role="tablist" aria-label={label} className="pt-tablist" data-tour={tourHook}>
         {tabs.map((tab, i) => {
           const selected = tab.id === active;
           return (

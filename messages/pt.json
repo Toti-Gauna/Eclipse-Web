@@ -4073,15 +4073,14 @@
       "tableCaption": "Seus projetos com a Eclipse (dados fictícios)",
       "columns": {
         "project": "Projeto",
-        "service": "Serviço",
         "stage": "Etapa atual",
         "updated": "Última atualização",
         "milestone": "Próximo marco",
-        "action": "Ação"
+        "action": "Sua ação",
+        "open": "Abrir o projeto"
       },
       "milestoneMeta": "{owner} · previsão <d>{date}</d>",
       "view": "Ver projeto",
-      "review": "Revisar",
       "actionNeeded": "Precisa da sua ação",
       "states": {
         "label": "Visualização da demo",
@@ -4096,6 +4095,11 @@
         "body": "Seus projetos aparecem aqui quando a equipe os vincula à sua conta, depois do sinal. Se você já confirmou um, fale com a gente.",
         "cta": "Fale com a gente no WhatsApp",
         "message": "Olá, Eclipse. Entrei no portal e ainda não vejo meu projeto."
+      },
+      "nothingPending": "Nada pendente do seu lado",
+      "whoWorks": {
+        "active": "A Eclipse está trabalhando",
+        "support": "Suporte ativo"
       }
     },
     "people": {
@@ -4288,7 +4292,11 @@
         "delivered": "Entregue em {date}",
         "deliveryPaused": "Recalculada ao retomar"
       },
-      "others": "Outros projetos"
+      "others": "Outros projetos",
+      "follow": {
+        "title": "Acompanhamento",
+        "intro": "Cada avanço com data, o que o escopo inclui, as mudanças pedidas e os documentos."
+      }
     },
     "demo": {
       "projects": {
@@ -4497,6 +4505,86 @@
             "script": "Roteiro de ligações",
             "proposal": "Proposta e escopo aprovados"
           }
+        }
+      }
+    },
+    "info": {
+      "more": "Mais informações: {topic}",
+      "close": "Fechar",
+      "legend": "Como ler a lista",
+      "stages": {
+        "chip": "Etapas",
+        "title": "As 5 etapas",
+        "body": "Todo projeto passa por Preparação, Construção, Revisão da Eclipse, Revisão do cliente e Entrega. \"2 de 5\" quer dizer que está na segunda. Suporte vem depois da entrega e só existe com manutenção contratada."
+      },
+      "estimate": {
+        "chip": "Data prevista",
+        "title": "Data prevista",
+        "body": "É a nossa previsão com o que sabemos hoje: uma estimativa, não um compromisso. Pode mudar se uma mudança de escopo for aceita ou se o projeto for pausado."
+      },
+      "action": {
+        "chip": "Sua ação",
+        "title": "Sua ação",
+        "body": "Quando algo depende de você — aprovar, confirmar um dado ou mandar um arquivo — o projeto mostra \"Precisa da sua ação\" e explica o que falta. Se não, mostra \"Nada pendente do seu lado\"."
+      },
+      "clientReview": {
+        "title": "Revisão do cliente",
+        "body": "É a etapa 4: o trabalho já passou pela nossa revisão e é a sua vez de olhar. Você aprova ou pede ajustes dentro do escopo. Com a sua aprovação registrada, passa para Entrega."
+      },
+      "support": {
+        "title": "Suporte",
+        "body": "Começa depois da entrega e só existe com manutenção contratada. Enquanto estiver ativa, cuidamos de hospedagem, backups e das alterações que o seu plano inclui."
+      },
+      "changes": {
+        "title": "Mudança aceita ou pedido em andamento",
+        "body": "Um pedido em andamento é algo que você pediu e que estamos avaliando ou estimando: ainda não faz parte do escopo. Uma mudança aceita já tem a aceitação registrada: entra no escopo com o impacto anotado."
+      }
+    },
+    "guide": {
+      "projects": {
+        "label": "Guia de Meus projetos",
+        "list": {
+          "title": "Seus projetos",
+          "body": "Aqui estão todos os seus projetos com a Eclipse. Cada um mostra a etapa, o que vem a seguir, se você precisa fazer algo e a última atualização."
+        },
+        "stage": {
+          "title": "Etapa atual",
+          "body": "\"2 de 5 · Construção\" quer dizer que está na segunda das 5 etapas. Embaixo, em poucas palavras, o que se faz nela."
+        },
+        "next": {
+          "title": "O que vem e o que é com você",
+          "body": "O próximo marco diz o que vem a seguir, quem faz e a data prevista. Se algo depende de você, aparece \"Precisa da sua ação\" com o que falta."
+        },
+        "open": {
+          "title": "Ver projeto",
+          "body": "Abre o detalhe: etapa, cronograma, atividade, escopo e documentos."
+        },
+        "help": {
+          "title": "Ajuda",
+          "body": "Veja este guia de novo quando quiser; os botões (i) explicam cada termo. Nesta demo ele fica lembrado só neste navegador; no portal real, na sua conta."
+        }
+      },
+      "project": {
+        "label": "Guia do projeto",
+        "current": {
+          "title": "Etapa atual",
+          "body": "Em que etapa o projeto está, o que ela significa e o que falta para passar para a próxima."
+        },
+        "next": {
+          "title": "Próximo marco e sua ação",
+          "body": "O que vem a seguir, quem faz e para quando. Se for a sua vez, você vê aqui com os detalhes. Nesta demo os botões estão desativados."
+        },
+        "timeline": {
+          "title": "Cronograma",
+          "body": "As 5 etapas com o status escrito — concluída, atual, próxima ou pendente — e as datas."
+        },
+        "follow": {
+          "title": "Acompanhamento",
+          "body": "Atualizações com data, escopo e mudanças, documentos e como funciona cada etapa, em abas."
+        },
+        "help": {
+          "title": "Ajuda",
+          "body": "Veja este guia de novo quando quiser. Ele fica lembrado só neste navegador; no portal real, na sua conta."
         }
       }
     }

@@ -4073,15 +4073,14 @@
       "tableCaption": "Your projects with Eclipse (fictional data)",
       "columns": {
         "project": "Project",
-        "service": "Service",
         "stage": "Current stage",
         "updated": "Last update",
         "milestone": "Next milestone",
-        "action": "Action"
+        "action": "Your action",
+        "open": "Open the project"
       },
       "milestoneMeta": "{owner} · estimated <d>{date}</d>",
       "view": "View project",
-      "review": "Review",
       "actionNeeded": "Needs your action",
       "states": {
         "label": "Demo view",
@@ -4096,6 +4095,11 @@
         "body": "Your projects show up here once the team links them to your account, after the deposit. If you've already confirmed one, message us.",
         "cta": "Message us on WhatsApp",
         "message": "Hi Eclipse. I signed in to the portal and can't see my project yet."
+      },
+      "nothingPending": "Nothing pending on your side",
+      "whoWorks": {
+        "active": "Eclipse is working on it",
+        "support": "Support active"
       }
     },
     "people": {
@@ -4288,7 +4292,11 @@
         "delivered": "Delivered {date}",
         "deliveryPaused": "Recalculated when work resumes"
       },
-      "others": "Other projects"
+      "others": "Other projects",
+      "follow": {
+        "title": "Follow-up",
+        "intro": "Every dated update, what the scope includes, requested changes and documents."
+      }
     },
     "demo": {
       "projects": {
@@ -4497,6 +4505,86 @@
             "script": "Call script",
             "proposal": "Approved proposal and scope"
           }
+        }
+      }
+    },
+    "info": {
+      "more": "More information: {topic}",
+      "close": "Close",
+      "legend": "How to read this list",
+      "stages": {
+        "chip": "Stages",
+        "title": "The 5 stages",
+        "body": "Every project goes through Preparation, Build, Eclipse review, Client review and Delivery. \"2 of 5\" means it's on the second one. Support comes after delivery and only exists with a maintenance plan."
+      },
+      "estimate": {
+        "chip": "Estimated date",
+        "title": "Estimated date",
+        "body": "It's our forecast with what we know today: an estimate, not a commitment. It can move if a scope change is accepted or if the project is paused."
+      },
+      "action": {
+        "chip": "Your action",
+        "title": "Your action",
+        "body": "When something depends on you — approving, confirming a detail or sending a file — the project says \"Needs your action\" and explains what's needed. Otherwise it says \"Nothing pending on your side\"."
+      },
+      "clientReview": {
+        "title": "Client review",
+        "body": "It's stage 4: the work has passed our review and it's your turn to look at it. You approve it or ask for tweaks within scope. Once your approval is recorded, it moves to Delivery."
+      },
+      "support": {
+        "title": "Support",
+        "body": "It starts after delivery and only exists with a maintenance plan. While it's active we look after hosting, backups and the changes your plan includes."
+      },
+      "changes": {
+        "title": "Accepted change or open request",
+        "body": "An open request is something you asked for that we're evaluating or estimating: it isn't part of the scope yet. An accepted change has its acceptance recorded: it joins the scope with its impact noted."
+      }
+    },
+    "guide": {
+      "projects": {
+        "label": "My projects guide",
+        "list": {
+          "title": "Your projects",
+          "body": "All your projects with Eclipse are here. Each one shows its stage, what's next, whether you need to do something and the latest update."
+        },
+        "stage": {
+          "title": "Current stage",
+          "body": "\"2 of 5 · Build\" means it's on the second of 5 stages. Below it, in a few words, what happens in that stage."
+        },
+        "next": {
+          "title": "What's next and what's yours",
+          "body": "The next milestone says what comes next, who does it and the estimated date. If something depends on you, you'll see \"Needs your action\" and what's needed."
+        },
+        "open": {
+          "title": "View project",
+          "body": "Opens the detail: stage, timeline, activity, scope and documents."
+        },
+        "help": {
+          "title": "Help",
+          "body": "See this guide again whenever you want; the (i) buttons explain each term. In this demo it's remembered only in this browser; in the real portal, in your account."
+        }
+      },
+      "project": {
+        "label": "Project guide",
+        "current": {
+          "title": "Current stage",
+          "body": "Which stage the project is in, what it means and what it takes to move to the next one."
+        },
+        "next": {
+          "title": "Next milestone and your action",
+          "body": "What's next, who does it and by when. If it's your turn, you'll see it here with the details. In this demo the buttons are disabled."
+        },
+        "timeline": {
+          "title": "Timeline",
+          "body": "The 5 stages with their status in words — done, current, next or pending — and their dates."
+        },
+        "follow": {
+          "title": "Follow-up",
+          "body": "Dated updates, scope and changes, documents and how each stage works, in tabs."
+        },
+        "help": {
+          "title": "Help",
+          "body": "See this guide again whenever you want. It's remembered only in this browser; in the real portal, in your account."
         }
       }
     }

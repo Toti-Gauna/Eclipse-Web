@@ -1,7 +1,8 @@
 'use client';
 
-import { useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useState, type ReactNode } from 'react';
 import { useSound } from '@/components/sound/SoundContext';
+import { PORTAL_TOUR_EVENT } from '@/lib/portal/tour';
 
 const VIEWS = ['full', 'empty', 'loading'] as const;
 type View = (typeof VIEWS)[number];
@@ -35,6 +36,13 @@ export function ProjectsBoard({
   const [view, setView] = useState<View>('full');
   const { play } = useSound();
   const views: Record<View, ReactNode> = { full, empty, loading };
+
+  // The guide points at the projects: starting it brings the "with projects" view back.
+  useEffect(() => {
+    const showFull = () => setView('full');
+    window.addEventListener(PORTAL_TOUR_EVENT, showFull);
+    return () => window.removeEventListener(PORTAL_TOUR_EVENT, showFull);
+  }, []);
 
   return (
     <>

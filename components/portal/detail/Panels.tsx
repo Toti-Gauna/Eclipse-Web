@@ -2,6 +2,7 @@ import { Check, FileText, Info, Lock } from 'lucide-react';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { TOTAL_STAGES, changeGroups, documentsByDate } from '@/lib/portal/project';
 import { EXTRA_STAGES, MAIN_STAGES, type ChangeRequest, type PortalProject, type StageId } from '@/lib/portal/types';
+import { InfoTip } from '../InfoTip';
 import { usePortal } from '../usePortal';
 
 /** Dated updates written by Eclipse, newest first; stage transitions are marked. */
@@ -10,7 +11,7 @@ export function UpdatesLog({ project }: { project: PortalProject }) {
   const { t } = p;
   return (
     <>
-      <h2 className="sr-only">{t('detail.tabs.updates')}</h2>
+      <h3 className="sr-only">{t('detail.tabs.updates')}</h3>
       <ol className="pt-log">
         {project.updates.map((u) => (
           <li key={u.id} className="pt-log-item" data-change={u.stageChange ? '' : undefined}>
@@ -28,7 +29,7 @@ export function UpdatesLog({ project }: { project: PortalProject }) {
                   </b>
                 </p>
               ) : null}
-              <h3 className="pt-log-title">{p.text(project, `updates.${u.id}.title`)}</h3>
+              <h4 className="pt-log-title">{p.text(project, `updates.${u.id}.title`)}</h4>
               <p className="pt-log-text">{p.text(project, `updates.${u.id}.body`)}</p>
               <p className="pt-log-author">{p.byline(u.author)}</p>
             </div>
@@ -56,13 +57,13 @@ export function ScopePanel({ project }: { project: PortalProject }) {
 
   return (
     <div className="pt-scope">
-      <h2 className="sr-only">{t('detail.tabs.scope')}</h2>
+      <h3 className="sr-only">{t('detail.tabs.scope')}</h3>
 
       <section aria-labelledby="pt-scope-approved">
         <div className="pt-scope-head">
-          <h3 id="pt-scope-approved" className="pt-h3">
+          <h4 id="pt-scope-approved" className="pt-h3">
             {t('detail.scope.approvedTitle')}
-          </h3>
+          </h4>
           <p className="pt-fine">
             <span className="pt-date">
               {t('detail.scope.approvedMeta', { version: project.scope.version, date: p.date(project.scope.approvedOn) })}
@@ -81,9 +82,9 @@ export function ScopePanel({ project }: { project: PortalProject }) {
 
       <section aria-labelledby="pt-scope-accepted">
         <div className="pt-scope-head">
-          <h3 id="pt-scope-accepted" className="pt-h3">
+          <h4 id="pt-scope-accepted" className="pt-h3">
             {t('detail.scope.acceptedTitle')}
-          </h3>
+          </h4>
           <span className="pt-count">{accepted.length}</span>
         </div>
         {accepted.length ? (
@@ -121,9 +122,12 @@ export function ScopePanel({ project }: { project: PortalProject }) {
 
       <section aria-labelledby="pt-scope-open">
         <div className="pt-scope-head">
-          <h3 id="pt-scope-open" className="pt-h3">
-            {t('detail.scope.openTitle')}
-          </h3>
+          <div className="pt-term">
+            <h4 id="pt-scope-open" className="pt-h3">
+              {t('detail.scope.openTitle')}
+            </h4>
+            <InfoTip copy={p.info('changes')} />
+          </div>
           <span className="pt-count">{open.length}</span>
         </div>
         {open.length ? (
@@ -190,7 +194,7 @@ export function DocumentsList({ project }: { project: PortalProject }) {
   const { t } = p;
   return (
     <>
-      <h2 className="sr-only">{t('detail.docs.title')}</h2>
+      <h3 className="sr-only">{t('detail.docs.title')}</h3>
       <ul className="pt-docs">
         {documentsByDate(project).map((d) => (
           <li key={d.id} className="pt-doc">
@@ -240,7 +244,7 @@ export function StagesGuide({ project }: { project: PortalProject }) {
         <div className="pt-guide-head">
           <PhaseGlyph phase={phase} size={20} />
           {n ? <span className="pt-guide-n">{t('stage.position', { n, total: TOTAL_STAGES })}</span> : null}{' '}
-          <h3 className="pt-h3">{t(`stages.${stage}.name`)}</h3>
+          <h4 className="pt-h3">{t(`stages.${stage}.name`)}</h4>
           <span className="pt-guide-short">{t(`stages.${stage}.short`)}</span>
           {current ? <span className="pt-tag pt-tag-turn">{t('detail.stagesTab.current')}</span> : null}
         </div>
@@ -263,7 +267,7 @@ export function StagesGuide({ project }: { project: PortalProject }) {
   };
   return (
     <>
-      <h2 className="sr-only">{t('detail.stagesTab.title')}</h2>
+      <h3 className="sr-only">{t('detail.stagesTab.title')}</h3>
       <p className="pt-fine">{t('detail.stagesTab.intro')}</p>
       <ol className="pt-guide-list">
         {MAIN_STAGES.map((stage, i) => item(stage, (i + 1) / TOTAL_STAGES, i + 1))}
