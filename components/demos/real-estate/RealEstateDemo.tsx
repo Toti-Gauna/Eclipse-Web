@@ -1,13 +1,14 @@
 'use client';
 
-import { useCallback, useId, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Building2, CalendarDays, Columns3, Globe, House, MessagesSquare, Send, Smartphone } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, Avatar, Switch, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, Avatar, Switch, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
-import { ADVISORS, LUMEN_THEME, TODAY } from './data';
+import { ADVISORS, BEAT_FOCUS, CHAT_SLOTS, LUMEN_THEME, TODAY, type EstateBeatId, type EstateSpot } from './data';
+import { SPOTS, revealSpot } from './focus';
 import { act, createEstateStore, deriveEstate } from './story';
 import { EstateProvider, useEstate, type EstateCtx, type EstateTab } from './context';
 import { Announcer, EstateToasts, LumenMark, useEstateText } from './ui';
@@ -76,13 +77,37 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
   const [buyerOpen, setBuyerOpen] = useState(false);
   const buyerPhone = screen === 'phone' && paired;
   const announce = screen === 'laptop' || !paired;
+  const root = useRef<HTMLDivElement | null>(null);
   const rootRef = useCallback(
     (el: HTMLDivElement | null) => {
+      root.current = el;
       ref(el);
       el?.classList.add('lumen');
     },
     [ref],
   );
+
+  // v3c: a beat takes this view where it happens (BEAT_FOCUS): the section and the element that
+  // changes; Carolina's phone drops the visitor's detours. Only on beat entry (never at rest).
+  const [focus, setFocus] = useState<{ n: number; spot: EstateSpot | null; top: boolean }>({ n: 0, spot: null, top: false });
+  useBeatFocus(store, snap, (id) => {
+    const target = BEAT_FOCUS[id as EstateBeatId]?.[view.botOff ? 'off' : 'on'];
+    if (!target) return;
+    if (!buyerPhone) {
+      const to = target[screen];
+      setBuyerOpen(false);
+      if (to.spot === 'calendar') setVisitsDay(CHAT_SLOTS.fri.day);
+      setTab(to.tab);
+      setFocus((f) => ({ n: f.n + 1, spot: to.spot, top: to.tab !== tab }));
+    } else setFocus((f) => ({ n: f.n + 1, spot: null, top: false }));
+  });
+  useEffect(() => {
+    if (!focus.n || buyerPhone) return;
+    const id = requestAnimationFrame(() => revealSpot(root.current, focus.spot && SPOTS[focus.spot], { top: focus.top, smooth: !snap.reduced }));
+    return () => cancelAnimationFrame(id);
+    // Only when a beat moved the view (not when the motion preference changes).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus]);
 
   const playing = !!snap.playing;
   const segFrom = snap.segment?.from ?? null;
@@ -103,6 +128,7 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
     keyNumber,
     keySuffix,
     go: (id) => setTab(id),
+    focus,
     seeVisits: (day) => {
       setVisitsDay(day);
       setBuyerOpen(false);

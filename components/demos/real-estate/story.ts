@@ -620,6 +620,18 @@ export function deriveEstate(state: EstateState, t: number): EstateView {
   };
 }
 
+/**
+ * What Carolina's phone shows from the story alone (the visitor's detours aside): the site, with
+ * Lumi's chat open from beat 1, and the WhatsApp thread once the follow-up opens it (beat 4).
+ * `screenAt` / `chatAt`: when the story last changed each (a visitor's choice made later wins).
+ */
+export function buyerStory(view: Pick<EstateView, 't' | 'followStart'>): { screen: 'site' | 'whatsapp'; screenAt: number; chat: boolean; chatAt: number; threadAt: number | null } {
+  const threadAt = view.followStart !== null ? view.followStart + STORY.openThread : null;
+  const wa = threadAt !== null && view.t >= threadAt;
+  const chat = view.t >= STORY.chatOpen;
+  return { screen: wa ? 'whatsapp' : 'site', screenAt: wa ? threadAt : -1, chat, chatAt: chat ? STORY.chatOpen : -1, threadAt };
+}
+
 /* ------------------------------------------------------------------ */
 /* Visits on any day (calendar navigation)                              */
 /* ------------------------------------------------------------------ */

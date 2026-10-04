@@ -222,9 +222,19 @@ function Legend() {
 
 /** Calendar state shared by both screens: date navigation and the selected slot. */
 function useVisits(initialView: 'day' | 'week') {
-  const { visitsDay } = useEstate();
+  const { visitsDay, focus } = useEstate();
   const nav = useCalendarNav({ today: TODAY, initialDay: visitsDay, initialView, open: isOpenDay });
   const [sel, setSel] = useState<Slot | null>(null);
+  // A beat about the agenda (BEAT_FOCUS) brings back the day it happens, in the screen's own view.
+  const [seen, setSeen] = useState(focus.n);
+  if (seen !== focus.n) {
+    setSeen(focus.n);
+    if (focus.spot === 'calendar') {
+      nav.setDay(visitsDay);
+      nav.setView(initialView);
+      setSel(null);
+    }
+  }
   return { nav, sel, setSel };
 }
 

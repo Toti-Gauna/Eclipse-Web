@@ -1,14 +1,15 @@
 'use client';
 
-import { useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Award, LayoutDashboard, MessageCircleQuestion, Package, ShoppingCart, Store } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, upperFirst, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, upperFirst, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
-import { SHOP_THEME } from './data';
-import { createShopStore, deriveShop } from './story';
+import { BEAT_FOCUS, SHOP_THEME, type ShopBeatId, type ShopSpot } from './data';
+import { act, beatVariant, createShopStore, deriveShop } from './story';
+import { SPOTS, revealSpot } from './focus';
 import { ShopProvider, type ShopCtx, type ShopTab } from './context';
 import { useShopScripts } from './scripts';
 import { Announcer, BrumaMark, useShopText } from './ui';
@@ -63,6 +64,37 @@ export default function ShopDemo({ screen, active }: DemoProps) {
   const [tab, setTab] = useState<ShopTab>('today');
   const [storeOpen, setStoreOpen] = useState(false);
   const customerPhone = screen === 'phone' && paired;
+  const root = useRef<HTMLDivElement | null>(null);
+  const rootRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      root.current = el;
+      ref(el);
+    },
+    [ref],
+  );
+
+  // v3c: a beat takes this view where it happens (BEAT_FOCUS): the panel's section and the element
+  // that changes; the customer's phone goes back to Inés's evening. Only on beat entry (never at rest).
+  const [focus, setFocus] = useState<{ n: number; spot: ShopSpot | null; top: boolean }>({ n: 0, spot: null, top: false });
+  useBeatFocus(store, snap, (id) => {
+    const target = BEAT_FOCUS[id as ShopBeatId]?.[beatVariant(id, view)];
+    if (!target) return;
+    if (customerPhone) {
+      store.update(act.resume());
+      return;
+    }
+    const to = target[screen];
+    setStoreOpen(false);
+    setTab(to.tab);
+    setFocus((f) => ({ n: f.n + 1, spot: to.spot, top: to.tab !== tab }));
+  });
+  useEffect(() => {
+    if (!focus.n) return;
+    const id = requestAnimationFrame(() => revealSpot(root.current, focus.spot && SPOTS[focus.spot], { top: focus.top, smooth: !snap.reduced }));
+    return () => cancelAnimationFrame(id);
+    // Only when a beat moved the view (not when the motion preference changes).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus]);
   const announce = screen === 'laptop' || !paired;
   const playing = !!snap.playing;
   const segFrom = snap.segment?.from ?? null;
@@ -93,6 +125,7 @@ export default function ShopDemo({ screen, active }: DemoProps) {
     business,
     ticketUsd,
     go: (id) => setTab(id),
+    focus,
     openStore: () => {
       setStoreOpen(true);
       if (active) play('open');
@@ -106,7 +139,8 @@ export default function ShopDemo({ screen, active }: DemoProps) {
   const clock = fmt.time(view.clock);
   const sim = {
     store,
-    label: (id: string) => t(!view.recoveryOn && (id === 'recovery' || id === 'paid') ? `sim.off.${id}` : `sim.${id}`),
+    // With the recovery off, beats 3–4 show the cart getting lost (once sent, the message counts).
+    label: (id: string) => t(beatVariant(id, view) === 'off' && (id === 'recovery' || id === 'paid') ? `sim.off.${id}` : `sim.${id}`),
     note: t('sim.note'),
     tour: 'sim',
     announce,
@@ -115,7 +149,7 @@ export default function ShopDemo({ screen, active }: DemoProps) {
   if (customerPhone) {
     return (
       <ShopProvider value={ctx}>
-        <AppShell screen="phone" chrome="bare" theme={SHOP_THEME} business={business} logo={<BrumaMark />} active={active} rootRef={ref} statusTime={clock} sim={sim}>
+        <AppShell screen="phone" chrome="bare" theme={SHOP_THEME} business={business} logo={<BrumaMark />} active={active} rootRef={rootRef} statusTime={clock} sim={sim}>
           <Storefront key={snap.loop} variant="phone" />
         </AppShell>
       </ShopProvider>
@@ -168,7 +202,7 @@ export default function ShopDemo({ screen, active }: DemoProps) {
         phoneNav="tabs"
         maxTabs={5}
         active={active}
-        rootRef={ref}
+        rootRef={rootRef}
         statusTime={clock}
         sim={sim}
         overlay={screen === 'phone' ? <Storefront key={snap.loop} variant="phone" onPanel={ctx.closeStore} homeIndicator /> : undefined}

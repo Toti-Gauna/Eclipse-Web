@@ -1,9 +1,10 @@
 'use client';
 
 import { createContext, useContext } from 'react';
+import type { EstateSpot, EstateTab } from './data';
 import type { EstateState, EstateStore, EstateView } from './story';
 
-export type EstateTab = 'today' | 'inbox' | 'pipeline' | 'visits' | 'followups' | 'listings' | 'site';
+export type { EstateTab };
 
 export interface EstateCtx {
   screen: 'phone' | 'laptop';
@@ -29,6 +30,12 @@ export interface EstateCtx {
   keyNumber: number;
   keySuffix: string;
   go: (tab: EstateTab) => void;
+  /**
+   * The last time a beat took this view somewhere (`n` counts them; 0: never) and the element it
+   * points at. Views with their own state (calendar date, chat channel, the buyer's detours)
+   * follow it when `n` changes.
+   */
+  focus: { n: number; spot: EstateSpot | null };
   /** Opens the visits calendar on a day (e.g. after booking on the site). */
   seeVisits: (day: number) => void;
   /** The day the visits calendar opens on. */

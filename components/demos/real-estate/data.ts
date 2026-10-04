@@ -244,6 +244,63 @@ export const BEATS = [
   { id: 'reply', at: 30_500 },
 ] as const;
 export const STORY_END = BEATS[BEATS.length - 1].at;
+export type EstateBeatId = (typeof BEATS)[number]['id'];
+
+/* ------------------------------------------------------------------ */
+/* Where each beat happens (v3c: a simulation takes every view there)   */
+/* ------------------------------------------------------------------ */
+/** Sections of the agency's workspace (laptop) and app (phone alone; "site" is the buyer button there). */
+export type EstateTab = 'today' | 'inbox' | 'pipeline' | 'visits' | 'followups' | 'listings' | 'site';
+/** Elements a beat brings into view inside its section (see real-estate/focus.ts). */
+export type EstateSpot = 'transcript' | 'chat' | 'key' | 'calendar' | 'preview' | 'card';
+export interface EstateBeatTarget {
+  tab: Exclude<EstateTab, 'site' | 'listings'>;
+  spot: EstateSpot;
+}
+/** What Carolina's phone (next to the laptop) shows when the beat lands: the site with Lumi's chat, or WhatsApp. */
+export type BuyerTarget = 'chat' | 'whatsapp';
+export interface EstateBeatFocus {
+  laptop: EstateBeatTarget;
+  /** The agency's app (phone alone): the buyer view closes, the section opens. */
+  phone: EstateBeatTarget;
+  /** Carolina's phone: a beat drops the visitor's detours (closed chat, back to the site) and the story drives it. */
+  buyer: BuyerTarget;
+}
+
+const go = (tab: EstateBeatTarget['tab'], spot: EstateSpot): EstateBeatTarget => ({ tab, spot });
+const INBOX = go('inbox', 'transcript');
+const CHAT = go('inbox', 'chat');
+
+/**
+ * Per beat and variant (`on`: the 24/7 assistant answers; `off`: nobody does until the office
+ * opens), the screen where the action is legible. Laptop: the conversation while Lumi talks
+ * (transcript + lead file), the visit landing in the calendar, the WhatsApp follow-up, and the
+ * card reaching Reserve (or lost) in the pipeline; without the assistant, the key number while the
+ * night passes unanswered. The phone app is the conversation itself (the WhatsApp thread from the
+ * follow-up on), so every step shows in the chat; without the assistant, the key number too.
+ */
+export const BEAT_FOCUS: Record<EstateBeatId, Record<'on' | 'off', EstateBeatFocus>> = {
+  inquiry: {
+    on: { laptop: INBOX, phone: CHAT, buyer: 'chat' },
+    off: { laptop: INBOX, phone: CHAT, buyer: 'chat' },
+  },
+  qualify: {
+    on: { laptop: INBOX, phone: CHAT, buyer: 'chat' },
+    off: { laptop: go('today', 'key'), phone: go('today', 'key'), buyer: 'chat' },
+  },
+  visit: {
+    on: { laptop: go('visits', 'calendar'), phone: CHAT, buyer: 'chat' },
+    off: { laptop: INBOX, phone: CHAT, buyer: 'chat' },
+  },
+  followup: {
+    on: { laptop: go('followups', 'preview'), phone: CHAT, buyer: 'whatsapp' },
+    off: { laptop: INBOX, phone: CHAT, buyer: 'chat' },
+  },
+  reply: {
+    on: { laptop: go('pipeline', 'card'), phone: CHAT, buyer: 'whatsapp' },
+    off: { laptop: go('pipeline', 'card'), phone: CHAT, buyer: 'chat' },
+  },
+};
 
 /** Story clock start: Thursday 23:40. */
 export const CLOCK_START = { day: TODAY, min: 23 * 60 + 40 };

@@ -5,8 +5,8 @@ import { useTranslations } from 'next-intl';
 import { ArrowLeft, Bath, CalendarCheck, CalendarDays, Check, ChevronLeft, ChevronRight, MessageCircle, Ruler, Square, X } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { BrowserFrame, Button, ChatPeek, ChatWidget, DemoBadge, PushBanner, SiteSection } from '../../kit';
-import { ASKED, CAL_DAYS, LISTINGS, SITE_TIMES, SITE_URL, STORY, listingById, listingPath, type ListingId, type Scene, type ZoneId } from '../data';
-import { act, freeSiteSlots, isVisitFree, parseSlotReply } from '../story';
+import { ASKED, CAL_DAYS, LISTINGS, SITE_TIMES, SITE_URL, listingById, listingPath, type ListingId, type Scene, type ZoneId } from '../data';
+import { act, buyerStory, freeSiteSlots, isVisitFree, parseSlotReply } from '../story';
 import { useEstate } from '../context';
 import { Facade, FloorPlan, MapBlock } from '../facade';
 import { useEstateChats } from '../scripts';
@@ -435,21 +435,32 @@ export function LaptopSite() {
  */
 export function BuyerPhone({ onClose }: { onClose?: () => void }) {
   const t = useTranslations('demoRealEstate');
-  const { view, business, active, seeVisits } = useEstate();
+  const { view, business, active, seeVisits, focus } = useEstate();
   const x = useEstateText();
   const { play } = useSound();
   const own = !!onClose;
   const [page, setPage] = useState<Page>({ name: 'listing', id: ASKED });
   const [chatOv, setChatOv] = useState<{ open: boolean; at: number } | null>(null);
   const [screenOv, setScreenOv] = useState<{ screen: 'site' | 'whatsapp'; at: number } | null>(null);
+  // A beat takes Carolina's phone back from the visitor's detours (closed chat, back to the site):
+  // the story shows where it happens (BEAT_FOCUS → buyer).
+  const [seen, setSeen] = useState(focus.n);
+  if (seen !== focus.n) {
+    setSeen(focus.n);
+    if (!own) {
+      setChatOv(null);
+      setScreenOv(null);
+    }
+  }
 
   // What the story shows, and when it last changed (a visitor's choice wins until the story changes again).
-  const threadAt = view.followStart !== null ? view.followStart + STORY.openThread : null;
-  const storyScreen = !own && threadAt !== null && view.t >= threadAt ? 'whatsapp' : 'site';
-  const storyScreenAt = storyScreen === 'whatsapp' ? threadAt! : -1;
+  const story = buyerStory(view);
+  const threadAt = story.threadAt;
+  const storyScreen = own ? 'site' : story.screen;
+  const storyScreenAt = own ? -1 : story.screenAt;
   const screen = screenOv && screenOv.at >= storyScreenAt ? screenOv.screen : storyScreen;
-  const storyChat = !own && view.t >= STORY.chatOpen;
-  const chatOpen = chatOv && chatOv.at >= (storyChat ? STORY.chatOpen : -1) ? chatOv.open : storyChat;
+  const storyChat = !own && story.chat;
+  const chatOpen = chatOv && chatOv.at >= (own ? -1 : story.chatAt) ? chatOv.open : storyChat;
   const followAt = view.followStart;
   const pushVisible = !own && followAt !== null && view.follow !== null && screen === 'site' && view.t >= followAt && view.t < (threadAt ?? 0);
   const l = listingById(view.listing);

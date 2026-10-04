@@ -6,11 +6,11 @@ import { Award, Clock3, LayoutDashboard, MessageCircleMore, Package, ShoppingBag
 import { useSound } from '@/components/sound/SoundContext';
 import { ChatPeek, ChatWidget, DemoBadge, PushBanner, runChat, type ChatRun } from '../../kit';
 import { COUPON, STORY, type ProductId } from '../data';
-import { act, inesWaRun, stepLine, type InesPhase } from '../story';
+import { PHASE_SCREEN, act, inesWaRun, stepLine, type InesPhase } from '../story';
 import { useShop } from '../context';
 import { useShopScripts } from '../scripts';
 import { BrumaMark, useShopText } from '../ui';
-import { FrontProvider, useFront, type FrontApi, type FrontScreen, type FrontSheet, type FrontUi } from './context';
+import { FrontProvider, useFront, type FrontApi, type FrontScreen, type FrontUi } from './context';
 import { Catalog, ProductPage } from './Catalog';
 import { CartSheet, Checkout, OrderDone } from './Checkout';
 import { ClubPage } from './Club';
@@ -18,17 +18,6 @@ import { LockScreen, WhatsAppScreen } from './Lock';
 
 const START: FrontUi = { screen: 'catalog', product: 'cerrado', size: 's250', grind: 'beans', sheet: null, cat: 'all', pay: 'card', delivery: 'home' };
 
-const PHASE_SCREEN: Record<InesPhase, { screen: FrontScreen; sheet: FrontSheet }> = {
-  catalog: { screen: 'catalog', sheet: null },
-  chat: { screen: 'catalog', sheet: 'chat' },
-  cart: { screen: 'catalog', sheet: 'cart' },
-  checkout: { screen: 'checkout', sheet: null },
-  locked: { screen: 'lock', sheet: null },
-  whatsapp: { screen: 'whatsapp', sheet: null },
-  checkout2: { screen: 'checkout', sheet: null },
-  paying: { screen: 'checkout', sheet: null },
-  paid: { screen: 'order', sheet: null },
-};
 
 /**
  * The customer's side: Bruma's online store.
@@ -44,7 +33,8 @@ export function Storefront({ variant, onPanel, homeIndicator = false }: { varian
   const { play } = useSound();
   const { person } = useShopText();
   const tl = useTranslations('demoShop.front.later');
-  const story = variant === 'phone' && paired && !onPanel && (state.manual === null || view.t > state.manual);
+  // Inés's evening until the visitor touches the phone; the next beat takes it back (ShopDemo → act.resume).
+  const story = variant === 'phone' && paired && !onPanel && state.manual === null;
   const [ui, setUi] = useState<FrontUi>(START);
   const [orderKey, setOrderKey] = useState<string | null>(null);
   /** The visitor reached the checkout in this session (leaving the cart after that abandons it). */
@@ -70,11 +60,14 @@ export function Storefront({ variant, onPanel, homeIndicator = false }: { varian
   /* Actions ---------------------------------------------------------------- */
   const change: FrontApi['act'] = (fn, sound = 'select') => {
     let base = ui;
+    // A takeover starts a new session: a checkout reached before a beat took the phone back doesn't count.
+    let wasReached = reached;
     if (story) {
       // The visitor takes over Inés's phone: their session starts where she was (and with her cart).
       store.update(act.takeOver(ines.lines));
       const safe = shown.screen === 'lock' || shown.screen === 'whatsapp' || shown.screen === 'order' ? 'catalog' : shown.screen;
       base = { ...shown, screen: safe, sheet: shown.sheet === 'chat' ? null : shown.sheet };
+      wasReached = base.screen === 'checkout';
     }
     const next = { ...base, ...fn(base) };
     setUi(next);
@@ -82,10 +75,10 @@ export function Storefront({ variant, onPanel, homeIndicator = false }: { varian
     const seeded = story ? ines.lines.length : mine.lines.length;
     const inCart = next.screen === 'checkout' || next.sheet === 'cart';
     if (next.screen === 'checkout') setReached(true);
-    else if (reached && !inCart && next.screen !== 'order') {
+    else if (wasReached && !inCart && next.screen !== 'order') {
       setReached(false);
       if (seeded) store.update(act.mineLeave());
-    }
+    } else if (wasReached !== reached) setReached(wasReached);
     if (sound && active) play(sound);
   };
 

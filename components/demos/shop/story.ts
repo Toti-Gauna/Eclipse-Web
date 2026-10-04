@@ -90,7 +90,7 @@ export interface ShopState {
   waOpen: number | null;
   /** When the cart-recovery automation was off (story time). */
   off: Range[];
-  /** Story time the visitor took over the customer's phone (it shows their session until a beat plays). */
+  /** Story time the visitor took over the customer's phone (it shows their session until the next beat starts: `resume`). */
   manual: number | null;
   /** Story time the visitor scheduled a roast for the low-stock coffee. */
   restock: number | null;
@@ -141,6 +141,8 @@ export const act = {
     manual: t,
     mine: s.mine.lines.length || s.mine.orders.length ? s.mine : { ...s.mine, lines: seed.map((l) => ({ ...l })) },
   }),
+  /** A beat plays: the customer's phone goes back to Inés's evening (the visitor's session stays in `mine`). */
+  resume: () => (s: ShopState): ShopState => (s.manual === null ? s : { ...s, manual: null }),
   restock: () => (s: ShopState, t: number): ShopState => (s.restock === null ? { ...s, restock: t } : s),
   advance: (key: string, stage: Stage) => (s: ShopState, t: number): ShopState => ({ ...s, moved: { ...s.moved, [key]: { stage, at: t } } }),
 
@@ -300,6 +302,19 @@ export function backTime(run: ChatRun): number | null {
 /* ------------------------------------------------------------------ */
 export type InesPhase = 'catalog' | 'chat' | 'cart' | 'checkout' | 'locked' | 'whatsapp' | 'checkout2' | 'paying' | 'paid';
 export type CartStatus = 'browsing' | 'checkout' | 'abandoned' | 'sent' | 'unsent' | 'read' | 'back' | 'recovered' | 'lost';
+
+/** What Inés's phone (the storefront in story mode) shows in each phase. */
+export const PHASE_SCREEN: Record<InesPhase, { screen: 'catalog' | 'checkout' | 'lock' | 'whatsapp' | 'order'; sheet: 'chat' | 'cart' | null }> = {
+  catalog: { screen: 'catalog', sheet: null },
+  chat: { screen: 'catalog', sheet: 'chat' },
+  cart: { screen: 'catalog', sheet: 'cart' },
+  checkout: { screen: 'checkout', sheet: null },
+  locked: { screen: 'lock', sheet: null },
+  whatsapp: { screen: 'whatsapp', sheet: null },
+  checkout2: { screen: 'checkout', sheet: null },
+  paying: { screen: 'checkout', sheet: null },
+  paid: { screen: 'order', sheet: null },
+};
 
 export interface InesView {
   phase: InesPhase;
@@ -629,6 +644,14 @@ export function deriveShop(state: ShopState, t: number, bot: ChatScript, wa: Cha
     recoveryOn: !isOffNow(state.off),
   };
 }
+
+/**
+ * Which version of the evening plays: `on` when the recovery message goes out to Inés, `off` when
+ * it doesn't. Once the half-hour jump happened it's what was decided then (switching the
+ * automation afterwards doesn't unsend it); before, the switch. Picks the SimBar labels
+ * (`sim.off.*`) and where a beat takes each view (BEAT_FOCUS).
+ */
+export const beatVariant = (_beat: string, view: Pick<ShopView, 'ines' | 'recoveryOn'>): 'on' | 'off' => ((view.ines.sent ?? view.recoveryOn) ? 'on' : 'off');
 
 /** Where the visitor's own cart stands (panel list). */
 export function mineCartStatus(m: Mine): CartStatus | null {

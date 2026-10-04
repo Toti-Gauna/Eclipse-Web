@@ -1,9 +1,10 @@
 'use client';
 
 import { createContext, useContext } from 'react';
+import type { ShopSpot, ShopTab } from './data';
 import type { ShopState, ShopStore, ShopView } from './story';
 
-export type ShopTab = 'today' | 'orders' | 'carts' | 'club' | 'chat' | 'site';
+export type { ShopTab };
 
 export interface ShopCtx {
   screen: 'phone' | 'laptop';
@@ -27,6 +28,11 @@ export interface ShopCtx {
   business: string;
   ticketUsd: number;
   go: (tab: ShopTab) => void;
+  /**
+   * The last time a beat took this view somewhere (`n` counts them; 0: never) and the element it
+   * points at. Views with their own selection (the chat list) follow it when `n` changes.
+   */
+  focus: { n: number; spot: ShopSpot | null };
   /** Phone alone: show the customer's store / the owner's panel. */
   openStore?: () => void;
   closeStore?: () => void;
