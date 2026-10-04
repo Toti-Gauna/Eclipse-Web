@@ -103,7 +103,6 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     ignorePop: false,
     saved: { x: 0, y: 0 },
     release: null as null | (() => void),
-    gutter: '',
     sounded: false,
   });
   const token = `eclipse-demo-${request.id}`;
@@ -165,7 +164,6 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     const l = life.current;
     l.release?.();
     l.release = null;
-    document.documentElement.style.scrollbarGutter = l.gutter;
     if (Math.abs(window.scrollY - l.saved.y) > 0.5 || Math.abs(window.scrollX - l.saved.x) > 0.5)
       window.scrollTo({ left: l.saved.x, top: l.saved.y, behavior: 'instant' });
   }, []);
@@ -224,11 +222,8 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     const p = panel.current;
     if (!d || !p) return;
     const l = life.current;
-    const root = document.documentElement;
     l.saved = { x: window.scrollX, y: window.scrollY };
-    l.gutter = root.style.scrollbarGutter;
-    // Locking hides the page's scrollbar: keep its gutter so nothing behind shifts sideways.
-    root.style.scrollbarGutter = 'stable';
+    // lockScroll keeps the scrollbar gutter, so nothing behind shifts sideways.
     l.release = lockScroll();
     if (!d.open) d.showModal();
     heading.current?.focus({ preventScroll: true });

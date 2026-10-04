@@ -82,8 +82,6 @@
     "pickVertical": "Escolha seu setor e veja",
     "ctaDemo": "Peça sua demo",
     "ctaPlan": "Monte seu plano",
-    "seeAnother": "Ver outro setor",
-    "wantThis": "Quero isso no meu negócio",
     "pickOptional": "Opcional"
   },
   "whatsapp": {
@@ -610,10 +608,6 @@
     "notes": {
       "from": "“A partir de” é o preço de partida: o final depende do escopo e a gente confirma por escrito antes de começar."
     }
-  },
-  "heroReveal": {
-    "hint": "Demo navegável: teste como se fosse sua.",
-    "loading": "Carregando a demo de {business}…"
   },
   "demoShowcase": {
     "laptopLabel": "{business}: demo navegável, versão para computador",
@@ -2003,14 +1997,8 @@
     "sub": "{count} negócios de demo, cada um com o problema mais caro do seu setor. Escolha um: assista ao trailer de {seconds} s ou abra a demo e use.",
     "pain": "O problema",
     "result": "Na demo",
-    "openDemo": "Abrir demo",
-    "openDemoLabel": "Abrir demo: {business}",
-    "modal": {
-      "close": "Fechar a demo",
-      "hint": "É uma demo navegável: toque e teste tudo.",
-      "loading": "Carregando a demo de {business}…",
-      "wantThis": "Quero isso no meu negócio"
-    },
+    "openDemo": "Ver demo",
+    "openDemoLabel": "Ver demo: {business}",
     "notListed": {
       "title": "Não achou o seu setor? <em>A gente monta em {hours} h.</em>",
       "body": "Conte o que o seu negócio faz e mostramos a sua demo.",
@@ -4637,6 +4625,35 @@
         "title": "Faltas que não viram prejuízo",
         "body": "Quantas consultas foram recuperadas nesta semana e de onde vieram: lembretes, lista de espera e a recepção com IA."
       }
+    }
+  },
+  "demoExperience": {
+    "hint": "Demo navegável: teste como se fosse sua.",
+    "loading": "Carregando a demo de {business}…",
+    "wantThis": "Quero isso no meu negócio",
+    "guideSoon": "O guia desta demo ainda não está pronto.",
+    "choice": {
+      "title": "Como você quer ver?",
+      "guideText": "A gente mostra o que importa, passo a passo.",
+      "exploreText": "Toque e teste tudo, no seu ritmo."
+    },
+    "whatsapp": {
+      "plan": "Olá, Eclipse. Vi a demo da {business} e quero algo assim para o meu negócio ({vertical}): o pacote {plan}.",
+      "planExtras": "Olá, Eclipse. Vi a demo da {business} e quero algo assim para o meu negócio ({vertical}): o pacote {plan}, mais {pieces}.",
+      "pieces": "Olá, Eclipse. Vi a demo da {business} e quero algo assim para o meu negócio ({vertical}), com {pieces}."
+    },
+    "project": {
+      "label": "O projeto completo",
+      "title": "O que você vê é uma amostra de um projeto completo.",
+      "leadPlan": "Para ter isso no seu negócio: o pacote {plan}, com tudo o que tem nesta demo.",
+      "leadPlanExtras": "Para ter isso no seu negócio: o pacote {plan}, {count, plural, one {mais # peça que também aparece nesta demo} other {mais # peças que também aparecem nesta demo}}.",
+      "leadPieces": "Ela é feita com {count, plural, one {# peça} other {# peças}}, cada uma com seu preço publicado. O preço do projeto completo a gente confirma por escrito, depois da demo e da conversa.",
+      "package": "Pacote",
+      "covered": "Desta demo, o pacote já inclui: {pieces}.",
+      "extras": "Também nesta demo",
+      "pieces": "As peças desta demo",
+      "piecesNote": "preço publicado de cada peça. O total do projeto a gente confirma por escrito.",
+      "build": "Monte este projeto"
     }
   }
 }

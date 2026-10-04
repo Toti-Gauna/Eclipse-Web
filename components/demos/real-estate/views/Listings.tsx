@@ -9,12 +9,12 @@ import { useEstateText, ViewHead } from '../ui';
 
 /** Each listing's numbers this week, including tonight's inquiry, visit and reservation. */
 function useListingStats() {
-  const { view } = useEstate();
+  const { view, recent } = useEstate();
   return (l: Listing) => {
     const inquiries = l.inquiries + (l.id === ASKED && view.t >= view.inquiryAt ? 1 : 0);
     const visits = l.visits + view.visits.filter((v) => v.listing === l.id && (v.who === 'carolina' || v.who === 'you')).length;
     const reserved = view.outcome === 'reserve' && view.outcomeAt !== null && view.t >= view.outcomeAt && view.listing === l.id;
-    const fresh = (view.bookedAt !== null && view.listing === l.id && view.t - view.bookedAt < 2400 && view.t >= view.bookedAt) || (reserved && view.t - view.outcomeAt! < 2400);
+    const fresh = (view.listing === l.id && recent(view.bookedAt, 2400)) || (reserved && recent(view.outcomeAt, 2400));
     return { inquiries, visits, reserved, fresh };
   };
 }

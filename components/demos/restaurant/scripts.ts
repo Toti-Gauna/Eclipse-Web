@@ -7,7 +7,6 @@ import { AI_BOOKING, tableById, type Items } from './data';
 import { callScript, totalUsd, type CallPlan } from './story';
 import { useRestaurantText } from './text';
 
-
 /** Every call's transcript in the current locale (the timing lives in story.ts FLOWS). */
 export function useCallScripts() {
   const x = useRestaurantText();
@@ -84,7 +83,8 @@ export function useCallScripts() {
             icons: [undefined, undefined, Wheat, undefined, undefined, ChefHat, undefined],
           };
         }
-        case 'alt': {
+        case 'alt':
+        default: {
           const asked = c.dish ?? 'napolitana';
           const sub = c.subs?.[0];
           const alt = sub ? sub[1] : asked;
@@ -102,12 +102,6 @@ export function useCallScripts() {
             icons: [undefined, undefined, BookOpenText, undefined, undefined, ChefHat, undefined],
           };
         }
-        case 'info':
-        default:
-          return {
-            texts: [t('calls.info.hello'), t('calls.info.ask'), t('calls.info.answer', { time: fmt.time(30) }), t('calls.info.no'), t('calls.info.bye')],
-            icons: [],
-          };
       }
     };
 

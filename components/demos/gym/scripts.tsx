@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { Gift, Target, Zap } from 'lucide-react';
 import { runChat, type ChatRun, type ChatScript } from '../kit';
-import { AT, HERO, LEAD, MISSIONS, TRIAL_OPTIONS, WA_OPTIONS, XP, sessionById } from './model';
+import { HERO, LEAD, MISSIONS, TRIAL_OPTIONS, WA_OPTIONS, XP, sessionById } from './model';
 import { LEAD_FLOW, WA_FLOW, buildScript } from './story';
 import { useGym, useGymText } from './hooks';
 
@@ -63,7 +63,7 @@ const spots = (id: string) => {
 };
 
 /** Every chat of the demo, in the current locale. Texts that depend on a choice take it. */
-export function useGymScripts(waSlot: string | undefined, leadGoal: string | undefined, leadPick: string | undefined) {
+export function useGymScripts(waSlot: string | undefined, leadGoal: string | undefined, leadPick: string | undefined, leadName?: string) {
   const { t, short, session, kind, coach } = useGymText();
   return useMemo(() => {
     const comeback = MISSIONS.find((m) => m.id === 'comeback')!;
@@ -110,10 +110,10 @@ export function useGymScripts(waSlot: string | undefined, leadGoal: string | und
               ),
             };
           case 'nameReply':
-            return { text: short(LEAD) };
+            return { text: leadName ?? short(LEAD) };
           case 'done':
             return {
-              text: t('lead.done', { name: short(LEAD) }),
+              text: t('lead.done', { name: leadName ?? short(LEAD) }),
               card: <ClassTicket session={trialSession} tag={t('lead.trialTag')} tone="info" />,
             };
           default:
@@ -123,19 +123,26 @@ export function useGymScripts(waSlot: string | undefined, leadGoal: string | und
       (step, id) => (step === 'pick' ? session(TRIAL_OPTIONS[id === 'opt1' ? 1 : 0], false) : t(`lead.replies.${id}`)),
     );
     return { wa, lead };
-  }, [t, short, session, kind, coach, waSlot, leadGoal, leadPick]);
+  }, [t, short, session, kind, coach, waSlot, leadGoal, leadPick, leadName]);
 }
 
 /**
- * The chats as they are right now, with the localized texts (same structure as the
- * timing scripts the story runs, so both agree on when everything happens).
+ * The chats as they are right now, with the localized texts (same structure and picks as the
+ * timing scripts the story runs, so both agree on when everything happens):
+ * Lucía's WhatsApp, Tomás' site chat (beat 1) and the visitor's own site chat.
  */
-export function useChats(): { wa: ChatRun | null; lead: ChatRun; scripts: ReturnType<typeof useGymScripts> } {
-  const { view, state, reduced } = useGym();
-  const scripts = useGymScripts(view.wa.chosen.slots, view.leadGoal ?? undefined, view.lead.chosen.pick);
-  const sentAt = view.sentAt;
-  const t = view.t;
-  const wa = useMemo(() => (sentAt === null ? null : runChat(scripts.wa, t - sentAt, state.wa, { instant: reduced })), [scripts.wa, sentAt, t, state.wa, reduced]);
-  const lead = useMemo(() => runChat(scripts.lead, t - AT.lead, state.lead, { instant: reduced }), [scripts.lead, t, state.lead, reduced]);
-  return { wa, lead, scripts };
+export function useChats(): { wa: ChatRun | null; lead: ChatRun; leadMine: ChatRun | null } {
+  const { view } = useGym();
+  const { t } = useGymText();
+  const scripts = useGymScripts(view.wa.chosen.slots, view.lead.chosen.goal, view.lead.chosen.pick);
+  const mineScripts = useGymScripts(undefined, view.leadMine?.chosen.goal, view.leadMine?.chosen.pick, t('lead.youName'));
+  const time = view.t;
+  const { waSource, leadSource, leadMineSource } = view;
+  const wa = useMemo(() => (waSource ? runChat(scripts.wa, time - waSource.start, waSource.picks, waSource.options) : null), [scripts.wa, waSource, time]);
+  const lead = useMemo(() => runChat(scripts.lead, time - leadSource.start, leadSource.picks, leadSource.options), [scripts.lead, leadSource, time]);
+  const leadMine = useMemo(
+    () => (leadMineSource ? runChat(mineScripts.lead, time - leadMineSource.start, leadMineSource.picks, leadMineSource.options) : null),
+    [mineScripts.lead, leadMineSource, time],
+  );
+  return { wa, lead, leadMine };
 }

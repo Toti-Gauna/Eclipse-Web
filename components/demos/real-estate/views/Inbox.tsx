@@ -13,14 +13,13 @@ import { FollowThread, useFollow } from './Followups';
 
 /** Hook: the localized 23:40 conversation + a pick handler (as the buyer). */
 export function useInquiry(): { run: ChatRun; pick: (step: string, reply: string) => void } {
-  const { view, store, active, reduced } = useEstate();
+  const { view, store, active } = useEstate();
   const chats = useEstateChats();
   const { play } = useSound();
   return {
-    run: chats.inquiry(view, reduced),
+    run: chats.inquiry(view),
     pick: (step, reply) => {
-      store.update(act.pick(view.chat, step, reply));
-      store.engage();
+      store.update(act.pick(step, reply));
       if (active) play('select');
     },
   };
@@ -172,10 +171,10 @@ function Transcript() {
 /** Conversations of the night: the live one first. */
 function ConvoList() {
   const t = useTranslations('demoRealEstate');
-  const { view, reduced } = useEstate();
+  const { view } = useEstate();
   const chats = useEstateChats();
   const x = useEstateText();
-  const last = [...chats.inquiry(view, reduced, true).items].reverse().find((i) => i.from !== 'note');
+  const last = [...chats.inquiry(view, true).items].reverse().find((i) => i.from !== 'note');
   const lastText = typeof last?.text === 'string' ? last.text : '';
   const rows = BASE_LEADS.filter((l) => ['andres', 'valeria', 'lucia', 'diego'].includes(l.id))
     .sort((a, b) => b.day * 1440 + b.min - (a.day * 1440 + a.min))
@@ -221,10 +220,10 @@ function ConvoList() {
 /** What the assistant knows about Carolina so far. */
 export function LeadFile({ compact = false }: { compact?: boolean }) {
   const t = useTranslations('demoRealEstate');
-  const { view } = useEstate();
+  const { view, recent } = useEstate();
   const x = useEstateText();
   const l = listingById(view.listing);
-  const fresh = (at: number | null) => at !== null && view.t - at >= 0 && view.t - at < 2200;
+  const fresh = (at: number | null) => recent(at, 2200);
   const lost = view.lostAt !== null && view.t >= view.lostAt;
   const next = lost
     ? 'lost'
@@ -297,7 +296,18 @@ export function PhoneInbox() {
       ) : (
         <p className="re-live-hint">{t('chat.as', { name: t('people.carolinaFirst') })}</p>
       )}
-      {channel === 'wa' && view.follow ? <FollowThread className="re-live-chat" /> : <LiveChat className="re-live-chat" />}
+      {channel === 'wa' && view.follow ? (
+        <FollowThread className="re-live-chat" />
+      ) : view.t < view.inquiryAt ? (
+        <div className="re-live-empty" data-tour="chat">
+          <p className="re-title demo-display">{t('inbox.emptyTitle')}</p>
+          <p className="re-sub">{t('inbox.emptyBody')}</p>
+        </div>
+      ) : (
+        <div className="re-live-chat" data-tour="chat">
+          <LiveChat className="h-full" />
+        </div>
+      )}
       <button type="button" className="re-live-dock" onClick={() => go('pipeline')}>
         <span className="flex items-baseline justify-between gap-[0.6em]">
           <span className="truncate text-[0.72em] font-semibold">{t('people.carolina')}</span>

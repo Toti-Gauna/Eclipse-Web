@@ -8,7 +8,7 @@
   --dx-bar-h: 64px;
   position: fixed;
   inset: 0;
-  /* 100vw: also covers the page's scrollbar gutter (kept while locked, see the host). */
+  /* 100vw: also covers the page's scrollbar gutter (kept while locked, see lib/scroll-lock.ts). */
   width: 100vw;
   height: 100%;
   max-width: none;

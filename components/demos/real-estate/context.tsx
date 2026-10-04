@@ -15,16 +15,27 @@ export interface EstateCtx {
   loop: number;
   reduced: boolean;
   active: boolean;
-  /** This instance announces live changes and plays sounds (one per laptop + phone pair). */
+  /** A beat is playing. */
+  playing: boolean;
+  /**
+   * True while a story change at `at` is "just now" (toasts, halos): only while a beat plays
+   * and only for what happened inside it — never at rest, never for the visitor's own actions.
+   */
+  recent: (at: number | null | undefined, ms?: number) => boolean;
+  /** This instance announces live changes (one per laptop + phone pair). */
   announce: boolean;
   business: string;
   /** The vertical's key number (content/verticals.json): 100 % answered in under a minute. */
   keyNumber: number;
   keySuffix: string;
   go: (tab: EstateTab) => void;
-  /** Phone: open the buyer's phone view (site + chat + WhatsApp). */
+  /** Opens the visits calendar on a day (e.g. after booking on the site). */
+  seeVisits: (day: number) => void;
+  /** The day the visits calendar opens on. */
+  visitsDay: number;
+  /** Phone: open the buyer's phone view (site + chat). */
   openBuyer: () => void;
-  /** Switch the 24/7 assistant on/off (restarts the story at 23:40). */
+  /** Switch the 24/7 assistant on/off (the story restarts at 23:40 with the new setting). */
   toggleBot: () => void;
 }
 

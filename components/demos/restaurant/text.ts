@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { useDemoFormat, upperFirst } from '../kit';
-import { TONIGHT, dishById, itemList, type DishId, type Items, type PersonId } from './data';
+import { TONIGHT, dayDate, dishById, itemList, type DishId, type Items, type PersonId } from './data';
 
 /**
  * Names, dishes and money in the current locale (stable per locale + currency).
@@ -41,7 +41,10 @@ export function useRestaurantText() {
     const day = (style: 'short' | 'long' = 'long') =>
       upperFirst(fmt.date(new Date(TONIGHT), style === 'long' ? { weekday: 'long', day: 'numeric', month: 'long' } : { weekday: 'short', day: 'numeric' }).replace('.', ''));
     const weekday = () => upperFirst(fmt.date(new Date(TONIGHT), { weekday: 'long' }));
-    return { t, fmt, price, sum, cash, money: (usd: number) => cash(convert(usd)), dish, dishShort, dishA, dishN, person, first, spoken, names, day, weekday, list };
+    /** Any day of the reservations book: "Sábado 10 de octubre" (long) · "Sáb 10" (short). */
+    const dayOf = (d: number, style: 'short' | 'long' = 'long') =>
+      upperFirst(fmt.date(dayDate(d), style === 'long' ? { weekday: 'long', day: 'numeric', month: 'long' } : { weekday: 'short', day: 'numeric' }).replace('.', ''));
+    return { t, fmt, price, sum, cash, money: (usd: number) => cash(convert(usd)), dish, dishShort, dishA, dishN, person, first, spoken, names, day, weekday, dayOf, list };
   }, [t, fmt, currency, convert]);
 }
 

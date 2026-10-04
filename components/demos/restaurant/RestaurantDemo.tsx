@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { BookOpenText, ChartNoAxesColumn, ChefHat, ConciergeBell, LayoutGrid, PhoneCall, QrCode } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, usePairedStore, useStory, type NavItem } from '../kit';
+import { AppShell, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { RESTAURANT_THEME } from './data';
 import { createRestaurantStore, deriveRestaurant, isOffNow, type LineId } from './story';
@@ -17,6 +17,7 @@ import { LaptopKitchen, PhoneKitchen } from './views/Kitchen';
 import { LaptopFloor, PhoneFloor } from './views/Floor';
 import { LaptopMenu, PhoneMenu } from './views/Menu';
 import { LaptopNumbers, PhoneNumbers } from './views/Numbers';
+import { LaptopQr } from './views/Qr';
 import { CustomerApp } from './views/Customer';
 import './restaurant.css';
 
@@ -26,22 +27,27 @@ const VIEWS: Record<RestaurantTab, Record<DemoProps['screen'], () => ReactNode>>
   kitchen: { phone: PhoneKitchen, laptop: LaptopKitchen },
   floor: { phone: PhoneFloor, laptop: LaptopFloor },
   menu: { phone: PhoneMenu, laptop: LaptopMenu },
+  qr: { phone: PhoneService, laptop: LaptopQr },
   numbers: { phone: PhoneNumbers, laptop: LaptopNumbers },
 };
 
-/** Events that land something (an order, a booking): the success sound. */
-const LANDED = ['aiOrder', 'aiBooking', 'aiGf', 'web', 'alt', 'youOrder', 'youBooking', 'webBooking'];
+/**
+ * Shell variant: a service tool used mid-rush — a slim icon rail (the kitchen display and the
+ * switchboard need the width), compact density, thin icons; on the phone a bottom tab bar.
+ * Different from the clinic's airy top pills + dock.
+ */
+const LAYOUT: ShellLayout = { nav: 'rail', density: 'compact', icons: 'line' };
 
 /**
  * Bodegón Lucero (vertical "restaurantes"): a Buenos Aires bodegón with salón,
  * delivery, take-away and reservations.
- * - laptop: the staff / owner side (collapsible sidebar): the live rush (service), the AI
- *   voice agent on three lines, the kitchen display, salón & reservations, the carta
- *   (stock), the night's numbers.
+ * - laptop: the staff / owner side: tonight's service, the AI voice agent on three lines,
+ *   the kitchen display (move tickets), salón & reservations (any day), the carta (stock),
+ *   the QR / web carta as customers see it, the night's numbers.
  * - phone alone: the same product as a mobile app (+ the customer's side, one tap away).
- * - phone next to the laptop: the CUSTOMER's phone (orders from the QR / web carta,
- *   follows the order live, books a table) — what they do lands on the laptop.
- * One story (28 s loop, see story.ts) drives both screens.
+ * - phone next to the laptop: the CUSTOMER's phone (QR / web carta, order, book a table) —
+ *   what they do lands on the laptop.
+ * Nothing plays on its own: the visitor plays four beats from the SimBar (see story.ts).
  */
 export default function RestaurantDemo({ screen, active }: DemoProps) {
   const vertical = verticalById('restaurantes')!;
@@ -53,7 +59,7 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
   const { play } = useSound();
 
   const { store, paired, ref } = usePairedStore('restaurant', createRestaurantStore);
-  // Scopes the chrome tweaks in restaurant.css (sidebar, tab bar, paper tokens) to this demo.
+  // Scopes the chrome tweaks in restaurant.css (rail, tab bar, paper tokens) to this demo.
   const rootRef = useCallback(
     (el: HTMLDivElement | null) => {
       if (el) el.dataset.demo = 'restaurant';
@@ -70,37 +76,17 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
   const customerPhone = screen === 'phone' && paired;
   const announce = screen === 'laptop' || !paired;
 
-  // Sound: an order / a booking landing (one instance per pair, only while visible).
-  const lastLanded = [...view.events].reverse().find((e) => LANDED.includes(e.kind));
-  const heard = useRef<string | null>(null);
-  useEffect(() => {
-    const id = lastLanded?.id ?? '';
-    const first = heard.current === null;
-    const changed = heard.current !== id;
-    heard.current = id;
-    if (first || !changed || !active || !announce || !lastLanded || lastLanded.at < 0) return;
-    play('success');
-  }, [lastLanded, active, announce, play]);
-  // Sound: a new transcript line on the AI phone (soft), while the calls are on screen.
-  const spoken = view.calls.reduce((n, c) => n + c.voice.lines.filter((l) => l.who !== 'tool').length, 0);
-  const heardLines = useRef(spoken);
-  const callsOnScreen = !customerPhone && (tab === 'phone' || tab === 'service');
-  useEffect(() => {
-    const more = spoken > heardLines.current;
-    heardLines.current = spoken;
-    if (more && active && announce && callsOnScreen && !snap.reduced) play('type', { volume: 0.5 });
-  }, [spoken, active, announce, callsOnScreen, play, snap.reduced]);
-
   const aiOn = !isOffNow(snap.state.aiOff);
   const newTickets = view.board.filter((tk) => tk.stage === 'new').length;
   const laptop = screen === 'laptop';
   const nav: NavItem[] = [
-    { id: 'service', label: t('nav.service'), icon: ConciergeBell, group: laptop ? t('nav.groupTonight') : undefined },
-    { id: 'phone', label: t(laptop ? 'nav.phone' : 'nav.phoneShort'), icon: PhoneCall, badge: view.liveCount ? 'live' : undefined },
-    { id: 'kitchen', label: t('nav.kitchen'), icon: ChefHat, badge: newTickets || undefined },
-    { id: 'floor', label: t(laptop ? 'nav.floor' : 'nav.floorShort'), icon: LayoutGrid, group: laptop ? t('nav.groupRoom') : undefined },
+    { id: 'service', label: t('nav.service'), icon: ConciergeBell },
+    { id: 'phone', label: t(laptop ? 'nav.phone' : 'nav.phoneShort'), icon: PhoneCall, badge: view.liveCount ? 'live' : undefined, tour: 'voice' },
+    { id: 'kitchen', label: t('nav.kitchen'), icon: ChefHat, badge: newTickets || undefined, tour: 'kitchen' },
+    { id: 'floor', label: t(laptop ? 'nav.floor' : 'nav.floorShort'), icon: LayoutGrid, tour: 'floor' },
+    ...(laptop ? [{ id: 'qr', label: t('nav.qr'), icon: QrCode, tour: 'order' }] : []),
     { id: 'menu', label: t('nav.menu'), icon: BookOpenText },
-    { id: 'numbers', label: t('nav.numbers'), icon: ChartNoAxesColumn, group: laptop ? t('nav.groupBiz') : undefined },
+    { id: 'numbers', label: t('nav.numbers'), icon: ChartNoAxesColumn },
   ];
 
   const ctx: RestaurantCtx = {
@@ -128,16 +114,23 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
       setCustomer(true);
       if (active) play('open');
     },
+    beat: snap.beat ?? -1,
+    playing: !!snap.playing,
+    playBeat: (id) => {
+      store.play?.(id);
+      if (active) play('select');
+    },
   };
 
   const clock = fmt.time(view.clock);
+  const sim = { store, label: (id: string) => t(`sim.${id}`), note: t('sim.note'), tour: 'sim', announce };
 
   if (customerPhone) {
     return (
       <RestaurantProvider value={ctx}>
-        <AppShell screen="phone" chrome="bare" theme={RESTAURANT_THEME} business={business} logo={<LuceroMark />} active={active} rootRef={rootRef} statusTime={clock}>
+        <AppShell screen="phone" chrome="bare" theme={RESTAURANT_THEME} business={business} logo={<LuceroMark />} active={active} rootRef={rootRef} statusTime={clock} sim={sim}>
           <div className="rl rl-customer-root" data-screen="phone">
-            <CustomerApp key={snap.loop} auto />
+            <CustomerApp key={snap.loop} />
           </div>
         </AppShell>
       </RestaurantProvider>
@@ -153,14 +146,14 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
           {t('top.live', { count: view.liveCount })}
         </button>
       ) : (
-        <span className="rl-toppill" data-off={aiOn ? undefined : ''}>
+        <button type="button" className="rl-toppill" data-off={aiOn ? undefined : ''} onClick={() => ctx.go('phone')}>
           {aiOn ? t('top.aiOn') : t('top.aiOff')}
-        </span>
+        </button>
       )}
       <span className="rl-topclock demo-mono">{clock}</span>
     </>
   ) : (
-    <button type="button" className="rl-cxbtn" onClick={() => ctx.openCustomer()} aria-haspopup="dialog">
+    <button type="button" className="rl-cxbtn" onClick={() => ctx.openCustomer()} aria-haspopup="dialog" data-tour="order">
       <QrCode aria-hidden strokeWidth={1.8} />
       {t('top.customer')}
     </button>
@@ -176,23 +169,26 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
         nav={nav}
         current={tab}
         onNavigate={(id) => setTab(id as RestaurantTab)}
+        layout={LAYOUT}
+        phoneNav="tabs"
         title={
           laptop ? (
-            <>
-              <p className="rl-toptitle">{nav.find((n) => n.id === tab)?.label}</p>
-              <p className="rl-topdate">{t('top.tonight', { day: x.day() })}</p>
-            </>
+            <p className="rl-toptitle">
+              <span>{nav.find((n) => n.id === tab)?.label}</span>
+              <span className="rl-topdate">{t('top.tonight', { day: x.day() })}</span>
+            </p>
           ) : undefined
         }
         headerRight={headerRight}
-        sidebarFooter={<SidebarFooter on={aiOn} live={view.liveCount} />}
         active={active}
         rootRef={rootRef}
         statusTime={clock}
+        sim={sim}
         overlay={
           screen === 'phone' ? (
             <div className="rl rl-customer-root" data-screen="phone">
               <CustomerApp
+                key={snap.loop}
                 onClose={() => {
                   setCustomer(false);
                   if (active) play('close');
@@ -214,20 +210,5 @@ export default function RestaurantDemo({ screen, active }: DemoProps) {
         </div>
       </AppShell>
     </RestaurantProvider>
-  );
-}
-
-function SidebarFooter({ on, live }: { on: boolean; live: number }) {
-  const { t } = useRestaurantText();
-  return (
-    <div className="rl-sidefoot" data-off={on ? undefined : ''}>
-      <span className="rl-sidefoot-icon" aria-hidden>
-        <PhoneCall strokeWidth={1.7} />
-      </span>
-      <span className="min-w-0 leading-[1.25]">
-        <span className="block truncate text-[0.74em] font-semibold">{t('side.aiTitle')}</span>
-        <span className="block truncate text-[0.64em] text-[var(--demo-muted)]">{on ? t('side.aiOn', { count: live }) : t('side.aiOff')}</span>
-      </span>
-    </div>
   );
 }

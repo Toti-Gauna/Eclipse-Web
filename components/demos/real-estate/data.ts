@@ -146,7 +146,11 @@ export const BASE_LEADS: BaseLead[] = [
 /* ------------------------------------------------------------------ */
 /* Visits (calendar: Fri 9, Sat 10, Mon 12; 10:00 → 20:00)              */
 /* ------------------------------------------------------------------ */
+/** Days with hand-written visits (the site offers them too); other days are generated (see story.ts). */
 export const CAL_DAYS = [4, 5, 7] as const;
+/** The agency shows homes Monday to Saturday (Saturdays until 14:00). */
+export const isOpenDay = (weekday: number) => weekday < 6;
+export const dayEndFor = (weekday: number) => (weekday === 5 ? 840 : 1200);
 export const CAL_START = 600;
 export const CAL_END = 1200;
 export const CAL_STEP = 30;
@@ -163,6 +167,8 @@ export interface BaseVisit {
   listing: ListingId;
   advisor: AdvisorId;
 }
+/** People who visit on generated days. */
+export const VISITORS: PersonId[] = ['valeria', 'andres', 'lucia', 'diego', 'tomas', 'pablo', 'sofia', 'martin'];
 export const BASE_VISITS: BaseVisit[] = [
   { id: 'v-tomas', day: 4, start: 630, end: 690, what: 'visit', who: 'tomas', listing: 'colinas', advisor: 'julia' },
   { id: 'v-appraisal', day: 4, start: 780, end: 840, what: 'appraisal', listing: 'loft', advisor: 'marcos' },
@@ -205,24 +211,39 @@ export const WEEK = {
 export const WEEK_BY_DAY = [11, 13, 9, 14] as const;
 
 /* ------------------------------------------------------------------ */
-/* The story (ms on a 28 s loop)                                        */
+/* The story: five beats the visitor plays (no autoplay)                */
 /* ------------------------------------------------------------------ */
-export const LOOP_MS = 28_000;
+/**
+ * Story times (ms). Nothing runs on its own: each beat is a segment the visitor plays from the
+ * SimBar; the clock stops at the beat's `at`, always on a calm frame (no toast, typing or
+ * "just now" halo left). Carolina's answers are scripted at fixed times *inside* the beats
+ * (see INQUIRY in story.ts); the visitor can answer for her at rest instead.
+ */
 export const STORY = {
   /** The buyer opens the site's chat. */
   chatOpen: 600,
   /** Chat time 0: the inquiry is sent (23:40). */
   chatStart: 1200,
-  /** Earliest jump to after the visit (and at least this long after the booking). */
-  timelapse: 16_500,
+  /** Bot on: after the visit is booked, the night skips to just after the visit (beat "followup"). */
+  timelapse: 18_500,
   timelapseAfterBooking: 1800,
   /** The WhatsApp follow-up starts this long after the jump. */
   follow: 500,
   /** Buyer's phone: the push becomes the WhatsApp thread. */
   openThread: 1700,
-  /** Bot off: the night fast-forwards between these story times, up to 9:00. */
-  off: { from: 2300, to: 7800 },
+  /** Bot off: the night fast-forwards to 9:00 (beat 2) and the first human answer is at 9:12 (beat 3). */
+  off: { from: 5000, to: 9000, human: 13_000 },
 } as const;
+
+/** The SimBar's beats (labels: demoRealEstate.sim.<id>, or sim.off.<id> with the assistant off). */
+export const BEATS = [
+  { id: 'inquiry', at: 5_000 },
+  { id: 'qualify', at: 12_400 },
+  { id: 'visit', at: 18_000 },
+  { id: 'followup', at: 23_500 },
+  { id: 'reply', at: 29_500 },
+] as const;
+export const STORY_END = BEATS[BEATS.length - 1].at;
 
 /** Story clock start: Thursday 23:40. */
 export const CLOCK_START = { day: TODAY, min: 23 * 60 + 40 };

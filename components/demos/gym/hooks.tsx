@@ -4,7 +4,7 @@ import { createContext, useContext, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { upperFirst, useDemoFormat } from '../kit';
 import { dayDate, sessionById, type ClassKind, type CoachId, type MemberId } from './model';
-import type { GymState, GymStore, GymView, MemberTab, PhoneOverlay } from './story';
+import type { GymEvent, GymState, GymStore, GymView, MemberTab, PhoneOverlay } from './story';
 
 export type OwnerTab = 'today' | 'retention' | 'members' | 'classes' | 'league' | 'site';
 
@@ -18,27 +18,27 @@ export interface GymCtx {
   loop: number;
   reduced: boolean;
   active: boolean;
-  /** This instance announces live changes and plays sounds (one per laptop + phone pair). */
+  /** This instance announces changes (one per laptop + phone pair). */
   announce: boolean;
   business: string;
   /** The rubro's key number (content/verticals.json): −25 % churn. */
   keyNumber: { value: number; prefix: string; suffix: string };
   /** Owner side: open a section. */
   go: (tab: OwnerTab) => void;
-  /** Member app (phone): where it is, and how to move (taking over from the story). */
+  /** Member app (phone): where the visitor is. Nothing navigates on its own. */
   member: {
     tab: MemberTab;
-    day: number;
     overlay: PhoneOverlay | null;
     open: (tab: MemberTab) => void;
-    pickDay: (day: number) => void;
     openOverlay: (o: PhoneOverlay) => void;
     closeOverlay: () => void;
   };
   /** Phone alone: switch between the member app and the owner's panel. */
   setMode?: (mode: 'member' | 'owner') => void;
-  /** A visitor action: update the store, hold the loop, play a sound. */
+  /** A visitor action: update the store (stamped with the frozen story time) and play a sound. */
   run: (fn: Parameters<GymStore['update']>[0], sound?: 'select' | 'toggle' | 'success' | 'open' | 'close') => void;
+  /** The visitor's latest action, for a short local toast + announcement (cleared by a timer it started). */
+  flash: GymEvent | null;
 }
 
 const Ctx = createContext<GymCtx | null>(null);

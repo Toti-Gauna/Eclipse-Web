@@ -16,15 +16,14 @@ const STEPS: StepId[] = ['confirm', 'remind', 'after', 'similar', 'news'];
 
 /** Hook: the localized WhatsApp follow-up + a pick handler (as the buyer). */
 export function useFollow(): { run: ChatRun | null; pick: (step: string, reply: string) => void } {
-  const { view, store, active, reduced } = useEstate();
+  const { view, store, active } = useEstate();
   const chats = useEstateChats();
   const { play } = useSound();
   return {
-    run: chats.follow(view, reduced),
+    run: chats.follow(view),
     pick: (step, reply) => {
       if (view.followStart === null) return;
-      store.update(act.pickFollow(view.follow, view.followStart, step, reply));
-      store.engage();
+      store.update(act.pickFollow(view.followStart, step, reply));
       if (active) play('select');
     },
   };
@@ -57,7 +56,7 @@ export function FollowThread({ className = '', announce: announceProp }: { class
 /** The sequence after each visit, with where Carolina is in it. */
 function Sequence() {
   const t = useTranslations('demoRealEstate.followups');
-  const { view } = useEstate();
+  const { view, recent } = useEstate();
   const x = useEstateText();
   const slot = view.slot ? CHAT_SLOTS[view.slot] : null;
   const booked = view.bookedAt !== null && view.t >= view.bookedAt && slot;
@@ -95,7 +94,7 @@ function Sequence() {
     <ol className="re-seq">
       {STEPS.map((id, i) => {
         const s = status(id);
-        const Icon = id === 'after' && s === 'sent' && view.t - (view.followStart ?? 0) < 2600 ? Send : ICON[s];
+        const Icon = id === 'after' && s === 'sent' && recent(view.followStart, 2600) ? Send : ICON[s];
         return (
           <li key={id} className="re-seq-step" data-status={s}>
             <span className="re-seq-index demo-num" aria-hidden>

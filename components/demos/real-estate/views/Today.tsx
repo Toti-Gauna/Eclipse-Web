@@ -3,8 +3,10 @@
 import type { CSSProperties } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowUpRight } from 'lucide-react';
+import { useSound } from '@/components/sound/SoundContext';
 import { ActivityFeed, Kanban, Readout, type KanbanCard } from '../../kit';
-import { SOURCES, STAGES, STAGE_TONE, listingById } from '../data';
+import { SOURCES, STAGES, STAGE_TONE, listingById, type Stage } from '../data';
+import { act } from '../story';
 import { useEstate } from '../context';
 import { SOURCE_ICON, useCardNote, useEstateText, useFeedItems, waitedMinutes } from '../ui';
 import { LeadFile, useInquiry } from './Inbox';
@@ -89,7 +91,7 @@ function Sources() {
 
 /** The pipeline as kit Kanban cards (shared by Today and Pipeline). */
 export function usePipelineCards(): KanbanCard[] {
-  const { view } = useEstate();
+  const { view, recent } = useEstate();
   const x = useEstateText();
   const note = useCardNote();
   return view.cards.map((c) => ({
@@ -100,13 +102,14 @@ export function usePipelineCards(): KanbanCard[] {
     meta: c.note === 'lost' ? '—' : String(c.score),
     icon: SOURCE_ICON[c.source],
     tone: c.note === 'lost' || c.note === 'waiting' ? 'bad' : c.person === 'carolina' ? 'accent' : c.person === 'you' ? 'accent2' : 'neutral',
-    fresh: c.changedAt >= 0 && view.t - c.changedAt < 2400,
+    fresh: recent(c.changedAt, 2400),
   }));
 }
 
 export function PipelineBoard({ layout = 'columns', className = '' }: { layout?: 'columns' | 'stack'; className?: string }) {
   const t = useTranslations('demoRealEstate');
-  const { view } = useEstate();
+  const { view, store, active } = useEstate();
+  const { play } = useSound();
   const cards = usePipelineCards();
   // Carolina (and the visitor's own leads) first in their column.
   const sorted = [...cards].sort((a, b) => Number(b.tone !== 'neutral') - Number(a.tone !== 'neutral'));
@@ -117,6 +120,10 @@ export function PipelineBoard({ layout = 'columns', className = '' }: { layout?:
       label={t('pipeline.label', { count: view.cards.length })}
       layout={layout}
       empty={t('pipeline.empty')}
+      onMove={(id, column) => {
+        store.update(act.moveCard(id, column as Stage));
+        if (active) play('select');
+      }}
       className={`re-kanban ${className}`}
     />
   );
@@ -132,7 +139,7 @@ function NowCard() {
   const last = [...thread.items].reverse().find((i) => i.from !== 'note');
   const started = view.t >= view.inquiryAt;
   return (
-    <section className="re-panel re-now" data-off={view.botOff ? '' : undefined} aria-labelledby="re-now">
+    <section className="re-panel re-now" data-off={view.botOff ? '' : undefined} aria-labelledby="re-now" data-tour="chat">
       <div className="flex items-center justify-between gap-[0.6em]">
         <h3 id="re-now" className="re-panel-title">
           {t('today.now')}
@@ -184,7 +191,7 @@ export function PhoneToday() {
       <NowCard />
       <Sources />
       <section className="re-panel">
-        <ActivityFeed title={t('activity')} live items={feed} />
+        <ActivityFeed title={t('activity')} items={feed} />
       </section>
     </div>
   );
@@ -224,7 +231,7 @@ export function LaptopToday() {
       </div>
       <Ledger />
       <div className="grid grid-cols-[minmax(0,1fr)_17em] items-start gap-[1em]">
-        <section className="re-panel" aria-labelledby="re-pipe">
+        <section className="re-panel" aria-labelledby="re-pipe" data-tour="pipeline">
           <div className="mb-[0.6em] flex items-center justify-between gap-[0.6em]">
             <h3 id="re-pipe" className="re-panel-title">
               {t('pipeline')}
@@ -241,7 +248,7 @@ export function LaptopToday() {
       <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-start gap-[1em]">
         <Sources />
         <section className="re-panel">
-          <ActivityFeed title={t('activity')} live items={feed} />
+          <ActivityFeed title={t('activity')} items={feed} />
         </section>
       </div>
     </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   BadgeCheck,
@@ -109,6 +109,8 @@ export function useCardNote() {
       case 'booked':
       case 'you':
         return t(`notes.${c.note}`, { slot: c.visit ? x.slot(c.visit) : '' });
+      case 'youQualified':
+        return t('notes.youQualified', { budget: view.own?.budget ? t(`budget.${view.own.budget}`) : '', listing: x.rooms(c.listing, true) });
       case 'reserved':
         return t('notes.reserved', { street: l.street });
       default:
@@ -135,6 +137,7 @@ const EVENT_ICON: Record<EstateEvent['kind'], { icon: LucideIcon; tone: Tone }> 
   human: { icon: MessageCircle, tone: 'warn' },
   lost: { icon: CircleSlash, tone: 'bad' },
   you: { icon: BadgeCheck, tone: 'accent' },
+  youLead: { icon: MessageSquareText, tone: 'accent' },
 };
 export const eventIcon = (kind: EstateEvent['kind']) => EVENT_ICON[kind];
 
@@ -151,6 +154,7 @@ export function useEventText() {
       pay: view.pay ? x.t(`pay.${view.pay}`).toLowerCase() : '',
       slot: e.visit ? x.slotLong(e.visit) : '',
       advisor: x.t('people.juliaFirst'),
+      listing: e.listing ? listingById(e.listing).street : '',
       late: x.late,
     });
   };
@@ -158,36 +162,60 @@ export function useEventText() {
 
 /** The activity of the night, newest first. */
 export function useFeedItems(limit = 6): FeedItem[] {
-  const { view } = useEstate();
+  const { view, recent } = useEstate();
   const text = useEventText();
   const x = useEstateText();
   return [...view.events]
     .reverse()
     .slice(0, limit)
-    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], text: text(e), time: x.clock(e.clock), fresh: e.at >= 0 && view.t - e.at < 2600 }));
+    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], text: text(e), time: x.clock(e.clock), fresh: !e.mine && recent(e.at, 2600) }));
 }
 
-const TOASTED: EstateEvent['kind'][] = ['inquiry', 'qualified', 'booked', 'followSent', 'reserved', 'similar', 'think', 'waiting', 'lost', 'you'];
+const TOASTED: EstateEvent['kind'][] = ['inquiry', 'qualified', 'booked', 'followSent', 'reserved', 'similar', 'think', 'waiting', 'lost'];
 
-/** Live toasts (decorative: the Announcer speaks). */
+/**
+ * Toasts (decorative: the Announcer speaks). Story events show while their beat plays (every
+ * beat ends after they leave); the visitor's own bookings show for a few seconds after their click.
+ */
 export function EstateToasts({ placement }: { placement: 'top' | 'bottom-right' }) {
-  const { view, reduced } = useEstate();
+  const { view, reduced, recent } = useEstate();
   const text = useEventText();
   const t = useTranslations('demoRealEstate.toast');
+  // The visitor's bookings made while this view is on screen (a local timer started by their click).
+  const ids = view.events
+    .filter((e) => e.kind === 'you')
+    .map((e) => e.id)
+    .join('|');
+  const known = useRef<Set<string> | null>(null);
+  const timers = useRef<number[]>([]);
+  const [own, setOwn] = useState<string[]>([]);
+  useEffect(() => {
+    const now = ids ? ids.split('|') : [];
+    const before = known.current;
+    known.current = new Set(now);
+    const added = before ? now.filter((id) => !before.has(id)) : [];
+    if (!added.length) return;
+    setOwn((r) => [...r, ...added]);
+    timers.current.push(window.setTimeout(() => setOwn((r) => r.filter((x) => !added.includes(x))), 3400));
+  }, [ids]);
+  useEffect(() => {
+    const list = timers.current;
+    return () => list.forEach((id) => window.clearTimeout(id));
+  }, []);
   if (reduced) return null;
   const items: ToastItem[] = view.events
-    .filter((e) => e.at >= 0 && TOASTED.includes(e.kind) && view.t - e.at < 3200)
+    .filter((e) => (e.kind === 'you' ? own.includes(e.id) : !e.mine && TOASTED.includes(e.kind) && recent(e.at, 3200)))
     .slice(-2)
-    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], title: t(e.kind as 'inquiry'), body: text(e), leaving: view.t - e.at >= 2700 }));
+    .map((e) => ({ id: e.id, ...EVENT_ICON[e.kind], title: t(e.kind as 'inquiry'), body: text(e), leaving: e.kind !== 'you' && view.t - e.at >= 2700 }));
   return <ToastStack items={items} placement={placement} className="re-toasts" />;
 }
 
-/** One polite announcement of the latest live change (one instance per pair). */
+/** One polite announcement of the latest change (one instance per pair). */
 export function Announcer() {
-  const { view, announce } = useEstate();
+  const { view, announce, recent } = useEstate();
   const text = useEventText();
   if (!announce) return null;
-  const latest = [...view.events].reverse().find((e) => e.at >= 0 && view.t - e.at < 2600);
+  const latest = [...view.events].reverse().find((e) => e.at >= 0 && (e.mine ? e.at === view.t : recent(e.at, 2600)));
   return (
     <p className="sr-only" aria-live="polite" aria-atomic="true">
       {latest ? text(latest) : ''}
