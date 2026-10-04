@@ -7,7 +7,9 @@ import { useSound } from '@/components/sound/SoundContext';
 import { PlanBuilder } from './PlanBuilder';
 
 /**
- * "Armá tu plan" as a drawer (right side from md) / full-screen bottom sheet (mobile).
+ * "Armá tu plan" as a drawer that always enters from the right (on phones it leaves a
+ * sliver of the page visible on the left). Its surface follows the section it was opened
+ * from (`builder.theme`, captured by openBuilder): light over dawn, dark over night.
  * Lazy-loaded by BuilderHost on first open and kept mounted afterwards.
  * `suppressed` keeps it closed on /plan, where the page itself is the builder.
  */
@@ -25,10 +27,18 @@ export function PlanBuilderSheet({ suppressed = false }: { suppressed?: boolean 
   }, [open, play]);
 
   return (
-    <Sheet open={open} onClose={closeBuilder} variant="drawer" labelledBy="builder-title" panelClassName="pb-panel">
+    <Sheet
+      open={open}
+      onClose={closeBuilder}
+      variant="drawer"
+      labelledBy="builder-title"
+      className="pb-sheet"
+      surface={builder.theme}
+      panelClassName={`pb-panel theme-${builder.theme}`}
+    >
       <div className="pb-panel-inner">
         <div aria-hidden className="pb-panel-light" />
-        <PlanBuilder mode="sheet" open={open} preset={builder.preset} onClose={closeBuilder} />
+        <PlanBuilder mode="sheet" open={open} preset={builder.preset} onClose={closeBuilder} surface={builder.theme} />
       </div>
     </Sheet>
   );

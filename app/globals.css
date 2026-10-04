@@ -445,30 +445,7 @@
     transform 0.45s var(--ease-expo),
     opacity 0.35s ease;
 }
-/* drawer: full-screen bottom sheet on mobile, right drawer from md */
-.sheet[data-variant='drawer'] .sheet-panel {
-  inset: 0;
-  transform: translateY(100%);
-}
-.sheet[data-variant='drawer'][data-state='open'] .sheet-panel {
-  transform: translateY(0);
-}
-@media (min-width: 768px) {
-  .sheet[data-variant='drawer'] .sheet-panel {
-    inset: 0 0 0 auto;
-    width: min(560px, 100vw);
-    transform: translateX(100%);
-    box-shadow: -40px 0 80px -20px rgb(0 0 0 / 0.5);
-  }
-  .sheet[data-variant='drawer'][data-state='open'] .sheet-panel {
-    transform: translateX(0);
-  }
-}
-@media (min-width: 1280px) {
-  .sheet[data-variant='drawer'] .sheet-panel {
-    width: min(920px, 100vw);
-  }
-}
+/* drawer: always from the right — components/ui/sheet.css */
 .sheet[data-variant='fullscreen'] .sheet-panel {
   inset: 0;
   opacity: 0;

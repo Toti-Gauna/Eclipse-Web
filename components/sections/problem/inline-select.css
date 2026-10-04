@@ -1,44 +1,43 @@
 /*
- * <InlineSelect>: a native <select> that reads as part of a sentence ("Tengo [una clínica ▾].").
- * The visible text hugs the current option; the real select sits on top, transparent.
+ * <InlineSelect>: a native <select> that reads as part of a sentence ("Tengo [✎ una clínica ⌄].").
+ * The visible text hugs the current option; the real select sits on top, transparent (native
+ * picker on phones, keyboard and screen readers for free).
  * Colors follow the section theme: --accent is the corona on dark, corona-deep on dawn (AA).
+ * Sizes follow the sentence's tokens when there are some (--tok-h / --btn, see problem.css).
  */
 .isel {
   position: relative;
   display: inline-flex;
   align-items: baseline;
   gap: 0.28em;
+  max-width: 100%;
   color: var(--accent);
   font-style: italic;
   white-space: nowrap;
   cursor: pointer;
   border-radius: 0.4rem;
-  transition: color 0.25s ease;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.4s var(--ease-expo);
 }
 .isel-text {
-  text-decoration-line: underline;
-  text-decoration-style: dashed;
-  text-decoration-thickness: 1px;
-  text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  text-underline-offset: 0.2em;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .isel-caret {
   width: 0.55em;
   height: 0.55em;
-  margin-right: -0.12em;
   flex: none;
-  align-self: center;
   color: var(--fg-muted);
   transition: transform 0.3s var(--ease-expo);
 }
-.isel:hover {
-  color: var(--flare);
-}
-.theme-light .isel:hover {
-  color: var(--fg);
-}
-.isel:hover .isel-caret {
-  transform: translateY(2px);
+.isel-cap {
+  display: inline-flex;
+  flex: none;
+  align-self: center;
 }
 .isel-native {
   position: absolute;
@@ -58,4 +57,96 @@
 .isel:has(.isel-native:focus-visible) {
   outline: 2px solid var(--focus);
   outline-offset: 4px;
+}
+
+/* ---- inline: the dashed-underline word ----------------------------------------------- */
+.isel--inline .isel-text {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  text-underline-offset: 0.2em;
+}
+.isel--inline .isel-caret {
+  margin-right: -0.12em;
+}
+.isel--inline:hover {
+  color: var(--flare);
+}
+.theme-light .isel--inline:hover {
+  color: var(--fg);
+}
+.isel--inline:hover .isel-caret {
+  transform: translateY(2px);
+}
+
+/* ---- field: a token that looks editable (border, surface, pencil, chevron cap) ---------- */
+.isel--field {
+  --isel-h: var(--tok-h, 2.75rem);
+  --isel-btn: var(--btn, 2.2rem);
+  align-items: center;
+  gap: 0.3em;
+  height: var(--isel-h);
+  margin-inline: 0.06em;
+  padding-inline: 0.55em calc((var(--isel-h) - var(--isel-btn)) / 2);
+  vertical-align: middle;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 6px 18px -14px rgb(17 17 20 / 0.45);
+}
+.isel--field .isel-text {
+  padding-right: 0.15em;
+  font-size: 0.92em;
+  line-height: 1.2;
+}
+.isel-edit {
+  width: 0.62em;
+  height: 0.62em;
+  flex: none;
+  color: var(--fg-muted);
+}
+.isel--field .isel-cap {
+  display: grid;
+  width: var(--isel-btn);
+  height: var(--isel-btn);
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgb(17 17 20 / 0.04);
+}
+.theme-dark .isel--field .isel-cap {
+  background: rgb(244 239 230 / 0.06);
+}
+.isel--field .isel-caret {
+  width: 52%;
+  height: 52%;
+  color: var(--fg);
+}
+@media (hover: hover) {
+  .isel--field:hover {
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  .isel--field:hover .isel-cap {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    background: rgb(245 185 66 / 0.24);
+  }
+  .isel--field:hover .isel-caret {
+    transform: translateY(1px);
+  }
+}
+.isel--field:has(.isel-native:focus-visible) {
+  outline-offset: 3px;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 0 0 4px rgb(245 185 66 / 0.22);
+}
+.isel--field:active .isel-cap {
+  transform: scale(0.94);
+}
+
+@media (forced-colors: active) {
+  .isel--field,
+  .isel--field .isel-cap {
+    border-color: CanvasText;
+  }
 }

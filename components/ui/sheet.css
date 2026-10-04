@@ -1,0 +1,39 @@
+/*
+ * <Sheet variant="drawer">: the panel always lives on the right edge and slides in from it,
+ * at every width. Phones keep a sliver of the page visible on the left (the way back is the
+ * way it came), tablets/desktop a fixed width (callers may widen it, e.g. .pb-panel).
+ * Overrides the drawer block in app/globals.css (higher specificity: dialog.sheet > .sheet-panel).
+ * The panel's theme comes from the caller (.theme-light / .theme-dark on panelClassName).
+ * Only transform / opacity animate; reduced motion is handled globally.
+ */
+dialog.sheet[data-variant='drawer'] > .sheet-panel {
+  inset: 0 0 0 auto;
+  width: calc(100% - var(--sheet-sliver, 20px));
+  max-width: 100%;
+  transform: translateX(100%);
+  border-left: 1px solid var(--line-strong);
+  box-shadow: -32px 0 64px -28px rgb(0 0 0 / 0.6);
+}
+dialog.sheet[data-variant='drawer'][data-state='open'] > .sheet-panel {
+  transform: translateX(0);
+}
+@media (min-width: 768px) {
+  dialog.sheet[data-variant='drawer'] > .sheet-panel {
+    width: min(560px, calc(100% - 48px));
+  }
+}
+
+/* Backdrop: dimmed and blurred, light enough to keep the page (and where you were) in sight. */
+dialog.sheet[data-variant='drawer']::backdrop {
+  background: rgb(5 5 10 / 0.55);
+  -webkit-backdrop-filter: blur(5px) saturate(115%);
+  backdrop-filter: blur(5px) saturate(115%);
+}
+dialog.sheet[data-variant='drawer'][data-surface='light']::backdrop {
+  background: rgb(28 24 18 / 0.36);
+}
+dialog.sheet[data-variant='drawer'][data-surface='light'] > .sheet-panel {
+  box-shadow:
+    -1px 0 0 rgb(17 17 20 / 0.06),
+    -28px 0 60px -30px rgb(28 24 18 / 0.55);
+}

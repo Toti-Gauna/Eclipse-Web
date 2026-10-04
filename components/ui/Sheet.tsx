@@ -1,5 +1,6 @@
 'use client';
 
+import './sheet.css';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { lockScroll } from '@/lib/scroll-lock';
 
@@ -8,7 +9,9 @@ export type SheetVariant = 'drawer' | 'fullscreen' | 'center';
 /**
  * Accessible modal built on the native <dialog> (focus containment, Esc, inert
  * background, top layer). Variants:
- * - drawer: full-screen bottom sheet on mobile, right-side drawer from md up
+ * - drawer: always a right-side drawer — it slides in from the right and back out at every
+ *   width; on phones it leaves a sliver of the page on the left (sheet.css). `surface`
+ *   tunes its backdrop for a light or dark panel (the panel's own theme is the caller's). up
  * - fullscreen: covers the viewport (demo modal)
  * - center: centered card
  * Page scroll is locked while open (lib/scroll-lock.ts).
@@ -22,6 +25,7 @@ export function Sheet({
   children,
   className = '',
   panelClassName = '',
+  surface,
 }: {
   open: boolean;
   onClose: () => void;
@@ -31,6 +35,8 @@ export function Sheet({
   children: ReactNode;
   className?: string;
   panelClassName?: string;
+  /** Drawer only: the panel's surface, so the backdrop dims to match ('light' | 'dark'). */
+  surface?: 'light' | 'dark';
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [state, setState] = useState<'open' | 'closed'>('closed');
@@ -43,7 +49,12 @@ export function Sheet({
     const dialog = ref.current;
     if (!dialog) return;
     if (open) {
-      if (!dialog.open) dialog.showModal();
+      if (!dialog.open) {
+        dialog.showModal();
+        // Commit the closed position (off-screen right for the drawer) before switching to
+        // 'open', so the panel always slides in instead of appearing in place. One read per open.
+        void dialog.getBoundingClientRect();
+      }
       const raf = requestAnimationFrame(() => setState('open'));
       return () => cancelAnimationFrame(raf);
     }
@@ -73,6 +84,7 @@ export function Sheet({
       aria-label={labelledBy ? undefined : label}
       data-state={state}
       data-variant={variant}
+      data-surface={surface}
       className={`sheet ${className}`}
       onClick={(e) => {
         // Click on the backdrop (the dialog box itself, outside the panel).
