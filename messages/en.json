@@ -2377,16 +2377,14 @@
   "demoRestaurant": {
     "nav": {
       "service": "Service",
-      "groupTonight": "Tonight",
       "phone": "AI phone",
       "phoneShort": "Phone",
       "kitchen": "Kitchen",
       "floor": "Floor & bookings",
       "floorShort": "Floor",
-      "groupRoom": "The room",
       "menu": "Menu",
       "numbers": "Numbers",
-      "groupBiz": "Business"
+      "qr": "QR menu"
     },
     "top": {
       "live": "{count, plural, one {# call in progress} other {# calls in progress}}",
@@ -2394,11 +2392,6 @@
       "aiOff": "AI phone off",
       "customer": "Customer",
       "tonight": "{day} · night shift"
-    },
-    "side": {
-      "aiTitle": "AI phone",
-      "aiOn": "{count, plural, =0 {Waiting for calls} one {Answering # call} other {Answering # calls}}",
-      "aiOff": "Off: it rings at the counter"
     },
     "people": {
       "you": "You",
@@ -2439,6 +2432,30 @@
       },
       "rider": {
         "name": "Tomás"
+      },
+      "acosta": {
+        "name": "Valeria Acosta",
+        "first": "Valeria"
+      },
+      "vidal": {
+        "name": "Martín Vidal",
+        "first": "Martín"
+      },
+      "herrera": {
+        "name": "The Herrera family",
+        "first": "Herrera"
+      },
+      "molina": {
+        "name": "Paula Molina",
+        "first": "Paula"
+      },
+      "castro": {
+        "name": "Diego Castro",
+        "first": "Diego"
+      },
+      "navarro": {
+        "name": "Inés Navarro",
+        "first": "Inés"
       }
     },
     "dishes": {
@@ -2538,7 +2555,8 @@
         "free": "Free",
         "seated": "Seated",
         "bill": "Asked for the bill",
-        "reserved": "Reserved"
+        "reserved": "Reserved",
+        "done": "Served"
       }
     },
     "calls": {
@@ -2566,8 +2584,7 @@
         "order": "Order · delivery",
         "booking": "Booking · 4 people",
         "gf": "Question · gluten-free",
-        "alt": "Order · pickup",
-        "info": "Question · hours"
+        "alt": "Order · pickup"
       },
       "order": {
         "hello": "Bodegón Lucero, good evening. Order or booking?",
@@ -2622,25 +2639,16 @@
         "ticket": "Ticket #{num} → kitchen · pickup",
         "bye": "Done. I'll text you on WhatsApp when it's ready."
       },
-      "info": {
-        "hello": "Bodegón Lucero, good evening.",
-        "ask": "Hi, until what time do you take orders?",
-        "answer": "The kitchen is open until {time}. Want to order now?",
-        "no": "Not yet, later. Thanks.",
-        "bye": "Sure. Good night!"
-      },
       "outcome": {
         "missed": "Missed call",
         "lost": {
           "order": "A delivery order that never came in.",
           "booking": "A booking for 4 that never happened.",
           "gf": "A question (and an order) with no answer.",
-          "alt": "A pickup order that never came in.",
-          "info": "A question with no answer."
+          "alt": "A pickup order that never came in."
         },
         "booking": "Table {table} · {time} · {people} people",
         "waitlist": "On the waitlist",
-        "info": "Question answered",
         "none": "No order",
         "delivery": "Order #{num} · delivery · arrives {time}",
         "pickup": "Order #{num} · pickup {time}"
@@ -2703,11 +2711,12 @@
         "missed": "Missed calls"
       },
       "customer": "What the customer sees",
-      "customerSub": "QR menu, online orders and bookings"
+      "customerSub": "QR menu, online orders and bookings",
+      "switchboard": "AI phone · 3 lines"
     },
     "kitchen": {
       "rubric": "Kitchen display",
-      "title": "Kitchen, live",
+      "title": "Tickets",
       "subtitle": "Every order lands on its own, from the floor, the site or the phone. No paper slips, no shouting.",
       "ticketLabel": "Ticket {num}, {channel}, {stage}: {items}",
       "age": "{min} min",
@@ -2721,11 +2730,22 @@
         "orders": "Orders today",
         "late": "Running late"
       },
-      "footnote": "What the AI phone takes and what comes in from the site goes straight to the screen, with notes like “gluten-free”."
+      "footnote": "What the AI phone takes and what comes in from the site goes straight to the screen, with notes like “gluten-free”.",
+      "cols": {
+        "new": "New",
+        "cooking": "Cooking",
+        "ready": "Ready",
+        "out": "Out"
+      },
+      "boardLabel": "Kitchen display",
+      "hint": "You're the kitchen: drag a ticket to the next column or use its Move button.",
+      "bumpLabel": "Ticket {num}: move to {stage}",
+      "yoursShort": "Yours",
+      "gfShort": "GF"
     },
     "floor": {
       "rubric": "Floor & bookings",
-      "title": "The floor, live",
+      "title": "The floor, tonight",
       "titleShort": "The floor",
       "subtitle": "{seated} of {total} tables taken · {people} guests seated.",
       "mapLabel": "Floor plan",
@@ -2745,7 +2765,9 @@
         "people": "People",
         "time": "Time",
         "book": "Book table {n}",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "title": "Book table {n}",
+        "tonight": "Tonight"
       },
       "pending": "Confirming…",
       "via": {
@@ -2760,11 +2782,25 @@
         "conf": "Hi {name}. Your table is confirmed: tonight at {time}, {people} people, table {table}. If plans change, just reply here.",
         "confYou": "Done! Your table is confirmed: tonight at {time}, {people} people, table {table}. If plans change, just reply here.",
         "note": "Automatic reminder 2 hours before",
-        "label": "Booking confirmation on WhatsApp"
+        "label": "Booking confirmation on WhatsApp",
+        "confDay": "Hi {name}. Your table is confirmed: {day} at {time}, {people} people, table {table}. If plans change, just reply here.",
+        "confYouDay": "Done! Your table is confirmed: {day} at {time}, {people} people, table {table}. If plans change, just reply here."
       },
       "hint": "Tap a free table to book it: the confirmation goes out on WhatsApp by itself.",
-      "hintPhone": "Tap a free table to book it.",
-      "listTitle": "Tonight's bookings"
+      "listTitle": "Tonight's bookings",
+      "titleBook": "Bookings book",
+      "subtitleDay": "{count, plural, =0 {No bookings} one {# booking} other {# bookings}} that night.",
+      "listDay": "That night's bookings",
+      "noBookings": "No bookings for that night yet.",
+      "more": "and {count} more",
+      "attended": "Served",
+      "pastNote": "A past night: read-only. {count, plural, =0 {No bookings} one {# booking served} other {# bookings served}}.",
+      "hintAhead": "Tap a free table to book it for that night.",
+      "period": {
+        "tonight": "tonight",
+        "past": "past night",
+        "ahead": "upcoming"
+      }
     },
     "menu": {
       "rubric": "Menu & stock",
@@ -2778,15 +2814,11 @@
       "gf": "Gluten-free",
       "effect": {
         "title": "When something runs out",
-        "idle": "Try it: mark a dish as sold out. The next caller who asks for it hears an alternative.",
+        "idle": "Try it: mark a dish as sold out. It disappears from the QR menu and the site, and the AI phone offers an alternative.",
         "body": "{dish} is sold out. The AI offers {alt} instead.",
-        "soon": "A call is coming in on line {n}…",
-        "ringing": "Line {n}: ringing",
-        "live": "Line {n}: the AI is offering the alternative",
-        "ended": "Line {n}: order taken with the alternative",
-        "missed": "Line {n}: missed call (the AI is off)",
-        "line1": "Line {n} is already offering it",
-        "listen": "Listen to line {n}"
+        "none": "{dish} and anything like it are sold out: the AI says it's off for tonight.",
+        "ahead": "The calls you simulate from now on take it into account.",
+        "after": "The QR menu and the site no longer offer it."
       },
       "qr": {
         "title": "A QR on every table",
@@ -2834,7 +2866,8 @@
       },
       "backToMenu": "Back to the menu",
       "menu": {
-        "hello": "What are we having tonight?"
+        "hello": "What are we having tonight?",
+        "qr": "Table {n} QR · lucero.demo/carta"
       },
       "add": "Add {dish}",
       "less": "One less {dish}",
@@ -2849,10 +2882,15 @@
         "deliveryEta": "40 min",
         "pickupEta": "25 min",
         "direct": "Ordered straight from the bodegón: no delivery-app commission in between.",
-        "confirm": "Place order · {total}"
+        "confirm": "Place order · {total}",
+        "table": "At table {n}",
+        "tableEta": "QR",
+        "note": "Note for the kitchen",
+        "notePlaceholder": "E.g. no salt, well done",
+        "qr": "It goes straight to the kitchen with your table number.",
+        "demo": "Demo: the order only changes this demo's data; nothing is charged or sent."
       },
       "status": {
-        "sending": "Sending your order…",
         "title": "Your order",
         "arrives": "Arrives at",
         "ready": "Ready at",
@@ -2862,7 +2900,8 @@
           "cooking": "Cooking",
           "ready": "Ready",
           "out": "On the way",
-          "picked": "Pick it up"
+          "picked": "Pick it up",
+          "served": "At your table"
         },
         "whatsapp": "We'll text you on WhatsApp at every step.",
         "again": "Place another order",
@@ -2871,25 +2910,35 @@
           "to": "Your place",
           "rider": "{name} is on the way",
           "riderWait": "The rider leaves when it’s ready"
-        }
+        },
+        "atTable": "To table {n}",
+        "now": "Status: {step}",
+        "kitchenHint": "Move the ticket on the kitchen display and watch it change here."
       },
       "book": {
         "title": "Book your table",
-        "tonight": "{day}, tonight",
         "fewer": "One person less",
         "more": "One person more",
         "table": "Table {n} is yours.",
         "full": "No free tables for that many people.",
         "confirm": "Book",
         "doneTitle": "Table booked!",
-        "whatsapp": "The confirmation is on its way on WhatsApp."
+        "whatsapp": "The confirmation is on its way on WhatsApp.",
+        "when": "Which night?",
+        "tonightShort": "Tonight",
+        "late": "No times left for tonight.",
+        "again": "Make another booking"
       },
       "push": {
         "app": "WhatsApp",
         "now": "now",
         "out": "Your order #{num} is on its way: it arrives at {time}.",
-        "ready": "Your order #{num} is ready for pickup ({time})."
-      }
+        "ready": "Your order #{num} is ready for pickup ({time}).",
+        "readySalon": "Your order #{num} is ready.",
+        "picked": "Thanks for picking up order #{num}.",
+        "served": "Your order #{num} is at your table."
+      },
+      "addMore": "Add another {dish} ({count} so far)"
     },
     "feed": {
       "ring": "Line {line}: incoming call",
@@ -2906,7 +2955,7 @@
       "altSame": "Line {line}: {dish} for pickup",
       "youOrder": "Your order #{num} is in the kitchen",
       "youBooking": "You booked table {table} at {time}",
-      "webBooking": "Web booking: table {table} at {time}"
+      "webBooking": "Web booking: table {table}, {day} at {time}"
     },
     "toast": {
       "aiOrder": "Phone order",
@@ -2919,6 +2968,33 @@
       "youBooking": "Your booking",
       "webBooking": "Web booking",
       "out": "On the way"
+    },
+    "sim": {
+      "order": "A call to order",
+      "rush": "3 calls at once",
+      "qr": "A table orders by QR",
+      "web": "An order and a booking on the site",
+      "note": "Calls, orders and bookings are simulated with demo data; nothing is sent."
+    },
+    "simCue": "Simulate: {label}",
+    "stageOut": {
+      "salon": "Served",
+      "delivery": "On the way",
+      "pickup": "Picked up"
+    },
+    "qr": {
+      "rubric": "QR & site",
+      "title": "The menu, as guests see it",
+      "subtitle": "The same menu on every table's QR and on the site. Order here: it reaches the kitchen with your note.",
+      "steps": {
+        "scan": "Guests scan the QR or open the site and pick.",
+        "kitchen": "The order lands on the kitchen display, note included.",
+        "whatsapp": "They get a WhatsApp message when it's out."
+      },
+      "yours": "Your latest order",
+      "count": "{count, plural, one {# order of yours} other {# orders of yours}}",
+      "empty": "You haven't ordered yet. Pick dishes from the menu on the left.",
+      "toKitchen": "See it in the kitchen"
     }
   },
   "demoShop": {
@@ -4624,6 +4700,28 @@
       "recovered": {
         "title": "No-shows that don't cost you",
         "body": "How many appointments were recovered this week and where they came from: reminders, the waitlist and the AI front desk."
+      }
+    },
+    "restaurant": {
+      "sim": {
+        "title": "You run the shift",
+        "body": "Nothing moves on its own. Tap “Simulate” to see a moment of the night: one call, three at once, a table ordering by QR or a web order."
+      },
+      "order": {
+        "title": "QR menu and online orders",
+        "body": "Pick dishes, quantities and a note for the kitchen, then place the order. It lands on the kitchen display without a waiter or a delivery app's commission."
+      },
+      "voice": {
+        "title": "The AI phone answers every call",
+        "body": "It takes orders and bookings on three lines at once, with the menu and the floor up to date. Simulate the three calls and read each conversation."
+      },
+      "kitchen": {
+        "title": "The kitchen display",
+        "body": "Every ticket lands on its own, from the QR, the site or the phone. Move it from New to Out: the guest sees the status on their phone."
+      },
+      "floor": {
+        "title": "Floor and bookings",
+        "body": "The plan shows who's seated, who's coming and which tables are free. Look at past or upcoming nights and book a table: the confirmation goes out on WhatsApp."
       }
     }
   },

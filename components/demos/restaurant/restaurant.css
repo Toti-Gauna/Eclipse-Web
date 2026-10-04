@@ -132,14 +132,23 @@
 
 /* Laptop top bar ------------------------------------------------------ */
 .rl-toptitle {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.7em;
+  white-space: nowrap;
+}
+.rl-toptitle > span:first-child {
   font-family: var(--font-serif);
-  font-size: 1.15em !important;
+  font-size: 1.15em;
   font-style: italic;
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 .rl-topdate {
+  overflow: hidden;
   color: var(--demo-muted);
   font-size: 0.66em;
+  text-overflow: ellipsis;
 }
 .rl-toplive,
 .rl-toppill {
@@ -188,32 +197,6 @@
 .rl-cxbtn svg {
   width: 1.2em;
   height: 1.2em;
-}
-.rl-sidefoot {
-  display: flex;
-  align-items: center;
-  gap: 0.6em;
-  padding: 0.6em;
-  border: 1px solid var(--demo-line);
-  border-radius: var(--demo-radius);
-}
-.rl-sidefoot-icon {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 2em;
-  height: 2em;
-  border-radius: 999px;
-  background: var(--demo-accent-2);
-  color: var(--demo-accent-2-ink);
-}
-.rl-sidefoot[data-off] .rl-sidefoot-icon {
-  background: var(--demo-bad);
-  color: var(--demo-on-status);
-}
-.rl-sidefoot-icon svg {
-  width: 1em;
-  height: 1em;
 }
 
 /* Lamps (phone lines) ---------------------------------------------- */
@@ -1023,71 +1006,6 @@
   flex: none;
 }
 
-/* Kitchen board ---------------------------------------------------- */
-.rl-board {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.6em;
-  align-items: start;
-}
-.rl-board-col {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 0.5em;
-  min-height: 18em;
-  padding: 0.55em;
-  border-radius: var(--demo-radius);
-  background: var(--demo-sunken);
-}
-.rl-board-head {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  padding: 0.1em 0.2em 0.35em;
-  border-bottom: 1px solid var(--demo-line);
-  font-size: 0.7em;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.rl-board-dot {
-  width: 0.6em;
-  height: 0.6em;
-  flex: none;
-  border-radius: 999px;
-  background: var(--rl-stage-new);
-}
-.rl-board-col[data-stage='cooking'] .rl-board-dot {
-  background: var(--rl-stage-cooking);
-}
-.rl-board-col[data-stage='ready'] .rl-board-dot {
-  background: var(--rl-stage-ready);
-}
-.rl-board-col[data-stage='out'] .rl-board-dot {
-  background: var(--rl-stage-out);
-}
-.rl-board-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-}
-.rl-board-empty {
-  padding: 0.6em 0.2em;
-  color: var(--demo-muted);
-  font-size: 0.66em;
-}
-.rl-board[data-layout='stack'] {
-  grid-template-columns: 1fr;
-}
-.rl-board[data-layout='stack'] .rl-board-col {
-  min-height: 0;
-}
-.rl-board[data-layout='stack'] .rl-board-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-}
 .rl-readouts {
   display: flex;
   gap: 1.2em;
@@ -1556,16 +1474,6 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
   color: var(--demo-muted);
   font-size: 0.66em;
 }
-.rl-effect-status[data-phase='ringing'],
-.rl-effect-status[data-phase='live'] {
-  color: var(--demo-accent-text);
-}
-.rl-effect-status[data-phase='ended'] {
-  color: var(--demo-accent-2-text);
-}
-.rl-effect-status[data-phase='missed'] {
-  color: var(--demo-bad);
-}
 .rl-effect .rl-linkbtn {
   align-self: flex-start;
 }
@@ -1779,34 +1687,6 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
 .rl-cx-add:active:not(:disabled) {
   transform: scale(0.92);
 }
-/* Autoplay: the button "tapped" now gets a ring */
-.rl-cx [data-tap] {
-  position: relative;
-}
-.rl-cx [data-tap]::after {
-  content: '';
-  position: absolute;
-  inset: -0.25em;
-  border-radius: inherit;
-  box-shadow: 0 0 0 0.18em var(--demo-accent);
-  opacity: 0;
-  animation: rl-tap 0.8s var(--demo-ease) both;
-  pointer-events: none;
-}
-@keyframes rl-tap {
-  0% {
-    opacity: 0;
-    transform: scale(1.25);
-  }
-  45% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-}
 .rl-cx-cartbar {
   position: absolute;
   left: 0.9em;
@@ -1903,7 +1783,7 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
 }
 .rl-cx-modes {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.45em;
 }
 .rl-cx-modes button {
@@ -1940,12 +1820,6 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
   display: flex;
   flex-direction: column;
   gap: 0.6em;
-}
-.rl-cx-wait {
-  padding: 2em 0;
-  color: var(--rl-paper-muted);
-  font-size: 0.74em;
-  text-align: center;
 }
 .rl-cx-receipt {
   --perf: 0.32em;
@@ -2085,10 +1959,10 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
   right: 0;
   background: var(--demo-accent);
 }
-.rl-cx-route-run {
-  position: absolute;
-  inset: 0 2.2em 0 0;
-  animation: rl-ride 14s linear both;
+/* No loop: the rider stands on the route once the order left (the visitor moved it). */
+.rl-cx-route-rider[data-out] {
+  left: calc(62% - 1.1em);
+  transition: left 0.6s var(--demo-ease);
 }
 .rl-cx-route-rider {
   position: absolute;
@@ -2116,14 +1990,6 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
   grid-column: 1 / -1;
   color: var(--rl-paper-muted);
   font-weight: 500;
-}
-@keyframes rl-ride {
-  from {
-    transform: translateX(4%);
-  }
-  to {
-    transform: translateX(100%);
-  }
 }
 .rl-cx-wa {
   display: flex;
@@ -2176,13 +2042,11 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
   .rl-lamp::after,
   .rl-fresh,
   .rl-table.rl-fresh .rl-table-top,
-  .rl-table[data-status='pending'] .rl-table-top,
-  .rl-cx [data-tap]::after {
+  .rl-table[data-status='pending'] .rl-table-top {
     animation: none !important;
   }
-  .rl-cx-route-run {
-    animation: none;
-    transform: translateX(60%);
+  .rl-cx-route-rider {
+    transition: none;
   }
   .rl-linkbtn svg,
   .rl-table-top,
@@ -2191,4 +2055,406 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
   .rl-cx-add {
     transition: none;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* v3: manual story — beat cues, bump buttons, kitchen display board   */
+/* ------------------------------------------------------------------ */
+/* A contextual "Simular: …" (same as the SimBar), drawn as a wine outline ticket stub. */
+.rl-simcue {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.45em;
+  min-height: 2.3em;
+  padding: 0 0.85em 0 0.7em;
+  border: 1px dashed color-mix(in oklab, var(--demo-accent-text) 70%, transparent);
+  border-radius: 999px;
+  color: var(--demo-accent-text);
+  font-size: 0.68em;
+  font-weight: 650;
+  text-align: left;
+}
+.rl-simcue svg {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+  fill: currentColor;
+}
+.rl-simcue:hover {
+  border-style: solid;
+  background: color-mix(in oklab, var(--demo-accent) 16%, transparent);
+}
+.rl-simcue:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Bump: what the cook taps on a ticket (moves it one rail on). */
+.rl-bump {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4em;
+  min-height: 2.5em;
+  margin: 0.15em -0.15em 0;
+  padding: 0 0.7em;
+  border-radius: 0.35em;
+  background: var(--rl-paper-ink);
+  color: var(--rl-paper);
+  font-size: 0.64em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.rl-bump svg {
+  width: 1.2em;
+  height: 1.2em;
+  transition: transform 0.3s var(--demo-ease);
+}
+.rl-bump:hover svg {
+  transform: translateX(0.2em);
+}
+.rl-bump[data-to='out'] {
+  background: var(--rl-paper-wine);
+}
+.rl-ticket-note {
+  color: var(--rl-paper-wine);
+  font-family: var(--font-serif);
+  font-size: 0.78em;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+/* The kitchen display is the kit Kanban, printed as paper tickets on dark rails. */
+.rl-kds {
+  --rl-perf: 0.32em;
+}
+.rl-kds .demo-kanban-col {
+  border: 1px solid var(--demo-line);
+  border-radius: var(--demo-radius-sm);
+  background: color-mix(in oklab, var(--demo-sunken) 70%, var(--demo-bg));
+}
+.rl-kds .demo-kanban-head {
+  padding-bottom: 0.35em;
+  border-bottom: 1px dashed var(--demo-line-strong);
+  font-size: 0.66em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.rl-kds .demo-kanban-count {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  color: var(--demo-ink);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  letter-spacing: 0;
+}
+.rl-kds .demo-kanban-card {
+  --demo-surface: var(--rl-paper);
+  --demo-sunken: color-mix(in oklab, var(--demo-bg) 9%, var(--rl-paper));
+  --demo-ink: var(--rl-paper-ink);
+  --demo-muted: var(--rl-paper-muted);
+  --demo-line: var(--rl-paper-line);
+  align-items: flex-start;
+  padding: 0.55em 0.55em calc(0.5em + var(--rl-perf));
+  border-top: 0.26em solid var(--tone-solid);
+  border-radius: 0.2em;
+  background: var(--rl-paper);
+  color: var(--rl-paper-ink);
+  box-shadow: 0 0.5em 1em -0.6em rgb(0 0 0 / 0.75);
+}
+/* Perforated bottom edge (a pseudo-element, so the "Mover" menu is never clipped). */
+.rl-kds .demo-kanban-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--rl-perf);
+  background: radial-gradient(circle at 50% 100%, color-mix(in oklab, var(--demo-sunken) 70%, var(--demo-bg)) 0.16em, transparent 0.18em) 0 0 / 0.55em 100% repeat-x;
+  pointer-events: none;
+}
+.rl-kds .demo-kanban-card .demo-icon-chip {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--rl-paper-line);
+  color: var(--rl-paper-ink);
+}
+.rl-kds .demo-kanban-card .text-\[0\.74em\] {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  letter-spacing: -0.01em;
+}
+.rl-kds .demo-kanban-card .text-\[0\.62em\] {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 0.64em;
+  line-height: 1.3;
+}
+.rl-kds .demo-kanban-menu {
+  color: var(--rl-paper-ink);
+}
+.rl-kds .demo-kanban-empty {
+  border-color: var(--demo-line-strong);
+}
+.rl-kds-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25em;
+}
+.rl-kds-meta [data-late] {
+  color: var(--rl-paper-wine);
+  font-weight: 700;
+}
+.rl-kds-tag {
+  padding: 0.05em 0.4em;
+  border: 1.5px solid currentColor;
+  border-radius: 0.2em;
+  color: var(--rl-paper-wine);
+  font-size: 0.9em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.rl-kds-tag[data-tone='olive'] {
+  color: var(--rl-paper-olive);
+}
+
+/* Desktop columns are narrow: the channel shows in the title (Mesa 7 / a name), not as a chip. */
+.rl-kds[data-layout='columns'] .demo-kanban-card .demo-icon-chip {
+  display: none;
+}
+
+/* Reservations book --------------------------------------------------- */
+.rl-calbar .demo-cal-bar-period {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+.rl-period-tag {
+  color: var(--demo-muted);
+  font-family: var(--font-sans, inherit);
+  font-size: 0.82em;
+  font-style: normal;
+}
+.rl-table[data-status='done'] {
+  --fill: color-mix(in oklab, var(--demo-ink) 22%, var(--demo-sunken));
+  --edge: transparent;
+  --ink: var(--demo-muted);
+}
+.rl-table[data-status='done'] .rl-table-top {
+  border-style: solid;
+}
+.rl-legend li[data-status='done'] .rl-legend-swatch {
+  border-style: solid;
+  border-color: transparent;
+  background: color-mix(in oklab, var(--demo-ink) 22%, var(--demo-sunken));
+}
+.rl-bookings-empty {
+  margin-top: 0.4em;
+  color: var(--demo-muted);
+  font-size: 0.7em;
+}
+.rl-bookings li.rl-bookings-more {
+  justify-content: flex-end;
+  color: var(--demo-muted);
+  font-size: 0.64em;
+}
+.rl-bookings li[data-past] .rl-via {
+  color: var(--demo-muted);
+}
+
+/* Carta: what selling out does */
+.rl-effect-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+/* Customer: QR line, note field, fine print */
+.rl-cx-qr {
+  margin: -0.3em 0 0.7em;
+  color: var(--rl-paper-muted);
+  font-size: 0.62em;
+}
+.rl-cx-notefield {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+.rl-cx-notefield input {
+  min-height: 2.9em;
+  padding: 0 0.8em;
+  border-radius: var(--demo-radius-sm);
+  background: color-mix(in oklab, var(--demo-bg) 5%, var(--rl-paper));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--demo-bg) 30%, transparent);
+  color: var(--rl-paper-ink);
+  font-family: var(--font-serif);
+  font-size: 0.86em;
+  font-style: italic;
+}
+.rl-cx-notefield input::placeholder {
+  color: var(--rl-paper-muted);
+}
+.rl-cx-notefield input:focus-visible {
+  outline: 2px solid var(--rl-paper-wine);
+  outline-offset: 1px;
+}
+.rl-cx-fine {
+  color: var(--rl-paper-muted);
+  font-size: 0.6em;
+  line-height: 1.4;
+}
+.rl-cx-notes {
+  color: var(--rl-paper-wine);
+  font-family: var(--font-serif);
+  font-size: 0.82em;
+  font-style: italic;
+}
+.rl-cx-hint {
+  padding-top: 0.5em;
+  border-top: 1px dashed var(--rl-paper-line);
+  color: var(--rl-paper-muted);
+  font-size: 0.64em;
+  line-height: 1.4;
+}
+
+/* Laptop "Carta QR": the customer's carta inside a phone-width browser */
+.rl-qrframe {
+  width: 100%;
+  max-width: 22em;
+  height: 31em;
+  justify-self: center;
+}
+.rl-qrframe .demo-browser-body {
+  display: flex;
+}
+.rl-qrframe .rl-customer-root {
+  flex: 1;
+}
+.rl-steps {
+  display: flex;
+  flex-direction: column;
+}
+.rl-steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.55em 0;
+  border-top: 1px dashed var(--demo-line-strong);
+  font-size: 0.72em;
+}
+.rl-steps li > svg {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+  color: var(--demo-accent-2-text);
+}
+.rl-steps-n {
+  flex: none;
+  width: 1.4em;
+  color: var(--demo-muted);
+}
+.rl-qr-ticket {
+  max-width: 16em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Phone view: touch targets ≈ 44 px (the phone root em is ~11.9 px at  */
+/* a 360 px viewport, so 3.7 root em). Where a bigger control would     */
+/* break the composition, an invisible hit area grows it instead.       */
+/* ------------------------------------------------------------------ */
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cxbtn,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-linkbtn,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-back,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-add,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-stepper button {
+  position: relative;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cxbtn::after,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-linkbtn::after,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-back::after,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-add::after,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-stepper button::after,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .demo-switch::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -0.4em;
+  right: -0.4em;
+  transform: translateY(-50%);
+}
+/* App bar pill: as tall as the app bar (3.3 root em), never over the SimBar. */
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cxbtn::after {
+  height: 4.85em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-linkbtn::after {
+  height: 5.45em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-back::after {
+  height: 5.3em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-add::after {
+  left: calc(50% - 2.15em);
+  right: auto;
+  width: 4.3em;
+  height: 4.3em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-stepper button::after {
+  left: -0.3em;
+  right: -0.3em;
+  height: 4.75em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .demo-switch::before {
+  left: -0.7em;
+  right: -0.7em;
+  height: 3.7em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-simcue {
+  min-height: 5.45em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-customer-cta {
+  min-height: 4.75em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-linerow {
+  min-height: 3.7em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-linepick .rl-lamp-btn {
+  min-width: 4.3em;
+  min-height: 4.3em;
+  justify-content: center;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-chip {
+  min-width: 5.15em;
+  min-height: 5.15em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-book .demo-btn,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-bookform .demo-btn {
+  min-height: 4.65em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-kds .demo-kanban-move {
+  width: 3.7em;
+  height: 3.7em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-tabs button {
+  min-height: 5.15em;
+}
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-notefield input,
+.demo-root[data-demo='restaurant'][data-screen='phone'] .rl-cx-confirm {
+  min-height: 4.3em;
+}
+
+/* The emphasized KPI on the wine accent: a deeper wine so its captions keep AA contrast. */
+.rl .demo-kpi[data-emphasis] {
+  background: color-mix(in oklab, var(--demo-accent) 70%, var(--demo-sunken));
+}
+/* Small round tables on the phone plan: a hit area of ~44 px around them. */
+.demo-root[data-demo='restaurant'][data-screen='phone'] button.rl-table::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
 }

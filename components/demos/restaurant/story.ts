@@ -1,40 +1,44 @@
 /**
- * Bodegón Lucero — the live story and everything derived from it.
+ * Bodegón Lucero — the story and everything derived from it.
  *
  * One store per showcase (laptop + phone share it) holds only what the visitor did;
  * every screen DERIVES the night from (story time t, that state) with `deriveRestaurant`,
- * which is pure: pausing, looping, reduced motion (t = end) and two screens in sync
- * come for free.
+ * which is pure: pausing, reduced motion and two screens in sync come for free.
  *
- * The 28 s loop — Friday 21:30, rush hour: three lines ring almost at once and the AI
- * voice agent answers all three. Line 1: Marta orders delivery (ticket → kitchen,
- * WhatsApp). Line 2: Ramiro books a table for 4 at 22:30 (floor map, WhatsApp).
- * Line 3: Lucía asks for gluten-free dishes and orders take-away. Meanwhile Sofía orders
- * on the site (the customer's phone), a couple walks in, tickets move
- * Nuevo → En cocina → Listo → En camino, table 3 asks for the bill.
- * Visitor: order from the menu, book a table, mark a dish out of stock (a caller hears
- * the alternative), switch the AI phone off (calls go unanswered).
+ * Nothing plays on its own (v3). Friday 21:30, the visitor plays four beats from the SimBar:
+ * 1 order — Marta calls line 1 and the AI voice agent takes her delivery order.
+ * 2 rush — three lines ring at once: a take-away order, Ramiro books a table for 4,
+ *   Lucía asks for gluten-free dishes and orders.
+ * 3 qr — a couple walks in and orders by QR, table 3 asks for the bill, desserts by QR.
+ * 4 web — Sofía orders delivery on the site; Julieta books tomorrow's table on the site.
+ * Between beats the clock is stopped. What the visitor does (order from the carta, book a
+ * table on any day, move a kitchen ticket, mark a dish out of stock, switch the AI phone
+ * off) is stamped with `t` and shows at once.
  */
-import { runVoice, type DemoStore, type VoiceLine, type VoiceScript, type VoiceState } from '../kit';
-import { createStoryStore } from './store';
+import { createDemoStore, runVoice, weekdayOf, type DemoStore, type VoiceLine, type VoiceScript, type VoiceState } from '../kit';
 import {
   AI_BOOKING,
   AI_TABLES,
   BASE_BOOKINGS,
   BASE_SEATED,
   BASE_TICKETS,
+  BEATS,
+  BOOK_TIMES,
   FIRST_TICKET,
-  LOOP_MS,
+  GUESTS,
   MENU,
-  OVERRUN_MS,
+  OUT_SHOWN,
+  QR_TABLE,
   STORY,
   TABLES,
-  TICKET_FLOW,
+  TODAY,
   TONIGHT_BASE,
+  WEB_BOOKING,
   dishById,
+  isOpenDay,
   itemList,
+  stageIndex,
   storyClock,
-  tableById,
   type BookingVia,
   type Channel,
   type DishId,
@@ -42,6 +46,7 @@ import {
   type PersonId,
   type Source,
   type Stage,
+  type Table,
   type TicketPlan,
 } from './data';
 
@@ -52,56 +57,46 @@ export interface Range {
   from: number;
   to: number | null;
 }
+export type OrderMode = 'table' | 'delivery' | 'pickup';
 export interface MyOrder {
   id: string;
   items: Items;
-  mode: 'delivery' | 'pickup';
+  mode: OrderMode;
+  /** A note for the kitchen ("sin sal"). Local demo data only. */
+  note: string;
   /** Story time it was placed. */
   at: number;
 }
 export interface MyBooking {
+  /** Day index (TODAY = tonight). */
+  day: number;
   table: number;
   time: number;
   people: number;
-  /** Story time it was made (−1: an earlier loop). */
+  /** Story time it was made. */
   at: number;
-  /** you: from the staff floor map · web: from the customer's phone. */
+  /** you: from the staff floor plan · web: from the customer's phone. */
   via: 'you' | 'web';
 }
-/** A call the visitor caused: a dish out of stock (a caller asks for it) or the AI switched off. */
-export type ExtraCall = { kind: 'alt'; dish: DishId; at: number } | { kind: 'probe'; at: number };
 
 export interface RestaurantState {
   orders: MyOrder[];
   bookings: MyBooking[];
-  /** Dish → story time it ran out (−1: an earlier loop). */
+  /** Dish → story time it ran out. */
   soldOut: Partial<Record<DishId, number>>;
   /** When the AI phone was off. */
   aiOff: Range[];
-  extra: ExtraCall | null;
-  /** The visitor took over the customer phone (no autoplay this loop). */
-  manual: boolean;
+  /** Kitchen display: tickets the visitor moved (stage + story time). */
+  moved: Record<string, { stage: Stage; at: number }>;
 }
 
-const fresh = (): RestaurantState => ({ orders: [], bookings: [], soldOut: {}, aiOff: [], extra: null, manual: false });
-/** A switch left off stays off in the next loop. */
-const carry = (ranges: Range[]): Range[] => (ranges.some((r) => r.to === null) ? [{ from: -1, to: null }] : []);
+const fresh = (): RestaurantState => ({ orders: [], bookings: [], soldOut: {}, aiOff: [], moved: {} });
 
 export type RestaurantStore = DemoStore<RestaurantState>;
 
-/** Module-level (stable) factory for usePairedStore. */
+/** Module-level (stable) factory for usePairedStore. Beats: no autoplay; "Reiniciar" = a fresh night. */
 export function createRestaurantStore(paired: boolean): RestaurantStore {
-  return createStoryStore<RestaurantState>(fresh(), {
-    loopMs: LOOP_MS,
-    overrunMs: OVERRUN_MS,
-    paired,
-    onLoop: (s) => ({
-      ...fresh(),
-      bookings: s.bookings.map((b) => ({ ...b, at: -1 })),
-      soldOut: Object.fromEntries(Object.keys(s.soldOut).map((k) => [k, -1])),
-      aiOff: carry(s.aiOff),
-    }),
-  });
+  return createDemoStore<RestaurantState>(fresh(), { beats: BEATS, paired, reset: fresh });
 }
 
 export const isOn = (ranges: Range[], at: number) => !ranges.some((r) => at >= r.from && (r.to === null || at < r.to));
@@ -113,41 +108,42 @@ export const isSoldOut = (soldOut: RestaurantState['soldOut'], dish: DishId, at 
 
 /** State updates (use with `store.update(...)`; `t` is the store's story time). */
 export const act = {
-  order: (items: Items, mode: MyOrder['mode']) => (s: RestaurantState, t: number): RestaurantState => ({
+  order: (items: Items, mode: OrderMode, note: string) => (s: RestaurantState, t: number): RestaurantState => ({
     ...s,
-    manual: true,
-    orders: [...s.orders, { id: `o${t}-${s.orders.length}`, items, mode, at: t }],
+    orders: [...s.orders, { id: `you-${s.orders.length + 1}`, items, mode, note: note.trim().slice(0, 60), at: t }],
   }),
   book: (b: Omit<MyBooking, 'at'>) => (s: RestaurantState, t: number): RestaurantState =>
-    s.bookings.some((x) => x.table === b.table) ? s : { ...s, manual: b.via === 'web' ? true : s.manual, bookings: [...s.bookings, { ...b, at: t }] },
+    s.bookings.some((x) => x.day === b.day && x.table === b.table) ? s : { ...s, bookings: [...s.bookings, { ...b, at: t }] },
   toggleStock: (dish: DishId) => (s: RestaurantState, t: number): RestaurantState => {
     if (s.soldOut[dish] !== undefined) {
       const next = { ...s.soldOut };
       delete next[dish];
-      return { ...s, soldOut: next, extra: s.extra?.kind === 'alt' && s.extra.dish === dish && s.extra.at > t - 1200 ? null : s.extra };
+      return { ...s, soldOut: next };
     }
-    return { ...s, soldOut: { ...s.soldOut, [dish]: t }, extra: { kind: 'alt', dish, at: t } };
+    return { ...s, soldOut: { ...s.soldOut, [dish]: t } };
   },
   toggleAi: () => (s: RestaurantState, t: number): RestaurantState => {
     const off = isOffNow(s.aiOff);
-    const aiOff = off ? s.aiOff.map((r) => (r.to === null ? { ...r, to: t } : r)) : [...s.aiOff, { from: t, to: null }];
-    return { ...s, aiOff, extra: off ? s.extra : { kind: 'probe', at: t } };
+    return { ...s, aiOff: off ? s.aiOff.map((r) => (r.to === null ? { ...r, to: t } : r)) : [...s.aiOff, { from: t, to: null }] };
   },
-  touch: () => (s: RestaurantState): RestaurantState => (s.manual ? s : { ...s, manual: true }),
+  move: (ticket: string, stage: Stage) => (s: RestaurantState, t: number): RestaurantState => ({
+    ...s,
+    moved: { ...s.moved, [ticket]: { stage, at: t } },
+  }),
 };
 
 /* ------------------------------------------------------------------ */
 /* Calls: timing per kind (texts are added per locale, see scripts.ts)  */
 /* ------------------------------------------------------------------ */
-export type CallKind = 'order' | 'booking' | 'gf' | 'alt' | 'info';
+export type CallKind = 'order' | 'booking' | 'gf' | 'alt';
 type Who = VoiceLine['who'];
 interface Flow {
   ringMs: number;
   lines: { who: Who; ms: number; gapMs?: number }[];
   /** Line index where the agent checks the menu / the floor. */
-  check?: number;
+  check: number;
   /** Line index where the order / booking lands. */
-  act?: number;
+  act: number;
 }
 const L = (who: Who, ms: number, gapMs = 250) => ({ who, ms, gapMs });
 export const FLOWS: Record<CallKind, Flow> = {
@@ -155,7 +151,6 @@ export const FLOWS: Record<CallKind, Flow> = {
   booking: { ringMs: 1400, lines: [L('agent', 1400), L('caller', 1800), L('tool', 900), L('agent', 2000), L('caller', 1000), L('tool', 800), L('agent', 1600)], check: 2, act: 5 },
   gf: { ringMs: 1400, lines: [L('agent', 1400), L('caller', 1900), L('tool', 900), L('agent', 2600), L('caller', 1500), L('tool', 800), L('agent', 1500)], check: 2, act: 5 },
   alt: { ringMs: 1300, lines: [L('agent', 1400), L('caller', 1700), L('tool', 900), L('agent', 2600), L('caller', 900), L('tool', 800), L('agent', 1500)], check: 2, act: 5 },
-  info: { ringMs: 1300, lines: [L('agent', 1400), L('caller', 1700), L('agent', 2000), L('caller', 1000), L('agent', 1300)] },
 };
 /** Rings before an unanswered call counts as missed. */
 export const MISSED_RING_MS = 5200;
@@ -170,14 +165,9 @@ export function callScript(kind: CallKind, missed: boolean, texts: string[] = []
   };
 }
 const TIMING = Object.fromEntries((Object.keys(FLOWS) as CallKind[]).map((k) => [k, runVoice(callScript(k, false), 0)])) as Record<CallKind, VoiceState>;
-/** ms after the ring starts: check / act / end. */
-const at = (kind: CallKind, which: 'check' | 'act') => {
-  const i = FLOWS[kind][which];
-  return i === undefined ? Infinity : TIMING[kind].starts[i];
-};
+/** ms after the ring starts: the agent checks / the order or booking lands. */
+const at = (kind: CallKind, which: 'check' | 'act') => TIMING[kind].starts[FLOWS[kind][which]];
 const callEnd = (kind: CallKind, missed: boolean) => (missed ? MISSED_RING_MS : TIMING[kind].endsAt);
-/** Story time the order of the line-1 call lands (the trailer and toasts sync to it). */
-export const ORDER_AT = STORY.ring.order + at('order', 'act');
 
 /* ------------------------------------------------------------------ */
 /* Derived types                                                        */
@@ -225,20 +215,25 @@ export interface Ticket {
   stage: Stage;
   /** Story time the current stage began (−Infinity: before the story). */
   stageAt: number;
-  plan: TicketPlan;
+  /** The visitor set the current stage (kitchen display). */
+  movedByYou: boolean;
   who?: PersonId | 'you';
   gf?: boolean;
+  note?: string;
   /** USD total. */
   usd: number;
   /** Clock minute it is promised (delivery arrives / take-away ready). */
   eta?: number;
   /** The visitor's order id. */
   mine?: string;
+  /** Drinks only: straight from the bar, never on the kitchen display. */
+  bar: boolean;
 }
 
-export type TableStatus = 'free' | 'seated' | 'bill' | 'reserved';
+export type TableStatus = 'free' | 'seated' | 'bill' | 'reserved' | 'done';
 export interface Booking {
   key: string;
+  day: number;
   table: number;
   time: number;
   people: number;
@@ -246,6 +241,8 @@ export interface Booking {
   via: BookingVia;
   /** Story time it was made (−Infinity: before the story). */
   at: number;
+  /** The visitor made it (never "fresh": it shows at once, the clock is stopped). */
+  mine?: boolean;
   /** The AI is holding it (between checking the floor and confirming). */
   pending?: boolean;
 }
@@ -255,7 +252,7 @@ export interface TableView {
   people?: number;
   since?: number;
   booking?: Booking;
-  /** Story time of the last change. */
+  /** Story time of the last change made by the story (−Infinity: none / by the visitor). */
   changedAt: number;
 }
 
@@ -269,23 +266,27 @@ export interface RestaurantEvent {
   table?: number;
   people?: number;
   time?: number;
+  day?: number;
   dish?: DishId;
   alt?: DishId | null;
   who?: PersonId;
 }
+/** Events the visitor caused: they show at once and never as a timed toast (the clock is stopped). */
+export const isMine = (e: RestaurantEvent) => e.kind === 'youOrder' || e.kind === 'youBooking';
 
 export interface RestaurantView {
   t: number;
   clock: number;
   calls: CallPlan[];
-  /** Per line: the call it shows now (the latest that started, else the next one). */
+  /** Per line: the latest call that started (null: idle). */
   lines: Record<LineId, CallPlan | null>;
   /** Calls live (ringing or talking) right now. */
   liveCount: number;
   tickets: Ticket[];
-  /** On the kitchen board now. */
+  /** On the kitchen display now (no drinks-only tickets; only the latest few that left). */
   board: Ticket[];
   tables: TableView[];
+  /** Tonight's reservations. */
   bookings: Booking[];
   events: RestaurantEvent[];
   stats: {
@@ -322,47 +323,37 @@ function fill(s: RestaurantState, asked: Items, when: number) {
   return { items, subs };
 }
 export const totalUsd = (items: Items) => itemList(items).reduce((sum, [d, n]) => sum + dishById(d).usd * n, 0);
-const kitchenItems = (items: Items) => itemList(items).some(([d]) => !dishById(d).bar);
+export const kitchenItems = (items: Items) => itemList(items).some(([d]) => !dishById(d).bar);
+export const channelOf = (mode: OrderMode): Channel => (mode === 'table' ? 'salon' : mode);
 
-function stageOf(plan: TicketPlan, t: number): { stage: Stage; at: number } {
-  const steps: [Stage, number | undefined][] = [
-    ['cooking', plan.cook],
-    ['ready', plan.ready],
-    ['out', plan.out],
-    ['done', plan.done],
-  ];
-  let stage: Stage = 'new';
+/** Story stage of a ticket at `t` (placement stage + scripted bumps). */
+function storyStage(plan: TicketPlan, t: number): { stage: Stage; at: number } {
+  let stage: Stage = plan.stage ?? 'new';
   let since = plan.placed < 0 ? -Infinity : plan.placed;
-  for (const [s, when] of steps) {
-    if (when === undefined) continue;
+  for (const [s, when] of plan.bumps ?? []) {
     if (t >= when) {
       stage = s;
-      since = when < 0 ? -Infinity : when;
+      since = when;
     }
   }
   return { stage, at: since };
 }
 
+/**
+ * The visitor's move wins unless the story moved the ticket FURTHER along after it
+ * (the kitchen kept working in a later beat).
+ */
+function withMove(story: { stage: Stage; at: number }, move: { stage: Stage; at: number } | undefined) {
+  if (!move) return { ...story, byYou: false };
+  if (story.at > move.at && stageIndex(story.stage) > stageIndex(move.stage)) return { ...story, byYou: false };
+  return { stage: move.stage, at: move.at, byYou: true };
+}
+
 /* ------------------------------------------------------------------ */
 /* Derivation                                                           */
 /* ------------------------------------------------------------------ */
-/** Story time of the visitor's latest action (−Infinity if none). */
-const lastAction = (s: RestaurantState) =>
-  Math.max(
-    -Infinity,
-    ...s.orders.map((o) => o.at),
-    ...s.bookings.map((b) => b.at),
-    ...Object.values(s.soldOut).map((v) => v ?? -Infinity),
-    ...s.aiOff.flatMap((r) => [r.from, r.to ?? -Infinity]),
-    s.extra?.at ?? -Infinity,
-  );
-
-/**
- * The whole night at story time `t0`. With `instant` (reduced motion: the clock never
- * runs) whatever the visitor did is shown already played out.
- */
-export function deriveRestaurant(state: RestaurantState, t0: number, instant: boolean): RestaurantView {
-  const t = instant ? Math.max(t0, lastAction(state) + OVERRUN_MS) : t0;
+/** The whole night at story time `t` (`instant`: reduced motion, calls show their outcome). */
+export function deriveRestaurant(state: RestaurantState, t: number, instant: boolean): RestaurantView {
   const events: RestaurantEvent[] = [];
 
   /* Calls ---------------------------------------------------------- */
@@ -370,88 +361,68 @@ export function deriveRestaurant(state: RestaurantState, t0: number, instant: bo
     const missed = !isOn(state.aiOff, start);
     return { id, kind, line, start, missed, end: start + callEnd(kind, missed), voice: runVoice(callScript(kind, missed), t - start, { instant: instant && t >= start }) };
   };
-  const c1 = plan('order', 'order', 1, STORY.ring.order);
-  const c2 = plan('booking', 'booking', 2, STORY.ring.booking);
-  const c3 = plan('gf', 'gf', 3, STORY.ring.gf);
-  const calls: CallPlan[] = [c1, c2, c3];
+  const R = STORY.rush;
+  const c1 = plan('order', 'order', STORY.order.line, STORY.order.ring);
+  const cAlt = plan('alt', 'alt', 1, R.alt);
+  const cBook = plan('booking', 'booking', 2, R.booking);
+  const cGf = plan('gf', 'gf', 3, R.gf);
+  const calls: CallPlan[] = [c1, cAlt, cBook, cGf];
 
-  // Line 1 — Marta: delivery order (the agent checks the menu, offers alternatives).
+  // Marta: delivery order (the agent checks the menu, offers alternatives).
   c1.asked = { napolitana: 2, flan: 1 };
-  Object.assign(c1, c1.missed ? {} : fill(state, c1.asked, c1.start + at('order', 'check')));
-  // Line 3 — Lucía: gluten-free question → take-away.
-  if (!c3.missed) {
-    const when = c3.start + at('gf', 'check');
-    c3.gfList = (['bife', 'provoleta', 'flan'] as DishId[]).filter((d) => inStock(state, d, when));
+  if (!c1.missed) Object.assign(c1, fill(state, c1.asked, c1.start + at('order', 'check')));
+  // Take-away of one dish (the agent offers an alternative if it ran out).
+  cAlt.dish = R.altDish;
+  cAlt.asked = { [R.altDish]: 1 };
+  if (!cAlt.missed) Object.assign(cAlt, fill(state, cAlt.asked, cAlt.start + at('alt', 'check')));
+  // Lucía: gluten-free question → take-away.
+  if (!cGf.missed) {
+    const when = cGf.start + at('gf', 'check');
+    cGf.gfList = (['bife', 'provoleta', 'flan'] as DishId[]).filter((d) => inStock(state, d, when));
     const pick = (['bife', 'provoleta'] as DishId[]).find((d) => inStock(state, d, when));
-    c3.items = pick ? { [pick]: 1 } : {};
-    c3.asked = c3.items;
+    cGf.items = pick ? { [pick]: 1 } : {};
+    cGf.asked = cGf.items;
   }
 
-  // The visitor's extra call: on the line that frees first.
-  const extra = state.extra;
-  if (extra) {
-    const skip =
-      extra.kind === 'alt' &&
-      !c1.missed &&
-      extra.at < c1.start + at('order', 'check') &&
-      (c1.asked?.[extra.dish] ?? 0) > 0;
-    if (!skip) {
-      const ends: [LineId, number][] = [
-        [1, c1.end],
-        [2, c2.end],
-        [3, c3.end],
-      ];
-      const ready = extra.at + 1200;
-      const [line, end] = ends.reduce((best, cur) => (Math.max(ready, cur[1] + 700) < Math.max(ready, best[1] + 700) ? cur : best));
-      const start = Math.max(ready, end + 700);
-      const kind: CallKind = extra.kind === 'alt' ? 'alt' : 'info';
-      const x = plan(`extra-${extra.at}`, kind, line, start);
-      if (extra.kind === 'alt' && !x.missed) {
-        x.dish = extra.dish;
-        x.asked = { [extra.dish]: 1 };
-        Object.assign(x, fill(state, x.asked, start + at('alt', 'check')));
-      }
-      calls.push(x);
-    }
-  }
-
-  /* Floor: seats, bookings ------------------------------------------ */
-  const bookings: Booking[] = BASE_BOOKINGS.map((b) => ({ key: `base-${b.table}`, ...b, at: -Infinity }));
+  /* Floor: seats, bookings (tonight) --------------------------------- */
+  const bookings: Booking[] = BASE_BOOKINGS.map((b) => ({ key: `base-${b.table}`, day: TODAY, ...b, at: -Infinity }));
   const seated = new Map<number, { people: number; since: number; at: number; bill?: number; left?: number }>();
   for (const [id, s] of Object.entries(BASE_SEATED)) seated.set(Number(id), { ...s, at: -Infinity });
+  for (const b of state.bookings) {
+    if (b.day !== TODAY) continue;
+    bookings.push({ key: `mine-${b.day}-${b.table}`, day: TODAY, table: b.table, time: b.time, people: b.people, name: 'you', via: b.via === 'web' ? 'web' : 'you', at: b.at, mine: true });
+    events.push({ id: `you-b-${b.day}-${b.table}`, at: b.at, kind: 'youBooking', table: b.table, people: b.people, time: b.time, day: b.day });
+  }
   const bookedAt = (table: number, when: number) => bookings.some((b) => b.table === table && b.at <= when);
   const isFreeAt = (table: number, when: number) => {
     const s = seated.get(table);
     const occupied = s && s.at <= when && (s.left === undefined || when < s.left);
     return !occupied && !bookedAt(table, when);
   };
-  for (const b of state.bookings) {
-    bookings.push({ key: `mine-${b.table}-${b.at}`, table: b.table, time: b.time, people: b.people, name: 'you', via: b.via === 'web' ? 'web' : 'you', at: b.at < 0 ? -Infinity : b.at });
-    if (b.at >= 0) events.push({ id: `you-b-${b.table}-${b.at}`, at: b.at, kind: b.via === 'web' ? 'webBooking' : 'youBooking', table: b.table, people: b.people, time: b.time });
-  }
-  // Line 2 — Ramiro: a table for 4 at 22:30 (held when the agent checks, confirmed after).
-  if (!c2.missed) {
-    const check = c2.start + at('booking', 'check');
-    const done = c2.start + at('booking', 'act');
+  // Ramiro: a table for 4 at 22:30 (held when the agent checks, confirmed after).
+  if (!cBook.missed) {
+    const check = cBook.start + at('booking', 'check');
+    const done = cBook.start + at('booking', 'act');
     const table = AI_TABLES.find((id) => !bookedAt(id, check)) ?? null;
-    c2.table = table;
+    cBook.table = table;
     if (table !== null && t >= check) {
-      bookings.push({ key: 'ai-ramiro', table, time: AI_BOOKING.time, people: AI_BOOKING.people, name: 'ramiro', via: 'ai', at: check, pending: t < done });
-      if (done <= t) events.push({ id: 'ai-booking', at: done, kind: 'aiBooking', line: 2, table, people: AI_BOOKING.people, time: AI_BOOKING.time, who: 'ramiro' });
+      bookings.push({ key: 'ai-ramiro', day: TODAY, table, time: AI_BOOKING.time, people: AI_BOOKING.people, name: 'ramiro', via: 'ai', at: check, pending: t < done });
+      events.push({ id: 'ai-booking', at: done, kind: 'aiBooking', line: 2, table, people: AI_BOOKING.people, time: AI_BOOKING.time, who: 'ramiro' });
     }
   }
   // A couple walks in (first free 2-top) and orders by QR.
-  const walkTable = [2, 14].find((id) => isFreeAt(id, STORY.walkIn.at)) ?? null;
+  const Q = STORY.qr;
+  const walkTable = [2, 14, 12].find((id) => isFreeAt(id, Q.walkIn)) ?? null;
   if (walkTable !== null) {
-    seated.set(walkTable, { people: 2, since: storyClock(STORY.walkIn.at), at: STORY.walkIn.at });
-    events.push({ id: 'walk-in', at: STORY.walkIn.at, kind: 'walkIn', table: walkTable, people: 2 });
+    seated.set(walkTable, { people: 2, since: storyClock(Q.walkIn), at: Q.walkIn });
+    events.push({ id: 'walk-in', at: Q.walkIn, kind: 'walkIn', table: walkTable, people: 2 });
   }
   // Table 3 asks for the bill and leaves.
-  const t3 = seated.get(STORY.bill.table);
-  if (t3) {
-    t3.bill = STORY.bill.at;
-    t3.left = STORY.bill.free;
-    events.push({ id: 'bill', at: STORY.bill.at, kind: 'bill', table: STORY.bill.table });
+  const billed = seated.get(STORY.billTable);
+  if (billed) {
+    billed.bill = Q.bill;
+    billed.left = Q.left;
+    events.push({ id: 'bill', at: Q.bill, kind: 'bill', table: STORY.billTable });
   }
 
   /* Kitchen ---------------------------------------------------------- */
@@ -460,50 +431,44 @@ export function deriveRestaurant(state: RestaurantState, t0: number, instant: bo
     plan: TicketPlan;
     who?: PersonId | 'you';
     gf?: boolean;
+    note?: string;
     mine?: string;
-    event?: Omit<RestaurantEvent, 'id' | 'at' | 'ticket'> & { id: string };
+    event?: Omit<RestaurantEvent, 'at' | 'ticket'>;
     call?: CallPlan;
   }
-  const story: Placed[] = [];
-  const flowFrom = (placed: number, channel: Channel): Pick<TicketPlan, 'cook' | 'ready' | 'out' | 'done'> => ({
-    cook: placed + TICKET_FLOW.cook,
-    ready: placed + TICKET_FLOW.ready,
-    out: channel === 'delivery' ? placed + TICKET_FLOW.out : undefined,
-    done: channel === 'pickup' ? placed + TICKET_FLOW.pickupDone : channel === 'salon' ? placed + TICKET_FLOW.salonDone : undefined,
-  });
-  const add = (p: Omit<Placed, 'plan'> & { channel: Channel; source: Source; table?: number; items: Items; placed: number }) => {
+  const placed: Placed[] = [];
+  const add = (p: Omit<Placed, 'plan'> & { channel: Channel; source: Source; table?: number; items: Items; at: number; bumps?: TicketPlan['bumps'] }) => {
     if (!itemList(p.items).length) return;
-    const { channel, source, table, items, placed, ...rest } = p;
-    story.push({ ...rest, plan: { channel, source, table, items, placed, ...flowFrom(placed, channel) } });
+    const { channel, source, table, items, at: when, bumps, ...rest } = p;
+    placed.push({ ...rest, plan: { channel, source, table, items, placed: when, bumps } });
   };
-  // Sofía orders on the site (what the customer's phone plays).
-  add({ id: 'web-sofia', channel: 'delivery', source: 'web', items: fill(state, { ravioles: 1, flan: 1 }, STORY.web.place).items, placed: STORY.web.place, who: 'sofia', event: { id: 'web', kind: 'web' } });
   if (!c1.missed && c1.items) {
-    add({ id: 'ai-marta', channel: 'delivery', source: 'ai', items: c1.items, placed: c1.start + at('order', 'act'), who: 'marta', call: c1, event: { id: 'ai-order', kind: 'aiOrder', line: 1, who: 'marta' } });
+    add({ id: 'ai-marta', channel: 'delivery', source: 'ai', items: c1.items, at: c1.start + at('order', 'act'), bumps: [['cooking', STORY.martaCooks]], who: 'marta', call: c1, event: { id: 'ai-order', kind: 'aiOrder', line: 1, who: 'marta' } });
+  }
+  if (!cAlt.missed && cAlt.items) {
+    add({ id: 'ai-alt', channel: 'pickup', source: 'ai', items: cAlt.items, at: cAlt.start + at('alt', 'act'), call: cAlt, event: { id: 'ai-alt', kind: 'alt', line: 1, dish: cAlt.dish, alt: cAlt.subs?.[0]?.[1] ?? null } });
+  }
+  if (!cGf.missed && cGf.items) {
+    add({ id: 'ai-lucia', channel: 'pickup', source: 'ai', items: cGf.items, at: cGf.start + at('gf', 'act'), who: 'lucia', gf: true, call: cGf, event: { id: 'ai-gf', kind: 'aiGf', line: 3, who: 'lucia' } });
   }
   if (walkTable !== null) {
-    add({ id: 'qr-walkin', channel: 'salon', source: 'qr', table: walkTable, items: fill(state, { napolitana: 1, empanadas: 1, vermu: 2 }, STORY.walkIn.order).items, placed: STORY.walkIn.order, event: { id: 'qr-walkin', kind: 'qr', table: walkTable } });
+    add({ id: 'qr-walkin', channel: 'salon', source: 'qr', table: walkTable, items: fill(state, { napolitana: 1, empanadas: 1, vermu: 2 }, Q.order).items, at: Q.order, event: { id: 'qr-walkin', kind: 'qr', table: walkTable } });
   }
-  if (!c3.missed && c3.items) {
-    add({ id: 'ai-lucia', channel: 'pickup', source: 'ai', items: c3.items, placed: c3.start + at('gf', 'act'), who: 'lucia', gf: true, call: c3, event: { id: 'ai-gf', kind: 'aiGf', line: 3, who: 'lucia' } });
-  }
-  STORY.desserts.forEach((d, i) =>
-    add({ id: `qr-dessert-${i}`, channel: 'salon', source: 'qr', table: d.table, items: fill(state, d.items, d.at).items, placed: d.at, event: { id: `qr-dessert-${i}`, kind: 'qr', table: d.table } }),
-  );
-  for (const o of state.orders) {
-    add({ id: o.id, channel: o.mode, source: 'web', items: o.items, placed: o.at, who: 'you', mine: o.id, event: { id: `you-${o.id}`, kind: 'youOrder' } });
-  }
-  for (const x of calls.slice(3)) {
-    if (x.kind === 'alt' && !x.missed && x.items) {
-      add({ id: x.id, channel: 'pickup', source: 'ai', items: x.items, placed: x.start + at('alt', 'act'), call: x, event: { id: `${x.id}-order`, kind: 'alt', line: x.line, dish: x.dish, alt: x.subs?.[0]?.[1] ?? null } });
-    }
-  }
-  story.sort((a, b) => a.plan.placed - b.plan.placed);
+  add({ id: 'qr-dessert', channel: 'salon', source: 'qr', table: Q.dessertTable, items: fill(state, Q.dessertItems, Q.dessert).items, at: Q.dessert, event: { id: 'qr-dessert', kind: 'qr', table: Q.dessertTable } });
+  add({ id: 'web-sofia', channel: 'delivery', source: 'web', items: fill(state, { ravioles: 1, flan: 1 }, STORY.web.order).items, at: STORY.web.order, who: 'sofia', event: { id: 'web', kind: 'web' } });
+  state.orders.forEach((o) => {
+    const channel = channelOf(o.mode);
+    add({ id: o.id, channel, source: o.mode === 'table' ? 'qr' : 'web', table: o.mode === 'table' ? QR_TABLE : undefined, items: o.items, at: o.at, who: 'you', note: o.note || undefined, mine: o.id, event: { id: `you-${o.id}`, kind: 'youOrder' } });
+  });
+  // Placement order numbers the tickets (same time: story before the visitor, then in order).
+  placed.sort((a, b) => a.plan.placed - b.plan.placed || Number(!!a.mine) - Number(!!b.mine));
 
   const tickets: Ticket[] = [];
-  const pushTicket = (id: string, num: number, p: TicketPlan, extraFields: Partial<Ticket> = {}) => {
-    if (p.placed > t) return;
-    const { stage, at: stageAt } = stageOf(p, t);
+  const pushTicket = (id: string, num: number, p: TicketPlan, extra: Partial<Ticket> = {}) => {
+    const bar = !kitchenItems(p.items);
+    // Drinks only: served by the bar at once.
+    const story = bar ? { stage: 'out' as Stage, at: p.placed < 0 ? -Infinity : p.placed } : storyStage(p, t);
+    const { stage, at: stageAt, byYou } = withMove(story, state.moved[id]);
     const clock = p.clock ?? storyClock(p.placed);
     tickets.push({
       id,
@@ -516,33 +481,27 @@ export function deriveRestaurant(state: RestaurantState, t0: number, instant: bo
       clock,
       stage,
       stageAt,
-      plan: p,
+      movedByYou: byYou,
       usd: totalUsd(p.items),
       eta: p.channel === 'delivery' ? clock + 40 : p.channel === 'pickup' ? clock + 25 : undefined,
-      ...extraFields,
+      bar,
+      ...extra,
     });
   };
   BASE_TICKETS.forEach((p, i) => pushTicket(`base-${i}`, FIRST_TICKET + i, p));
-  story.forEach((p, i) => {
+  placed.forEach((p, i) => {
     const num = FIRST_TICKET + BASE_TICKETS.length + i;
     if (p.call) {
       p.call.ticket = num;
       p.call.eta = storyClock(p.plan.placed) + (p.plan.channel === 'delivery' ? 40 : 25);
     }
     if (p.plan.placed > t) return;
-    if (!kitchenItems(p.plan.items)) {
-      // Drinks only: straight to the bar (counts as an order, never on the kitchen board).
-      p.plan = { ...p.plan, cook: p.plan.placed, ready: p.plan.placed, done: p.plan.placed };
-    }
-    pushTicket(p.id, num, p.plan, { who: p.who, gf: p.gf, mine: p.mine });
-    if (p.event) {
-      const { id, ...rest } = p.event;
-      events.push({ ...rest, id, at: p.plan.placed, ticket: num });
-    }
+    pushTicket(p.id, num, p.plan, { who: p.who, gf: p.gf, mine: p.mine, note: p.note });
+    if (p.event) events.push({ ...p.event, at: p.plan.placed, ticket: num });
   });
   for (const tk of tickets) {
-    if (tk.channel === 'delivery' && tk.plan.out !== undefined && tk.plan.out >= 0 && tk.plan.out <= t) {
-      events.push({ id: `out-${tk.id}`, at: tk.plan.out, kind: 'out', ticket: tk.num });
+    if (tk.channel === 'delivery' && tk.stage === 'out' && tk.stageAt >= 0 && !tk.movedByYou) {
+      events.push({ id: `out-${tk.id}`, at: tk.stageAt, kind: 'out', ticket: tk.num });
     }
   }
 
@@ -554,12 +513,11 @@ export function deriveRestaurant(state: RestaurantState, t0: number, instant: bo
   const lines = { 1: null, 2: null, 3: null } as Record<LineId, CallPlan | null>;
   for (const c of calls) {
     const cur = lines[c.line];
-    if (!cur) lines[c.line] = c;
-    else if (c.start <= t && c.start > cur.start) lines[c.line] = c;
+    if (c.start <= t && (!cur || c.start > cur.start)) lines[c.line] = c;
   }
   const live = calls.filter((c) => c.voice.phase === 'ringing' || c.voice.phase === 'live');
 
-  /* Floor view ------------------------------------------------------- */
+  /* Floor view (tonight) --------------------------------------------- */
   const visibleBookings = bookings.filter((b) => b.at <= t).sort((a, b) => a.time - b.time || a.table - b.table);
   const tables: TableView[] = TABLES.map((tb) => {
     const s = seated.get(tb.id);
@@ -569,20 +527,21 @@ export function deriveRestaurant(state: RestaurantState, t0: number, instant: bo
       const bill = s.bill !== undefined && t >= s.bill;
       return { id: tb.id, status: bill ? 'bill' : 'seated', people: s.people, since: s.since, booking, changedAt: bill ? s.bill! : s.at };
     }
-    if (booking) return { id: tb.id, status: 'reserved', booking, people: booking.people, changedAt: booking.at };
-    return { id: tb.id, status: 'free', changedAt: s?.left ?? -Infinity };
+    if (booking) return { id: tb.id, status: 'reserved', booking, people: booking.people, changedAt: booking.mine ? -Infinity : booking.at };
+    return { id: tb.id, status: 'free', changedAt: s?.left !== undefined && t >= s.left ? s.left : -Infinity };
   });
+
+  // Tomorrow's web booking (Julieta) — shown in the reservations book, announced here.
+  const web = webBookingOf(state);
+  if (web) events.push({ id: 'web-booking', at: STORY.web.booking, kind: 'webBooking', table: web.table, people: web.people, time: web.time, day: web.day, who: web.name as PersonId });
 
   /* Numbers -------------------------------------------------------- */
   const storyTickets = tickets.filter((tk) => tk.placed >= 0);
-  const covers =
-    TONIGHT_BASE.served +
-    [...seated.values()].filter((s) => s.at <= t).reduce((sum, s) => sum + s.people, 0);
+  const covers = TONIGHT_BASE.served + [...seated.values()].filter((s) => s.at <= t).reduce((sum, s) => sum + s.people, 0);
   // Peak: most calls live at the same time tonight (so far).
-  const marks = calls.filter((c) => !c.missed && c.start + FLOWS[c.kind].ringMs <= t).flatMap((c) => [
-    [c.start + FLOWS[c.kind].ringMs, 1] as const,
-    [Math.min(c.end, t), -1] as const,
-  ]);
+  const marks = calls
+    .filter((c) => !c.missed && c.start + FLOWS[c.kind].ringMs <= t)
+    .flatMap((c) => [[c.start + FLOWS[c.kind].ringMs, 1] as const, [Math.min(c.end, t), -1] as const]);
   let peak = 0;
   let cur = 0;
   for (const [, d] of [...marks].sort((a, b) => a[0] - b[0] || a[1] - b[1])) {
@@ -591,7 +550,11 @@ export function deriveRestaurant(state: RestaurantState, t0: number, instant: bo
   }
 
   events.sort((a, b) => a.at - b.at);
-  const visibleEvents = events.filter((e) => e.at <= t);
+  const out = tickets
+    .filter((tk) => tk.stage === 'out' && !tk.bar)
+    .sort((a, b) => b.stageAt - a.stageAt || b.num - a.num)
+    .slice(0, OUT_SHOWN)
+    .map((tk) => tk.id);
 
   return {
     t,
@@ -600,10 +563,10 @@ export function deriveRestaurant(state: RestaurantState, t0: number, instant: bo
     lines,
     liveCount: live.length,
     tickets,
-    board: tickets.filter((tk) => tk.stage !== 'done' && kitchenItems(tk.items)),
+    board: tickets.filter((tk) => !tk.bar && (tk.stage !== 'out' || out.includes(tk.id))),
     tables,
     bookings: visibleBookings,
-    events: visibleEvents,
+    events: events.filter((e) => e.at <= t),
     stats: {
       orders: TONIGHT_BASE.orders + storyTickets.length,
       direct: TONIGHT_BASE.direct + storyTickets.filter((tk) => tk.channel !== 'salon').length,
@@ -615,12 +578,94 @@ export function deriveRestaurant(state: RestaurantState, t0: number, instant: bo
       bookings: visibleBookings.filter((b) => !b.pending).length,
     },
   };
+
+  /** Julieta's web booking for tomorrow, once the "web" beat reached it. */
+  function webBookingOf(s: RestaurantState): Booking | null {
+    if (t < STORY.web.booking) return null;
+    const day = WEB_BOOKING.day;
+    const taken = new Set([...seededBookings(day).map((b) => b.table), ...s.bookings.filter((b) => b.day === day && b.at <= STORY.web.booking).map((b) => b.table)]);
+    const table = [WEB_BOOKING.table, 14, 2, 11, 1, 9, 10].find((id) => !taken.has(id));
+    if (table === undefined) return null;
+    return { key: 'web-julieta', day, table, time: WEB_BOOKING.time, people: WEB_BOOKING.people, name: WEB_BOOKING.name, via: 'web', at: STORY.web.booking };
+  }
 }
 
-/** Tables a visitor can book right now: free, no reservation. */
-export const bookableTables = (view: RestaurantView) => view.tables.filter((tb) => tb.status === 'free').map((tb) => tableById(tb.id));
+/* ------------------------------------------------------------------ */
+/* Other days (reservations book): a plausible, deterministic schedule  */
+/* ------------------------------------------------------------------ */
+/** A stable pseudo-random number in [0, 1) for a seed. */
+function hash(seed: number) {
+  let x = Math.imul(seed ^ 0x9e3779b9, 0x85ebca6b);
+  x ^= x >>> 13;
+  x = Math.imul(x, 0xc2b2ae35);
+  x ^= x >>> 16;
+  return (x >>> 0) / 4294967296;
+}
+const VIAS: BookingVia[] = ['ai', 'web', 'phone', 'ai'];
+
+/** Reservations of a day other than tonight, before anything the visitor or the story did. */
+export function seededBookings(day: number): Booking[] {
+  if (day === TODAY || !isOpenDay(weekdayOf(day))) return [];
+  const wd = weekdayOf(day);
+  const weekend = wd === 4 || wd === 5;
+  // Past nights were full; the further ahead, the more room is left.
+  const busy = day < TODAY ? 0.7 : Math.max(0.22, 0.58 - 0.08 * (day - TODAY)) + (weekend ? 0.1 : 0);
+  const out: Booking[] = [];
+  // Names walk the guest list from a seeded start, so a night never repeats one.
+  let guest = Math.floor(hash(day * 31 + 1) * GUESTS.length);
+  for (const tb of TABLES) {
+    const seed = day * 977 + tb.id * 131;
+    if (hash(seed) >= busy) continue;
+    const people = Math.max(Math.min(2, tb.seats), tb.seats - Math.floor(hash(seed + 3) * 2));
+    out.push({
+      key: `seed-${day}-${tb.id}`,
+      day,
+      table: tb.id,
+      time: BOOK_TIMES[Math.floor(hash(seed + 5) * BOOK_TIMES.length)],
+      people,
+      name: GUESTS[guest++ % GUESTS.length],
+      via: VIAS[Math.floor(hash(seed + 11) * VIAS.length)],
+      at: -Infinity,
+    });
+  }
+  return out;
+}
+
+/** Any day's reservations: tonight from the story; other days seeded + the story's web booking + the visitor's. */
+export function dayBookings(day: number, state: RestaurantState, view: RestaurantView): Booking[] {
+  if (day === TODAY) return view.bookings;
+  const list = seededBookings(day);
+  const web = view.events.find((e) => e.kind === 'webBooking');
+  if (web && web.day === day && web.table !== undefined) {
+    list.push({ key: 'web-julieta', day, table: web.table, time: web.time ?? 0, people: web.people ?? 2, name: web.who ?? 'rios', via: 'web', at: web.at });
+  }
+  for (const b of state.bookings) {
+    if (b.day !== day || list.some((x) => x.table === b.table)) continue;
+    list.push({ key: `mine-${b.day}-${b.table}`, day, table: b.table, time: b.time, people: b.people, name: 'you', via: b.via === 'web' ? 'web' : 'you', at: b.at, mine: true });
+  }
+  return list.sort((a, b) => a.time - b.time || a.table - b.table);
+}
+
+/** The floor plan of a day: tonight live; other days by reservation (past: attended). */
+export function dayTables(day: number, state: RestaurantState, view: RestaurantView): TableView[] {
+  if (day === TODAY) return view.tables;
+  const list = dayBookings(day, state, view);
+  return TABLES.map((tb) => {
+    const booking = list.find((b) => b.table === tb.id);
+    if (!booking) return { id: tb.id, status: 'free', changedAt: -Infinity };
+    return { id: tb.id, status: day < TODAY ? 'done' : 'reserved', booking, people: booking.people, changedAt: booking.mine ? -Infinity : booking.at };
+  });
+}
+
+/** Times still bookable on a day (tonight: from 15 min after the story clock). */
+export const bookTimes = (day: number, view: RestaurantView) => (day < TODAY ? [] : day === TODAY ? BOOK_TIMES.filter((m) => m >= view.clock + 15) : BOOK_TIMES);
+
+/** Tables a visitor can book on a day: free, no reservation, the day still ahead. */
+export const bookableTables = (day: number, tables: TableView[], view: RestaurantView): Table[] =>
+  bookTimes(day, view).length ? tables.filter((tb) => tb.status === 'free').map((tb) => TABLES.find((x) => x.id === tb.id)!) : [];
+
 /** Best free table for `people` (the customer's phone books without a map). */
-export const bestTable = (view: RestaurantView, people: number) =>
-  bookableTables(view)
-    .filter((tb) => tb.seats >= people)
-    .sort((a, b) => a.seats - b.seats || a.id - b.id)[0] ?? null;
+export const bestTable = (tables: Table[], people: number) => tables.filter((tb) => tb.seats >= people).sort((a, b) => a.seats - b.seats || a.id - b.id)[0] ?? null;
+
+/** Is this "just happened" by the story (the visitor's own changes never are: the clock is stopped)? */
+export const isStoryFresh = (t: number, at: number, ms = 2400) => at >= 0 && t >= at && t - at < ms;

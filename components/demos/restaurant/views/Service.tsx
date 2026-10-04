@@ -2,11 +2,11 @@
 
 import { ArrowRight, QrCode } from 'lucide-react';
 import { Readout } from '../../kit';
-import { BOARD_STAGES } from '../data';
-import type { LineId } from '../story';
+import { STAGES } from '../data';
+import { isStoryFresh, type LineId, type Ticket } from '../story';
 import { useRestaurant } from '../context';
 import { useRestaurantText } from '../text';
-import { LineLamps, TicketCard } from '../ui';
+import { LineLamps, SimCue, TicketCard, useStageLabel } from '../ui';
 import { LineCard, LineRow } from './Calls';
 import { FloorLegend, FloorMap, useFloorStats } from './Floor';
 import { useTonight } from './Numbers';
@@ -48,13 +48,19 @@ function ServiceClock({ size }: { size: 'lg' | 'md' }) {
   );
 }
 
-/** The newest tickets, as a rail of receipts (newest first). */
+/** A ticket that the story just printed or moved (never the visitor's own: they see it at once). */
+export const ticketFresh = (tk: Ticket, t: number) => (!tk.mine && isStoryFresh(t, tk.placed)) || (!tk.movedByYou && tk.stageAt !== tk.placed && isStoryFresh(t, tk.stageAt, 2200));
+
+/** The tickets still on the pass, as a rail of receipts (newest first), each with its bump button. */
 function TicketRail({ limit }: { limit: number }) {
   const { view, go } = useRestaurant();
   const { t } = useRestaurantText();
-  const latest = [...view.board].sort((a, b) => b.placed - a.placed || b.num - a.num).slice(0, limit);
+  const latest = view.board
+    .filter((tk) => tk.stage !== 'out')
+    .sort((a, b) => b.num - a.num)
+    .slice(0, limit);
   return (
-    <section className="rl-rail">
+    <section className="rl-rail" data-tour="kitchen">
       <header className="rl-section-head">
         <h3 className="rl-rubric">{t('service.rail')}</h3>
         <button type="button" className="rl-linkbtn" onClick={() => go('kitchen')}>
@@ -64,7 +70,7 @@ function TicketRail({ limit }: { limit: number }) {
       </header>
       <div className="rl-rail-list">
         {latest.map((tk) => (
-          <TicketCard key={tk.id} ticket={tk} fresh={tk.placed >= 0 && view.t - tk.placed < 2400} className="rl-rail-ticket" />
+          <TicketCard key={tk.id} ticket={tk} fresh={ticketFresh(tk, view.t)} bump className="rl-rail-ticket" />
         ))}
       </div>
     </section>
@@ -75,8 +81,9 @@ function TicketRail({ limit }: { limit: number }) {
 function StageCounts() {
   const { view, go } = useRestaurant();
   const { t } = useRestaurantText();
+  const stage = useStageLabel();
   return (
-    <section className="rl-stagecounts">
+    <section className="rl-stagecounts" data-tour="kitchen">
       <header className="rl-section-head">
         <h3 className="rl-rubric">{t('service.kitchen')}</h3>
         <button type="button" className="rl-linkbtn" onClick={() => go('kitchen')}>
@@ -85,21 +92,22 @@ function StageCounts() {
         </button>
       </header>
       <ul>
-        {BOARD_STAGES.map((stage) => (
-          <li key={stage} data-stage={stage}>
+        {STAGES.slice(0, 3).map((s) => (
+          <li key={s} data-stage={s}>
             <span className="rl-stagecounts-n demo-mono">
-              <Readout value={view.board.filter((tk) => tk.stage === stage).length} rollDown />
+              <Readout value={view.board.filter((tk) => tk.stage === s).length} rollDown />
             </span>
-            <span className="rl-stagecounts-l">{t(`stage.${stage}`)}</span>
+            <span className="rl-stagecounts-l">{stage(s)}</span>
           </li>
         ))}
       </ul>
       <div className="rl-stagecounts-mini">
-        {[...view.board]
-          .sort((a, b) => b.placed - a.placed || b.num - a.num)
+        {view.board
+          .filter((tk) => tk.stage !== 'out')
+          .sort((a, b) => b.num - a.num)
           .slice(0, 3)
           .map((tk) => (
-            <TicketCard key={tk.id} ticket={tk} variant="mini" fresh={tk.placed >= 0 && view.t - tk.placed < 2400} />
+            <TicketCard key={tk.id} ticket={tk} variant="mini" fresh={ticketFresh(tk, view.t)} />
           ))}
       </div>
     </section>
@@ -117,7 +125,7 @@ function SalonGlance({ withMap }: { withMap: boolean }) {
     .sort((a, b) => b.at - a.at || a.time - b.time)
     .slice(0, 2);
   return (
-    <section className="rl-glance">
+    <section className="rl-glance" data-tour="floor">
       <header className="rl-section-head">
         <h3 className="rl-rubric">{t('service.salon')}</h3>
         <button type="button" className="rl-linkbtn" onClick={() => go('floor')}>
@@ -138,7 +146,7 @@ function SalonGlance({ withMap }: { withMap: boolean }) {
       )}
       <ul className="rl-glance-next">
         {next.map((b) => (
-          <li key={b.key} className={b.at >= 0 && view.t - b.at < 3000 ? 'demo-pop' : ''}>
+          <li key={b.key} className={!b.mine && isStoryFresh(view.t, b.at, 3000) ? 'demo-pop' : ''}>
             <span className="demo-mono">{fmt.time(b.time)}</span>
             <span className="min-w-0 flex-1 truncate">
               {x.person(b.name)} · {t('floor.people', { count: b.people })}
@@ -149,6 +157,12 @@ function SalonGlance({ withMap }: { withMap: boolean }) {
       </ul>
     </section>
   );
+}
+
+/** "Simular: llamada para pedir" / "3 llamadas a la vez" while those beats are ahead. */
+function CallCue() {
+  const { beat } = useRestaurant();
+  return beat < 0 ? <SimCue beat="order" /> : beat < 1 ? <SimCue beat="rush" /> : null;
 }
 
 export function LaptopService() {
@@ -173,11 +187,17 @@ export function LaptopService() {
           <LineLamps />
         </div>
       </header>
-      <div className="rl-switchboard" data-variant="compact">
-        {([1, 2, 3] as LineId[]).map((line) => (
-          <LineCard key={line} line={line} variant="compact" />
-        ))}
-      </div>
+      <section className="flex flex-col gap-[0.45em]" data-tour="voice">
+        <header className="rl-section-head">
+          <h3 className="rl-rubric">{t('service.switchboard')}</h3>
+          <CallCue />
+        </header>
+        <div className="rl-switchboard" data-variant="compact">
+          {([1, 2, 3] as LineId[]).map((line) => (
+            <LineCard key={line} line={line} variant="compact" />
+          ))}
+        </div>
+      </section>
       <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-[0.9em]">
         <TicketRail limit={3} />
         <SalonGlance withMap />
@@ -188,7 +208,7 @@ export function LaptopService() {
 }
 
 export function PhoneService() {
-  const { view, go, openCustomer } = useRestaurant();
+  const { view, openCustomer } = useRestaurant();
   const x = useRestaurantText();
   const { t } = x;
   return (
@@ -200,18 +220,22 @@ export function PhoneService() {
         </div>
         <div className="rl-service-live">
           <span className="rl-service-countl">{t('service.live', { count: view.liveCount })}</span>
-          <LineLamps onPick={(line) => go('phone', line)} />
+          {/* The line rows below open each call: the lamps here are a readout. */}
+          <LineLamps />
         </div>
       </header>
-      <div className="rl-linerows">
-        {([1, 2, 3] as LineId[]).map((line) => (
-          <LineRow key={line} line={line} />
-        ))}
-      </div>
+      <section className="flex flex-col gap-[0.45em]" data-tour="voice">
+        <div className="rl-linerows">
+          {([1, 2, 3] as LineId[]).map((line) => (
+            <LineRow key={line} line={line} />
+          ))}
+        </div>
+        <CallCue />
+      </section>
       <StageCounts />
       <SalonGlance withMap={false} />
       <Ledger layout="rows" />
-      <button type="button" className="rl-customer-cta" onClick={() => openCustomer('menu')} aria-haspopup="dialog">
+      <button type="button" className="rl-customer-cta" onClick={() => openCustomer()} aria-haspopup="dialog" data-tour="order">
         <QrCode aria-hidden strokeWidth={1.6} />
         <span className="min-w-0 flex-1 text-left leading-[1.25]">
           <span className="block font-semibold">{t('service.customer')}</span>
