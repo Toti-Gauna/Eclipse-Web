@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowLeft, Bike, CalendarCheck, Check, MessageCircle, Minus, Plus, ShoppingBag, UtensilsCrossed, Wheat } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { BrandName, Button, PushBanner } from '../../kit';
@@ -12,6 +12,12 @@ import { useRestaurantText } from '../text';
 import { LuceroMark } from '../ui';
 
 type Screen = 'menu' | 'cart' | 'status' | 'book' | 'booked';
+
+/** A beat asks the customer's phone for one of its tabs ("Pedir" / "Reservar mesa"); `n` counts the asks. */
+export interface CustomerFocusRequest {
+  tab: 'order' | 'book';
+  n: number;
+}
 
 const MODES: OrderMode[] = ['table', 'delivery', 'pickup'];
 const MODE_ICON = { table: UtensilsCrossed, delivery: Bike, pickup: ShoppingBag } as const;
@@ -127,7 +133,7 @@ function usePush(ticket: Ticket | null) {
  * next nights. Nothing plays on its own; what they do lands on the staff side (kitchen display,
  * floor plan). `onClose`: opened from the staff app (phone) — it shows a way back.
  */
-export function CustomerApp({ onClose }: { onClose?: () => void }) {
+export function CustomerApp({ onClose, focus }: { onClose?: () => void; focus?: CustomerFocusRequest }) {
   const { view, state, store, active, business } = useRestaurant();
   const x = useRestaurantText();
   const { t, fmt } = x;
@@ -149,6 +155,22 @@ export function CustomerApp({ onClose }: { onClose?: () => void }) {
   const myBooking = bookedKey ? (state.bookings.find((b) => `${b.day}-${b.table}` === bookedKey) ?? null) : null;
   const screen: Screen = screenState === 'status' && !ticket ? 'menu' : screenState === 'booked' && !myBooking ? 'book' : screenState;
   const push = usePush(ticket);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  // A beat's ask works like tapping that tab — except over an order the visitor is putting
+  // together (the cart stays where it is). Asks from before this mount are not replayed.
+  const [seenFocus, setSeenFocus] = useState(focus?.n ?? 0);
+  const [focusTo, setFocusTo] = useState(0);
+  if (focus && focus.n !== seenFocus) {
+    setSeenFocus(focus.n);
+    if (!(screen === 'cart' && itemCount(cart) > 0)) {
+      setScreen(focus.tab === 'book' ? (myBooking ? 'booked' : 'book') : ticket ? 'status' : 'menu');
+      setFocusTo(focus.n);
+    }
+  }
+  useLayoutEffect(() => {
+    if (focusTo) bodyRef.current?.scrollTo({ top: 0 });
+  }, [focusTo]);
 
   const sound = (name: 'select' | 'success' | 'open' | 'close') => {
     if (active) play(name);
@@ -415,7 +437,9 @@ export function CustomerApp({ onClose }: { onClose?: () => void }) {
   return (
     <div className="rl-cx" data-screen={screen}>
       {header}
-      <div className="rl-cx-body demo-scroll">{body}</div>
+      <div ref={bodyRef} className="rl-cx-body demo-scroll">
+        {body}
+      </div>
       {screen === 'menu' && count ? (
         <button
           type="button"

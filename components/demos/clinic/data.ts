@@ -188,6 +188,46 @@ export const BEATS = [
   { id: 'call', at: 48_500 },
 ] as const;
 export const LOOP_MS = BEATS[BEATS.length - 1].at;
+export type BeatId = (typeof BEATS)[number]['id'];
+
+/* ------------------------------------------------------------------ */
+/* Beat → screen: a simulation takes each view to where it happens      */
+/* ------------------------------------------------------------------ */
+export type ClinicTab = 'today' | 'agenda' | 'calls' | 'whatsapp' | 'site' | 'recovered';
+/** The clinic app's sections per screen, in nav order (the phone opens the site from its app bar). */
+export const SCREEN_TABS = {
+  laptop: ['today', 'agenda', 'calls', 'whatsapp', 'site', 'recovered'],
+  phone: ['today', 'agenda', 'calls', 'whatsapp', 'recovered'],
+} as const satisfies Record<'laptop' | 'phone', readonly ClinicTab[]>;
+/** Spots a beat can scroll a section to (`data-focus` in its laptop and phone views; `top` = the start). */
+export const FOCUS_SPOTS = {
+  today: ['top'],
+  agenda: ['top', 'agenda'],
+  calls: ['top', 'call'],
+  whatsapp: ['top', 'chat'],
+  site: ['top'],
+  recovered: ['top'],
+} as const satisfies Record<ClinicTab, readonly string[]>;
+export type FocusSpot = (typeof FOCUS_SPOTS)[ClinicTab][number];
+/** Where a beat takes a staff view (laptop, or the phone app alone); the agenda opens on today. */
+export interface StaffFocus {
+  tab: ClinicTab;
+  spot: FocusSpot;
+}
+/** The patient's phone (next to the laptop): back to the site (Camila books there), or stay. */
+export type PatientFocus = 'site' | 'stay';
+
+/**
+ * Beat → screen. "online": the agenda (Camila's 10:30 lands; the patient phone replays her booking
+ * on the site); "reminder": WhatsApp (Martina's conversation); "freed": the agenda (Nicolás's 12:00
+ * frees and the waitlist refills it, next to the waitlist card); "call": the AI receptionist.
+ */
+export const BEAT_FOCUS: Record<BeatId, { laptop: StaffFocus; phone: StaffFocus; patient: PatientFocus }> = {
+  online: { laptop: { tab: 'agenda', spot: 'agenda' }, phone: { tab: 'agenda', spot: 'agenda' }, patient: 'site' },
+  reminder: { laptop: { tab: 'whatsapp', spot: 'chat' }, phone: { tab: 'whatsapp', spot: 'chat' }, patient: 'stay' },
+  freed: { laptop: { tab: 'agenda', spot: 'agenda' }, phone: { tab: 'agenda', spot: 'agenda' }, patient: 'stay' },
+  call: { laptop: { tab: 'calls', spot: 'call' }, phone: { tab: 'calls', spot: 'call' }, patient: 'stay' },
+};
 
 /** Rescheduling options offered to Martina (day index + minutes). */
 export const MARTINA_OPTIONS = [

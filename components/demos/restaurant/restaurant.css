@@ -25,8 +25,32 @@
   --rl-stage-out: var(--demo-info);
   --rl-glow: color-mix(in oklab, var(--demo-accent) 45%, transparent);
 }
+/* A plain sidebar, labels always visible: narrower than the kit's (the kitchen display and the
+   switchboard keep their width) and not collapsible (no toggle in the top bar). */
+.demo-root[data-demo='restaurant'][data-screen='laptop'] {
+  --demo-side-w: 11.2em;
+}
+.demo-root[data-demo='restaurant'] .demo-top > .demo-side-toggle {
+  display: none;
+}
+.demo-root[data-demo='restaurant'] .demo-top {
+  padding-left: 1.1em;
+}
 .demo-root[data-demo='restaurant'] .demo-side {
   box-shadow: inset -1px 0 0 var(--demo-line);
+}
+.demo-root[data-demo='restaurant'] .demo-side-head {
+  margin-bottom: 0.9em;
+}
+/* The name may take two lines on the panel (never an ellipsis). */
+.demo-root[data-demo='restaurant'] .demo-side-name .demo-brand-name {
+  font-size: 1.02em;
+  line-height: 1.05;
+  white-space: normal;
+}
+.demo-root[data-demo='restaurant'] .demo-side-item {
+  gap: 0.65em;
+  padding: 0 0.6em;
 }
 .demo-root[data-demo='restaurant'] .demo-brand-name {
   font-family: var(--font-serif);
@@ -589,14 +613,16 @@
 .rl-switchboard:not([data-variant='compact']) .rl-voice {
   height: 22em;
 }
+/* The idle box is as tall as a live call (its text is 0.7em): a ringing line doesn't push the page. */
 .rl-switchboard:not([data-variant='compact']) .rl-linecard-idle {
-  min-height: 22em;
+  min-height: calc(22em / 0.7);
 }
 .rl-voice .demo-voice-transcript {
   flex: 1;
 }
 .rl-switchboard[data-variant='compact'] .rl-voice {
-  height: 9.4em;
+  flex: none;
+  height: 11.6em;
   min-height: 0;
   overflow: hidden;
 }
@@ -606,7 +632,7 @@
   display: none;
 }
 .rl-switchboard[data-variant='compact'] .rl-linecard-idle {
-  min-height: 9.4em;
+  min-height: calc(11.6em / 0.7);
 }
 .rl-voice[data-variant='compact'] .demo-voice-text {
   display: -webkit-box;
@@ -2224,6 +2250,34 @@ button.rl-table[aria-pressed='true'] .rl-table-top {
 /* Desktop columns are narrow: the channel shows in the title (Mesa 7 / a name), not as a chip. */
 .rl-kds[data-layout='columns'] .demo-kanban-card .demo-icon-chip {
   display: none;
+}
+/* The ticket's age and stamps go under its number, so "#148 · Mesa 10" keeps the full width. */
+.rl-kds[data-layout='columns'] .demo-kanban-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: 0.4em;
+  row-gap: 0.3em;
+}
+.rl-kds[data-layout='columns'] .demo-kanban-grip {
+  grid-row: 1 / span 2;
+}
+.rl-kds[data-layout='columns'] .demo-kanban-card > .min-w-0 {
+  grid-row: 1;
+  grid-column: 2;
+}
+.rl-kds[data-layout='columns'] .demo-kanban-meta {
+  grid-row: 2;
+  grid-column: 2;
+}
+.rl-kds[data-layout='columns'] .rl-kds-meta {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em;
+}
+.rl-kds[data-layout='columns'] .demo-kanban-move {
+  grid-row: 1 / span 2;
+  grid-column: 3;
 }
 
 /* Reservations book --------------------------------------------------- */

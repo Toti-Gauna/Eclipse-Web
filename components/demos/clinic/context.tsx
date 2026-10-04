@@ -1,9 +1,10 @@
 'use client';
 
 import { createContext, useContext } from 'react';
+import type { ClinicTab } from './data';
 import type { ClinicState, ClinicStore, ClinicView } from './story';
 
-export type ClinicTab = 'today' | 'agenda' | 'calls' | 'whatsapp' | 'site' | 'recovered';
+export type { ClinicTab };
 
 export interface ClinicCtx {
   screen: 'phone' | 'laptop';

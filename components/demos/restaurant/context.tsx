@@ -1,10 +1,10 @@
 'use client';
 
 import { createContext, useContext } from 'react';
-import type { BeatId } from './data';
+import type { BeatId, RestaurantTab } from './data';
 import type { LineId, RestaurantState, RestaurantStore, RestaurantView } from './story';
 
-export type RestaurantTab = 'service' | 'phone' | 'kitchen' | 'floor' | 'menu' | 'qr' | 'numbers';
+export type { RestaurantTab };
 
 export interface RestaurantCtx {
   screen: 'phone' | 'laptop';
@@ -33,6 +33,8 @@ export interface RestaurantCtx {
   playing: boolean;
   /** Plays the story up to that beat (same as the SimBar), when it is still ahead. */
   playBeat: (id: BeatId) => void;
+  /** "Salón y reservas" opens on this day (a beat can ask for another one). */
+  floorDay: number;
 }
 
 const Ctx = createContext<RestaurantCtx | null>(null);

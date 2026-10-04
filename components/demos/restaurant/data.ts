@@ -102,8 +102,8 @@ export type PersonId =
   | 'molina'
   | 'castro'
   | 'navarro';
-/** Names used for the reservations of other days (seeded). */
-export const GUESTS: PersonId[] = ['acosta', 'vidal', 'herrera', 'molina', 'castro', 'navarro', 'gomez', 'ledesma', 'paz', 'rios', 'sofia', 'marta'];
+/** Names used for the reservations of other days (seeded). Not 'rios': Julieta books tomorrow from the site (beat "web"). */
+export const GUESTS: PersonId[] = ['acosta', 'vidal', 'herrera', 'molina', 'castro', 'navarro', 'gomez', 'ledesma', 'paz', 'sofia', 'marta'];
 
 /* ------------------------------------------------------------------ */
 /* The salón: a floor plan in a 100 × 62 box (landscape; the phone      */
@@ -239,6 +239,56 @@ export const BEATS = [
 ] as const;
 export type BeatId = (typeof BEATS)[number]['id'];
 export const STORY_END = BEATS[BEATS.length - 1].at;
+
+/* ------------------------------------------------------------------ */
+/* Beat → screen: a simulation takes each view to where it happens      */
+/* ------------------------------------------------------------------ */
+export type RestaurantTab = 'service' | 'phone' | 'kitchen' | 'floor' | 'menu' | 'qr' | 'numbers';
+/** The staff app's sections per screen, in nav order (the phone reaches the QR carta via "Cliente"). */
+export const SCREEN_TABS = {
+  laptop: ['service', 'phone', 'kitchen', 'floor', 'qr', 'menu', 'numbers'],
+  phone: ['service', 'phone', 'kitchen', 'floor', 'menu', 'numbers'],
+} as const satisfies Record<'laptop' | 'phone', readonly RestaurantTab[]>;
+/**
+ * Spots a beat can scroll a section to (`data-focus` in that section's views; `top` = the start).
+ * Each section lists the spots its laptop and phone views both mark.
+ */
+export const FOCUS_SPOTS = {
+  service: ['top', 'pass'],
+  phone: ['top', 'switchboard'],
+  kitchen: ['top'],
+  floor: ['top', 'bookings'],
+  menu: ['top'],
+  qr: ['top'],
+  numbers: ['top'],
+} as const satisfies Record<RestaurantTab, readonly string[]>;
+export type FocusSpot = (typeof FOCUS_SPOTS)[RestaurantTab][number];
+
+/** Where a beat takes a staff view (laptop, or the phone app alone). */
+export interface StaffFocus {
+  tab: RestaurantTab;
+  /** Scrolls the content so this spot is in view (only when it isn't already). */
+  spot: FocusSpot;
+  /** "Teléfono IA": the line shown in full (phone). */
+  line?: 1 | 2 | 3;
+  /** "Salón y reservas": the day the reservations book opens on. */
+  day?: number;
+}
+/** The customer's phone (next to the laptop): one of its two tabs, or stay (nothing happens on it). */
+export type CustomerFocus = 'order' | 'book' | 'stay';
+
+/**
+ * Beat → screen. Calls: the AI phone with its lines; the QR beat: tonight's service (the pass and
+ * the salón side by side: the couple sits, orders, table 3 pays and leaves); the web beat: the
+ * reservations book on tomorrow (Julieta's booking + its WhatsApp; Sofía's delivery is a toast).
+ * The customer's phone shows the carta / the booking form the story's customers use.
+ */
+export const BEAT_FOCUS: Record<BeatId, { laptop: StaffFocus; phone: StaffFocus; customer: CustomerFocus }> = {
+  order: { laptop: { tab: 'phone', spot: 'switchboard' }, phone: { tab: 'phone', spot: 'top', line: 1 }, customer: 'stay' },
+  rush: { laptop: { tab: 'phone', spot: 'switchboard' }, phone: { tab: 'phone', spot: 'top', line: 2 }, customer: 'stay' },
+  qr: { laptop: { tab: 'service', spot: 'pass' }, phone: { tab: 'service', spot: 'pass' }, customer: 'order' },
+  web: { laptop: { tab: 'floor', spot: 'top', day: TODAY + 1 }, phone: { tab: 'floor', spot: 'bookings', day: TODAY + 1 }, customer: 'book' },
+};
 
 /** Friday 21:30; the story clock advances one minute every 2 s of a beat. */
 export const CLOCK_START = 21 * 60 + 30;

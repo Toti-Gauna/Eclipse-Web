@@ -188,7 +188,9 @@ export function PhoneCalls() {
   return (
     <div className="flex flex-col gap-[0.8em] pt-[0.2em]">
       <ViewHead title={t('title')} sub={t('subtitle')} />
-      <LiveCall />
+      <div data-focus="call">
+        <LiveCall />
+      </div>
       <div className="grid grid-cols-2 gap-[0.55em]">
         <Kpi label={t('kpis.total')} value={s.total} />
         <Kpi label={t('kpis.booked')} value={s.booked} />
@@ -223,7 +225,9 @@ export function LaptopCalls() {
         <Kpi label={t('kpis.avg')} value={s.avg} format={(ms) => fmt.duration(ms)} hint={t('kpis.avgHint')} />
       </div>
       <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] items-start gap-[0.8em]">
-        <LiveCall />
+        <div className="min-w-0" data-focus="call">
+          <LiveCall />
+        </div>
         <div className="flex flex-col gap-[0.8em]">
           <CallLog />
           <AgentCard />

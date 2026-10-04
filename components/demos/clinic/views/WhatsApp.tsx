@@ -178,8 +178,10 @@ export function PhoneWhatsApp() {
   return (
     <div className="flex flex-col gap-[0.7em] pt-[0.2em]">
       <ViewHead title={t('title')} sub={t('subtitle')} />
-      <ChatHint />
-      <MartinaChat className="h-[30em]" />
+      <div className="flex flex-col gap-[0.7em]" data-focus="chat">
+        <ChatHint />
+        <MartinaChat className="h-[30em]" />
+      </div>
       <ReplyStats compact />
       <Automations />
     </div>
@@ -197,7 +199,7 @@ export function LaptopWhatsApp() {
           <Automations />
           <Replies />
         </div>
-        <div className="flex flex-col gap-[0.4em]">
+        <div className="flex flex-col gap-[0.4em]" data-focus="chat">
           <ChatHint />
           <MartinaChat className="h-[31em]" />
         </div>

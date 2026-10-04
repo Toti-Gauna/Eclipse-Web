@@ -275,11 +275,13 @@ export function PhoneAgenda() {
   return (
     <div className="flex flex-col gap-[0.7em] pt-[0.2em]">
       <ViewHead title={t('title')} sub={summary} />
-      <CalendarToolbar nav={nav} period={<Period nav={nav} />} compact />
-      <Filters value={filter} onChange={setFilter} all={nav.view === 'day'} />
-      <Card className="px-[0.5em] pb-[0.3em] pt-[0.65em]" tour="agenda">
-        <AgendaCalendar nav={nav} filter={filter} selected={sel} onSelect={setSel} rowHeight="2.6em" />
-      </Card>
+      <div className="flex flex-col gap-[0.7em]" data-focus="agenda">
+        <CalendarToolbar nav={nav} period={<Period nav={nav} />} compact />
+        <Filters value={filter} onChange={setFilter} all={nav.view === 'day'} />
+        <Card className="px-[0.5em] pb-[0.3em] pt-[0.65em]" tour="agenda">
+          <AgendaCalendar nav={nav} filter={filter} selected={sel} onSelect={setSel} rowHeight="2.6em" />
+        </Card>
+      </div>
       {sel ? (
         <div className="clinic-sheet" role="dialog" aria-label={t('bookTitle')}>
           <BookingForm key={`${sel.day}${sel.pro}${sel.minute}`} slot={sel} onDone={() => setSel(null)} onCancel={() => setSel(null)} />
@@ -304,7 +306,7 @@ export function LaptopAgenda() {
     <div className="flex flex-col gap-[0.9em]">
       <ViewHead title={t('title')} sub={summary} aside={<Filters value={filter} onChange={setFilter} all={nav.view === 'day'} />} />
       <div className="grid grid-cols-[minmax(0,1fr)_13.5em] items-start gap-[0.8em]">
-        <div ref={grid} tabIndex={-1} className="outline-none">
+        <div ref={grid} tabIndex={-1} className="outline-none" data-focus="agenda">
           <Card className="p-[0.75em] pb-[0.4em]" tour="agenda">
             <CalendarToolbar nav={nav} period={<Period nav={nav} long />} className="mb-[0.7em]" />
             <AgendaCalendar nav={nav} filter={filter} selected={sel} onSelect={setSel} rowHeight="2.3em" />

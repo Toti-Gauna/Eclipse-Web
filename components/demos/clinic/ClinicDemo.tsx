@@ -1,13 +1,13 @@
 'use client';
 
-import { useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { CalendarDays, ChartNoAxesColumn, Globe, House, MessageCircle, PhoneCall } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, LiveDot, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, LiveDot, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
-import { CLINIC_THEME, TODAY } from './data';
+import { BEAT_FOCUS, CLINIC_THEME, SCREEN_TABS, TODAY, type BeatId, type FocusSpot } from './data';
 import { createClinicStore, deriveClinic, isOffNow } from './story';
 import { ClinicProvider, type ClinicCtx, type ClinicTab } from './context';
 import { useClinicScripts } from './scripts';
@@ -18,6 +18,7 @@ import { LaptopCalls, PhoneCalls } from './views/Calls';
 import { LaptopWhatsApp, PhoneWhatsApp } from './views/WhatsApp';
 import { LaptopSite, PatientPhone } from './views/Site';
 import { LaptopRecovered, PhoneRecovered } from './views/Recovered';
+import { revealSpot } from './focus';
 import './clinic.css';
 
 const VIEWS: Record<ClinicTab, Record<DemoProps['screen'], () => ReactNode>> = {
@@ -54,6 +55,14 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
   const { play } = useSound();
 
   const { store, paired, ref } = usePairedStore('clinic', createClinicStore);
+  const rootEl = useRef<HTMLDivElement | null>(null);
+  const rootRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      rootEl.current = el;
+      ref(el);
+    },
+    [ref],
+  );
   const snap = useStory(store, active);
   const scripts = useClinicScripts();
   const view = useMemo(
@@ -66,16 +75,44 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
   const [siteOpen, setSiteOpen] = useState(false);
   const patientPhone = screen === 'phone' && paired;
   const announce = screen === 'laptop' || !paired;
+  /** Remounts the agenda when a beat opens it on today while it shows another day. */
+  const [agendaN, setAgendaN] = useState(0);
+  /** Where the last beat asked this view to scroll (`jump`: it also changed section). */
+  const [reveal, setReveal] = useState<{ spot: FocusSpot; jump: boolean; n: number } | null>(null);
+  const [patientFocus, setPatientFocus] = useState(0);
+
+  // A beat takes this view to where it happens (data.ts BEAT_FOCUS), once, when the story enters it.
+  useBeatFocus(store, snap, (id) => {
+    const target = BEAT_FOCUS[id as BeatId];
+    if (!target) return;
+    if (patientPhone) {
+      if (target.patient === 'site') setPatientFocus((n) => n + 1);
+      return;
+    }
+    const f = target[screen];
+    setSiteOpen(false);
+    const reopen = f.tab === 'agenda' && tab === 'agenda' && agendaDay !== TODAY;
+    if (f.tab === 'agenda') setAgendaDay(TODAY);
+    if (reopen) setAgendaN((n) => n + 1);
+    setReveal((r) => ({ spot: f.spot, jump: f.tab !== tab || reopen, n: (r?.n ?? 0) + 1 }));
+    setTab(f.tab);
+  });
+  useLayoutEffect(() => {
+    if (reveal) revealSpot(rootEl.current, reveal.spot, !reveal.jump && !snap.reduced);
+    // Only when a beat asks (not on every story tick).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reveal]);
 
   const live = view.call.phase === 'ringing' || view.call.phase === 'live';
-  const nav: NavItem[] = [
-    { id: 'today', label: t('nav.today'), icon: House },
-    { id: 'agenda', label: t('nav.agenda'), icon: CalendarDays, tour: screen === 'phone' ? 'agenda' : undefined },
-    { id: 'calls', label: t(screen === 'phone' ? 'nav.callsShort' : 'nav.calls'), icon: PhoneCall, badge: live ? 'live' : undefined },
-    { id: 'whatsapp', label: t('nav.whatsapp'), icon: MessageCircle, tour: 'reminders' },
-    ...(screen === 'laptop' ? [{ id: 'site', label: t('nav.site'), icon: Globe, tour: 'booking' }] : []),
-    { id: 'recovered', label: t(screen === 'phone' ? 'nav.recoveredShort' : 'nav.recovered'), icon: ChartNoAxesColumn },
-  ];
+  const items: Record<ClinicTab, Omit<NavItem, 'id'>> = {
+    today: { label: t('nav.today'), icon: House },
+    agenda: { label: t('nav.agenda'), icon: CalendarDays, tour: screen === 'phone' ? 'agenda' : undefined },
+    calls: { label: t(screen === 'phone' ? 'nav.callsShort' : 'nav.calls'), icon: PhoneCall, badge: live ? 'live' : undefined },
+    whatsapp: { label: t('nav.whatsapp'), icon: MessageCircle, tour: 'reminders' },
+    site: { label: t('nav.site'), icon: Globe, tour: 'booking' },
+    recovered: { label: t(screen === 'phone' ? 'nav.recoveredShort' : 'nav.recovered'), icon: ChartNoAxesColumn },
+  };
+  const nav: NavItem[] = SCREEN_TABS[screen].map((id) => ({ id, ...items[id] }));
 
   const ctx: ClinicCtx = {
     screen,
@@ -110,8 +147,8 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
   if (patientPhone) {
     return (
       <ClinicProvider value={ctx}>
-        <AppShell screen="phone" chrome="bare" theme={CLINIC_THEME} business={business} logo={<AuroraMark />} active={active} rootRef={ref} statusTime={clock} sim={sim}>
-          <PatientPhone key={snap.loop} />
+        <AppShell screen="phone" chrome="bare" theme={CLINIC_THEME} business={business} logo={<AuroraMark />} active={active} rootRef={rootRef} statusTime={clock} sim={sim}>
+          <PatientPhone key={snap.loop} focus={patientFocus} />
         </AppShell>
       </ClinicProvider>
     );
@@ -161,7 +198,7 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
         phoneNav="dock"
         headerRight={headerRight}
         active={active}
-        rootRef={ref}
+        rootRef={rootRef}
         statusTime={clock}
         sim={sim}
         overlay={
@@ -180,7 +217,7 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
       >
         <div className="clinic" data-screen={screen}>
           <ClinicToasts placement={screen === 'phone' ? 'top' : 'bottom-right'} />
-          <div key={tab} className="demo-view">
+          <div key={tab === 'agenda' ? `agenda:${agendaN}` : tab} className="demo-view">
             <View />
           </div>
           <Announcer />
