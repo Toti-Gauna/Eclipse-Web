@@ -3179,6 +3179,7 @@
 }
 /* Phone app bar: a comfortable target for the store button. */
 .demo-root[data-screen='phone'] .shop-topbtn {
-  height: 3.1em;
+  /* ≈ 44px, like the kit's touch targets */
+  height: 5em;
   padding: 0 1em;
 }

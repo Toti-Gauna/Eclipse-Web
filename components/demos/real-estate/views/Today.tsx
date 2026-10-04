@@ -103,6 +103,7 @@ export function usePipelineCards(): KanbanCard[] {
     icon: SOURCE_ICON[c.source],
     tone: c.note === 'lost' || c.note === 'waiting' ? 'bad' : c.person === 'carolina' ? 'accent' : c.person === 'you' ? 'accent2' : 'neutral',
     fresh: recent(c.changedAt, 2400),
+    lines: 2,
   }));
 }
 

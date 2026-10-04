@@ -1855,14 +1855,13 @@
 .lumen .demo-toptabs-item .demo-navicon {
   display: none;
 }
-/* Square text tabs with a rule, like a magazine's index (taller for touch). */
+/* Square text tabs with a rule, like a magazine's index (height: the kit's touch size). */
 .lumen .demo-toptabs {
   gap: 0;
   padding: 0 0.6em;
   border-bottom: 1px solid var(--demo-line);
 }
 .lumen .demo-toptabs-item {
-  height: 3.6em;
   padding: 0 0.75em;
   border-radius: 0;
   box-shadow: none;
@@ -1872,9 +1871,9 @@
   box-shadow: inset 0 -2px 0 var(--demo-ink);
   color: var(--demo-ink);
 }
-.lumen .demo-root[data-screen='phone'] .re-buyerbtn,
+/* Phone app bar: ≈ 44px, like the kit's touch targets. */
 .lumen[data-screen='phone'] .re-buyerbtn {
-  height: 3.3em;
+  height: 4.9em;
   font-size: 0.74em;
 }
 .re-toppill-dot {

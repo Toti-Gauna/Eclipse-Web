@@ -2940,7 +2940,6 @@
   border-bottom: 1px solid var(--demo-line-strong);
 }
 .demo-root:has(.atrio) .demo-toptabs-item {
-  height: 3.3em;
   border-radius: 0.55em 0.55em 0 0;
   box-shadow: none;
   font-weight: 600;
@@ -3043,11 +3042,20 @@ button.atrio-site-btn {
 .demo-root[data-screen='phone'] .atrio-prompt {
   min-height: 5em;
 }
+.demo-root[data-screen='phone'] .atrio-chat-wait .atrio-btn {
+  min-height: 5.7em;
+}
+.demo-root[data-screen='phone'] .atrio-site-btn {
+  min-height: 5.2em;
+}
+/* The kit's "Mover" button on the follow-up board (phone) */
+.demo-root[data-screen='phone'] .atrio-kanban .demo-kanban-move {
+  width: 3.7em;
+  height: 3.7em;
+  margin: -0.65em -0.55em -0.65em 0;
+}
 .demo-root[data-screen='phone'] .atrio-link {
   min-height: 6.2em;
-}
-.demo-root[data-screen='phone']:has(.atrio) .demo-toptabs-item {
-  height: 4.75em;
 }
 .atrio-mode button {
   position: relative;

@@ -2737,7 +2737,18 @@ button.gym-site-btn {
    app-bar switch, which can't, gets an invisible hit area. */
 .demo-root[data-screen='phone'] .gym-btn,
 .demo-root[data-screen='phone'] .gym-chip {
-  min-height: 5.6em;
+  min-height: 6.1em;
+}
+.demo-root[data-screen='phone'] .gym-leadchat-idle .gym-btn {
+  min-height: 7.6em;
+}
+.demo-root[data-screen='phone'] .gym-site-btn,
+.demo-root[data-screen='phone'] .gym-site-cta {
+  min-height: 6.2em;
+}
+.demo-root[data-screen='phone'] .gym-leadchat-min {
+  width: 4.1em;
+  height: 4.1em;
 }
 .demo-root[data-screen='phone'] .gym-day {
   min-height: 5.8em;
