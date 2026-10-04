@@ -11,16 +11,20 @@ import type { Quote } from '@/lib/pricing';
 import type { Locale } from '@/i18n/routing';
 import type { PlanSwitch, StepId } from './rules';
 import { recurringSplit } from './rules';
+import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { CopyButton, DetectBanner } from './parts';
 
 /**
- * Step 4 — the plan, clean: what is paid once vs. what is paid every month (and every
- * year, with annual maintenance), the package suggestion if there is one, sharing
+ * Step 4 — the plan, clean, labelled for what it is: a proposal request, not a quote
+ * (Eclipse confirms scope and price in writing). What is paid once vs. what is paid every
+ * month (and every year, with annual maintenance) — every amount in the dock has its line
+ * here, preselected ones marked —, the package suggestion if there is one, sharing
  * (link + summary) and the exact message that will be sent. Sending lives in the dock.
  */
 export function StepSummary({
   quote: q,
   empty,
+  maintenanceAuto,
   suggestion,
   onSwitch,
   onGo,
@@ -32,6 +36,8 @@ export function StepSummary({
 }: {
   quote: Quote;
   empty: boolean;
+  /** The maintenance line is the automatic suggestion (marked as such). */
+  maintenanceAuto: boolean;
   suggestion: PlanSwitch | null;
   onSwitch: () => void;
   onGo: (step: StepId) => void;
@@ -72,6 +78,14 @@ export function StepSummary({
 
   return (
     <>
+      <div className="pb-proposal ticks">
+        <p className="label pb-proposal-label">
+          <PhaseGlyph phase={1} size={14} className="pb-proposal-glyph" />
+          {t('proposalLabel')}
+        </p>
+        <p className="pb-proposal-text">{t('proposalText')}</p>
+      </div>
+
       {suggestion ? <DetectBanner suggestion={suggestion} planName={l(suggestion.plan.name, locale)} onSwitch={onSwitch} /> : null}
 
       <div className="pb-ledger">
@@ -133,7 +147,10 @@ export function StepSummary({
               <ul className="pb-ledger-lines">
                 {m.plan && m.billing === 'monthly' ? (
                   <li className="pb-ledger-line">
-                    <span className="pb-ledger-name">{t('maintenanceLine', { name: l(m.plan.name, locale) })}</span>
+                    <span className="pb-ledger-name">
+                      {t('maintenanceLine', { name: l(m.plan.name, locale) })}
+                      {maintenanceAuto ? <span className="pb-tag">{t('suggested')}</span> : null}
+                    </span>
                     <span aria-hidden className="leader" />
                     <span className="pb-ledger-amount readout">{format(m.periodUsd)}</span>
                   </li>
@@ -168,6 +185,7 @@ export function StepSummary({
               <p className="pb-ledger-line">
                 <span className="pb-ledger-name">
                   {t('maintenanceAnnualLine', { name: l(m.plan.name, locale) })}
+                  {maintenanceAuto ? <span className="pb-tag">{t('suggested')}</span> : null}
                   {free > 0 ? <span className="pb-tag pb-tag--accent">{t('freeMonths', { count: free })}</span> : null}
                 </span>
                 <span aria-hidden className="leader" />

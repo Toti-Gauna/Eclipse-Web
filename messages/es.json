@@ -205,7 +205,9 @@
     "mathTotal": "Total por mes",
     "assumptions": "Supuestos: 1 mes = {weeks} semanas · 1 hora de tu equipo = {rate}. Tu número real puede ser otro.",
     "miniLabel": "Perdés por mes",
-    "miniJump": "Ver el detalle de la estimación"
+    "miniJump": "Ver el detalle de la estimación",
+    "rangeMax": "Máximo {value}: usamos ese número.",
+    "rangeMin": "Mínimo {value}: usamos ese número."
   },
   "services": {
     "title": "Lo que construimos, <em>pieza por pieza</em>.",
@@ -327,7 +329,7 @@
     "ctaLead": "El primer paso es ver tu negocio funcionando."
   },
   "builder": {
-    "eyebrow": "Presupuesto en tu moneda",
+    "eyebrow": "Estimación en tu moneda",
     "title": "Armá tu plan",
     "pageTitle": "Armá tu <em>plan</em>",
     "pageIntro": "Cuatro pasos y todos se pueden saltear. Elegí qué querés resolver: el número se arma solo.",
@@ -458,7 +460,20 @@
     "dockOneTime": "Pago único",
     "dockFrom": "desde",
     "recurringAnnounce": "Además, {amount} {period}.",
-    "goalsLine": "Objetivo: {list}"
+    "goalsLine": "Objetivo: {list}",
+    "preloadGoals": "Por tu objetivo te preseleccionamos {list}. Sacá o sumá lo que quieras.",
+    "preloadGoalsMany": "Por tu objetivo te preseleccionamos {count} piezas (marcadas como «Sugerida»). Sacá o sumá lo que quieras.",
+    "preloadGoalsEdit": "Cambiar objetivo",
+    "preloadAdded": "Sumaste {list} a tu plan.",
+    "preloadUndo": "Deshacer",
+    "preloadUndone": "Quitaste {list}.",
+    "packageFromPreset": "Empezaste desde este paquete: {count, plural, one {su pieza ya está marcada} other {sus # piezas ya están marcadas}}. Sumá las que quieras.",
+    "expandAll": "Abrir todas",
+    "collapseAll": "Cerrar todas",
+    "catChosen": "{chosen} de {total} elegidas",
+    "careSuggestedNote": "Marcamos {name} porque es el que sugerimos para tu plan. Cambialo o elegí «{none}».",
+    "proposalLabel": "Solicitud de propuesta",
+    "proposalText": "No es una cotización: te confirmamos alcance y precio por escrito."
   },
   "pricing": {
     "title": "Cuánto cuesta<br></br> y cómo se paga.",

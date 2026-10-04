@@ -29,6 +29,45 @@ export function useInViewOnce<T extends Element>(ref: RefObject<T | null>, rootM
 }
 
 /**
+ * True while the element intersects the viewport (both directions, every time).
+ * IntersectionObserver only: nothing runs per scroll event.
+ */
+export function useInView<T extends Element>(ref: RefObject<T | null>, rootMargin = '0px'): boolean {
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      const last = entries[entries.length - 1];
+      if (last) setInView(last.isIntersecting);
+    }, { rootMargin });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, rootMargin]);
+  return inView;
+}
+
+/**
+ * True once the element's top has scrolled above the top of the viewport (and back to
+ * false when it comes down again). Observe a zero-height sentinel to know when a sticky
+ * sibling is actually stuck. IntersectionObserver only.
+ */
+export function useScrolledPast<T extends Element>(ref: RefObject<T | null>): boolean {
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      const last = entries[entries.length - 1];
+      if (last) setPast(!last.isIntersecting && last.boundingClientRect.top < 0);
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref]);
+  return past;
+}
+
+/**
  * A number that counts up from 0 the first time `started` becomes true, then
  * rolls from its current value to every new one (slider changes, currency switch).
  *

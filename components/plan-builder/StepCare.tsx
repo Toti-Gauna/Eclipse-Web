@@ -8,18 +8,20 @@ import { annualMonthsCharged, l, maintenancePlans, voiceUsage, type FounderOffer
 import { annualize, type Billing, type Quote } from '@/lib/pricing';
 import type { PlanState } from '@/lib/plan-url';
 import type { Locale } from '@/i18n/routing';
+import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { Mark, OfferCountdown } from './parts';
 
 /**
  * Step 3 — maintenance + hosting: one billing switch (monthly / yearly) for every
- * option, the suggested level marked, the voice agent's monthly fee explained apart,
- * and the founder price as an opt-in.
+ * option, the suggested level marked (and, while the plan follows it, said why it is
+ * checked), the voice agent's monthly fee explained apart, and the founder price as an opt-in.
  */
 export function StepCare({
   state,
   quote: q,
   maintenanceId,
   suggested,
+  auto,
   empty,
   founder,
   annualOffer,
@@ -34,6 +36,8 @@ export function StepCare({
   quote: Quote;
   maintenanceId: MaintenanceId | null;
   suggested: MaintenanceId | null;
+  /** The checked level is the automatic suggestion (the visitor hasn't picked one). */
+  auto: boolean;
   empty: boolean;
   founder: { offer: FounderOffer; left: number; total: number } | null;
   annualOffer: Offer | null;
@@ -52,6 +56,7 @@ export function StepCare({
   const annual = state.billing === 'annual' && !!annualOffer;
   const free = 12 - annualMonthsCharged;
   const savedPerYear = q.offers.applied.find((a) => a.kind === 'annualMaintenance')?.savingsPerYearUsd ?? 0;
+  const suggestedPlan = auto && !empty ? maintenancePlans.find((m) => m.id === maintenanceId) : undefined;
 
   return (
     <>
@@ -68,7 +73,14 @@ export function StepCare({
         </fieldset>
       ) : null}
 
-      <fieldset className="pb-care" aria-labelledby={headingId}>
+      {suggestedPlan ? (
+        <p id={`${uid}-auto`} className="pb-note pb-note--lead">
+          <PhaseGlyph phase={0.75} size={16} className="pb-note-icon" />
+          <span>{t('careSuggestedNote', { name: l(suggestedPlan.name, locale), none: t('maintenanceNone') })}</span>
+        </p>
+      ) : null}
+
+      <fieldset className="pb-care" aria-labelledby={headingId} aria-describedby={suggestedPlan ? `${uid}-auto` : undefined}>
         {[null, ...maintenancePlans].map((m) => {
           const id = m?.id ?? null;
           const checked = maintenanceId === id;

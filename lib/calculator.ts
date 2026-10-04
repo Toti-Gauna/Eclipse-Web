@@ -128,6 +128,19 @@ export function clampToRange(value: number, range: ValueRange): number {
   return Math.min(range.max, Math.max(range.min, snapped));
 }
 
+export type RangeEdge = 'min' | 'max';
+
+/**
+ * Which end of the range a typed value went past (null when it fits): the calculator
+ * clamps it and says so next to the field ("Máximo 200: usamos ese número").
+ */
+export function outOfRange(value: number, range: Pick<ValueRange, 'min' | 'max'>): RangeEdge | null {
+  if (!Number.isFinite(value)) return null;
+  if (value > range.max) return 'max';
+  if (value < range.min) return 'min';
+  return null;
+}
+
 /** Clamps a USD ticket to its range without snapping (it comes from a local amount). */
 export function clampTicketUsd(value: number): number {
   const { min, max } = CALCULATOR_RANGES.ticketUsd;

@@ -1,7 +1,9 @@
 /*
- * 02 · "¿Cuánto te cuesta no tener esto?" — calculator styles (imported by ProblemSection).
- * A sentence the visitor completes (serif, values in mono) + an instrument readout.
- * Only transform / opacity / clip-path animate.
+ * 05 · "¿Cuánto te cuesta no tener esto?" — calculator styles (imported by ProblemSection).
+ * Light section on --dawn: a sentence the visitor completes (serif, values in mono) and a
+ * compact instrument readout whose arithmetic unfolds on demand ("Ver la cuenta").
+ * Text only uses --fg / --fg-muted / --accent (corona-deep on dawn: AA); amber is a fill
+ * or a light, never small text. Only transform / opacity / clip-path animate.
  */
 
 /* <Reveal> fades with opacity only: keep revealed content in the tab order and the a11y tree. */
@@ -9,13 +11,13 @@
   visibility: visible !important;
 }
 
-/* One light source: a corona glow from the right, behind the readout. Static. */
+/* One light source: warm daylight from the right, behind the readout. Static. */
 .problem-light {
   background:
-    radial-gradient(38% 46% at 94% 52%, rgb(245 185 66 / 0.12), transparent 70%),
-    radial-gradient(60% 70% at 100% 50%, rgb(255 232 176 / 0.035), transparent 75%);
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 16%, #000 84%, transparent);
-  mask-image: linear-gradient(180deg, transparent, #000 16%, #000 84%, transparent);
+    radial-gradient(34% 44% at 90% 46%, rgb(255 232 176 / 0.85), transparent 72%),
+    radial-gradient(20% 26% at 94% 40%, rgb(245 185 66 / 0.12), transparent 70%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
 }
 
 /* ------------------------------------------------------------------ */
@@ -31,7 +33,7 @@
 }
 @media (min-width: 1024px) {
   .calc {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr);
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
     column-gap: clamp(3rem, 5vw, 5.5rem);
     align-items: start;
   }
@@ -41,10 +43,10 @@
   max-width: 42rem;
 }
 .calc-mark {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 .calc-title {
-  font-size: clamp(2.55rem, 1.5rem + 4.4vw, 4.6rem);
+  font-size: clamp(2.3rem, 1.45rem + 3.4vw, 3.9rem);
 }
 /* LightSweep clips to its box: room for the descenders under the tight display line-height. */
 .calc-sweep {
@@ -53,19 +55,19 @@
 }
 .calc-sub {
   max-width: 34rem;
-  margin-top: 1.1rem;
-  font-size: 1.02rem;
+  margin-top: 0.9rem;
+  font-size: 1rem;
   line-height: 1.55;
   color: var(--fg-muted);
 }
 
 .calc-inputs {
   position: relative;
-  margin-top: 2.25rem;
+  margin-top: 1.75rem;
 }
 @media (min-width: 1024px) {
   .calc-inputs {
-    margin-top: 3.25rem;
+    margin-top: 2.5rem;
   }
 }
 
@@ -76,8 +78,8 @@
   --tok-h: 2.75rem;
   --btn: 2.2rem;
   font-family: var(--font-serif);
-  font-size: 1.55rem;
-  line-height: 3.25rem;
+  font-size: 1.5rem;
+  line-height: 3.15rem;
   letter-spacing: -0.012em;
   color: var(--fg);
   text-wrap: pretty;
@@ -86,16 +88,16 @@
   .calc-sentence {
     --tok-h: 2.95rem;
     --btn: 2.3rem;
-    font-size: 1.95rem;
-    line-height: 3.65rem;
+    font-size: 1.85rem;
+    line-height: 3.55rem;
   }
 }
 @media (min-width: 1280px) {
   .calc-sentence {
-    --tok-h: 3.3rem;
-    --btn: 2.55rem;
-    font-size: 2.35rem;
-    line-height: 4.2rem;
+    --tok-h: 3.2rem;
+    --btn: 2.5rem;
+    font-size: 2.2rem;
+    line-height: 4rem;
   }
 }
 
@@ -116,17 +118,18 @@
   vertical-align: middle;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
-  background: rgb(5 5 10 / 0.5);
+  background: rgb(255 255 255 / 0.62);
   transition:
     border-color 0.3s ease,
     box-shadow 0.4s var(--ease-expo),
     background-color 0.3s ease;
 }
 .vf[data-active] {
-  border-color: rgb(245 185 66 / 0.5);
+  border-color: rgb(138 90 0 / 0.5);
+  background: rgb(255 255 255 / 0.88);
   box-shadow:
-    0 0 0 4px rgb(245 185 66 / 0.07),
-    0 0 30px -10px rgb(245 185 66 / 0.6);
+    0 0 0 4px rgb(245 185 66 / 0.22),
+    0 10px 26px -16px rgb(138 90 0 / 0.55);
 }
 .vf:has(.vf-input:focus-visible) {
   outline: 2px solid var(--focus);
@@ -142,7 +145,7 @@
   font-style: normal;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums slashed-zero;
-  color: var(--corona);
+  color: var(--accent);
 }
 .vf-value[data-flash] {
   animation: vf-flash 0.7s var(--ease-expo) both;
@@ -164,12 +167,12 @@
   letter-spacing: inherit;
   line-height: 1.2;
   text-align: center;
-  caret-color: var(--flare);
+  caret-color: var(--accent);
   outline: none;
 }
 .vf-input::selection {
-  background: rgb(245 185 66 / 0.32);
-  color: var(--flare);
+  background: rgb(245 185 66 / 0.45);
+  color: var(--fg);
 }
 .vf-btn {
   position: relative;
@@ -180,7 +183,7 @@
   height: var(--btn);
   border: 1px solid var(--line);
   border-radius: 50%;
-  background: rgb(244 239 230 / 0.06);
+  background: rgb(17 17 20 / 0.04);
   color: var(--fg);
   touch-action: manipulation;
   -webkit-user-select: none;
@@ -205,16 +208,15 @@
 }
 @media (hover: hover) {
   .vf-btn:hover {
-    border-color: rgb(245 185 66 / 0.55);
-    background: rgb(245 185 66 / 0.14);
-    color: var(--flare);
+    border-color: rgb(138 90 0 / 0.45);
+    background: rgb(245 185 66 / 0.24);
   }
 }
 .vf-btn:active {
   transform: scale(0.9);
 }
 .vf-btn[aria-disabled='true'] {
-  opacity: 0.28;
+  opacity: 0.3;
   cursor: default;
 }
 .vf-btn[aria-disabled='true']:active {
@@ -231,32 +233,55 @@
 /* ------------------------------------------------------------------ */
 /* Sticky mini reading (phones / tablets)                               */
 /* ------------------------------------------------------------------ */
-.calc-mini {
+/* Zero-height sticky rail: it sticks under the header for as long as the sentence and the
+   presets are on screen, takes no room in the flow, and leaves with them. */
+/* Shifted up by the rail's offset: it leaves the viewport exactly when the rail gets stuck. */
+.calc-mini-sentinel {
+  position: relative;
+  top: calc(-1 * (var(--header-h) + 0.5rem));
+  display: block;
+  height: 0;
+}
+.calc-mini-rail {
   position: sticky;
   top: calc(var(--header-h) + 0.5rem);
   z-index: 5;
+  height: 0;
+}
+.calc-mini {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  width: 100%;
-  min-height: 3rem;
-  margin-bottom: 1.25rem;
-  padding: 0.4rem 0.9rem 0.4rem 1rem;
-  border: 1px solid var(--line);
+  min-height: 44px;
+  padding: 0.3rem 0.85rem 0.3rem 1rem;
+  border: 1px solid var(--line-strong);
   border-radius: 999px;
-  background: rgb(12 12 20 / 0.86);
-  box-shadow: 0 14px 40px -24px rgb(0 0 0 / 0.9);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  backdrop-filter: blur(14px) saturate(140%);
+  background: rgb(244 239 230 / 0.88);
+  box-shadow: 0 12px 30px -22px rgb(17 17 20 / 0.5);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+  backdrop-filter: blur(12px) saturate(130%);
   text-align: left;
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s var(--ease-expo);
+}
+/* Not needed (the sentence's top is still in view, or the full reading is): out of the way. */
+.calc-mini[data-idle] {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
 }
 .calc-mini-label {
   flex: none;
 }
 .calc-mini-value {
   margin-left: auto;
-  font-size: 1.02rem;
-  color: var(--flare);
+  font-size: 0.98rem;
+  color: var(--fg);
   white-space: nowrap;
 }
 .calc-mini-icon {
@@ -266,7 +291,7 @@
   color: var(--fg-muted);
 }
 @media (min-width: 1024px) {
-  .calc-mini {
+  .calc-mini-rail {
     display: none;
   }
 }
@@ -275,15 +300,7 @@
 /* Presets for the field being edited                                   */
 /* ------------------------------------------------------------------ */
 .calc-presets {
-  margin-top: 1.5rem;
-  /* Room (inside the sticky container's content box) for the mini reading to come to
-     rest below the chips instead of on top of them. */
-  padding-bottom: 4.25rem;
-}
-@media (min-width: 1024px) {
-  .calc-presets {
-    padding-bottom: 0;
-  }
+  margin-top: 1.25rem;
 }
 .calc-presets-label {
   display: flex;
@@ -308,7 +325,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  margin-top: 0.7rem;
 }
 .calc-chip {
   min-width: 3.25rem;
@@ -338,13 +355,26 @@
 }
 @media (hover: hover) {
   .calc-chip:hover {
-    border-color: var(--corona);
+    border-color: var(--accent);
   }
 }
 .calc-chip[aria-pressed='true'] {
-  border-color: rgb(245 185 66 / 0.7);
-  background: rgb(245 185 66 / 0.1);
-  color: var(--corona);
+  border-color: rgb(138 90 0 / 0.55);
+  background: rgb(245 185 66 / 0.3);
+  color: var(--fg);
+}
+
+/* A typed value past the range, said right under the sentence. */
+.calc-range {
+  min-height: 1.25rem;
+  margin-top: 0.6rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--accent);
+}
+.calc-range:empty {
+  margin-top: 0;
+  min-height: 0;
 }
 
 /* ------------------------------------------------------------------ */
@@ -353,38 +383,43 @@
 .calc-readout-frame {
   position: relative;
   min-width: 0;
+  margin-top: 0.5rem;
 }
 @media (min-width: 1024px) {
   .calc-readout-frame {
     position: sticky;
     top: calc(var(--header-h) + 1.5rem);
-    margin-top: 0.5rem;
+    margin-top: 0.25rem;
   }
 }
 .calc-readout {
   --tick: 14px;
-  --tick-c: rgb(245 185 66 / 0.6);
+  --tick-c: rgb(17 17 20 / 0.5);
   position: relative;
   isolation: isolate;
   container-type: inline-size;
-  padding: 1.5rem 1.25rem;
-  background-color: rgb(5 5 10 / 0.6);
-  box-shadow: inset 0 0 0 1px rgb(244 239 230 / 0.05);
+  overflow: hidden;
+  padding: 1.4rem 1.25rem 1.25rem;
+  background-color: rgb(255 255 255 / 0.5);
+  box-shadow:
+    inset 0 0 0 1px rgb(17 17 20 / 0.07),
+    0 30px 60px -48px rgb(138 90 0 / 0.55);
 }
 @media (min-width: 640px) {
   .calc-readout {
-    padding: 2rem 2rem 1.75rem;
+    padding: 1.75rem 1.9rem 1.6rem;
   }
 }
+/* Daylight behind the reading: grows with the loss. */
 .calc-glow {
   position: absolute;
   z-index: -1;
-  top: -18%;
-  right: -22%;
-  width: 85%;
+  top: -30%;
+  right: -26%;
+  width: 90%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(245 185 66 / 0.2), rgb(245 185 66 / 0.06) 55%, transparent 76%);
+  background: radial-gradient(closest-side, rgb(255 232 176 / 0.95), rgb(255 232 176 / 0.4) 55%, transparent 76%);
   opacity: var(--glow, 0.5);
   pointer-events: none;
   transition: opacity 0.9s var(--ease-expo);
@@ -395,7 +430,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.4rem 1rem;
+  gap: 0.5rem 1rem;
 }
 .calc-readout-title {
   display: inline-flex;
@@ -410,21 +445,35 @@
   flex: none;
   border-radius: 50%;
   background: var(--corona);
-  box-shadow: 0 0 10px 2px rgb(245 185 66 / 0.7);
+  box-shadow: 0 0 0 3px rgb(245 185 66 / 0.25);
+}
+/* "Estimación con tus números": the result is indicative, said where the number is. */
+.calc-honest {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 450;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
 }
 
 .calc-reading {
-  margin-top: 1.75rem;
+  margin-top: 1.4rem;
 }
 .calc-total {
   --chars: 12;
-  margin-top: 0.4rem;
-  font-size: min(5.5rem, calc(100cqi / (var(--chars) * 0.58)));
+  margin-top: 0.35rem;
+  font-size: min(4.75rem, calc(100cqi / (var(--chars) * 0.6)));
   line-height: 1;
   letter-spacing: -0.045em;
   white-space: nowrap;
-  color: var(--flare);
-  text-shadow: 0 0 42px rgb(245 185 66 / 0.28);
+  color: var(--fg);
 }
 .calc-approx {
   margin-right: 0.3em;
@@ -432,27 +481,59 @@
   letter-spacing: 0;
   vertical-align: 0.16em;
   color: var(--fg-muted);
-  text-shadow: none;
 }
 .calc-reading-sub {
   display: flex;
   flex-wrap: wrap;
   gap: 0.2rem 1.1rem;
-  margin-top: 0.85rem;
+  margin-top: 0.75rem;
   font-size: 0.8125rem;
   letter-spacing: 0;
   color: var(--fg-muted);
 }
 
-/* Two-part bar on a ruler: lost revenue (solid) + team time (hatched). */
-.calc-split {
-  margin-top: 1.75rem;
+/* The arithmetic, on demand */
+.calc-math-block {
+  margin-top: 1.1rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--line);
 }
+.calc-math-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+}
+.calc-math-toggle:hover {
+  text-decoration-color: var(--accent);
+}
+.calc-math-caret {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.35s var(--ease-expo);
+}
+.calc-math-toggle[aria-expanded='true'] .calc-math-caret {
+  transform: rotate(180deg);
+}
+.calc-math {
+  padding: 0.5rem 0 0.35rem;
+  animation: calc-fade 0.45s ease both;
+}
+
+/* Two-part bar on a ruler: lost revenue (solid amber) + team time (hatched ink).
+   It draws in each time the account opens. */
 .calc-bar {
   position: relative;
   height: 0.625rem;
   overflow: hidden;
-  background: rgb(244 239 230 / 0.06);
+  background: rgb(17 17 20 / 0.07);
 }
 .calc-bar-a,
 .calc-bar-b {
@@ -462,18 +543,24 @@
   transition: transform 1.1s var(--ease-expo);
 }
 .calc-bar-a {
-  background: linear-gradient(90deg, var(--corona), #ffd581);
+  background: linear-gradient(90deg, var(--corona), #e8a730);
   transform: scaleX(var(--a, 0));
+  animation: calc-bar-draw 0.9s var(--ease-expo) both;
 }
 .calc-bar-b {
-  background: repeating-linear-gradient(-45deg, rgb(255 232 176 / 0.85) 0 1.5px, transparent 1.5px 4.5px);
+  background: repeating-linear-gradient(-45deg, rgb(17 17 20 / 0.62) 0 1.5px, transparent 1.5px 4.5px);
   transform: translateX(calc(var(--a, 0) * 100%)) scaleX(var(--b, 0));
+  animation: calc-bar-draw-b 0.9s var(--ease-expo) 0.12s both;
 }
-/* Before the readout enters the viewport (client only): empty, no transition. */
-.calc-split[data-armed] .calc-bar-a,
-.calc-split[data-armed] .calc-bar-b {
-  transform: scaleX(0);
-  transition: none;
+@keyframes calc-bar-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes calc-bar-draw-b {
+  from {
+    transform: translateX(calc(var(--a, 0) * 100%)) scaleX(0);
+  }
 }
 .calc-ruler {
   position: relative;
@@ -492,34 +579,49 @@
   height: 7px;
   background: var(--fg-muted);
 }
-.calc-legend {
+
+/* Each part: name ··· amount, then its exact arithmetic and its share of the total. */
+.calc-break {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.8rem;
   margin-top: 1rem;
 }
-.calc-legend-row {
+.calc-break-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
-  gap: 0.85rem;
-  font-size: 0.875rem;
+  column-gap: 0.5rem;
 }
-.calc-legend-row dt {
+.calc-break-name {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.55rem;
   min-width: 0;
+  font-size: 0.875rem;
+  line-height: 1.3;
   color: var(--fg);
 }
-.calc-legend-pct {
-  min-width: 3.5ch;
-  text-align: right;
-  font-size: 0.8125rem;
+.calc-break-name .leader {
+  min-width: 0.75rem;
+  align-self: flex-end;
+  margin-bottom: 0.3em;
+}
+.calc-break-amount {
+  font-size: 0.875rem;
+  white-space: nowrap;
+  color: var(--fg);
+}
+.calc-break-math {
+  grid-column: 1 / -1;
+  margin-top: 0.15rem;
+  padding-left: 1.25rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
   color: var(--fg-muted);
 }
-.calc-legend-amount {
-  text-align: right;
-  color: var(--fg);
+.calc-break-pct {
+  white-space: nowrap;
 }
 .calc-swatch {
   width: 0.7rem;
@@ -528,73 +630,33 @@
 }
 .calc-swatch--a {
   background: var(--corona);
+  box-shadow: inset 0 0 0 1px rgb(138 90 0 / 0.35);
 }
 .calc-swatch--b {
-  background: repeating-linear-gradient(-45deg, rgb(255 232 176 / 0.85) 0 1.5px, transparent 1.5px 4px);
-  box-shadow: inset 0 0 0 1px rgb(255 232 176 / 0.45);
+  background: repeating-linear-gradient(-45deg, rgb(17 17 20 / 0.62) 0 1.5px, transparent 1.5px 4px);
+  box-shadow: inset 0 0 0 1px rgb(17 17 20 / 0.35);
 }
-
-/* The arithmetic, on demand */
-.calc-math-block {
-  margin-top: 1.4rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--line);
-}
-.calc-math-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-height: 44px;
-  font-size: 0.875rem;
-  color: var(--fg);
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-  text-underline-offset: 4px;
-}
-.calc-math-toggle:hover {
-  text-decoration-color: var(--corona);
-}
-.calc-math-caret {
-  width: 1rem;
-  height: 1rem;
-  transition: transform 0.35s var(--ease-expo);
-}
-.calc-math-toggle[aria-expanded='true'] .calc-math-caret {
-  transform: rotate(180deg);
-}
-.calc-math {
-  padding-bottom: 0.5rem;
-  animation: calc-fade 0.45s ease both;
-}
-.calc-math-row {
+.calc-math-total {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
-  padding: 0.3rem 0;
-  font-size: 0.78rem;
-  letter-spacing: -0.02em;
-  color: var(--fg-muted);
-}
-.calc-math-row > :first-child {
-  min-width: 0;
-  white-space: nowrap;
-}
-.calc-math-row .leader {
-  min-width: 0.5rem;
-}
-.calc-math-row > :last-child {
-  flex: none;
-  white-space: nowrap;
-  color: var(--fg);
-}
-.calc-math-total {
-  margin-top: 0.25rem;
-  padding-top: 0.55rem;
+  margin-top: 0.9rem;
+  padding-top: 0.65rem;
   border-top: 1px dashed var(--line-strong);
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--fg);
+}
+.calc-math-total .leader {
+  min-width: 0.75rem;
+}
+.calc-math-total .readout {
+  flex: none;
+  font-weight: 400;
+  white-space: nowrap;
 }
 .calc-assumptions {
-  margin-top: 0.35rem;
+  margin-top: 0.75rem;
   font-size: 0.75rem;
   line-height: 1.55;
   color: var(--fg-muted);
@@ -603,7 +665,12 @@
 .calc-ctas {
   display: grid;
   gap: 0.6rem;
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
+}
+@container (min-width: 34rem) {
+  .calc-ctas {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
 }
 .calc-cta {
   width: 100%;
@@ -632,7 +699,8 @@
     background: CanvasText;
   }
   .vf,
-  .calc-mini {
+  .calc-mini,
+  .calc-honest {
     border-color: CanvasText;
   }
 }

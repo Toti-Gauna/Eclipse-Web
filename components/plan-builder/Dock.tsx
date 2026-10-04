@@ -15,7 +15,8 @@ import { DetectBanner, SendAction } from './parts';
  * Sticky bar under every step: the running total split in "pago único" + what repeats,
  * Back, and the step's one primary action (Siguiente → Ver resumen → Enviar por WhatsApp).
  * The package suggestion rides on top of it while the plan is being built.
- * The amounts here are visual: the builder announces totals in its own live region.
+ * The rolling amounts are visual; assistive tech reads the same totals as plain text here
+ * (and the builder announces changes in its own live region).
  */
 export function Dock({
   step,
@@ -28,6 +29,7 @@ export function Dock({
   message,
   analytics,
   glint,
+  totalsText,
 }: {
   step: StepId;
   quote: Quote;
@@ -40,6 +42,8 @@ export function Dock({
   analytics: { items: string; plan: string; total: number; count: number };
   /** Changes on success moments (package switch): replays the diamond-ring glint. */
   glint: number;
+  /** The totals as one sentence ("Pago único: … Además, … por mes."), for screen readers. */
+  totalsText: string;
 }) {
   const t = useTranslations('builder');
   const tc = useTranslations('common');
@@ -67,17 +71,18 @@ export function Dock({
           <ArrowLeft aria-hidden strokeWidth={1.5} />
         </button>
 
-        <div aria-hidden className="pb-dock-total">
-          <span className="label pb-dock-label">
+        <div className="pb-dock-total">
+          <span className="sr-only">{empty ? t('emptyTitle') : totalsText}</span>
+          <span aria-hidden className="label pb-dock-label">
             {t('dockOneTime')}
             {q.plan ? ` · ${t('dockFrom')}` : null}
           </span>
-          <span className="pb-dock-amount readout">
+          <span aria-hidden className="pb-dock-amount readout">
             <AnimatedMoney usd={q.totalUsd} />
             {glint ? <span key={glint} className="pb-glint" /> : null}
           </span>
           {rec.monthlyUsd > 0 || rec.yearlyUsd > 0 ? (
-            <span className="pb-dock-rec readout">
+            <span aria-hidden className="pb-dock-rec readout">
               {rec.monthlyUsd > 0 ? (
                 <span>
                   + {format(rec.monthlyUsd)}

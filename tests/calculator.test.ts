@@ -13,6 +13,7 @@ import {
   lossShares,
   monthlyLoss,
   niceRound,
+  outOfRange,
   parseTyped,
   perMonth,
   perYear,
@@ -214,6 +215,15 @@ describe('editing', () => {
     expect(stepCount(0, -1, CALCULATOR_RANGES.lostPerWeek)).toBe(0);
     expect(stepCount(198, 1, CALCULATOR_RANGES.lostPerWeek, 5)).toBe(200);
     expect(stepCount(12, 1, CALCULATOR_RANGES.hoursPerWeek, 5)).toBe(17);
+  });
+
+  it('says which end of the range a typed value went past (it is clamped and said next to the field)', () => {
+    expect(outOfRange(250, CALCULATOR_RANGES.lostPerWeek)).toBe('max');
+    expect(outOfRange(200, CALCULATOR_RANGES.lostPerWeek)).toBeNull();
+    expect(outOfRange(0, CALCULATOR_RANGES.hoursPerWeek)).toBeNull();
+    expect(outOfRange(100, ticketBounds('ARS', rates))).toBe('min');
+    expect(outOfRange(3_000_000, ticketBounds('ARS', rates))).toBe('max');
+    expect(outOfRange(Number.NaN, CALCULATOR_RANGES.lostPerWeek)).toBeNull();
   });
 
   it('parses what the visitor types, whatever the separators', () => {

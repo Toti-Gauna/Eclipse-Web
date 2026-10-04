@@ -205,7 +205,9 @@
     "mathTotal": "Total a month",
     "assumptions": "Assumptions: 1 month = {weeks} weeks · 1 hour of your team = {rate}. Your real number may differ.",
     "miniLabel": "You lose a month",
-    "miniJump": "See the estimate in detail"
+    "miniJump": "See the estimate in detail",
+    "rangeMax": "Max {value}: we use that number.",
+    "rangeMin": "Min {value}: we use that number."
   },
   "services": {
     "title": "What we build, <em>piece by piece</em>.",
@@ -458,7 +460,20 @@
     "dockOneTime": "One-time",
     "dockFrom": "from",
     "recurringAnnounce": "Plus {amount} {period}.",
-    "goalsLine": "Goal: {list}"
+    "goalsLine": "Goal: {list}",
+    "preloadGoals": "Based on your goal we preselected {list}. Remove or add anything.",
+    "preloadGoalsMany": "Based on your goal we preselected {count} pieces (tagged “Suggested”). Remove or add anything.",
+    "preloadGoalsEdit": "Change goal",
+    "preloadAdded": "You added {list} to your plan.",
+    "preloadUndo": "Undo",
+    "preloadUndone": "Removed {list}.",
+    "packageFromPreset": "You started from this package: {count, plural, one {its piece is already checked} other {its # pieces are already checked}}. Add any others you want.",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "catChosen": "{chosen} of {total} selected",
+    "careSuggestedNote": "We checked {name} because it’s the one we suggest for your plan. Change it or pick “{none}”.",
+    "proposalLabel": "Proposal request",
+    "proposalText": "Not a quote: we confirm scope and price in writing."
   },
   "pricing": {
     "title": "What it costs,<br></br> and how you pay.",

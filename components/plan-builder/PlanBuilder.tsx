@@ -39,6 +39,7 @@ import { Dock } from './Dock';
 import { setVertical as setVerticalRule, suggestedIds, toggleGoal as toggleGoalRule, type GoalId } from './goals';
 import { withGoals } from './message';
 import { CopyButton } from './parts';
+import { preloadNotes, undoAdded } from './preload';
 import {
   STEPS,
   builderQuote,
@@ -104,7 +105,7 @@ export function PlanBuilder({
   const { currency, rates, format } = useCurrency();
   const { selectVertical } = useExperience();
   const { play } = useSound();
-  const { state, update, step, goTo, focusTick, highlight } = usePlanState(mode, { open, preset });
+  const { state, update, step, goTo, focusTick, highlight, preload, clearAdded } = usePlanState(mode, { open, preset });
   const uid = useId();
   const scrollRef = useRef<HTMLDivElement>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
@@ -119,7 +120,10 @@ export function PlanBuilder({
   const suggestion = planSwitchSuggestion(state, ctx);
   const hints = new Map<string, HintId>(softHints(selection).map((h) => [h.itemId, h.id]));
   const maintenanceId = effectiveMaintenance(state);
+  /** Maintenance is following the automatic suggestion (the visitor hasn't picked one). */
+  const maintenanceAuto = state.maintenance === undefined && maintenanceId !== null;
   const fromGoals = suggestedIds(state);
+  const notes = preloadNotes(state, preload);
   const comboOffer = (offers.find((o): o is VoiceComboOffer => o.kind === 'voiceCombo' && isOfferActive(o)) ?? null) as VoiceComboOffer | null;
   const founderOffer = offers.find((o): o is FounderOffer => o.kind === 'founder');
   const referral = offers.find((o): o is ReferralOffer => o.kind === 'referral');
@@ -250,6 +254,24 @@ export function PlanBuilder({
     play('toggle');
     update((s) => ({ ...s, founder: on }));
   };
+  const focusStepTitle = (id: StepId) =>
+    requestAnimationFrame(() => document.getElementById(`${uid}-${id}-title`)?.focus({ preventScroll: true }));
+  const onUndoAdded = () => {
+    const ids = notes.added;
+    if (!ids.length) return;
+    play('select');
+    update((s) => undoAdded(s, ids));
+    clearAdded();
+    const list = new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' }).format(
+      ids.map((id) => {
+        const item = itemById(id);
+        return item ? l(item.name, locale) : id;
+      }),
+    );
+    setStatus(t('preloadUndone', { list }));
+    // The note (and its button) goes away: keep the keyboard in the step.
+    focusStepTitle('piezas');
+  };
 
   // ---- Navigation: focus moves to the step's heading; the new step is uncovered.
   const prevIndex = useRef(stepIndex(step));
@@ -329,6 +351,10 @@ export function PlanBuilder({
         groups={groups}
         views={views}
         plan={q.plan}
+        selection={state.items}
+        notes={notes}
+        onUndoAdded={onUndoAdded}
+        onEditGoals={() => go('objetivo')}
         onToggle={onToggleItem}
         onEditPieces={() => {
           play('select');
@@ -354,6 +380,7 @@ export function PlanBuilder({
         quote={q}
         maintenanceId={maintenanceId}
         suggested={suggestedMaintenance(state)}
+        auto={maintenanceAuto}
         empty={empty}
         founder={founderOpen && founderOffer ? { offer: founderOffer, left: foundersLeft, total: founders.total } : null}
         annualOffer={annualOffer && isOfferActive(annualOffer) ? annualOffer : null}
@@ -369,6 +396,7 @@ export function PlanBuilder({
       <StepSummary
         quote={q}
         empty={empty}
+        maintenanceAuto={maintenanceAuto}
         suggestion={suggestion}
         onSwitch={onSwitch}
         onGo={go}
@@ -460,6 +488,7 @@ export function PlanBuilder({
             message={message}
             analytics={analytics}
             glint={glint}
+            totalsText={totalsText}
           />
         </div>
       </div>

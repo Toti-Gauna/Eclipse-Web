@@ -205,7 +205,9 @@
     "mathTotal": "Total por mês",
     "assumptions": "Premissas: 1 mês = {weeks} semanas · 1 hora da sua equipe = {rate}. Seu número real pode ser outro.",
     "miniLabel": "Você perde por mês",
-    "miniJump": "Ver a estimativa em detalhe"
+    "miniJump": "Ver a estimativa em detalhe",
+    "rangeMax": "Máximo {value}: usamos esse número.",
+    "rangeMin": "Mínimo {value}: usamos esse número."
   },
   "services": {
     "title": "O que construímos, <em>peça por peça</em>.",
@@ -327,7 +329,7 @@
     "ctaLead": "O primeiro passo é ver seu negócio funcionando."
   },
   "builder": {
-    "eyebrow": "Orçamento na sua moeda",
+    "eyebrow": "Estimativa na sua moeda",
     "title": "Monte seu plano",
     "pageTitle": "Monte seu <em>plano</em>",
     "pageIntro": "Quatro passos, e dá para pular qualquer um. Escolha o que você quer resolver: o número se monta sozinho.",
@@ -458,7 +460,20 @@
     "dockOneTime": "Pagamento único",
     "dockFrom": "a partir de",
     "recurringAnnounce": "Além disso, {amount} {period}.",
-    "goalsLine": "Objetivo: {list}"
+    "goalsLine": "Objetivo: {list}",
+    "preloadGoals": "Pelo seu objetivo, a gente pré-selecionou {list}. Tire ou adicione o que quiser.",
+    "preloadGoalsMany": "Pelo seu objetivo, a gente pré-selecionou {count} peças (com a etiqueta “Sugerida”). Tire ou adicione o que quiser.",
+    "preloadGoalsEdit": "Mudar objetivo",
+    "preloadAdded": "Você adicionou {list} ao seu plano.",
+    "preloadUndo": "Desfazer",
+    "preloadUndone": "Você tirou {list}.",
+    "packageFromPreset": "Você começou por este pacote: {count, plural, one {a peça dele já está marcada} other {as # peças dele já estão marcadas}}. Adicione as que quiser.",
+    "expandAll": "Abrir todas",
+    "collapseAll": "Fechar todas",
+    "catChosen": "{chosen} de {total} escolhidas",
+    "careSuggestedNote": "Marcamos {name} porque é o que sugerimos para o seu plano. Troque ou escolha “{none}”.",
+    "proposalLabel": "Pedido de proposta",
+    "proposalText": "Não é um orçamento: a gente confirma escopo e preço por escrito."
   },
   "pricing": {
     "title": "Quanto custa<br></br> e como você paga.",
