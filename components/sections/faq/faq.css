@@ -1,0 +1,132 @@
+/*
+ * Preguntas frecuentes (components/sections/faq): a ruled list of native <details>.
+ * Follows the section theme (semantic tokens). Only the "+" turns and the answer
+ * fades in on open; reduced motion → instant.
+ */
+.faq {
+  margin: 0;
+  border-top: 1px solid var(--fg);
+}
+.faq-item {
+  border-bottom: 1px solid var(--line);
+}
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 60px;
+  padding: 14px 0;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  list-style: none;
+  cursor: pointer;
+}
+.faq-q::-webkit-details-marker {
+  display: none;
+}
+.faq-q::marker {
+  content: '';
+}
+.faq-q:focus-visible {
+  border-radius: 10px;
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.faq-icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  transition: transform 0.4s var(--ease-expo);
+}
+.faq-item[open] .faq-icon {
+  transform: rotate(45deg);
+}
+@media (hover: hover) {
+  .faq-q:hover .faq-q-text {
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 4px;
+  }
+}
+
+.faq-a {
+  display: grid;
+  gap: 10px;
+  max-width: 42rem;
+  padding: 0 2.25rem 22px 0;
+  font-size: 0.975rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+.faq-item[open] .faq-a {
+  animation: faq-open 0.45s var(--ease-expo) both;
+}
+@keyframes faq-open {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.faq-a strong {
+  font-weight: 600;
+  color: var(--fg);
+}
+/* A reading in mono: "1 USD ≈ $ 1.450 · Cotización del …", "Pagás 10 meses y usás 12". */
+.faq-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
+.faq-list {
+  display: grid;
+  gap: 10px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.faq-list li {
+  display: grid;
+  gap: 2px;
+  padding-left: 14px;
+  border-left: 1px solid var(--line-strong);
+}
+.faq-list-head {
+  color: var(--fg);
+}
+.faq-list-text {
+  font-size: 0.9rem;
+}
+.faq-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-weight: 500;
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+}
+.faq-link:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+.faq-link svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item[open] .faq-a {
+    animation: none;
+  }
+  .faq-icon {
+    transition: none;
+  }
+}

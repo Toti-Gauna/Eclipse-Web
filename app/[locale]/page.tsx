@@ -4,11 +4,11 @@ import type { Locale } from '@/i18n/routing';
 import { LazyHydrate } from '@/components/motion/LazyHydrate';
 import { Hero } from '@/components/hero/Hero';
 import { SkyTransition } from '@/components/sections/SkyTransition';
-import { ProblemSection } from '@/components/sections/problem/ProblemSection';
-import { ServicesSection } from '@/components/sections/services/ServicesSection';
 import { ExamplesSection } from '@/components/sections/examples/ExamplesSection';
-import { ProcessSection } from '@/components/sections/process/ProcessSection';
+import { ServicesSection } from '@/components/sections/services/ServicesSection';
 import { PricingSection } from '@/components/pricing/PricingSection';
+import { ProblemSection } from '@/components/sections/problem/ProblemSection';
+import { ProcessSection } from '@/components/sections/process/ProcessSection';
 import { FoundersSection } from '@/components/sections/founders/FoundersSection';
 import { AgentSection } from '@/components/sections/agent/AgentSection';
 import { EphemerisRail } from '@/components/ui/EphemerisRail';
@@ -28,21 +28,24 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
       <Hero />
       <SkyTransition from="void" to="night" />
-      <LazyHydrate className="cv-section">
-        <ProblemSection />
-      </LazyHydrate>
-      <LazyHydrate className="cv-section">
-        <ServicesSection />
-      </LazyHydrate>
+      {/* v3 order (ids unchanged; components/ui/sectionIndex.ts numbers them 01–08):
+          demos → soluciones → [sunrise] → precios → calculadora → cómo trabajamos →
+          fundadores → preguntas y contacto. */}
       <LazyHydrate className="cv-section">
         <ExamplesSection />
       </LazyHydrate>
       <LazyHydrate className="cv-section">
-        <ProcessSection />
+        <ServicesSection />
       </LazyHydrate>
       <SkyTransition from="night" to="dawn" />
       <LazyHydrate className="cv-section">
         <PricingSection />
+      </LazyHydrate>
+      <LazyHydrate className="cv-section">
+        <ProblemSection />
+      </LazyHydrate>
+      <LazyHydrate className="cv-section">
+        <ProcessSection />
       </LazyHydrate>
       <LazyHydrate className="cv-section">
         <FoundersSection />

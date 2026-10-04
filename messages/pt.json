@@ -326,7 +326,11 @@
         "body": "Hospedagem, backups e ajustes todo mês. Seu sistema cresce junto com o seu negócio."
       }
     },
-    "ctaLead": "O primeiro passo é ver seu negócio funcionando."
+    "ctaLead": "O primeiro passo é ver seu negócio funcionando.",
+    "phases": {
+      "pre": "Demo e proposta",
+      "project": "Projeto · começa com o sinal"
+    }
   },
   "builder": {
     "eyebrow": "Estimativa na sua moeda",
@@ -554,7 +558,8 @@
         "text": "Escolha só o que precisa e veja o total na hora, na sua moeda.",
         "cta": "Montar peça por peça",
         "from": "Peças a partir de {price}."
-      }
+      },
+      "options": "{count, plural, one {# opção} other {# opções}}"
     },
     "groups": {
       "starter": {
@@ -575,7 +580,11 @@
       "includes": "O que inclui",
       "savings": "Economize <pct></pct> vs. peças avulsas",
       "customize": "Personalizar",
-      "customizeLabel": "Personalizar o pacote {name} no montador"
+      "customizeLabel": "Personalizar o pacote {name} no montador",
+      "audienceLabel": "Para quem",
+      "maintenanceLabel": "Manutenção sugerida",
+      "maintenanceValue": "{name} · {price} {period}",
+      "maintenanceNone": "Nenhuma (opcional)"
     },
     "noneFits": "Nenhum pacote serve?",
     "noneFitsCta": "Monte peça por peça",
@@ -2111,9 +2120,7 @@
     "clientsLabel": "Clientes",
     "slot": {
       "number": "Vaga {n}",
-      "free": "Livre",
       "founder": "Fundador",
-      "emptyTitle": "Seu negócio aqui",
       "cta": "Quero ser fundador",
       "ctaLabel": "Quero ser fundador: vaga {n} de {total}, pelo WhatsApp",
       "case": "Ver caso",
@@ -2207,13 +2214,13 @@
     "index": "Índice",
     "labels": {
       "hero": "Início",
-      "problem": "O que você perde",
-      "services": "O que construímos",
+      "problem": "Calculadora",
+      "services": "Soluções",
       "examples": "Demos",
       "process": "Como trabalhamos",
       "pricing": "Preços",
       "founders": "Fundadores",
-      "agent": "Vamos conversar"
+      "agent": "Perguntas e contato"
     },
     "clients": "Clientes"
   },
@@ -3899,6 +3906,21 @@
       },
       "liveSpeaking": "Speaking ao vivo · {name}",
       "liveWriting": "Escrita ao vivo · {name}"
+    }
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "items": {
+      "demo": "Como funciona a demo?",
+      "start": "Quando o projeto começa?",
+      "from": "O que significa “a partir de”?",
+      "currency": "Em que moeda estão os preços?",
+      "pieces": "Posso comprar uma peça só?",
+      "maintenance": "A manutenção é obrigatória? O que inclui?",
+      "voice": "O agente de voz tem custo mensal?",
+      "annual": "Tem desconto se eu pagar a manutenção anual?",
+      "founder": "O que é o programa de fundadores?",
+      "referral": "Tenho algum benefício por indicar alguém?"
     }
   }
 }

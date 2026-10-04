@@ -18,8 +18,11 @@ import { PriceReadout } from './PriceReadout';
 import { planAnchor } from './anchors';
 
 /**
- * One package in the ledger. Desktop: name · includes · price · actions on one row.
- * Phones: a compact row (name, who it's for, the "desde") that opens to the details.
+ * One package of tab A, with the same fields as every other package:
+ *   para quién · qué incluye · desde (pago único, range, saving vs. pieces) ·
+ *   mantenimiento sugerido (+ the voice agent's monthly usage when it has one) · CTAs.
+ * Desktop: one row, the fields in columns (see .pr-cols). Phones: a compact row
+ * (name, who it's for, the "desde") that opens to the details.
  * Arriving from an "Incluida en" chip (the row gets focus) opens and flashes it.
  */
 export function PlanRow({
@@ -39,7 +42,7 @@ export function PlanRow({
   const tm = useTranslations('planMessage');
   const tl = useTranslations('languages');
   const locale = useLocale() as Locale;
-  const { currency, rates } = useCurrency();
+  const { currency, rates, format } = useCurrency();
   const { vertical, openBuilder } = useExperience();
   const { play } = useSound();
   const uid = useId();
@@ -129,7 +132,10 @@ export function PlanRow({
           </button>
           <span className="pr-plan-name-text">{name}</span>
         </h4>
-        <p className="pr-plan-audience">{l(plan.audience, locale)}</p>
+        <p className="pr-plan-audience">
+          <span className="sr-only">{t('plan.audienceLabel')}: </span>
+          {l(plan.audience, locale)}
+        </p>
         <div className="pr-plan-price">
           <p className="pr-plan-from">
             <span>{t('plan.from')}</span>
@@ -163,6 +169,22 @@ export function PlanRow({
             </li>
           ))}
         </ul>
+
+        <div className="pr-plan-care">
+          <p className="pr-plan-care-label">{t('plan.maintenanceLabel')}</p>
+          <p className="pr-plan-care-value">
+            {q.maintenance.plan
+              ? t('plan.maintenanceValue', {
+                  name: l(q.maintenance.plan.name, locale),
+                  price: format(q.maintenance.periodUsd),
+                  period: t(q.maintenance.billing === 'annual' ? 'perYear' : 'perMonth'),
+                })
+              : t('plan.maintenanceNone')}
+          </p>
+          {q.maintenance.voiceUsageMonthlyUsd > 0 ? (
+            <p className="pr-plan-care-voice">{tm('voiceUsage', { price: format(q.maintenance.voiceUsageMonthlyUsd) })}</p>
+          ) : null}
+        </div>
 
         <div className="pr-plan-actions">
           <WhatsAppLink
