@@ -130,7 +130,7 @@ rail-wide, items are as narrow as the rail and their focus ring is fully visible
 
 Variants already taken: **clinic** = `top` + `airy` + `chip` / phone `dock`. Choose a different
 combination per demo where it makes sense (e.g. real estate `sidebar` + `none` + `regular` /
-`drawer`; restaurant `rail` + `compact` / `tabs`; gym or academy `dock`), and give the content
+`drawer`; restaurant `sidebar` (fixed, narrow) + `compact` / `tabs`; gym or academy `dock`), and give the content
 its own composition too.
 
 Other shell rules: the business name always renders with the visible "Demo" badge and `— Demo`

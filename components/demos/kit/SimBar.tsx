@@ -95,6 +95,8 @@ export function SimBar({
     store.reset?.();
     setOpen(false);
     sound('toggle');
+    // "Reiniciar" turns disabled (or leaves): keep the focus in the bar, on "Simular".
+    requestAnimationFrame(() => root.current?.querySelector<HTMLElement>('.demo-sim-play')?.focus({ preventScroll: true }));
   };
 
   const primary = playing ? (
