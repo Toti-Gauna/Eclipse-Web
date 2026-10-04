@@ -2,19 +2,12 @@
 
 import { useMemo, type ReactNode } from 'react';
 import { KeyRound } from 'lucide-react';
-import { runChat, type ChatRun } from '../kit';
+import type { ChatRun } from '../kit';
 import { ALTERNATIVE, ASKED, BOT_SECONDS, CHAT_SLOTS, SIMILAR, STORY, VISIT_MIN, dayDate, listingById, type ListingId } from './data';
-import { FOLLOW, INQUIRY, UNANSWERED, clockAt, toScript, type EstateView } from './story';
+import { clockAt, ownRun, parseSlotReply, type EstateState, type EstateView } from './story';
 import { Facade } from './facade';
 import { useEstateText } from './ui';
 import { useEstate } from './context';
-
-/** Default runs (auto replies, real timing): their times label messages under reduced motion. */
-const NOMINAL = {
-  inquiry: runChat(toScript(INQUIRY), 1e9, {}),
-  unanswered: runChat(toScript(UNANSWERED), 1e9, {}),
-  follow: runChat(toScript(FOLLOW), 1e9, {}),
-};
 
 /** A listing inside a chat bubble: façade, title, price. */
 export function ListingChip({ id }: { id: ListingId }) {
@@ -35,7 +28,7 @@ export function ListingChip({ id }: { id: ListingId }) {
 }
 
 /** A booked visit inside a chat bubble: date tile + time, address, advisor. */
-export function VisitChip({ day, start, listing }: { day: number; start: number; listing: ListingId }) {
+export function VisitChip({ day, start, listing, advisor = 'julia' }: { day: number; start: number; listing: ListingId; advisor?: 'julia' | 'marcos' }) {
   const x = useEstateText();
   const date = dayDate(day);
   return (
@@ -49,26 +42,19 @@ export function VisitChip({ day, start, listing }: { day: number; start: number;
           {x.fmt.time(start)}–{x.fmt.time(start + VISIT_MIN)}
         </span>
         <span className="block truncate">{listingById(listing).street}</span>
-        <span className="block truncate opacity-80">{x.t('visits.withAdvisor', { advisor: x.t('people.julia') })}</span>
+        <span className="block truncate opacity-80">{x.t('visits.withAdvisor', { advisor: x.t(`people.${advisor}`) })}</span>
       </span>
     </span>
   );
 }
 
-function localize(
-  run: ChatRun,
-  text: (step: string) => ReactNode,
-  card: (step: string) => ReactNode | undefined,
-  label: (reply: string) => string,
-  nominal: ChatRun | null,
-): ChatRun {
-  const atOf = (id: string, at: number) => (nominal ? (nominal.items.find((i) => i.id === id)?.at ?? at) : at);
+function localize(run: ChatRun, text: (step: string) => ReactNode, card: (step: string) => ReactNode | undefined, label: (reply: string) => string): ChatRun {
   return {
     ...run,
     items: run.items.map((it) =>
       it.id.endsWith(':reply')
-        ? { ...it, text: label(run.chosen[it.step] ?? ''), at: atOf(it.id, it.at) }
-        : { ...it, text: text(it.step), card: card(it.step), at: atOf(it.id, it.at), replies: it.replies?.map((r) => ({ ...r, label: label(r.id) })) },
+        ? { ...it, text: label(run.chosen[it.step] ?? '') }
+        : { ...it, text: text(it.step), card: card(it.step), replies: it.replies?.map((r) => ({ ...r, label: label(r.id) })) },
     ),
     awaiting: run.awaiting ? { ...run.awaiting, replies: run.awaiting.replies.map((r) => ({ ...r, label: label(r.id) })) } : null,
   };
@@ -84,7 +70,7 @@ export function useEstateChats() {
     const asked = listingById(ASKED);
 
     /** `plain`: texts only (previews), without the "AI · 4 s" tags. */
-    const inquiry = (view: EstateView, reduced: boolean, plain = false): ChatRun => {
+    const inquiry = (view: EstateView, plain = false): ChatRun => {
       const botTag = (step: string, s: string): ReactNode => plain ? s : (
         <>
           {s}
@@ -123,10 +109,10 @@ export function useEstateChats() {
       const card = (step: string) =>
         step === 'alt' ? <ListingChip id={ALTERNATIVE} /> : step === 'booked' && view.slot ? <VisitChip {...CHAT_SLOTS[view.slot]} listing={view.listing} /> : undefined;
       const label = (id: string) => (id === 'fri' || id === 'sat' ? x.slot(CHAT_SLOTS[id]) : id ? t(`chat.replies.${id}`) : '');
-      return localize(view.chat, text, card, label, reduced ? (view.botOff ? NOMINAL.unanswered : NOMINAL.inquiry) : null);
+      return localize(view.chat, text, card, label);
     };
 
-    const follow = (view: EstateView, reduced: boolean): ChatRun | null => {
+    const follow = (view: EstateView): ChatRun | null => {
       if (!view.follow) return null;
       const l = listingById(view.listing);
       const text = (step: string): ReactNode => t(`follow.steps.${step}`, { name, street: l.street, advisor });
@@ -150,10 +136,39 @@ export function useEstateChats() {
           </span>
         ) : undefined;
       const label = (id: string) => (id ? t(`follow.replies.${id}`) : '');
-      return localize(view.follow, text, card, label, reduced ? NOMINAL.follow : null);
+      return localize(view.follow, text, card, label);
     };
 
-    return { inquiry, follow };
+    /** The visitor's own chat with Lumi (`slots`: the two free visits it offers). */
+    const own = (view: EstateView, state: EstateState, slots: { day: number; start: number }[]): ChatRun => {
+      const run = ownRun(state.own, slots);
+      const o = view.own;
+      const picked = state.own?.picks.match?.reply;
+      const booked = picked ? parseSlotReply(picked) : null;
+      const match = o?.match ?? ASKED;
+      const l = listingById(match);
+      const text = (step: string): ReactNode => {
+        switch (step) {
+          case 'match':
+            return t(`own.steps.match_${o?.need ?? 'three'}`, { street: l.street });
+          case 'booked':
+            return t('own.steps.booked', { slot: booked ? x.slotLong(booked) : '', advisor: t('people.marcosFirst') });
+          default:
+            return t(`own.steps.${step}`);
+        }
+      };
+      const card = (step: string) =>
+        step === 'match' ? <ListingChip id={match} /> : step === 'booked' && booked ? <VisitChip {...booked} listing={match} advisor="marcos" /> : undefined;
+      const label = (id: string) => {
+        const s = parseSlotReply(id);
+        if (s) return x.slot(s);
+        if (!id) return '';
+        return ['cash', 'credit', 'sell', 'low', 'mid', 'high'].includes(id) ? t(`chat.replies.${id}`) : t(`own.replies.${id}`);
+      };
+      return localize(run, text, card, label);
+    };
+
+    return { inquiry, follow, own };
   }, [x]);
 }
 

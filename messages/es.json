@@ -1598,7 +1598,8 @@
       "days": "{count} días publicada",
       "available": "Disponible",
       "reserved": "Reservada",
-      "photo": "Fachada de {street}, ilustración"
+      "photo": "Fachada de {street}, ilustración",
+      "photoN": "Fachada de {street}, ilustración {n} de {total}"
     },
     "listings": {
       "title": "Propiedades",
@@ -1627,7 +1628,8 @@
       "andres": "Andrés Paz",
       "pablo": "Pablo Núñez",
       "sofia": "Sofía Arce",
-      "you": "Vos"
+      "you": "Vos",
+      "marcosFirst": "Marcos"
     },
     "stages": {
       "new": "Nuevo",
@@ -1693,7 +1695,9 @@
       "botLabel": "Lumi · IA",
       "humanLabel": "{name} · equipo",
       "noReply": "Sin respuesta",
-      "channel": "Canal de la conversación"
+      "channel": "Canal de la conversación",
+      "emptyTitle": "Todavía no escribió nadie.",
+      "emptyBody": "Tocá «Simular» arriba: a las 23:40 llega la consulta de Carolina y Lumi la atiende."
     },
     "lead": {
       "title": "Ficha del lead",
@@ -1745,8 +1749,8 @@
       "on": "Responde 24/7 en el sitio y WhatsApp",
       "offShort": "Apagado: las consultas esperan",
       "switch": "Asistente 24/7",
-      "hint": "Apagalo y mirá qué pasa con la consulta de las 23:40.",
-      "hintOff": "Prendelo de nuevo y la consulta se responde en segundos."
+      "hint": "Apagalo: la demo vuelve a las 23:40 y simulás la misma noche sin asistente.",
+      "hintOff": "Prendelo: la demo vuelve a las 23:40 y la consulta se responde en segundos."
     },
     "kinds": {
       "apartment": "Departamento",
@@ -1798,7 +1802,9 @@
       "openPush": "Abrir el mensaje de WhatsApp",
       "backToSite": "Sitio",
       "backToApp": "Volver a la app",
-      "jump": "{date} · después de la visita"
+      "jump": "{date} · después de la visita",
+      "you": "Vos, en el sitio",
+      "openThread": "Ver el WhatsApp"
     },
     "time": {
       "late": "{hours} h {minutes} min",
@@ -1816,7 +1822,10 @@
       "reserved": "Reservó {street}",
       "similar": "Recibió 2 opciones parecidas",
       "think": "Lo piensa · recordatorio el martes",
-      "you": "Tu visita · {slot}"
+      "you": "Tu visita · {slot}",
+      "youNew": "Tu consulta · Lumi te está calificando",
+      "youQualified": "{budget} · busca {listing}",
+      "moved": "Movida por vos"
     },
     "today": {
       "kicker": "Hoy · {date}",
@@ -1835,7 +1844,7 @@
       "reserves": "Reservas",
       "reservesHint": "Esta semana",
       "now": "Ahora",
-      "nowEmpty": "Esperando la próxima consulta…",
+      "nowEmpty": "Nada todavía. Simulá la consulta de las 23:40.",
       "pipeline": "Pipeline",
       "openPipeline": "Ver pipeline",
       "openInbox": "Ver conversación",
@@ -1851,13 +1860,12 @@
       "label": "Pipeline de ventas: {count} leads",
       "value": "USD {amount}",
       "empty": "Sin leads",
-      "note": "Lumi mueve las tarjetas solo: califica, agenda la visita y hace el seguimiento."
+      "note": "Lumi mueve las tarjetas cuando califica y agenda. Vos también: arrastralas o usá «Mover»."
     },
     "visits": {
       "title": "Visitas",
-      "label": "Agenda de visitas, viernes 9 a lunes 12",
       "free": "Libre",
-      "freeLabel": "Agendar una visita el {day} a las {time}",
+      "freeLabel": "{day}, {time}: libre, agendar una visita",
       "next": "Próxima visita",
       "nextEmpty": "Sin visitas nuevas esta noche",
       "reminder": "Recordatorio por WhatsApp 2 h antes",
@@ -1872,7 +1880,21 @@
       "you": "Tu visita",
       "done": "Realizada",
       "booked": "Visita agendada: {slot}",
-      "legendLive": "Agendada por Lumi"
+      "legendLive": "Agendada por Lumi",
+      "freeLabelWith": "{time} con {advisor}: libre, agendar una visita",
+      "dayLabel": "Visitas del {day}, por asesor",
+      "weekLabel": "Visitas de la semana, {from} a {to}",
+      "summary": "{day} · {count, plural, =0 {sin visitas} one {# visita} other {# visitas}}",
+      "summaryPast": "{day} · {count, plural, =0 {sin visitas} one {# visita realizada} other {# visitas realizadas}}",
+      "weekSummary": "{count, plural, one {# visita} other {# visitas}} en la semana · tocá un horario libre para agendar",
+      "closed": "{day} · la oficina no muestra propiedades",
+      "hintLaptop": "Pasá de semana a día, mirá semanas pasadas y futuras, y tocá un horario libre para agendar.",
+      "hintPast": "Día pasado: solo lectura.",
+      "bookTitle": "Agendar visita",
+      "property": "Propiedad",
+      "confirm": "Agendar visita",
+      "cancel": "Cancelar",
+      "localNote": "Visita de demostración: queda solo en esta pantalla."
     },
     "followups": {
       "title": "Seguimientos",
@@ -1913,24 +1935,23 @@
     },
     "site": {
       "nav": {
-        "buy": "Comprar",
-        "rent": "Alquilar",
-        "sell": "Vender",
-        "contact": "Contacto"
+        "all": "Propiedades ({count})"
       },
       "kicker": "Inmobiliaria · La Arboleda y alrededores",
       "title": "Casas con buena luz, <em>a la vista.</em>",
       "body": "Buscá, mirá el plano y agendá la visita a cualquier hora.",
       "search": {
-        "op": "Operación",
-        "opValue": "Comprar",
         "zone": "Zona",
         "zoneAll": "Todas",
         "rooms": "Ambientes",
         "roomsAny": "Cualquiera",
         "roomsMin": "{count}+",
-        "go": "Buscar",
-        "results": "{count, plural, one {# propiedad} other {# propiedades}}"
+        "results": "{count, plural, one {# propiedad} other {# propiedades}}",
+        "label": "Buscar propiedades",
+        "price": "Precio",
+        "priceAny": "Cualquiera",
+        "priceMax": "Hasta USD {amount}",
+        "none": "Nada con esos filtros. Probá con otra zona o más presupuesto."
       },
       "crumbs": "Comprar · {zone}",
       "back": "Resultados",
@@ -1955,9 +1976,15 @@
         "confirm": "Confirmar visita",
         "booked": "Visita agendada",
         "bookedBody": "{slot} · {street}. Te llega la confirmación por WhatsApp.",
-        "again": "Agendar otra"
+        "again": "Agendar otra",
+        "pickDay": "Elegí un día",
+        "seeAgenda": "Ver en la agenda",
+        "note": "Visita de demostración: no se envía nada."
       },
-      "url": "Dirección del sitio"
+      "url": "Dirección del sitio",
+      "prevPhoto": "Foto anterior",
+      "nextPhoto": "Foto siguiente",
+      "viewSub": "{url} · buscá, abrí una propiedad, agendá una visita o chateá con Lumi"
     },
     "toast": {
       "inquiry": "Consulta nueva · 23:40",
@@ -1989,7 +2016,44 @@
       "opens": "Abre la oficina",
       "human": "{advisor} respondió {late} después",
       "lost": "{name} coordinó con otra inmobiliaria",
-      "you": "Agendaste una visita: {slot}"
+      "you": "Agendaste una visita: {slot}",
+      "youLead": "Tu consulta entró al CRM: {listing}"
+    },
+    "sim": {
+      "inquiry": "Llega una consulta a las 23:40",
+      "qualify": "Lumi califica a Carolina",
+      "visit": "Lumi agenda la visita",
+      "followup": "Seguimiento después de la visita",
+      "reply": "Carolina responde el seguimiento",
+      "note": "Consultas, visitas y mensajes simulados con datos de demostración; no se envía nada.",
+      "off": {
+        "inquiry": "Llega una consulta a las 23:40",
+        "qualify": "Pasa la noche sin respuesta",
+        "visit": "Abre la oficina: responde Julia",
+        "followup": "Carolina contesta",
+        "reply": "El lead queda perdido"
+      }
+    },
+    "own": {
+      "label": "Tu chat con Lumi en el sitio de {business}",
+      "steps": {
+        "hi": "¡Hola! Soy Lumi, el asistente de Lumen. ¿Qué estás buscando?",
+        "pay": "¿Cómo pensás pagarlo?",
+        "budget": "¿Hasta cuánto querés invertir?",
+        "match_two": "Para 2 ambientes, mirá este loft en {street}. ¿Querés verlo?",
+        "match_three": "Tengo uno que encaja: {street}. ¿Querés verlo?",
+        "match_house": "Mirá esta casa en {street}, con jardín y pileta. ¿Querés verla?",
+        "booked": "Listo: visita el {slot} con {advisor}. Te llega la confirmación por WhatsApp.",
+        "note": "Lead calificado · ficha y visita cargadas en el CRM",
+        "later": "Dale. Te aviso por WhatsApp si baja de precio o entra algo parecido.",
+        "laterNote": "Lead calificado · seguimiento programado"
+      },
+      "replies": {
+        "two": "2 ambientes",
+        "three": "3 ambientes",
+        "house": "Casa con jardín",
+        "later": "Ahora no"
+      }
     }
   },
   "examples": {
@@ -3011,13 +3075,8 @@
       "groupChannel": "Canal"
     },
     "top": {
-      "live": "{count} personas en la tienda",
-      "store": "Tienda"
-    },
-    "side": {
-      "title": "Carritos",
-      "on": "Recuperación encendida",
-      "off": "Recuperación apagada"
+      "store": "Tienda",
+      "open": "Tienda abierta"
     },
     "products": {
       "niebla": {
@@ -3124,9 +3183,10 @@
       "restock": "Tueste del lunes programado: {product}",
       "levelup": "{name} cumplió 6 meses en el club y subió de nivel",
       "faq": "El bot respondió solo una consulta de envíos",
-      "mineAbandon": "Dejaste tu carrito: sin recuperación, no salió ningún mensaje",
+      "mineAbandon": "Dejaste tu carrito en el checkout",
       "mineSent": "Te escribimos por WhatsApp con un cupón",
-      "mineOrder": "Tu pedido #{id} llegó al panel · {total}"
+      "mineOrder": "Tu pedido #{id} llegó al panel · {total}",
+      "mineUnsent": "Recuperación apagada: no te escribió nadie"
     },
     "toast": {
       "order": "Pedido nuevo",
@@ -3137,7 +3197,8 @@
       "stock": "Stock bajo",
       "mineOrder": "Tu pedido",
       "mineSent": "Recuperación enviada",
-      "lost": "Carrito perdido"
+      "lost": "Carrito perdido",
+      "mineUnsent": "Sin recuperación"
     },
     "today": {
       "title": "Hoy",
@@ -3155,7 +3216,7 @@
       "stock": "{count} en stock",
       "stockSr": "{count} bolsas en stock",
       "restock": "Programar tueste de {name} (+{count})",
-      "live": "Pedidos en vivo",
+      "live": "Últimos pedidos",
       "recovered": "Carritos recuperados esta semana",
       "of": "de",
       "open": "Ver carritos",
@@ -3178,7 +3239,14 @@
         "club": "Club",
         "recovered": "Recuperados"
       },
-      "items": "{count, plural, one {# producto} other {# productos}}"
+      "items": "{count, plural, one {# producto} other {# productos}}",
+      "hint": "Avanzá cada pedido cuando lo tostás, lo despachás y llega.",
+      "advance": {
+        "roasting": "A tostar",
+        "shipping": "Despachar",
+        "delivered": "Entregado"
+      },
+      "advanceLabel": "Pasar el pedido #{id} a {stage}"
     },
     "carts": {
       "title": "Carritos abandonados",
@@ -3268,7 +3336,7 @@
         "shipping": "¿Envían a mi ciudad?"
       },
       "states": {
-        "live": "En vivo",
+        "live": "Abierta",
         "bot": "Bot",
         "sale": "Compró",
         "human": "Para vos"
@@ -3501,7 +3569,26 @@
         "threadLabel": "Mensajes de {business}",
         "today": "Hoy",
         "composer": "Mensaje",
-        "left": "{name} dejó {count, plural, one {# producto} other {# productos}} en el carrito"
+        "left": "{name} dejó {count, plural, one {# producto} other {# productos}} en el carrito",
+        "later": "30 min después"
+      },
+      "later": {
+        "label": "Tu carrito abandonado",
+        "left": "Dejaste tu carrito en el checkout.",
+        "simulate": "Simular: 30 min después",
+        "unsent": "Recuperación apagada: nadie te escribió. El carrito queda perdido."
+      }
+    },
+    "sim": {
+      "bot": "Inés le pregunta al bot qué café comprar",
+      "abandon": "Inés llega al checkout y se va",
+      "recovery": "30 min después: WhatsApp con cupón",
+      "paid": "Inés vuelve y paga",
+      "club": "Tomás sube de nivel en el club",
+      "note": "Pedidos, carritos y mensajes simulados con datos de demostración; no se cobra ni se envía nada.",
+      "off": {
+        "recovery": "30 min después: nadie le escribe",
+        "paid": "El carrito de Inés se pierde"
       }
     }
   },
@@ -4722,6 +4809,58 @@
       "floor": {
         "title": "Salón y reservas",
         "body": "El plano muestra quién está sentado, quién viene y qué mesa queda libre. Mirá noches pasadas o futuras y reservá una mesa: la confirmación sale por WhatsApp."
+      }
+    },
+    "realEstate": {
+      "sim": {
+        "title": "Vos decidís qué pasa esta noche",
+        "body": "Nada se mueve solo. Tocá «Simular» y seguí la consulta de las 23:40: respuesta, calificación, visita y seguimiento. Apagá el asistente para ver la misma noche sin él."
+      },
+      "chat": {
+        "title": "Cada consulta, respondida en segundos",
+        "body": "Lumi contesta a cualquier hora, pregunta cómo paga y cuánto invierte, y deja la ficha lista. Podés responder vos por Carolina."
+      },
+      "site": {
+        "title": "Tu sitio busca y agenda",
+        "body": "Filtros por zona, ambientes y precio, ficha con plano y «Agendar visita». Agendá una: aparece en el calendario y en el pipeline."
+      },
+      "pipeline": {
+        "title": "Un pipeline que se ordena solo",
+        "body": "Cada lead pasa de Nuevo a Calificado, Visita y Reserva cuando Lumi avanza. Arrastrá una tarjeta o usá «Mover» para ordenarlo a mano."
+      },
+      "visits": {
+        "title": "Visitas sin ida y vuelta",
+        "body": "Los dos asesores en una agenda. Pasá de semana a día, mirá semanas pasadas y futuras y tocá un horario libre para agendar."
+      },
+      "followups": {
+        "title": "Seguimiento después de cada visita",
+        "body": "Confirmación, recordatorio y «¿qué te pareció?» por WhatsApp, con la propiedad y el nombre. Así una visita termina en reserva."
+      }
+    },
+    "shop": {
+      "sim": {
+        "title": "Vos decidís qué pasa en la tienda",
+        "body": "Nada se mueve solo. Tocá «Simular» y seguí la tarde de Inés: pregunta al bot, deja el carrito, recibe el cupón y vuelve a pagar."
+      },
+      "store": {
+        "title": "Una tienda que vende sola",
+        "body": "Catálogo, ficha con molienda y tamaño, carrito y checkout. Comprá vos: el pedido cae en el panel con su total."
+      },
+      "bot": {
+        "title": "Un bot que recomienda el café justo",
+        "body": "Pregunta con qué preparás el café y te muestra una bolsa con precio. Un toque y está en el carrito."
+      },
+      "recovery": {
+        "title": "Carritos que vuelven",
+        "body": "Media hora después de un checkout abandonado sale un WhatsApp con cupón. Apagá la recuperación y mirá cómo se pierde el carrito."
+      },
+      "orders": {
+        "title": "Pedidos de punta a punta",
+        "body": "Nuevos, tostando, en camino y entregados. Avanzá cada pedido con un toque; los del club y los recuperados se distinguen solos."
+      },
+      "club": {
+        "title": "Un club que suscribe y fideliza",
+        "body": "Granos por compra, rachas por mes y niveles de tueste con beneficios. Tomás cumple seis meses y sube de nivel."
       }
     }
   },

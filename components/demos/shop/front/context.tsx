@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext } from 'react';
 import type { ChatRun } from '../../kit';
 import type { GrindId, Line, PayId, ProductId, SizeId } from '../data';
 
@@ -21,7 +21,7 @@ export interface FrontUi {
 
 export interface FrontApi {
   variant: 'phone' | 'desktop';
-  /** Inés's journey is playing (autoplay) — false once the visitor takes over. */
+  /** The phone shows Inés's evening (beats) — false once the visitor takes over (until the next beat). */
   story: boolean;
   ui: FrontUi;
   lines: Line[];
@@ -51,22 +51,4 @@ export function useFront(): FrontApi {
   const ctx = useContext(Ctx);
   if (!ctx) throw new Error('useFront outside <FrontProvider>');
   return ctx;
-}
-
-/**
- * Milliseconds since `since` (a Date.now() stamp), ticking while `active` until `cap`.
- * The visitor's own chats run on real time: the story clock holds still while they play.
- */
-export function useWallElapsed(since: number | null, active: boolean, cap = 16_000): number {
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => {
-    if (since === null || !active) return;
-    const id = window.setInterval(() => {
-      const n = Date.now();
-      setNow(n);
-      if (n - since > cap) window.clearInterval(id);
-    }, 250);
-    return () => window.clearInterval(id);
-  }, [since, active, cap]);
-  return since === null ? -1 : Math.max(0, now - since);
 }

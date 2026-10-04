@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { Award, LayoutDashboard, MessageCircleMore, Package, ShoppingBag, Store, X } from 'lucide-react';
+import { Award, Clock3, LayoutDashboard, MessageCircleMore, Package, ShoppingBag, Store, X } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { ChatPeek, ChatWidget, DemoBadge, PushBanner, runChat, type ChatRun } from '../../kit';
-import { COUPON, MINE_RECOVERY_MS, STORY, type ProductId } from '../data';
-import { act, steeredPicks, stepLine, type InesPhase } from '../story';
+import { COUPON, STORY, type ProductId } from '../data';
+import { act, inesWaRun, stepLine, type InesPhase } from '../story';
 import { useShop } from '../context';
 import { useShopScripts } from '../scripts';
 import { BrumaMark, useShopText } from '../ui';
-import { FrontProvider, useFront, useWallElapsed, type FrontApi, type FrontScreen, type FrontSheet, type FrontUi } from './context';
+import { FrontProvider, useFront, type FrontApi, type FrontScreen, type FrontSheet, type FrontUi } from './context';
 import { Catalog, ProductPage } from './Catalog';
 import { CartSheet, Checkout, OrderDone } from './Checkout';
 import { ClubPage } from './Club';
@@ -30,76 +30,44 @@ const PHASE_SCREEN: Record<InesPhase, { screen: FrontScreen; sheet: FrontSheet }
   paid: { screen: 'order', sheet: null },
 };
 
-/** Plays the soft "bubble" sound when a new bot message lands in a visible chat. */
-function useBubbleSound(run: ChatRun | null, enabled: boolean) {
-  const { play } = useSound();
-  const seen = useRef<number | null>(null);
-  const count = run?.items.filter((i) => i.from === 'bot').length ?? 0;
-  useEffect(() => {
-    const first = seen.current === null;
-    const grew = !first && count > (seen.current ?? 0);
-    seen.current = count;
-    if (grew && enabled) play('type', { volume: 0.6 });
-  }, [count, enabled, play]);
-}
-
 /**
  * The customer's side: Bruma's online store.
- * - phone: plays Inés's evening (bot → cart → checkout → leaves → WhatsApp → pays) until
- *   the visitor touches it; then it's their own session (cart, bot, recovery, order).
- * - desktop: the same store in a browser (the owner's "Store" view), always the visitor's.
+ * - phone next to the laptop: Inés's evening, beat by beat (bot → cart → checkout → leaves →
+ *   WhatsApp → pays). Touching the store makes it the visitor's own session until the next beat.
+ * - phone alone / desktop: always the visitor's own session (cart, bot, checkout, their order).
+ *   Leaving the checkout with a full cart abandons it; "Simular: 30 minutos después" sends their
+ *   own recovery message (if the automation is on). Everything is local and answers at once.
  */
 export function Storefront({ variant, onPanel, homeIndicator = false }: { variant: 'phone' | 'desktop'; onPanel?: () => void; homeIndicator?: boolean }) {
-  const { view, state, store, active, reduced, announce } = useShop();
+  const { view, state, store, active, paired } = useShop();
   const scripts = useShopScripts();
   const { play } = useSound();
   const { person } = useShopText();
-  const story = variant === 'phone' && !state.manual;
+  const tl = useTranslations('demoShop.front.later');
+  const story = variant === 'phone' && paired && !onPanel && (state.manual === null || view.t > state.manual);
   const [ui, setUi] = useState<FrontUi>(START);
-  const [leftAt, setLeftAt] = useState<number | null>(null);
   const [orderKey, setOrderKey] = useState<string | null>(null);
+  /** The visitor reached the checkout in this session (leaving the cart after that abandons it). */
+  const [reached, setReached] = useState(false);
 
   const ines = view.ines;
   const phase = ines.phase;
   const storyUi: FrontUi = { ...START, ...PHASE_SCREEN[phase], product: ines.pick?.product ?? 'cerrado' };
   const shown = story ? storyUi : ui;
+  const mine = state.mine;
 
   /* What's in the cart ---------------------------------------------------- */
-  const lines = story ? (phase === 'paid' ? [] : ines.lines) : state.mine.lines;
-  const coupon = story ? phase === 'checkout2' || phase === 'paying' || phase === 'paid' : state.mine.coupon;
+  const lines = story ? (phase === 'paid' ? [] : ines.lines) : mine.lines;
+  const coupon = story ? phase === 'checkout2' || phase === 'paying' || phase === 'paid' : mine.coupon;
 
   /* Chats ------------------------------------------------------------------ */
-  const mineChatAt = useWallElapsed(state.mine.chat?.start ?? null, active);
-  const mineChat = state.mine.chat ? runChat(scripts.botMine, mineChatAt, state.mine.chat.picks, { instant: reduced }) : null;
+  const mineChat = runChat(scripts.botMine, 0, mine.chat ?? {}, { instant: true });
   const chat: ChatRun | null = story ? (view.t >= STORY.chatStart ? ines.chat : null) : mineChat;
-
-  const ab = state.mine.abandoned;
-  const mineWaAt = useWallElapsed(ab?.sent ? ab.wall : null, active);
-  const mineWa = ab?.sent ? runChat(scripts.wa(null, state.mine.lines, false), mineWaAt, state.mine.waPicks, { instant: reduced }) : null;
-  const inesWaScript = scripts.wa(person('ines'), ines.lines, true);
-  const inesWa =
-    story && ines.sent && ines.pushAt !== null && view.t >= ines.pushAt ? runChat(inesWaScript, view.t - ines.pushAt, steeredPicks(inesWaScript, state.wa), { instant: reduced }) : null;
+  const mineWa = mine.recovery?.sent ? runChat(scripts.wa(null, mine.lines, false), 0, mine.waPicks, { instant: true }) : null;
+  const inesWa = story && ines.sent && ines.pushAt !== null && view.t >= ines.pushAt ? inesWaRun(scripts.wa(person('ines'), ines.lines, true), view.t - ines.pushAt, state.wa) : null;
   const wa = story ? inesWa : mineWa;
 
-  const sounds = active && (announce || variant === 'phone');
-  useBubbleSound(shown.sheet === 'chat' || (story && phase === 'catalog') ? chat : null, sounds);
-  useBubbleSound(shown.screen === 'whatsapp' ? wa : null, sounds);
-
-  /* The visitor leaves a full cart → their own recovery (real time) ---------- */
-  useEffect(() => {
-    if (leftAt === null || story || ab || !state.mine.lines.length || !active) return;
-    const id = window.setTimeout(
-      () => {
-        store.update(act.mineAbandon(Date.now()));
-        setLeftAt(null);
-      },
-      Math.max(0, leftAt + MINE_RECOVERY_MS - Date.now()),
-    );
-    return () => window.clearTimeout(id);
-  }, [leftAt, story, ab, state.mine.lines.length, active, store]);
-
   /* Actions ---------------------------------------------------------------- */
-  const inCart = (u: FrontUi) => u.sheet === 'cart' || u.screen === 'checkout';
   const change: FrontApi['act'] = (fn, sound = 'select') => {
     let base = ui;
     if (story) {
@@ -110,14 +78,18 @@ export function Storefront({ variant, onPanel, homeIndicator = false }: { varian
     }
     const next = { ...base, ...fn(base) };
     setUi(next);
-    const seeded = story ? ines.lines.length : state.mine.lines.length;
-    if (inCart(base) && !inCart(next) && seeded && next.screen !== 'order') setLeftAt(Date.now());
-    if (inCart(next)) setLeftAt(null);
-    store.engage();
+    // Reaching the checkout and then leaving the cart behind (not back to it, not paying) abandons it.
+    const seeded = story ? ines.lines.length : mine.lines.length;
+    const inCart = next.screen === 'checkout' || next.sheet === 'cart';
+    if (next.screen === 'checkout') setReached(true);
+    else if (reached && !inCart && next.screen !== 'order') {
+      setReached(false);
+      if (seeded) store.update(act.mineLeave());
+    }
     if (sound && active) play(sound);
   };
 
-  const apiRef: FrontApi = {
+  const api: FrontApi = {
     variant,
     story,
     ui: shown,
@@ -141,53 +113,50 @@ export function Storefront({ variant, onPanel, homeIndicator = false }: { varian
     pay: () => {
       change(() => ({}), null);
       store.update(act.minePay(shown.pay));
-      setOrderKey(`mine-${state.mine.orders.length}`);
+      setOrderKey(`mine-${mine.orders.length}`);
       setUi((u) => ({ ...u, screen: 'order', sheet: null }));
-      setLeftAt(null);
+      setReached(false);
       if (active) play('success');
     },
     pickChat: (step, reply) => {
       if (story) {
         store.update(act.pickBot(step, reply));
-        store.engage();
         if (active) play('select');
         return;
       }
-      const wall = Date.now();
-      store.update(act.mineChatPick(step, reply, wall));
+      store.update(act.mineChatPick(step, reply));
       const line = reply === 'add' ? stepLine(step) : null;
       if (line) store.update(act.mineAdd(line));
-      store.engage();
       if (active) play(line ? 'success' : 'select', line ? { volume: 0.5 } : undefined);
     },
-    openChat: () => {
-      change(() => ({ sheet: 'chat' }), 'open');
-      if (!state.mine.chat) store.update(act.mineChat(Date.now()));
-    },
+    openChat: () => change(() => ({ sheet: 'chat' }), 'open'),
     onPanel,
   };
 
   const pickWa = (step: string, reply: string) => {
     if (story && ines.pushAt !== null) {
       store.update(act.pickWa(step, reply, ines.pushAt));
-      store.engage();
       if (active) play('select');
       return;
     }
-    store.update(act.mineWaPick(step, reply, Date.now()));
+    store.update(act.mineWaPick(step, reply));
     if (reply === 'back') change(() => ({ screen: 'checkout', sheet: null }), 'open');
-    else {
-      store.engage();
-      if (active) play('select');
-    }
+    else if (active) play('select');
+  };
+  const backToCart = () => {
+    store.update(act.mineWaPick('msg', 'back'));
+    change(() => ({ screen: 'checkout', sheet: null }), 'open');
   };
 
-  const minePush = !story && variant === 'phone' && ab?.sent && !state.mine.waOpened && shown.screen !== 'whatsapp';
-  const desktopNotice = variant === 'desktop' && ab?.sent && !state.mine.coupon;
   const full = shown.screen === 'lock' || shown.screen === 'whatsapp';
+  const own = !story;
+  const pending = own && !!mine.abandoned && !mine.recovery && !!mine.lines.length;
+  const minePush = own && variant === 'phone' && !!mine.recovery?.sent && !mine.waOpened && !mine.coupon && shown.screen !== 'whatsapp';
+  const desktopNotice = own && variant === 'desktop' && !!mine.recovery?.sent && !mine.coupon;
+  const unsent = own && mine.recovery?.sent === false && !!mine.lines.length;
 
   return (
-    <FrontProvider value={apiRef}>
+    <FrontProvider value={api}>
       <div className="sf" data-variant={variant} data-screen={shown.screen} data-story={story ? '' : undefined}>
         {full ? null : <FrontHeader />}
         <div className="sf-body demo-scroll" key={`${shown.screen}-${shown.screen === 'product' ? shown.product : ''}`}>
@@ -198,6 +167,17 @@ export function Storefront({ variant, onPanel, homeIndicator = false }: { varian
         {!full && variant === 'phone' && shown.screen !== 'checkout' ? <FrontNav /> : null}
         {!full ? <ChatDock /> : null}
         {shown.sheet === 'cart' ? <CartSheet /> : null}
+        {pending && !full ? (
+          <div className="sf-later" role="group" aria-label={tl('label')}>
+            <LaterBar
+              onSimulate={() => {
+                store.update(act.mineRecover());
+                if (active) play('select');
+              }}
+            />
+          </div>
+        ) : null}
+        {unsent && !full ? <UnsentNote /> : null}
         {minePush ? (
           <div className="sf-push">
             <MinePush
@@ -208,14 +188,7 @@ export function Storefront({ variant, onPanel, homeIndicator = false }: { varian
             />
           </div>
         ) : null}
-        {desktopNotice ? (
-          <DesktopRecovery
-            onBack={() => {
-              store.update(act.mineWaPick('msg', 'back', Date.now()));
-              change(() => ({ screen: 'checkout', sheet: null }), 'open');
-            }}
-          />
-        ) : null}
+        {desktopNotice ? <DesktopRecovery onBack={backToCart} /> : null}
         {homeIndicator && !full ? <span aria-hidden className="demo-home-indicator" /> : null}
       </div>
     </FrontProvider>
@@ -240,7 +213,7 @@ function renderScreen(screen: FrontScreen): ReactNode {
   }
 }
 
-/** Which control Inés is touching (a tap ring in story mode). */
+/** Which control Inés is touching (a tap ring, only inside the beat that plays it). */
 function storyTap(phase: InesPhase, t: number, ines: { addAt: number | null; backAt: number | null }): string | null {
   const near = (at: number | null, ms = 650) => at !== null && t >= at && t < at + ms;
   if (phase === 'chat' && t >= STORY.chatOpen - 400 && t < STORY.chatOpen + 250) return 'launcher';
@@ -272,10 +245,10 @@ function FrontHeader() {
       </button>
       {f.variant === 'desktop' ? (
         <nav className="sf-links" aria-label={t('nav.label')}>
-          <button type="button" onClick={() => f.act(() => ({ screen: 'catalog', cat: 'coffee', sheet: null }))}>
+          <button type="button" aria-pressed={f.ui.screen === 'catalog' && f.ui.cat === 'coffee'} onClick={() => f.act(() => ({ screen: 'catalog', cat: 'coffee', sheet: null }))}>
             {t('cats.coffee')}
           </button>
-          <button type="button" onClick={() => f.act(() => ({ screen: 'catalog', cat: 'gear', sheet: null }))}>
+          <button type="button" aria-pressed={f.ui.screen === 'catalog' && f.ui.cat === 'gear'} onClick={() => f.act(() => ({ screen: 'catalog', cat: 'gear', sheet: null }))}>
             {t('cats.gear')}
           </button>
           <button type="button" aria-current={f.ui.screen === 'club' ? 'page' : undefined} onClick={() => f.act(() => ({ screen: 'club', sheet: null }))}>
@@ -295,6 +268,7 @@ function FrontHeader() {
           className="sf-cartbtn"
           aria-label={t('cart.open', { count })}
           aria-expanded={f.ui.sheet === 'cart'}
+          data-tour="store"
           onClick={() => f.act((u) => ({ sheet: u.sheet === 'cart' ? null : 'cart' }), f.ui.sheet === 'cart' ? 'close' : 'open')}
         >
           <ShoppingBag aria-hidden strokeWidth={1.8} />
@@ -350,7 +324,7 @@ function ChatDock() {
           subtitle={t('subtitle')}
           avatar={<BrumaMark />}
           label={t('label', { business })}
-          announce={announce}
+          announce={announce && !f.story}
           onPick={f.pickChat}
           composer={t('composer')}
           className="sf-chat-widget"
@@ -361,7 +335,7 @@ function ChatDock() {
       </div>
     );
   }
-  // Story: the greeting peeks out before Inés opens the chat.
+  // Story: the greeting peeks out before Inés opens the chat (inside beat 1).
   const peek = f.story && f.chat && view.t < STORY.chatOpen;
   if (peek && f.chat) {
     return (
@@ -377,10 +351,33 @@ function ChatDock() {
     );
   }
   return (
-    <button type="button" className={`sf-launcher ${f.tap === 'launcher' ? 'sf-tap' : ''}`} onClick={f.openChat} aria-label={t('open')}>
+    <button type="button" className={`sf-launcher ${f.tap === 'launcher' ? 'sf-tap' : ''}`} onClick={f.openChat} aria-label={t('open')} data-tour="bot">
       <MessageCircleMore aria-hidden strokeWidth={1.8} />
       {f.variant === 'desktop' ? <span>{t('ask')}</span> : null}
     </button>
+  );
+}
+
+/** The visitor left their checkout: they decide when "30 minutes later" happens. */
+function LaterBar({ onSimulate }: { onSimulate: () => void }) {
+  const t = useTranslations('demoShop.front.later');
+  return (
+    <div className="sf-later-bar">
+      <Clock3 aria-hidden strokeWidth={1.8} />
+      <span className="min-w-0 flex-1">{t('left')}</span>
+      <button type="button" className="sf-later-go" onClick={onSimulate}>
+        {t('simulate')}
+      </button>
+    </div>
+  );
+}
+
+function UnsentNote() {
+  const t = useTranslations('demoShop.front.later');
+  return (
+    <p className="sf-later sf-later-note" role="status">
+      {t('unsent')}
+    </p>
   );
 }
 
@@ -395,7 +392,7 @@ function MinePush({ onOpen }: { onOpen: () => void }) {
           <BrumaMark />
         </span>
       }
-      time={t('lock.now')}
+      time={t('lock.later')}
       title={business}
       body={t('lock.pushYou', { code: COUPON.code, pct: Math.round(COUPON.pct * 100) })}
       onOpen={onOpen}

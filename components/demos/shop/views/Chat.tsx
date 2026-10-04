@@ -4,13 +4,12 @@ import { useMemo, useState, type CSSProperties } from 'react';
 import { useTranslations } from 'next-intl';
 import { Bot, UserRound } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
-import { Card, ChatWidget, Kpi, LiveDot, Pill, runChat, type ChatRun, type ChatScript } from '../../kit';
+import { Card, ChatWidget, Kpi, Pill, runChat, type ChatRun, type ChatScript } from '../../kit';
 import { FREE_SHIPPING_USD, STORY, TOP_QUESTIONS } from '../data';
 import { addTime, botPick } from '../story';
 import { useShop } from '../context';
 import { useShopScripts } from '../scripts';
 import { BrumaMark, PersonAvatar, useShopMoney, useShopText, ViewHead } from '../ui';
-import { useWallElapsed } from '../front/context';
 
 type ConvId = 'ines' | 'you' | 'faq' | 'martin' | 'sofia' | 'joaquin';
 
@@ -73,18 +72,17 @@ function useConvs(): Conv[] {
 
 function Transcript({ id }: { id: ConvId }) {
   const t = useTranslations('demoShop.chat');
-  const { view, state, business, active, reduced } = useShop();
+  const { view, state, business } = useShop();
   const { person } = useShopText();
   const scripts = useShopScripts();
   const statics = useStaticScripts();
-  const mineAt = useWallElapsed(state.mine.chat?.start ?? null, active);
   let run: ChatRun;
   let title = t('visitor');
   if (id === 'ines') {
     run = view.ines.chat;
     title = person('ines');
   } else if (id === 'you' && state.mine.chat) {
-    run = runChat(scripts.botMine, mineAt, state.mine.chat.picks, { instant: reduced });
+    run = runChat(scripts.botMine, 0, state.mine.chat, { instant: true });
     title = person('you');
   } else {
     const key = id === 'you' ? 'faq' : id;
@@ -125,7 +123,6 @@ function ConvList({ selected, onSelect, limit = 6 }: { selected: ConvId; onSelec
             <span className="min-w-0 flex-1 text-left leading-[1.2]">
               <span className="flex items-center gap-[0.4em]">
                 <span className="truncate font-semibold">{c.who === 'visitor' ? t('visitor') : person(c.who)}</span>
-                {c.state === 'live' ? <LiveDot /> : null}
               </span>
               <span className="block truncate text-[0.8em] text-[var(--demo-muted)]">{c.line}</span>
             </span>

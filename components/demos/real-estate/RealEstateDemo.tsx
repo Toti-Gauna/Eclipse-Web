@@ -1,13 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useId, useMemo, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Building2, CalendarDays, Columns3, Globe, House, MessagesSquare, Send, Smartphone } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, Avatar, LiveDot, Switch, usePairedStore, useStory, type NavItem } from '../kit';
+import { AppShell, Avatar, Switch, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
-import { ADVISORS, LUMEN_THEME } from './data';
+import { ADVISORS, LUMEN_THEME, TODAY } from './data';
 import { act, createEstateStore, deriveEstate } from './story';
 import { EstateProvider, useEstate, type EstateCtx, type EstateTab } from './context';
 import { Announcer, EstateToasts, LumenMark, useEstateText } from './ui';
@@ -32,22 +32,31 @@ const VIEWS: Record<EstateTab, Record<DemoProps['screen'], () => ReactNode>> = {
 };
 const ORDER: Record<DemoProps['screen'], EstateTab[]> = {
   laptop: ['today', 'inbox', 'pipeline', 'visits', 'followups', 'listings', 'site'],
-  phone: ['inbox', 'pipeline', 'visits', 'today', 'followups', 'listings', 'site'],
+  phone: ['inbox', 'pipeline', 'visits', 'today', 'followups', 'listings'],
 };
 const ICONS = { today: House, inbox: MessagesSquare, pipeline: Columns3, visits: CalendarDays, followups: Send, listings: Building2, site: Globe };
+/** Guide hooks on the nav items (both screens). */
+const TOUR: Partial<Record<EstateTab, string>> = { pipeline: 'pipeline', visits: 'visits', followups: 'followups', site: 'site' };
+
+/**
+ * Shell variant: an editorial back office — a full sidebar with labels only (no icons), thin
+ * rules and square corners (desktop); on the phone the same sections as a row of text tabs
+ * under the app bar, like a magazine's index.
+ */
+const LAYOUT: ShellLayout = { nav: 'sidebar', density: 'regular', icons: 'none' };
 
 /** Office hours (weekdays 9–19): the top bar says who is answering. */
 const officeOpen = (day: number, min: number) => day % 7 < 5 && min >= 540 && min < 1140;
 
 /**
- * Lumen Propiedades (vertical "inmobiliarias"): an agency that sells and rents homes.
- * - laptop: the agency's workspace (collapsible sidebar): today's numbers, the inquiry inbox
- *   (live transcript + lead file), CRM pipeline, visits calendar, WhatsApp follow-ups,
- *   listings and the public site.
- * - phone alone: the same product as an app, opening on the live conversation (the visitor
- *   plays the buyer); "Comprador" / "Sitio web" opens what the buyer sees.
- * - phone next to the laptop: the BUYER's phone (site + chat at 23:40, WhatsApp after the visit).
- * One story (28 s loop, see story.ts) drives both screens.
+ * Lumen Propiedades (vertical "inmobiliarias"): an agency that sells homes.
+ * - laptop: the agency's workspace: today's numbers, the inquiry inbox (transcript + lead file),
+ *   CRM pipeline (drag cards or "Mover a…"), visits calendar (any day, book a free slot),
+ *   WhatsApp follow-ups, listings and the public site (search → listing → book a visit; Lumi's chat).
+ * - phone alone: the same product as an app (text tabs), opening on the conversation;
+ *   "Comprador" opens the public site as a buyer sees it (the visitor's own search and chat).
+ * - phone next to the laptop: Carolina's phone (the site + chat at 23:40, WhatsApp after the visit).
+ * Nothing plays on its own: the visitor plays five beats from the SimBar (see story.ts).
  */
 export default function RealEstateDemo({ screen, active }: DemoProps) {
   const vertical = verticalById('inmobiliarias')!;
@@ -60,9 +69,10 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
 
   const { store, paired, ref } = usePairedStore('realEstate', createEstateStore);
   const snap = useStory(store, active);
-  const view = useMemo(() => deriveEstate(snap.state, snap.t, snap.reduced), [snap.state, snap.t, snap.reduced]);
+  const view = useMemo(() => deriveEstate(snap.state, snap.t), [snap.state, snap.t]);
 
   const [tab, setTab] = useState<EstateTab>(screen === 'phone' ? 'inbox' : 'today');
+  const [visitsDay, setVisitsDay] = useState(4);
   const [buyerOpen, setBuyerOpen] = useState(false);
   const buyerPhone = screen === 'phone' && paired;
   const announce = screen === 'laptop' || !paired;
@@ -74,18 +84,8 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
     [ref],
   );
 
-  // Sound (one instance per pair, only while visible): a soft tick per message, a chime when a visit or a reservation lands.
-  const messages = view.chat.items.length + (view.follow?.items.length ?? 0);
-  const lastEvent = view.events[view.events.length - 1];
-  const heard = useRef<{ messages: number; event: string } | null>(null);
-  useEffect(() => {
-    const prev = heard.current;
-    heard.current = { messages, event: lastEvent?.id ?? '' };
-    if (!prev || !active || !announce || snap.reduced) return;
-    if (lastEvent && lastEvent.id !== prev.event && lastEvent.at >= 0 && (lastEvent.kind === 'booked' || lastEvent.kind === 'reserved')) play('success');
-    else if (messages > prev.messages) play('type');
-  }, [messages, lastEvent, active, announce, snap.reduced, play]);
-
+  const playing = !!snap.playing;
+  const segFrom = snap.segment?.from ?? null;
   const ctx: EstateCtx = {
     screen,
     paired,
@@ -96,40 +96,54 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
     loop: snap.loop,
     reduced: snap.reduced,
     active,
+    playing,
+    recent: (at, ms = 2400) => playing && segFrom !== null && at != null && at > segFrom && snap.t - at < ms,
     announce,
     business,
     keyNumber,
     keySuffix,
     go: (id) => setTab(id),
+    seeVisits: (day) => {
+      setVisitsDay(day);
+      setBuyerOpen(false);
+      setTab('visits');
+    },
+    visitsDay,
     openBuyer: () => {
       setBuyerOpen(true);
       if (active) play('open');
     },
     toggleBot: () => {
       store.update(act.toggleBot());
-      store.restart();
+      store.reset?.();
       if (active) play('toggle');
     },
   };
 
   const clock = x.clock(view.clock);
+  const sim = {
+    store,
+    label: (id: string) => t(view.botOff ? `sim.off.${id}` : `sim.${id}`),
+    note: t('sim.note'),
+    tour: 'sim',
+    announce,
+  };
 
   if (buyerPhone) {
     return (
       <EstateProvider value={ctx}>
-        <AppShell screen="phone" chrome="bare" theme={LUMEN_THEME} business={business} logo={<LumenMark />} active={active} rootRef={rootRef} statusTime={clock}>
+        <AppShell screen="phone" chrome="bare" theme={LUMEN_THEME} business={business} logo={<LumenMark />} active={active} rootRef={rootRef} statusTime={clock} sim={sim}>
           <BuyerPhone key={snap.loop} />
         </AppShell>
       </EstateProvider>
     );
   }
 
-  const live = view.t >= view.inquiryAt && !view.chat.done;
   const nav: NavItem[] = ORDER[screen].map((id) => ({
     id,
     label: t(`nav.${id}`),
     icon: ICONS[id],
-    badge: id === 'inbox' && live ? 'live' : undefined,
+    tour: TOUR[id],
     group: screen === 'laptop' ? (id === 'followups' ? t('nav.groupAuto') : id === 'listings' ? t('nav.groupShop') : undefined) : undefined,
   }));
   const open = officeOpen(view.clock.day, view.clock.min);
@@ -140,13 +154,13 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
     screen === 'laptop' ? (
       <>
         <span className="re-toppill" data-tone={view.botOff && !open ? 'bad' : open ? 'neutral' : 'accent'}>
-          <LiveDot color={view.botOff && !open ? 'var(--demo-bad)' : 'var(--demo-accent)'} />
+          <span aria-hidden className="re-toppill-dot" />
           {view.botOff && !open ? t('top.off') : open ? t('top.open') : t('top.closed')}
         </span>
         <Avatar initials={julia.initials} color={julia.color} ink={julia.ink} className="text-[0.72em]" />
       </>
     ) : (
-      <button type="button" className="re-buyerbtn" onClick={ctx.openBuyer} aria-haspopup="dialog" aria-label={t('top.buyerLabel')}>
+      <button type="button" className="re-buyerbtn" onClick={ctx.openBuyer} aria-haspopup="dialog" aria-label={t('top.buyerLabel')} data-tour="site">
         <Smartphone aria-hidden strokeWidth={1.8} />
         {t('top.buyer')}
       </button>
@@ -162,8 +176,8 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
         nav={nav}
         current={tab}
         onNavigate={(id) => {
-          if (screen === 'phone' && id === 'site') ctx.openBuyer();
-          else setTab(id as EstateTab);
+          if (id === 'visits') setVisitsDay(TODAY + 1);
+          setTab(id as EstateTab);
         }}
         title={
           screen === 'laptop' ? (
@@ -175,11 +189,12 @@ export default function RealEstateDemo({ screen, active }: DemoProps) {
         }
         headerRight={headerRight}
         sidebarFooter={<SidebarFooter />}
+        layout={LAYOUT}
+        phoneNav="top"
         active={active}
         rootRef={rootRef}
         statusTime={clock}
-        phoneNav="tabs"
-        maxTabs={5}
+        sim={sim}
         overlay={
           screen === 'phone' ? (
             <BuyerPhone

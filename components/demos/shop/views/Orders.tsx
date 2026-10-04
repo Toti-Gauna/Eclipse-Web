@@ -7,6 +7,8 @@ import { useFlip } from '../../kit';
 import { STAGES, type Stage } from '../data';
 import type { OrderView } from '../story';
 import { useShop } from '../context';
+import { ArrowRight } from 'lucide-react';
+import { act, nextStage } from '../story';
 import { BagStack, PersonAvatar, useShopMoney, useShopText, ViewHead } from '../ui';
 import { PayPill, ViaPill } from './Today';
 
@@ -15,10 +17,12 @@ const match = (o: OrderView, f: Filter) => f === 'all' || o.via === f;
 
 function OrderCard({ order }: { order: OrderView }) {
   const t = useTranslations('demoShop.orders');
-  const { view } = useShop();
+  const { store, active, recent } = useShop();
+  const { play } = useSound();
   const { person, fmt, items } = useShopText();
   const money = useShopMoney();
-  const fresh = order.changedAt >= 0 && view.t - order.changedAt < 2400;
+  const fresh = !order.byYou && order.customer !== 'you' && recent(order.changedAt, 2400);
+  const next = nextStage(order.stage);
   return (
     <li data-flip={order.key} className={`shop-ocard ${fresh ? 'demo-fresh' : ''}`}>
       <span className="shop-ocard-top">
@@ -41,6 +45,23 @@ function OrderCard({ order }: { order: OrderView }) {
         <span className="shop-ocard-via">
           <ViaPill order={order} />
         </span>
+      ) : null}
+      {next ? (
+        <button
+          type="button"
+          className="shop-ocard-next"
+          aria-label={t('advanceLabel', { id: order.id, stage: t(`stages.${next}`) })}
+          onClick={(e) => {
+            const board = e.currentTarget.closest('.shop-board');
+            store.update(act.advance(order.key, next));
+            if (active) play('select');
+            // Focus follows the order to its new column.
+            requestAnimationFrame(() => board?.querySelector<HTMLElement>(`[data-flip="${order.key}"] .shop-ocard-next`)?.focus({ preventScroll: true }));
+          }}
+        >
+          {t(`advance.${next}`)}
+          <ArrowRight aria-hidden strokeWidth={2} />
+        </button>
       ) : null}
     </li>
   );
@@ -112,6 +133,7 @@ export function LaptopOrders() {
     <div className="flex flex-col gap-[0.9em]">
       <ViewHead title={t('title')} sub={t('sub', { count: todo })} aside={<Filters value={filter} onChange={setFilter} />} />
       <Board filter={filter} layout="columns" />
+      <p className="shop-hint">{t('hint')}</p>
     </div>
   );
 }
@@ -125,6 +147,7 @@ export function PhoneOrders() {
     <div className="flex flex-col gap-[0.8em]">
       <ViewHead title={t('title')} sub={t('sub', { count: todo })} />
       <Filters value={filter} onChange={setFilter} />
+      <p className="shop-hint">{t('hint')}</p>
       <Board filter={filter} layout="stack" />
     </div>
   );
