@@ -8,9 +8,11 @@ import { LossCalculator } from './LossCalculator';
 import './problem.css';
 
 /**
- * 02 · "¿Cuánto te cuesta no tener esto?" — the visitor completes a sentence with their
- * own numbers and reads the monthly loss on an instrument, in their currency.
- * Follows the vertical chosen in the hero. Lit from the right (the readout side).
+ * 05 · "¿Cuánto te cuesta no tener esto?" — the opportunity calculator, after Precios on
+ * the dawn sky. The visitor completes a sentence with their own numbers and reads the
+ * monthly loss in their currency; "Ver la cuenta" unfolds the arithmetic and the
+ * assumptions. Follows the vertical chosen anywhere on the page. Warm light from the
+ * right (the readout side).
  */
 export function ProblemSection() {
   const t = useTranslations('problem');
@@ -20,7 +22,8 @@ export function ProblemSection() {
     <section
       id={SECTION_IDS.problem}
       aria-labelledby="problem-title"
-      className="problem theme-dark relative isolate overflow-clip bg-night py-20 md:py-32"
+      data-header-theme="light"
+      className="problem theme-light relative isolate overflow-clip bg-dawn py-16 md:py-24"
     >
       <div aria-hidden className="problem-light pointer-events-none absolute inset-0 -z-10" />
       <div className="container-x">

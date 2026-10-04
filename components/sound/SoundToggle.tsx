@@ -15,12 +15,13 @@ const BARS = [
 ] as const;
 
 /**
- * Sound on/off (effects + music) for the header. 44px target.
+ * Sound on/off (effects + music) in one press: the master switch at the top of the
+ * preferences popover (desktop) and in the phone menu's top bar. 44px target.
  * Off: a low, muted wave at rest. On: amber bars stand; while music plays they move
  * like an equalizer (transform: scaleY only; static with reduced motion).
  * The first press turns both on and plays the diamond-ring glint. If sound was left
  * on in a previous visit, a press starts the waiting audio instead of muting it.
- * `className` sets its display (default `grid`), e.g. `hidden sm:grid`.
+ * `className` sets its display (default `grid`).
  */
 export function SoundToggle({ className = 'grid' }: { className?: string }) {
   const t = useTranslations('sound');
@@ -65,15 +66,16 @@ export function SoundToggle({ className = 'grid' }: { className?: string }) {
 }
 
 /**
- * A tiny equalizer for the corner of another control (the phone menu button) while
- * sound is on. Decorative; renders nothing when sound is off.
+ * A tiny equalizer that says "sound is on" on another control: the corner of the phone
+ * menu button, or inline after the preferences trigger's readout. Decorative (the
+ * control's own name carries the state); renders nothing when sound is off.
  */
-export function SoundBadge() {
+export function SoundBadge({ inline = false }: { inline?: boolean }) {
   const { enabled, music } = useSound();
   const { running } = useSoundStatus();
   if (!enabled && !music) return null;
   return (
-    <span aria-hidden className="sound-badge" data-state={music && running ? 'playing' : 'on'}>
+    <span aria-hidden className={`sound-badge ${inline ? 'sound-badge-inline' : ''}`} data-state={music && running ? 'playing' : 'on'}>
       {[0.55, 1, 0.75].map((h, i) => (
         <i key={i} style={{ ['--h' as string]: h, ['--i' as string]: i }} />
       ))}

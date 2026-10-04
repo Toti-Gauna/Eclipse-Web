@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 import type { ItemId, PlanId, VerticalId } from '@/lib/content';
 import { track } from '@/lib/analytics';
 
-export type BuilderSource = 'header' | 'hero' | 'hero_other' | 'pricing' | 'plan_card' | 'calculator' | 'menu' | 'founders' | 'final_cta' | 'examples' | 'footer' | 'services';
+export type BuilderSource = 'header' | 'hero' | 'hero_shortcut' | 'hero_other' | 'pricing' | 'plan_card' | 'calculator' | 'menu' | 'founders' | 'final_cta' | 'examples' | 'footer' | 'services';
 
 export interface BuilderPreset {
   items?: ItemId[];

@@ -1,63 +1,28 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ArrowDown, ArrowRight } from 'lucide-react';
-import { featuredPlanId, items, plans } from '@/lib/content';
-import { lowestItemPrice, plansByTier, type Billing } from '@/lib/pricing';
-import { useExperience } from '@/components/providers/ExperienceProvider';
-import { useCurrency } from '@/components/providers/CurrencyProvider';
-import { useSound } from '@/components/sound/SoundContext';
+import { ArrowRight } from 'lucide-react';
+import { featuredPlanId, plans } from '@/lib/content';
+import { plansByTier, type Billing } from '@/lib/pricing';
 import { DrawLine } from '@/components/motion/DrawLine';
 import { PlanRow } from './PlanRow';
-import { PRICING_ANCHORS } from './anchors';
 
 /**
- * "Dos formas de comprar": A · Paquetes (the 7 packages in two groups, below) and
- * B · Pieza por pieza (opens "Armá tu plan" with whatever the visitor already has).
+ * Tab A · Paquetes: the 7 packages in their two groups, every row with the same
+ * fields in the same place — para quién · qué incluye · desde (pago único, range,
+ * saving) · mantenimiento sugerido · CTAs — so they compare at a glance. Desktop
+ * gets a column header; phones get compact rows that open to the details.
  */
-export function Packages({ billing, now }: { billing: Billing; now: number | null }) {
+export function Packages({ billing, now, onShowPieces }: { billing: Billing; now: number | null; onShowPieces: () => void }) {
   const t = useTranslations('pricing');
-  const { openBuilder } = useExperience();
-  const { format } = useCurrency();
-  const { play } = useSound();
   const groups = plansByTier();
-  const cheapestPiece = lowestItemPrice(items.map((i) => i.id));
-
-  const openPieces = () => {
-    play('open');
-    openBuilder('pricing');
-  };
 
   return (
-    <div id={PRICING_ANCHORS.packages} className="pr-packages">
-      <p className="pr-label">{t('ways.label')}</p>
-      <div className="pr-ways">
-        <div className="pr-way" data-way="a">
-          <span aria-hidden className="pr-way-mark">
-            A
-          </span>
-          <h3 className="pr-way-title">{t('ways.bundles.title')}</h3>
-          <p className="pr-way-text">{t('ways.bundles.text')}</p>
-          <p className="pr-way-meta">
-            {t('ways.bundles.count', { count: plans.length, groups: groups.length })}
-            <ArrowDown aria-hidden strokeWidth={1.5} />
-          </p>
-        </div>
-        <div className="pr-way" data-way="b">
-          <span aria-hidden className="pr-way-mark">
-            B
-          </span>
-          <p className="pr-way-title">{t('ways.pieces.title')}</p>
-          <p className="pr-way-text">
-            {t('ways.pieces.text')}
-            {cheapestPiece !== null ? <span className="pr-way-from"> {t('ways.pieces.from', { price: format(cheapestPiece) })}</span> : null}
-          </p>
-          <button type="button" aria-haspopup="dialog" onClick={openPieces} className="btn btn-sm pr-btn-ghost pr-way-cta">
-            {t('ways.pieces.cta')}
-            <ArrowRight aria-hidden className="size-4" strokeWidth={1.5} />
-          </button>
-        </div>
-      </div>
+    <div className="pr-packages">
+      <p className="pr-panel-intro">
+        <span>{t('ways.bundles.text')}</span>
+        <span className="pr-panel-meta">{t('ways.bundles.count', { count: plans.length, groups: groups.length })}</span>
+      </p>
 
       {groups.map((group, gi) => {
         const titleId = `pr-group-${group.tier}`;
@@ -67,13 +32,19 @@ export function Packages({ billing, now }: { billing: Billing; now: number | nul
               <span aria-hidden className="pr-group-index">
                 {`A${gi + 1}`}
               </span>
-              <p id={titleId} className="pr-group-title">
+              <h3 id={titleId} className="pr-group-title">
                 {t(`groups.${group.tier}.title`)}
-              </p>
+              </h3>
               <p className="pr-group-text">{t(`groups.${group.tier}.text`)}</p>
               <p className="pr-group-count">{t('groups.count', { count: group.plans.length })}</p>
             </div>
             <DrawLine className="pr-group-rule" />
+            {/* Desktop: names the two unlabeled columns; the price and maintenance columns label themselves in
+                every row ("Desde · Pago único", "Mantenimiento sugerido"). Rows carry these for assistive tech. */}
+            <p aria-hidden className="pr-cols">
+              <span>{t('plan.audienceLabel')}</span>
+              <span>{t('plan.includes')}</span>
+            </p>
             <div className="pr-group-list">
               {group.plans.map((plan) => (
                 <PlanRow key={plan.id} plan={plan} featured={plan.id === featuredPlanId} billing={billing} now={now} />
@@ -85,7 +56,7 @@ export function Packages({ billing, now }: { billing: Billing; now: number | nul
 
       <p className="pr-nonefits">
         <span>{t('noneFits')}</span>
-        <button type="button" aria-haspopup="dialog" onClick={openPieces} className="pr-link">
+        <button type="button" aria-controls="pr-panel-pieces" onClick={onShowPieces} className="pr-link">
           {t('noneFitsCta')}
           <ArrowRight aria-hidden strokeWidth={1.5} />
         </button>

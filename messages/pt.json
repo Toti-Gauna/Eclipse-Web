@@ -34,10 +34,9 @@
   },
   "nav": {
     "services": "Serviços",
-    "examples": "Exemplos",
+    "examples": "Demos",
     "pricing": "Preços",
-    "founders": "Fundadores",
-    "clients": "Clientes"
+    "process": "Como trabalhamos"
   },
   "header": {
     "home": "Eclipse, ir para o início",
@@ -51,7 +50,13 @@
     "progress": "Progresso de leitura: {value}%",
     "buildPlan": "Monte seu plano",
     "progressLabel": "Progresso de leitura",
-    "prefsTrigger": "Idioma e moeda"
+    "login": "Entrar",
+    "loginContext": "no portal do cliente (demo)",
+    "soundOn": "som ligado",
+    "portal": "Portal do cliente",
+    "backToSite": "Voltar ao site",
+    "myProjects": "Meus projetos",
+    "exitDemo": "Sair da demo"
   },
   "currency": {
     "ARS": "Pesos argentinos",
@@ -73,13 +78,13 @@
   "hero": {
     "eyebrow": "Desenvolvimento · IA · Automação",
     "title": "Antes de conversar, mostramos <em>o seu negócio</em> funcionando.",
-    "subtitle": "Sites, sistemas e agentes de IA para negócios que não podem esperar. Escolha seu setor e veja.",
-    "pickVertical": "Escolha seu setor",
+    "subtitle": "Sites, sistemas e agentes de IA para negócios que não podem esperar.",
+    "pickVertical": "Escolha seu setor e veja",
     "ctaDemo": "Peça sua demo",
     "ctaPlan": "Monte seu plano",
     "seeAnother": "Ver outro setor",
-    "scroll": "Role para ver mais",
-    "wantThis": "Quero isso no meu negócio"
+    "wantThis": "Quero isso no meu negócio",
+    "pickOptional": "Opcional"
   },
   "whatsapp": {
     "greeting": "Olá, Eclipse.",
@@ -91,7 +96,6 @@
     "tagline": "Desenvolvimento, IA e automação para negócios que não podem esperar.",
     "explore": "Explorar",
     "contact": "Contato",
-    "settings": "Preferências",
     "teaser": "A Eclipse é mais que um estúdio. <em>Em breve</em>.",
     "comingSoon": "Em breve",
     "rights": "© {year} Eclipse. Todos os direitos reservados.",
@@ -205,7 +209,9 @@
     "mathTotal": "Total por mês",
     "assumptions": "Premissas: 1 mês = {weeks} semanas · 1 hora da sua equipe = {rate}. Seu número real pode ser outro.",
     "miniLabel": "Você perde por mês",
-    "miniJump": "Ver a estimativa em detalhe"
+    "miniJump": "Ver a estimativa em detalhe",
+    "rangeMax": "Máximo {value}: usamos esse número.",
+    "rangeMin": "Mínimo {value}: usamos esse número."
   },
   "services": {
     "title": "O que construímos, <em>peça por peça</em>.",
@@ -324,10 +330,14 @@
         "body": "Hospedagem, backups e ajustes todo mês. Seu sistema cresce junto com o seu negócio."
       }
     },
-    "ctaLead": "O primeiro passo é ver seu negócio funcionando."
+    "ctaLead": "O primeiro passo é ver seu negócio funcionando.",
+    "phases": {
+      "pre": "Demo e proposta",
+      "project": "Projeto · começa com o sinal"
+    }
   },
   "builder": {
-    "eyebrow": "Orçamento na sua moeda",
+    "eyebrow": "Estimativa na sua moeda",
     "title": "Monte seu plano",
     "pageTitle": "Monte seu <em>plano</em>",
     "pageIntro": "Quatro passos, e dá para pular qualquer um. Escolha o que você quer resolver: o número se monta sozinho.",
@@ -458,7 +468,20 @@
     "dockOneTime": "Pagamento único",
     "dockFrom": "a partir de",
     "recurringAnnounce": "Além disso, {amount} {period}.",
-    "goalsLine": "Objetivo: {list}"
+    "goalsLine": "Objetivo: {list}",
+    "preloadGoals": "Pelo seu objetivo, a gente pré-selecionou {list}. Tire ou adicione o que quiser.",
+    "preloadGoalsMany": "Pelo seu objetivo, a gente pré-selecionou {count} peças (com a etiqueta “Sugerida”). Tire ou adicione o que quiser.",
+    "preloadGoalsEdit": "Mudar objetivo",
+    "preloadAdded": "Você adicionou {list} ao seu plano.",
+    "preloadUndo": "Desfazer",
+    "preloadUndone": "Você tirou {list}.",
+    "packageFromPreset": "Você começou por este pacote: {count, plural, one {a peça dele já está marcada} other {as # peças dele já estão marcadas}}. Adicione as que quiser.",
+    "expandAll": "Abrir todas",
+    "collapseAll": "Fechar todas",
+    "catChosen": "{chosen} de {total} escolhidas",
+    "careSuggestedNote": "Marcamos {name} porque é o que sugerimos para o seu plano. Troque ou escolha “{none}”.",
+    "proposalLabel": "Pedido de proposta",
+    "proposalText": "Não é um orçamento: a gente confirma escopo e preço por escrito."
   },
   "pricing": {
     "title": "Quanto custa<br></br> e como você paga.",
@@ -539,7 +562,8 @@
         "text": "Escolha só o que precisa e veja o total na hora, na sua moeda.",
         "cta": "Montar peça por peça",
         "from": "Peças a partir de {price}."
-      }
+      },
+      "options": "{count, plural, one {# opção} other {# opções}}"
     },
     "groups": {
       "starter": {
@@ -560,7 +584,11 @@
       "includes": "O que inclui",
       "savings": "Economize <pct></pct> vs. peças avulsas",
       "customize": "Personalizar",
-      "customizeLabel": "Personalizar o pacote {name} no montador"
+      "customizeLabel": "Personalizar o pacote {name} no montador",
+      "audienceLabel": "Para quem",
+      "maintenanceLabel": "Manutenção sugerida",
+      "maintenanceValue": "{name} · {price} {period}",
+      "maintenanceNone": "Nenhuma (opcional)"
     },
     "noneFits": "Nenhum pacote serve?",
     "noneFitsCta": "Monte peça por peça",
@@ -574,7 +602,12 @@
   },
   "demoShowcase": {
     "laptopLabel": "{business}: demo navegável, versão para computador",
-    "phoneLabel": "{business}: demo navegável, versão para celular"
+    "phoneLabel": "{business}: demo navegável, versão para celular",
+    "desktop": "Computador",
+    "mobile": "Celular",
+    "viewsLabel": "Demo de {business}: escolha a visualização",
+    "panHint": "Deslize para ver tudo",
+    "loading": "Carregando a demo de {business}…"
   },
   "demoClinic": {
     "pros": {
@@ -1955,7 +1988,13 @@
       "message": "Olá, Eclipse. Meu setor não está nos exemplos do site. Vocês montam uma demo para mim? Meu negócio é:"
     },
     "note": "Os negócios destes exemplos são fictícios. Os números mostram o cenário de cada demo, não resultados de clientes.",
-    "tabsLabel": "Negócios de demo"
+    "tabsLabel": "Negócios de demo",
+    "stage": {
+      "label": "Visualização da demo",
+      "demo": "Demo navegável",
+      "trailer": "Trailer de {seconds} s",
+      "skip": "Pular a demo ao vivo"
+    }
   },
   "trailers": {
     "title": "{business} — Demo",
@@ -2096,9 +2135,7 @@
     "clientsLabel": "Clientes",
     "slot": {
       "number": "Vaga {n}",
-      "free": "Livre",
       "founder": "Fundador",
-      "emptyTitle": "Seu negócio aqui",
       "cta": "Quero ser fundador",
       "ctaLabel": "Quero ser fundador: vaga {n} de {total}, pelo WhatsApp",
       "case": "Ver caso",
@@ -2192,13 +2229,13 @@
     "index": "Índice",
     "labels": {
       "hero": "Início",
-      "problem": "O que você perde",
-      "services": "O que construímos",
+      "problem": "Calculadora",
+      "services": "Soluções",
       "examples": "Demos",
       "process": "Como trabalhamos",
       "pricing": "Preços",
       "founders": "Fundadores",
-      "agent": "Vamos conversar"
+      "agent": "Perguntas e contato"
     },
     "clients": "Clientes"
   },
@@ -3885,5 +3922,521 @@
       "liveSpeaking": "Speaking ao vivo · {name}",
       "liveWriting": "Escrita ao vivo · {name}"
     }
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "items": {
+      "demo": "Como funciona a demo?",
+      "start": "Quando o projeto começa?",
+      "from": "O que significa “a partir de”?",
+      "currency": "Em que moeda estão os preços?",
+      "pieces": "Posso comprar uma peça só?",
+      "maintenance": "A manutenção é obrigatória? O que inclui?",
+      "voice": "O agente de voz tem custo mensal?",
+      "annual": "Tem desconto se eu pagar a manutenção anual?",
+      "founder": "O que é o programa de fundadores?",
+      "referral": "Tenho algum benefício por indicar alguém?"
+    }
+  },
+  "portal": {
+    "meta": {
+      "loginTitle": "Portal do cliente · Demo — Eclipse",
+      "loginDescription": "Assim você vai acompanhar seu projeto com a Eclipse: etapa, próximo marco, avanços e entregas. Demonstração com dados fictícios.",
+      "projectsTitle": "Meus projetos · Demo — Eclipse",
+      "projectsDescription": "Portal de exemplo com projetos fictícios: etapa atual, última atualização e próximo marco de cada um.",
+      "projectTitle": "{name} · Demo — Eclipse",
+      "projectDescription": "Um projeto fictício em detalhe: etapa, cronograma, escopo aprovado, mudanças e documentos."
+    },
+    "badge": "Demo",
+    "notice": {
+      "label": "Aviso de demonstração",
+      "text": "Visualização de demonstração — dados fictícios; o acesso real estará disponível quando o backend for implementado."
+    },
+    "nav": {
+      "breadcrumb": "Você está em",
+      "site": "Site",
+      "portal": "Portal",
+      "projects": "Meus projetos",
+      "backToProjects": "Voltar para meus projetos",
+      "backToSite": "Voltar ao site"
+    },
+    "login": {
+      "label": "Portal do cliente",
+      "title": "Acompanhe seu projeto, <em>etapa por etapa</em>.",
+      "lead": "É para clientes com um projeto confirmado. O projeto começa com o sinal; depois mandamos um convite por e-mail para você entrar.",
+      "example": "Ver o portal de exemplo",
+      "exampleNote": "Projetos fictícios. Não precisa de conta.",
+      "formLabel": "Acesso",
+      "formTitle": "Entrar",
+      "formHint": "É uma demonstração: ainda não existem contas. Não digite sua senha real.",
+      "email": "E-mail",
+      "password": "Senha",
+      "submit": "Entrar",
+      "doneTitle": "É uma demonstração",
+      "doneEmpty": "Não precisa preencher nada: o portal de exemplo está aberto.",
+      "doneFilled": "Não verificamos o que você digitou: nada saiu do seu navegador e já apagamos tudo.",
+      "doneCta": "Ir para o portal de exemplo",
+      "helpTitle": "Já trabalha com a Eclipse?",
+      "help": "Até o portal entrar no ar, contamos cada avanço pelo WhatsApp.",
+      "helpCta": "Fale com a gente no WhatsApp",
+      "helpMessage": "Olá, Eclipse. Quero saber como está meu projeto.",
+      "stepsTitle": "Como o acesso vai funcionar",
+      "steps": {
+        "confirm": "Você aceita a proposta e paga o sinal: o projeto fica confirmado.",
+        "invite": "Mandamos um convite pessoal por e-mail.",
+        "enter": "Você entra e vê a etapa, o próximo marco, os avanços e as entregas."
+      }
+    },
+    "projects": {
+      "label": "Meus projetos",
+      "hello": "Olá, {name}.",
+      "company": "{company} · {count, plural, one {# projeto} other {# projetos}} com a Eclipse",
+      "summaryTitle": "Resumo",
+      "overall": "Situação geral",
+      "buckets": {
+        "active": "{count} em andamento",
+        "support": "{count} em suporte",
+        "paused": "{count} em pausa",
+        "closed": "{count, plural, one {# encerrado} other {# encerrados}}"
+      },
+      "waiting": "{count, plural, =0 {Nada depende de você agora.} one {# item depende de você.} other {# itens dependem de você.}}",
+      "lastUpdate": "Última atualização",
+      "nextStep": "Próximo passo",
+      "yourTurn": "Sua vez",
+      "listTitle": "Projetos",
+      "tableCaption": "Seus projetos com a Eclipse (dados fictícios)",
+      "columns": {
+        "project": "Projeto",
+        "service": "Serviço",
+        "stage": "Etapa atual",
+        "updated": "Última atualização",
+        "milestone": "Próximo marco",
+        "action": "Ação"
+      },
+      "milestoneMeta": "{owner} · previsão <d>{date}</d>",
+      "view": "Ver projeto",
+      "review": "Revisar",
+      "actionNeeded": "Precisa da sua ação",
+      "states": {
+        "label": "Visualização da demo",
+        "hint": "Veja como esta tela fica em outros estados.",
+        "full": "Com projetos",
+        "empty": "Sem projetos",
+        "loading": "Carregando"
+      },
+      "loading": "Prévia do estado de carregamento.",
+      "empty": {
+        "title": "Você ainda não tem projetos atribuídos.",
+        "body": "Seus projetos aparecem aqui quando a equipe os vincula à sua conta, depois do sinal. Se você já confirmou um, fale com a gente.",
+        "cta": "Fale com a gente no WhatsApp",
+        "message": "Olá, Eclipse. Entrei no portal e ainda não vejo meu projeto."
+      }
+    },
+    "people": {
+      "you": "Você",
+      "eclipse": "Eclipse · {role}",
+      "team": "{name} · sua equipe"
+    },
+    "roles": {
+      "projectLead": "Líder de projeto",
+      "developer": "Desenvolvimento",
+      "designer": "Design",
+      "clientAdmin": "Administração",
+      "clientCollaborator": "Colaboração"
+    },
+    "stage": {
+      "position": "{n} de {total}",
+      "status": {
+        "done": "Concluída",
+        "current": "Atual",
+        "paused": "Em pausa",
+        "next": "Próxima",
+        "pending": "Pendente"
+      },
+      "since": "Desde {date}",
+      "pausedAt": "Parado em {n} de {total} · {stage}",
+      "afterDelivery": "Depois da entrega"
+    },
+    "stages": {
+      "preparation": {
+        "name": "Preparação",
+        "short": "Início confirmado e insumos",
+        "definition": "O projeto começou com o sinal. Reunimos acessos, logo, fotos e textos, e montamos o plano de trabalho.",
+        "exit": "Passa para Construção quando todos os insumos chegam e o plano está aprovado.",
+        "owner": "Eclipse e você"
+      },
+      "build": {
+        "name": "Construção",
+        "short": "Execução do escopo",
+        "definition": "Construímos o que está no escopo aprovado, em um ambiente de testes.",
+        "exit": "Passa para Revisão da Eclipse quando todo o escopo está construído.",
+        "owner": "Eclipse"
+      },
+      "eclipseReview": {
+        "name": "Revisão da Eclipse",
+        "short": "QA interno",
+        "definition": "Testamos tudo antes de mostrar para você: celulares, velocidade, textos, formulários e links.",
+        "exit": "Passa para a sua revisão quando cumpre o nosso checklist sem pendências.",
+        "owner": "Eclipse"
+      },
+      "clientReview": {
+        "name": "Revisão do cliente",
+        "short": "Aprovação ou decisão necessária",
+        "definition": "Sua vez: você revisa e aprova, ou pede ajustes dentro do escopo.",
+        "exit": "Passa para Entrega com a sua aprovação registrada.",
+        "owner": "Você"
+      },
+      "delivery": {
+        "name": "Entrega",
+        "short": "Publicação, repasse e treinamento",
+        "definition": "Publicamos, passamos acessos e documentação, e treinamos sua equipe.",
+        "exit": "Termina quando está no ar e o treinamento foi feito.",
+        "owner": "Eclipse e você"
+      },
+      "support": {
+        "name": "Suporte",
+        "short": "Só com manutenção contratada",
+        "definition": "Com a manutenção ativa cuidamos de hospedagem, backups e das alterações que o seu plano inclui.",
+        "exit": "Dura enquanto a manutenção estiver contratada.",
+        "owner": "Eclipse"
+      },
+      "paused": {
+        "name": "Em pausa",
+        "short": "Com motivo e próxima ação",
+        "definition": "O trabalho está parado por um motivo concreto. Sempre dizemos qual é e o que falta para seguir.",
+        "exit": "É retomado quando o motivo se resolve.",
+        "owner": "Depende do motivo"
+      },
+      "closed": {
+        "name": "Encerrado",
+        "short": "Com motivo e próxima ação",
+        "definition": "O projeto terminou ou foi cancelado. Fica registrado o motivo e, se for o caso, o que vem depois.",
+        "exit": "É a etapa final.",
+        "owner": "Eclipse"
+      }
+    },
+    "detail": {
+      "currentStage": "Etapa atual",
+      "meaning": "O que significa",
+      "exit": "Para mudar de etapa",
+      "owner": "Responsável",
+      "nextMilestone": "Próximo marco",
+      "estimate": "Data prevista",
+      "estimateNote": "É uma estimativa, não um compromisso.",
+      "yourAction": "Sua ação",
+      "noAction": "Nada pendente do seu lado por enquanto.",
+      "noActionNote": "Quando precisarmos de algo, aparece aqui.",
+      "requested": "Solicitado em {date}",
+      "actions": {
+        "approve": "Aprovar",
+        "adjust": "Pedir ajustes",
+        "confirm": "Confirmar",
+        "upload": "Enviar arquivo"
+      },
+      "needsBackend": "Requer backend",
+      "needsBackendNote": "Nesta demonstração os botões estão desativados: nada é aprovado, enviado ou salvo.",
+      "pause": {
+        "title": "Projeto em pausa",
+        "reason": "Motivo",
+        "next": "Para seguir"
+      },
+      "timeline": "Cronograma",
+      "timelineNote": "As etapas 1 a 5 valem para todo projeto. Suporte só existe com manutenção contratada.",
+      "supportWith": "Suporte · manutenção {plan}",
+      "tabs": {
+        "label": "Seções do projeto",
+        "updates": "Atualizações",
+        "scope": "Escopo e mudanças",
+        "documents": "Documentos",
+        "stages": "Etapas"
+      },
+      "updates": {
+        "stageChange": "Mudança de etapa",
+        "projectStart": "Início do projeto"
+      },
+      "scope": {
+        "approvedTitle": "Escopo aprovado",
+        "approvedMeta": "Versão {version} · aprovado em {date}",
+        "acceptedTitle": "Mudanças aceitas",
+        "acceptedMeta": "Aceita em {date} por {name}",
+        "impact": "Impacto registrado",
+        "noAccepted": "Ainda não há mudanças aceitas.",
+        "openTitle": "Pedidos de mudança em andamento",
+        "openMeta": "Solicitada em {date} por {name}",
+        "notIncluded": "Não incluído",
+        "noOpen": "Nenhum pedido de mudança em andamento.",
+        "rule": "Nenhuma mudança altera escopo, custo ou prazo até que a aceitação fique registrada.",
+        "request": "Pedir uma mudança",
+        "decide": "Aceitar ou recusar",
+        "flowLabel": "Andamento do pedido"
+      },
+      "changeStatus": {
+        "received": "Recebida",
+        "evaluating": "Em avaliação",
+        "estimated": "Estimada",
+        "accepted": "Aceita",
+        "rejected": "Recusada",
+        "closed": "Encerrada"
+      },
+      "docs": {
+        "title": "Documentos e entregas",
+        "note": "Sem arquivos nem downloads nesta demonstração: os documentos reais só vão abrir com acesso autorizado.",
+        "columns": {
+          "category": "Categoria",
+          "version": "Versão",
+          "date": "Data",
+          "author": "Autor"
+        },
+        "version": "v{version}",
+        "noFile": "Sem arquivo na demo"
+      },
+      "docCategory": {
+        "proposal": "Proposta e acordo",
+        "input": "Insumo",
+        "decision": "Decisão",
+        "deliverable": "Entregável",
+        "manual": "Manual",
+        "record": "Ata"
+      },
+      "stagesTab": {
+        "title": "Como funcionam as etapas",
+        "intro": "Cada etapa tem uma definição, uma condição para avançar e um responsável.",
+        "definition": "O que é",
+        "exit": "Quando termina",
+        "owner": "Responsável",
+        "extra": "Fora das 5 etapas",
+        "current": "Você está aqui"
+      },
+      "facts": {
+        "title": "Dados do projeto",
+        "code": "Código",
+        "service": "Serviço",
+        "start": "Início",
+        "startNote": "sinal registrado",
+        "lead": "Responsável na Eclipse",
+        "channel": "Canal combinado",
+        "channelValue": "WhatsApp",
+        "maintenance": "Manutenção",
+        "noMaintenance": "Sem manutenção contratada",
+        "delivery": "Entrega prevista",
+        "delivered": "Entregue em {date}",
+        "deliveryPaused": "Recalculada ao retomar"
+      },
+      "others": "Outros projetos"
+    },
+    "demo": {
+      "projects": {
+        "sitio-web": {
+          "name": "Site de exemplo",
+          "summary": "Site de 5 páginas com catálogo, filiais e contato pelo WhatsApp.",
+          "stageNote": "Estamos construindo as 5 páginas do escopo em um ambiente de testes. Início e Catálogo já funcionam; faltam Sobre, Filiais e Contato.",
+          "milestone": "Protótipo navegável das 5 páginas",
+          "updates": {
+            "home": {
+              "title": "Início e Catálogo prontos para teste",
+              "body": "As duas primeiras páginas já funcionam no ambiente de testes, no celular e no computador. Nesta semana seguimos com Sobre e Filiais."
+            },
+            "faq": {
+              "title": "Mudança aceita: Perguntas frequentes",
+              "body": "Sua aceitação ficou registrada. Soma uma página ao escopo e 2 dias úteis ao prazo previsto."
+            },
+            "design": {
+              "title": "Design do catálogo fechado",
+              "body": "Definimos a grade de produtos, os filtros por categoria e a página de cada produto com botão para o WhatsApp."
+            },
+            "build": {
+              "title": "Começa a Construção",
+              "body": "Preparação concluída: escopo aprovado, acessos e insumos recebidos."
+            },
+            "inputs": {
+              "title": "Insumos completos",
+              "body": "Recebemos o logo em alta, 48 fotos de produtos e os horários das 3 filiais."
+            },
+            "start": {
+              "title": "Projeto confirmado",
+              "body": "Registramos o sinal e começamos a preparação. Pedimos logo, fotos e textos."
+            }
+          },
+          "scope": {
+            "pages": "5 páginas: Início, Catálogo, Sobre, Filiais e Contato",
+            "responsive": "Design para celular, tablet e computador",
+            "catalog": "Catálogo com 6 categorias e busca",
+            "contact": "Botão de WhatsApp e formulário de contato",
+            "branches": "Mapa e horários das 3 filiais",
+            "seo": "SEO básico e medição de visitas"
+          },
+          "changes": {
+            "faq": {
+              "title": "Página de Perguntas frequentes",
+              "detail": "Uma página com as 12 perguntas que o balcão mais recebe.",
+              "impact": "+1 página no escopo · +2 dias úteis no prazo previsto"
+            },
+            "pdf": {
+              "title": "Catálogo em PDF para baixar",
+              "detail": "Um PDF do catálogo para mandar pelo WhatsApp. Estamos avaliando: ainda sem custo nem prazo."
+            }
+          },
+          "docs": {
+            "faq": "Mudança aceita: Perguntas frequentes",
+            "sitemap": "Mapa do site e guia de textos",
+            "kickoff": "Ata de início",
+            "assets": "Logo e fotos de produtos",
+            "proposal": "Proposta e escopo aprovados"
+          }
+        },
+        "chatbot": {
+          "name": "Chatbot de atendimento",
+          "summary": "Responde estoque, horários e entregas no WhatsApp e no site.",
+          "stageNote": "O chatbot já responde em um ambiente de testes. Antes de conectá-lo ao seu WhatsApp, precisamos que você revise as respostas.",
+          "milestone": "Sua aprovação das respostas",
+          "action": {
+            "title": "Aprovar as respostas do chatbot ou pedir ajustes",
+            "detail": "São 40 respostas sobre estoque, horários, entregas e formas de pagamento. Você pode aprovar ou marcar as que quer ajustar dentro do escopo."
+          },
+          "updates": {
+            "estimate": {
+              "title": "Estimativa pronta: status do pedido",
+              "body": "Estimamos a mudança que você pediu. Ela não faz parte do escopo até você aceitar."
+            },
+            "review": {
+              "title": "Pronto para a sua revisão",
+              "body": "Passou na nossa revisão interna: testamos as 40 respostas com 120 perguntas de teste."
+            },
+            "tone": {
+              "title": "Tom ajustado",
+              "body": "As respostas agora têm um tom mais próximo e indicam a filial mais perto quando perguntam por estoque."
+            },
+            "qa": {
+              "title": "Construção concluída",
+              "body": "O chatbot responde os 4 temas do escopo. Começa a nossa revisão."
+            },
+            "build": {
+              "title": "Começa a Construção",
+              "body": "Com as perguntas frequentes e a tabela de preços carregadas, começamos a construir."
+            },
+            "start": {
+              "title": "Projeto confirmado",
+              "body": "Registramos o sinal. Pedimos as perguntas mais comuns e a tabela de preços."
+            }
+          },
+          "scope": {
+            "channels": "Chatbot no WhatsApp e no site",
+            "topics": "Respostas sobre estoque, horários, entregas e formas de pagamento",
+            "handoff": "Passa para uma pessoa quando não sabe responder",
+            "report": "Resumo mensal das perguntas mais frequentes"
+          },
+          "changes": {
+            "orders": {
+              "title": "Consultar o status de um pedido",
+              "detail": "Que o chatbot diga em que etapa está um pedido a partir do número.",
+              "impact": "Estimativa: +4 dias úteis. Só conta se você aceitar."
+            }
+          },
+          "docs": {
+            "estimate": "Estimativa da mudança: status do pedido",
+            "answers": "Roteiro de respostas do chatbot",
+            "qa": "Relatório de revisão interna",
+            "proposal": "Proposta e escopo aprovados"
+          }
+        },
+        "recordatorios": {
+          "name": "Lembretes automáticos",
+          "summary": "Mensagens no WhatsApp para retiradas, pedidos prontos e uma pesquisa curta.",
+          "stageNote": "Em uso desde agosto. Com a sua manutenção revisamos os envios todo mês e usamos a alteração pequena mensal quando precisa.",
+          "milestone": "Revisão dos envios de outubro",
+          "updates": {
+            "september": {
+              "title": "Revisão de setembro",
+              "body": "Saíram 412 lembretes e 9 voltaram por números digitados errado. O relatório está em Documentos."
+            },
+            "restock": {
+              "title": "Alteração do mês: aviso de reposição",
+              "body": "Incluímos o modelo que avisa quando um produto volta ao estoque. Entra na alteração pequena do mês."
+            },
+            "august": {
+              "title": "Revisão de agosto",
+              "body": "Primeiro mês completo: 388 lembretes enviados, sem falhas de envio."
+            },
+            "support": {
+              "title": "Entregue: começa o Suporte",
+              "body": "Está funcionando e com a manutenção ativa."
+            },
+            "delivery": {
+              "title": "Aprovado: começa a Entrega",
+              "body": "Você aprovou os modelos. Treinamos 2 pessoas da sua equipe para editá-los."
+            },
+            "start": {
+              "title": "Projeto confirmado",
+              "body": "Registramos o sinal. Pedimos a lista de clientes e os textos de cada mensagem."
+            }
+          },
+          "scope": {
+            "pickup": "Lembrete no WhatsApp 24 h antes de cada retirada",
+            "ready": "Aviso automático de pedido pronto",
+            "survey": "Pesquisa de 1 pergunta depois da compra",
+            "report": "Relatório mensal de envios"
+          },
+          "changes": {
+            "restock": {
+              "title": "Aviso de reposição de estoque",
+              "detail": "Um modelo novo que avisa quando um produto esgotado volta.",
+              "impact": "+1 modelo · usa a alteração pequena do mês"
+            }
+          },
+          "docs": {
+            "september": "Relatório de envios · setembro",
+            "manual": "Manual: como editar os modelos",
+            "handover": "Ata de entrega",
+            "proposal": "Proposta e escopo aprovados"
+          }
+        },
+        "agente-voz": {
+          "name": "Agente de voz para pedidos",
+          "summary": "Atende o telefone da filial Centro e anota pedidos.",
+          "stageNote": "Tudo o que já foi construído fica guardado: retomamos de onde paramos.",
+          "milestone": "Confirmar o número da filial Centro",
+          "action": {
+            "title": "Confirmar o número de telefone da filial Centro",
+            "detail": "É a linha que o agente vai atender. Com o número confirmado, retomamos em 2 dias úteis."
+          },
+          "pause": {
+            "reason": "Falta o número de telefone definitivo da filial Centro: sem ele não conseguimos conectar o agente à linha.",
+            "next": "Confirme o número e retomamos a Construção em 2 dias úteis."
+          },
+          "updates": {
+            "paused": {
+              "title": "Projeto em pausa",
+              "body": "Sem o número definitivo não conseguimos conectar o agente. Retomamos assim que você confirmar."
+            },
+            "calls": {
+              "title": "Primeiras ligações de teste",
+              "body": "O agente já anota pedidos de 25 produtos em ligações de teste, com até 3 ligações ao mesmo tempo."
+            },
+            "build": {
+              "title": "Começa a Construção",
+              "body": "Com o catálogo de produtos e os horários carregados, começamos a construir."
+            },
+            "start": {
+              "title": "Projeto confirmado",
+              "body": "Registramos o sinal. Pedimos o catálogo de produtos e os horários de atendimento."
+            }
+          },
+          "scope": {
+            "calls": "Agente que atende ligações e anota pedidos",
+            "parallel": "Até 3 ligações ao mesmo tempo",
+            "confirm": "Confirmação do pedido para o cliente pelo WhatsApp",
+            "summary": "Resumo diário de pedidos para a sua equipe"
+          },
+          "docs": {
+            "script": "Roteiro de ligações",
+            "proposal": "Proposta e escopo aprovados"
+          }
+        }
+      }
+    }
+  },
+  "shortcuts": {
+    "label": "Atalhos",
+    "plan": "Montar plano"
   }
 }

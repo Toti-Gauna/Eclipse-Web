@@ -58,7 +58,7 @@
 
   position: absolute;
   inset: 0;
-  /* Keeps the demo's z-indices inside its device (the phone overlaps the laptop). */
+  /* Keeps the demo's z-indices inside its view. */
   isolation: isolate;
   overflow: hidden;
   background: var(--demo-bg);
@@ -526,7 +526,6 @@
   gap: 0.7em;
   min-height: 3.4em;
   padding: 0.5em 1.2em 0.5em 0.75em;
-  padding-right: max(1.2em, var(--demo-safe-top, 0em));
   border-bottom: 1px solid var(--demo-line);
   background: var(--demo-top-bg, var(--demo-bg));
 }
@@ -589,10 +588,6 @@
 }
 .demo-content {
   padding: 1.15em 1.2em 1.3em;
-  padding-right: max(1.2em, var(--demo-safe-right, 0em));
-}
-.demo-content[data-safe='off'] {
-  padding-right: 1.2em;
 }
 .demo-root[data-screen='phone'] .demo-content {
   padding: 0 1em 1em;

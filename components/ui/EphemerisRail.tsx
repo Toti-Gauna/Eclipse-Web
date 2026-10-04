@@ -8,6 +8,13 @@ const RailView = lazy(() => import('./EphemerisRailView'));
 /** Where the rail exists: wide screens only (it lives in the page's side margin). */
 export const RAIL_QUERY = '(min-width: 1280px)';
 
+/**
+ * Dispatch on window when a [data-header-theme="light"] / [data-rail-theme="light"]
+ * zone changes size outside a ScrollTrigger refresh (e.g. the hero's demo light):
+ * the rail caches the zones' positions instead of measuring them on every frame.
+ */
+export const LIGHT_ZONES_EVENT = 'eclipse:light-zones';
+
 type IdleWindow = Window & {
   requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
   cancelIdleCallback?: (id: number) => void;

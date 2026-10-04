@@ -1,7 +1,8 @@
-/* <SkyTransition>: void → night (a plain fade) and night → dawn (the sunrise). */
+/* <SkyTransition>: void → night (a plain fade) and night → dawn (the sunrise).
+   v3: shorter than in v2 (less empty scroll between sections). */
 .sky-fade {
-  height: 30vh;
-  min-height: 12rem;
+  height: 14vh;
+  min-height: 6rem;
   background: var(--night);
 }
 .sky-fade--void {
@@ -10,8 +11,8 @@
 
 .sky-sunrise {
   position: relative;
-  height: 60vh;
-  min-height: 20rem;
+  height: 44vh;
+  min-height: 17rem;
   overflow: hidden;
   /* Night → plum → ember → dawn; no flat brown band in the middle. */
   background: linear-gradient(

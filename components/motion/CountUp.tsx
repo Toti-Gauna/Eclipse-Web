@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { gsap, useGSAP } from './gsap';
+import { observeEnter } from './observeEnter';
 import { prefersReducedMotion } from './useReducedMotion';
 import { localeTags, type Locale } from '@/i18n/routing';
 
@@ -10,6 +11,7 @@ import { localeTags, type Locale } from '@/i18n/routing';
  * default) or right when it mounts (`on="mount"`: e.g. a readout that changes
  * with a selection the visitor just made, already on screen).
  * Screen readers get the final value only (the animated digits are aria-hidden).
+ * The entrance is detected by a pooled IntersectionObserver (no ScrollTrigger).
  */
 export function CountUp({
   value,
@@ -44,11 +46,11 @@ export function CountUp({
       };
       const state = { v: 0 };
       setText(`${prefix}${fmt.format(0)}${suffix}`);
-      gsap.to(state, {
+      const tween = gsap.to(state, {
         v: value,
         duration,
         ease: 'power3.out',
-        scrollTrigger: on === 'enter' ? { trigger: el, start: 'top 90%', once: true } : undefined,
+        paused: on === 'enter',
         onUpdate: () => {
           setText(`${prefix}${fmt.format(state.v)}${suffix}`);
         },
@@ -56,6 +58,8 @@ export function CountUp({
           setText(final);
         },
       });
+      // useGSAP reverts the tween on cleanup; the observer is ours to cancel.
+      if (on === 'enter') return observeEnter(el, 'top 90%', () => tween.play());
     },
     { dependencies: [value, prefix, suffix, decimals, locale, on], revertOnUpdate: true },
   );

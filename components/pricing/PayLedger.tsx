@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { lowestMaintenance } from '@/lib/pricing';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
@@ -11,15 +11,17 @@ import { PRICING_ANCHORS } from './anchors';
 
 type Rhythm = 'once' | 'monthly' | 'extras';
 
-const ENTRIES: { key: 'project' | 'care' | 'extras'; rhythm: Rhythm; href: string; up?: boolean }[] = [
+// Every target sits above: the ledger closes the section as its conditions.
+const ENTRIES: { key: 'project' | 'care' | 'extras'; rhythm: Rhythm; href: string }[] = [
   { key: 'project', rhythm: 'once', href: `#${PRICING_ANCHORS.packages}` },
   { key: 'care', rhythm: 'monthly', href: `#${PRICING_ANCHORS.care}` },
-  { key: 'extras', rhythm: 'extras', href: `#${SECTION_IDS.services}`, up: true },
+  { key: 'extras', rhythm: 'extras', href: `#${SECTION_IDS.services}` },
 ];
 
 /**
- * "Cómo se paga": the pricing model as one time axis. ① the project is paid once
- * (one mark), ② maintenance is a monthly, optional rhythm (ticks), ③ extras land
+ * "Cómo se paga" (the section's conditions, v3: after packages, maintenance and
+ * offers): the pricing model as one time axis. ① the project is paid once (one
+ * mark), ② maintenance is a monthly, optional rhythm (ticks), ③ extras land
  * whenever you want (loose marks). On desktop the three rails join into one line.
  */
 export function PayLedger({ freeMonths }: { freeMonths: number | null }) {
@@ -34,7 +36,6 @@ export function PayLedger({ freeMonths }: { freeMonths: number | null }) {
       </h3>
       <ol className="pr-how-list">
         {ENTRIES.map((entry, i) => {
-          const Arrow = entry.up ? ArrowUp : ArrowDown;
           let text = t(`${entry.key}.text`, { price: low ? format(low.priceUsd) : '' });
           if (entry.key === 'care' && freeMonths) text = `${text} ${t('care.annual', { months: freeMonths })}`;
           return (
@@ -80,7 +81,7 @@ export function PayLedger({ freeMonths }: { freeMonths: number | null }) {
               <p className="pr-how-text">{text}</p>
               <a href={entry.href} className="pr-link">
                 {t(`${entry.key}.link`)}
-                <Arrow aria-hidden strokeWidth={1.5} />
+                <ArrowUp aria-hidden strokeWidth={1.5} />
               </a>
             </li>
           );

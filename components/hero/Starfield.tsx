@@ -1,6 +1,9 @@
 /**
  * Deterministic star field (seeded PRNG → identical SSR and client markup).
  * Three depth layers; [data-star-layer] lets the hero move them for parallax.
+ * Still by design (v3: no permanent decorative animation): the v2 twinkle animated
+ * the opacity of SVG circles, which can't be composited, so it repainted the hero
+ * and re-layerized the page on every frame, even with nobody scrolling.
  */
 function mulberry32(seed: number) {
   return () => {
@@ -22,14 +25,16 @@ const round = (n: number) => Math.round(n * 100) / 100;
 
 const STARS = LAYERS.map((layer) => {
   const rand = mulberry32(layer.seed);
-  return Array.from({ length: layer.count }, (_, i) => ({
-    x: round(rand() * 100),
-    y: round(rand() * 100),
-    r: round(layer.r[0] + rand() * (layer.r[1] - layer.r[0])),
-    o: round(layer.o[0] + rand() * (layer.o[1] - layer.o[0])),
-    twinkle: i % 5 === 0,
-    delay: round(rand() * 4),
-  }));
+  return Array.from({ length: layer.count }, () => {
+    const star = {
+      x: round(rand() * 100),
+      y: round(rand() * 100),
+      r: round(layer.r[0] + rand() * (layer.r[1] - layer.r[0])),
+      o: round(layer.o[0] + rand() * (layer.o[1] - layer.o[0])),
+    };
+    rand(); // was the twinkle delay: keeps the v2 sky (same positions) without it
+    return star;
+  });
 });
 
 export function Starfield({ className = '' }: { className?: string }) {
@@ -45,9 +50,6 @@ export function Starfield({ className = '' }: { className?: string }) {
               r={s.r / 10}
               fill={li === 2 && i % 3 === 0 ? '#FFE8B0' : '#F4EFE6'}
               opacity={s.o}
-              className={s.twinkle ? 'twinkle' : undefined}
-              style={s.twinkle ? { animationDelay: `${s.delay}s` } : undefined}
-              vectorEffect="non-scaling-stroke"
             />
           ))}
         </svg>

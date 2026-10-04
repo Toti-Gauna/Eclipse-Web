@@ -6,7 +6,6 @@ import { ArrowDown, ChevronDown, MessageCircle } from 'lucide-react';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { Occult } from '@/components/motion/Occult';
-import { useIsClient } from '@/components/motion/useIsClient';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useSound } from '@/components/sound/SoundContext';
 import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
@@ -24,6 +23,7 @@ import {
   hourlyRateIn,
   lossShares,
   monthlyLoss,
+  outOfRange,
   perYear,
   rateOf,
   stepAmount,
@@ -34,17 +34,18 @@ import {
   type CalculatorField,
   type CalculatorValues,
   type CountField,
+  type RangeEdge,
 } from '@/lib/calculator';
 import { isApproximate } from '@/lib/currency';
 import { formatMoney } from '@/lib/pricing';
 import { track } from '@/lib/analytics';
 import { InlineSelect } from './InlineSelect';
 import { ValueField } from './ValueField';
-import { RollingNumber, useInViewOnce } from './RollingNumber';
+import { RollingNumber, useInView, useInViewOnce, useScrolledPast } from './RollingNumber';
 
 /** Delay before the aria-live total is updated (announce the final value, not every step). */
 const ANNOUNCE_DELAY_MS = 700;
-/** Monthly loss (USD) at which the corona behind the reading is at full strength. Purely visual. */
+/** Monthly loss (USD) at which the warm light behind the reading is at full strength. Purely visual. */
 const GLOW_FULL_USD = 3000;
 const USED_KEY = 'eclipse:calculator_used';
 
@@ -81,11 +82,15 @@ const fresh = (vertical: VerticalId, load = 0): CalcState => ({
 
 /**
  * "¿Cuánto te cuesta no tener esto?" — the visitor completes a sentence with their
- * numbers ("Tengo [una clínica]. Cada semana pierdo [10] turnos…") and an instrument
- * readout shows the monthly loss in their currency. All maths in lib/calculator.ts.
+ * numbers ("Tengo [una clínica]. Cada semana pierdo [10] turnos…") and a compact readout
+ * shows the monthly loss in their currency (the year and the USD reference smaller).
+ * "Ver la cuenta" unfolds the rest — lost revenue vs. team time with the exact
+ * arithmetic, and the assumptions — so nothing is lost, only folded. All maths in
+ * lib/calculator.ts; the result is labelled as an estimate with the visitor's numbers.
  *
  * Layout: header + sentence | readout (lg+); on phones the readout follows the sentence
- * and a sticky mini reading keeps the number on screen while editing.
+ * and a light sticky mini reading keeps the number on screen while the full one is out
+ * of view (typing with the keyboard open, mostly).
  */
 export function LossCalculator({ header }: { header?: ReactNode }) {
   const t = useTranslations('problem');
@@ -94,10 +99,9 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
   const { currency, rates, format } = useCurrency();
   const { vertical, selectVertical } = useExperience();
   const { play } = useSound();
-  const isClient = useIsClient();
   const uid = useId();
 
-  // The calculator follows the vertical chosen anywhere (hero or here).
+  // The calculator follows the vertical chosen anywhere (hero, demos or here).
   const verticalId: VerticalId = vertical ?? 'otro';
   const [state, setState] = useState<CalcState>(() => fresh(verticalId));
   let current = state;
@@ -148,8 +152,14 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
   // ---- Readout motion: count up when it enters the viewport.
   const readoutRef = useRef<HTMLElement>(null);
   const inputsRef = useRef<HTMLDivElement>(null);
+  const totalRef = useRef<HTMLParagraphElement>(null);
+  const sentinelRef = useRef<HTMLSpanElement>(null);
   const started = useInViewOnce(readoutRef);
   const miniStarted = useInViewOnce(inputsRef);
+  // Phones: the mini reading only shows while the sentence is being read (its top has
+  // scrolled away) and the full reading is off screen — never the same number twice.
+  const totalOnScreen = useInView(totalRef);
+  const intoSentence = useScrolledPast(sentinelRef);
 
   // ---- aria-live: the final total once the visitor stops editing. Silent until the
   // calculator is touched, so load-time changes (stored currency, live rates) aren't read.
@@ -163,6 +173,8 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
 
   // ---- Editing
   const [activeField, setActiveField] = useState<CalculatorField>('lostPerWeek');
+  /** A typed value outside the accepted range: said right under the sentence, next to the presets. */
+  const [rangeNote, setRangeNote] = useState<{ field: CalculatorField; edge: RangeEdge } | null>(null);
   // A held −/+ repeats every 75 ms: tick on every other step.
   const tick = (direction: 1 | -1, repeat: number) => {
     if (repeat % 2 === 0) play('tick', { pitch: direction });
@@ -188,10 +200,27 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
       return { ...s, ticketEdited: true, values: { ...s.values, ticketUsd: ticketUsdFromLocal(local, currency, rates) } };
     });
   };
+  const noteRange = (field: CalculatorField, edge: RangeEdge | null) => {
+    if (edge && !rangeNote) play('error');
+    setRangeNote(edge ? { field, edge } : null);
+  };
+  const typeCount = (field: CountField, n: number) => {
+    noteRange(field, outOfRange(n, CALCULATOR_RANGES[field]));
+    setCount(field, () => n);
+  };
+  const typeTicket = (n: number) => {
+    noteRange('ticketUsd', outOfRange(n, bounds));
+    setTicketLocal(n);
+  };
+  const focusField = (field: CalculatorField) => {
+    setActiveField(field);
+    setRangeNote((r) => (r && r.field !== field ? null : r));
+  };
 
   const pickVertical = (id: VerticalId) => {
     touch('vertical');
     play('select');
+    setRangeNote(null);
     setState((s) => fresh(id, s.load + 1));
     selectVertical(id, 'calculator');
   };
@@ -205,6 +234,7 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
     presetField === 'ticketUsd' ? localFmt(n) : presetField === 'hoursPerWeek' ? t('hoursValue', { count: n }) : intFmt.format(n);
   const applyPreset = (n: number) => {
     play('select');
+    setRangeNote(null);
     if (presetField === 'ticketUsd') setTicketLocal(n);
     else setCount(presetField, () => n);
   };
@@ -221,8 +251,20 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
     hours: `${uid}-hours`,
     readout: `${uid}-readout`,
     math: `${uid}-math`,
+    range: `${uid}-range`,
   };
   const flashKey = current.load ? String(current.load) : undefined;
+  const describedBy = (field: CalculatorField) => (rangeNote?.field === field ? ids.range : undefined);
+
+  // The limit, as the visitor typed it: a count, or an amount in the display currency.
+  const rangeText = (() => {
+    if (!rangeNote) return '';
+    const limit =
+      rangeNote.field === 'ticketUsd'
+        ? localFmt(bounds[rangeNote.edge])
+        : intFmt.format(CALCULATOR_RANGES[rangeNote.field][rangeNote.edge]);
+    return t(rangeNote.edge === 'max' ? 'rangeMax' : 'rangeMin', { value: limit });
+  })();
 
   const verticalOptions = verticals.map((x) => ({ value: x.id, label: t(`verticalOption.${x.id}`) }));
   const sentence = {
@@ -241,13 +283,15 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
         increaseLabel={t('increase', { label: lostLabel })}
         onStep={(d, n, repeat) => {
           tick(d, repeat);
+          setRangeNote(null);
           setCount('lostPerWeek', (x) => stepCount(x, d, CALCULATOR_RANGES.lostPerWeek, n));
         }}
-        onType={(n) => setCount('lostPerWeek', () => n)}
+        onType={(n) => typeCount('lostPerWeek', n)}
         onEdge={(edge) => setCount('lostPerWeek', () => CALCULATOR_RANGES.lostPerWeek[edge])}
-        onFocusField={() => setActiveField('lostPerWeek')}
+        onFocusField={() => focusField('lostPerWeek')}
         active={activeField === 'lostPerWeek'}
         flashKey={flashKey}
+        describedBy={describedBy('lostPerWeek')}
       />
     ),
     ticket: () => (
@@ -264,13 +308,15 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
         increaseLabel={t('increase', { label: ticketLabel })}
         onStep={(d, n, repeat) => {
           tick(d, repeat);
+          setRangeNote(null);
           stepTicket(d, n);
         }}
-        onType={setTicketLocal}
+        onType={typeTicket}
         onEdge={(edge) => setTicketLocal(bounds[edge])}
-        onFocusField={() => setActiveField('ticketUsd')}
+        onFocusField={() => focusField('ticketUsd')}
         active={activeField === 'ticketUsd'}
         flashKey={flashKey}
+        describedBy={describedBy('ticketUsd')}
       />
     ),
     hours: () => (
@@ -287,13 +333,15 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
         increaseLabel={t('increase', { label: hoursLabel })}
         onStep={(d, n, repeat) => {
           tick(d, repeat);
+          setRangeNote(null);
           setCount('hoursPerWeek', (x) => stepCount(x, d, CALCULATOR_RANGES.hoursPerWeek, n));
         }}
-        onType={(n) => setCount('hoursPerWeek', () => n)}
+        onType={(n) => typeCount('hoursPerWeek', n)}
         onEdge={(edge) => setCount('hoursPerWeek', () => CALCULATOR_RANGES.hoursPerWeek[edge])}
-        onFocusField={() => setActiveField('hoursPerWeek')}
+        onFocusField={() => focusField('hoursPerWeek')}
         active={activeField === 'hoursPerWeek'}
         flashKey={flashKey}
+        describedBy={describedBy('hoursPerWeek')}
       />
     ),
   };
@@ -309,9 +357,9 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
   const waMessage = verticalName ? t('whatsapp', { ...waValues, vertical: verticalName }) : t('whatsappNoVertical', waValues);
   const rateText = currency === 'USD' ? localFmt(hourlyLocal) : `${formatMoney(DEFAULT_HOURLY_USD, 'USD', rates, locale)} ${tc('approxPrefix')} ${localFmt(hourlyLocal)}`;
   const totalText = moneyPlain(loss.totalUsd);
-  const glow = 0.3 + 0.7 * Math.min(1, loss.totalUsd / GLOW_FULL_USD);
-  const barsArmed = isClient && !started;
+  const glow = 0.35 + 0.65 * Math.min(1, loss.totalUsd / GLOW_FULL_USD);
   const [mathOpen, setMathOpen] = useState(false);
+  const miniIdle = totalOnScreen || !intoSentence;
 
   const scrollToReadout = () => {
     const el = readoutRef.current;
@@ -329,15 +377,27 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
             {t('inputsTitle')}
           </h3>
 
-          {/* Phones: the reading stays on screen (under the header) while the sentence is edited. */}
-          <button type="button" className="calc-mini" onClick={scrollToReadout} aria-label={t('miniJump')}>
-            <span className="label calc-mini-label">{t('miniLabel')}</span>
-            <span className="calc-mini-value readout">
-              {approx ? <span className="calc-approx">{tc('approxPrefix')} </span> : null}
-              <RollingNumber value={loss.totalUsd} format={moneyPlain} started={miniStarted} srOnly={false} />
-            </span>
-            <ArrowDown aria-hidden className="calc-mini-icon" strokeWidth={1.5} />
-          </button>
+          {/* Phones: a zero-height sticky rail under the header carries the reading while the
+              full one is out of view; it takes no room in the sentence. */}
+          <span ref={sentinelRef} aria-hidden className="calc-mini-sentinel" />
+          <div className="calc-mini-rail">
+            <button
+              type="button"
+              className="calc-mini"
+              onClick={scrollToReadout}
+              aria-label={t('miniJump')}
+              data-idle={miniIdle || undefined}
+              aria-hidden={miniIdle || undefined}
+              tabIndex={miniIdle ? -1 : undefined}
+            >
+              <span className="label calc-mini-label">{t('miniLabel')}</span>
+              <span className="calc-mini-value readout">
+                {approx ? <span className="calc-approx">{tc('approxPrefix')} </span> : null}
+                <RollingNumber value={loss.totalUsd} format={moneyPlain} started={miniStarted} srOnly={false} />
+              </span>
+              <ArrowDown aria-hidden className="calc-mini-icon" strokeWidth={1.5} />
+            </button>
+          </div>
 
           <p data-reveal className="calc-sentence">
             {t.rich('lead', sentence)} {t.rich(`lost.${verticalId}`, sentence)} {t.rich('hours', sentence)}
@@ -359,101 +419,111 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
               ))}
             </div>
           </div>
+          <p id={ids.range} role="status" className="calc-range">
+            {rangeText}
+          </p>
         </div>
       </div>
 
       <Occult from="right" start="top 85%" className="calc-readout-frame">
-      <aside ref={readoutRef} className="calc-readout ticks" aria-labelledby={ids.readout} style={{ '--glow': glow } as CSSProperties}>
-        <div aria-hidden className="calc-glow" />
-        <header className="calc-readout-head">
-          <h3 id={ids.readout} data-readout-title tabIndex={-1} className="label calc-readout-title">
-            <span aria-hidden className="calc-dot" />
-            {t('readoutTitle')}
-          </h3>
-          <p className="label calc-honest">{t('honest')}</p>
-        </header>
+        <aside ref={readoutRef} className="calc-readout ticks" aria-labelledby={ids.readout} style={{ '--glow': glow } as CSSProperties}>
+          <div aria-hidden className="calc-glow" />
+          <header className="calc-readout-head">
+            <h3 id={ids.readout} data-readout-title tabIndex={-1} className="label calc-readout-title">
+              <span aria-hidden className="calc-dot" />
+              {t('readoutTitle')}
+            </h3>
+            <p className="calc-honest">{t('honest')}</p>
+          </header>
 
-        <div className="calc-reading">
-          <p className="label calc-reading-unit">{t('perMonth')}</p>
-          <p aria-hidden className="calc-total readout" style={{ '--chars': (approx ? 1 : 0) + totalText.length } as CSSProperties}>
-            {approx ? <span className="calc-approx">{tc('approxPrefix')}</span> : null}
-            <RollingNumber value={loss.totalUsd} format={moneyPlain} started={started} srOnly={false} introDuration={1.8} />
-          </p>
-          <p className="calc-reading-sub readout">
-            <span>{t('perYear', { amount: money(perYear(loss.totalUsd)) })}</span>
-            {currency !== 'USD' ? <span className="calc-usd">{t('usdRef', { amount: formatMoney(loss.totalUsd, 'USD', rates, locale) })}</span> : null}
-          </p>
-          <p className="sr-only" aria-live={live ? 'polite' : 'off'} aria-atomic="true">
-            {announced}
-          </p>
-        </div>
-
-        <div className="calc-split" data-armed={barsArmed || undefined}>
-          <div aria-hidden className="calc-bar" style={{ '--a': shares.revenue, '--b': shares.time } as CSSProperties}>
-            <span className="calc-bar-a" />
-            <span className="calc-bar-b" />
-          </div>
-          <div aria-hidden className="calc-ruler" />
-          <dl className="calc-legend">
-            <div className="calc-legend-row">
-              <dt>
-                <span aria-hidden className="calc-swatch calc-swatch--a" />
-                {t('lostRevenue')}
-              </dt>
-              <dd className="readout calc-legend-pct">{pctFmt.format(shares.revenue)}</dd>
-              <dd className="readout calc-legend-amount">{money(loss.lostRevenueUsd)}</dd>
-            </div>
-            <div className="calc-legend-row">
-              <dt>
-                <span aria-hidden className="calc-swatch calc-swatch--b" />
-                {t('timeCost')}
-              </dt>
-              <dd className="readout calc-legend-pct">{pctFmt.format(shares.time)}</dd>
-              <dd className="readout calc-legend-amount">{money(loss.timeCostUsd)}</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className="calc-math-block">
-          <button type="button" className="calc-math-toggle" aria-expanded={mathOpen} aria-controls={ids.math} onClick={() => setMathOpen((o) => !o)}>
-            <span>{mathOpen ? t('hideMath') : t('showMath')}</span>
-            <ChevronDown aria-hidden className="calc-math-caret" strokeWidth={1.5} />
-          </button>
-          <div id={ids.math} className="calc-math" hidden={!mathOpen}>
-            <p className="calc-math-row readout">
-              <span>{t('mathLost', { count: decFmt.format(loss.lostPerMonth), unit: unit(loss.lostPerMonth), ticket: localFmt(ticket.local) })}</span>
-              <span aria-hidden className="leader" />
-              <span>{money(loss.lostRevenueUsd)}</span>
+          <div className="calc-reading">
+            <p className="label calc-reading-unit">{t('perMonth')}</p>
+            <p ref={totalRef} aria-hidden className="calc-total readout" style={{ '--chars': (approx ? 1 : 0) + totalText.length } as CSSProperties}>
+              {approx ? <span className="calc-approx">{tc('approxPrefix')}</span> : null}
+              <RollingNumber value={loss.totalUsd} format={moneyPlain} started={started} srOnly={false} introDuration={1.8} />
             </p>
-            <p className="calc-math-row readout">
-              <span>{t('mathTime', { count: decFmt.format(loss.hoursPerMonth), rate: localFmt(hourlyLocal) })}</span>
-              <span aria-hidden className="leader" />
-              <span>{money(loss.timeCostUsd)}</span>
+            <p className="calc-reading-sub readout">
+              <span>{t('perYear', { amount: money(perYear(loss.totalUsd)) })}</span>
+              {currency !== 'USD' ? <span className="calc-usd">{t('usdRef', { amount: formatMoney(loss.totalUsd, 'USD', rates, locale) })}</span> : null}
             </p>
-            <p className="calc-math-row calc-math-total readout">
-              <span>{t('mathTotal')}</span>
-              <span aria-hidden className="leader" />
-              <span>{money(loss.totalUsd)}</span>
+            <p className="sr-only" aria-live={live ? 'polite' : 'off'} aria-atomic="true">
+              {announced}
             </p>
           </div>
-          <p className="calc-assumptions">{t('assumptions', { weeks: decFmt.format(WEEKS_PER_MONTH), rate: rateText })}</p>
-        </div>
 
-        <div className="calc-ctas">
-          <WhatsAppLink
-            message={waMessage}
-            origin="calculator"
-            extra={{ vertical: verticalId, monthly_loss_usd: Math.round(loss.totalUsd) }}
-            className="btn btn-primary calc-cta"
-          >
-            <MessageCircle aria-hidden className="size-[1.1em] shrink-0" strokeWidth={1.8} />
-            {t('cta')}
-          </WhatsAppLink>
-          <BuildPlanButton source="calculator" className="btn btn-ghost calc-cta">
-            {t('ctaPlan')}
-          </BuildPlanButton>
-        </div>
-      </aside>
+          <div className="calc-math-block">
+            <button
+              type="button"
+              className="calc-math-toggle"
+              aria-expanded={mathOpen}
+              aria-controls={ids.math}
+              onClick={() => {
+                play('toggle');
+                setMathOpen((o) => !o);
+              }}
+            >
+              <span>{mathOpen ? t('hideMath') : t('showMath')}</span>
+              <ChevronDown aria-hidden className="calc-math-caret" strokeWidth={1.5} />
+            </button>
+            <div id={ids.math} className="calc-math" hidden={!mathOpen}>
+              {/* Lost revenue (solid) + team time (hatched) on a ruler; the rows below carry the numbers. */}
+              <div aria-hidden className="calc-bar" style={{ '--a': shares.revenue, '--b': shares.time } as CSSProperties}>
+                <span className="calc-bar-a" />
+                <span className="calc-bar-b" />
+              </div>
+              <div aria-hidden className="calc-ruler" />
+              {/* Each part: name ··· amount, then its exact arithmetic and share. */}
+              <dl className="calc-break">
+                <div className="calc-break-row">
+                  <dt className="calc-break-name">
+                    <span aria-hidden className="calc-swatch calc-swatch--a" />
+                    <span>{t('lostRevenue')}</span>
+                    <span aria-hidden className="leader" />
+                  </dt>
+                  <dd className="calc-break-amount readout">{money(loss.lostRevenueUsd)}</dd>
+                  <dd className="calc-break-math readout">
+                    {t('mathLost', { count: decFmt.format(loss.lostPerMonth), unit: unit(loss.lostPerMonth), ticket: localFmt(ticket.local) })}
+                    <span className="calc-break-pct"> · {pctFmt.format(shares.revenue)}</span>
+                  </dd>
+                </div>
+                <div className="calc-break-row">
+                  <dt className="calc-break-name">
+                    <span aria-hidden className="calc-swatch calc-swatch--b" />
+                    <span>{t('timeCost')}</span>
+                    <span aria-hidden className="leader" />
+                  </dt>
+                  <dd className="calc-break-amount readout">{money(loss.timeCostUsd)}</dd>
+                  <dd className="calc-break-math readout">
+                    {t('mathTime', { count: decFmt.format(loss.hoursPerMonth), rate: localFmt(hourlyLocal) })}
+                    <span className="calc-break-pct"> · {pctFmt.format(shares.time)}</span>
+                  </dd>
+                </div>
+              </dl>
+              <p className="calc-math-total">
+                <span>{t('mathTotal')}</span>
+                <span aria-hidden className="leader" />
+                <span className="readout">{money(loss.totalUsd)}</span>
+              </p>
+              <p className="calc-assumptions">{t('assumptions', { weeks: decFmt.format(WEEKS_PER_MONTH), rate: rateText })}</p>
+            </div>
+          </div>
+
+          <div className="calc-ctas">
+            <WhatsAppLink
+              message={waMessage}
+              origin="calculator"
+              extra={{ vertical: verticalId, monthly_loss_usd: Math.round(loss.totalUsd) }}
+              className="btn btn-primary calc-cta"
+              data-page-cta
+            >
+              <MessageCircle aria-hidden className="size-[1.1em] shrink-0" strokeWidth={1.8} />
+              {t('cta')}
+            </WhatsAppLink>
+            <BuildPlanButton source="calculator" className="btn btn-ghost calc-cta">
+              {t('ctaPlan')}
+            </BuildPlanButton>
+          </div>
+        </aside>
       </Occult>
     </div>
   );

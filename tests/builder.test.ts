@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { emptyPlanState, GOAL_IDS, type PlanState } from '@/lib/plan-url';
-import { itemCategories, items, plans } from '@/lib/content';
+import { itemCategories, items, plans, type ItemId } from '@/lib/content';
 import { quote } from '@/lib/pricing';
 import {
   addedByPreset,
@@ -30,6 +30,7 @@ import {
 } from '@/components/plan-builder/rules';
 import { goalPieces, piecesForGoals, setVertical, suggestedIds, toggleGoal } from '@/components/plan-builder/goals';
 import { withGoals } from '@/components/plan-builder/message';
+import { mergePreload, noPreload, openCategories, preloadNotes, presetPreload, undoAdded } from '@/components/plan-builder/preload';
 
 const NOW = new Date('2026-10-02T12:00:00Z');
 const ctx = { foundersLeft: 5, now: NOW };
@@ -305,5 +306,55 @@ describe('offer countdown', () => {
     expect(timeLeft('2026-10-05T18:00:00Z', now)).toEqual({ days: 3, hours: 78 });
     expect(timeLeft('2026-10-02T12:20:00Z', now)).toEqual({ days: 0, hours: 1 });
     expect(timeLeft('2026-10-01T00:00:00Z', now)).toBeNull();
+  });
+});
+
+describe('preload: what came preselected, and why (step 2)', () => {
+  it('goals explain the extras they suggested; a preset explains what it added', () => {
+    const goals = toggleGoal(emptyPlanState, 'encontrar');
+    expect(preloadNotes(goals, noPreload)).toEqual({ fromGoals: ['landing', 'seo'], added: [], packageFromPreset: false });
+    const preset = { items: ['chatbot', 'seo'] as ItemId[] };
+    const preload = presetPreload(goals, preset);
+    expect(preload).toEqual({ items: ['chatbot'], planId: null });
+    // seo was already there (the goal explains it); chatbot is the preset's.
+    expect(preloadNotes(applyPreset(goals, preset), preload)).toEqual({ fromGoals: ['landing', 'seo'], added: ['chatbot'], packageFromPreset: false });
+  });
+  it('a piece is explained once, and only while it is still selected', () => {
+    const s = state({ goals: ['atender'], items: ['voz', 'chatbot'] });
+    expect(preloadNotes(s, { items: ['chatbot'], planId: null })).toMatchObject({ fromGoals: ['voz'], added: ['chatbot'] });
+    expect(preloadNotes(toggleItem(s, 'chatbot'), { items: ['chatbot'], planId: null })).toMatchObject({ fromGoals: ['voz'], added: [] });
+  });
+  it("pieces inside the package are the package's to explain", () => {
+    const s = toggleGoal(state({ planId: 'presencia' }), 'encontrar');
+    expect(preloadNotes(s, noPreload).fromGoals).toEqual(['seo']);
+  });
+  it('a package preset is remembered while that package is selected', () => {
+    const preload = presetPreload(emptyPlanState, { planId: 'sistema' });
+    expect(preload).toEqual({ items: [], planId: 'sistema' });
+    const s = applyPreset(emptyPlanState, { planId: 'sistema' });
+    expect(preloadNotes(s, preload).packageFromPreset).toBe(true);
+    expect(preloadNotes(dropPlan(s), preload).packageFromPreset).toBe(false);
+    expect(preloadNotes(togglePlan(s, 'comercio'), preload).packageFromPreset).toBe(false);
+  });
+  it('presets add up; a new package starts over', () => {
+    const a = mergePreload(noPreload, { items: [], planId: 'sistema' });
+    const b = mergePreload(a, { items: ['dashboard'], planId: null });
+    expect(mergePreload(b, { items: ['chatbot'], planId: null })).toEqual({ items: ['dashboard', 'chatbot'], planId: 'sistema' });
+    expect(mergePreload(b, { items: [], planId: 'voz' })).toEqual({ items: [], planId: 'voz' });
+  });
+  it('"Deshacer" takes out only what the preset added', () => {
+    const s = state({ planId: 'presencia', items: ['seo', 'chatbot', 'automatizacion'] });
+    expect(undoAdded(s, ['chatbot', 'automatizacion'])).toMatchObject({ planId: 'presencia', items: ['seo'] });
+  });
+});
+
+describe('folding categories (step 2)', () => {
+  const groups = groupByCategory();
+  it('opens the categories that hold extras or pieces a preset just added', () => {
+    expect(openCategories(groups, { items: ['seo', 'chatbot'] })).toEqual(['presencia', 'ia']);
+    expect(openCategories(groups, { items: [] }, ['ecommerce'])).toEqual(['comercio']);
+  });
+  it('with nothing chosen, the first one (so the list shows how it works)', () => {
+    expect(openCategories(groups, { items: [] })).toEqual([groups[0].category.id]);
   });
 });

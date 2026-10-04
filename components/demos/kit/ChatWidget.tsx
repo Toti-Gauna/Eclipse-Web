@@ -281,7 +281,8 @@ export function ChatWidget({
           ) : null}
         </header>
       ) : null}
-      <div ref={log} role="log" aria-live={announce ? 'polite' : 'off'} aria-label={label} className="demo-chat-log">
+      {/* Focusable: the log scrolls, and keyboard users must be able to scroll it too. */}
+      <div ref={log} role="log" tabIndex={0} aria-live={announce ? 'polite' : 'off'} aria-label={label} className="demo-chat-log">
         {dateLabel ? <p className="demo-chat-date">{dateLabel}</p> : null}
         {run.items.map((item) => {
           if (item.from === 'note') {

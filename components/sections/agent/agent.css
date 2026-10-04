@@ -1,8 +1,44 @@
 /*
- * 08 · "Tu negocio, a plena luz." (components/sections/agent). Light theme over --dawn.
- * The eclipse is resolved here: the sun rises behind the title (Dawn.tsx).
- * Only transform / opacity are animated.
+ * 08 · Preguntas y contacto (components/sections/agent), light theme over --dawn:
+ * the FAQ, then the closing line "Tu negocio, a plena luz." over a static risen sun
+ * (Dawn.tsx) with the CTAs, the direct contact and the agent preview.
+ * No looping decoration; only the chat's own messages animate.
  */
+
+/* ---- 1 · Preguntas frecuentes ---------------------------------------- */
+.faq-block {
+  display: grid;
+  gap: 1.5rem;
+}
+.faq-block-title {
+  max-width: 12ch;
+  font-size: clamp(2.6rem, 10.5vw, 4.4rem);
+}
+@media (min-width: 1024px) {
+  .faq-block {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    align-items: start;
+    column-gap: 4rem;
+  }
+  .faq-block-mark {
+    grid-column: 1 / -1;
+  }
+  .faq-block-title {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+    font-size: clamp(3.6rem, 5.4vw, 5rem);
+  }
+}
+
+/* ---- 2 · The closing line ------------------------------------------- */
+.agent-close {
+  margin-top: 5rem;
+}
+@media (min-width: 1024px) {
+  .agent-close {
+    margin-top: 8rem;
+  }
+}
 
 /* The morning light, from the sun's side; it rises from the top edge so it never
    ends in a hard line against the section above. */
@@ -120,7 +156,6 @@
     rgb(255 210 120 / 0.2) 14deg,
     rgb(245 185 66 / 0) 15.5deg 22deg
   );
-  animation: eclipse-spin 240s linear infinite;
 }
 .agent-sun-disc {
   inset: 0;
@@ -157,6 +192,54 @@
     flex-direction: row;
     flex-wrap: wrap;
   }
+}
+
+/* Direct contact: WhatsApp and email (lib/env), as quiet links under the CTAs. */
+.agent-contact {
+  margin-top: 2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+.agent-contact-label {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.agent-contact ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.75rem;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.agent-contact-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+  transition:
+    color 0.25s ease,
+    text-decoration-color 0.25s ease;
+}
+.agent-contact-link:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+.agent-contact-link svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
 }
 @media (min-width: 1024px) {
   .agent-grid {
@@ -279,7 +362,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .agent-sun-rays::before,
   .agent-msg,
   .agent-typing span {
     animation: none;

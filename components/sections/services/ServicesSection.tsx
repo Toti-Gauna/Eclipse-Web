@@ -11,10 +11,11 @@ import { ServicesIndex } from './ServicesIndex';
 import { FAMILIES } from './services';
 
 /**
- * 03 · "Qué construimos": the catalog of pieces. Six families (the item categories
- * of content/items.json) as an index list with a live preview; every piece shows
- * its single price ("pieza suelta", pago único), the packages that already include
- * it, and opens "Armá tu plan" with it.
+ * 03 · Soluciones (#servicios): the catalog of pieces. Six families (the item
+ * categories of content/items.json) as an index: each row shows the family's result
+ * and its "desde"; one family opens at a time with every piece, its single price
+ * ("pieza suelta", pago único), the packages that already include it and "Sumar"
+ * (opens "Armá tu plan" with it). Precios (#precios) follows right below.
  */
 export function ServicesSection() {
   const t = useTranslations('services');

@@ -5,7 +5,8 @@ import type { DemoId, VerticalId } from '@/lib/content';
  *
  * - `screen="phone"`: the complete, navigable mobile experience (it is the ONLY
  *   screen on mobile, so every feature must be reachable from it).
- * - `screen="laptop"`: the desktop composition shown next to the phone from md up.
+ * - `screen="laptop"`: the desktop composition ("Escritorio"), shown next to the phone
+ *   when the showcase is wide enough (SPLIT_MIN) and as the second tab below that.
  * - `active`: false while hidden/off-screen → pause timers and live simulations.
  * - The demo must render the visible "Demo" badge and the business name with
  *   " — Demo"; never real brands, never real people.

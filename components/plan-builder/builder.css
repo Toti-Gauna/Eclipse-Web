@@ -100,14 +100,15 @@
 /* ------------------------------------------------------------------ */
 /* Page frame                                                           */
 /* ------------------------------------------------------------------ */
+/* Compact head (v3): the steps and the dock start within the first screen. */
 .pb-page-head {
-  padding-top: calc(var(--header-h) + 2.75rem);
-  padding-bottom: 2rem;
+  padding-top: calc(var(--header-h) + 2rem);
+  padding-bottom: 1.5rem;
 }
 @media (min-width: 768px) {
   .pb-page-head {
-    padding-top: calc(var(--header-h) + 4.5rem);
-    padding-bottom: 3rem;
+    padding-top: calc(var(--header-h) + 3rem);
+    padding-bottom: 2rem;
   }
 }
 .pb-page-kicker {
@@ -116,8 +117,8 @@
   gap: 0.6rem;
 }
 .pb-page-title {
-  margin-top: 1.1rem;
-  font-size: clamp(3.4rem, 1.8rem + 7.5vw, 8.5rem);
+  margin-top: 0.9rem;
+  font-size: clamp(3rem, 1.7rem + 5.6vw, 6.5rem);
   line-height: 0.92;
 }
 /* LightSweep clips to its box: give the descenders (y, p) room below the tight line-height. */
@@ -127,13 +128,13 @@
 }
 .pb-page-intro {
   max-width: 34rem;
-  margin-top: 1.25rem;
+  margin-top: 1rem;
   font-size: 1.05rem;
   line-height: 1.55;
   color: var(--fg-muted);
 }
 .pb-page-actions {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 }
 .pb[data-mode='page'] .pb-rail {
   display: none;
@@ -648,14 +649,79 @@
   color: var(--fg);
   text-decoration-color: var(--accent);
 }
-.pb-cat + .pb-cat {
-  margin-top: 2.25rem;
+/* "Por qué ya hay piezas marcadas": each preload, explained, with its way back. */
+.pb-preload {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.pb-preload-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.7rem;
+  padding: 0.7rem 0.9rem 0.25rem;
+  border: 1px solid rgb(245 185 66 / 0.3);
+  background: rgb(245 185 66 / 0.06);
+  animation: pb-rise 0.5s var(--ease-expo) both;
+}
+.pb-preload-glyph {
+  margin-top: 0.15rem;
+  color: var(--corona);
+}
+.pb-preload-text {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--fg);
+}
+.pb-preload-action {
+  grid-column: 2;
+  justify-self: start;
+}
+@container pbsteps (min-width: 34rem) {
+  .pb-preload-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 0.35rem 0.6rem 0.35rem 0.9rem;
+  }
+  .pb-preload-glyph {
+    margin-top: 0;
+  }
+  .pb-preload-action {
+    grid-column: auto;
+    padding-inline: 0.4rem;
+  }
+}
+
+/* Categories fold: a disclosure button in each heading, a hairline between them. */
+.pb-cats-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin: -0.5rem 0 0.15rem;
+}
+.pb-cat {
+  border-top: 1px solid var(--line-strong);
+}
+.pb-cat:last-child {
+  border-bottom: 1px solid var(--line-strong);
 }
 .pb-cat-head {
+  margin: 0;
+}
+.pb-cat-toggle {
   display: flex;
-  align-items: baseline;
-  gap: 0.7rem;
-  padding-bottom: 0.7rem;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3.6rem;
+  padding: 0.8rem 0.2rem;
+  color: var(--fg);
+  text-align: left;
+}
+.pb-cat-toggle:focus-visible {
+  outline-offset: -2px;
 }
 .pb-cat-index,
 .pb-cat-count {
@@ -663,14 +729,46 @@
   color: var(--fg-muted);
 }
 .pb-cat-name {
+  min-width: 0;
   font-family: var(--font-serif);
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.05;
   color: var(--fg);
 }
 .pb-cat-count {
+  flex: none;
   margin-left: auto;
+  letter-spacing: 0.02em;
+}
+.pb-cat-count[data-some] {
+  color: var(--accent);
+}
+.pb-cat-caret {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: none;
+  color: var(--fg-muted);
+  transition: transform 0.35s var(--ease-expo);
+}
+.pb-cat[data-open] .pb-cat-caret {
+  transform: rotate(180deg);
+}
+@media (hover: hover) {
+  .pb-cat-toggle:hover .pb-cat-caret {
+    color: var(--fg);
+  }
+}
+/* Folded with pieces inside: which ones, so nothing chosen is out of sight. */
+.pb-cat-summary {
+  margin: -0.4rem 0 0.95rem 2.05rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+.pb-cat .pb-list {
+  margin-bottom: 1.4rem;
+  animation: pb-rise 0.45s var(--ease-expo) both;
 }
 .pb-piece[data-locked] {
   cursor: default;
@@ -763,6 +861,11 @@
 }
 .pb-note--accent {
   color: var(--flare);
+}
+/* Said before the options: why one of them is already checked. */
+.pb-note--lead {
+  margin: 0 0 1.1rem;
+  color: var(--fg);
 }
 .pb-offer {
   margin-top: 2.25rem;
@@ -879,6 +982,29 @@
 /* ------------------------------------------------------------------ */
 /* Step 4: the ledger                                                   */
 /* ------------------------------------------------------------------ */
+/* "Solicitud de propuesta": what the summary is (and isn't), before any number. */
+.pb-proposal {
+  --tick: 10px;
+  --tick-c: rgb(245 185 66 / 0.6);
+  margin-bottom: 1.75rem;
+  padding: 0.85rem 1rem 0.9rem;
+  background-color: rgb(244 239 230 / 0.035);
+}
+.pb-proposal-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+}
+.pb-proposal-glyph {
+  flex: none;
+}
+.pb-proposal-text {
+  margin-top: 0.35rem;
+  font-size: 0.925rem;
+  line-height: 1.45;
+  color: var(--fg);
+}
 .pb-ledger {
   display: grid;
   gap: 2rem;

@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, type ComponentPropsWithoutRef, type ElementType, type ReactNode } from 'react';
-import { gsap, useGSAP } from './gsap';
+import { useLayoutEffect, useRef, type ComponentPropsWithoutRef, type ElementType, type ReactNode } from 'react';
+import { observeEnter } from './observeEnter';
 import { prefersReducedMotion } from './useReducedMotion';
 
 export type OccultShape = 'circle' | 'inset';
@@ -31,7 +31,7 @@ type OccultProps<T extends ElementType> = {
   round?: string;
   /** 'enter' (default): the first time it scrolls in. 'mount': right away (e.g. a re-keyed stage). */
   on?: 'enter' | 'mount';
-  /** ScrollTrigger start for on="enter". */
+  /** Reading line for on="enter", "top NN%". */
   start?: string;
   duration?: number;
   delay?: number;
@@ -49,6 +49,8 @@ type OccultProps<T extends ElementType> = {
  * Content is fully visible without JS and with reduced motion. With
  * on="enter", content that is already on screen when it mounts (a reload
  * mid-page, a deep link) is left as is instead of hiding and replaying.
+ * A CSS transition (`[data-occult]`, globals "v2 · motion signature") started by a
+ * pooled IntersectionObserver: no ScrollTrigger and no GSAP style reads.
  */
 export function Occult<T extends ElementType = 'div'>({
   as,
@@ -67,46 +69,52 @@ export function Occult<T extends ElementType = 'div'>({
   const Tag = (as ?? 'div') as ElementType;
   const ref = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      const el = ref.current;
-      if (!el || prefersReducedMotion()) return;
-      if (on === 'enter') {
-        const r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.75 && r.bottom > 0) return;
-      }
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    const box = el.getBoundingClientRect();
+    if (on === 'enter' && box.top < window.innerHeight * 0.75 && box.bottom > 0) return;
 
-      let hidden: string;
-      let shown: string;
-      if (shape === 'circle') {
-        // Radius in px that reaches the farthest corner from the birth point.
-        const { width: w, height: h } = el.getBoundingClientRect();
-        const [px, py] = at.split(/\s+/).map((v) => parseFloat(v) / 100);
-        const x = (Number.isFinite(px) ? px : 0.5) * w;
-        const y = (Number.isFinite(py) ? py : 0.5) * h;
-        const far = Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) + 2;
-        hidden = `circle(0px at ${x}px ${y}px)`;
-        shown = `circle(${far}px at ${x}px ${y}px)`;
-      } else {
-        hidden = inset(HIDDEN_INSET[from], round);
-        shown = inset([0, 0, 0, 0], round);
-      }
+    let hidden: string;
+    let shown: string;
+    if (shape === 'circle') {
+      // Radius in px that reaches the farthest corner from the birth point.
+      const { width: w, height: h } = box;
+      const [px, py] = at.split(/\s+/).map((v) => parseFloat(v) / 100);
+      const x = (Number.isFinite(px) ? px : 0.5) * w;
+      const y = (Number.isFinite(py) ? py : 0.5) * h;
+      const far = Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) + 2;
+      hidden = `circle(0px at ${x}px ${y}px)`;
+      shown = `circle(${far}px at ${x}px ${y}px)`;
+    } else {
+      hidden = inset(HIDDEN_INSET[from], round);
+      shown = inset([0, 0, 0, 0], round);
+    }
 
-      gsap.fromTo(
-        el,
-        { clipPath: hidden },
-        {
-          clipPath: shown,
-          duration,
-          delay,
-          ease: 'expo.inOut',
-          clearProps: 'clipPath',
-          scrollTrigger: on === 'enter' ? { trigger: el, start, once: true } : undefined,
-        },
-      );
-    },
-    { scope: ref },
-  );
+    el.style.setProperty('--occult-from', hidden);
+    el.style.setProperty('--occult-to', shown);
+    el.style.setProperty('--occult-duration', `${duration}s`);
+    el.style.setProperty('--occult-delay', `${delay}s`);
+    el.setAttribute('data-occult', 'hidden');
+    let timer = 0;
+    let raf = 0;
+    const done = () => {
+      el.removeAttribute('data-occult');
+      for (const p of ['--occult-from', '--occult-to', '--occult-duration', '--occult-delay']) el.style.removeProperty(p);
+    };
+    const play = () => {
+      el.setAttribute('data-occult', 'playing');
+      timer = window.setTimeout(done, (duration + delay) * 1000 + 50);
+    };
+    // on="mount": the hidden state has to be painted once before the transition starts.
+    const stop = on === 'enter' ? observeEnter(el, start, play) : () => cancelAnimationFrame(raf);
+    if (on === 'mount') raf = requestAnimationFrame(() => (raf = requestAnimationFrame(play)));
+    return () => {
+      stop();
+      window.clearTimeout(timer);
+      done();
+    };
+  }, [shape, from, at, round, on, start, duration, delay]);
 
   return (
     <Tag ref={ref} className={className} {...rest}>

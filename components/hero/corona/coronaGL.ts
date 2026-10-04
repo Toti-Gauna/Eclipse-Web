@@ -19,12 +19,23 @@ export interface CoronaFrameState {
 }
 
 export interface CoronaHandle {
-  /** Run or pause the render loop (off-screen, hidden tab, covered by the reveal). */
+  /** Allow or forbid drawing (off-screen, hidden tab, covered by the reveal). */
   setActive: (active: boolean) => void;
+  /**
+   * Keep the corona moving for at least `ms` from now (entrance, scroll, reveal, dial).
+   * Otherwise it rests on its last frame: no requestAnimationFrame, no GPU work.
+   */
+  wake: (ms: number) => void;
   dispose: () => void;
 }
 
-const MAX_DPR = 1.5;
+/**
+ * The corona is soft: rendered at 1.25 device px per CSS px it looks the same as at 1.5
+ * (side-by-side check on a 2× screen, hero/gltest) with ~31 % fewer pixels to shade.
+ */
+const MAX_DPR = 1.25;
+/** How fast the corona's clock speeds up when woken / slows to a stop at rest (per 60 Hz frame). */
+const EASE_PER_FRAME = 0.06;
 
 export function mountCorona(
   host: HTMLElement,
@@ -85,27 +96,42 @@ export function mountCorona(
 
   host.appendChild(canvas);
 
+  let redraw = () => {};
   const resize = () => {
     const w = host.clientWidth;
     const h = host.clientHeight;
-    if (w && h) renderer.setSize(w, h);
+    if (!w || !h) return;
+    renderer.setSize(w, h);
+    redraw(); // setSize clears the canvas
   };
   resize();
   const ro = new ResizeObserver(resize);
   ro.observe(host);
 
+  // Demand-driven loop (v3: no permanent decorative animation). It draws while the
+  // inputs change (scroll scrub, reveal moon) or while woken; its clock eases to a
+  // stop afterwards and the last frame stays on the canvas. Time only advances while
+  // drawing, so a new wake continues the same sky without a jump.
   let raf = 0;
   let running = false;
   let first = true;
   let last = 0;
+  let awakeUntil = 0;
+  let speed = 0;
   let elapsed = Math.random() * 40; // a different sky on every visit
+  let prev = { intensity: NaN, moonX: NaN, moonY: NaN };
 
   const frame = (now: number) => {
-    raf = requestAnimationFrame(frame);
-    // Only advance time while running (no jump after a pause), clamp long frames.
-    elapsed += last ? Math.min(now - last, 50) / 1000 : 0;
+    raf = 0;
+    const dt = last ? Math.min(now - last, 50) : 0;
     last = now;
+    const target = now < awakeUntil ? 1 : 0;
+    speed += (target - speed) * Math.min(1, EASE_PER_FRAME * (dt / 16.7 || 1));
+    if (speed < 0.004 && target === 0) speed = 0;
+    elapsed += (dt / 1000) * speed;
     const s = read();
+    const changed = s.intensity !== prev.intensity || s.moonX !== prev.moonX || s.moonY !== prev.moonY;
+    prev = s;
     program.uniforms.uTime.value = elapsed;
     program.uniforms.uIntensity.value = s.intensity;
     program.uniforms.uMoon.value[0] = s.moonX;
@@ -115,6 +141,12 @@ export function mountCorona(
       first = false;
       onFirstFrame();
     }
+    if (running && (speed > 0 || changed)) raf = requestAnimationFrame(frame);
+    else last = 0;
+  };
+  /** One more frame (or the loop, if woken / still changing). */
+  const schedule = () => {
+    if (running && !raf) raf = requestAnimationFrame(frame);
   };
 
   const setActive = (active: boolean) => {
@@ -122,11 +154,18 @@ export function mountCorona(
     running = active;
     if (active) {
       last = 0;
-      raf = requestAnimationFrame(frame);
+      schedule();
     } else {
       cancelAnimationFrame(raf);
+      raf = 0;
     }
   };
+
+  const wake = (ms: number) => {
+    awakeUntil = Math.max(awakeUntil, performance.now() + ms);
+    schedule();
+  };
+  redraw = schedule;
 
   const onContextLost = (e: Event) => {
     e.preventDefault();
@@ -137,6 +176,7 @@ export function mountCorona(
 
   return {
     setActive,
+    wake,
     dispose: () => {
       setActive(false);
       ro.disconnect();

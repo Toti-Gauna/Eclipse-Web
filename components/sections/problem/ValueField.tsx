@@ -81,6 +81,7 @@ export function ValueField({
   onFocusField,
   active = false,
   flashKey,
+  describedBy,
 }: {
   id: string;
   /** Accessible name, e.g. "Turnos perdidos por semana". */
@@ -107,6 +108,8 @@ export function ValueField({
   active?: boolean;
   /** Changing it replays the "new reading" animation (vertical change). */
   flashKey?: string;
+  /** id of a nearby note about this value (e.g. "Máximo 200: usamos ese número"). */
+  describedBy?: string;
 }) {
   const [draft, setDraft] = useState<string | null>(null);
   const selectOnMouseUp = useRef(false);
@@ -171,6 +174,7 @@ export function ValueField({
             aria-valuemax={max}
             aria-valuenow={value}
             aria-valuetext={valueText}
+            aria-describedby={describedBy}
             value={text}
             style={{ width: `${Math.max(1, text.length) + 0.35}ch` }}
             className="vf-input"

@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Eclipse — landing (mockup v2)
+# Eclipse — landing + client portal mockup (v3)
 
 Landing for **Eclipse**, a development / AI / automation studio. Demo-first sales: we show
 the visitor *their business working* before talking. Single conversion goal: ask for a demo
@@ -54,6 +54,54 @@ Static export (`output: 'export'`) deployed to GitHub Pages under `/Eclipse-Web`
 - Localized content fields in `/content` are `{ es, en, pt }` objects → `l(value, locale)`.
 - Locale tags: `localeTags` (es-AR, en, pt-BR) for `Intl` and `lang`.
 
+## v3 — landing UX/UI + client portal mockup (read first)
+
+Sources: Notion "Landing Eclipse — Revisión UX/UI y requisitos v3", "Portal de clientes — Especificación
+v3" and "Contexto Eclipse". `docs/v3/inventario.md` lists every v2 content block: all of it must stay
+reachable (folded is fine, deleted is not).
+
+- **Goal:** a new visitor understands what Eclipse offers in ~30 s and finds a demo, an entry price,
+  maintenance and the next step in < 2 min. Summarize on the surface and fold details (tabs, accordions,
+  "Ver la cuenta"); never hide price, scope, maintenance or conditions behind a CTA.
+- **Page order (ids unchanged):** 01 hero `#inicio` (+ shortcuts to Demos, Soluciones, Precios, Armar plan) ·
+  02 demos `#ejemplos` · 03 soluciones `#servicios` · 04 precios `#precios` · 05 calculadora `#problema` ·
+  06 cómo trabajamos `#proceso` · 07 fundadores `#fundadores` · 08 preguntas y contacto `#contacto` · footer.
+  Sky: hero void → demos/soluciones night → `<SkyTransition>` → dawn from precios on.
+- **Header:** Servicios · Demos · Precios · Cómo trabajamos; "Pedí tu demo" is THE primary CTA and stays
+  reachable on desktop and mobile; "Armá tu plan" is secondary; "Ingresar" is discreet and opens
+  `/[locale]/portal/`. Language, currency and sound sit together behind one preferences trigger.
+  Naming follows the brief: the header says «Servicios», the shortcut and the section label say «Soluciones»
+  (an exception to the v2 copy rule below; same anchor `#servicios`).
+- **One amber per viewport:** the hero's CTA wrapper carries `data-hero-cta`; a section's solid amber CTA carries
+  `data-page-cta` (`<DemoCta pageCta>`). While one is on screen the header CTA turns to outline (`usePageCtaInView`).
+  Mark any new solid amber CTA the same way.
+- **Motion (overrides the v2 art direction where they conflict):** no permanent decorative animation; big
+  motion only in the hero or one transition; everything pauses off-screen; no heavy work per scroll event;
+  reduced motion = static. The hero pins only with a mouse/trackpad. Any performance claim needs a before/after
+  measurement (method and baseline in `docs/v3/rendimiento.md`).
+- **Hydration must not change heights:** a deferred section's server HTML must measure the same as the hydrated
+  section (otherwise anchor jumps land off and there is layout shift). Media-query defaults go in CSS too — e.g.
+  `ServicesIndex` marks its desktop-default family `data-default` (Tailwind's preflight makes `[hidden]` !important,
+  so it can't be overridden by CSS).
+- **Demos:** desktop preview on the left and mobile preview on the right as two independent, labeled,
+  frameless views (no laptop/phone shells, no overlap). On phones: tabs with readable sizes. Load near the
+  viewport with a static poster first; never more than one live experience at a time.
+- **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in
+  `/content` and `messages`. FAQ and conditions only reuse existing approved copy. A project starts after
+  the seña. The builder summary is a proposal request, not a binding quote; the calculator is indicative.
+- **Client portal = frontend mockup only:** routes `/[locale]/portal/` (demo login),
+  `/[locale]/portal/proyectos/` (Mis proyectos) and `/[locale]/portal/proyectos/[id]/` (detail), static
+  export, same layout and tokens as the site. Fictional fixtures labeled "Demo" and the visible notice
+  "Vista de demostración — datos ficticios; acceso real disponible cuando se implemente el backend." No
+  backend, API, auth, persistence, uploads or emails; forms never submit or store anything; no fake
+  security. Stages: 1 Preparación · 2 Construcción · 3 Revisión de Eclipse · 4 Revisión del cliente ·
+  5 Entrega (+ Soporte, En pausa/Cerrado). Projects table on desktop, cards on phones. Copy in es
+  (rioplatense), en and pt-BR through next-intl. The internal Eclipse portal/CRM is out of scope.
+  Eclipse's side appears by role only (no invented team members). Plumbing: routes in `lib/portal/routes.ts`
+  (re-exported as `PORTAL_ROUTES`), `chromeRoute()` picks the header mode, `<LandingOnly>` drops sales blocks
+  from the footer, and the `portal` namespace is server-only (`PORTAL_NAMESPACES`, left out of the client
+  messages like `DEMO_NAMESPACES`): portal client components receive plain strings as props.
+
 ## Art direction v2 — "Efemérides" (read before touching any UI)
 
 The site is an observatory: the visitor watches their business come out of the shadow. The
@@ -85,7 +133,7 @@ negative space over symmetric grids. Mobile gets its own composition, not a sque
 2. Readouts: numbers roll/count like instruments (`CountUp`, `RollingNumber`, `AnimatedMoney`).
 3. Glint: a diamond-ring sparkle on the primary action and on "success" moments.
 4. Drawing: hairlines and rulers draw in (`scaleX`/`scaleY` from 0) as sections enter.
-5. Scrub: scroll advances the moon (phase) in glyphs/rails. Never scroll-jack; never pin on mobile.
+5. Scrub: scroll advances the moon (phase) in glyphs/rails. Never scroll-jack; never pin on touch screens.
 Reduced motion → final state immediately (a ≤150 ms fade at most).
 
 **Sound** — `useSound()` from `components/sound/SoundContext.tsx` (names and when to use each in
@@ -137,6 +185,9 @@ agents, gamification, e-commerce, dashboards, automations, apps.
   `<Reveal>` + `data-reveal` children (fade + 24px rise, 60 ms stagger, once),
   `<SectionHeading>` (display h2 + light sweep), `<LightSweep>`, `<CountUp>`,
   `useReducedMotion` / `prefersReducedMotion`, `useMediaQuery`, `useIsClient`.
+  Once-only entrances (Reveal, DrawLine, Occult, LightSweep, CountUp) are CSS transitions started by one pooled
+  IntersectionObserver (`components/motion/observeEnter.ts`) — don't add a ScrollTrigger per entrance. The WebGL
+  corona draws on demand: call `bus.current.wake?.(ms)` (HeroState) when something should move it.
 - Money: `useCurrency()` → `{ currency, rates, format(usd), convert(usd) }`; `<Money usd>`,
   `<AnimatedMoney usd>` (rolls on change). Pricing logic: `lib/pricing.ts` (`quote`,
   `addonsForPlan`, `detectPlans`, `planSavings`, `maintenanceSuggestion`, `annualize`,

@@ -6,6 +6,7 @@ import { decodePlanState, emptyPlanState, encodePlanState, type PlanState } from
 import type { ItemId, VerticalId } from '@/lib/content';
 import { BUILDER_FOCUS_EVENT, readStoredPlan, readStoredStep, writeStoredPlan, writeStoredStep } from './browser';
 import { setVertical } from './goals';
+import { mergePreload, noPreload, presetPreload, type Preload } from './preload';
 import { addedByPreset, applyPreset, isEmptyState, landingStep, normalizeState, type Preset, type StepId } from './rules';
 
 export type BuilderMode = 'sheet' | 'page';
@@ -30,6 +31,7 @@ function withVertical(state: PlanState, vertical: VerticalId | null): PlanState 
  *   summary) or the session copy, and from then on mirrors every change into the URL.
  * Both keep a sessionStorage copy of the plan and the step, so switching language keeps them.
  * `focusTick` changes whenever the step should take focus (navigation, preset, open).
+ * `preload` remembers what the last preset brought in, so step 2 can explain it (and undo it).
  */
 export function usePlanState(mode: BuilderMode, { open, preset }: { open: boolean; preset: Preset | null }) {
   const { vertical: globalVertical } = useExperience();
@@ -45,6 +47,8 @@ export function usePlanState(mode: BuilderMode, { open, preset }: { open: boolea
   const [focusTick, setFocusTick] = useState(0);
   /** Pieces a preset just added: step 2 points them out. */
   const [highlight, setHighlight] = useState<ItemId[]>([]);
+  /** What the last preset preloaded (explained in step 2 until it is gone or undone). */
+  const [preload, setPreload] = useState<Preload>(noPreload);
 
   // Sheet: react to each open (render-phase update, no effect round-trip).
   const [seenOpen, setSeenOpen] = useState(false);
@@ -53,6 +57,7 @@ export function usePlanState(mode: BuilderMode, { open, preset }: { open: boolea
     if (open) {
       const next = withVertical(preset ? applyPreset(state, preset) : state, defaultVertical);
       setHighlight(pointOut(state, preset));
+      if (preset) setPreload((p) => mergePreload(p, presetPreload(state, preset)));
       setState(next);
       if (preset) setStep(landingStep({ preset, empty: isEmptyState(next) }));
       setFocusTick((n) => n + 1);
@@ -99,6 +104,7 @@ export function usePlanState(mode: BuilderMode, { open, preset }: { open: boolea
       if (next) {
         const current = latest.current;
         setHighlight(pointOut(current, next));
+        setPreload((p) => mergePreload(p, presetPreload(current, next)));
         setState(applyPreset(current, next));
         setStep(landingStep({ preset: next, empty: false }));
       }
@@ -115,5 +121,8 @@ export function usePlanState(mode: BuilderMode, { open, preset }: { open: boolea
     setFocusTick((n) => n + 1);
   };
 
-  return { state, update, step, goTo, ready, focusTick, highlight };
+  /** "Deshacer" on the pieces a preset added (the package's note, if any, stays). */
+  const clearAdded = () => setPreload((p) => ({ ...p, items: [] }));
+
+  return { state, update, step, goTo, ready, focusTick, highlight, preload, clearAdded };
 }

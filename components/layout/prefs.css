@@ -208,13 +208,16 @@
     border-color 0.3s ease,
     background-color 0.3s ease;
 }
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .prefs-trigger {
+    gap: 6px;
+    padding: 0 11px 0 10px;
+  }
+}
 .prefs-trigger:hover,
 .prefs-trigger[aria-expanded='true'] {
   border-color: var(--line-strong);
   background: var(--surface);
-}
-.prefs-trigger-caption {
-  color: var(--fg-muted);
 }
 .prefs-trigger-readout {
   font-family: var(--font-mono);
@@ -279,4 +282,85 @@
   box-shadow:
     0 40px 90px -40px rgb(17 17 20 / 0.35),
     0 0 0 1px rgb(17 17 20 / 0.03);
+}
+
+/* Popover title row: the dialog's visible name + the sound master switch. */
+.prefs-pop-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: -6px 0 18px;
+}
+.prefs-pop-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+
+/* ---- Disclosure (phone menu, footer) ---------------------------------- */
+/*
+ * A native <details>: works before the footer's deferred hydration, keyboard and screen
+ * readers get a real expanded / collapsed control, find-in-page opens it. The summary
+ * is one 52px row: globe · "Idioma, moneda y sonido" · ES · ARS · chevron.
+ */
+.prefs-disclosure {
+  min-width: 0;
+  border-block: 1px solid var(--line);
+}
+.prefs-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding-block: 6px;
+  list-style: none;
+  color: var(--fg);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.prefs-summary::-webkit-details-marker {
+  display: none;
+}
+.prefs-summary:hover .prefs-summary-chevron {
+  color: var(--fg);
+}
+.prefs-summary-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.prefs-summary-readout {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+.prefs-summary-chevron {
+  flex: none;
+  color: var(--fg-muted);
+  transition:
+    transform 0.4s var(--ease-expo),
+    color 0.2s ease;
+}
+.prefs-disclosure[open] > .prefs-summary .prefs-summary-chevron {
+  transform: rotate(180deg);
+}
+.prefs-disclosure-body {
+  padding: 6px 0 22px;
+}
+.prefs-disclosure[open] > .prefs-disclosure-body {
+  animation: prefs-rise 0.45s var(--ease-expo) both;
+}
+@keyframes prefs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
