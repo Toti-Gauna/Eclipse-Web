@@ -34,10 +34,9 @@
   },
   "nav": {
     "services": "Serviços",
-    "examples": "Exemplos",
+    "examples": "Demos",
     "pricing": "Preços",
-    "founders": "Fundadores",
-    "clients": "Clientes"
+    "process": "Como trabalhamos"
   },
   "header": {
     "home": "Eclipse, ir para o início",
@@ -51,7 +50,13 @@
     "progress": "Progresso de leitura: {value}%",
     "buildPlan": "Monte seu plano",
     "progressLabel": "Progresso de leitura",
-    "prefsTrigger": "Idioma e moeda"
+    "login": "Entrar",
+    "loginContext": "no portal do cliente (demo)",
+    "soundOn": "som ligado",
+    "portal": "Portal do cliente",
+    "backToSite": "Voltar ao site",
+    "myProjects": "Meus projetos",
+    "exitDemo": "Sair da demo"
   },
   "currency": {
     "ARS": "Pesos argentinos",
@@ -91,7 +96,6 @@
     "tagline": "Desenvolvimento, IA e automação para negócios que não podem esperar.",
     "explore": "Explorar",
     "contact": "Contato",
-    "settings": "Preferências",
     "teaser": "A Eclipse é mais que um estúdio. <em>Em breve</em>.",
     "comingSoon": "Em breve",
     "rights": "© {year} Eclipse. Todos os direitos reservados.",

@@ -1,8 +1,15 @@
 import './loader.css';
+import { routing } from '@/i18n/routing';
 import { LOADER_DONE_EVENT, LOADER_END_MS, LOADER_REDUCED_END_MS } from './constants';
 
-/** Runs in <head> before first paint, on every full page load: turns the loader on and starts its clock. */
-export const LOADER_HEAD_SCRIPT = `(function(){try{document.documentElement.setAttribute('data-loader','on');window.__eclipseLoaderAt=performance.now();}catch(e){}})();`;
+/** Paths that never get the loader: the client portal mockup (/<locale>/portal…, under any basePath). */
+const NO_LOADER_PATH = `\\/(?:${routing.locales.join('|')})\\/portal(?:\\/|$)`;
+
+/**
+ * Runs in <head> before first paint, on every full page load: turns the loader on and
+ * starts its clock — except on portal routes, which open straight onto the page.
+ */
+export const LOADER_HEAD_SCRIPT = `(function(){try{if(/${NO_LOADER_PATH}/.test(location.pathname))return;document.documentElement.setAttribute('data-loader','on');window.__eclipseLoaderAt=performance.now();}catch(e){}})();`;
 
 /**
  * Runs right after the loader markup is parsed (stylesheets are loaded by then):

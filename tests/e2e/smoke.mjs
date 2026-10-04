@@ -73,6 +73,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.waitForTimeout(400);
   await page.locator('button[aria-label="Abrir menú"]').click();
   await page.waitForTimeout(900);
+  await page.locator('dialog[open] summary', { hasText: 'Idioma, moneda' }).click();
   await page.locator('dialog[open] label', { hasText: 'USD' }).first().click();
   await page.keyboard.press('Escape');
   await page.waitForTimeout(800);
@@ -113,10 +114,10 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
     await page.waitForTimeout(1800);
   }
   // Sound is opt-in; the preferences popover explains the currency.
+  await page.getByRole('banner').getByRole('button', { name: /Idioma, moneda/ }).first().click();
+  await page.waitForTimeout(600);
   const sound = page.getByRole('banner').getByRole('button', { name: /Sonido/ }).first();
   check('sound is off by default', (await sound.getAttribute('aria-pressed')) === 'false');
-  await page.getByRole('banner').getByRole('button', { name: /Idioma y moneda/ }).first().click();
-  await page.waitForTimeout(600);
   const prefs = page.getByRole('dialog', { name: /Idioma, moneda/ }).first();
   check('preferences popover shows the rate used', /1 USD ≈/.test(await prefs.innerText()));
   await page.keyboard.press('Escape');
@@ -186,7 +187,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const { ctx, page, errors } = await newPage(1440, 900);
   await page.goto(`${BASE}/es/plan/?items=landing`);
   await page.waitForTimeout(1500);
-  await page.getByRole('banner').getByRole('button', { name: /Idioma y moneda/ }).first().click();
+  await page.getByRole('banner').getByRole('button', { name: /Idioma, moneda/ }).first().click();
   await page.waitForTimeout(600);
   const en = page.getByRole('group', { name: /Idioma/ }).first().getByRole('link', { name: /English/ });
   const href = await en.getAttribute('href');
@@ -214,6 +215,56 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const { ctx, page } = await newPage(390, 844);
   const res = await page.goto(`${BASE}/no-existe/`);
   check('404 served with links back', res?.status() === 404 && (await page.locator(`a[href="/Eclipse-Web/es/"]`).count()) > 0);
+  await ctx.close();
+}
+
+// 8. Client portal mockup: "Ingresar" → demo login (no auth, nothing sent or stored),
+//    Mis proyectos (table on desktop, cards on phones) and a project's detail.
+{
+  const { ctx, page, errors } = await newPage(1440, 900);
+  const sent = [];
+  // Anything that could carry data (a form post, a beacon): GET/HEAD are navigation and prefetch.
+  page.on('request', (r) => !['GET', 'HEAD'].includes(r.method()) && sent.push(`${r.method()} ${r.url()}`));
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(1500);
+  const login = page.getByRole('banner').getByRole('link', { name: /Ingresar/ }).first();
+  check('header "Ingresar" points to the portal', /\/Eclipse-Web\/es\/portal\/$/.test((await login.getAttribute('href')) ?? ''));
+  await login.click();
+  await page.waitForURL(/\/es\/portal\/$/);
+  await page.waitForTimeout(800);
+  check('portal login shows the demo notice', (await page.locator('[data-portal-demo-notice]').count()) > 0);
+  // The form is only layout: submitting it sends and stores nothing, and clears the password.
+  await page.getByLabel('Email').fill('demo@example.com');
+  await page.getByLabel('Contraseña').fill('no-es-real');
+  await page.locator('form button[type="submit"]').click();
+  await page.waitForTimeout(600);
+  const stored = await page.evaluate(() => JSON.stringify({ ...localStorage }) + JSON.stringify({ ...sessionStorage }) + document.cookie);
+  check('demo login sends and stores nothing', sent.length === 0 && !/no-es-real|demo@example/.test(stored), sent.join(' | '));
+  check('demo login clears the password', (await page.getByLabel('Contraseña').inputValue()) === '');
+  await page.getByRole('link', { name: /Ver portal de ejemplo/ }).first().click();
+  await page.waitForURL(/\/es\/portal\/proyectos\/$/);
+  await page.waitForTimeout(800);
+  const row = page.locator('table[data-portal-projects-table] tr[data-portal-project="sitio-web"]');
+  const rowText = await row.evaluate((el) => el.textContent?.replace(/\s+/g, ' ') ?? '');
+  check('Mis proyectos: example site in 2 de 5 · Construcción', /2 de 5 · Construcción/.test(rowText));
+  await row.getByRole('link').first().click();
+  await page.waitForURL(/\/es\/portal\/proyectos\/sitio-web\/$/);
+  await page.waitForTimeout(800);
+  const h1 = page.locator('h1');
+  check('project detail: one h1, the project name', (await h1.count()) === 1 && /Sitio web de ejemplo/.test(await h1.innerText()));
+  check('no page errors (portal)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  await ctx.close();
+}
+{
+  const { ctx, page } = await newPage(360, 780);
+  await page.goto(`${BASE}/es/portal/proyectos/`);
+  await page.waitForTimeout(800);
+  check('portal loads without the loader', (await page.evaluate(() => document.documentElement.getAttribute('data-loader'))) !== 'on');
+  const cards = await page.locator('ul[data-portal-projects-cards] > li').count();
+  const fits = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
+  check('portal on phones: project cards, no horizontal scroll', cards >= 1 && fits, `${cards} cards`);
+  const res = await page.goto(`${BASE}/es/portal/proyectos/no-existe/`);
+  check('unknown portal project is a 404', res?.status() === 404);
   await ctx.close();
 }
 
