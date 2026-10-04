@@ -7,6 +7,7 @@ import { BrowserFrame, Card, ChatWidget, LandingPreview, SiteSection } from '../
 import { ENROLLED_TODAY, SITE_URL, STORY, storyClock, type CefrLevel } from '../data';
 import { act, isFreshEvent, type Enrollment } from '../story';
 import { useAcademy } from '../context';
+import { keepChatFocus } from '../focus';
 import { AtrioMark, ChalkUnderline, PersonAvatar, ViewHead, useAcademyText } from '../ui';
 
 /** The site's chatbot: the level test, the recommended course, enroll and pay (Julieta's, or the visitor's own). */
@@ -14,12 +15,12 @@ function TestChat({ className = '' }: { className?: string }) {
   const t = useTranslations('demoAcademy.site');
   const { view, run, announce } = useAcademy();
   const { fmt, name } = useAcademyText();
-  const mine = view.siteMine !== null;
-  const shown = view.siteMine ?? view.lead;
+  const mine = view.siteShowMine && view.siteMine !== null;
+  const shown = (mine ? view.siteMine : null) ?? view.lead;
   const start = mine ? (view.siteMineStart ?? 0) : STORY.lead;
   const idle = !shown.items.length && !shown.typing;
   return (
-    <div className={`atrio-testchat ${className}`}>
+    <div className={`atrio-testchat ${className}`} data-beat="sitechat">
       <p className="atrio-testchat-who" aria-live="off">
         <PenLine aria-hidden strokeWidth={2} />
         {mine ? t('takingYou') : idle ? t('idleWho') : t('taking', { name: name('julieta') })}
@@ -33,7 +34,10 @@ function TestChat({ className = '' }: { className?: string }) {
         stamp={(at) => fmt.time(storyClock(start + at))}
         label={t('chatLabel')}
         announce={announce}
-        onPick={(step, reply) => run(mine ? act.pickSite(step, reply) : act.pickLead(step, reply), 'select')}
+        onPick={(step, reply) => {
+          keepChatFocus();
+          run(mine ? act.pickSite(step, reply) : act.pickLead(step, reply), 'select');
+        }}
         composer={false}
         footer={
           idle ? (
@@ -158,7 +162,7 @@ function Enrollments({ compact = false }: { compact?: boolean }) {
       </div>
       <ul className="atrio-enrol-list">
         {live.map((e) =>
-          row(`${e.who}-${e.at}`, e.who, e, fmt.time(storyClock(e.at)), isFreshEvent(view.t, e)),
+          row(e.id, e.who, e, fmt.time(storyClock(e.at)), isFreshEvent(view.t, e)),
         )}
         {ENROLLED_TODAY.slice(0, compact ? 1 : 2).map((e) => (
           <li key={e.id} className="atrio-enrol">

@@ -8,6 +8,7 @@ import { Card, ChatWidget, Kanban, Meter, Pill, Switch, type KanbanCard, type Ka
 import { ROSTER, SCHOOL, STORY, storyClock } from '../data';
 import { act, isFreshEvent, isOffNow, type BoardColumn } from '../story';
 import { useAcademy } from '../context';
+import { keepChatFocus } from '../focus';
 import { AtrioMark, PersonAvatar, ViewHead, useAcademyText } from '../ui';
 
 type Status = 'ok' | 'risk' | 'sent' | 'back' | 'later' | 'dropped' | 'lesson' | 'b1';
@@ -154,7 +155,10 @@ function MartinThread({ className = '' }: { className?: string }) {
       announce={announce}
       dateLabel={t('date')}
       stamp={(at) => fmt.time(storyClock((view.martin.sentAt ?? STORY.nudge) + at))}
-      onPick={(step, reply) => run(act.pickWa(step, reply, view.martin.sentAt ?? STORY.nudge), 'select')}
+      onPick={(step, reply) => {
+        keepChatFocus();
+        run(act.pickWa(step, reply, view.martin.sentAt ?? STORY.nudge), 'select');
+      }}
       composer={false}
       className={`atrio-wa ${className}`}
     />

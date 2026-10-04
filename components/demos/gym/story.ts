@@ -259,8 +259,7 @@ export interface GymEvent {
   mine?: boolean;
 }
 
-export type MemberTab = 'home' | 'classes' | 'league';
-export type PhoneOverlay = 'wa' | 'levelup';
+export type { MemberTab, PhoneOverlay } from './model';
 
 export interface LeagueRow {
   id: MemberId;
@@ -302,6 +301,12 @@ export interface GymView {
   leadSource: ChatSource;
   leadMine: ChatRun | null;
   leadMineSource: ChatSource | null;
+  /**
+   * The site's widget shows the visitor's own chat (else Tomás'): the latest one started wins —
+   * playing the lead beat after trying it yourself shows Tomás' conversation; trying it during
+   * or after the beat shows yours.
+   */
+  leadShowMine: boolean;
   trial: Booking | null;
   trialYou: Booking | null;
   trialInAt: number | null;
@@ -383,6 +388,7 @@ export function deriveGym(state: GymState, t: number, instant: boolean): GymView
     leadMine && leadMineSource && leadMine.at.done !== undefined
       ? { session: TRIAL_OPTIONS[leadMine.chosen.pick === 'opt1' ? 1 : 0], at: leadMineSource.start + leadMine.at.done, via: 'chat', mine: true }
       : null;
+  const leadShowMine = !!state.leadMine && (state.leadMine.start >= AT.lead || t < AT.lead);
   if (trial) push({ id: 'trial', at: trial.at, kind: 'trial', member: 'tomas', session: trial.session, mine: trial.mine });
   if (trialYou) push({ id: 'trial-you', at: trialYou.at, kind: 'trial', member: 'you', session: trialYou.session, mine: true });
   const trialInAt = trial && dayOf(trial.session) === 3 ? thuAt + THU.trialIn : null;
@@ -548,10 +554,11 @@ export function deriveGym(state: GymState, t: number, instant: boolean): GymView
   for (const a of AT.ambient) {
     push({ id: `amb-${a.member}`, at: a.at, kind: a.kind === 'checkin' ? 'aCheckin' : a.kind === 'mission' ? 'aMission' : 'aBadge', member: a.member, n: memberById(a.member).streak });
   }
-  for (const r of state.off) {
-    push({ id: `off-${r.from}`, at: r.from, kind: 'off', mine: true });
-    if (r.to !== null) push({ id: `on-${r.to}`, at: r.to, kind: 'on', mine: true });
-  }
+  // By index: at rest the clock is frozen, so switching it off and on again repeats the same time.
+  state.off.forEach((r, i) => {
+    push({ id: `off-${i}`, at: r.from, kind: 'off', mine: true });
+    if (r.to !== null) push({ id: `on-${i}`, at: r.to, kind: 'on', mine: true });
+  });
   bookings.forEach((b, i) => {
     const kind: EventKind = i === 0 ? 'booked' : b.via === 'auto' ? 'book2' : 'booked';
     push({ id: `booked-${b.session}`, at: b.at, kind, member: 'lucia', session: b.session, via: b.via, mine: b.mine });
@@ -619,6 +626,7 @@ export function deriveGym(state: GymState, t: number, instant: boolean): GymView
     leadSource,
     leadMine,
     leadMineSource,
+    leadShowMine,
     trial,
     trialYou,
     trialInAt,

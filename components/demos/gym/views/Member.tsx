@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowLeft, Check, ChevronsUp, Dumbbell, Flame, FlameKindling, Gift, Medal, MessageCircle, ScanLine, Sparkles, Sunrise, Target, Trophy, Users, Zap } from 'lucide-react';
 import {
@@ -19,6 +20,7 @@ import { DEMOTE, HERO, HERO_BEST_STREAK, LEAGUE, PROMOTE, SECOND_CLASS, memberBy
 import { act, canBook, canCheckIn, checkedInAt, isPast, taken, type MemberTab } from '../story';
 import { useGym, useGymText } from '../hooks';
 import { useChats } from '../scripts';
+import { keepChatFocus } from '../focus';
 import { MemberAvatar, OrbitaMark, Segments, storyClockAt } from '../parts';
 
 const MISSION_ICON: Record<MissionId, typeof Target> = { comeback: Target, streak3: Flame, friend: Users, newClass: Sparkles };
@@ -415,8 +417,9 @@ export function WaThread() {
   const { fmt, short } = useGymText();
   const { wa } = useChats();
   const sentAt = view.sentAt ?? 0;
+  const box = useRef<HTMLDivElement>(null);
   return (
-    <div className="gym-wa">
+    <div ref={box} className="gym-wa">
       <button type="button" className="gym-wa-back" onClick={member.closeOverlay} aria-label={t('wa.back')}>
         <ArrowLeft aria-hidden strokeWidth={2} />
       </button>
@@ -430,7 +433,10 @@ export function WaThread() {
           dateLabel={t('wa.today')}
           label={t('wa.label', { name: short(HERO) })}
           announce={announce}
-          onPick={(step, reply) => run(act.pickWa(step, reply, sentAt), 'select')}
+          onPick={(step, reply) => {
+            keepChatFocus(box.current);
+            run(act.pickWa(step, reply, sentAt), 'select');
+          }}
           composer={false}
           className="gym-wa-chat"
         />

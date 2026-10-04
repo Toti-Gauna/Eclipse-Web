@@ -3,10 +3,10 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { upperFirst, useDemoFormat } from '../kit';
-import { dayDate, sessionById, type ClassKind, type CoachId, type MemberId } from './model';
+import { dayDate, sessionById, type ClassKind, type CoachId, type MemberId, type OwnerTab } from './model';
 import type { GymEvent, GymState, GymStore, GymView, MemberTab, PhoneOverlay } from './story';
 
-export type OwnerTab = 'today' | 'retention' | 'members' | 'classes' | 'league' | 'site';
+export type { OwnerTab };
 
 export interface GymCtx {
   screen: 'phone' | 'laptop';
@@ -23,6 +23,8 @@ export interface GymCtx {
   business: string;
   /** The rubro's key number (content/verticals.json): −25 % churn. */
   keyNumber: { value: number; prefix: string; suffix: string };
+  /** The site's chat widget: open, or minimized to its launcher (the visitor's choice; a beat reopens it). */
+  siteChat: { open: boolean; setOpen: (open: boolean) => void };
   /** Owner side: open a section. */
   go: (tab: OwnerTab) => void;
   /** Member app (phone): where the visitor is. Nothing navigates on its own. */

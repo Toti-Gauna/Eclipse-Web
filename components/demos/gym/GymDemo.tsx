@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { CalendarDays, Globe, HeartPulse, LayoutDashboard, Smartphone, Trophy, Users } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
+import { AppShell, useBeatFocus, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
-import { HERO, ORBITA_THEME } from './model';
-import { createGymStore, deriveGym, isOffNow, type GymEvent, type MemberTab, type PhoneOverlay } from './story';
-import { GymProvider, useGymText, type GymCtx, type OwnerTab } from './hooks';
+import { BEAT_SCREENS, HERO, ORBITA_THEME, OWNER_TABS, type BeatId, type BeatMark, type MemberTab, type OwnerTab, type PhoneOverlay } from './model';
+import { createGymStore, deriveGym, isOffNow, type GymEvent } from './story';
+import { GymProvider, useGymText, type GymCtx } from './hooks';
+import { contentToTop, revealInDemo } from './focus';
 import { Announcer, DayDial, GymToasts, MemberAvatar, OrbitaMark } from './parts';
 import { DayCut, LevelUp, MEMBER_TABS, MemberClasses, MemberHome, MemberLeague, MemberPush, WaThread } from './views/Member';
 import { LaptopToday, PhoneToday } from './views/Today';
@@ -20,6 +21,14 @@ import { LaptopLeague } from './views/League';
 import { LaptopSite, PhoneSite } from './views/Site';
 import './orbita.css';
 
+const OWNER_ICONS: Record<OwnerTab, NavItem['icon']> = {
+  today: LayoutDashboard,
+  retention: HeartPulse,
+  members: Users,
+  classes: CalendarDays,
+  league: Trophy,
+  site: Globe,
+};
 const OWNER_VIEWS: Record<OwnerTab, Record<DemoProps['screen'], () => ReactNode>> = {
   today: { laptop: LaptopToday, phone: PhoneToday },
   retention: { laptop: LaptopRetention, phone: PhoneRetention },
@@ -36,6 +45,13 @@ const MEMBER_VIEWS: Record<MemberTab, () => ReactNode> = { home: MemberHome, cla
  * has a bottom tab bar like a game's (Inicio · Clases · Liga).
  */
 const LAYOUT: ShellLayout = { nav: 'dock', density: 'compact', icons: 'chip' };
+
+/** A beat took this view somewhere: scroll its content to the top and/or reveal one element. */
+interface Jump {
+  n: number;
+  top: boolean;
+  mark?: BeatMark;
+}
 
 /** Where the visitor took Lucía's phone (reset with the story). */
 interface PhoneNav {
@@ -100,6 +116,42 @@ export default function GymDemo({ screen, active }: DemoProps) {
   if (nav.overlay && nav.overlay !== lastOverlay) setLastOverlay(nav.overlay);
   const patchNav = (patch: Partial<PhoneNav>) => setNav({ ...nav, ...patch });
   const memberApp = screen === 'phone' && (memberOnly || mode === 'member');
+  // The site's chat: open unless the visitor minimized it (a beat or the site's CTAs reopen it).
+  const [chatOpen, setChatOpen] = useState(true);
+
+  /* ---- v3c: a beat takes each view to where it happens (model.ts BEAT_SCREENS) ---- */
+  const box = useRef<HTMLDivElement>(null);
+  const [jump, setJump] = useState<Jump | null>(null);
+  useBeatFocus(store, snap, (id) => {
+    const where = BEAT_SCREENS[id as BeatId];
+    if (!where) return;
+    const target = screen === 'laptop' ? where.laptop : paired ? where.paired : where.phone;
+    if (target.side === 'stay') return;
+    let moved: boolean;
+    if (target.side === 'owner') {
+      moved = memberApp || tab !== target.tab;
+      setMode('owner');
+      setTab(target.tab);
+      if (target.reveal === 'chat') setChatOpen(true);
+    } else {
+      // The WhatsApp only arrives when the automation is on: otherwise her home shows why not.
+      const overlay: PhoneOverlay | null = target.overlay === 'wa' && view.sentAt === null && isOffNow(snap.state.off) ? null : (target.overlay ?? null);
+      moved = !memberApp || nav.tab !== target.tab;
+      setMode('member');
+      setNav({ loop: snap.loop, tab: target.tab, overlay });
+    }
+    setJump((j) => ({ n: (j?.n ?? 0) + 1, top: moved, mark: target.reveal }));
+  });
+  useEffect(() => {
+    if (!jump) return;
+    const id = requestAnimationFrame(() => {
+      if (jump.top) contentToTop(box.current);
+      if (jump.mark) revealInDemo(box.current, jump.mark, snap.reduced);
+    });
+    return () => cancelAnimationFrame(id);
+    // Only when a beat asked for it (not on every story tick).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jump]);
 
   const ctx: GymCtx = {
     screen,
@@ -115,6 +167,7 @@ export default function GymDemo({ screen, active }: DemoProps) {
     business,
     keyNumber,
     flash,
+    siteChat: { open: chatOpen, setOpen: setChatOpen },
     go: (id) => {
       setTab(id);
       if (active) play('select');
@@ -177,7 +230,7 @@ export default function GymDemo({ screen, active }: DemoProps) {
           overlayOpen={nav.overlay !== null}
           overlayOrigin={overlayKind === 'levelup' ? ['50%', '58%'] : ['50%', '7%']}
         >
-          <div className="gym" data-screen="phone">
+          <div ref={box} className="gym" data-screen="phone">
             <DayCut />
             <MemberPush kind={nav.overlay === 'wa' ? null : view.push} />
             {/* Lucía's phone only hears about Lucía (the owner's actions toast on the panel). */}
@@ -193,15 +246,24 @@ export default function GymDemo({ screen, active }: DemoProps) {
   }
 
   /* ---- owner's panel (laptop, or the phone alone in owner mode) ---- */
-  const ownerNav: NavItem[] = [
-    { id: 'today', label: t(screen === 'phone' ? 'nav.todayShort' : 'nav.today'), icon: LayoutDashboard },
-    { id: 'retention', label: t(screen === 'phone' ? 'nav.retentionShort' : 'nav.retention'), icon: HeartPulse, badge: view.kpi.atRisk, tour: 'winback' },
-    { id: 'members', label: t('nav.members'), icon: Users },
-    { id: 'classes', label: t('nav.classes'), icon: CalendarDays, tour: 'classes' },
-    ...(screen === 'laptop' ? [{ id: 'league', label: t('nav.league'), icon: Trophy, tour: 'league' }] : []),
-    { id: 'site', label: t(screen === 'phone' ? 'nav.siteShort' : 'nav.site'), icon: Globe, tour: 'lead' },
-  ];
-  const current = screen === 'phone' && tab === 'league' ? 'today' : tab;
+  const NAV_LABEL: Record<OwnerTab, string> = {
+    today: screen === 'phone' ? 'nav.todayShort' : 'nav.today',
+    retention: screen === 'phone' ? 'nav.retentionShort' : 'nav.retention',
+    members: 'nav.members',
+    classes: 'nav.classes',
+    league: 'nav.league',
+    site: screen === 'phone' ? 'nav.siteShort' : 'nav.site',
+  };
+  const NAV_TOUR: Partial<Record<OwnerTab, string>> = { retention: 'winback', classes: 'classes', league: 'league', site: 'lead' };
+  const ownerTabs: readonly OwnerTab[] = OWNER_TABS[screen];
+  const ownerNav: NavItem[] = ownerTabs.map((id) => ({
+    id,
+    label: t(NAV_LABEL[id]),
+    icon: OWNER_ICONS[id],
+    badge: id === 'retention' ? view.kpi.atRisk : undefined,
+    tour: NAV_TOUR[id],
+  }));
+  const current = ownerTabs.includes(tab) ? tab : 'today';
   const View = OWNER_VIEWS[current][screen];
   return (
     <GymProvider value={ctx}>
@@ -243,7 +305,7 @@ export default function GymDemo({ screen, active }: DemoProps) {
         statusTime={clock}
         sim={sim}
       >
-        <div className="gym" data-screen={screen}>
+        <div ref={box} className="gym" data-screen={screen}>
           {screen === 'phone' ? <DayCut /> : null}
           {/* Top: the desktop dock owns the bottom edge. */}
           <GymToasts placement="top" />
