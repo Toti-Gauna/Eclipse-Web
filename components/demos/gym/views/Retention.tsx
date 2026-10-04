@@ -3,8 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { BellRing, CalendarCheck, MessageCircle, Send, TimerReset, type LucideIcon } from 'lucide-react';
 import { Bars, Pill, type Tone } from '../../kit';
-import { CHURN, CHURN_LIVE_FROM, CHURN_MONTHS, HERO, HIGH_RISK_DAYS, QUEUED_AT, RISK_DAYS, RISK_LIST, memberById, type MemberId, type RiskState } from '../model';
-import { act, isOffNow, type HeroStatus } from '../story';
+import { AT, CHURN, CHURN_LIVE_FROM, CHURN_MONTHS, HERO, HIGH_RISK_DAYS, QUEUED_AT, RISK_DAYS, RISK_LIST, memberById, type MemberId, type RiskState } from '../model';
+import { act, isFreshEvent, isOffNow, type HeroStatus } from '../story';
 import { useGym, useGymText } from '../hooks';
 import { useChats } from '../scripts';
 import { HudHead, MemberAvatar, WinbackSwitch } from '../parts';
@@ -35,6 +35,9 @@ function useRiskRows(): RiskRow[] {
   const t = useTranslations('demoGym.risk');
   const { view, state, run } = useGym();
   const { short, session } = useGymText();
+  const lastHero = [...view.events].reverse().find((e) => e.member === HERO);
+  // The automation was off when her message was due: the owner can send it by hand (Monday only).
+  const canSend = view.day === 0 && view.status === 'risk' && view.sentAt === null && view.winOffAtSend;
   const hero: RiskRow = {
     id: HERO,
     days: view.away,
@@ -43,7 +46,8 @@ function useRiskRows(): RiskRow[] {
       view.status === 'booked' && view.book1
         ? t('heroBooked', { class: session(view.book1.session, false) })
         : t(`hero.${view.status === 'away' ? 'risk' : view.status}`),
-    fresh: view.events.length > 0 && view.t - view.events[view.events.length - 1].at < 2000 && view.events[view.events.length - 1].member === HERO,
+    action: canSend ? { label: t('send'), aria: t('sendTo', { name: short(HERO) }), onClick: () => run(act.sendNow(HERO), 'success') } : undefined,
+    fresh: !!lastHero && isFreshEvent(view, lastHero, 2000),
   };
   const rows = RISK_LIST.map(({ id, state: s }) => {
     const m = memberById(id);
@@ -122,7 +126,7 @@ export function Automation({ compact = false }: { compact?: boolean }) {
   const preview = wa?.items.find((i) => i.step === 'hello');
   const id = `gym-win-${screen}-${compact ? 'c' : 'f'}`;
   return (
-    <section className="gym-auto gym-cut" data-off={on ? undefined : ''} aria-labelledby={`${id}-h`}>
+    <section className="gym-auto gym-cut" data-off={on ? undefined : ''} aria-labelledby={`${id}-h`} data-tour="winback">
       <div className="gym-auto-head">
         <span className="min-w-0 flex-1">
           <span className="gym-auto-kicker">{t('kicker')}</span>
@@ -154,7 +158,7 @@ export function Automation({ compact = false }: { compact?: boolean }) {
       <div className="gym-auto-preview" aria-hidden={!preview}>
         <span className="gym-auto-preview-k">
           <Send aria-hidden strokeWidth={2} />
-          {preview ? t('lastSent', { name: short(HERO) }) : on ? t('nextSend', { name: short(HERO) }) : t('notSent')}
+          {preview ? t('lastSent', { name: short(HERO) }) : on && view.t < AT.win ? t('nextSend', { name: short(HERO) }) : t('notSent')}
         </span>
         {preview ? <span className="gym-auto-bubble">{preview.text}</span> : null}
       </div>

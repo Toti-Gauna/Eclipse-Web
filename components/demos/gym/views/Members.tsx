@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Flame } from 'lucide-react';
 import { Pill, type Tone } from '../../kit';
+import { isFreshEvent } from '../story';
 import { ACTIVE, HERO, LEAD, MEMBERS, RISK_DAYS, type MemberId } from '../model';
 import { useGym, useGymText } from '../hooks';
 import { HudHead, MemberAvatar } from '../parts';
@@ -26,14 +27,18 @@ interface Row {
 function useRows(): Row[] {
   const t = useTranslations('demoGym.league');
   const { view } = useGym();
-  return MEMBERS.filter((m) => m.id !== LEAD || (view.trial && view.trial.at <= view.t)).map((m) => {
+  const fresh = (kind: string) => {
+    const e = view.events.find((x) => x.kind === kind);
+    return !!e && isFreshEvent(view, e, 2500);
+  };
+  return MEMBERS.filter((m) => m.id !== LEAD || view.trial).map((m) => {
     if (m.id === HERO) {
-      const status: Status = view.churnAt !== null ? 'churned' : view.check1At !== null && view.check1At <= view.t ? 'back' : 'risk';
-      return { id: m.id, level: view.level, streak: view.streak, away: view.away, league: t('silver'), status, fresh: view.t - (view.check1At ?? -9e9) < 2500 };
+      const status: Status = view.churnAt !== null ? 'churned' : view.check1At !== null ? 'back' : 'risk';
+      return { id: m.id, level: view.level, streak: view.streak, away: view.away, league: t('silver'), status, fresh: fresh('back') };
     }
     if (m.id === LEAD) {
       const came = view.trialInAt !== null && view.trialInAt <= view.t;
-      return { id: m.id, level: 1, streak: came ? 1 : 0, away: came ? 0 : -1, league: '—', status: 'trial', fresh: view.t - (view.trial?.at ?? -9e9) < 2500 };
+      return { id: m.id, level: 1, streak: came ? 1 : 0, away: came ? 0 : -1, league: '—', status: 'trial', fresh: fresh('trial') };
     }
     const away = m.away + view.day;
     const status: Status = away >= RISK_DAYS ? 'risk' : m.streak >= 7 ? 'streak' : 'ok';

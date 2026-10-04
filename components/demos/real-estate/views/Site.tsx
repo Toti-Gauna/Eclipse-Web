@@ -325,13 +325,26 @@ function PublicSite({
 /* ------------------------------------------------------------------ */
 /* The visitor's own chat with Lumi (qualifies them; books a visit)     */
 /* ------------------------------------------------------------------ */
-export function OwnChat({ className = '', announce: announceProp }: { className?: string; announce?: boolean }) {
-  const t = useTranslations('demoRealEstate');
-  const { view, state, store, business, active, announce } = useEstate();
+/** The visitor's own chat run + its pick handler (a slot reply books the visit). */
+function useOwnChat() {
+  const { view, state, store, active } = useEstate();
   const chats = useEstateChats();
   const { play } = useSound();
-  const slots = freeSiteSlots(view);
-  const run = chats.own(view, state, slots);
+  return {
+    run: chats.own(view, state, freeSiteSlots(view)),
+    pick: (step: string, reply: string) => {
+      store.update(act.ownPick(step, reply));
+      const slot = step === 'match' ? parseSlotReply(reply) : null;
+      if (slot && view.own) store.update(act.book({ ...slot, listing: view.own.match, advisor: 'marcos', via: 'chat' }));
+      if (active) play(slot ? 'success' : 'select');
+    },
+  };
+}
+
+export function OwnChat({ className = '', announce: announceProp }: { className?: string; announce?: boolean }) {
+  const t = useTranslations('demoRealEstate');
+  const { business, announce } = useEstate();
+  const { run, pick } = useOwnChat();
   return (
     <ChatWidget
       variant="widget"
@@ -341,12 +354,7 @@ export function OwnChat({ className = '', announce: announceProp }: { className?
       avatar={<LumenMark />}
       label={t('own.label', { business })}
       announce={announceProp ?? announce}
-      onPick={(step, reply) => {
-        store.update(act.ownPick(step, reply));
-        const slot = step === 'match' ? parseSlotReply(reply) : null;
-        if (slot && view.own) store.update(act.book({ ...slot, listing: view.own.match, advisor: 'marcos', via: 'chat' }));
-        if (active) play(slot ? 'success' : 'select');
-      }}
+      onPick={pick}
       composer={t('chat.composer')}
       className={`re-chat ${className}`}
     />
@@ -358,8 +366,8 @@ export function OwnChat({ className = '', announce: announceProp }: { className?
 /* ------------------------------------------------------------------ */
 function SiteChatDock() {
   const t = useTranslations('demoRealEstate.chat');
-  const { view, state, store, active } = useEstate();
-  const chats = useEstateChats();
+  const { active } = useEstate();
+  const own = useOwnChat();
   const { play } = useSound();
   const [open, setOpen] = useState(false);
   if (open) {
@@ -382,13 +390,12 @@ function SiteChatDock() {
   }
   return (
     <ChatPeek
-      run={chats.own(view, state, freeSiteSlots(view))}
+      run={own.run}
       title={t('subtitle')}
       avatar={<LumenMark />}
       onPick={(step, reply) => {
-        store.update(act.ownPick(step, reply));
+        own.pick(step, reply);
         setOpen(true);
-        if (active) play('select');
       }}
       onOpen={() => {
         setOpen(true);
