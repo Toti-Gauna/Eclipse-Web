@@ -598,7 +598,12 @@
   },
   "demoShowcase": {
     "laptopLabel": "{business}: interactive demo, desktop version",
-    "phoneLabel": "{business}: interactive demo, mobile version"
+    "phoneLabel": "{business}: interactive demo, mobile version",
+    "desktop": "Desktop",
+    "mobile": "Phone",
+    "viewsLabel": "{business} demo: choose a view",
+    "panHint": "Swipe to see it all",
+    "loading": "Loading the {business} demo…"
   },
   "demoClinic": {
     "pros": {
@@ -1979,7 +1984,13 @@
       "message": "Hi Eclipse. My industry isn't in your examples. Can you build me a demo? My business is:"
     },
     "note": "The businesses in these examples are fictional. Their numbers describe each demo's scenario, not client results.",
-    "tabsLabel": "Demo businesses"
+    "tabsLabel": "Demo businesses",
+    "stage": {
+      "label": "Demo view",
+      "demo": "Interactive demo",
+      "trailer": "{seconds}-second trailer",
+      "skip": "Skip the live demo"
+    }
   },
   "trailers": {
     "title": "{business} — Demo",

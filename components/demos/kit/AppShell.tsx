@@ -7,7 +7,6 @@ import { prefersReducedMotion, useReducedMotion } from '@/components/motion/useR
 import { useSound } from '@/components/sound/SoundContext';
 import { legacyTheme, themeVars, type DemoTheme } from './theme';
 import { BrandName, LiveDot } from './primitives';
-import { pairedPhoneOf } from './store';
 
 export interface NavItem {
   id: string;
@@ -59,7 +58,10 @@ export interface AppShellProps {
   overlayOrigin?: [string, string];
   /** Padding around the content (default true). */
   padded?: boolean;
-  /** Laptop: pad the content clear of the showcase's phone (default true). */
+  /**
+   * @deprecated No-op since v3: the showcase's views never overlap (frameless split),
+   * so the laptop content needs no room for a phone. Kept so older call sites compile.
+   */
   safeArea?: boolean;
   contentClassName?: string;
   /** false while hidden: loops pause and no sounds play. */
@@ -124,8 +126,7 @@ function NavBadge({ badge, rail = false }: { badge: NavItem['badge']; rail?: boo
 /**
  * App chrome shared by every demo.
  * - laptop: collapsible sidebar (labels ↔ icon rail, remembered for the instance) + top bar.
- *   When the showcase's phone covers the laptop's right edge, the content keeps clear of it
- *   (`--demo-safe-right`, measured here).
+ *   The showcase shows it next to the phone, never under it (v3), so it uses its full width.
  * - phone: status bar, app bar (brand + "Demo"), content, bottom tab bar (or a drawer).
  * Sizes are `em` (see demo.css); colors come from `theme`.
  */
@@ -149,7 +150,6 @@ export function AppShell(props: AppShellProps) {
     overlayOpen = false,
     overlayOrigin,
     padded = true,
-    safeArea = true,
     contentClassName = '',
     active: on = true,
     rootRef,
@@ -214,34 +214,15 @@ export function AppShell(props: AppShellProps) {
     });
   }, [collapsed]);
 
-  // Laptop next to the showcase's phone: keep the content clear of it.
-  useLayoutEffect(() => {
-    const el = rootEl.current;
-    const screenEl = el?.closest('.device-screen');
-    const phone = el && screen === 'laptop' ? pairedPhoneOf(el) : null;
-    if (!el || !screenEl || !phone) return;
-    const measure = () => {
-      const s = screenEl.getBoundingClientRect();
-      const p = phone.getBoundingClientRect();
-      if (!s.width) return;
-      const covered = Math.max(0, (s.right - p.left) / s.width);
-      const safe = `calc(${covered.toFixed(4)} * 100cqw + 0.9em)`;
-      el.style.setProperty('--demo-safe-right', safe);
-      el.style.setProperty('--demo-safe-top', (p.top - s.top) / s.height < 0.14 ? safe : '0em');
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(screenEl);
-    ro.observe(phone);
-    return () => ro.disconnect();
-  }, [screen]);
-
   // Drawer: focus in, Escape out, focus back.
   useEffect(() => {
     if (!drawer) return;
     drawerPanel.current?.querySelector<HTMLElement>('button')?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
+      // Closes the drawer only, not the dialog the showcase may sit in ("Abrir demo").
+      e.preventDefault();
+      e.stopPropagation();
       setDrawer(false);
       drawerButton.current?.focus({ preventScroll: true });
     };
@@ -335,7 +316,6 @@ export function AppShell(props: AppShellProps) {
           <div
             className={`demo-scroll demo-content ${contentClassName}`}
             data-padded={padded ? undefined : 'false'}
-            data-safe={safeArea ? undefined : 'off'}
           >
             {children}
           </div>
@@ -493,6 +473,5 @@ export function DemoShell(props: {
   headerRight?: ReactNode;
   children: ReactNode;
 }) {
-  // v1 demos keep clear of the phone themselves (--gym-safe, --re-safe…).
-  return <AppShell {...props} safeArea={false} />;
+  return <AppShell {...props} />;
 }

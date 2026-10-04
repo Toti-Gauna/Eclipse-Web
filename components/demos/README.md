@@ -1,7 +1,8 @@
 # Demo kit v2
 
-Every demo is a **fictional product with its own brand**, shown inside a phone and a laptop
-(`<DemoShowcase>`). The kit gives you the chrome, a story clock and the modules we sell
+Every demo is a **fictional product with its own brand**, shown as two frameless views,
+"Escritorio" and "Celular" (`<DemoShowcase>`: side by side when the showcase is ≥ 880 px wide,
+tabs below that; no device shells, no overlap). The kit gives you the chrome, a story clock and the modules we sell
 (chatbots, voice agents, sites, agendas, pipelines, gamification, dashboards) so each demo
 only writes its data, its story and its composition.
 
@@ -30,7 +31,7 @@ components/demos/
 
 `export default function MyDemo({ screen, active }: DemoProps)`, registered lazily in
 `registry.ts`. `screen="phone"` is the **complete navigable experience** (it's the only screen on
-mobile); `screen="laptop"` is the desktop composition. `active=false` → nothing runs.
+mobile); `screen="laptop"` is the desktop composition ("Escritorio"). `active=false` → nothing runs.
 Everything is sized in `em`: the root font-size is a fraction of the device screen
 (container query units), so the same markup works from a 150 px preview to a fullscreen modal.
 
@@ -80,8 +81,8 @@ layer and is never themed.
 
 - Laptop: sidebar expanded ↔ icon rail (toggle has `aria-expanded/aria-controls`, FLIP slide,
   state kept per instance); the business name + "Demo" badge move to the top bar on the rail.
-- Paired phone: the laptop measures the phone that covers its right edge and pads the content
-  with `--demo-safe-right` (and `--demo-safe-top` on small showcases). Nothing to do.
+- Paired phone: since v3 the two views sit side by side and never overlap, so there is no
+  safe area to pad (`safeArea` is kept as a no-op for compatibility). Nothing to do.
 - Business name always renders with the visible "Demo" badge and `— Demo` for screen readers.
 - `DemoShell` / `DemoTab` / `useDemoClock` remain as v1 aliases.
 

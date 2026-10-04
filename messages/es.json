@@ -598,7 +598,12 @@
   },
   "demoShowcase": {
     "laptopLabel": "{business}: demo navegable, versión de escritorio",
-    "phoneLabel": "{business}: demo navegable, versión para celular"
+    "phoneLabel": "{business}: demo navegable, versión para celular",
+    "desktop": "Escritorio",
+    "mobile": "Celular",
+    "viewsLabel": "Demo de {business}: elegí la vista",
+    "panHint": "Deslizá para ver todo",
+    "loading": "Cargando la demo de {business}…"
   },
   "demoClinic": {
     "pros": {
@@ -1979,7 +1984,13 @@
       "message": "Hola Eclipse. Mi rubro no está en los ejemplos de la web. ¿Me arman una demo? Mi negocio es:"
     },
     "note": "Los negocios de estos ejemplos son ficticios. Sus números son el escenario de cada demo, no resultados de clientes.",
-    "tabsLabel": "Negocios de demo"
+    "tabsLabel": "Negocios de demo",
+    "stage": {
+      "label": "Vista de la demo",
+      "demo": "Demo navegable",
+      "trailer": "Trailer de {seconds} s",
+      "skip": "Saltar la demo en vivo"
+    }
   },
   "trailers": {
     "title": "{business} — Demo",
