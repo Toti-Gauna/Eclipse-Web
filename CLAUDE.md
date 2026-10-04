@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Eclipse — landing (mockup v2)
+# Eclipse — landing (v3 in progress: landing UX/UI + client portal mockup)
 
 Landing for **Eclipse**, a development / AI / automation studio. Demo-first sales: we show
 the visitor *their business working* before talking. Single conversion goal: ask for a demo
@@ -53,6 +53,40 @@ Static export (`output: 'export'`) deployed to GitHub Pages under `/Eclipse-Web`
   them in later with the same rules. Drafts are dev-only: `npm run build` ignores them.
 - Localized content fields in `/content` are `{ es, en, pt }` objects → `l(value, locale)`.
 - Locale tags: `localeTags` (es-AR, en, pt-BR) for `Intl` and `lang`.
+
+## v3 — landing UX/UI + client portal mockup (current work; read first)
+
+Sources: Notion "Landing Eclipse — Revisión UX/UI y requisitos v3", "Portal de clientes — Especificación
+v3" and "Contexto Eclipse". `docs/v3/inventario.md` lists every v2 content block: all of it must stay
+reachable (folded is fine, deleted is not).
+
+- **Goal:** a new visitor understands what Eclipse offers in ~30 s and finds a demo, an entry price,
+  maintenance and the next step in < 2 min. Summarize on the surface and fold details (tabs, accordions,
+  "Ver la cuenta"); never hide price, scope, maintenance or conditions behind a CTA.
+- **Page order (ids unchanged):** 01 hero `#inicio` (+ shortcuts to Demos, Soluciones, Precios, Armar plan) ·
+  02 demos `#ejemplos` · 03 soluciones `#servicios` · 04 precios `#precios` · 05 calculadora `#problema` ·
+  06 cómo trabajamos `#proceso` · 07 fundadores `#fundadores` · 08 preguntas y contacto `#contacto` · footer.
+  Sky: hero void → demos/soluciones night → `<SkyTransition>` → dawn from precios on.
+- **Header:** Servicios · Demos · Precios · Cómo trabajamos; "Pedí tu demo" is THE primary CTA and stays
+  reachable on desktop and mobile; "Armá tu plan" is secondary; "Ingresar" is discreet and opens
+  `/[locale]/portal/`. Language, currency and sound sit together behind one preferences trigger.
+- **Motion (overrides the v2 art direction where they conflict):** no permanent decorative animation; big
+  motion only in the hero or one transition; everything pauses off-screen; no heavy work per scroll event;
+  reduced motion = static. Any performance claim needs a before/after measurement.
+- **Demos:** desktop preview on the left and mobile preview on the right as two independent, labeled,
+  frameless views (no laptop/phone shells, no overlap). On phones: tabs with readable sizes. Load near the
+  viewport with a static poster first; never more than one live experience at a time.
+- **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in
+  `/content` and `messages`. FAQ and conditions only reuse existing approved copy. A project starts after
+  the seña. The builder summary is a proposal request, not a binding quote; the calculator is indicative.
+- **Client portal = frontend mockup only:** routes `/[locale]/portal/` (demo login),
+  `/[locale]/portal/proyectos/` (Mis proyectos) and `/[locale]/portal/proyectos/[id]/` (detail), static
+  export, same layout and tokens as the site. Fictional fixtures labeled "Demo" and the visible notice
+  "Vista de demostración — datos ficticios; acceso real disponible cuando se implemente el backend." No
+  backend, API, auth, persistence, uploads or emails; forms never submit or store anything; no fake
+  security. Stages: 1 Preparación · 2 Construcción · 3 Revisión de Eclipse · 4 Revisión del cliente ·
+  5 Entrega (+ Soporte, En pausa/Cerrado). Projects table on desktop, cards on phones. Copy in es
+  (rioplatense), en and pt-BR through next-intl. The internal Eclipse portal/CRM is out of scope.
 
 ## Art direction v2 — "Efemérides" (read before touching any UI)
 
