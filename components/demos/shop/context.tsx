@@ -15,6 +15,13 @@ export interface ShopCtx {
   loop: number;
   reduced: boolean;
   active: boolean;
+  /** A beat is playing. */
+  playing: boolean;
+  /**
+   * True while a story change at `at` is "just now" (toasts, halos): only while a beat plays and
+   * only for what happened inside it — never at rest, never for the visitor's own actions.
+   */
+  recent: (at: number | null | undefined, ms?: number) => boolean;
   /** This instance announces live changes and plays sounds (one per laptop + phone pair). */
   announce: boolean;
   business: string;

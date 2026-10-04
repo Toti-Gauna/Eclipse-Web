@@ -297,8 +297,8 @@ export const THU = { checkin: 1_500, trialIn: 2_300, mission: 600, league: 3_000
 /** Story clock: minutes per ms in each day of the time-lapse. */
 export const CLOCK = {
   mon: { start: 540, msPerMin: 1500 },
-  tue: { lead: 2, msPerMin: 1000 },
-  thu: { lead: 2, msPerMin: 900 },
+  tue: { lead: 1, msPerMin: 1000 },
+  thu: { lead: 1, msPerMin: 900 },
 } as const;
 
 /* ------------------------------------------------------------------ */

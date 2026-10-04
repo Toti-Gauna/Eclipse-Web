@@ -132,7 +132,7 @@ export const INQUIRY: Flow = {
   steps: {
     ask: { from: 'user', typingMs: 0, pauseMs: 0, next: 'hi' },
     hi: { from: 'bot', typingMs: 1200, pauseMs: 300, next: 'pay' },
-    pay: { from: 'bot', typingMs: 800, pauseMs: 300, replies: [{ id: 'cash' }, { id: 'credit' }, { id: 'sell' }], auto: 'credit', autoMs: 2000, next: 'budget' },
+    pay: { from: 'bot', typingMs: 800, pauseMs: 300, replies: [{ id: 'cash' }, { id: 'credit' }, { id: 'sell' }], auto: 'credit', autoMs: 2800, next: 'budget' },
     budget: {
       from: 'bot',
       typingMs: 900,
@@ -143,7 +143,7 @@ export const INQUIRY: Flow = {
     },
     fits: { from: 'bot', typingMs: 1000, pauseMs: 300, next: 'slots' },
     alt: { from: 'bot', typingMs: 1200, pauseMs: 300, next: 'slots' },
-    slots: { from: 'bot', typingMs: 900, pauseMs: 300, replies: [{ id: 'fri' }, { id: 'sat' }], auto: 'fri', autoMs: 1900, next: 'booked' },
+    slots: { from: 'bot', typingMs: 900, pauseMs: 300, replies: [{ id: 'fri' }, { id: 'sat' }], auto: 'fri', autoMs: 2400, next: 'booked' },
     booked: { from: 'bot', typingMs: 1000, pauseMs: 300, next: 'crm' },
     crm: { from: 'note', typingMs: 450 },
   },
@@ -157,7 +157,7 @@ export const UNANSWERED: Flow = {
     wait: { from: 'note', typingMs: 500, pauseMs: 300, next: 'opens' },
     opens: { from: 'note', typingMs: 7000, pauseMs: 3900, next: 'human' },
     human: { from: 'bot', typingMs: 100, pauseMs: 300, next: 'lost' },
-    lost: { from: 'user', typingMs: 5700, pauseMs: 300, next: 'lostNote' },
+    lost: { from: 'user', typingMs: 7200, pauseMs: 300, next: 'lostNote' },
     lostNote: { from: 'note', typingMs: 5200 },
   },
 };
@@ -172,7 +172,7 @@ export const FOLLOW: Flow = {
       pauseMs: 300,
       replies: [{ id: 'reserve', goto: 'reserved' }, { id: 'similar', goto: 'similarList' }, { id: 'think', goto: 'later' }],
       auto: 'reserve',
-      autoMs: 4900,
+      autoMs: 4400,
     },
     reserved: { from: 'bot', typingMs: 1100, pauseMs: 300, next: 'reservedNote' },
     reservedNote: { from: 'note', typingMs: 450 },
@@ -239,7 +239,9 @@ const SCRIPTED: Record<string, ChatPick> = Object.fromEntries(
 export function inquiryRun(botOff: boolean, elapsed: number, picks: Record<string, ChatPick>): ChatRun {
   if (botOff) return runChat(SCRIPTS.unanswered, elapsed, {});
   if (!Object.keys(picks).length) return runChat(SCRIPTS.inquiry, elapsed, {});
-  return runChat(SCRIPTS.inquiry, elapsed, { ...SCRIPTED, ...picks }, { instantAfterPick: true });
+  // Scripted answers only count once their time has come (runChat applies a pick as soon as its step shows).
+  const due = Object.fromEntries(Object.entries(SCRIPTED).filter(([, p]) => p.at <= elapsed));
+  return runChat(SCRIPTS.inquiry, elapsed, { ...due, ...picks }, { instantAfterPick: true });
 }
 
 /** The visitor's own chat with Lumi (instant). `slots`: the two visit slots it offers. */

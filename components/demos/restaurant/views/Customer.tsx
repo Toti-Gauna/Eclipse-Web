@@ -125,7 +125,7 @@ function usePush(ticket: Ticket | null) {
  * What a customer sees (QR on the table / the bodegón's site): the carta with prices and stock →
  * their order (quantities, a note, how they want it) → its status, or book a table on one of the
  * next nights. Nothing plays on its own; what they do lands on the staff side (kitchen display,
- * floor plan). `onClose`: opened from the staff app (phone). `embedded`: inside the laptop's frame.
+ * floor plan). `onClose`: opened from the staff app (phone) — it shows a way back.
  */
 export function CustomerApp({ onClose }: { onClose?: () => void }) {
   const { view, state, store, active, business } = useRestaurant();

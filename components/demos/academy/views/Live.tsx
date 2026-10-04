@@ -5,15 +5,17 @@ import { CalendarCheck, Radio, Users } from 'lucide-react';
 import { Calendar, Card, LiveDot, Meter, type CalendarEvent } from '../../kit';
 import { LIVE_CLASSES, LIVE_END, LIVE_START, ON_AIR, TEACHERS } from '../data';
 import { useAcademy } from '../context';
+import { isFreshEvent } from '../story';
 import { PersonAvatar, TeacherAvatar, ViewHead, useAcademyText } from '../ui';
 
 /** Today's live classes per teacher; the B1 club fills up as Valentina books. */
 function useClassEvents(): CalendarEvent[] {
   const t = useTranslations('demoAcademy.live');
   const tc = useTranslations('demoAcademy.student.classes');
-  const { view } = useAcademy();
+  const { view, state } = useAcademy();
   const { fmt, teacher } = useAcademyText();
   const booked = view.booked !== null && view.t >= view.booked;
+  const freshBook = view.booked !== null && isFreshEvent(view.t, { at: view.booked, mine: state.booked !== null }, 2400);
   return LIVE_CLASSES.map((c) => {
     const done = c.end <= view.clock;
     const onAir = c.start <= view.clock && view.clock < c.end;
@@ -29,7 +31,7 @@ function useClassEvents(): CalendarEvent[] {
       tone,
       state: done ? 'done' : c.id === 'club-b1' && booked ? 'mine' : 'default',
       status: onAir ? <LiveDot color="var(--demo-accent-2)" /> : undefined,
-      fresh: c.id === 'club-b1' && booked && view.t - (view.booked ?? 0) < 2400,
+      fresh: c.id === 'club-b1' && freshBook,
       version: c.id === 'club-b1' && booked ? 'booked' : 'base',
       label: `${fmt.time(c.start)}, ${teacher(c.teacher)}: ${tc(c.id)}`,
     };

@@ -204,15 +204,15 @@ export function TicketCard({ ticket, variant = 'board', fresh = false, bump = fa
 
 /**
  * A contextual "Simular: …" button for a beat that is still ahead (same as the SimBar).
- * Hidden once the story got there.
  */
 export function SimCue({ beat, className = '' }: { beat: BeatId; className?: string }) {
   const ctx = useRestaurant();
   const { t } = useRestaurantText();
   const index = BEATS.findIndex((b) => b.id === beat);
-  if (index <= ctx.beat) return null;
+  // Hidden once reached, and while any beat plays (the SimBar shows that one).
+  if (index <= ctx.beat || ctx.playing) return null;
   return (
-    <button type="button" className={`rl-simcue ${className}`} disabled={ctx.playing} onClick={() => ctx.playBeat(beat)}>
+    <button type="button" className={`rl-simcue ${className}`} onClick={() => ctx.playBeat(beat)}>
       <Play aria-hidden strokeWidth={2} />
       <span className="min-w-0">{t('simCue', { label: t(`sim.${beat}`) })}</span>
     </button>

@@ -7,7 +7,7 @@ import { STAGES, itemList, type Stage } from '../data';
 import { act } from '../story';
 import { useRestaurant } from '../context';
 import { useRestaurantText } from '../text';
-import { CHANNEL_ICON, STAGE_TONE, SimCue, ViewHead, useTicketWhere } from '../ui';
+import { CHANNEL_ICON, STAGE_TONE, SimCue, ViewHead } from '../ui';
 import { ticketFresh } from './Service';
 
 /**
@@ -21,7 +21,9 @@ export function KitchenBoard({ layout = 'columns', className = '' }: { layout?: 
   const x = useRestaurantText();
   const { t, fmt } = x;
   const { play } = useSound();
-  const where = useTicketWhere();
+  /** Short "where" for a narrow card: Mesa 7 · Lucía · Vos · Retira. */
+  const where = (tk: (typeof view.board)[number]) =>
+    tk.channel === 'salon' ? t('table.label', { n: tk.table ?? '' }) : tk.who ? (tk.who === 'you' ? t('people.you') : x.first(tk.who)) : t(`channel.${tk.channel}`);
   const order = (a: (typeof view.board)[number], b: (typeof view.board)[number]) =>
     a.stage === 'out' ? b.stageAt - a.stageAt || b.num - a.num : a.clock - b.clock || a.num - b.num;
   const cards: KanbanCard[] = [...view.board].sort(order).map((tk) => {

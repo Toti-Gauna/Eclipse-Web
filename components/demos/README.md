@@ -121,6 +121,9 @@ consistent (same items, same icon treatment, same rhythm).
 | `top` | scrollable pills under the app bar (no bottom bar) |
 | `drawer` | menu button + side drawer only |
 
+With `rail` (and a collapsed `sidebar`) only the icon column is interactive: the panel is
+rail-wide, items are as narrow as the rail and their focus ring is fully visible.
+
 `layout.density`: `airy` (taller top bar, roomier content) · `regular` · `compact` (dense tools).
 `layout.icons`: `line` (thin icons) · `chip` (icons in tinted squares; the current one solid accent) ·
 `none` (labels only — sidebar/top only; editorial demos).
@@ -240,7 +243,8 @@ shows in every view of the pair.
 phones. With `onMove(cardId, toColumn)` the visitor moves cards: pointer drag (mouse anywhere on
 the card; touch/pen by the grip, so the page still scrolls) and an accessible alternative on
 every card ("Mover «card»" → "Mover a <column>"), a polite announcement and focus back on the
-moved card. Store the override with its time and let the story win only if it changes the card
+moved card. `lines: 2` on a card lets `sub` and `meta` take two lines (the title stays on one).
+Store the override with its time and let the story win only if it changes the card
 later (clinic: `state.moved` in `deriveClinic`).
 
 **Feed** — `ActivityFeed` (newest first, `fresh` tag; don't pass `live` in v3), `ToastStack`
@@ -298,7 +302,10 @@ export const tour: DemoTourStep[] = [
   Never from an effect, a timer or a beat landing.
 - Real buttons with labels; `aria-pressed`/`aria-current`/`aria-expanded` where it applies;
   one polite announcer per showcase; no focus traps inside the device; touch targets ≥ 44 px in
-  the phone view where the scale allows (SimBar, dock, calendar bar use ~3.3em).
+  the phone view (≈ 3.7em at the usual scale). The kit's phone chrome already complies (SimBar,
+  dock, bottom tabs via an invisible hit area into the bar's padding, app-bar/drawer buttons,
+  drawer items, calendar bar); give your own phone controls the same size, or an invisible
+  `::after` hit area when the layout can't grow.
 - Demo code is lazy (registry). No new dependencies. No layout reads inside timers.
 
 ## 9. Verify

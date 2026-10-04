@@ -1847,3 +1847,165 @@
 .re-line-sep .re-line-text {
   color: var(--demo-accent-text);
 }
+
+/* ------------------------------------------------------------------ */
+/* v3: editorial shell, manual flows                                    */
+/* ------------------------------------------------------------------ */
+/* Phone: the sections as a row of text tabs (no icons), square, ruled */
+.lumen .demo-toptabs-item .demo-navicon {
+  display: none;
+}
+/* Square text tabs with a rule, like a magazine's index (taller for touch). */
+.lumen .demo-toptabs {
+  gap: 0;
+  padding: 0 0.6em;
+  border-bottom: 1px solid var(--demo-line);
+}
+.lumen .demo-toptabs-item {
+  height: 3.6em;
+  padding: 0 0.75em;
+  border-radius: 0;
+  box-shadow: none;
+}
+.lumen .demo-toptabs-item[aria-current='page'] {
+  background: transparent;
+  box-shadow: inset 0 -2px 0 var(--demo-ink);
+  color: var(--demo-ink);
+}
+.lumen .demo-root[data-screen='phone'] .re-buyerbtn,
+.lumen[data-screen='phone'] .re-buyerbtn {
+  height: 3.3em;
+  font-size: 0.74em;
+}
+.re-toppill-dot {
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 999px;
+  background: var(--demo-accent);
+}
+.re-toppill[data-tone='bad'] .re-toppill-dot {
+  background: var(--demo-bad);
+}
+.re-toppill[data-tone='neutral'] .re-toppill-dot {
+  background: var(--demo-ok);
+}
+.re-live-empty {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 1em;
+  border: 1px solid var(--demo-line);
+  background: var(--demo-surface);
+}
+.re-live-chat > .re-chat {
+  height: 100%;
+}
+.re-iconbtn {
+  display: grid;
+  width: 2.4em;
+  height: 2.4em;
+  flex: none;
+  place-items: center;
+  margin: -0.4em -0.4em 0 0;
+  color: var(--demo-muted);
+}
+.re-iconbtn svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.re-bookform {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+}
+.re-bookform fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.re-bookform-when {
+  margin-top: 0.15em;
+  font-size: 1.3em;
+  line-height: 1.05;
+}
+.re-bookform-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+  margin-top: 0.4em;
+}
+.re-sheetform {
+  padding: 0.85em;
+  border: 1px solid var(--demo-ink);
+  background: var(--demo-surface);
+  animation: re-in 0.45s var(--demo-ease) both;
+}
+.re-book-note {
+  color: var(--demo-muted);
+  font-size: 0.6em;
+  line-height: 1.4;
+}
+/* Gallery: three takes of the façade (day · dusk · night) */
+.re-gallery-nav {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.5em;
+  display: flex;
+  gap: 1px;
+}
+.re-gallery-nav button {
+  display: grid;
+  width: 2.4em;
+  height: 2.4em;
+  place-items: center;
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+}
+.re-gallery-nav button svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.re-gallery-nav button:hover {
+  background: var(--demo-accent);
+}
+.re-site-navlink {
+  margin-left: auto;
+  min-height: 2.4em;
+  padding: 0 0.2em;
+  border-bottom: 1px solid transparent;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+.re-site-navlink[aria-current='page'] {
+  border-bottom-color: var(--demo-ink);
+}
+.re-wabtn {
+  position: absolute;
+  bottom: 1.6em;
+  left: 0.9em;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  height: 2.9em;
+  padding: 0 0.9em;
+  border: 1px solid var(--demo-ink);
+  background: var(--demo-surface);
+  font-size: 0.7em;
+  font-weight: 600;
+  box-shadow: var(--demo-shadow);
+}
+.re-wabtn svg {
+  width: 1.2em;
+  height: 1.2em;
+  color: #1f8a5b;
+}
+/* A listing inside a chat bubble: a thumbnail, not a hero (beats `.re-facade { width: 100% }`). */
+.re-chip-listing .re-chip-listing-img {
+  width: 4.2em;
+  height: 3.2em;
+}

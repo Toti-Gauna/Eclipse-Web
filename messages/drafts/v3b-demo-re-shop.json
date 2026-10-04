@@ -1,0 +1,680 @@
+{
+  "demoRealEstate": {
+    "es": {
+      "sim": {
+        "inquiry": "Llega una consulta a las 23:40",
+        "qualify": "Lumi califica a Carolina",
+        "visit": "Lumi agenda la visita",
+        "followup": "Seguimiento después de la visita",
+        "reply": "Carolina responde el seguimiento",
+        "note": "Consultas, visitas y mensajes simulados con datos de demostración; no se envía nada.",
+        "off": {
+          "inquiry": "Llega una consulta a las 23:40",
+          "qualify": "Pasa la noche sin respuesta",
+          "visit": "Abre la oficina: responde Julia",
+          "followup": "Carolina contesta",
+          "reply": "El lead queda perdido"
+        }
+      },
+      "own": {
+        "label": "Tu chat con Lumi en el sitio de {business}",
+        "steps": {
+          "hi": "¡Hola! Soy Lumi, el asistente de Lumen. ¿Qué estás buscando?",
+          "pay": "¿Cómo pensás pagarlo?",
+          "budget": "¿Hasta cuánto querés invertir?",
+          "match_two": "Para 2 ambientes, mirá este loft en {street}. ¿Querés verlo?",
+          "match_three": "Tengo uno que encaja: {street}. ¿Querés verlo?",
+          "match_house": "Mirá esta casa en {street}, con jardín y pileta. ¿Querés verla?",
+          "booked": "Listo: visita el {slot} con {advisor}. Te llega la confirmación por WhatsApp.",
+          "note": "Lead calificado · ficha y visita cargadas en el CRM",
+          "later": "Dale. Te aviso por WhatsApp si baja de precio o entra algo parecido.",
+          "laterNote": "Lead calificado · seguimiento programado"
+        },
+        "replies": {
+          "two": "2 ambientes",
+          "three": "3 ambientes",
+          "house": "Casa con jardín",
+          "later": "Ahora no"
+        }
+      },
+      "people": {
+        "marcosFirst": "Marcos"
+      },
+      "notes": {
+        "youNew": "Tu consulta · Lumi te está calificando",
+        "youQualified": "{budget} · busca {listing}",
+        "moved": "Movida por vos"
+      },
+      "feed": {
+        "youLead": "Tu consulta entró al CRM: {listing}"
+      },
+      "inbox": {
+        "emptyTitle": "Todavía no escribió nadie.",
+        "emptyBody": "Tocá «Simular» arriba: a las 23:40 llega la consulta de Carolina y Lumi la atiende."
+      },
+      "today": {
+        "nowEmpty": "Nada todavía. Simulá la consulta de las 23:40."
+      },
+      "pipeline": {
+        "note": "Lumi mueve las tarjetas cuando califica y agenda. Vos también: arrastralas o usá «Mover»."
+      },
+      "listing": {
+        "photoN": "Fachada de {street}, ilustración {n} de {total}"
+      },
+      "visits": {
+        "label": null,
+        "freeLabel": "{day}, {time}: libre, agendar una visita",
+        "freeLabelWith": "{time} con {advisor}: libre, agendar una visita",
+        "dayLabel": "Visitas del {day}, por asesor",
+        "weekLabel": "Visitas de la semana, {from} a {to}",
+        "summary": "{day} · {count, plural, =0 {sin visitas} one {# visita} other {# visitas}}",
+        "summaryPast": "{day} · {count, plural, =0 {sin visitas} one {# visita realizada} other {# visitas realizadas}}",
+        "weekSummary": "{count, plural, one {# visita} other {# visitas}} en la semana · tocá un horario libre para agendar",
+        "closed": "{day} · la oficina no muestra propiedades",
+        "hint": "Tocá un horario libre para agendar una visita.",
+        "hintLaptop": "Pasá de semana a día, mirá semanas pasadas y futuras, y tocá un horario libre para agendar.",
+        "hintPast": "Día pasado: solo lectura.",
+        "bookTitle": "Agendar visita",
+        "property": "Propiedad",
+        "confirm": "Agendar visita",
+        "cancel": "Cancelar",
+        "localNote": "Visita de demostración: queda solo en esta pantalla."
+      },
+      "site": {
+        "nav": {
+          "buy": null,
+          "rent": null,
+          "sell": null,
+          "contact": null,
+          "all": "Propiedades ({count})"
+        },
+        "search": {
+          "op": null,
+          "opValue": null,
+          "go": null,
+          "label": "Buscar propiedades",
+          "price": "Precio",
+          "priceAny": "Cualquiera",
+          "priceMax": "Hasta USD {amount}",
+          "none": "Nada con esos filtros. Probá con otra zona o más presupuesto."
+        },
+        "prevPhoto": "Foto anterior",
+        "nextPhoto": "Foto siguiente",
+        "viewSub": "{url} · buscá, abrí una propiedad, agendá una visita o chateá con Lumi",
+        "booking": {
+          "pickDay": "Elegí un día",
+          "seeAgenda": "Ver en la agenda",
+          "note": "Visita de demostración: no se envía nada."
+        }
+      },
+      "buyer": {
+        "you": "Vos, en el sitio",
+        "openThread": "Ver el WhatsApp"
+      },
+      "bot": {
+        "hint": "Apagalo: la demo vuelve a las 23:40 y simulás la misma noche sin asistente.",
+        "hintOff": "Prendelo: la demo vuelve a las 23:40 y la consulta se responde en segundos."
+      }
+    },
+    "en": {
+      "sim": {
+        "inquiry": "An inquiry arrives at 11:40 PM",
+        "qualify": "Lumi qualifies Carolina",
+        "visit": "Lumi books the viewing",
+        "followup": "Follow-up after the viewing",
+        "reply": "Carolina answers the follow-up",
+        "note": "Inquiries, viewings and messages are simulated with demo data; nothing is sent.",
+        "off": {
+          "inquiry": "An inquiry arrives at 11:40 PM",
+          "qualify": "The night goes by unanswered",
+          "visit": "The office opens: Julia replies",
+          "followup": "Carolina answers",
+          "reply": "The lead is lost"
+        }
+      },
+      "own": {
+        "label": "Your chat with Lumi on the {business} website",
+        "steps": {
+          "hi": "Hi! I'm Lumi, Lumen's assistant. What are you looking for?",
+          "pay": "How are you planning to pay?",
+          "budget": "What's your budget, at most?",
+          "match_two": "For 2 rooms, take a look at this loft on {street}. Want to see it?",
+          "match_three": "I have one that fits: {street}. Want to see it?",
+          "match_house": "Take a look at this house on {street}, with a garden and a pool. Want to see it?",
+          "booked": "Done: viewing on {slot} with {advisor}. The confirmation arrives on WhatsApp.",
+          "note": "Lead qualified · details and viewing saved to the CRM",
+          "later": "Sure. I'll message you on WhatsApp if the price drops or something similar comes in.",
+          "laterNote": "Lead qualified · follow-up scheduled"
+        },
+        "replies": {
+          "two": "2 rooms",
+          "three": "3 rooms",
+          "house": "House with a garden",
+          "later": "Not now"
+        }
+      },
+      "people": {
+        "marcosFirst": "Marcos"
+      },
+      "notes": {
+        "youNew": "Your inquiry · Lumi is qualifying you",
+        "youQualified": "{budget} · wants {listing}",
+        "moved": "Moved by you"
+      },
+      "feed": {
+        "youLead": "Your inquiry is in the CRM: {listing}"
+      },
+      "inbox": {
+        "emptyTitle": "No one has written yet.",
+        "emptyBody": "Tap “Simulate” above: at 11:40 PM Carolina's inquiry arrives and Lumi takes it."
+      },
+      "today": {
+        "nowEmpty": "Nothing yet. Simulate the 11:40 PM inquiry."
+      },
+      "pipeline": {
+        "note": "Lumi moves the cards as it qualifies and books. So can you: drag them or use “Move”."
+      },
+      "listing": {
+        "photoN": "Front of {street}, illustration {n} of {total}"
+      },
+      "visits": {
+        "label": null,
+        "freeLabel": "{day}, {time}: free, book a viewing",
+        "freeLabelWith": "{time} with {advisor}: free, book a viewing",
+        "dayLabel": "Viewings on {day}, by agent",
+        "weekLabel": "Viewings this week, {from} to {to}",
+        "summary": "{day} · {count, plural, =0 {no viewings} one {# viewing} other {# viewings}}",
+        "summaryPast": "{day} · {count, plural, =0 {no viewings} one {# viewing done} other {# viewings done}}",
+        "weekSummary": "{count, plural, one {# viewing} other {# viewings}} this week · tap a free time to book",
+        "closed": "{day} · no viewings that day",
+        "hint": "Tap a free time to book a viewing.",
+        "hintLaptop": "Switch between week and day, browse past and future weeks, and tap a free time to book.",
+        "hintPast": "Past day: read only.",
+        "bookTitle": "Book a viewing",
+        "property": "Property",
+        "confirm": "Book viewing",
+        "cancel": "Cancel",
+        "localNote": "Demo viewing: it only stays on this screen."
+      },
+      "site": {
+        "nav": {
+          "buy": null,
+          "rent": null,
+          "sell": null,
+          "contact": null,
+          "all": "Properties ({count})"
+        },
+        "search": {
+          "op": null,
+          "opValue": null,
+          "go": null,
+          "label": "Search properties",
+          "price": "Price",
+          "priceAny": "Any",
+          "priceMax": "Up to USD {amount}",
+          "none": "Nothing with those filters. Try another area or a higher budget."
+        },
+        "prevPhoto": "Previous photo",
+        "nextPhoto": "Next photo",
+        "viewSub": "{url} · search, open a property, book a viewing or chat with Lumi",
+        "booking": {
+          "pickDay": "Pick a day",
+          "seeAgenda": "See it in the calendar",
+          "note": "Demo viewing: nothing is sent."
+        }
+      },
+      "buyer": {
+        "you": "You, on the website",
+        "openThread": "Open WhatsApp"
+      },
+      "bot": {
+        "hint": "Turn it off: the demo goes back to 11:40 PM and you simulate the same night without the assistant.",
+        "hintOff": "Turn it on: the demo goes back to 11:40 PM and the inquiry is answered in seconds."
+      }
+    },
+    "pt": {
+      "sim": {
+        "inquiry": "Chega um contato às 23:40",
+        "qualify": "A Lumi qualifica a Mariana",
+        "visit": "A Lumi agenda a visita",
+        "followup": "Acompanhamento depois da visita",
+        "reply": "A Mariana responde o acompanhamento",
+        "note": "Contatos, visitas e mensagens simulados com dados de demonstração; nada é enviado.",
+        "off": {
+          "inquiry": "Chega um contato às 23:40",
+          "qualify": "A noite passa sem resposta",
+          "visit": "O escritório abre: a Júlia responde",
+          "followup": "A Mariana responde",
+          "reply": "O lead é perdido"
+        }
+      },
+      "own": {
+        "label": "Seu chat com a Lumi no site da {business}",
+        "steps": {
+          "hi": "Oi! Eu sou a Lumi, assistente da Lumen. O que você está procurando?",
+          "pay": "Como você pretende pagar?",
+          "budget": "Até quanto você quer investir?",
+          "match_two": "Para 1 quarto, olha este loft na {street}. Quer visitar?",
+          "match_three": "Tenho um que encaixa: {street}. Quer visitar?",
+          "match_house": "Olha esta casa na {street}, com jardim e piscina. Quer visitar?",
+          "booked": "Pronto: visita {slot} com o {advisor}. A confirmação chega pelo WhatsApp.",
+          "note": "Lead qualificado · ficha e visita salvas no CRM",
+          "later": "Combinado. Te aviso pelo WhatsApp se o preço baixar ou entrar algo parecido.",
+          "laterNote": "Lead qualificado · acompanhamento programado"
+        },
+        "replies": {
+          "two": "1 quarto",
+          "three": "2 quartos",
+          "house": "Casa com jardim",
+          "later": "Agora não"
+        }
+      },
+      "people": {
+        "marcosFirst": "Marcos"
+      },
+      "notes": {
+        "youNew": "Seu contato · a Lumi está te qualificando",
+        "youQualified": "{budget} · procura {listing}",
+        "moved": "Movido por você"
+      },
+      "feed": {
+        "youLead": "Seu contato entrou no CRM: {listing}"
+      },
+      "inbox": {
+        "emptyTitle": "Ninguém escreveu ainda.",
+        "emptyBody": "Toque em “Simular” lá em cima: às 23:40 chega o contato da Mariana e a Lumi atende."
+      },
+      "today": {
+        "nowEmpty": "Nada ainda. Simule o contato das 23:40."
+      },
+      "pipeline": {
+        "note": "A Lumi move os cards quando qualifica e agenda. Você também: arraste ou use “Mover”."
+      },
+      "listing": {
+        "photoN": "Fachada da {street}, ilustração {n} de {total}"
+      },
+      "visits": {
+        "label": null,
+        "freeLabel": "{day}, {time}: livre, agendar uma visita",
+        "freeLabelWith": "{time} com {advisor}: livre, agendar uma visita",
+        "dayLabel": "Visitas de {day}, por corretor",
+        "weekLabel": "Visitas da semana, de {from} a {to}",
+        "summary": "{day} · {count, plural, =0 {sem visitas} one {# visita} other {# visitas}}",
+        "summaryPast": "{day} · {count, plural, =0 {sem visitas} one {# visita feita} other {# visitas feitas}}",
+        "weekSummary": "{count, plural, one {# visita} other {# visitas}} na semana · toque num horário livre para agendar",
+        "closed": "{day} · sem visitas neste dia",
+        "hint": "Toque num horário livre para agendar uma visita.",
+        "hintLaptop": "Alterne entre semana e dia, veja semanas passadas e futuras e toque num horário livre para agendar.",
+        "hintPast": "Dia passado: só leitura.",
+        "bookTitle": "Agendar visita",
+        "property": "Imóvel",
+        "confirm": "Agendar visita",
+        "cancel": "Cancelar",
+        "localNote": "Visita de demonstração: fica só nesta tela."
+      },
+      "site": {
+        "nav": {
+          "buy": null,
+          "rent": null,
+          "sell": null,
+          "contact": null,
+          "all": "Imóveis ({count})"
+        },
+        "search": {
+          "op": null,
+          "opValue": null,
+          "go": null,
+          "label": "Buscar imóveis",
+          "price": "Preço",
+          "priceAny": "Qualquer",
+          "priceMax": "Até US$ {amount}",
+          "none": "Nada com esses filtros. Tente outra região ou um orçamento maior."
+        },
+        "prevPhoto": "Foto anterior",
+        "nextPhoto": "Próxima foto",
+        "viewSub": "{url} · busque, abra um imóvel, agende uma visita ou converse com a Lumi",
+        "booking": {
+          "pickDay": "Escolha um dia",
+          "seeAgenda": "Ver na agenda",
+          "note": "Visita de demonstração: nada é enviado."
+        }
+      },
+      "buyer": {
+        "you": "Você, no site",
+        "openThread": "Abrir o WhatsApp"
+      },
+      "bot": {
+        "hint": "Desligue: a demo volta às 23:40 e você simula a mesma noite sem a assistente.",
+        "hintOff": "Ligue: a demo volta às 23:40 e o contato é respondido em segundos."
+      }
+    }
+  },
+  "demoShop": {
+    "es": {
+      "sim": {
+        "bot": "Inés le pregunta al bot qué café comprar",
+        "abandon": "Inés llega al checkout y se va",
+        "recovery": "30 min después: WhatsApp con cupón",
+        "paid": "Inés vuelve y paga",
+        "club": "Tomás sube de nivel en el club",
+        "note": "Pedidos, carritos y mensajes simulados con datos de demostración; no se cobra ni se envía nada.",
+        "off": {
+          "recovery": "30 min después: nadie le escribe",
+          "paid": "El carrito de Inés se pierde"
+        }
+      },
+      "top": {
+        "live": null,
+        "open": "Tienda abierta"
+      },
+      "side": null,
+      "today": {
+        "live": "Últimos pedidos"
+      },
+      "chat": {
+        "states": {
+          "live": "Abierta"
+        }
+      },
+      "toast": {
+        "mineUnsent": "Sin recuperación"
+      },
+      "feed": {
+        "mineAbandon": "Dejaste tu carrito en el checkout",
+        "mineUnsent": "Recuperación apagada: no te escribió nadie"
+      },
+      "orders": {
+        "hint": "Avanzá cada pedido cuando lo tostás, lo despachás y llega.",
+        "advance": {
+          "roasting": "A tostar",
+          "shipping": "Despachar",
+          "delivered": "Entregado"
+        },
+        "advanceLabel": "Pasar el pedido #{id} a {stage}"
+      },
+      "front": {
+        "lock": {
+          "later": "30 min después"
+        },
+        "later": {
+          "label": "Tu carrito abandonado",
+          "left": "Dejaste tu carrito en el checkout.",
+          "simulate": "Simular: 30 min después",
+          "unsent": "Recuperación apagada: nadie te escribió. El carrito queda perdido."
+        }
+      }
+    },
+    "en": {
+      "sim": {
+        "bot": "Inés asks the bot which coffee to buy",
+        "abandon": "Inés reaches checkout and leaves",
+        "recovery": "30 min later: WhatsApp with a coupon",
+        "paid": "Inés comes back and pays",
+        "club": "Tomás levels up in the club",
+        "note": "Orders, carts and messages are simulated with demo data; nothing is charged or sent.",
+        "off": {
+          "recovery": "30 min later: nobody writes to her",
+          "paid": "Inés's cart is lost"
+        }
+      },
+      "top": {
+        "live": null,
+        "open": "Store open"
+      },
+      "side": null,
+      "today": {
+        "live": "Latest orders"
+      },
+      "chat": {
+        "states": {
+          "live": "Open"
+        }
+      },
+      "toast": {
+        "mineUnsent": "No recovery"
+      },
+      "feed": {
+        "mineAbandon": "You left your cart at checkout",
+        "mineUnsent": "Recovery is off: nobody wrote to you"
+      },
+      "orders": {
+        "hint": "Move each order along as you roast it, ship it and it arrives.",
+        "advance": {
+          "roasting": "Roast",
+          "shipping": "Ship",
+          "delivered": "Delivered"
+        },
+        "advanceLabel": "Move order #{id} to {stage}"
+      },
+      "front": {
+        "lock": {
+          "later": "30 min later"
+        },
+        "later": {
+          "label": "Your abandoned cart",
+          "left": "You left your cart at checkout.",
+          "simulate": "Simulate: 30 min later",
+          "unsent": "Recovery is off: nobody wrote to you. The cart is lost."
+        }
+      }
+    },
+    "pt": {
+      "sim": {
+        "bot": "A Bia pergunta ao bot qual café comprar",
+        "abandon": "A Bia chega ao checkout e sai",
+        "recovery": "30 min depois: WhatsApp com cupom",
+        "paid": "A Bia volta e paga",
+        "club": "O Thiago sobe de nível no clube",
+        "note": "Pedidos, carrinhos e mensagens simulados com dados de demonstração; nada é cobrado nem enviado.",
+        "off": {
+          "recovery": "30 min depois: ninguém escreve para ela",
+          "paid": "O carrinho da Bia se perde"
+        }
+      },
+      "top": {
+        "live": null,
+        "open": "Loja aberta"
+      },
+      "side": null,
+      "today": {
+        "live": "Últimos pedidos"
+      },
+      "chat": {
+        "states": {
+          "live": "Aberta"
+        }
+      },
+      "toast": {
+        "mineUnsent": "Sem recuperação"
+      },
+      "feed": {
+        "mineAbandon": "Você deixou o carrinho no checkout",
+        "mineUnsent": "Recuperação desligada: ninguém escreveu para você"
+      },
+      "orders": {
+        "hint": "Avance cada pedido quando torrar, despachar e ele chegar.",
+        "advance": {
+          "roasting": "Torrar",
+          "shipping": "Despachar",
+          "delivered": "Entregue"
+        },
+        "advanceLabel": "Passar o pedido #{id} para {stage}"
+      },
+      "front": {
+        "lock": {
+          "later": "30 min depois"
+        },
+        "later": {
+          "label": "Seu carrinho abandonado",
+          "left": "Você deixou o carrinho no checkout.",
+          "simulate": "Simular: 30 min depois",
+          "unsent": "Recuperação desligada: ninguém te escreveu. O carrinho se perde."
+        }
+      }
+    }
+  },
+  "demoTours": {
+    "es": {
+      "realEstate": {
+        "sim": {
+          "title": "Vos decidís qué pasa esta noche",
+          "body": "Nada se mueve solo. Tocá «Simular» y seguí la consulta de las 23:40: respuesta, calificación, visita y seguimiento. Apagá el asistente para ver la misma noche sin él."
+        },
+        "chat": {
+          "title": "Cada consulta, respondida en segundos",
+          "body": "Lumi contesta a cualquier hora, pregunta cómo paga y cuánto invierte, y deja la ficha lista. Podés responder vos por Carolina."
+        },
+        "site": {
+          "title": "Tu sitio busca y agenda",
+          "body": "Filtros por zona, ambientes y precio, ficha con plano y «Agendar visita». Agendá una: aparece en el calendario y en el pipeline."
+        },
+        "pipeline": {
+          "title": "Un pipeline que se ordena solo",
+          "body": "Cada lead pasa de Nuevo a Calificado, Visita y Reserva cuando Lumi avanza. Arrastrá una tarjeta o usá «Mover» para ordenarlo a mano."
+        },
+        "visits": {
+          "title": "Visitas sin ida y vuelta",
+          "body": "Los dos asesores en una agenda. Pasá de semana a día, mirá semanas pasadas y futuras y tocá un horario libre para agendar."
+        },
+        "followups": {
+          "title": "Seguimiento después de cada visita",
+          "body": "Confirmación, recordatorio y «¿qué te pareció?» por WhatsApp, con la propiedad y el nombre. Así una visita termina en reserva."
+        }
+      },
+      "shop": {
+        "sim": {
+          "title": "Vos decidís qué pasa en la tienda",
+          "body": "Nada se mueve solo. Tocá «Simular» y seguí la tarde de Inés: pregunta al bot, deja el carrito, recibe el cupón y vuelve a pagar."
+        },
+        "store": {
+          "title": "Una tienda que vende sola",
+          "body": "Catálogo, ficha con molienda y tamaño, carrito y checkout. Comprá vos: el pedido cae en el panel con su total."
+        },
+        "bot": {
+          "title": "Un bot que recomienda el café justo",
+          "body": "Pregunta con qué preparás el café y te muestra una bolsa con precio. Un toque y está en el carrito."
+        },
+        "recovery": {
+          "title": "Carritos que vuelven",
+          "body": "Media hora después de un checkout abandonado sale un WhatsApp con cupón. Apagá la recuperación y mirá cómo se pierde el carrito."
+        },
+        "orders": {
+          "title": "Pedidos de punta a punta",
+          "body": "Nuevos, tostando, en camino y entregados. Avanzá cada pedido con un toque; los del club y los recuperados se distinguen solos."
+        },
+        "club": {
+          "title": "Un club que suscribe y fideliza",
+          "body": "Granos por compra, rachas por mes y niveles de tueste con beneficios. Tomás cumple seis meses y sube de nivel."
+        }
+      }
+    },
+    "en": {
+      "realEstate": {
+        "sim": {
+          "title": "You decide what happens tonight",
+          "body": "Nothing moves on its own. Tap “Simulate” and follow the 11:40 PM inquiry: reply, qualification, viewing and follow-up. Switch the assistant off to see the same night without it."
+        },
+        "chat": {
+          "title": "Every inquiry, answered in seconds",
+          "body": "Lumi replies at any hour, asks how they'll pay and their budget, and leaves the lead file ready. You can answer for Carolina."
+        },
+        "site": {
+          "title": "Your website searches and books",
+          "body": "Filters by area, rooms and price, a listing page with the floor plan and “Book a viewing”. Book one: it shows up in the calendar and the pipeline."
+        },
+        "pipeline": {
+          "title": "A pipeline that sorts itself",
+          "body": "Each lead goes from New to Qualified, Viewing and Reserved as Lumi moves forward. Drag a card or use “Move” to sort it by hand."
+        },
+        "visits": {
+          "title": "Viewings without the back-and-forth",
+          "body": "Both agents in one calendar. Switch between week and day, browse past and future weeks and tap a free time to book."
+        },
+        "followups": {
+          "title": "A follow-up after every viewing",
+          "body": "Confirmation, reminder and “how did you like it?” on WhatsApp, with the property and their name. That is how a viewing turns into a reservation."
+        }
+      },
+      "shop": {
+        "sim": {
+          "title": "You decide what happens in the store",
+          "body": "Nothing moves on its own. Tap “Simulate” and follow Inés's evening: she asks the bot, leaves her cart, gets the coupon and comes back to pay."
+        },
+        "store": {
+          "title": "A store that sells on its own",
+          "body": "Catalog, product page with grind and size, cart and checkout. Buy something: the order lands in the panel with its total."
+        },
+        "bot": {
+          "title": "A bot that recommends the right coffee",
+          "body": "It asks how you brew and shows a bag with its price. One tap and it's in the cart."
+        },
+        "recovery": {
+          "title": "Carts that come back",
+          "body": "Half an hour after an abandoned checkout, a WhatsApp with a coupon goes out. Switch recovery off and watch the cart get lost."
+        },
+        "orders": {
+          "title": "Orders from start to finish",
+          "body": "New, roasting, on the way and delivered. Move each order along with one tap; club and recovered orders stand out on their own."
+        },
+        "club": {
+          "title": "A club that subscribes and retains",
+          "body": "Points per purchase, monthly streaks and roast levels with perks. Tomás completes six months and levels up."
+        }
+      }
+    },
+    "pt": {
+      "realEstate": {
+        "sim": {
+          "title": "Você decide o que acontece esta noite",
+          "body": "Nada se mexe sozinho. Toque em “Simular” e acompanhe o contato das 23:40: resposta, qualificação, visita e acompanhamento. Desligue a assistente para ver a mesma noite sem ela."
+        },
+        "chat": {
+          "title": "Cada contato, respondido em segundos",
+          "body": "A Lumi responde a qualquer hora, pergunta como a pessoa vai pagar e quanto quer investir, e deixa a ficha pronta. Você pode responder pela Mariana."
+        },
+        "site": {
+          "title": "Seu site busca e agenda",
+          "body": "Filtros por região, quartos e preço, página do imóvel com planta e “Agendar visita”. Agende uma: ela aparece na agenda e no funil."
+        },
+        "pipeline": {
+          "title": "Um funil que se organiza sozinho",
+          "body": "Cada lead passa de Novo para Qualificado, Visita e Reserva conforme a Lumi avança. Arraste um card ou use “Mover” para organizar na mão."
+        },
+        "visits": {
+          "title": "Visitas sem vai e volta",
+          "body": "Os dois corretores numa agenda só. Alterne entre semana e dia, veja semanas passadas e futuras e toque num horário livre para agendar."
+        },
+        "followups": {
+          "title": "Acompanhamento depois de cada visita",
+          "body": "Confirmação, lembrete e “o que achou?” pelo WhatsApp, com o imóvel e o nome. É assim que uma visita vira reserva."
+        }
+      },
+      "shop": {
+        "sim": {
+          "title": "Você decide o que acontece na loja",
+          "body": "Nada se mexe sozinho. Toque em “Simular” e acompanhe a tarde da Bia: ela pergunta ao bot, deixa o carrinho, recebe o cupom e volta para pagar."
+        },
+        "store": {
+          "title": "Uma loja que vende sozinha",
+          "body": "Catálogo, página do produto com moagem e tamanho, carrinho e checkout. Compre você: o pedido cai no painel com o total."
+        },
+        "bot": {
+          "title": "Um bot que indica o café certo",
+          "body": "Pergunta como você prepara o café e mostra um pacote com preço. Um toque e já está no carrinho."
+        },
+        "recovery": {
+          "title": "Carrinhos que voltam",
+          "body": "Meia hora depois de um checkout abandonado sai um WhatsApp com cupom. Desligue a recuperação e veja o carrinho se perder."
+        },
+        "orders": {
+          "title": "Pedidos do começo ao fim",
+          "body": "Novos, torrando, a caminho e entregues. Avance cada pedido com um toque; os do clube e os recuperados se destacam sozinhos."
+        },
+        "club": {
+          "title": "Um clube que assina e fideliza",
+          "body": "Grãos por compra, sequências por mês e níveis de torra com benefícios. O Thiago completa seis meses e sobe de nível."
+        }
+      }
+    }
+  }
+}

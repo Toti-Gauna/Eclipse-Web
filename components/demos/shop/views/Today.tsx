@@ -50,10 +50,10 @@ export function ViaPill({ order }: { order: OrderView }) {
 
 /** One order as a receipt row: who, the bags, how they paid, how much. */
 export function OrderRow({ order, compact = false }: { order: OrderView; compact?: boolean }) {
-  const { view } = useShop();
+  const { recent } = useShop();
   const { person, fmt } = useShopText();
   const money = useShopMoney();
-  const fresh = order.at >= 0 && view.t - order.at < 2600;
+  const fresh = order.customer !== 'you' && recent(order.at, 2600);
   return (
     <li className={`shop-order ${fresh ? 'demo-fresh' : ''}`} data-compact={compact ? '' : undefined} data-fresh={fresh ? '' : undefined}>
       <PersonAvatar id={order.customer} />
@@ -76,13 +76,13 @@ export function OrderRow({ order, compact = false }: { order: OrderView; compact
 }
 
 /** "1 in 5": this week's abandoned carts as fifteen little bags, the recovered ones lit. */
-export function RecoveredCard({ compact = false, onOpen }: { compact?: boolean; onOpen?: () => void }) {
+export function RecoveredCard({ compact = false, onOpen, tour = false }: { compact?: boolean; onOpen?: () => void; tour?: boolean }) {
   const t = useTranslations('demoShop.today');
   const locale = useLocale() as Locale;
-  const { view } = useShop();
+  const { view, recent } = useShop();
   const key = verticalById('tiendas')?.keyNumber;
   const { abandoned, paid } = view.week;
-  const lit = view.ines.status === 'recovered' && view.t - view.ines.statusAt < 2600;
+  const lit = view.ines.status === 'recovered' && recent(view.ines.statusAt, 2600);
   const body = (
     <>
       <span className="shop-rec-label">{t('recovered')}</span>
@@ -106,7 +106,7 @@ export function RecoveredCard({ compact = false, onOpen }: { compact?: boolean; 
     </>
   );
   return onOpen ? (
-    <button type="button" className="shop-rec" data-compact={compact ? '' : undefined} onClick={onOpen} aria-label={`${t('recovered')}: ${paid} / ${abandoned}. ${t('open')}`}>
+    <button type="button" className="shop-rec" data-compact={compact ? '' : undefined} data-tour={tour ? 'recovery' : undefined} onClick={onOpen} aria-label={`${t('recovered')}: ${paid} / ${abandoned}. ${t('open')}`}>
       {body}
     </button>
   ) : (
@@ -164,7 +164,6 @@ export function Shelf({ compact = false }: { compact?: boolean }) {
           className="shop-shelf-restock"
           onClick={() => {
             store.update(act.restock());
-            store.engage();
             if (active) play('success', { volume: 0.6 });
           }}
         >
@@ -184,7 +183,6 @@ export function LiveOrders({ limit = 4, compact = false }: { limit?: number; com
     <Card className="shop-live">
       <div className="shop-live-head">
         <h3 className="shop-card-title">{t('live')}</h3>
-        <span className="shop-live-dot demo-loop" aria-hidden />
       </div>
       <ul className="shop-orders">
         {view.orders.slice(0, limit).map((o) => (
@@ -248,7 +246,7 @@ export function LaptopToday() {
       <Shelf />
       <div className="shop-today-bottom">
         <div className="shop-today-side">
-          <RecoveredCard onOpen={() => go('carts')} />
+          <RecoveredCard onOpen={() => go('carts')} tour />
           <button type="button" className="shop-botline" onClick={() => go('chat')}>
             <span className="min-w-0 flex-1 text-left">{t('botLine')}</span>
             <ArrowUpRight aria-hidden strokeWidth={2} />
@@ -266,7 +264,7 @@ export function PhoneToday() {
     <div className="shop-today" data-screen="phone">
       <Revenue compact />
       <Kpis compact />
-      <RecoveredCard compact onOpen={() => go('carts')} />
+      <RecoveredCard compact onOpen={() => go('carts')} tour />
       <LiveOrders limit={3} compact />
       <Shelf compact />
     </div>

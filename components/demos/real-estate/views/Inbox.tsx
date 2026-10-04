@@ -293,9 +293,9 @@ export function PhoneInbox() {
             </button>
           ))}
         </div>
-      ) : (
+      ) : view.t >= view.inquiryAt ? (
         <p className="re-live-hint">{t('chat.as', { name: t('people.carolinaFirst') })}</p>
-      )}
+      ) : null}
       {channel === 'wa' && view.follow ? (
         <FollowThread className="re-live-chat" />
       ) : view.t < view.inquiryAt ? (

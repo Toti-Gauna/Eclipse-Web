@@ -228,37 +228,54 @@ export const TOP_QUESTIONS = [
 ] as const;
 
 /* ------------------------------------------------------------------ */
-/* The story (ms on a 30 s loop)                                        */
+/* The story: five beats the visitor plays (no autoplay)                */
 /* ------------------------------------------------------------------ */
-export const LOOP_MS = 30_000;
 /** 18:05 when the story starts; one minute every 2 s; +30 min when "half an hour later" happens. */
 export const NOW_START = 18 * 60 + 5;
 export const MINUTE_MS = 2000;
 export const JUMP_MINUTES = 30;
 
+/**
+ * Story times (ms). Nothing runs on its own: each beat is a segment the visitor plays from the
+ * SimBar; the clock stops at the beat's `at`, always on a calm frame (no toast, typing or
+ * "just now" halo left). Inés's taps are scripted inside the beats; at rest the visitor can tap
+ * for her instead (her next step then shows at once).
+ */
 export const STORY = {
   /** The site bot greets Inés (peek) — chat time 0. */
   chatStart: 1000,
   /** She opens the chat. */
   chatOpen: 3000,
   orderTomas: 2000,
-  orderCarla: 6400,
-  move1: 9200,
-  move2: 15_500,
-  levelUp: 23_000,
-  move3: 23_800,
-  faq: 25_200,
-  orderDiego: 26_800,
+  orderCarla: 9400,
+  /** "Half an hour later" (never before this, so it lands in beat 3). */
+  jump: 16_000,
+  /** Recovery off: the panel gives her cart up (beat 4). */
+  lost: 25_000,
+  move1: 25_500,
+  levelUp: 32_000,
+  move2: 33_000,
+  faq: 34_000,
+  orderDiego: 34_500,
+  move3: 35_000,
 } as const;
+/** Inés's scripted decisions (chat time): what she needs (beat 1) and "add it" (beat 2). */
+export const INES_DECIDES = { need: 3000, add: 7500 } as const;
+/** Her scripted "back to my cart" on WhatsApp (thread time, beat 4). */
+export const INES_BACK = 7900;
 /** Inés's journey after she adds the bot's pick (ms after the tap). */
-export const AFTER_ADD = { cart: 450, checkout: 1650, leave: 3450, jump: 5450, push: 6050, open: 7850 } as const;
+export const AFTER_ADD = { cart: 450, checkout: 1650, leave: 3450, push: 600, open: 1800 } as const;
 /** After "Back to my cart" (ms after the tap). */
 export const AFTER_BACK = { checkout: 650, press: 2050, paid: 2650 } as const;
-/** Without the automation, when the panel gives the cart up. */
-export const LOST_AFTER_LEAVE = 8000;
 
-/** The visitor's own abandoned cart: the recovery message arrives this long after they leave it (real time). */
-export const MINE_RECOVERY_MS = 5000;
+/** The SimBar's beats (labels: demoShop.sim.<id>, or sim.off.<id> with the recovery off). */
+export const BEATS = [
+  { id: 'bot', at: 8_000 },
+  { id: 'abandon', at: 15_500 },
+  { id: 'recovery', at: 23_500 },
+  { id: 'paid', at: 31_000 },
+  { id: 'club', at: 38_500 },
+] as const;
 
 export const SITE_URL = 'brumatostadores.demo';
 export const CUSTOMER_PHONE = '+54 9 11 6•••-4410';

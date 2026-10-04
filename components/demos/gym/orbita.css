@@ -392,7 +392,8 @@
   inset: 0;
   background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.65) 50%, transparent 65%);
   transform: translateX(-120%);
-  animation: gym-glint 1.8s var(--demo-ease) infinite;
+  /* Two passes when it appears (no permanent shimmer). */
+  animation: gym-glint 1.8s var(--demo-ease) 0.3s 2;
 }
 @keyframes gym-glint {
   60%,
@@ -904,12 +905,6 @@
   height: 60em;
   margin: -30em 0 0 -30em;
   background: repeating-conic-gradient(from 0deg, rgb(11 12 15 / 0.07) 0 6deg, transparent 6deg 18deg);
-  animation: gym-spin 24s linear infinite;
-}
-@keyframes gym-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 .gym-lvl-kicker {
   font-family: var(--font-mono);
@@ -1415,7 +1410,7 @@ button.gym-stat:hover {
 .gym-rail li[data-state='now'] .gym-rail-dot {
   background: var(--demo-ink);
   color: var(--demo-bg);
-  animation: gym-beat 1.4s ease-in-out infinite;
+  box-shadow: 0 0 0 0.25em color-mix(in oklab, var(--demo-ink) 22%, transparent);
 }
 .gym-rail li[data-state='bad'] .gym-rail-dot {
   background: var(--demo-accent-2);
@@ -1424,11 +1419,6 @@ button.gym-stat:hover {
 .gym-rail li[data-state='warn'] .gym-rail-dot {
   background: var(--demo-warn);
   color: var(--demo-bg);
-}
-@keyframes gym-beat {
-  50% {
-    transform: scale(1.15);
-  }
 }
 .gym-rail-label {
   font-size: 0.66em;
@@ -2558,10 +2548,224 @@ button.gym-stat:hover {
   display: none;
 }
 
+/* ------------------------------------------------------------------ */
+/* v3: shell (HUD dock + game tab bar) and the visitor's controls       */
+/* ------------------------------------------------------------------ */
+/* Desktop dock: a chamfered HUD bar instead of a soft pill; caps labels. */
+.demo-root:has(.gym) .demo-dock {
+  border-radius: 0;
+  clip-path: polygon(0.9em 0, 100% 0, calc(100% - 0.9em) 100%, 0 100%);
+  padding: 0.3em 1em;
+  background: color-mix(in oklab, var(--demo-surface) 96%, transparent);
+}
+.demo-root:has(.gym) .demo-dock-item {
+  border-radius: var(--demo-radius-sm);
+  font-weight: 800;
+  font-style: oblique 9deg;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+/* Phone tab bar: caps labels, a lime bar over the current tab. */
+.demo-root:has(.gym) .demo-tab {
+  font-weight: 800;
+  font-style: oblique 9deg;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.demo-root:has(.gym) .demo-tab[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: -0.6em;
+  left: 30%;
+  right: 30%;
+  height: 0.3em;
+  background: var(--demo-accent);
+}
+.demo-root:has(.gym) .demo-tab {
+  min-height: 3.4em;
+}
+
+/* The win-back status in the desktop top bar (a button: opens Retention). */
+button.gym-toppill {
+  min-height: 2.2em;
+  padding: 0 0.7em;
+  border-radius: var(--demo-radius-sm);
+}
+button.gym-toppill:hover {
+  background: var(--demo-sunken);
+}
+.gym-toppill-dot {
+  width: 0.55em;
+  height: 0.55em;
+  flex: none;
+  background: var(--demo-accent);
+  transform: rotate(45deg);
+}
+.gym-toppill[data-off] .gym-toppill-dot {
+  background: var(--demo-accent-2);
+}
+
+/* Player card: "level up — see your reward" */
+.gym-player-reward {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.35em;
+  min-height: 2.6em;
+  margin-top: 0.55em;
+  padding: 0 0.8em;
+  border-radius: var(--demo-radius-sm);
+  background: color-mix(in oklab, var(--demo-accent) 14%, transparent);
+  color: var(--demo-accent-text);
+  font-size: 0.62em;
+  font-weight: 800;
+  font-style: oblique 9deg;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.gym-player-reward svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+.gym-focus-cta {
+  align-self: flex-start;
+  margin-top: 0.6em;
+}
+.gym-focus-next .gym-btn svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+/* Classes: date navigation (kit toolbar, squared to the HUD), past days, notes */
+.gym-calbar {
+  margin-bottom: 0.15em;
+}
+.gym-calbar .demo-cal-bar-btn,
+.gym-calbar .demo-cal-bar-today,
+.gym-calbar .demo-cal-bar-seg,
+.gym-calbar .demo-cal-bar-seg button {
+  border-radius: var(--demo-radius-sm);
+}
+.gym-calbar .demo-cal-bar-period {
+  font-weight: 800;
+  font-style: oblique 9deg;
+  text-transform: uppercase;
+}
+.gym-day[data-past]:not([aria-pressed='true']) b {
+  color: var(--demo-muted);
+}
+.gym-day {
+  min-height: 3.3em;
+}
+.gym-classes-note {
+  padding: 0.2em 0.1em;
+  color: var(--demo-muted);
+  font-size: 0.62em;
+  line-height: 1.4;
+}
+.gym-session-over {
+  flex: none;
+  color: var(--demo-muted);
+  font-size: 0.6em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.gym-tt th[data-past] {
+  opacity: 0.6;
+}
+.gym-btn {
+  min-height: 2.6em;
+}
+
+/* Site chat: idle state (before Tomás or the visitor opens it) and "try it yourself" */
+.gym-leadchat-idle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55em;
+  padding: 0.8em;
+  color: var(--demo-muted);
+  font-size: 0.82em;
+  line-height: 1.4;
+}
+.gym-leadchat-again {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 2.4em;
+  margin: 0.3em 0.6em 0.5em;
+  padding: 0 0.7em;
+  border-radius: var(--demo-radius-sm);
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  color: var(--demo-ink);
+  font-size: 0.66em;
+  font-weight: 700;
+}
+.gym-leadchat-again svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+button.gym-site-cta,
+button.gym-site-btn {
+  cursor: pointer;
+}
+.gym-lead-you {
+  display: grid;
+  width: 2em;
+  height: 2em;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--demo-accent-2) 24%, var(--demo-surface));
+  color: var(--demo-accent-2-text);
+  font-size: 0.7em;
+  font-weight: 800;
+}
+
+/* LEVEL UP: a second, quiet way out */
+.gym-lvl-close {
+  min-height: 2.6em;
+  padding: 0 1em;
+  color: var(--demo-accent-ink);
+  font-size: 0.72em;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Phone touch targets (≥ 44px ≈ 3.7em of the content): our controls grow on the phone; the
+   app-bar switch, which can't, gets an invisible hit area. */
+.demo-root[data-screen='phone'] .gym-btn,
+.demo-root[data-screen='phone'] .gym-chip {
+  min-height: 5.6em;
+}
+.demo-root[data-screen='phone'] .gym-day {
+  min-height: 5.8em;
+}
+.demo-root[data-screen='phone'] .gym-player-reward,
+.demo-root[data-screen='phone'] .gym-leadchat-again,
+.demo-root[data-screen='phone'] .gym-link,
+.demo-root[data-screen='phone'] .gym-journey-link {
+  min-height: 6em;
+}
+.demo-root[data-screen='phone'] .gym-checkin {
+  min-height: 5.2em;
+}
+.demo-root[data-screen='phone'] .gym-lvl-close,
+.demo-root[data-screen='phone'] .gym-lvl-cta {
+  min-height: 5.2em;
+}
+.gym-mode button {
+  position: relative;
+}
+.demo-root[data-screen='phone'] .gym-mode button::after {
+  content: '';
+  position: absolute;
+  inset: -2em 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gym-checkin::after,
-  .gym-lvl-rays,
-  .gym-rail li[data-state='now'] .gym-rail-dot,
   .gym-cutin,
   .gym-dial[data-cut] {
     animation: none;

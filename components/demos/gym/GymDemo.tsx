@@ -180,7 +180,8 @@ export default function GymDemo({ screen, active }: DemoProps) {
           <div className="gym" data-screen="phone">
             <DayCut />
             <MemberPush kind={nav.overlay === 'wa' ? null : view.push} />
-            <GymToasts placement="top" />
+            {/* Lucía's phone only hears about Lucía (the owner's actions toast on the panel). */}
+            <GymToasts placement="top" only={(e) => e.member === HERO && e.kind !== 'churn'} />
             <div key={`${nav.tab}-${snap.loop}`} className="demo-view">
               <View />
             </div>
@@ -244,7 +245,8 @@ export default function GymDemo({ screen, active }: DemoProps) {
       >
         <div className="gym" data-screen={screen}>
           {screen === 'phone' ? <DayCut /> : null}
-          <GymToasts placement={screen === 'phone' ? 'top' : 'bottom-right'} />
+          {/* Top: the desktop dock owns the bottom edge. */}
+          <GymToasts placement="top" />
           <div key={current} className="demo-view">
             <View />
           </div>

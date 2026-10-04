@@ -1,0 +1,674 @@
+{
+  "demoGym": {
+    "es": {
+      "sim": {
+        "lead": "Un interesado pide una clase de prueba",
+        "winback": "Lucía cumple 9 días sin venir",
+        "tuesday": "Martes: Lucía vuelve al gimnasio",
+        "thursday": "Jueves: misión cumplida y sube de nivel",
+        "note": "Socios, mensajes y reservas simulados con datos de demostración; no se envía nada."
+      },
+      "people": {
+        "you": "Vos"
+      },
+      "missions": {
+        "friend": {
+          "title": "Compartí tu pase de invitado"
+        }
+      },
+      "app": {
+        "reward": "Nivel {level} · ver recompensa",
+        "checkinLabel": "Hacer check-in en {kind}",
+        "seeClasses": "Ver clases",
+        "waArrived": "Te escribimos por WhatsApp con una misión",
+        "openWa": "Abrir",
+        "pastDay": "Día pasado: solo lectura.",
+        "over": "Terminó",
+        "closed": "{day}: cerrado.",
+        "bookNote": "Reservar y hacer check-in es simulado: solo cambia los datos de esta demo.",
+        "leagueHint": "Cada check-in y cada misión suman XP a la tabla al instante.",
+        "passSent": null
+      },
+      "class": {
+        "went": "{count, plural, one {fue # persona} other {fueron #}}"
+      },
+      "levelUp": {
+        "badgeLevel": "Nivel {level} desbloqueado",
+        "close": "Seguir",
+        "gain": {
+          "newClass": "Clase nueva"
+        },
+        "badge": null
+      },
+      "toast": {
+        "checkin2": "Check-in",
+        "mission": "Misión cumplida",
+        "newClass": "Clase nueva",
+        "friend": "Pase compartido",
+        "off": "Automatización apagada",
+        "on": "Automatización encendida",
+        "declined": "Respondió",
+        "manual": "Mensaje enviado"
+      },
+      "feed": {
+        "trialYou": "Reservaste una clase de prueba por el chat del sitio: {class}",
+        "newClass": "{name} probó una clase nueva: misión cumplida",
+        "friend": "{name} compartió su pase de invitado: misión cumplida"
+      },
+      "today": {
+        "feedTitle": "Actividad",
+        "feedEmpty": "Sin novedades todavía. Tocá «Simular» para ver la semana.",
+        "live": null
+      },
+      "classesView": {
+        "now": "Ahora",
+        "sub": "Lo que se reserva por la app, WhatsApp o el chat del sitio aparece acá.",
+        "subPast": "Semana pasada: cuántos vinieron a cada clase.",
+        "note": "Los socios reservan desde su app; el dueño ve los cupos de cualquier semana.",
+        "caption": "Grilla de clases, semana del {week}",
+        "live": null
+      },
+      "lead": {
+        "subtitleYou": "probalo vos",
+        "idle": "Todavía nadie abrió el chat. Probalo vos o simulá la consulta de un interesado.",
+        "start": "Empezar chat",
+        "again": "Empezar de nuevo",
+        "tryYou": "Probalo vos",
+        "youName": "Visitante",
+        "composer": null
+      },
+      "leads": {
+        "you": "Vos (visitante)",
+        "youInitials": "V"
+      },
+      "side": null
+    },
+    "en": {
+      "sim": {
+        "lead": "A prospect asks for a trial class",
+        "winback": "Lucy hits 9 days without coming",
+        "tuesday": "Tuesday: Lucy is back at the gym",
+        "thursday": "Thursday: mission done, level up",
+        "note": "Members, messages and bookings are simulated with demo data; nothing is sent."
+      },
+      "people": {
+        "you": "You"
+      },
+      "missions": {
+        "friend": {
+          "title": "Share your guest pass"
+        }
+      },
+      "app": {
+        "reward": "Level {level} · see reward",
+        "checkinLabel": "Check in to {kind}",
+        "seeClasses": "See classes",
+        "waArrived": "We sent you a mission on WhatsApp",
+        "openWa": "Open",
+        "pastDay": "Past day: read only.",
+        "over": "Over",
+        "closed": "{day}: closed.",
+        "bookNote": "Booking and checking in are simulated: they only change this demo's data.",
+        "leagueHint": "Every check-in and mission adds XP to the table right away.",
+        "passSent": null
+      },
+      "class": {
+        "went": "{count, plural, one {# came} other {# came}}"
+      },
+      "levelUp": {
+        "badgeLevel": "Level {level} unlocked",
+        "close": "Continue",
+        "gain": {
+          "newClass": "New class"
+        },
+        "badge": null
+      },
+      "toast": {
+        "checkin2": "Checked in",
+        "mission": "Mission complete",
+        "newClass": "New class",
+        "friend": "Pass shared",
+        "off": "Automation off",
+        "on": "Automation on",
+        "declined": "Replied",
+        "manual": "Message sent"
+      },
+      "feed": {
+        "trialYou": "You booked a trial class through the site's chat: {class}",
+        "newClass": "{name} tried a new class: mission complete",
+        "friend": "{name} shared her guest pass: mission complete"
+      },
+      "today": {
+        "feedTitle": "Activity",
+        "feedEmpty": "Nothing yet. Tap “Simulate” to play the week.",
+        "live": null
+      },
+      "classesView": {
+        "now": "Now",
+        "sub": "Bookings from the app, WhatsApp or the site's chat show up here.",
+        "subPast": "Past week: how many came to each class.",
+        "note": "Members book from their app; the owner sees capacity for any week.",
+        "caption": "Class grid, week of {week}",
+        "live": null
+      },
+      "lead": {
+        "subtitleYou": "try it yourself",
+        "idle": "Nobody has opened the chat yet. Try it yourself or simulate a prospect's question.",
+        "start": "Start chat",
+        "again": "Start over",
+        "tryYou": "Try it yourself",
+        "youName": "Visitor",
+        "composer": null
+      },
+      "leads": {
+        "you": "You (visitor)",
+        "youInitials": "Y"
+      },
+      "side": null
+    },
+    "pt": {
+      "sim": {
+        "lead": "Um interessado pede uma aula experimental",
+        "winback": "Luíza completa 9 dias sem vir",
+        "tuesday": "Terça: Luíza volta à academia",
+        "thursday": "Quinta: missão cumprida e sobe de nível",
+        "note": "Alunos, mensagens e reservas simulados com dados de demonstração; nada é enviado."
+      },
+      "people": {
+        "you": "Você"
+      },
+      "missions": {
+        "friend": {
+          "title": "Compartilhe seu passe de convidado"
+        }
+      },
+      "app": {
+        "reward": "Nível {level} · ver recompensa",
+        "checkinLabel": "Fazer check-in em {kind}",
+        "seeClasses": "Ver aulas",
+        "waArrived": "Mandamos uma missão no seu WhatsApp",
+        "openWa": "Abrir",
+        "pastDay": "Dia passado: só leitura.",
+        "over": "Encerrada",
+        "closed": "{day}: fechado.",
+        "bookNote": "Reservar e fazer check-in é simulado: só muda os dados desta demo.",
+        "leagueHint": "Cada check-in e cada missão somam XP na tabela na hora.",
+        "passSent": null
+      },
+      "class": {
+        "went": "{count, plural, one {# veio} other {# vieram}}"
+      },
+      "levelUp": {
+        "badgeLevel": "Nível {level} desbloqueado",
+        "close": "Continuar",
+        "gain": {
+          "newClass": "Aula nova"
+        },
+        "badge": null
+      },
+      "toast": {
+        "checkin2": "Check-in",
+        "mission": "Missão cumprida",
+        "newClass": "Aula nova",
+        "friend": "Passe compartilhado",
+        "off": "Automação desligada",
+        "on": "Automação ligada",
+        "declined": "Respondeu",
+        "manual": "Mensagem enviada"
+      },
+      "feed": {
+        "trialYou": "Você reservou uma aula experimental pelo chat do site: {class}",
+        "newClass": "{name} experimentou uma aula nova: missão cumprida",
+        "friend": "{name} compartilhou o passe de convidado: missão cumprida"
+      },
+      "today": {
+        "feedTitle": "Atividade",
+        "feedEmpty": "Nada ainda. Toque em “Simular” para ver a semana.",
+        "live": null
+      },
+      "classesView": {
+        "now": "Agora",
+        "sub": "O que se reserva pelo app, WhatsApp ou chat do site aparece aqui.",
+        "subPast": "Semana passada: quantos vieram em cada aula.",
+        "note": "Os alunos reservam pelo app; o dono vê as vagas de qualquer semana.",
+        "caption": "Grade de aulas, semana de {week}",
+        "live": null
+      },
+      "lead": {
+        "subtitleYou": "teste você",
+        "idle": "Ninguém abriu o chat ainda. Teste você ou simule a conversa de um interessado.",
+        "start": "Começar chat",
+        "again": "Começar de novo",
+        "tryYou": "Teste você",
+        "youName": "Visitante",
+        "composer": null
+      },
+      "leads": {
+        "you": "Você (visitante)",
+        "youInitials": "V"
+      },
+      "side": null
+    }
+  },
+  "demoTours": {
+    "es": {
+      "gym": {
+        "sim": {
+          "title": "Simulá la semana del gimnasio",
+          "body": "Nada se mueve solo. Tocá «Simular» y mirá cuatro momentos: una clase de prueba, Lucía con 9 días sin venir, su regreso el martes y su misión el jueves."
+        },
+        "winback": {
+          "title": "Regreso automático",
+          "body": "A los 7 días sin venir, la app le escribe por WhatsApp con una misión personal y XP extra. Apagalo y mirá qué pasa con Lucía."
+        },
+        "missions": {
+          "title": "Misiones que se juegan",
+          "body": "Compartí el pase de invitado o hacé check-in en una clase nueva: XP, racha y nivel se actualizan al instante."
+        },
+        "classes": {
+          "title": "Clases y cupos",
+          "body": "Navegá días pasados y futuros y reservá un lugar desde la app: el dueño lo ve en su grilla."
+        },
+        "league": {
+          "title": "Liga semanal",
+          "body": "Ocho socios por liga y los tres primeros suben. Cada clase suma puntos y da un motivo para volver."
+        },
+        "lead": {
+          "title": "Clases de prueba desde el sitio",
+          "body": "El chat del sitio responde, recomienda una clase y reserva la prueba gratis. Probalo: el lead aparece en el panel."
+        }
+      },
+      "academy": {
+        "sim": {
+          "title": "Simulá la noche de la escuela",
+          "body": "Nada se mueve solo. Tocá «Simular» para ver cinco momentos: speaking con la IA, la corrección escrita, el paso a B1, una inscripción y un alumno que vuelve."
+        },
+        "speaking": {
+          "title": "Speaking con la tutora IA",
+          "body": "Elegí un tema y empezá: la tutora escucha, marca la pronunciación (sink → think) y pone un puntaje."
+        },
+        "tutor": {
+          "title": "Una tutora que responde al toque",
+          "body": "Corrige cada frase y la explica en una línea. Preguntale algo: responde al instante, a cualquier hora."
+        },
+        "ranking": {
+          "title": "Racha, niveles y ranking de la clase",
+          "body": "Cada lección suma puntos. Valentina pasa a B1 y sube en el ranking de su clase."
+        },
+        "followup": {
+          "title": "Nadie se queda atrás",
+          "body": "A los 5 días sin entrar sale un WhatsApp con una lección de 5 minutos. Mové alumnos en el tablero o apagá el seguimiento y mirá la tasa de finalización."
+        },
+        "enroll": {
+          "title": "Test de nivel, inscripción y pago",
+          "body": "El chat del sitio toma el test, recomienda el curso y cobra la primera cuota. Hacelo vos: es una simulación, no se cobra nada."
+        }
+      }
+    },
+    "en": {
+      "gym": {
+        "sim": {
+          "title": "Play the gym's week",
+          "body": "Nothing moves on its own. Tap “Simulate” for four moments: a trial class, Lucy at 9 days away, her comeback on Tuesday and her mission on Thursday."
+        },
+        "winback": {
+          "title": "Automatic win-back",
+          "body": "After 7 days without coming, the app texts members on WhatsApp with a personal mission and bonus XP. Switch it off and see what happens to Lucy."
+        },
+        "missions": {
+          "title": "Missions you can play",
+          "body": "Share the guest pass or check in to a new class: XP, streak and level update right away."
+        },
+        "classes": {
+          "title": "Classes and capacity",
+          "body": "Browse past and future days and book a spot from the app: the owner sees it on the grid."
+        },
+        "league": {
+          "title": "Weekly league",
+          "body": "Eight members per league; the top three move up. Every class adds points and a reason to come back."
+        },
+        "lead": {
+          "title": "Trial classes from the site",
+          "body": "The site's chat answers, suggests a class and books the free trial. Try it: the lead shows up in the panel."
+        }
+      },
+      "academy": {
+        "sim": {
+          "title": "Play the school’s evening",
+          "body": "Nothing moves on its own. Tap “Simulate” for five moments: AI speaking practice, a written correction, a move up to B1, an enrollment and a student who comes back."
+        },
+        "speaking": {
+          "title": "Speaking with the AI tutor",
+          "body": "Pick a topic and start: the tutor listens, flags pronunciation (sink → think) and gives a score."
+        },
+        "tutor": {
+          "title": "A tutor that answers right away",
+          "body": "It corrects every sentence and explains it in one line. Ask it something: it answers instantly, any time."
+        },
+        "ranking": {
+          "title": "Streaks, levels and a class ranking",
+          "body": "Every lesson adds points. Valentina moves up to B1 and climbs her class ranking."
+        },
+        "followup": {
+          "title": "Nobody falls behind",
+          "body": "After 5 days away, a WhatsApp goes out with a 5-minute lesson. Move students on the board, or switch the follow-up off and watch completion."
+        },
+        "enroll": {
+          "title": "Level test, enrollment and payment",
+          "body": "The site’s chat runs the test, recommends a course and takes the first fee. Try it: it’s simulated, nothing is charged."
+        }
+      }
+    },
+    "pt": {
+      "gym": {
+        "sim": {
+          "title": "Simule a semana da academia",
+          "body": "Nada se mexe sozinho. Toque em “Simular” e veja quatro momentos: uma aula experimental, Luíza com 9 dias sem vir, a volta dela na terça e a missão na quinta."
+        },
+        "winback": {
+          "title": "Retorno automático",
+          "body": "Depois de 7 dias sem vir, o app manda um WhatsApp com uma missão pessoal e XP extra. Desligue e veja o que acontece com a Luíza."
+        },
+        "missions": {
+          "title": "Missões que dá pra jogar",
+          "body": "Compartilhe o passe de convidado ou faça check-in numa aula nova: XP, sequência e nível mudam na hora."
+        },
+        "classes": {
+          "title": "Aulas e vagas",
+          "body": "Navegue por dias passados e futuros e reserve uma vaga pelo app: o dono vê na grade."
+        },
+        "league": {
+          "title": "Liga semanal",
+          "body": "Oito alunos por liga e os três primeiros sobem. Cada aula soma pontos e dá um motivo pra voltar."
+        },
+        "lead": {
+          "title": "Aulas experimentais pelo site",
+          "body": "O chat do site responde, indica uma aula e reserva a experimental grátis. Teste: o lead aparece no painel."
+        }
+      },
+      "academy": {
+        "sim": {
+          "title": "Simule a noite da escola",
+          "body": "Nada se mexe sozinho. Toque em “Simular” e veja cinco momentos: speaking com a IA, a correção escrita, a subida para B1, uma matrícula e um aluno que volta."
+        },
+        "speaking": {
+          "title": "Speaking com a tutora IA",
+          "body": "Escolha um tema e comece: a tutora escuta, marca a pronúncia (sink → think) e dá uma nota."
+        },
+        "tutor": {
+          "title": "Uma tutora que responde na hora",
+          "body": "Corrige cada frase e explica em uma linha. Pergunte algo: ela responde na hora, a qualquer momento."
+        },
+        "ranking": {
+          "title": "Sequência, níveis e ranking da turma",
+          "body": "Cada lição soma pontos. Valentina sobe para B1 e no ranking da turma."
+        },
+        "followup": {
+          "title": "Ninguém fica pra trás",
+          "body": "Com 5 dias sem entrar, sai um WhatsApp com uma lição de 5 minutos. Mova alunos no quadro ou desligue o acompanhamento e veja a taxa de conclusão."
+        },
+        "enroll": {
+          "title": "Teste de nível, matrícula e pagamento",
+          "body": "O chat do site aplica o teste, indica o curso e cobra a primeira mensalidade. Faça você: é simulado, nada é cobrado."
+        }
+      }
+    }
+  },
+  "demoAcademy": {
+    "es": {
+      "sim": {
+        "speak": "Valentina practica speaking con la tutora IA",
+        "writing": "La tutora IA corrige su frase",
+        "levelup": "Valentina termina la lección y pasa a B1",
+        "lead": "Una interesada hace el test de nivel y se inscribe",
+        "nudge": "Martín lleva 5 días sin entrar",
+        "note": "Clases, mensajes, inscripciones y pagos simulados con datos de demostración; no se envía ni se cobra nada."
+      },
+      "speak": {
+        "start": "Empezar la práctica",
+        "againNote": "Cada nueva práctica muestra su resultado al instante.",
+        "transcript": "Transcripción"
+      },
+      "student": {
+        "seeResult": "Ver resultado"
+      },
+      "tutor": {
+        "askLabel": "Preguntas rápidas para la tutora",
+        "askKicker": "Preguntale a la tutora",
+        "playWriting": "Simular: Valentina escribe",
+        "asks": {
+          "past": {
+            "q": "¿Cuándo uso el past simple?",
+            "a": "Para algo terminado en un momento del pasado: «Yesterday I bought…». Con «yesterday», «last week» o «in 2020», va past simple."
+          },
+          "th": {
+            "q": "¿Cómo pronuncio «th»?",
+            "a": "Punta de la lengua entre los dientes y soplá suave: «think», «three». Si suena a «s», es «sink»: otra palabra."
+          },
+          "more": {
+            "q": "Dame otro ejercicio",
+            "a": "Completá: «Two days ago we ___ (go) to the beach.» Respuesta: went. Te lo sumo a la práctica de mañana."
+          }
+        },
+        "composer": null
+      },
+      "site": {
+        "idleWho": "Nadie está haciendo el test",
+        "idle": "Hacé el test vos (3 preguntas) o simulá a una interesada desde la barra de simulación.",
+        "localNote": "Inscripción y pago simulados: no se cobra ni se envía nada.",
+        "paidYou": "¡Listo! Pago simulado aprobado. Tu primera clase sería el martes a las 19:00.",
+        "paidTransferYou": "Transferencia simulada · acceso activo en la demo",
+        "composer": null
+      },
+      "today": {
+        "feedEmpty": "Sin novedades todavía. Tocá «Simular» para ver la noche de la escuela."
+      },
+      "wa": {
+        "waitingBeat": "Si {name} cumple 5 días sin entrar, el seguimiento le escribe.",
+        "waiting": null
+      },
+      "board": {
+        "title": "Alumnos que se alejan",
+        "hint": "Arrastrá o usá «Mover»",
+        "label": "Tablero de seguimiento de alumnos",
+        "empty": "Nadie acá",
+        "dropped": "Se dio de baja: nadie le escribió",
+        "columns": {
+          "risk": "En riesgo",
+          "nudged": "Mensaje enviado",
+          "back": "Volvió"
+        },
+        "notes": {
+          "martin": "5 días sin entrar · inglés A2",
+          "tomas": "4 días sin entrar · portugués A1",
+          "joaquin": "Lección exprés enviada ayer",
+          "renata": "Volvió ayer con la lección exprés"
+        }
+      },
+      "feed": {
+        "moved": "{name} → {column} (movido a mano)"
+      },
+      "toast": {
+        "complete": "Lección completa",
+        "booked": "Clase reservada",
+        "level": "Test de nivel",
+        "replied": "Respondió",
+        "later": "Lo deja para mañana",
+        "moved": "Tablero actualizado"
+      },
+      "lanes": {
+        "notStarted": "Sin empezar"
+      }
+    },
+    "en": {
+      "sim": {
+        "speak": "Valentina practices speaking with the AI tutor",
+        "writing": "The AI tutor corrects her sentence",
+        "levelup": "Valentina finishes the lesson and moves up to B1",
+        "lead": "A prospect takes the level test and enrolls",
+        "nudge": "Martín hasn't logged in for 5 days",
+        "note": "Lessons, messages, enrollments and payments are simulated with demo data; nothing is sent or charged."
+      },
+      "speak": {
+        "start": "Start practicing",
+        "againNote": "Each new practice shows its result right away.",
+        "transcript": "Transcript"
+      },
+      "student": {
+        "seeResult": "See result"
+      },
+      "tutor": {
+        "askLabel": "Quick questions for the tutor",
+        "askKicker": "Ask the tutor",
+        "playWriting": "Simulate: Valentina writes",
+        "asks": {
+          "past": {
+            "q": "When do I use the simple past?",
+            "a": "For something finished at a point in the past: “Yesterday I bought…”. With “yesterday”, “last week” or “in 2020”, use the simple past."
+          },
+          "th": {
+            "q": "How do I say “th”?",
+            "a": "Tip of the tongue between your teeth, then blow softly: “think”, “three”. If it sounds like “s”, it’s “sink”: a different word."
+          },
+          "more": {
+            "q": "Give me another exercise",
+            "a": "Fill in: “Two days ago we ___ (go) to the beach.” Answer: went. I’ll add it to tomorrow’s practice."
+          }
+        },
+        "composer": null
+      },
+      "site": {
+        "idleWho": "Nobody is taking the test",
+        "idle": "Take the test yourself (3 questions) or simulate a prospect from the simulation bar.",
+        "localNote": "Enrollment and payment are simulated: nothing is charged or sent.",
+        "paidYou": "Done! Simulated payment approved. Your first class would be Tuesday at 7 PM.",
+        "paidTransferYou": "Simulated transfer · access open in the demo",
+        "composer": null
+      },
+      "today": {
+        "feedEmpty": "Nothing yet. Tap “Simulate” to play the school’s evening."
+      },
+      "wa": {
+        "waitingBeat": "If {name} hits 5 days away, the follow-up writes to them.",
+        "waiting": null
+      },
+      "board": {
+        "title": "Students falling behind",
+        "hint": "Drag or use “Move”",
+        "label": "Student follow-up board",
+        "empty": "Nobody here",
+        "dropped": "Dropped out: nobody wrote to them",
+        "columns": {
+          "risk": "At risk",
+          "nudged": "Message sent",
+          "back": "Back"
+        },
+        "notes": {
+          "martin": "5 days away · English A2",
+          "tomas": "4 days away · Portuguese A1",
+          "joaquin": "Express lesson sent yesterday",
+          "renata": "Came back yesterday with the express lesson"
+        }
+      },
+      "feed": {
+        "moved": "{name} → {column} (moved by hand)"
+      },
+      "toast": {
+        "complete": "Lesson complete",
+        "booked": "Class booked",
+        "level": "Level test",
+        "replied": "Replied",
+        "later": "Saved for tomorrow",
+        "moved": "Board updated"
+      },
+      "lanes": {
+        "notStarted": "Not started"
+      }
+    },
+    "pt": {
+      "sim": {
+        "speak": "Valentina pratica speaking com a tutora IA",
+        "writing": "A tutora IA corrige a frase dela",
+        "levelup": "Valentina termina a lição e sobe para B1",
+        "lead": "Uma interessada faz o teste de nível e se matricula",
+        "nudge": "Mateus está há 5 dias sem entrar",
+        "note": "Aulas, mensagens, matrículas e pagamentos simulados com dados de demonstração; nada é enviado nem cobrado."
+      },
+      "speak": {
+        "start": "Começar a prática",
+        "againNote": "Cada nova prática mostra o resultado na hora.",
+        "transcript": "Transcrição"
+      },
+      "student": {
+        "seeResult": "Ver resultado"
+      },
+      "tutor": {
+        "askLabel": "Perguntas rápidas para a tutora",
+        "askKicker": "Pergunte à tutora",
+        "playWriting": "Simular: Valentina escreve",
+        "asks": {
+          "past": {
+            "q": "Quando eu uso o past simple?",
+            "a": "Pra algo terminado num momento do passado: “Yesterday I bought…”. Com “yesterday”, “last week” ou “in 2020”, vai past simple."
+          },
+          "th": {
+            "q": "Como eu pronuncio o “th”?",
+            "a": "Ponta da língua entre os dentes e sopra de leve: “think”, “three”. Se soar como “s”, vira “sink”: outra palavra."
+          },
+          "more": {
+            "q": "Me dá outro exercício",
+            "a": "Complete: “Two days ago we ___ (go) to the beach.” Resposta: went. Vou somar no treino de amanhã."
+          }
+        },
+        "composer": null
+      },
+      "site": {
+        "idleWho": "Ninguém está fazendo o teste",
+        "idle": "Faça o teste você (3 perguntas) ou simule uma interessada pela barra de simulação.",
+        "localNote": "Matrícula e pagamento simulados: nada é cobrado nem enviado.",
+        "paidYou": "Pronto! Pagamento simulado aprovado. Sua primeira aula seria terça às 19h.",
+        "paidTransferYou": "Pix simulado · acesso liberado na demo",
+        "composer": null
+      },
+      "today": {
+        "feedEmpty": "Nada ainda. Toque em “Simular” para ver a noite da escola."
+      },
+      "wa": {
+        "waitingBeat": "Se {name} completar 5 dias sem entrar, o acompanhamento escreve.",
+        "waiting": null
+      },
+      "board": {
+        "title": "Alunos que estão se afastando",
+        "hint": "Arraste ou use “Mover”",
+        "label": "Quadro de acompanhamento de alunos",
+        "empty": "Ninguém aqui",
+        "dropped": "Cancelou: ninguém escreveu",
+        "columns": {
+          "risk": "Em risco",
+          "nudged": "Mensagem enviada",
+          "back": "Voltou"
+        },
+        "notes": {
+          "martin": "5 dias sem entrar · inglês A2",
+          "tomas": "4 dias sem entrar · espanhol A1",
+          "joaquin": "Lição expressa enviada ontem",
+          "renata": "Voltou ontem com a lição expressa"
+        }
+      },
+      "feed": {
+        "moved": "{name} → {column} (movido manualmente)"
+      },
+      "toast": {
+        "complete": "Lição completa",
+        "booked": "Aula reservada",
+        "level": "Teste de nível",
+        "replied": "Respondeu",
+        "later": "Fica pra amanhã",
+        "moved": "Quadro atualizado"
+      },
+      "lanes": {
+        "notStarted": "Não começou"
+      }
+    }
+  }
+}

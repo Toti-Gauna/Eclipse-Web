@@ -225,23 +225,23 @@ export const STORY = {
   /** Chat time 0: the inquiry is sent (23:40). */
   chatStart: 1200,
   /** Bot on: after the visit is booked, the night skips to just after the visit (beat "followup"). */
-  timelapse: 18_500,
+  timelapse: 20_000,
   timelapseAfterBooking: 1800,
   /** The WhatsApp follow-up starts this long after the jump. */
   follow: 500,
   /** Buyer's phone: the push becomes the WhatsApp thread. */
   openThread: 1700,
   /** Bot off: the night fast-forwards to 9:00 (beat 2) and the first human answer is at 9:12 (beat 3). */
-  off: { from: 5000, to: 9000, human: 13_000 },
+  off: { from: 6000, to: 9000, human: 13_000 },
 } as const;
 
 /** The SimBar's beats (labels: demoRealEstate.sim.<id>, or sim.off.<id> with the assistant off). */
 export const BEATS = [
-  { id: 'inquiry', at: 5_000 },
-  { id: 'qualify', at: 12_400 },
-  { id: 'visit', at: 18_000 },
-  { id: 'followup', at: 23_500 },
-  { id: 'reply', at: 29_500 },
+  { id: 'inquiry', at: 5_800 },
+  { id: 'qualify', at: 12_800 },
+  { id: 'visit', at: 19_500 },
+  { id: 'followup', at: 24_500 },
+  { id: 'reply', at: 30_500 },
 ] as const;
 export const STORY_END = BEATS[BEATS.length - 1].at;
 

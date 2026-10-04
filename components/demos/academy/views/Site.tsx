@@ -5,32 +5,46 @@ import { ArrowRight, BadgeCheck, CreditCard, Landmark, PenLine, RotateCcw } from
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { BrowserFrame, Card, ChatWidget, LandingPreview, SiteSection } from '../../kit';
 import { ENROLLED_TODAY, SITE_URL, STORY, storyClock, type CefrLevel } from '../data';
-import { act, type Enrollment } from '../story';
+import { act, isFreshEvent, type Enrollment } from '../story';
 import { useAcademy } from '../context';
 import { AtrioMark, ChalkUnderline, PersonAvatar, ViewHead, useAcademyText } from '../ui';
 
-/** The site's chatbot: the level test, the recommended course, enroll and pay. */
+/** The site's chatbot: the level test, the recommended course, enroll and pay (Julieta's, or the visitor's own). */
 function TestChat({ className = '' }: { className?: string }) {
   const t = useTranslations('demoAcademy.site');
-  const { view, state, run, announce } = useAcademy();
+  const { view, run, announce } = useAcademy();
   const { fmt, name } = useAcademyText();
+  const mine = view.siteMine !== null;
+  const shown = view.siteMine ?? view.lead;
+  const start = mine ? (view.siteMineStart ?? 0) : STORY.lead;
+  const idle = !shown.items.length && !shown.typing;
   return (
     <div className={`atrio-testchat ${className}`}>
       <p className="atrio-testchat-who" aria-live="off">
         <PenLine aria-hidden strokeWidth={2} />
-        {view.siteMine ? t('takingYou') : t('taking', { name: name('julieta') })}
+        {mine ? t('takingYou') : idle ? t('idleWho') : t('taking', { name: name('julieta') })}
       </p>
       <ChatWidget
-        run={view.site}
+        run={shown}
         variant="widget"
         title={t('botName')}
         subtitle={t('botSub')}
         avatar={<AtrioMark />}
-        stamp={(at) => fmt.time(storyClock((view.siteMine ? state.site.start : STORY.lead) + at))}
+        stamp={(at) => fmt.time(storyClock(start + at))}
         label={t('chatLabel')}
         announce={announce}
-        onPick={(step, reply) => run(act.pickSite(view.site, step, reply), 'select')}
-        composer={t('composer')}
+        onPick={(step, reply) => run(mine ? act.pickSite(step, reply) : act.pickLead(step, reply), 'select')}
+        composer={false}
+        footer={
+          idle ? (
+            <div className="atrio-chat-wait">
+              <p>{t('idle')}</p>
+              <TryButton />
+            </div>
+          ) : mine ? (
+            <p className="atrio-testchat-note">{t('localNote')}</p>
+          ) : undefined
+        }
         className="atrio-chat atrio-sitechat"
       />
     </div>
@@ -41,7 +55,7 @@ function TryButton({ className = '' }: { className?: string }) {
   const t = useTranslations('demoAcademy.site');
   const { run, view } = useAcademy();
   return (
-    <button type="button" className={`atrio-btn atrio-btn-ghost ${className}`} onClick={() => run(act.restartSite(), 'select')}>
+    <button type="button" className={`atrio-btn atrio-btn-ghost ${className}`} onClick={() => run(act.startSite(view.mineEnrollment), 'open')} data-tour="enroll">
       <RotateCcw aria-hidden strokeWidth={2} />
       {view.siteMine ? t('again') : t('tryIt')}
     </button>
@@ -51,7 +65,7 @@ function TryButton({ className = '' }: { className?: string }) {
 /** The public landing of the school (fictional URL, .demo TLD). */
 function Landing({ compact = false }: { compact?: boolean }) {
   const t = useTranslations('demoAcademy.site');
-  const { business, ticketUsd } = useAcademy();
+  const { business, ticketUsd, run, view } = useAcademy();
   const { course } = useAcademyText();
   const { format } = useCurrency();
   const levels: CefrLevel[] = ['A2', 'B1', 'B2'];
@@ -81,10 +95,10 @@ function Landing({ compact = false }: { compact?: boolean }) {
         body: t('heroBody'),
         actions: (
           <>
-            <span className="atrio-site-btn" data-primary="">
+            <button type="button" className="atrio-site-btn" data-primary="" onClick={() => run(act.startSite(view.mineEnrollment), 'open')}>
               {t('testCta')}
               <ArrowRight aria-hidden strokeWidth={2} />
-            </span>
+            </button>
             {!compact ? <span className="atrio-site-btn">{t('seeCourses')}</span> : null}
           </>
         ),
@@ -119,7 +133,7 @@ function Enrollments({ compact = false }: { compact?: boolean }) {
   const t = useTranslations('demoAcademy.site');
   const { view } = useAcademy();
   const { fmt, name, course } = useAcademyText();
-  const live = [...view.enrollments].filter((e) => e.at < 0 || view.t >= e.at).reverse();
+  const live = [...view.enrollments].reverse();
   const row = (key: string, who: Parameters<typeof name>[0], e: Pick<Enrollment, 'level' | 'course' | 'pay'> & { lang?: 'en' | 'pt' }, time: string, fresh: boolean) => (
     <li key={key} className={`atrio-enrol ${fresh ? 'demo-pop atrio-enrol-fresh' : ''}`}>
       <PersonAvatar id={who ?? 'you'} />
@@ -144,7 +158,7 @@ function Enrollments({ compact = false }: { compact?: boolean }) {
       </div>
       <ul className="atrio-enrol-list">
         {live.map((e) =>
-          row(`${e.who}-${e.at}`, e.who, e, e.at < 0 ? '—' : fmt.time(storyClock(e.at)), e.at >= 0 && view.t - e.at < 2600),
+          row(`${e.who}-${e.at}`, e.who, e, fmt.time(storyClock(e.at)), isFreshEvent(view.t, e)),
         )}
         {ENROLLED_TODAY.slice(0, compact ? 1 : 2).map((e) => (
           <li key={e.id} className="atrio-enrol">
@@ -174,7 +188,7 @@ function Funnel() {
   const { fmt } = useAcademyText();
   const steps = [
     { id: 'visits', value: 1840 },
-    { id: 'tests', value: 312 + (view.site.items.length ? 1 : 0) },
+    { id: 'tests', value: 312 + (view.lead.items.length ? 1 : 0) + (view.siteMine?.items.length ? 1 : 0) },
     { id: 'enrolled', value: view.kpi.enrollments },
   ];
   return (

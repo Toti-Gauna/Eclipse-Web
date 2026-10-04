@@ -2377,16 +2377,14 @@
   "demoRestaurant": {
     "nav": {
       "service": "Serviço",
-      "groupTonight": "Hoje à noite",
       "phone": "Telefone IA",
       "phoneShort": "Telefone",
       "kitchen": "Cozinha",
       "floor": "Salão e reservas",
       "floorShort": "Salão",
-      "groupRoom": "O salão",
       "menu": "Cardápio",
       "numbers": "Números",
-      "groupBiz": "Negócio"
+      "qr": "Cardápio QR"
     },
     "top": {
       "live": "{count, plural, one {# ligação em andamento} other {# ligações em andamento}}",
@@ -2394,11 +2392,6 @@
       "aiOff": "Telefone IA desligado",
       "customer": "Cliente",
       "tonight": "{day} · turno da noite"
-    },
-    "side": {
-      "aiTitle": "Telefone IA",
-      "aiOn": "{count, plural, =0 {Esperando ligações} one {Atendendo # ligação} other {Atendendo # ligações}}",
-      "aiOff": "Desligado: toca no balcão"
     },
     "people": {
       "you": "Você",
@@ -2439,6 +2432,30 @@
       },
       "rider": {
         "name": "Tiago"
+      },
+      "acosta": {
+        "name": "Beatriz Costa",
+        "first": "Beatriz"
+      },
+      "vidal": {
+        "name": "Pedro Vidal",
+        "first": "Pedro"
+      },
+      "herrera": {
+        "name": "Família Pereira",
+        "first": "Pereira"
+      },
+      "molina": {
+        "name": "Helena Moura",
+        "first": "Helena"
+      },
+      "castro": {
+        "name": "Rafael Teixeira",
+        "first": "Rafael"
+      },
+      "navarro": {
+        "name": "Larissa Nunes",
+        "first": "Larissa"
       }
     },
     "dishes": {
@@ -2538,7 +2555,8 @@
         "free": "Livre",
         "seated": "Ocupada",
         "bill": "Pediu a conta",
-        "reserved": "Reservada"
+        "reserved": "Reservada",
+        "done": "Atendida"
       }
     },
     "calls": {
@@ -2566,8 +2584,7 @@
         "order": "Pedido · delivery",
         "booking": "Reserva · 4 pessoas",
         "gf": "Dúvida · sem glúten",
-        "alt": "Pedido · retirada",
-        "info": "Dúvida · horário"
+        "alt": "Pedido · retirada"
       },
       "order": {
         "hello": "Bodegón Lucero, boa noite. Pedido ou reserva?",
@@ -2622,25 +2639,16 @@
         "ticket": "Comanda #{num} → cozinha · retirada",
         "bye": "Pronto. Te aviso no WhatsApp quando estiver pronto."
       },
-      "info": {
-        "hello": "Bodegón Lucero, boa noite.",
-        "ask": "Oi, até que horas vocês aceitam pedido?",
-        "answer": "A cozinha fica aberta até {time}. Quer pedir agora?",
-        "no": "Agora não, mais tarde. Obrigado.",
-        "bye": "Combinado. Boa noite!"
-      },
       "outcome": {
         "missed": "Ligação perdida",
         "lost": {
           "order": "Um pedido de delivery que não entrou.",
           "booking": "Uma reserva pra 4 que não aconteceu.",
           "gf": "Uma dúvida (e um pedido) sem resposta.",
-          "alt": "Um pedido pra retirar que não entrou.",
-          "info": "Uma dúvida sem resposta."
+          "alt": "Um pedido pra retirar que não entrou."
         },
         "booking": "Mesa {table} · {time} · {people} pessoas",
         "waitlist": "Na lista de espera",
-        "info": "Dúvida respondida",
         "none": "Sem pedido",
         "delivery": "Pedido #{num} · delivery · chega {time}",
         "pickup": "Pedido #{num} · retirada {time}"
@@ -2703,11 +2711,12 @@
         "missed": "Ligações perdidas"
       },
       "customer": "O que o cliente vê",
-      "customerSub": "Cardápio QR, pedido online e reservas"
+      "customerSub": "Cardápio QR, pedido online e reservas",
+      "switchboard": "Telefone IA · 3 linhas"
     },
     "kitchen": {
       "rubric": "Tela da cozinha",
-      "title": "Cozinha ao vivo",
+      "title": "As comandas",
       "subtitle": "Cada pedido entra sozinho, venha do salão, do site ou do telefone. Sem papelzinho, sem grito.",
       "ticketLabel": "Comanda {num}, {channel}, {stage}: {items}",
       "age": "{min} min",
@@ -2721,11 +2730,22 @@
         "orders": "Pedidos hoje",
         "late": "Atrasados"
       },
-      "footnote": "O que o telefone IA anota e o que chega pelo site vai direto pra tela, com observações como “sem glúten”."
+      "footnote": "O que o telefone IA anota e o que chega pelo site vai direto pra tela, com observações como “sem glúten”.",
+      "cols": {
+        "new": "Novo",
+        "cooking": "No fogo",
+        "ready": "Pronto",
+        "out": "Saiu"
+      },
+      "boardLabel": "Tela da cozinha",
+      "hint": "Você é a cozinha: arraste uma comanda para a próxima coluna ou use o botão Mover.",
+      "bumpLabel": "Comanda {num}: passar para {stage}",
+      "yoursShort": "Seu",
+      "gfShort": "Sem glúten"
     },
     "floor": {
       "rubric": "Salão e reservas",
-      "title": "O salão, ao vivo",
+      "title": "O salão, hoje à noite",
       "titleShort": "O salão",
       "subtitle": "{seated} de {total} mesas ocupadas · {people} pessoas sentadas.",
       "mapLabel": "Planta do salão",
@@ -2745,7 +2765,9 @@
         "people": "Pessoas",
         "time": "Horário",
         "book": "Reservar mesa {n}",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "title": "Reservar a mesa {n}",
+        "tonight": "Hoje à noite"
       },
       "pending": "Confirmando…",
       "via": {
@@ -2760,11 +2782,25 @@
         "conf": "Oi, {name}. Sua mesa está confirmada: hoje às {time}, {people} pessoas, mesa {table}. Se mudar alguma coisa, é só responder aqui.",
         "confYou": "Pronto! Sua mesa está confirmada: hoje às {time}, {people} pessoas, mesa {table}. Se mudar alguma coisa, é só responder aqui.",
         "note": "Lembrete automático 2 horas antes",
-        "label": "Confirmação de reserva no WhatsApp"
+        "label": "Confirmação de reserva no WhatsApp",
+        "confDay": "Oi, {name}. Sua mesa está confirmada: {day} às {time}, {people} pessoas, mesa {table}. Se mudar alguma coisa, é só responder aqui.",
+        "confYouDay": "Pronto! Sua mesa está confirmada: {day} às {time}, {people} pessoas, mesa {table}. Se mudar alguma coisa, é só responder aqui."
       },
       "hint": "Toque numa mesa livre para reservar: a confirmação sai sozinha no WhatsApp.",
-      "hintPhone": "Toque numa mesa livre para reservar.",
-      "listTitle": "Reservas de hoje à noite"
+      "listTitle": "Reservas de hoje à noite",
+      "titleBook": "Livro de reservas",
+      "subtitleDay": "{count, plural, =0 {Nenhuma reserva} one {# reserva} other {# reservas}} nesse dia.",
+      "listDay": "Reservas do dia",
+      "noBookings": "Ainda não há reservas para esse dia.",
+      "more": "e mais {count}",
+      "attended": "Atendida",
+      "pastNote": "Noite passada: só leitura. {count, plural, =0 {Não houve reservas} one {# reserva atendida} other {# reservas atendidas}}.",
+      "hintAhead": "Toque numa mesa livre para reservar para essa noite.",
+      "period": {
+        "tonight": "hoje à noite",
+        "past": "noite passada",
+        "ahead": "próxima"
+      }
     },
     "menu": {
       "rubric": "Cardápio e estoque",
@@ -2778,15 +2814,11 @@
       "gf": "Sem glúten",
       "effect": {
         "title": "Quando algo acaba",
-        "idle": "Teste: marque um prato como esgotado. O próximo que pedir por telefone ouve uma alternativa.",
+        "idle": "Teste: marque um prato como esgotado. Ele some do QR e do site, e o telefone IA oferece uma alternativa.",
         "body": "{dish} esgotado. A IA oferece {alt} no lugar.",
-        "soon": "Entrando uma ligação na linha {n}…",
-        "ringing": "Linha {n}: tocando",
-        "live": "Linha {n}: a IA está oferecendo a alternativa",
-        "ended": "Linha {n}: pedido anotado com a alternativa",
-        "missed": "Linha {n}: ligação perdida (a IA está desligada)",
-        "line1": "A linha {n} já está oferecendo",
-        "listen": "Ouvir a linha {n}"
+        "none": "{dish} e tudo parecido esgotaram: a IA avisa que hoje não tem.",
+        "ahead": "As ligações que você simular daqui pra frente já levam isso em conta.",
+        "after": "O QR e o site já não oferecem esse prato."
       },
       "qr": {
         "title": "QR em cada mesa",
@@ -2834,7 +2866,8 @@
       },
       "backToMenu": "Voltar ao cardápio",
       "menu": {
-        "hello": "O que vai ser hoje?"
+        "hello": "O que vai ser hoje?",
+        "qr": "QR da mesa {n} · lucero.demo/carta"
       },
       "add": "Adicionar {dish}",
       "less": "Um a menos de {dish}",
@@ -2849,10 +2882,15 @@
         "deliveryEta": "40 min",
         "pickupEta": "25 min",
         "direct": "Pedido direto com o bodegón: sem comissão de app no meio.",
-        "confirm": "Confirmar pedido · {total}"
+        "confirm": "Confirmar pedido · {total}",
+        "table": "Na mesa {n}",
+        "tableEta": "QR",
+        "note": "Observação para a cozinha",
+        "notePlaceholder": "Ex.: sem sal, bem passado",
+        "qr": "Vai direto pra cozinha com o número da sua mesa.",
+        "demo": "Demo: o pedido só muda dados desta demonstração; nada é cobrado nem enviado."
       },
       "status": {
-        "sending": "Enviando seu pedido…",
         "title": "Seu pedido",
         "arrives": "Chega às",
         "ready": "Pronto às",
@@ -2862,7 +2900,8 @@
           "cooking": "Na cozinha",
           "ready": "Pronto",
           "out": "A caminho",
-          "picked": "Pode retirar"
+          "picked": "Pode retirar",
+          "served": "Na sua mesa"
         },
         "whatsapp": "Avisamos no WhatsApp a cada etapa.",
         "again": "Fazer outro pedido",
@@ -2871,25 +2910,35 @@
           "to": "Sua casa",
           "rider": "{name} está a caminho",
           "riderWait": "O motoboy sai quando estiver pronto"
-        }
+        },
+        "atTable": "Para a mesa {n}",
+        "now": "Status: {step}",
+        "kitchenHint": "Avance a comanda na tela da cozinha e veja mudar aqui."
       },
       "book": {
         "title": "Reserve sua mesa",
-        "tonight": "{day}, hoje à noite",
         "fewer": "Uma pessoa a menos",
         "more": "Uma pessoa a mais",
         "table": "A mesa {n} é sua.",
         "full": "Não há mesas livres para essa quantidade.",
         "confirm": "Reservar",
         "doneTitle": "Mesa reservada!",
-        "whatsapp": "A confirmação está chegando no seu WhatsApp."
+        "whatsapp": "A confirmação está chegando no seu WhatsApp.",
+        "when": "Qual noite?",
+        "tonightShort": "Hoje",
+        "late": "Para hoje não sobrou horário.",
+        "again": "Fazer outra reserva"
       },
       "push": {
         "app": "WhatsApp",
         "now": "agora",
         "out": "Seu pedido #{num} saiu: chega às {time}.",
-        "ready": "Seu pedido #{num} está pronto para retirar ({time})."
-      }
+        "ready": "Seu pedido #{num} está pronto para retirar ({time}).",
+        "readySalon": "Seu pedido #{num} está pronto.",
+        "picked": "Obrigado por retirar o pedido #{num}.",
+        "served": "Seu pedido #{num} já está na mesa."
+      },
+      "addMore": "Adicionar mais {dish} (já são {count})"
     },
     "feed": {
       "ring": "Linha {line}: entrando uma ligação",
@@ -2906,7 +2955,7 @@
       "altSame": "Linha {line}: {dish} pra retirar",
       "youOrder": "Seu pedido #{num} entrou na cozinha",
       "youBooking": "Você reservou a mesa {table} às {time}",
-      "webBooking": "Reserva pelo site: mesa {table} às {time}"
+      "webBooking": "Reserva pelo site: mesa {table}, {day} às {time}"
     },
     "toast": {
       "aiOrder": "Pedido por telefone",
@@ -2919,6 +2968,33 @@
       "youBooking": "Sua reserva",
       "webBooking": "Reserva pelo site",
       "out": "A caminho"
+    },
+    "sim": {
+      "order": "Ligação para pedir",
+      "rush": "3 ligações ao mesmo tempo",
+      "qr": "Uma mesa pede pelo QR",
+      "web": "Pedido e reserva pelo site",
+      "note": "Ligações, pedidos e reservas simulados com dados de demonstração; nada é enviado."
+    },
+    "simCue": "Simular: {label}",
+    "stageOut": {
+      "salon": "Servido",
+      "delivery": "A caminho",
+      "pickup": "Retirado"
+    },
+    "qr": {
+      "rubric": "QR e site",
+      "title": "O cardápio, como o cliente vê",
+      "subtitle": "O mesmo cardápio no QR de cada mesa e no site. Peça aqui: entra na cozinha com a sua observação.",
+      "steps": {
+        "scan": "O cliente escaneia o QR ou abre o site e escolhe.",
+        "kitchen": "O pedido entra na tela da cozinha, com a observação.",
+        "whatsapp": "Ele recebe um aviso no WhatsApp quando sai."
+      },
+      "yours": "Seu último pedido",
+      "count": "{count, plural, one {# pedido seu} other {# pedidos seus}}",
+      "empty": "Você ainda não pediu nada. Escolha pratos no cardápio à esquerda.",
+      "toKitchen": "Ver na cozinha"
     }
   },
   "demoShop": {
@@ -4624,6 +4700,28 @@
       "recovered": {
         "title": "Faltas que não viram prejuízo",
         "body": "Quantas consultas foram recuperadas nesta semana e de onde vieram: lembretes, lista de espera e a recepção com IA."
+      }
+    },
+    "restaurant": {
+      "sim": {
+        "title": "Você comanda o turno",
+        "body": "Nada se mexe sozinho. Toque em «Simular» para ver um momento da noite: uma ligação, três ao mesmo tempo, uma mesa pedindo pelo QR ou um pedido pelo site."
+      },
+      "order": {
+        "title": "Cardápio QR e pedidos online",
+        "body": "Escolha pratos, quantidades e uma observação para a cozinha e confirme. O pedido entra na tela da cozinha sem passar pelo garçom nem por app com comissão."
+      },
+      "voice": {
+        "title": "O telefone IA atende tudo",
+        "body": "Anota pedidos e reservas em três linhas ao mesmo tempo, com o cardápio e o salão atualizados. Simule as três ligações e leia cada conversa."
+      },
+      "kitchen": {
+        "title": "A tela da cozinha",
+        "body": "Cada comanda entra sozinha, venha do QR, do site ou do telefone. Passe de Novo para Saiu: o cliente vê o status no celular."
+      },
+      "floor": {
+        "title": "Salão e reservas",
+        "body": "A planta mostra quem está sentado, quem vem e qual mesa está livre. Veja noites passadas ou futuras e reserve uma mesa: a confirmação sai no WhatsApp."
       }
     }
   },

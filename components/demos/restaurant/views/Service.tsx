@@ -208,7 +208,7 @@ export function LaptopService() {
 }
 
 export function PhoneService() {
-  const { view, go, openCustomer } = useRestaurant();
+  const { view, openCustomer } = useRestaurant();
   const x = useRestaurantText();
   const { t } = x;
   return (
@@ -220,7 +220,8 @@ export function PhoneService() {
         </div>
         <div className="rl-service-live">
           <span className="rl-service-countl">{t('service.live', { count: view.liveCount })}</span>
-          <LineLamps onPick={(line) => go('phone', line)} />
+          {/* The line rows below open each call: the lamps here are a readout. */}
+          <LineLamps />
         </div>
       </header>
       <section className="flex flex-col gap-[0.45em]" data-tour="voice">

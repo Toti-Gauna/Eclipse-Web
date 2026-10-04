@@ -43,7 +43,8 @@ export function OrbitaMark({ className = '' }: { className?: string }) {
 export function MemberAvatar({ id, className = '' }: { id: MemberId; className?: string }) {
   const m = memberById(id);
   const c = tint(m.tint);
-  return <Avatar initials={m.initials} color={`color-mix(in oklab, ${c} 24%, #14161B)`} ink={c} className={`gym-avatar ${className}`} />;
+    // Initials a touch lighter than the tint so they read on its dark chip (AA).
+  return <Avatar initials={m.initials} color={`color-mix(in oklab, ${c} 24%, #14161B)`} ink={`color-mix(in oklab, ${c} 62%, #FFFFFF)`} className={`gym-avatar ${className}`} />;
 }
 
 /** Owner section header: mono index + condensed caps title + one line. */
@@ -144,13 +145,14 @@ const TOASTED: EventKind[] = ['booked', 'trial', 'back', 'levelup', 'league', 'c
  * Toasts: story events while a beat plays (they leave before it ends), and the visitor's own
  * latest action (`flash`, cleared by the timer their click started). Decorative: the Announcer speaks.
  */
-export function GymToasts({ placement }: { placement: 'top' | 'bottom-right' }) {
-  const { view, reduced, flash } = useGym();
+export function GymToasts({ placement, only }: { placement: 'top' | 'bottom-right'; only?: (e: GymEvent) => boolean }) {
+  const { view, reduced, flash: last } = useGym();
   const text = useEventText();
   const t = useTranslations('demoGym.toast');
   if (reduced) return null;
+  const flash = last && (!only || only(last)) ? last : null;
   const items: ToastItem[] = view.events
-    .filter((e) => TOASTED.includes(e.kind) && isFreshEvent(view, e, 3400))
+    .filter((e) => TOASTED.includes(e.kind) && isFreshEvent(view, e, 3400) && (!only || only(e)))
     .slice(-2)
     .map((e) => ({ id: e.id, icon: EVENT[e.kind].icon, tone: EVENT[e.kind].tone, title: t(e.kind), body: text(e), leaving: view.t - e.at >= 2900 }));
   if (flash) items.push({ id: `flash-${flash.id}`, icon: EVENT[flash.kind].icon, tone: EVENT[flash.kind].tone, title: t(flash.kind), body: text(flash) });

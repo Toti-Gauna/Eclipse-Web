@@ -611,6 +611,8 @@ export function seededBookings(day: number): Booking[] {
   // Past nights were full; the further ahead, the more room is left.
   const busy = day < TODAY ? 0.7 : Math.max(0.22, 0.58 - 0.08 * (day - TODAY)) + (weekend ? 0.1 : 0);
   const out: Booking[] = [];
+  // Names walk the guest list from a seeded start, so a night never repeats one.
+  let guest = Math.floor(hash(day * 31 + 1) * GUESTS.length);
   for (const tb of TABLES) {
     const seed = day * 977 + tb.id * 131;
     if (hash(seed) >= busy) continue;
@@ -621,7 +623,7 @@ export function seededBookings(day: number): Booking[] {
       table: tb.id,
       time: BOOK_TIMES[Math.floor(hash(seed + 5) * BOOK_TIMES.length)],
       people,
-      name: GUESTS[Math.floor(hash(seed + 7) * GUESTS.length)],
+      name: GUESTS[guest++ % GUESTS.length],
       via: VIAS[Math.floor(hash(seed + 11) * VIAS.length)],
       at: -Infinity,
     });

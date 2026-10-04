@@ -35,7 +35,7 @@ import {
   type WaveLevel,
 } from '../../kit';
 import { CLASSMATES, CURRENT_UNIT, HERO, HERO_COLOR, LIVE_CLASSES, NEXT_UNITS, PROMPTS, SPEAK_FLOW, SPEAK_SCALE, SPEAK_SCORE, STORY, UNITS, WEEKDAY, storyClock, type BadgeId } from '../data';
-import { act } from '../story';
+import { ASKS, act, isFreshEvent } from '../story';
 import { useAcademy } from '../context';
 import { useMarkWords } from '../scripts';
 import { CefrRuler, ChalkCircle, ChalkTick, GoalRing, PersonAvatar, useAcademyText } from '../ui';
@@ -185,15 +185,19 @@ export function SpeakingSession({ variant = 'full', className = '' }: { variant?
   );
 }
 
-/** Pick what to talk about (starts a session; after one ends: practice again). */
-/** The topic of the session (the tutor's question) + the picker (before it starts / to practice again). */
+/**
+ * The topic of the session (the tutor's question) + the picker. Before the lesson's session the
+ * visitor picks a topic and starts it (it plays the "speaking" beat); after it, practicing again
+ * shows the new result at once.
+ */
 function TopicCard() {
   const t = useTranslations('demoAcademy.speak');
-  const { view, run } = useAcademy();
+  const { view, run, playBeat, nextBeat, playing } = useAcademy();
   const phase = view.speak.state.phase;
-  const again = phase === 'ended';
+  const again = view.speakDone;
   const running = phase === 'ringing' || phase === 'live';
-  const topic = view.speak.replay || running || again ? view.speak.prompt : (view.prompt ?? 'weekend');
+  const topic = view.speak.prompt;
+  const canStart = !again && !running && !playing && nextBeat === 'speak';
   return (
     <section className="atrio-topic" aria-label={t('topicLabel')}>
       <p className="atrio-label">{t('topic')}</p>
@@ -205,7 +209,13 @@ function TopicCard() {
           <p className="atrio-prompts-k">{again ? t('again') : t('pick')}</p>
           <div className="atrio-prompts-row">
             {PROMPTS.map((p) => (
-              <button key={p} type="button" className="atrio-prompt" aria-pressed={!again && view.prompt === p} onClick={() => run(act.prompt(p), 'select')}>
+              <button
+                key={p}
+                type="button"
+                className="atrio-prompt"
+                aria-pressed={again ? undefined : view.prompt === p}
+                onClick={() => run(again ? act.replay(p) : act.pickPrompt(p), 'select')}
+              >
                 {again ? <RotateCcw aria-hidden strokeWidth={2} /> : null}
                 {t(`prompts.${p}`)}
               </button>
@@ -213,6 +223,13 @@ function TopicCard() {
           </div>
         </div>
       ) : null}
+      {canStart ? (
+        <button type="button" className="atrio-btn atrio-start" onClick={() => playBeat('speak')} data-tour="speaking">
+          <Mic aria-hidden strokeWidth={2} />
+          {t('start')}
+        </button>
+      ) : null}
+      {again ? <p className="atrio-topic-note">{t('againNote')}</p> : null}
     </section>
   );
 }
@@ -221,8 +238,8 @@ function TopicCard() {
 function LessonSteps() {
   const t = useTranslations('demoAcademy.student');
   const { view } = useAcademy();
-  const speakDone = view.t >= view.speakEnd;
-  const quizDone = view.answer !== null && view.t >= STORY.writing + (view.tutor.at.right ?? view.tutor.at.wrong ?? Infinity);
+  const speakDone = view.speakDone;
+  const quizDone = view.answerAt !== null && view.t >= view.answerAt;
   const complete = view.completeAt !== null && view.t >= view.completeAt;
   const steps = [
     { id: 'step1', done: speakDone },
@@ -266,10 +283,10 @@ function Activity({ n, icon: Icon, label, done, now }: { n: number; icon: Lucide
 function LessonCard() {
   const t = useTranslations('demoAcademy.student');
   const { view, student } = useAcademy();
-  const speakDone = view.t >= view.speakEnd;
-  const quizDone = view.answer !== null && view.t >= STORY.writing + (view.tutor.at.right ?? view.tutor.at.wrong ?? Infinity);
+  const speakDone = view.speakDone;
+  const quizDone = view.answerAt !== null && view.t >= view.answerAt;
   const complete = view.completeAt !== null && view.t >= view.completeAt;
-  const started = view.t >= STORY.open;
+  const started = view.t >= STORY.call;
   const step = complete ? 3 : quizDone ? 3 : speakDone ? 2 : started ? 1 : 0;
   return (
     <section className="atrio-notebook" aria-labelledby="atrio-lesson-h" data-complete={complete ? '' : undefined}>
@@ -290,8 +307,13 @@ function LessonCard() {
           <Check aria-hidden strokeWidth={2.4} />
           {view.levelUpAt !== null ? t('completeB1') : t('complete')}
         </p>
+      ) : null}
+      {complete ? (
+        <button type="button" className="atrio-btn atrio-btn-ghost atrio-btn-sm atrio-notebook-see" onClick={student.openOverlay}>
+          {t('seeResult')}
+        </button>
       ) : (
-        <button type="button" className="atrio-btn" data-pressing={!started && view.t >= STORY.open - 500 ? '' : undefined} onClick={() => student.open(speakDone ? 'tutor' : 'speak')}>
+        <button type="button" className="atrio-btn" onClick={() => student.open(speakDone ? 'tutor' : 'speak')}>
           <Play aria-hidden strokeWidth={2.2} />
           {started ? t('continue') : t('start')}
         </button>
@@ -410,7 +432,7 @@ export function StudentHome() {
 export function StudentCourse() {
   const t = useTranslations('demoAcademy.student');
   const tc = useTranslations('demoAcademy.course');
-  const { view, run } = useAcademy();
+  const { view, run, state } = useAcademy();
   const { fmt, day, teacher } = useAcademyText();
   const leveled = view.level === 'B1';
   const complete = view.completeAt !== null && view.t >= view.completeAt;
@@ -436,7 +458,7 @@ export function StudentCourse() {
             sub: booked ? t('booked') : t('seats', { count: (club.seats ?? 0) - (club.taken ?? 0) }),
             tone: 'accent2' as const,
             state: booked ? ('mine' as const) : ('ghost' as const),
-            fresh: booked && view.t - (view.booked ?? 0) < 2400,
+            fresh: booked && view.booked !== null && isFreshEvent(view.t, { at: view.booked, mine: state.booked !== null }, 2400),
             version: booked ? 'booked' : 'base',
           },
         ]
@@ -449,7 +471,7 @@ export function StudentCourse() {
       title: leveled ? t('classes.en-b1') : t('classes.en-a2'),
       sub: leveled ? teacher('diego') : teacher('carla'),
       tone: (leveled ? 'accent' : 'ink') as 'accent' | 'ink',
-      fresh: leveled && view.levelUpAt !== null && view.t - view.levelUpAt < 2400,
+      fresh: leveled && view.levelUpAt !== null && isFreshEvent(view.t, { at: view.levelUpAt, mine: view.answerMine }, 2400),
       version: leveled ? 'b1' : 'base',
     })),
   ];
@@ -548,11 +570,47 @@ export function StudentSpeak() {
   );
 }
 
-/** The written practice: Valentina's chat with the AI tutor. */
+/** Quick questions to the tutor: the visitor asks, the tutor answers at once (local demo data). */
+function AskTutor() {
+  const t = useTranslations('demoAcademy.tutor');
+  const { state, run } = useAcademy();
+  const left = ASKS.filter((id) => !state.asks.includes(id));
+  return (
+    <div className="atrio-asks">
+      {state.asks.map((id) => (
+        <div key={id} className="atrio-ask">
+          <div className="demo-msg-wrap" data-from="user">
+            <div className="demo-msg" data-from="user">
+              <div className="demo-msg-text">{t(`asks.${id}.q`)}</div>
+            </div>
+          </div>
+          <div className="demo-msg-wrap" data-from="bot">
+            <div className="demo-msg" data-from="bot">
+              <div className="demo-msg-text">{t(`asks.${id}.a`)}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+      {left.length ? (
+        <div className="atrio-ask-chips" role="group" aria-label={t('askLabel')} data-tour="tutor">
+          <p className="atrio-ask-k">{t('askKicker')}</p>
+          {left.map((id) => (
+            <button key={id} type="button" className="atrio-prompt" onClick={() => run(act.ask(id), 'select')}>
+              {t(`asks.${id}.q`)}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+/** The written practice: Valentina's chat with the AI tutor (+ quick questions). */
 export function TutorChat({ className = '', header = true }: { className?: string; header?: boolean }) {
   const t = useTranslations('demoAcademy.tutor');
-  const { view, run, announce } = useAcademy();
+  const { view, run, announce, playBeat, nextBeat, playing } = useAcademy();
   const { fmt } = useAcademyText();
+  const waiting = !view.tutor.items.length && !view.tutor.typing;
   return (
     <ChatWidget
       run={view.tutor}
@@ -566,8 +624,23 @@ export function TutorChat({ className = '', header = true }: { className?: strin
       label={t('label')}
       announce={announce}
       onPick={(step, reply) => run(act.pickTutor(step, reply), 'select')}
-      composer={t('composer')}
-      footer={!view.tutor.items.length && !view.tutor.typing ? <p className="atrio-chat-wait">{t('waiting')}</p> : undefined}
+      composer={false}
+      footer={
+        <>
+          {waiting ? (
+            <div className="atrio-chat-wait">
+              <p>{t('waiting')}</p>
+              {nextBeat === 'writing' && !playing ? (
+                <button type="button" className="atrio-btn atrio-btn-sm" onClick={() => playBeat('writing')}>
+                  <PenLine aria-hidden strokeWidth={2} />
+                  {t('playWriting')}
+                </button>
+              ) : null}
+            </div>
+          ) : null}
+          <AskTutor />
+        </>
+      }
       className={`atrio-chat ${className}`}
     />
   );

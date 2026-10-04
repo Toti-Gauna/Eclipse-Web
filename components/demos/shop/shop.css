@@ -3086,3 +3086,99 @@
 .shop .demo-kpi[data-emphasis] .demo-kpi-hint {
   color: var(--demo-accent-ink);
 }
+
+/* ------------------------------------------------------------------ */
+/* v3: manual flows (no autoplay)                                       */
+/* ------------------------------------------------------------------ */
+.shop-toppill-dot {
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 999px;
+  background: currentColor;
+}
+/* The visitor left their checkout: they trigger "30 minutes later" */
+.sf-later {
+  position: absolute;
+  left: 0.6em;
+  right: 0.6em;
+  bottom: 5em;
+  z-index: 11;
+}
+.sf[data-variant='desktop'] .sf-later {
+  top: 3.6em;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  width: min(32em, 92%);
+  transform: translateX(-50%);
+}
+.sf-later-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.45em 0.45em 0.45em 0.8em;
+  border-radius: 999px;
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+  font-size: 0.74em;
+  line-height: 1.25;
+  box-shadow: var(--demo-shadow-lg);
+  animation: demo-pop 0.45s var(--demo-ease) both;
+}
+.sf-later-bar svg {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+}
+.sf-later-go {
+  flex: none;
+  min-height: 2.6em;
+  padding: 0 1em;
+  border-radius: 999px;
+  background: var(--demo-bg);
+  color: var(--demo-ink);
+  font-weight: 700;
+}
+.sf-later-note {
+  padding: 0.6em 0.9em;
+  border-radius: 1em;
+  background: var(--demo-bad-soft);
+  color: var(--demo-bad);
+  font-size: 0.72em;
+  font-weight: 600;
+  text-align: center;
+}
+/* Orders: advance one stage */
+.shop-ocard-next {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.3em;
+  min-height: 2.3em;
+  margin-top: 0.15em;
+  padding: 0 0.75em;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--demo-line-strong);
+  font-size: 0.72em;
+  font-weight: 700;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.shop-ocard-next:hover {
+  background: var(--demo-ink);
+  color: var(--demo-bg);
+}
+.shop-ocard-next svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.shop-hint {
+  color: var(--demo-muted);
+  font-size: 0.66em;
+}
+/* Phone app bar: a comfortable target for the store button. */
+.demo-root[data-screen='phone'] .shop-topbtn {
+  height: 3.1em;
+  padding: 0 1em;
+}

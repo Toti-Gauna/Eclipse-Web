@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { BellRing, ChevronDown, Flame, MessageCircle, Target, Trophy, UserCheck, Zap } from 'lucide-react';
+import { BellRing, ChevronDown, Flame, MessageCircle, RotateCcw, Target, Trophy, UserCheck, Zap } from 'lucide-react';
 import { BrowserFrame, ChatPeek, ChatWidget, DemoBadge, LandingPreview, Readout, SiteSection } from '../../kit';
-import { LEAD, SESSIONS, SITE_URL } from '../model';
-import { act } from '../story';
+import { LEAD, SITE_URL, sessionsOn } from '../model';
+import { act, isFreshEvent, taken } from '../story';
 import { useGym, useGymText } from '../hooks';
 import { useChats } from '../scripts';
 import { HudHead, MemberAvatar, OrbitaMark, storyClockAt } from '../parts';
@@ -36,11 +36,20 @@ function OrbitArt() {
   );
 }
 
+/** The site's CTAs open the chat as the visitor (a fresh conversation, answered at once). */
+function useStartChat() {
+  const { run, view } = useGym();
+  return () => {
+    if (!view.leadMine || view.leadMine.done) run(act.startLead(), 'open');
+  };
+}
+
 function SiteBody({ compact }: { compact: boolean }) {
   const t = useTranslations('demoGym.site');
   const { view, business } = useGym();
   const { fmt, kind } = useGymText();
-  const today = SESSIONS.filter((s) => s.day === view.day).slice(0, compact ? 3 : 4);
+  const start = useStartChat();
+  const today = sessionsOn(view.day).slice(0, compact ? 3 : 4);
   return (
     <LandingPreview
       compact={compact}
@@ -52,12 +61,20 @@ function SiteBody({ compact }: { compact: boolean }) {
         </span>
       }
       links={[t('links.classes'), t('links.schedule')]}
-      cta={<span className="gym-site-cta">{t('cta')}</span>}
+      cta={
+        <button type="button" className="gym-site-cta" onClick={start}>
+          {t('cta')}
+        </button>
+      }
       hero={{
         kicker: t('kicker'),
         title: t('title'),
         body: t('body'),
-        actions: <span className="gym-site-btn">{t('action')}</span>,
+        actions: (
+          <button type="button" className="gym-site-btn" onClick={start} data-tour="lead">
+            {t('action')}
+          </button>
+        ),
       }}
       className="gym-site"
     >
@@ -67,7 +84,7 @@ function SiteBody({ compact }: { compact: boolean }) {
             <li key={s.id}>
               <span className="demo-num">{fmt.gutter(s.start)}</span>
               <b>{kind(s.kind)}</b>
-              <span>{t('spots', { count: s.cap - view.booked[s.id] })}</span>
+              <span>{t('spots', { count: s.cap - taken(view, s) })}</span>
             </li>
           ))}
         </ul>
@@ -99,13 +116,18 @@ function LeadChat({ compact }: { compact: boolean }) {
   const t = useTranslations('demoGym.lead');
   const { view, run, announce } = useGym();
   const { fmt } = useGymText();
-  const { lead } = useChats();
+  const chats = useChats();
+  const start = useStartChat();
   const [open, setOpen] = useState(true);
-  const pick = (step: string, reply: string) => run(act.pickLead(step, reply), 'select');
+  const mine = !!chats.leadMine;
+  const shown = chats.leadMine ?? chats.lead;
+  const pick = (step: string, reply: string) => run(mine ? act.pickLeadMine(step, reply) : act.pickLead(step, reply), 'select');
+  const begin = view.leadMineSource?.start ?? view.leadSource.start;
+  const idle = !shown.items.length && !shown.typing;
   if (!open) {
     return (
       <ChatPeek
-        run={lead}
+        run={shown}
         title={t('title')}
         avatar={<MessageCircle aria-hidden strokeWidth={1.9} />}
         onPick={pick}
@@ -121,16 +143,31 @@ function LeadChat({ compact }: { compact: boolean }) {
         <ChevronDown aria-hidden strokeWidth={2} />
       </button>
       <ChatWidget
-        run={lead}
+        run={shown}
         variant="widget"
         title={t('title')}
-        subtitle={t('subtitle')}
+        subtitle={mine ? t('subtitleYou') : t('subtitle')}
         avatar={<OrbitaMark />}
-        stamp={(at) => fmt.time(storyClockAt(view, at + 500).clock)}
+        stamp={(at) => fmt.time(storyClockAt(view, begin + at).clock)}
         label={t('label')}
         announce={announce}
         onPick={pick}
-        composer={t('composer')}
+        composer={false}
+        footer={
+          idle ? (
+            <div className="gym-leadchat-idle">
+              <p>{t('idle')}</p>
+              <button type="button" className="gym-btn" data-variant="primary" onClick={start}>
+                {t('start')}
+              </button>
+            </div>
+          ) : !mine || shown.done ? (
+            <button type="button" className="gym-leadchat-again" onClick={() => run(act.startLead(), 'open')}>
+              <RotateCcw aria-hidden strokeWidth={2} />
+              {mine ? t('again') : t('tryYou')}
+            </button>
+          ) : undefined
+        }
         className="gym-leadchat-w"
       />
     </div>
@@ -141,8 +178,9 @@ function Leads() {
   const t = useTranslations('demoGym.leads');
   const { view } = useGym();
   const { short, session } = useGymText();
-  const booked = view.trial && view.trial.at <= view.t;
+  const booked = !!view.trial;
   const came = view.trialInAt !== null && view.trialInAt <= view.t;
+  const trialEvent = view.events.find((e) => e.id === 'trial');
   return (
     <aside className="gym-leads" aria-labelledby="gym-leads-h">
       <p id="gym-leads-h" className="gym-auto-kicker">
@@ -152,7 +190,7 @@ function Leads() {
         <Readout value={view.kpi.leads} />
       </p>
       <p className="gym-leads-cap">{t('caption')}</p>
-      <div className="gym-lead" data-on={booked ? '' : undefined} data-fresh={booked && view.t - view.trial!.at < 2500 ? '' : undefined}>
+      <div className="gym-lead" data-on={booked ? '' : undefined} data-fresh={trialEvent && isFreshEvent(view, trialEvent, 2500) ? '' : undefined}>
         {booked ? (
           <>
             <span className="flex items-center gap-[0.5em]">
@@ -176,6 +214,20 @@ function Leads() {
           <span className="gym-lead-wait">{t('waiting')}</span>
         )}
       </div>
+      {view.trialYou ? (
+        <div className="gym-lead" data-on="">
+          <span className="flex items-center gap-[0.5em]">
+            <span className="gym-lead-you" aria-hidden>
+              {t('youInitials')}
+            </span>
+            <span className="min-w-0 leading-[1.2]">
+              <span className="block truncate font-semibold">{t('you')}</span>
+              <span className="block truncate text-[0.82em] text-[var(--demo-muted)]">{t('via')}</span>
+            </span>
+          </span>
+          <span className="gym-lead-class">{session(view.trialYou.session)}</span>
+        </div>
+      ) : null}
       <p className="gym-leads-rate">{t('rate')}</p>
     </aside>
   );

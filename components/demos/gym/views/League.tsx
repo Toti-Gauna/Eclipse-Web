@@ -28,7 +28,8 @@ export function LaptopLeague() {
   const { view } = useGym();
   const { fmt, short } = useGymText();
   const rows = useLeagueRows();
-  const heroDone = { comeback: view.missionAt !== null && view.missionAt <= view.t ? 1 : 0, streak3: view.missions.find((m) => m.id === 'streak3')?.doneAt !== null ? 1 : 0, friend: view.missions.find((m) => m.id === 'friend')?.doneAt !== null ? 1 : 0, threeClasses: 0 };
+  const doneNow = (id: string) => (view.missions.find((m) => m.id === id)?.doneAt != null ? 1 : 0);
+  const heroDone = { comeback: doneNow('comeback'), streak3: doneNow('streak3'), friend: doneNow('friend'), threeClasses: 0 };
   return (
     <div className="gym-view">
       <HudHead index="05" label={t('index')} title={t('title')} sub={t('sub', { count: ACTIVE })} />
@@ -69,7 +70,7 @@ export function LaptopLeague() {
             <ol>
               {REWARDS.map((r) => {
                 const Icon = r.icon;
-                const fresh = r.id === 'level7' && view.levelUpAt !== null && view.t - view.levelUpAt < 4000;
+                const fresh = r.id === 'level7' && view.level >= 7;
                 return (
                   <li key={r.id} data-fresh={fresh ? '' : undefined}>
                     <span className="gym-rewards-k demo-num">{t(`reward.${r.id}.k`)}</span>
