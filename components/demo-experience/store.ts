@@ -12,8 +12,6 @@ export interface DemoRequest {
   vertical: VerticalId;
   demo: DemoId;
   origin: DemoOrigin;
-  /** Viewport point the opening eclipse is born at (the click, or the control's center). */
-  point: { x: number; y: number };
   /**
    * Stable selector value of the control that opened it (`data-demo-opener`), used to find it
    * again if its section re-created its DOM (LazyHydrate) while the layer was open.
@@ -47,22 +45,12 @@ export function getDemoRequest(): DemoRequest | null {
 export const openerKey = (origin: DemoOrigin, demo: DemoId) => `${origin}:${demo}`;
 
 /**
- * Opens the layer from a control. `event` (a click) places the eclipse at the pointer; a
- * keyboard activation (detail 0) uses the control's center.
+ * Opens the layer from a control (its eclipse takes the center of the screen; from the hero
+ * it's the hero's own that glides there, motion.ts). `opener` gets the focus back on close.
  */
-export function openDemoExperience(
-  input: { vertical: VerticalId; demo: DemoId; origin: DemoOrigin },
-  opener: HTMLElement | null,
-  event?: { clientX: number; clientY: number; detail: number },
-): void {
+export function openDemoExperience(input: { vertical: VerticalId; demo: DemoId; origin: DemoOrigin }, opener: HTMLElement | null): void {
   if (current) return;
-  let point = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  if (event && event.detail > 0 && (event.clientX || event.clientY)) point = { x: event.clientX, y: event.clientY };
-  else if (opener) {
-    const r = opener.getBoundingClientRect();
-    point = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-  }
-  current = { ...input, point, opener, openerKey: openerKey(input.origin, input.demo), id: ++seq };
+  current = { ...input, opener, openerKey: openerKey(input.origin, input.demo), id: ++seq };
   track('demo_opened', { demo: input.demo, origin: input.origin, vertical: input.vertical });
   emit();
 }

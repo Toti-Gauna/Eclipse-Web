@@ -12,7 +12,9 @@ import { l, verticalById, type DemoId } from '@/lib/content';
 import { lockScroll } from '@/lib/scroll-lock';
 import { localeTags, type Locale } from '@/i18n/routing';
 import { buildTourSteps, GUIDE_CHOICE_KEY, type ViewTag } from './guide';
-import { playClosing, playOpening, limbPoint } from './motion';
+import { Eclipse } from '@/components/hero/Eclipse';
+import { LIMB_POINT } from '@/components/hero/geometry';
+import { heroEclipseSize, holdHeroEclipse, OPEN_CUES, playClosing, playOpening, type LayerParts } from './motion';
 import { projectSummary } from './project';
 import { clearDemoRequest, layerBodyLoader, useDemoRequest, type DemoRequest } from './store';
 import './demo-experience.css';
@@ -93,8 +95,9 @@ function DemoLayer({ request }: { request: DemoRequest }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
-  const ecl = useRef<HTMLDivElement>(null);
-  const glow = useRef<HTMLDivElement>(null);
+  const voidEl = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const halo = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const [phase, setPhase] = useState<Phase>('opening');
   const life = useRef({
@@ -104,10 +107,24 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     saved: { x: 0, y: 0 },
     release: null as null | (() => void),
     sounded: false,
+    cues: [] as number[],
   });
   const token = `eclipse-demo-${request.id}`;
   const getDialog = useCallback(() => dialog.current, []);
   const getScroller = useCallback(() => scroller.current, []);
+  const layerParts = useCallback(
+    (): LayerParts | null =>
+      panel.current
+        ? {
+            panel: panel.current,
+            void: voidEl.current,
+            stage: stage.current,
+            halo: halo.current,
+            items: Array.from(scroller.current?.children ?? []) as HTMLElement[],
+          }
+        : null,
+    [],
+  );
 
   // ---- Guide or explore -------------------------------------------------------------
   const { seen: choiceMade, markSeen: rememberChoice } = useTourSeen(GUIDE_CHOICE_KEY);
@@ -174,6 +191,9 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     if (d?.open) d.close();
     l.anims.forEach((a) => a.cancel());
     l.anims = [];
+    l.cues.forEach((id) => window.clearTimeout(id));
+    l.cues = [];
+    holdHeroEclipse(false);
     restorePage();
     findOpener()?.focus({ preventScroll: true });
     // The browser's own focus return / history traversal may still move it: once more next frame.
@@ -195,22 +215,19 @@ function DemoLayer({ request }: { request: DemoRequest }) {
         l.ignorePop = true;
         window.history.back();
       }
-      if (reason === 'native' || !panel.current) {
+      const parts = layerParts();
+      if (reason === 'native' || !parts) {
         finish();
         return;
       }
-      // The light collapses into the opener (back in place: the page never scrolled).
-      let point = request.point;
-      const opener = findOpener();
-      if (opener) {
-        const r = opener.getBoundingClientRect();
-        if (r.width && r.bottom > 0 && r.top < window.innerHeight) point = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-      }
+      // The light collapses back into the eclipse; the void lifts off the page (never moved).
+      l.cues.forEach((id) => window.clearTimeout(id));
+      l.cues = [];
       l.anims.forEach((a) => a.cancel());
-      l.anims = playClosing({ panel: panel.current, ecl: ecl.current, glow: glow.current }, point, prefersReducedMotion());
+      l.anims = playClosing(parts, { reduced: prefersReducedMotion(), toHero: request.origin === 'hero' });
       Promise.allSettled(l.anims.map((a) => a.finished)).then(finish);
     },
-    [finish, findOpener, play, request.point, token],
+    [finish, layerParts, play, token, request.origin],
   );
   const closeRef = useRef(requestClose);
   useLayoutEffect(() => {
@@ -228,18 +245,34 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     if (!d.open) d.showModal();
     heading.current?.focus({ preventScroll: true });
     if (historyToken() !== token) window.history.pushState({ eclipseDemo: token } satisfies LayerHistoryState, '');
+    const reduced = prefersReducedMotion();
+    // The centered eclipse is exactly the hero's size (CSS has the same rule as a fallback).
+    const size = heroEclipseSize();
+    if (size) stage.current?.style.setProperty('--dx-ecl-size', `${size}px`);
+    const parts = layerParts();
+    l.anims = parts ? playOpening(parts, { reduced, fromHero: request.origin === 'hero' }) : [];
     if (!l.sounded) {
       l.sounded = true;
-      play('open');
+      if (reduced) play('open');
+      else
+        l.cues = [
+          window.setTimeout(() => play('glint'), OPEN_CUES.glint),
+          window.setTimeout(() => play('whoosh'), OPEN_CUES.whoosh),
+        ];
     }
-    const origin = limbPoint(request.point);
-    p.style.setProperty('--dx-x', `${origin.x}px`);
-    p.style.setProperty('--dx-y', `${origin.y}px`);
-    l.anims = playOpening({ panel: p, ecl: ecl.current, glow: glow.current }, request.point, prefersReducedMotion());
     let live = true;
     Promise.allSettled(l.anims.map((a) => a.finished)).then(() => {
       if (live && !l.closing) setPhase('open');
     });
+    // A click or a key while it opens: straight to the end.
+    const skip = () => {
+      if (l.closing || !l.anims.some((a) => a.playState === 'running')) return;
+      l.cues.forEach((id) => window.clearTimeout(id));
+      l.cues = [];
+      l.anims.forEach((a) => a.finish());
+    };
+    d.addEventListener('pointerdown', skip);
+    d.addEventListener('keydown', skip);
 
     const onPop = () => {
       if (l.ignorePop) {
@@ -265,11 +298,16 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     return () => {
       live = false;
       window.removeEventListener('popstate', onPop);
+      d.removeEventListener('pointerdown', skip);
+      d.removeEventListener('keydown', skip);
       d.removeEventListener('cancel', onCancel);
       d.removeEventListener('close', onNativeClose);
       // Unmounted without closing (dev StrictMode replay, navigation away): undo, no animation.
       if (!l.closing) {
+        l.cues.forEach((id) => window.clearTimeout(id));
+        l.cues = [];
         l.anims.forEach((a) => a.cancel());
+        holdHeroEclipse(false);
         if (d.open) d.close();
         restorePage();
       }
@@ -313,6 +351,15 @@ function DemoLayer({ request }: { request: DemoRequest }) {
       className="dx-layer"
       onKeyDown={cycleFocus}
     >
+      {/* The opening's stage: the void and THE eclipse, centered, the hero's size (motion.ts). */}
+      <div ref={voidEl} aria-hidden className="dx-void" />
+      <div ref={stage} aria-hidden className="dx-ecl">
+        <Eclipse size="var(--dx-ecl-size)" />
+        <span className="dx-diamond" style={{ left: `${LIMB_POINT.x * 100}%`, top: `${LIMB_POINT.y * 100}%` }}>
+          <span data-dx-flare className="dx-diamond-flare" />
+          <span data-dx-core className="dx-diamond-core" />
+        </span>
+      </div>
       <div ref={panel} className="dx-panel theme-light">
         <div aria-hidden className="dx-light" />
         <div ref={scroller} className="dx-scroll" data-dx-scroll>
@@ -381,14 +428,7 @@ function DemoLayer({ request }: { request: DemoRequest }) {
           </Suspense>
         </div>
       </div>
-      <div ref={glow} aria-hidden className="dx-glow" />
-      <div ref={ecl} aria-hidden className="dx-ecl">
-        <span className="dx-ecl-corona" />
-        <span className="dx-ecl-sun" />
-        <span data-dx-moon className="dx-ecl-moon" />
-        <span data-dx-flare className="dx-ecl-flare" />
-        <span data-dx-diamond className="dx-ecl-diamond" />
-      </div>
+      <div ref={halo} aria-hidden className="dx-halo" />
     </dialog>
   );
 }
