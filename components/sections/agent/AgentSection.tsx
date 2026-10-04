@@ -68,7 +68,7 @@ export function AgentSection() {
               {t('sub', { hours: DEMO_HOURS })}
             </p>
             <div data-reveal className="agent-ctas">
-              <DemoCta origin="final_cta" className="btn btn-primary w-full sm:w-auto" />
+              <DemoCta origin="final_cta" pageCta className="btn btn-primary w-full sm:w-auto" />
               <BuildPlanButton source="final_cta" className="btn btn-ghost w-full sm:w-auto">
                 {th('ctaPlan')}
               </BuildPlanButton>

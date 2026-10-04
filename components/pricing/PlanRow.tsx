@@ -197,6 +197,7 @@ export function PlanRow({
               track('plan_cta_clicked', { plan: plan.id, addons: 'none', maintenance: maintenanceId ?? 'none', billing });
             }}
             className={`btn btn-sm pr-plan-cta ${featured ? 'btn-primary' : 'pr-btn-ghost'}`}
+            data-page-cta={featured || undefined}
           >
             {t('cta')}
             <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.75} />

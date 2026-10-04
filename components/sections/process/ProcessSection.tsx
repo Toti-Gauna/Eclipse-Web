@@ -50,7 +50,7 @@ export function ProcessSection() {
             {t('ctaLead')}
           </p>
           <div data-reveal className="proc-cta-action">
-            <DemoCta origin="process" className="btn btn-primary w-full sm:w-auto" />
+            <DemoCta origin="process" pageCta className="btn btn-primary w-full sm:w-auto" />
           </div>
         </Reveal>
       </div>

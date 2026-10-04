@@ -332,6 +332,7 @@ export function AgentChat() {
             message={whatsappMessage}
             extra={{ vertical: answers.verticalId ?? 'none' }}
             className="btn btn-primary w-full"
+            data-page-cta
           >
             <MessageCircle aria-hidden className="size-[1.1em]" strokeWidth={1.8} />
             {t('whatsappCta')}
