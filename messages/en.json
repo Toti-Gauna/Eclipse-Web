@@ -4438,5 +4438,23 @@
   "shortcuts": {
     "label": "Shortcuts",
     "plan": "Build a plan"
+  },
+  "tour": {
+    "label": "Guide",
+    "labelFor": "{name} guide",
+    "next": "Next",
+    "prev": "Back",
+    "done": "Done",
+    "skip": "Skip",
+    "close": "Close the guide",
+    "progress": "Step {current} of {total}",
+    "help": "Help",
+    "withGuide": "Take the guided tour",
+    "onMyOwn": "Explore on my own",
+    "replay": "Replay the guide",
+    "dontShowAgain": "Don't show this again",
+    "tagDesktop": "Desktop view",
+    "tagMobile": "Phone view",
+    "tagBoth": "Both views"
   }
 }
