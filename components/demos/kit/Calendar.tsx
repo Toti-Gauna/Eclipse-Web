@@ -1,7 +1,8 @@
 'use client';
 
-import type { CSSProperties, ReactNode } from 'react';
-import { Plus } from 'lucide-react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import { toneClass, type Tone } from './primitives';
 import './calendar.css';
 
@@ -11,6 +12,8 @@ export interface CalendarColumn {
   sub?: string;
   /** Avatar / color mark next to the label. */
   mark?: ReactNode;
+  /** Week view: `today` lights the column head, `past` mutes the column. */
+  state?: 'today' | 'past';
 }
 
 export interface CalendarEvent {
@@ -51,6 +54,8 @@ export interface CalendarProps {
   selected?: { column: string; minute: number } | null;
   /** Current time → a "now" line. */
   now?: number;
+  /** Week view: draw the "now" line only across this column (today). */
+  nowColumn?: string;
   formatTime: (minute: number) => string;
   /** Labels of the time gutter (default: formatTime). Use a compact one (see useDemoFormat().gutter). */
   formatGutter?: (minute: number) => string;
@@ -82,6 +87,7 @@ export function Calendar({
   freeLabel,
   selected,
   now,
+  nowColumn,
   formatTime,
   formatGutter = formatTime,
   label,
@@ -121,7 +127,7 @@ export function Calendar({
     <div className={`demo-cal ${className}`} style={style} role="group" aria-label={label} data-free={freeVisible ? 'visible' : undefined}>
       <div className="demo-cal-head" aria-hidden>
         {columns.map((c) => (
-          <div key={c.id} className="demo-cal-colhead">
+          <div key={c.id} className="demo-cal-colhead" data-state={c.state}>
             {c.mark}
             <span className="min-w-0 leading-[1.15]">
               <span className="block truncate text-[0.74em] font-semibold">{c.label}</span>
@@ -132,11 +138,16 @@ export function Calendar({
       </div>
       <div className="demo-cal-body">
         <div aria-hidden className="demo-cal-lines" />
+        {columns.map((c, ci) =>
+          c.state === 'past' || c.state === 'today' ? (
+            <div key={c.id} aria-hidden className="demo-cal-colbg" data-state={c.state} style={{ gridColumn: ci + 2 }} />
+          ) : null,
+        )}
         {Array.from({ length: rows }, (_, r) => {
           const minute = start + r * step;
           if (times === 'hours' && minute % 60) return null;
           // The "now" label takes the gutter near it.
-          if (now !== undefined && Math.abs(minute - now) < step * 0.45) return null;
+          if (now !== undefined && !nowColumn && Math.abs(minute - now) < step * 0.45) return null;
           return (
             <span key={minute} aria-hidden className="demo-cal-time demo-num" style={{ gridRow: r + 1 }}>
               {formatGutter(minute)}
@@ -190,9 +201,131 @@ export function Calendar({
             </button>
           );
         })}
-        {nowTop !== null ? (
+        {nowTop !== null && !nowColumn ? (
           <div aria-hidden className="demo-cal-now" style={{ '--now': nowTop } as CSSProperties}>
             <span className="demo-cal-now-time demo-num">{formatGutter(now!)}</span>
+          </div>
+        ) : null}
+        {nowTop !== null && nowColumn && col(nowColumn) >= 0 ? (
+          <div aria-hidden className="demo-cal-nowcol" style={{ gridColumn: col(nowColumn) + 2, '--now': nowTop } as CSSProperties} />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Navigation: day / week, past and future dates                        */
+/* ------------------------------------------------------------------ */
+export type CalendarView = 'day' | 'week';
+
+/** Weekday of a day index (0 = Monday of the demo's base week). */
+export const weekdayOf = (day: number) => ((day % 7) + 7) % 7;
+
+export interface CalendarNav {
+  view: CalendarView;
+  setView: (view: CalendarView) => void;
+  /** The selected day (day index: 0 = Monday of the base week; negative = earlier weeks). */
+  day: number;
+  setDay: (day: number) => void;
+  /** Previous / next open day (day view) or week (week view). */
+  prev: () => void;
+  next: () => void;
+  goToday: () => void;
+  isToday: boolean;
+  /** Week view: the open days of the selected day's week. */
+  week: number[];
+}
+
+/**
+ * Local date navigation for a demo agenda (no data, just where the visitor is looking).
+ * Days are integers so demos derive appointments for any date with pure functions.
+ * `open(weekday)` tells which weekdays the business works (default Mon–Fri).
+ */
+export function useCalendarNav({
+  today,
+  initialDay = today,
+  initialView = 'day',
+  open = (wd) => wd < 5,
+}: {
+  today: number;
+  /** Where it opens (default: today), e.g. the day the visitor just booked. */
+  initialDay?: number;
+  initialView?: CalendarView;
+  open?: (weekday: number) => boolean;
+}): CalendarNav {
+  const [view, setView] = useState<CalendarView>(initialView);
+  const [day, setDay] = useState(initialDay);
+  const step = (dir: 1 | -1) => {
+    if (view === 'week') {
+      setDay((d) => d + 7 * dir);
+      return;
+    }
+    setDay((d) => {
+      let n = d + dir;
+      for (let guard = 0; guard < 7 && !open(weekdayOf(n)); guard++) n += dir;
+      return n;
+    });
+  };
+  const monday = day - weekdayOf(day);
+  const week = Array.from({ length: 7 }, (_, i) => monday + i).filter((d) => open(weekdayOf(d)));
+  return {
+    view,
+    setView,
+    day,
+    setDay,
+    prev: () => step(-1),
+    next: () => step(1),
+    goToday: () => setDay(today),
+    isToday: view === 'week' ? week.includes(today) : day === today,
+    week,
+  };
+}
+
+/**
+ * The bar above an agenda: period label, previous / next, "Today" and the day/week switch.
+ * `period` is the visible text ("Jueves 8 de octubre" / "5 – 9 oct"). Labels: `demoKit.calendar`.
+ */
+export function CalendarToolbar({
+  nav,
+  period,
+  views = ['day', 'week'],
+  className = '',
+  compact = false,
+}: {
+  nav: CalendarNav;
+  period: ReactNode;
+  views?: CalendarView[];
+  className?: string;
+  /** Phone: smaller label, the switch on its own row. */
+  compact?: boolean;
+}) {
+  const t = useTranslations('demoKit.calendar');
+  const week = nav.view === 'week';
+  return (
+    <div className={`demo-cal-bar ${className}`} data-compact={compact ? '' : undefined}>
+      <div className="demo-cal-bar-nav">
+        <button type="button" className="demo-cal-bar-btn" aria-label={t(week ? 'prevWeek' : 'prevDay')} onClick={nav.prev}>
+          <ChevronLeft aria-hidden strokeWidth={2} />
+        </button>
+        <button type="button" className="demo-cal-bar-btn" aria-label={t(week ? 'nextWeek' : 'nextDay')} onClick={nav.next}>
+          <ChevronRight aria-hidden strokeWidth={2} />
+        </button>
+        <p className="demo-cal-bar-period" aria-live="polite" aria-atomic="true">
+          {period}
+        </p>
+      </div>
+      <div className="demo-cal-bar-tools">
+        <button type="button" className="demo-cal-bar-today" onClick={nav.goToday} disabled={nav.isToday}>
+          {t('today')}
+        </button>
+        {views.length > 1 ? (
+          <div role="group" aria-label={t('view')} className="demo-cal-bar-seg">
+            {views.map((v) => (
+              <button key={v} type="button" aria-pressed={nav.view === v} onClick={() => nav.setView(v)}>
+                {t(v)}
+              </button>
+            ))}
           </div>
         ) : null}
       </div>

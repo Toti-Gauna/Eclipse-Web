@@ -4438,5 +4438,23 @@
   "shortcuts": {
     "label": "Atalhos",
     "plan": "Montar plano"
+  },
+  "tour": {
+    "label": "Guia",
+    "labelFor": "Guia de {name}",
+    "next": "Próximo",
+    "prev": "Voltar",
+    "done": "Pronto",
+    "skip": "Pular",
+    "close": "Fechar o guia",
+    "progress": "Passo {current} de {total}",
+    "help": "Ajuda",
+    "withGuide": "Ver com guia",
+    "onMyOwn": "Explorar sozinho",
+    "replay": "Ver o guia de novo",
+    "dontShowAgain": "Não mostrar de novo",
+    "tagDesktop": "Versão desktop",
+    "tagMobile": "Versão celular",
+    "tagBoth": "As duas versões"
   }
 }

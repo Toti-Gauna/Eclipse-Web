@@ -19,6 +19,8 @@ export interface PieceView {
   checked: boolean;
   /** Package name when the selected package includes it (checked + locked). */
   includedIn: string | null;
+  /** It is the package's bonus piece: included at no extra cost (no price shown). */
+  bonus: boolean;
   /** Effective price if selected (voice combo aware). */
   priceUsd: number;
   /** The voice combo sets this price. */
@@ -174,6 +176,12 @@ export function StepPieces({
           <p className="pb-package-head-note">
             {notes.packageFromPreset ? t('packageFromPreset', { count: plan.items.length }) : t('packageIncludes', { count: plan.items.length })}
           </p>
+          {plan.bonus && !plan.items.includes(plan.bonus.itemId) ? (
+            <p className="pb-bonus-note">
+              <span className="pb-tag pb-tag--accent">{t('bonusTag')}</span>
+              <span>{t('bonusIncluded', { name: nameOf(plan.bonus.itemId) })}</span>
+            </p>
+          ) : null}
           <p className="pb-package-head-actions">
             <button type="button" className="pb-link" onClick={onEditPieces}>
               {t('editPieces')}
@@ -248,14 +256,23 @@ export function StepPieces({
                       <span className="pb-row-body">
                         <span className="pb-row-name">
                           {l(item.name, locale)}
+                          {view.bonus ? <span className="pb-tag pb-tag--accent">{t('bonusTag')}</span> : null}
                           {view.suggested && !locked ? <span className="pb-tag">{t('suggestedTag')}</span> : null}
                           {view.combo && comboOffer && !locked ? <span className="pb-tag pb-tag--accent">{l(comboOffer.label, locale)}</span> : null}
                         </span>
                         <span id={descId} className="pb-row-desc">
-                          {locked ? <span className="pb-row-included">{t('includedIn', { plan: view.includedIn ?? '' })}</span> : l(item.description, locale)}
+                          {view.bonus ? (
+                            <span className="pb-row-included">{t('bonusIn', { plan: view.includedIn ?? '' })}</span>
+                          ) : locked ? (
+                            <span className="pb-row-included">{t('includedIn', { plan: view.includedIn ?? '' })}</span>
+                          ) : (
+                            l(item.description, locale)
+                          )}
                         </span>
                       </span>
-                      <span className="pb-row-price readout">{locked ? <span aria-hidden>—</span> : <Money usd={view.priceUsd} />}</span>
+                      <span className="pb-row-price readout">
+                        {view.bonus ? <span className="pb-row-free">{t('bonusFree')}</span> : locked ? <span aria-hidden>—</span> : <Money usd={view.priceUsd} />}
+                      </span>
                     </label>
                     {view.hint && view.checked ? (
                       <p className="pb-hint">

@@ -1,6 +1,7 @@
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { TOTAL_STAGES, timeline, type TimelineStep } from '@/lib/portal/project';
 import type { PortalProject } from '@/lib/portal/types';
+import { InfoTip } from '../InfoTip';
 import { usePortal, type PortalText } from '../usePortal';
 
 function stepDate(step: TimelineStep, project: PortalProject, p: PortalText): string | null {
@@ -19,7 +20,7 @@ export function StageTimeline({ project }: { project: PortalProject }) {
   const support = project.history.find((h) => h.stage === 'support');
   const plan = p.maintenance(project);
   return (
-    <section className="pt-timeline" aria-labelledby="pt-timeline-title">
+    <section className="pt-timeline" aria-labelledby="pt-timeline-title" data-tour="pt-timeline">
       <h2 id="pt-timeline-title" className="pt-h2">
         {t('detail.timeline')}
       </h2>
@@ -35,7 +36,11 @@ export function StageTimeline({ project }: { project: PortalProject }) {
             >
               <PhaseGlyph phase={step.n / TOTAL_STAGES} size={28} className="pt-rail-mark" />
               <span className="pt-rail-n">{t('stage.position', { n: step.n, total: TOTAL_STAGES })}</span>{' '}
-              <span className="pt-rail-name">{p.stage(step.stage)}</span>{' '}
+              <span className="pt-rail-name">
+                {p.stage(step.stage)}
+                {/* The one stage that needs the client: what it means, in plain words. */}
+                {step.stage === 'clientReview' ? <InfoTip copy={p.info('clientReview')} /> : null}
+              </span>{' '}
               <span className="pt-rail-status">
                 <strong>{t(`stage.status.${step.status}`)}</strong>
                 {date ? (

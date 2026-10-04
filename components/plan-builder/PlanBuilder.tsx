@@ -37,7 +37,7 @@ import { track } from '@/lib/analytics';
 import type { Locale } from '@/i18n/routing';
 import { Dock } from './Dock';
 import { setVertical as setVerticalRule, suggestedIds, toggleGoal as toggleGoalRule, type GoalId } from './goals';
-import { withGoals } from './message';
+import { withBonus, withGoals } from './message';
 import { CopyButton } from './parts';
 import { preloadNotes, undoAdded } from './preload';
 import {
@@ -46,7 +46,8 @@ import {
   dropPlan,
   effectiveMaintenance,
   groupByCategory,
-  includedIds,
+  bonusOf,
+  coveredIds,
   isEmptyState,
   planSwitchSuggestion,
   priceIfSelected,
@@ -66,6 +67,7 @@ import {
   type Preset,
   type StepId,
 } from './rules';
+import type { SurfaceTheme } from './surface';
 import { StepCare } from './StepCare';
 import { StepGoals } from './StepGoals';
 import { StepPieces, type PieceView } from './StepPieces';
@@ -91,8 +93,11 @@ export function PlanBuilder({
   preset = null,
   onClose,
   titleId = mode === 'sheet' ? 'builder-title' : 'plan-title',
+  surface = 'dark',
 }: {
   mode: BuilderMode;
+  /** Light or dark surface (the drawer follows the section it was opened from; /plan is dark). */
+  surface?: SurfaceTheme;
   open?: boolean;
   preset?: Preset | null;
   onClose?: () => void;
@@ -115,7 +120,11 @@ export function PlanBuilder({
   const ctx = { foundersLeft };
   const q = builderQuote(state, ctx);
   const selection = selectionIds(state);
-  const included = new Set<string>(includedIds(state));
+  const included = new Set<string>(coveredIds(state));
+  /** The package's gift piece (Voz / Automatiza → premium landing), shown without a price. */
+  const bonus = bonusOf(state);
+  const bonusItem = bonus ? itemById(bonus.itemId) : undefined;
+  const bonusName = bonusItem ? l(bonusItem.name, locale) : null;
   const empty = isEmptyState(state);
   const suggestion = planSwitchSuggestion(state, ctx);
   const hints = new Map<string, HintId>(softHints(selection).map((h) => [h.itemId, h.id]));
@@ -139,6 +148,7 @@ export function PlanBuilder({
       item,
       checked: included.has(item.id) || state.items.includes(item.id),
       includedIn: included.has(item.id) ? planName : null,
+      bonus: bonus?.itemId === item.id,
       priceUsd: price ?? item.priceUsd,
       combo: price !== null && price < item.priceUsd,
       suggested: fromGoals.has(item.id),
@@ -158,23 +168,27 @@ export function PlanBuilder({
     const name = t(`goals.${g}.name`);
     return name.charAt(0).toLocaleLowerCase(locale) + name.slice(1);
   });
-  const message = withGoals(
-    buildPlanMessage(
-      {
-        source: 'builder',
-        locale,
-        currency,
-        rates,
-        quote: q,
-        names,
-        maintenanceName: q.maintenance.plan ? l(q.maintenance.plan.name, locale) : null,
-        offers: q.offers.applied.map((a) => offersById[a.id]).flatMap((o) => (o ? [l(o.label, locale)] : [])),
-        verticalName: vertical && vertical.id !== 'otro' ? l(vertical.name, locale) : null,
-        languageName: tAll(`languages.${locale}`),
-      },
-      translate,
+  const message = withBonus(
+    withGoals(
+      buildPlanMessage(
+        {
+          source: 'builder',
+          locale,
+          currency,
+          rates,
+          quote: q,
+          names,
+          maintenanceName: q.maintenance.plan ? l(q.maintenance.plan.name, locale) : null,
+          offers: q.offers.applied.map((a) => offersById[a.id]).flatMap((o) => (o ? [l(o.label, locale)] : [])),
+          verticalName: vertical && vertical.id !== 'otro' ? l(vertical.name, locale) : null,
+          languageName: tAll(`languages.${locale}`),
+        },
+        translate,
+      ),
+      goalNames.length ? t('goalsLine', { list: new Intl.ListFormat(locale, { type: 'conjunction' }).format(goalNames) }) : '',
     ),
-    goalNames.length ? t('goalsLine', { list: new Intl.ListFormat(locale, { type: 'conjunction' }).format(goalNames) }) : '',
+    // The package's bonus goes in the request too, without a price.
+    bonusName ? tMsg('bonusLine', { name: bonusName }) : '',
   );
   const shareUrl = () => {
     const qs = encodePlanState(state);
@@ -404,13 +418,14 @@ export function PlanBuilder({
         offersById={offersById}
         message={message}
         shareUrl={shareUrl}
+        bonusName={bonusName}
         Sub={Sub}
       />
     ),
   };
 
   return (
-    <div className="pb theme-dark" data-mode={mode} data-step={step}>
+    <div className={`pb theme-${surface}`} data-mode={mode} data-surface={surface} data-step={step}>
       {mode === 'sheet' ? (
         <header className="pb-sheet-head">
           <div className="pb-sheet-bar">

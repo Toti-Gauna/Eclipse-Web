@@ -162,7 +162,14 @@ export function DetectBanner({
       return item ? l(item.name, locale) : id;
     }),
   );
-  const body = more ? t('detectMoreBody', { list, amount: format(suggestion.savingsUsd) }) : t('detectBody', { amount: format(suggestion.savingsUsd) });
+  const bonusItem = suggestion.plan.bonus && !suggestion.plan.items.includes(suggestion.plan.bonus.itemId) ? itemById(suggestion.plan.bonus.itemId) : undefined;
+  const body = [
+    more ? t('detectMoreBody', { list, amount: format(suggestion.savingsUsd) }) : t('detectBody', { amount: format(suggestion.savingsUsd) }),
+    // The package's gift, named but never priced.
+    bonusItem ? t('bonusDetect', { name: l(bonusItem.name, locale) }) : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
   const id = useId();
   return (
     <div className="pb-detect" data-compact={compact || undefined}>

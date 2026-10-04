@@ -4,6 +4,7 @@ import { PORTAL_PROJECTS } from '@/lib/portal/fixtures';
 import { portalPaths } from '@/lib/portal/routes';
 import type { PortalProject } from '@/lib/portal/types';
 import { StageMark } from '../StageMark';
+import { InfoTip } from '../InfoTip';
 import { usePortal } from '../usePortal';
 
 /** Project facts: code, service, start (seña), Eclipse lead, delivery, maintenance, agreed channel. */
@@ -59,7 +60,12 @@ export function ProjectFacts({ project }: { project: PortalProject }) {
           </dd>
         </div>
         <div>
-          <dt>{t('detail.facts.maintenance')}</dt>
+          <dt>
+            <span className="pt-term">
+              {t('detail.facts.maintenance')}
+              <InfoTip copy={p.info('support')} />
+            </span>
+          </dt>
           <dd>
             {plan ? (
               <>

@@ -10,27 +10,27 @@ import { useHeroState } from './HeroState';
 import { useCorona } from './corona/useCorona';
 import { useStarParallax } from './useStarParallax';
 import { useHeroMotion } from './useHeroMotion';
-import { LIMB_POINT } from './geometry';
 import { Dial } from './Dial';
 import { useDial } from './useDial';
 import { l, verticals } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
+import { useDemoExperienceOpen } from '@/components/demo-experience/store';
 
 /**
  * Full-bleed visual layer of the hero (behind the copy, decorative).
  *
  * Layers, back to front: warm sky (scroll) · stars (mouse parallax) · bloom (scroll) ·
  * eclipse (CSS corona first paint → WebGL corona when supported) · the dial
- * (instrument bezel, aimed by the rubro chips) · diamond ring (reveal only).
- * Nothing here moves on its own (v3): the entrance, the scroll scrub, the pointer, the
- * chips and the reveal move it; at rest it is a still picture that costs no frames.
+ * (instrument bezel, aimed by the rubro chips).
+ * Nothing here moves on its own (v3): the entrance, the scroll scrub, the pointer and the
+ * chips move it; at rest it is a still picture that costs no frames.
  * Wrappers keep every motion on its own element:
  *   [data-hero-eclipse-motion] parallax x/y + scroll scale
  *   [data-hero-eclipse]        entrance (opacity + scale)
- *   [data-eclipse-moon-scroll] scroll moon offset · [data-eclipse-moon] reveal moon offset
+ *   [data-eclipse-moon-scroll] scroll moon offset
  */
 export function HeroStage() {
-  const { phase, bus, registerDial } = useHeroState();
+  const { bus, registerDial } = useHeroState();
   const reduced = useReducedMotion();
   const isClient = useIsClient();
   const motion = isClient && !reduced;
@@ -39,7 +39,8 @@ export function HeroStage() {
   const glHost = useRef<HTMLDivElement>(null);
   const bezel = useRef<HTMLDivElement>(null);
   const readout = useRef<HTMLDivElement>(null);
-  const covered = phase === 'open';
+  // The "Ver demo" layer covers the whole viewport while it is open.
+  const covered = useDemoExperienceOpen();
 
   const names = useMemo(() => verticals.map((v) => l(v.name, locale)), [locale]);
   const dialController = useDial(bezel, readout, names, motion);
@@ -53,7 +54,7 @@ export function HeroStage() {
   useHeroMotion(stage, bus, motion);
 
   // The WebGL corona never draws when nobody can see it: hero off-screen, tab
-  // hidden or the stage covered by the demo light.
+  // hidden or the page covered by the demo layer.
   const coveredRef = useRef(covered);
   useEffect(() => {
     coveredRef.current = covered;
@@ -89,16 +90,6 @@ export function HeroStage() {
               <div ref={glHost} data-corona-host className="eclipse-gl-host" />
             </Eclipse>
             <Dial bezelRef={bezel} readoutRef={readout} />
-            {phase !== 'closed' && !reduced ? (
-              <div
-                data-diamond
-                className="eclipse-diamond"
-                style={{ left: `${LIMB_POINT.x * 100}%`, top: `${LIMB_POINT.y * 100}%` }}
-              >
-                <span data-diamond-flare className="eclipse-diamond-flare" />
-                <span data-diamond-core className="eclipse-diamond-core" />
-              </div>
-            ) : null}
           </div>
         </div>
       </div>

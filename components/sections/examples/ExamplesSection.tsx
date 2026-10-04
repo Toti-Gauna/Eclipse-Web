@@ -16,8 +16,8 @@ import { DemoTheater } from './DemoTheater';
 /**
  * 02 · "Sala de demos": every demo business of /content (one per rubro with a
  * demo) in a theater — selector, stage (desktop: the live frameless views, desktop
- * left / mobile right, or the trailer; phones: the trailer), facts and "Abrir demo"
- * (fullscreen modal) — plus "¿No ves tu rubro?" → WhatsApp.
+ * left / mobile right, or the trailer; phones: the trailer), facts and "Ver demo"
+ * (the page's demo layer, components/demo-experience) — plus "¿No ves tu rubro?" → WhatsApp.
  * Every business here is fictional and labeled "Demo".
  */
 export function ExamplesSection() {

@@ -1,0 +1,341 @@
+{
+  "demoKit": {
+    "es": {
+      "sim": {
+        "title": "Simulación",
+        "note": "Las acciones son simuladas con datos de demostración; no se envía nada.",
+        "play": "Simular: {label}",
+        "playing": "Simulando: {label}",
+        "skip": "Saltar al final",
+        "reset": "Reiniciar",
+        "resetAll": "Reiniciar la demo",
+        "counter": "Evento {current} de {total}",
+        "counterIdle": "{total} eventos para simular",
+        "events": "Eventos simulados",
+        "close": "Cerrar",
+        "landed": "Listo: {label}. {counter}.",
+        "state": {
+          "done": "Hecho",
+          "playing": "Simulando",
+          "next": "Siguiente",
+          "pending": "Pendiente"
+        }
+      },
+      "calendar": {
+        "prevDay": "Día anterior",
+        "nextDay": "Día siguiente",
+        "prevWeek": "Semana anterior",
+        "nextWeek": "Semana siguiente",
+        "today": "Hoy",
+        "view": "Vista",
+        "day": "Día",
+        "week": "Semana"
+      },
+      "kanban": {
+        "hint": "Arrastrá una tarjeta a otra columna o usá su botón Mover.",
+        "moveCard": "Mover «{card}»",
+        "moveTo": "Mover a {column}",
+        "moved": "«{card}» pasó a {column}."
+      }
+    },
+    "en": {
+      "sim": {
+        "title": "Simulation",
+        "note": "Actions are simulated with demo data; nothing is sent.",
+        "play": "Simulate: {label}",
+        "playing": "Simulating: {label}",
+        "skip": "Skip to the end",
+        "reset": "Restart",
+        "resetAll": "Restart the demo",
+        "counter": "Event {current} of {total}",
+        "counterIdle": "{total} events to simulate",
+        "events": "Simulated events",
+        "close": "Close",
+        "landed": "Done: {label}. {counter}.",
+        "state": {
+          "done": "Done",
+          "playing": "Simulating",
+          "next": "Next",
+          "pending": "Pending"
+        }
+      },
+      "calendar": {
+        "prevDay": "Previous day",
+        "nextDay": "Next day",
+        "prevWeek": "Previous week",
+        "nextWeek": "Next week",
+        "today": "Today",
+        "view": "View",
+        "day": "Day",
+        "week": "Week"
+      },
+      "kanban": {
+        "hint": "Drag a card to another column or use its Move button.",
+        "moveCard": "Move “{card}”",
+        "moveTo": "Move to {column}",
+        "moved": "“{card}” moved to {column}."
+      }
+    },
+    "pt": {
+      "sim": {
+        "title": "Simulação",
+        "note": "As ações são simuladas com dados de demonstração; nada é enviado.",
+        "play": "Simular: {label}",
+        "playing": "Simulando: {label}",
+        "skip": "Pular para o fim",
+        "reset": "Reiniciar",
+        "resetAll": "Reiniciar a demo",
+        "counter": "Evento {current} de {total}",
+        "counterIdle": "{total} eventos para simular",
+        "events": "Eventos simulados",
+        "close": "Fechar",
+        "landed": "Pronto: {label}. {counter}.",
+        "state": {
+          "done": "Feito",
+          "playing": "Simulando",
+          "next": "Próximo",
+          "pending": "Pendente"
+        }
+      },
+      "calendar": {
+        "prevDay": "Dia anterior",
+        "nextDay": "Próximo dia",
+        "prevWeek": "Semana anterior",
+        "nextWeek": "Próxima semana",
+        "today": "Hoje",
+        "view": "Visualização",
+        "day": "Dia",
+        "week": "Semana"
+      },
+      "kanban": {
+        "hint": "Arraste um card para outra coluna ou use o botão Mover.",
+        "moveCard": "Mover “{card}”",
+        "moveTo": "Mover para {column}",
+        "moved": "“{card}” foi para {column}."
+      }
+    }
+  },
+  "demoClinic": {
+    "es": {
+      "sim": {
+        "online": "Llega una reserva online",
+        "reminder": "Recordatorio por WhatsApp",
+        "freed": "Cancelación: la lista de espera reasigna el turno",
+        "call": "Llamada a la recepción IA",
+        "note": "Reservas, mensajes y llamadas simulados con datos de demostración; no se envía nada."
+      },
+      "top": {
+        "live": null,
+        "ai": "Recepcionista IA activa",
+        "aiOff": "Recepcionista IA apagada"
+      },
+      "side": null,
+      "today": {
+        "activity": "Actividad de hoy",
+        "recoveredToday": "{count, plural, =0 {ninguno hoy} other {+# hoy}}"
+      },
+      "recovered": {
+        "heroToday": "{count, plural, =0 {Todavía nada hoy} other {+# hoy}}",
+        "boardTitle": "Tablero de recuperación",
+        "boardHint": "Arrastrá una tarjeta o usá Mover para ordenar el tablero."
+      },
+      "feed": {
+        "youDay": "Reservaste {treatment}: {day}, {time} · {pro}"
+      },
+      "agenda": {
+        "dayLabel": "Agenda del {day} por profesional",
+        "weekLabel": "Semana de {pro}, {from} a {to}",
+        "freeSlotDay": "{day}, {time} · {pro}: libre, reservar",
+        "summaryPast": "{day} · {count} turnos atendidos",
+        "weekSummary": "Semana por profesional · tocá un hueco libre para reservar",
+        "hintPast": "Día pasado: solo lectura.",
+        "localNote": "Reserva de demostración: queda solo en esta pantalla."
+      },
+      "site": {
+        "booking": {
+          "seeAgenda": "Ver en la agenda",
+          "pickDay": "Elegí un día"
+        }
+      },
+      "patient": {
+        "openThread": "Ver la confirmación"
+      }
+    },
+    "en": {
+      "sim": {
+        "online": "An online booking comes in",
+        "reminder": "WhatsApp reminder",
+        "freed": "Cancellation: the waitlist refills the slot",
+        "call": "A call to the AI front desk",
+        "note": "Bookings, messages and calls are simulated with demo data; nothing is sent."
+      },
+      "top": {
+        "live": null,
+        "ai": "AI front desk on",
+        "aiOff": "AI front desk off"
+      },
+      "side": null,
+      "today": {
+        "activity": "Today's activity",
+        "recoveredToday": "{count, plural, =0 {none today} other {+# today}}"
+      },
+      "recovered": {
+        "heroToday": "{count, plural, =0 {Nothing yet today} other {+# today}}",
+        "boardTitle": "Recovery board",
+        "boardHint": "Drag a card or use Move to sort the board."
+      },
+      "feed": {
+        "youDay": "You booked {treatment}: {day}, {time} · {pro}"
+      },
+      "agenda": {
+        "dayLabel": "Schedule for {day} by practitioner",
+        "weekLabel": "{pro}'s week, {from} to {to}",
+        "freeSlotDay": "{day}, {time} · {pro}: open, book",
+        "summaryPast": "{day} · {count} appointments seen",
+        "weekSummary": "Week by practitioner · tap an open slot to book",
+        "hintPast": "Past day: read only.",
+        "localNote": "Demo booking: it only stays on this screen."
+      },
+      "site": {
+        "booking": {
+          "seeAgenda": "See it in the schedule",
+          "pickDay": "Pick a day"
+        }
+      },
+      "patient": {
+        "openThread": "See the confirmation"
+      }
+    },
+    "pt": {
+      "sim": {
+        "online": "Chega um agendamento online",
+        "reminder": "Lembrete pelo WhatsApp",
+        "freed": "Cancelamento: a lista de espera preenche o horário",
+        "call": "Ligação para a recepção IA",
+        "note": "Agendamentos, mensagens e ligações simulados com dados de demonstração; nada é enviado."
+      },
+      "top": {
+        "live": null,
+        "ai": "Recepção IA ligada",
+        "aiOff": "Recepção IA desligada"
+      },
+      "side": null,
+      "today": {
+        "activity": "Atividade de hoje",
+        "recoveredToday": "{count, plural, =0 {nenhum hoje} other {+# hoje}}"
+      },
+      "recovered": {
+        "heroToday": "{count, plural, =0 {Nada ainda hoje} other {+# hoje}}",
+        "boardTitle": "Quadro de recuperação",
+        "boardHint": "Arraste um card ou use Mover para organizar o quadro."
+      },
+      "feed": {
+        "youDay": "Você agendou {treatment}: {day}, {time} · {pro}"
+      },
+      "agenda": {
+        "dayLabel": "Agenda de {day} por profissional",
+        "weekLabel": "Semana de {pro}, de {from} a {to}",
+        "freeSlotDay": "{day}, {time} · {pro}: livre, agendar",
+        "summaryPast": "{day} · {count} consultas atendidas",
+        "weekSummary": "Semana por profissional · toque num horário livre para agendar",
+        "hintPast": "Dia passado: só leitura.",
+        "localNote": "Agendamento de demonstração: fica só nesta tela."
+      },
+      "site": {
+        "booking": {
+          "seeAgenda": "Ver na agenda",
+          "pickDay": "Escolha um dia"
+        }
+      },
+      "patient": {
+        "openThread": "Ver a confirmação"
+      }
+    }
+  },
+  "demoTours": {
+    "es": {
+      "clinic": {
+        "sim": {
+          "title": "Vos decidís qué pasa",
+          "body": "Nada se mueve solo. Tocá «Simular» para ver un evento del día de la clínica: una reserva online, un recordatorio, una cancelación o una llamada."
+        },
+        "booking": {
+          "title": "Reservas online, sin llamar",
+          "body": "El paciente elige tratamiento, día y horario en el sitio. Probalo: el turno aparece en la agenda y la confirmación sale por WhatsApp."
+        },
+        "agenda": {
+          "title": "Una agenda que se completa sola",
+          "body": "Los tres profesionales en una grilla. Pasá de día a semana, mirá días pasados y futuros, y tocá un hueco libre para reservar."
+        },
+        "reception": {
+          "title": "Recepcionista IA, 24/7",
+          "body": "Atiende el teléfono, consulta la agenda y agenda el turno mientras habla. Simulá la llamada de Julián y mirá la transcripción."
+        },
+        "reminders": {
+          "title": "Recordatorios por WhatsApp",
+          "body": "Cada paciente recibe su recordatorio y confirma, reprograma o cancela con un toque. Lo que se libera se vuelve a ofrecer."
+        },
+        "recovered": {
+          "title": "Ausencias que no se pierden",
+          "body": "Cuántos turnos se recuperaron esta semana y de dónde salieron: recordatorios, lista de espera y la recepcionista IA."
+        }
+      }
+    },
+    "en": {
+      "clinic": {
+        "sim": {
+          "title": "You decide what happens",
+          "body": "Nothing moves on its own. Tap “Simulate” to see one event of the clinic's day: an online booking, a reminder, a cancellation or a call."
+        },
+        "booking": {
+          "title": "Online booking, no phone calls",
+          "body": "Patients pick a treatment, day and time on the site. Try it: the appointment lands in the schedule and the confirmation goes out on WhatsApp."
+        },
+        "agenda": {
+          "title": "A schedule that fills itself",
+          "body": "All three practitioners on one grid. Switch between day and week, look at past and future dates, and tap an open slot to book it."
+        },
+        "reception": {
+          "title": "An AI front desk, 24/7",
+          "body": "It answers the phone, checks the schedule and books while it talks. Simulate Julián's call and read the transcript."
+        },
+        "reminders": {
+          "title": "WhatsApp reminders",
+          "body": "Every patient gets a reminder and confirms, reschedules or cancels in one tap. Freed slots are offered again."
+        },
+        "recovered": {
+          "title": "No-shows that don't cost you",
+          "body": "How many appointments were recovered this week and where they came from: reminders, the waitlist and the AI front desk."
+        }
+      }
+    },
+    "pt": {
+      "clinic": {
+        "sim": {
+          "title": "Você decide o que acontece",
+          "body": "Nada se mexe sozinho. Toque em “Simular” para ver um evento do dia da clínica: um agendamento online, um lembrete, um cancelamento ou uma ligação."
+        },
+        "booking": {
+          "title": "Agendamento online, sem ligar",
+          "body": "O paciente escolhe tratamento, dia e horário no site. Teste: a consulta aparece na agenda e a confirmação sai pelo WhatsApp."
+        },
+        "agenda": {
+          "title": "Uma agenda que se preenche sozinha",
+          "body": "Os três profissionais numa grade só. Alterne entre dia e semana, veja datas passadas e futuras e toque num horário livre para agendar."
+        },
+        "reception": {
+          "title": "Recepção com IA, 24 horas",
+          "body": "Atende o telefone, consulta a agenda e marca a consulta enquanto conversa. Simule a ligação do Julián e leia a transcrição."
+        },
+        "reminders": {
+          "title": "Lembretes pelo WhatsApp",
+          "body": "Cada paciente recebe o lembrete e confirma, remarca ou cancela com um toque. O horário liberado é oferecido de novo."
+        },
+        "recovered": {
+          "title": "Faltas que não viram prejuízo",
+          "body": "Quantas consultas foram recuperadas nesta semana e de onde vieram: lembretes, lista de espera e a recepção com IA."
+        }
+      }
+    }
+  }
+}

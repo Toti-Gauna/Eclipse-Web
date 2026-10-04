@@ -10,26 +10,27 @@ import {
   type ComponentType,
   type KeyboardEvent,
   type LazyExoticComponent,
+  type MouseEvent,
   type ReactNode,
   type RefObject,
 } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Maximize2, Monitor, Smartphone } from 'lucide-react';
+import { Monitor, Smartphone } from 'lucide-react';
 import { CountUp } from '@/components/motion/CountUp';
 import { Occult } from '@/components/motion/Occult';
 import { useMediaQuery } from '@/components/motion/useMediaQuery';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { useSound } from '@/components/sound/SoundContext';
+import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { ShowcasePoster } from '@/components/demos/DeviceFrame';
+import { openDemoExperience, openerKey, preloadDemoExperience, useDemoExperienceOpen } from '@/components/demo-experience/store';
 import { trailerLoaders } from '@/components/trailers/registry';
 import { TrailerPoster } from '@/components/trailers/TrailerPoster';
 import { TRAILER_DURATION } from '@/components/trailers/constants';
 import type { TrailerComponentProps } from '@/components/trailers/VerticalTrailer';
 import { l, verticalById, type DemoId, type Vertical, type VerticalId } from '@/lib/content';
-import { track } from '@/lib/analytics';
 import type { Locale } from '@/i18n/routing';
-import { DemoModal } from './DemoModal';
 import { LazyShowcase, preloadShowcase } from './lazyShowcase';
 import { DEMO_PALETTES } from './palettes';
 import '@/components/trailers/trailer.css';
@@ -42,8 +43,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 /**
  * Where the stage shows the live demo (frameless split): wide screens with a mouse.
- * Touch and narrow screens get the trailer on the stage and the live demo in the modal,
- * so the page never traps a finger inside a scrolling demo. Mirrored in examples.css.
+ * Touch and narrow screens get the trailer on the stage and the live demo in the "Ver demo"
+ * layer, so the page never traps a finger inside a scrolling demo. Mirrored in examples.css.
  */
 const LIVE_STAGE = '(min-width: 1024px) and (hover: hover) and (pointer: fine)';
 
@@ -80,13 +81,15 @@ type StageView = 'demo' | 'trailer';
 
 /**
  * "Sala de demos": a selector (one tab per demo business: number, name, rubro and its
- * palette), a stage and the facts (the pain, the demo's key number, "Abrir demo").
+ * palette), a stage and the facts (the pain, the demo's key number, "Ver demo").
  * - Stage on wide screens with a mouse: the business's frameless previews, desktop on the
  *   left and mobile on the right, live and navigable — or its 15 s trailer (a switch under
- *   the stage). Elsewhere: the trailer, and "Abrir demo" for the live views.
+ *   the stage). Elsewhere: the trailer, and "Ver demo" for the live views.
+ * - "Ver demo" opens the page's one demo layer (components/demo-experience), born from the
+ *   button; the page doesn't move and focus comes back to the button when it closes.
  * - Lazy: a static poster with the same geometry until the stage is near the viewport;
  *   only the selected business mounts, and never more than one live experience at a time
- *   (the stage unmounts while the modal is open, the modal's demo after it closes).
+ *   (the stage shows its poster while the layer is open).
  * Tabs follow the WAI-ARIA pattern with manual activation (arrows / Home / End move the
  * focus, Enter or Space shows the business), since a stage change mounts a demo.
  * `more` ("¿No ves tu rubro?") closes the section.
@@ -106,8 +109,8 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
   const [selected, setSelected] = useState(0);
   const [changed, setChanged] = useState(false);
   const [view, setView] = useState<StageView>('demo');
-  const [open, setOpen] = useState(false);
-  const [modalDemo, setModalDemo] = useState<VerticalId | null>(null);
+  // The demo layer is open (from here or the hero): one live experience at a time.
+  const open = useDemoExperienceOpen();
   const tabs = useRef<Array<HTMLButtonElement | null>>([]);
   const openButton = useRef<HTMLButtonElement>(null);
   const intent = useRef<number | undefined>(undefined);
@@ -115,12 +118,6 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
   const near = useNearViewport(stage);
   const onScreen = useOnScreen(stage);
 
-  // The modal's demo unmounts once its closing fade is over.
-  useEffect(() => {
-    if (open || !modalDemo) return;
-    const id = window.setTimeout(() => setModalDemo(null), 450);
-    return () => window.clearTimeout(id);
-  }, [open, modalDemo]);
   useEffect(() => () => window.clearTimeout(intent.current), []);
 
   const v = items[Math.min(selected, items.length - 1)];
@@ -163,15 +160,9 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
   };
   const cool = () => window.clearTimeout(intent.current);
 
-  const openDemo = () => {
-    setModalDemo(v.id);
-    setOpen(true);
-    play('open');
-    track('demo_opened', { vertical: v.id, source: 'examples' });
-  };
-  const closeDemo = () => {
-    setOpen(false);
-    play('close');
+  const openDemo = (e: MouseEvent<HTMLButtonElement>) => {
+    selectVertical(v.id, 'examples');
+    openDemoExperience({ vertical: v.id, demo: v.demo, origin: 'examples' }, e.currentTarget, e);
   };
   const chooseView = (next: StageView) => {
     if (next === view) return;
@@ -331,11 +322,13 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
               aria-label={t('openDemoLabel', { business: v.business })}
               className="btn btn-primary ex-open"
               data-page-cta
+              data-demo-opener={openerKey('examples', v.demo)}
               onClick={openDemo}
-              onPointerEnter={() => preloadShowcase(v.demo)}
-              onFocus={() => preloadShowcase(v.demo)}
+              onPointerEnter={() => preloadDemoExperience(v.demo, locale)}
+              onPointerDown={() => preloadDemoExperience(v.demo, locale)}
+              onFocus={() => preloadDemoExperience(v.demo, locale)}
             >
-              <Maximize2 aria-hidden className="size-4" strokeWidth={1.8} />
+              <PhaseGlyph phase={1} size={18} />
               {t('openDemo')}
             </button>
             {/* Wide + mouse only (CSS): what the stage shows. */}
@@ -361,7 +354,6 @@ export function DemoTheater({ ids, more }: { ids: VerticalId[]; more?: ReactNode
 
       {more ? <div className="ex-more">{more}</div> : null}
 
-      <DemoModal key={v.id} open={open} mounted={modalDemo === v.id} onClose={closeDemo} vertical={v} returnFocus={openButton} />
     </div>
   );
 }

@@ -4438,5 +4438,23 @@
   "shortcuts": {
     "label": "Atajos",
     "plan": "Armar plan"
+  },
+  "tour": {
+    "label": "Guía",
+    "labelFor": "Guía de {name}",
+    "next": "Siguiente",
+    "prev": "Anterior",
+    "done": "Listo",
+    "skip": "Omitir",
+    "close": "Cerrar la guía",
+    "progress": "Paso {current} de {total}",
+    "help": "Ayuda",
+    "withGuide": "Ver con guía",
+    "onMyOwn": "Ver por mi cuenta",
+    "replay": "Repetir la guía",
+    "dontShowAgain": "No volver a mostrar",
+    "tagDesktop": "Vista escritorio",
+    "tagMobile": "Vista celular",
+    "tagBoth": "Las dos vistas"
   }
 }

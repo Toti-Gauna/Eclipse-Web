@@ -101,6 +101,25 @@ export function includedIds(state: Pick<PlanState, 'planId'>): ItemId[] {
   return planById(state.planId)?.items ?? [];
 }
 
+/**
+ * The piece the selected package gives at no extra cost (plans.json → `bonus`, e.g. the
+ * premium landing in Voz and Automatiza), or null. It is not one of the package's `items`
+ * (so package detection and "ahorrás" vs. pieces don't change): while the package is chosen
+ * it shows as included without a charge, and can't also be added as a paid extra.
+ */
+export function bonusOf(state: Pick<PlanState, 'planId'>): { plan: Plan; itemId: ItemId } | null {
+  const plan = planById(state.planId);
+  const itemId = plan?.bonus?.itemId;
+  if (!plan || !itemId || plan.items.includes(itemId)) return null;
+  return { plan, itemId };
+}
+
+/** Item ids the selected package covers: its items plus its bonus piece (never charged as extras). */
+export function coveredIds(state: Pick<PlanState, 'planId'>): ItemId[] {
+  const bonus = bonusOf(state);
+  return bonus ? [...includedIds(state), bonus.itemId] : includedIds(state);
+}
+
 /** Everything the visitor has: the package's items plus the extras, in catalog order. */
 export function selectionIds(state: Pick<PlanState, 'planId' | 'items'>): ItemId[] {
   return sortItemIds([...includedIds(state), ...state.items]);
@@ -110,14 +129,14 @@ export function isEmptyState(state: Pick<PlanState, 'planId' | 'items'>): boolea
   return !state.planId && state.items.length === 0;
 }
 
-/** Extras never repeat an item the package already includes. */
+/** Extras never repeat an item the package already includes (or gives as its bonus). */
 export function normalizeState(state: PlanState): PlanState {
-  const included = new Set<string>(includedIds(state));
+  const included = new Set<string>(coveredIds(state));
   return { ...state, items: sortItemIds(state.items.filter((id) => !included.has(id))) };
 }
 
 export function toggleItem(state: PlanState, id: ItemId): PlanState {
-  if (includedIds(state).includes(id)) return state;
+  if (coveredIds(state).includes(id)) return state;
   const items = state.items.includes(id) ? state.items.filter((i) => i !== id) : [...state.items, id];
   return normalizeState({ ...state, items });
 }
@@ -208,10 +227,10 @@ export function recurringSplit(q: Pick<Quote, 'maintenance'>): { monthlyUsd: num
 
 /**
  * Price an item would be charged if selected now (voice combo aware).
- * `null` when the selected package already includes it.
+ * `null` when the selected package already includes it (or gives it as its bonus).
  */
 export function priceIfSelected(state: PlanState, id: ItemId, ctx: BuilderContext): number | null {
-  if (includedIds(state).includes(id)) return null;
+  if (coveredIds(state).includes(id)) return null;
   const next = state.items.includes(id) ? state : toggleItem(state, id);
   const line = builderQuote(next, ctx).lines.find((l) => l.kind === 'item' && l.id === id);
   return line ? line.priceUsd : null;

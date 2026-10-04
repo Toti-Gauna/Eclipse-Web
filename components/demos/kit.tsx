@@ -19,3 +19,4 @@ export * from './kit/Kanban';
 export * from './kit/feed';
 export * from './kit/gamification';
 export * from './kit/flip';
+export * from './kit/SimBar';

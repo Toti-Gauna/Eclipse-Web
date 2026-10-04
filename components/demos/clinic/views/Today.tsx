@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowUpRight, ChevronRight, Globe } from 'lucide-react';
 import { Money } from '@/components/ui/Money';
@@ -38,24 +39,43 @@ export function RecoveredCard({ compact = false, onOpen }: { compact?: boolean; 
     </>
   );
   return onOpen ? (
-    <button type="button" onClick={onOpen} className="clinic-recovered" data-compact={compact ? '' : undefined}>
+    <button type="button" onClick={onOpen} className="clinic-recovered" data-compact={compact ? '' : undefined} data-tour="recovered">
       {body}
     </button>
   ) : (
-    <div className="clinic-recovered" data-compact={compact ? '' : undefined}>
+    <div className="clinic-recovered" data-compact={compact ? '' : undefined} data-tour="recovered">
       {body}
     </div>
   );
 }
 
-/** Live toasts on top of the laptop (decorative: the Announcer speaks). */
+/**
+ * Toasts (decorative: the Announcer speaks). Story events show while their beat plays (the
+ * beat always ends after they leave); the visitor's own bookings show for a few seconds.
+ */
 export function ClinicToasts({ placement }: { placement: 'top' | 'bottom-right' }) {
   const { view, reduced } = useClinic();
   const text = useEventText();
   const t = useTranslations('demoClinic.toast');
+  // The visitor's bookings made while this view is on screen (not the ones from before).
+  const mine = view.events.filter((e) => e.kind === 'you');
+  const ids = mine.map((e) => e.id).join('|');
+  const known = useRef<Set<string> | null>(null);
+  const [recent, setRecent] = useState<string[]>([]);
+  useEffect(() => {
+    const now = ids ? ids.split('|') : [];
+    const before = known.current;
+    known.current = new Set(now);
+    const added = before ? now.filter((id) => !before.has(id)) : [];
+    if (!added.length) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- a booking the visitor just made
+    setRecent((r) => [...r, ...added]);
+    const id = window.setTimeout(() => setRecent((r) => r.filter((x) => !added.includes(x))), 3400);
+    return () => window.clearTimeout(id);
+  }, [ids]);
   if (reduced) return null;
   const items: ToastItem[] = view.events
-    .filter((e) => e.at >= 0 && ['online', 'waitlist', 'voice', 'you', 'missed'].includes(e.kind) && view.t - e.at < 3400)
+    .filter((e) => (e.kind === 'you' ? recent.includes(e.id) : e.at >= 0 && ['online', 'waitlist', 'voice', 'missed'].includes(e.kind) && view.t - e.at < 3400))
     .slice(-2)
     .map((e) => ({
       id: e.id,
@@ -63,7 +83,7 @@ export function ClinicToasts({ placement }: { placement: 'top' | 'bottom-right' 
       tone: eventIcon(e.kind).tone,
       title: t(e.kind),
       body: text(e),
-      leaving: view.t - e.at >= 2900,
+      leaving: e.kind !== 'you' && view.t - e.at >= 2900,
     }));
   return <ToastStack items={items} placement={placement} />;
 }
@@ -116,6 +136,7 @@ function LiveCallCard({ compact }: { compact?: boolean }) {
       openLabel={before ? t('call.openIdle') : t('call.open')}
       sent={view.call.phase === 'ended' ? t('call.sent') : false}
       className={compact ? 'clinic-callcard' : ''}
+      tour="reception"
     />
   );
 }
@@ -153,9 +174,9 @@ export function PhoneToday() {
       <LiveCallCard compact />
       <NextUp />
       <Card className="p-[0.85em]">
-        <ActivityFeed title={t('activity')} live items={feed} />
+        <ActivityFeed title={t('activity')} items={feed} />
       </Card>
-      <button type="button" onClick={openSite} className="clinic-sitecard">
+      <button type="button" onClick={openSite} className="clinic-sitecard" data-tour="booking">
         <span className="clinic-sitecard-icon" aria-hidden>
           <Globe strokeWidth={1.7} />
         </span>
@@ -180,6 +201,7 @@ export function LaptopToday() {
   const feed = useFeedItems(4);
   const stats = dayStats(view.appts);
   const callsToday = 22 + (view.t >= STORY.callStart ? 1 : 0);
+
   return (
     <div className="flex flex-col gap-[0.9em]">
       <div className="grid grid-cols-[minmax(0,1.25fr)_repeat(3,minmax(0,1fr))] gap-[0.7em]">
@@ -194,7 +216,7 @@ export function LaptopToday() {
         <Kpi label={t('today.calls')} value={callsToday} hint={t('today.callsHint')} />
       </div>
       <div className="grid grid-cols-[minmax(0,1fr)_15.5em] items-start gap-[0.8em]">
-        <Card className="p-[0.75em] pb-[0.4em]">
+        <Card className="p-[0.75em] pb-[0.4em]" tour="agenda">
           <div className="mb-[0.6em] flex items-center justify-between gap-[0.6em] px-[0.2em]">
             <h3 className="demo-card-title">{t('today.agendaTitle')}</h3>
             <button type="button" onClick={() => go('agenda')} className="clinic-link">
@@ -221,7 +243,7 @@ export function LaptopToday() {
             {view.call.phase === 'ended' ? <CallOutcome compact /> : null}
           </div>
           <Card className="p-[0.85em]">
-            <ActivityFeed title={t('today.activity')} live items={feed} />
+            <ActivityFeed title={t('today.activity')} items={feed} />
           </Card>
         </div>
       </div>

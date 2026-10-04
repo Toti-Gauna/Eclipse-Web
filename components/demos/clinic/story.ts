@@ -1,25 +1,40 @@
 /**
- * Clínica Aurora — the live story and everything derived from it.
+ * Clínica Aurora — the story and everything derived from it.
  *
  * One store per showcase (laptop + phone share it) holds only what the visitor did;
  * every screen DERIVES the day from (story time t, that state) with `deriveClinic`,
- * which is pure: pausing, looping, reduced motion (t = end) and two screens in sync
- * come for free.
+ * which is pure: pausing, reduced motion and two screens in sync come for free.
  *
- * The ~31 s loop: Camila books online · Valentina confirms by WhatsApp · Nicolás
- * cancels and the waitlist refills his slot (Paula) · Martina's reminder: she
- * reschedules, her 11:30 frees up · Julián calls, the AI receptionist books him
- * into that 11:30 and confirms by WhatsApp. Recovered this week: 9 → 12.
+ * Nothing plays on its own (v3). The visitor plays four beats from the SimBar:
+ * 1 online — Camila books on the site · 2 reminder — Valentina confirms by WhatsApp and
+ * Martina moves her 11:30 · 3 freed — Nicolás cancels and the waitlist refills his slot
+ * (Paula) · 4 call — Julián calls, the AI receptionist books him into that 11:30.
+ * Recovered this week: 9 → 12. Between beats the clock is stopped; whatever the visitor
+ * does (book, answer a chat, switch an automation, move a card) is stamped with `t`.
  */
-import { createDemoStore, runChat, runVoice, type ChatPick, type ChatRun, type ChatScript, type DemoStore, type VoiceScript, type VoiceState } from '../kit';
+import {
+  createDemoStore,
+  runChat,
+  runVoice,
+  weekdayOf,
+  type ChatPick,
+  type ChatRun,
+  type ChatScript,
+  type DemoStore,
+  type VoiceScript,
+  type VoiceState,
+} from '../kit';
 import {
   BASE_DAY,
+  BEATS,
   DAY_END,
-  LOOP_MS,
+  DAY_START,
   MARTINA_OPTIONS,
   RECOVERED_BASE,
+  PROS,
   STEP,
   STORY,
+  TODAY,
   TREATMENTS,
   WAITLIST_OFFERED,
   WAITLIST_START,
@@ -40,9 +55,11 @@ export interface Range {
 }
 export interface MineBooking {
   pro: ProId;
+  /** Day index (TODAY = 3; see data.ts). */
+  day: number;
   start: number;
   treatment: TreatmentId;
-  /** Story time it was made (−1: an earlier loop). */
+  /** Story time it was made. */
   at: number;
   via: 'agenda' | 'site';
 }
@@ -52,16 +69,18 @@ export interface ClinicState {
   picks: Record<string, ChatPick>;
   /** Camila's WhatsApp thread on the patient phone (thread time). */
   patientPicks: Record<string, ChatPick>;
-  /** Site chatbot (time since it opened). */
+  /** Site chatbot (opened by the visitor; runs instantly). */
   faqPicks: Record<string, ChatPick>;
   faqStart: number | null;
   mine: MineBooking[];
   /** When each switchable automation was off (story time). */
   off: Record<Automation, Range[]>;
-  /** The visitor touched the patient phone's booking widget (no more autoplay this loop). */
+  /** The visitor touched the patient phone's booking widget (it stops replaying Camila's taps). */
   siteManual: boolean;
-  /** Story time the patient's WhatsApp thread started (the visitor booked on the site). */
+  /** The visitor booked on the site: their WhatsApp confirmation (story time it started). */
   patientThread: { at: number; pro: ProId; start: number; treatment: TreatmentId; day: number } | null;
+  /** Recovery board: cards the visitor moved (column + story time). */
+  moved: Record<string, { column: KanbanColumnId; at: number }>;
 }
 
 const fresh = (): ClinicState => ({
@@ -73,23 +92,14 @@ const fresh = (): ClinicState => ({
   off: { waitlist: [], voice: [] },
   siteManual: false,
   patientThread: null,
+  moved: {},
 });
-/** A switch left off stays off in the next loop. */
-const carry = (ranges: Range[]): Range[] => (ranges.some((r) => r.to === null) ? [{ from: -1, to: null }] : []);
 
 export type ClinicStore = DemoStore<ClinicState>;
 
-/** Module-level (stable) factory for usePairedStore. */
+/** Module-level (stable) factory for usePairedStore. Beats: no autoplay; "Reiniciar" = a fresh day. */
 export function createClinicStore(paired: boolean): ClinicStore {
-  return createDemoStore<ClinicState>(fresh(), {
-    loopMs: LOOP_MS,
-    paired,
-    onLoop: (s) => ({
-      ...fresh(),
-      mine: s.mine.map((m) => ({ ...m, at: -1 })),
-      off: { waitlist: carry(s.off.waitlist), voice: carry(s.off.voice) },
-    }),
-  });
+  return createDemoStore<ClinicState>(fresh(), { beats: BEATS, paired, reset: fresh });
 }
 
 export const isOn = (ranges: Range[], at: number) => !ranges.some((r) => at >= r.from && (r.to === null || at < r.to));
@@ -105,25 +115,28 @@ export const act = {
     ...s,
     patientPicks: { ...s.patientPicks, [step]: { reply, at: t - (s.patientThread?.at ?? STORY.site.push) } },
   }),
-  /** The visitor booked on the public site: their own WhatsApp confirmation starts shortly after. */
+  /** The visitor booked on the public site: the booking lands in the agenda and their WhatsApp confirmation shows. */
   siteBooked: (b: { pro: ProId; start: number; treatment: TreatmentId; day: number }) => (s: ClinicState, t: number): ClinicState => ({
     ...s,
     siteManual: true,
-    // Only today's bookings land in the agenda on screen.
-    mine:
-      b.day === 3 && !s.mine.some((m) => m.pro === b.pro && m.start === b.start)
-        ? [...s.mine, { pro: b.pro, start: b.start, treatment: b.treatment, via: 'site', at: t }]
-        : s.mine,
-    patientThread: { ...b, at: t + 900 },
+    mine: s.mine.some((m) => m.day === b.day && m.pro === b.pro && m.start === b.start)
+      ? s.mine
+      : [...s.mine, { pro: b.pro, day: b.day, start: b.start, treatment: b.treatment, via: 'site', at: t }],
+    patientThread: { ...b, at: t },
     patientPicks: {},
   }),
-  openFaq: () => (s: ClinicState, t: number): ClinicState => (s.faqStart === null ? { ...s, faqStart: t } : s),
+  /** The site chat runs instantly from when the visitor first answers it (chat time 0). */
   pickFaq: (step: string, reply: string) => (s: ClinicState, t: number): ClinicState => ({
     ...s,
+    faqStart: s.faqStart ?? t,
     faqPicks: { ...s.faqPicks, [step]: { reply, at: t - (s.faqStart ?? t) } },
   }),
   book: (b: Omit<MineBooking, 'at'>) => (s: ClinicState, t: number): ClinicState =>
-    s.mine.some((m) => m.pro === b.pro && m.start === b.start) ? s : { ...s, mine: [...s.mine, { ...b, at: t }] },
+    s.mine.some((m) => m.day === b.day && m.pro === b.pro && m.start === b.start) ? s : { ...s, mine: [...s.mine, { ...b, at: t }] },
+  moveCard: (id: string, column: KanbanColumnId) => (s: ClinicState, t: number): ClinicState => ({
+    ...s,
+    moved: { ...s.moved, [id]: { column, at: t } },
+  }),
   toggle: (id: Automation) => (s: ClinicState, t: number): ClinicState => {
     const ranges = s.off[id];
     const next = isOffNow(ranges) ? ranges.map((r) => (r.to === null ? { ...r, to: t } : r)) : [...ranges, { from: t, to: null }];
@@ -204,6 +217,8 @@ export interface ClinicEvent {
   option?: number;
   /** Clock time (minutes) for events from before the story. */
   clock?: number;
+  /** Day of the appointment when it isn't today (visitor bookings). */
+  day?: number;
 }
 
 export type KanbanColumnId = 'freed' | 'offered' | 'won';
@@ -278,7 +293,8 @@ export function deriveClinic(
   martina: ChatScript,
   voiceTexts: (target: { pro: ProId; start: number } | null) => { texts: string[]; icons?: VoiceScript['lines'][number]['icon'][] },
 ): ClinicView {
-  const chat = runChat(martina, t - STORY.chatStart, state.picks, { instant });
+  // Scripted inside the "reminder" beat; a tap by the visitor (as Martina) is answered at once.
+  const chat = runChat(martina, t - STORY.chatStart, state.picks, { instant, instantAfterPick: true });
   const choice = chat.chosen.ask as 'confirm' | 'reschedule' | 'cancel' | undefined;
   const option = chat.chosen.offer ? Number(chat.chosen.offer.slice(3)) : null;
 
@@ -427,20 +443,26 @@ export function deriveClinic(
       });
     }
   }
-  // The visitor's own bookings.
-  for (const b of state.mine) {
+  // The visitor's own bookings (today's; other days: see dayAppts).
+  for (const b of state.mine.filter((m) => m.day === TODAY)) {
     steps.push({
       at: b.at,
       run: () => {
         if (!isFree(b.pro, b.start, TREATMENTS[b.treatment].minutes)) return;
         const wasFreed = [...map.values()].find((x) => x.pro === b.pro && x.status === 'freed' && x.start === b.start);
         put({ pro: b.pro, start: b.start, patient: 'you', treatment: b.treatment, status: 'you', via: 'you', changedAt: b.at }, `you-${b.at}`);
-        events.push({ id: `you-${b.pro}-${b.start}`, at: b.at, kind: 'you', pro: b.pro, start: b.start, treatment: b.treatment });
+        events.push({ id: `you-${b.day}-${b.pro}-${b.start}`, at: b.at, kind: 'you', pro: b.pro, start: b.start, treatment: b.treatment, day: b.day });
         if (wasFreed) {
           const id = wasFreed.patient === 'nicolas' ? 'nicolas' : wasFreed.patient === 'martina' ? 'martina' : null;
           if (id) card(id, { at: b.at, column: 'won', note: 'byYou' });
         }
       },
+    });
+  }
+  for (const b of state.mine.filter((m) => m.day !== TODAY)) {
+    steps.push({
+      at: b.at,
+      run: () => events.push({ id: `you-${b.day}-${b.pro}-${b.start}`, at: b.at, kind: 'you', pro: b.pro, start: b.start, treatment: b.treatment, day: b.day }),
     });
   }
   // Julián calls: the receptionist checks the agenda, then books.
@@ -512,8 +534,100 @@ export function deriveClinic(
     events,
     recovered: { ...recovered, total },
     waitlist,
-    cards: cards.filter((c) => c.changedAt <= t),
+    cards: cards
+      .filter((c) => c.changedAt <= t)
+      .map((c) => {
+        const m = state.moved[c.id];
+        return m && m.at >= c.changedAt ? { ...c, column: m.column, changedAt: m.at } : c;
+      }),
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* Other days (agenda navigation): a plausible, deterministic schedule  */
+/* ------------------------------------------------------------------ */
+const POOL: PatientId[] = ['ana', 'diego', 'carla', 'pedro', 'lucas', 'bruno', 'elena', 'joaquin', 'sebastian', 'renata', 'lola', 'irene', 'florencia', 'micaela', 'rocio'];
+const BY_SPECIALTY = (Object.keys(TREATMENTS) as TreatmentId[]).reduce<Record<string, TreatmentId[]>>((acc, id) => {
+  (acc[TREATMENTS[id].specialty] ??= []).push(id);
+  return acc;
+}, {});
+/** A stable pseudo-random number in [0, 1) for a seed. */
+function hash(seed: number) {
+  let x = Math.imul(seed ^ 0x9e3779b9, 0x85ebca6b);
+  x ^= x >>> 13;
+  x = Math.imul(x, 0xc2b2ae35);
+  x ^= x >>> 16;
+  return (x >>> 0) / 4294967296;
+}
+
+/** The booked appointments of a day other than today (past: attended; future: confirmed / reminded). */
+export function scheduleFor(day: number): Appt[] {
+  const out: Appt[] = [];
+  const wd = weekdayOf(day);
+  if (wd > 5) return out;
+  PROS.forEach((p, pi) => {
+    const list = BY_SPECIALTY[p.specialty];
+    // Saturdays close at 13:00.
+    const end = wd === 5 ? 780 : DAY_END;
+    let m = DAY_START;
+    let i = 0;
+    while (m < end) {
+      const seed = day * 997 + pi * 131 + i++;
+      if (hash(seed) < 0.66) {
+        const treatment = list[Math.floor(hash(seed + 7) * list.length)];
+        const minutes = TREATMENTS[treatment].minutes;
+        if (m + minutes <= end) {
+          const status = day < TODAY ? 'done' : day === TODAY + 1 && hash(seed + 3) < 0.4 ? 'reminded' : 'confirmed';
+          const key = `${day}:${slotKey(p.id, m)}`;
+          out.push({ key, pro: p.id, start: m, end: m + minutes, patient: POOL[Math.floor(hash(seed + 11) * POOL.length)], treatment, status, changedAt: -Infinity, version: 'base' });
+          m += minutes;
+          continue;
+        }
+      }
+      m += STEP;
+    }
+  });
+  return out;
+}
+
+/** Closing time of a day (Saturdays 13:00). */
+export const dayEnd = (day: number) => (weekdayOf(day) === 5 ? 780 : DAY_END);
+
+/**
+ * Any day's appointments: today comes from the story (`view.appts`); other days from
+ * `scheduleFor` plus what changed there (Martina's new slot, the visitor's bookings).
+ */
+export function dayAppts(day: number, state: ClinicState, view: ClinicView): Appt[] {
+  if (day === TODAY) return view.appts;
+  let list = scheduleFor(day);
+  const overlaps = (a: Appt, pro: ProId, start: number, end: number) => a.pro === pro && a.start < end && start < a.end;
+  const opt = view.martina === 'reschedule' && view.martinaOption !== null ? MARTINA_OPTIONS[view.martinaOption] : null;
+  const moved = view.events.find((e) => e.id === 'martina' && e.kind === 'reschedule');
+  if (opt && moved && opt.day === day) {
+    const m = STORY.martina;
+    const end = opt.start + TREATMENTS[m.treatment].minutes;
+    list = list.filter((a) => !overlaps(a, m.pro, opt.start, end));
+    list.push({ key: `${day}:${slotKey(m.pro, opt.start)}`, pro: m.pro, start: opt.start, end, patient: 'martina', treatment: m.treatment, status: 'confirmed', via: 'whatsapp', changedAt: moved.at, version: 'moved' });
+  }
+  for (const b of state.mine) {
+    if (b.day !== day) continue;
+    const end = b.start + TREATMENTS[b.treatment].minutes;
+    if (list.some((a) => overlaps(a, b.pro, b.start, end)) || end > dayEnd(day)) continue;
+    list.push({ key: `${day}:${slotKey(b.pro, b.start)}`, pro: b.pro, start: b.start, end, patient: 'you', treatment: b.treatment, status: 'you', via: 'you', changedAt: b.at, version: `you-${b.at}` });
+  }
+  return list.sort((x, y) => x.start - y.start || x.pro.localeCompare(y.pro));
+}
+
+/** Bookable start times of a pro on a day for a treatment (today: after now). */
+export function freeTimes(day: number, pro: ProId, minutes: number, state: ClinicState, view: ClinicView): number[] {
+  if (day < TODAY) return [];
+  const list = dayAppts(day, state, view);
+  const from = day === TODAY ? Math.ceil((view.clock + 15) / STEP) * STEP : DAY_START;
+  const out: number[] = [];
+  for (let m = from; m + minutes <= dayEnd(day); m += STEP) {
+    if (!list.some((a) => a.pro === pro && a.status !== 'freed' && a.start < m + minutes && m < a.end)) out.push(m);
+  }
+  return out;
 }
 
 /** Today's agenda numbers. */

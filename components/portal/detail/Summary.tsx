@@ -2,6 +2,7 @@ import { Lock } from 'lucide-react';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { TOTAL_STAGES, isMainStage, stageNumber, stagePhase, stagePosition } from '@/lib/portal/project';
 import type { ClientAction, PortalProject } from '@/lib/portal/types';
+import { InfoTip } from '../InfoTip';
 import { usePortal } from '../usePortal';
 
 const ACTION_BUTTONS: Record<ClientAction['kind'], ('approve' | 'adjust' | 'confirm' | 'upload')[]> = {
@@ -25,7 +26,7 @@ export function CurrentStage({ project }: { project: PortalProject }) {
   const plan = p.maintenance(project);
 
   return (
-    <section className="pt-current ticks" data-stage={project.stage} aria-labelledby="pt-current-title">
+    <section className="pt-current ticks" data-stage={project.stage} aria-labelledby="pt-current-title" data-tour="pt-current">
       <div className="pt-dial">
         <PhaseGlyph phase={stagePhase(project)} size={72} />
         {position && project.stage !== 'support' && project.stage !== 'closed' ? (
@@ -99,7 +100,12 @@ export function NextMilestone({ project }: { project: PortalProject }) {
           <dd>{p.person(project.nextMilestone.owner)}</dd>
         </div>
         <div>
-          <dt>{t('detail.estimate')}</dt>
+          <dt>
+            <span className="pt-term">
+              {t('detail.estimate')}
+              <InfoTip copy={p.info('estimate')} />
+            </span>
+          </dt>
           <dd>
             <time className="pt-date" dateTime={project.nextMilestone.due}>
               {p.date(project.nextMilestone.due)}

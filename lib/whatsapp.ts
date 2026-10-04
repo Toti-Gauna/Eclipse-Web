@@ -10,6 +10,7 @@ export type WhatsAppOrigin =
   | 'examples'
   | 'examples_not_listed'
   | 'demo_modal'
+  | 'demo_layer'
   | 'demo'
   | 'plan_card'
   | 'builder'

@@ -6,24 +6,24 @@ import { SectionMark } from '@/components/ui/SectionMark';
 import { HeroStateProvider } from './HeroState';
 import { HeroStage } from './HeroStage';
 import { HeroCopy } from './HeroCopy';
-import { HeroReveal } from './HeroReveal';
 import { HeroShortcuts } from './HeroShortcuts';
 import { VerticalChips } from './VerticalChips';
+import { DemoExperienceHost } from '@/components/demo-experience/DemoExperienceHost';
 import './hero.css';
 
 /**
  * Hero (v3). One message, one concrete line, then the two actions: "Pedí tu demo"
  * (primary, `data-hero-cta` — the header quiets its own CTA while this one is on
  * screen) and "Armá tu plan" (secondary). The rubro keys come after, as an optional
- * shortcut (they reveal that rubro's demo right here); the shortcuts row closes the
- * hero (Demos · Soluciones · Precios · Armar plan) instead of a "scroll" hint.
+ * shortcut (they open that rubro's demo in the "Ver demo" layer, born from the key); the
+ * shortcuts row closes the hero (Demos · Soluciones · Precios · Armar plan) instead of a
+ * "scroll" hint.
  *
  * The H1 is server-rendered and visible from the first paint (it is the LCP
  * element): no entrance animation ever hides it.
  *
  * Layout: a one-cell grid. The stage (eclipse, stars) is a full-bleed layer
- * behind; the copy and the demo reveal share the cell, so when the demo is
- * taller than the screen (phones) the hero grows instead of clipping it.
+ * behind the copy.
  * Phones and portrait tablets stack the eclipse above the copy; landscape
  * screens from 768px and everything from 1024px put it on the right, and the copy
  * column never reaches the dial (hero.css sizes it from the eclipse's geometry).
@@ -32,7 +32,11 @@ import './hero.css';
  *
  * [data-hero-pin-spacer] is the pinned scroll's spacer (useHeroMotion): giving
  * ScrollTrigger its own wrapper means it never re-parents the section, which
- * would blur the focused element and reset the demo on every refresh.
+ * would blur the focused element on every refresh.
+ *
+ * <DemoExperienceHost> is the page's one "Ver demo" layer (components/demo-experience): a
+ * top-layer <dialog>, rendered here because the hero always hydrates first; the demos
+ * section opens the same layer.
  */
 export function Hero() {
   const t = useTranslations('hero');
@@ -78,9 +82,9 @@ export function Hero() {
             </div>
           </HeroCopy>
 
-          <HeroReveal />
         </HeroStateProvider>
       </section>
+      <DemoExperienceHost />
     </div>
   );
 }

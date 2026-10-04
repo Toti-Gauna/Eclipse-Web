@@ -61,8 +61,10 @@ function useLayoutFor(ref: RefObject<HTMLDivElement | null>, forced: ShowcaseLay
  * - tabs (narrow, e.g. phones): "Celular" (default) | "Escritorio". Only the chosen view is
  *   mounted, so the phone alone is the complete mobile experience; the desktop view keeps a
  *   readable size in a horizontal scroller (never a thumbnail).
- * Used by the hero reveal, the "Sala de demos" stage and its modal. The parent sizes the
- * width; the height follows (geometry in showcase.css). Each view is a labelled region.
+ * Used by the "Ver demo" layer (components/demo-experience) and the "Sala de demos" stage.
+ * The parent sizes the width; the height follows (geometry in showcase.css). Each view is a
+ * labelled region. The tab (tabs layout) is uncontrolled unless `view` is passed: the demo
+ * guide switches it to the view a step talks about (`onViewChange` reports the visitor's picks).
  */
 export function DemoShowcase({
   demo,
@@ -71,6 +73,8 @@ export function DemoShowcase({
   forceLayout,
   fit = false,
   className = '',
+  view,
+  onViewChange,
 }: {
   demo: DemoId;
   business: string;
@@ -80,6 +84,9 @@ export function DemoShowcase({
   /** Fill the parent's width (the parent sizes it) instead of the default cap. */
   fit?: boolean;
   className?: string;
+  /** Controlled tab of the tabs layout (ignored in the split layout). */
+  view?: DemoScreen;
+  onViewChange?: (view: DemoScreen) => void;
 }) {
   const t = useTranslations('demoShowcase');
   const root = useRef<HTMLDivElement>(null);
@@ -130,6 +137,8 @@ export function DemoShowcase({
           label={t('viewsLabel', { business })}
           tabs={{ phone: caption('phone'), laptop: caption('laptop') }}
           panHint={t('panHint')}
+          view={view}
+          onViewChange={onViewChange}
           phone={
             <DeviceFrame kind="phone" label={phoneLabel}>
               {screen('phone')}
@@ -155,16 +164,25 @@ function ShowcaseTabs({
   phone,
   laptop,
   panHint,
+  view: controlled,
+  onViewChange,
 }: {
   label: string;
   tabs: Record<DemoScreen, ReactNode>;
   phone: ReactNode;
   laptop: ReactNode;
   panHint: string;
+  view?: DemoScreen;
+  onViewChange?: (view: DemoScreen) => void;
 }) {
   const uid = useId();
   const { play } = useSound();
-  const [view, setView] = useState<DemoScreen>('phone');
+  const [own, setOwn] = useState<DemoScreen>('phone');
+  const view = controlled ?? own;
+  const setView = (k: DemoScreen) => {
+    setOwn(k);
+    onViewChange?.(k);
+  };
   const refs = useRef<Partial<Record<DemoScreen, HTMLButtonElement | null>>>({});
   const tabId = (k: DemoScreen) => `${uid}-tab-${k}`;
   const panelId = (k: DemoScreen) => `${uid}-panel-${k}`;

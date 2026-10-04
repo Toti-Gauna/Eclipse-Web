@@ -143,3 +143,18 @@ export function isIsoDate(value: unknown): value is IsoDate {
   const date = new Date(`${value}T00:00:00Z`);
   return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
+
+/**
+ * Which list row/card carries each guide target: the stage and "Ver proyecto" on the first
+ * project, the next milestone and the client's action on the first one waiting on the client.
+ */
+export function tourHooks(project: PortalProject, projects: readonly PortalProject[] = PORTAL_PROJECTS) {
+  const waiting = projects.find((p) => p.action) ?? projects[0];
+  const first = projects[0];
+  return {
+    stage: project.id === first?.id ? 'pt-stage' : undefined,
+    open: project.id === first?.id ? 'pt-open' : undefined,
+    next: project.id === waiting?.id ? 'pt-next' : undefined,
+    turn: project.id === waiting?.id ? 'pt-turn' : undefined,
+  };
+}

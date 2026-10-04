@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { CalendarDays, ChartNoAxesColumn, Globe, House, MessageCircle, PhoneCall } from 'lucide-react';
 import { useSound } from '@/components/sound/SoundContext';
 import { verticalById } from '@/lib/content';
-import { AppShell, LiveDot, usePairedStore, useStory, type NavItem } from '../kit';
+import { AppShell, LiveDot, usePairedStore, useStory, type NavItem, type ShellLayout } from '../kit';
 import type { DemoProps } from '../types';
 import { CLINIC_THEME, TODAY } from './data';
 import { createClinicStore, deriveClinic, isOffNow } from './story';
@@ -30,12 +30,19 @@ const VIEWS: Record<ClinicTab, Record<DemoProps['screen'], () => ReactNode>> = {
 };
 
 /**
- * Clínica Aurora (vertical "clinicas", dental & aesthetics).
- * - laptop: the clinic's workspace (collapsible sidebar): today, agenda, AI voice
- *   receptionist, WhatsApp automations, public site, no-shows recovered.
- * - phone alone: the same product as a mobile app (5 tabs + the public site).
+ * Shell variant: a front desk that should feel calm and airy — no heavy sidebar; soft pills
+ * in a roomy top bar (desktop) and a floating rounded dock (phone), icons in tinted chips.
+ */
+const LAYOUT: ShellLayout = { nav: 'top', density: 'airy', icons: 'chip' };
+
+/**
+ * Clínica Aurora (vertical "clinicas", dental & aesthetics) — the kit's reference demo.
+ * - laptop: the clinic's workspace: today, agenda (day/week, past and future dates, book a
+ *   free slot), AI voice receptionist, WhatsApp automations, public site ("Reservar"), no-shows.
+ * - phone alone: the same product as a mobile app (dock + the public site as an overlay).
  * - phone next to the laptop: the PATIENT's phone (books online, gets WhatsApp).
- * One story (~31 s loop, see story.ts) drives both screens.
+ * Nothing plays on its own: the visitor plays four beats from the SimBar (see story.ts) and
+ * everything they do is local demo data.
  */
 export default function ClinicDemo({ screen, active }: DemoProps) {
   const vertical = verticalById('clinicas')!;
@@ -43,7 +50,7 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
   const keyNumber = vertical.keyNumber?.value ?? 0;
   const ticketUsd = vertical.calculator.ticketUsd;
   const t = useTranslations('demoClinic');
-  const { fmt, day } = useClinicText();
+  const { fmt } = useClinicText();
   const { play } = useSound();
 
   const { store, paired, ref } = usePairedStore('clinic', createClinicStore);
@@ -55,28 +62,18 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
   );
 
   const [tab, setTab] = useState<ClinicTab>('today');
+  const [agendaDay, setAgendaDay] = useState(TODAY);
   const [siteOpen, setSiteOpen] = useState(false);
   const patientPhone = screen === 'phone' && paired;
   const announce = screen === 'laptop' || !paired;
 
-  // Sound: a booking landing (one instance per pair, only while visible).
-  const lastEvent = view.events[view.events.length - 1];
-  const heard = useRef<string | null>(null);
-  useEffect(() => {
-    const id = lastEvent?.id ?? null;
-    const first = heard.current === null;
-    heard.current = id ?? '';
-    if (first || !active || !announce || !lastEvent || lastEvent.at < 0) return;
-    if (['online', 'waitlist', 'voice', 'you'].includes(lastEvent.kind)) play('success');
-  }, [lastEvent, active, announce, play]);
-
   const live = view.call.phase === 'ringing' || view.call.phase === 'live';
   const nav: NavItem[] = [
     { id: 'today', label: t('nav.today'), icon: House },
-    { id: 'agenda', label: t('nav.agenda'), icon: CalendarDays },
-    { id: 'calls', label: t(screen === 'phone' ? 'nav.callsShort' : 'nav.calls'), icon: PhoneCall, badge: live ? 'live' : undefined, group: screen === 'laptop' ? t('nav.group') : undefined },
-    { id: 'whatsapp', label: t('nav.whatsapp'), icon: MessageCircle },
-    ...(screen === 'laptop' ? [{ id: 'site', label: t('nav.site'), icon: Globe }] : []),
+    { id: 'agenda', label: t('nav.agenda'), icon: CalendarDays, tour: screen === 'phone' ? 'agenda' : undefined },
+    { id: 'calls', label: t(screen === 'phone' ? 'nav.callsShort' : 'nav.calls'), icon: PhoneCall, badge: live ? 'live' : undefined },
+    { id: 'whatsapp', label: t('nav.whatsapp'), icon: MessageCircle, tour: 'reminders' },
+    ...(screen === 'laptop' ? [{ id: 'site', label: t('nav.site'), icon: Globe, tour: 'booking' }] : []),
     { id: 'recovered', label: t(screen === 'phone' ? 'nav.recoveredShort' : 'nav.recovered'), icon: ChartNoAxesColumn },
   ];
 
@@ -99,14 +96,21 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
       setSiteOpen(true);
       if (active) play('open');
     },
+    openAgenda: (day) => {
+      setAgendaDay(day);
+      setSiteOpen(false);
+      setTab('agenda');
+    },
+    agendaDay,
   };
 
   const clock = fmt.time(view.clock);
+  const sim = { store, label: (id: string) => t(`sim.${id}`), note: t('sim.note'), tour: 'sim', announce };
 
   if (patientPhone) {
     return (
       <ClinicProvider value={ctx}>
-        <AppShell screen="phone" chrome="bare" theme={CLINIC_THEME} business={business} logo={<AuroraMark />} active={active} rootRef={ref} statusTime={clock}>
+        <AppShell screen="phone" chrome="bare" theme={CLINIC_THEME} business={business} logo={<AuroraMark />} active={active} rootRef={ref} statusTime={clock} sim={sim}>
           <PatientPhone key={snap.loop} />
         </AppShell>
       </ClinicProvider>
@@ -114,6 +118,7 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
   }
 
   const View = VIEWS[tab][screen];
+  const aiOn = !isOffNow(snap.state.off.voice);
   const headerRight =
     screen === 'laptop' ? (
       <>
@@ -123,17 +128,17 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
             {view.call.phase === 'ringing' ? t('top.ringing') : t('top.liveCall', { time: fmt.duration(view.call.talkMs) })}
           </button>
         ) : (
-          <span className="clinic-toppill">
-            <LiveDot />
-            {t('top.live')}
-          </span>
+          <button type="button" className="clinic-toppill" data-off={aiOn ? undefined : ''} onClick={() => setTab('calls')}>
+            <span aria-hidden className="clinic-toppill-dot" />
+            {t(aiOn ? 'top.ai' : 'top.aiOff')}
+          </button>
         )}
         <span className="clinic-user" aria-hidden>
           <span className="clinic-user-av">RA</span>
         </span>
       </>
     ) : (
-      <button type="button" className="clinic-sitebtn" onClick={ctx.openSite} aria-haspopup="dialog">
+      <button type="button" className="clinic-sitebtn" onClick={ctx.openSite} aria-haspopup="dialog" data-tour="booking">
         <Globe aria-hidden strokeWidth={1.8} />
         {t('top.site')}
       </button>
@@ -148,20 +153,17 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
         logo={<AuroraMark />}
         nav={nav}
         current={tab}
-        onNavigate={(id) => setTab(id as ClinicTab)}
-        title={
-          screen === 'laptop' ? (
-            <>
-              <p className="clinic-toptitle">{nav.find((n) => n.id === tab)?.label}</p>
-              <p className="clinic-topdate">{day(TODAY, 'long')}</p>
-            </>
-          ) : undefined
-        }
+        onNavigate={(id) => {
+          if (id === 'agenda') setAgendaDay(TODAY);
+          setTab(id as ClinicTab);
+        }}
+        layout={LAYOUT}
+        phoneNav="dock"
         headerRight={headerRight}
-        sidebarFooter={<SidebarFooter on={!isOffNow(snap.state.off.voice)} />}
         active={active}
         rootRef={ref}
         statusTime={clock}
+        sim={sim}
         overlay={
           screen === 'phone' ? (
             <PatientPhone
@@ -188,17 +190,3 @@ export default function ClinicDemo({ screen, active }: DemoProps) {
   );
 }
 
-function SidebarFooter({ on }: { on: boolean }) {
-  const t = useTranslations('demoClinic');
-  return (
-    <div className="clinic-sidefoot" data-off={on ? undefined : ''}>
-      <span className="clinic-sidefoot-ai" aria-hidden>
-        <AuroraMark />
-      </span>
-      <span className="min-w-0 leading-[1.25]">
-        <span className="block truncate text-[0.74em] font-semibold">{t('side.aiTitle')}</span>
-        <span className="block truncate text-[0.64em] text-[var(--demo-muted)]">{on ? t('side.aiBody') : t('side.aiOff')}</span>
-      </span>
-    </div>
-  );
-}

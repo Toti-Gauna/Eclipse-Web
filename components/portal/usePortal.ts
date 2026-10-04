@@ -4,6 +4,10 @@ import { itemById, l, maintenanceById } from '@/lib/content';
 import { formatDate } from '@/lib/portal/format';
 import { isViewer, personById } from '@/lib/portal/project';
 import type { IsoDate, PortalProject, RoleId, StageId } from '@/lib/portal/types';
+import type { InfoTipCopy } from './InfoTip';
+
+/** Terms with a "Más información" card (`portal.info.<topic>`). */
+export type InfoTopic = 'stages' | 'estimate' | 'action' | 'clientReview' | 'support' | 'changes';
 
 /**
  * Words for the portal screens, resolved on the server (no `'use client'`): every portal
@@ -65,7 +69,19 @@ export function usePortal() {
     return plan ? { name: l(plan.name, locale), includes: l(plan.includes, locale) } : null;
   };
 
-  return { t, locale, date, person, byline, role, name, text, stage, service, maintenance };
+  /** Copy of a "Más información" card; `chip` adds its visible text (legend). */
+  const info = (topic: InfoTopic, chip = false): InfoTipCopy => {
+    const title = t(`info.${topic}.title`);
+    return {
+      label: t('info.more', { topic: title }),
+      title,
+      body: t(`info.${topic}.body`),
+      close: t('info.close'),
+      text: chip ? t(`info.${topic}.chip`) : undefined,
+    };
+  };
+
+  return { t, locale, date, person, byline, role, name, text, stage, service, maintenance, info };
 }
 
 export type PortalText = ReturnType<typeof usePortal>;

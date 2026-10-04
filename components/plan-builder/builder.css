@@ -10,6 +10,47 @@
   --pb-pad: 1rem;
   position: relative;
 }
+
+/* ------------------------------------------------------------------ */
+/* Surface: dark (night) or light (dawn)                                */
+/* ------------------------------------------------------------------ */
+/* The drawer takes the light of the section it was opened from (.theme-light / .theme-dark on
+   the panel and on .pb); /plan is dark. Text uses --fg / --fg-muted / --accent (AA in both);
+   these local tokens cover the rest. Amber stays a fill or a light; amber text is --accent. */
+.pb,
+.pb-panel {
+  --pb-bg: var(--night);
+  /* Emphasised readings (totals, the package price, notes that matter). */
+  --pb-hi: var(--flare);
+  /* Frosted bars over the scrolling steps (dock, sticky step bar). */
+  --pb-glass: rgb(12 12 20 / 0.94);
+  --pb-glass-shadow: 0 -24px 48px -28px rgb(0 0 0 / 0.8);
+  /* Wells: the message preview, an unchecked switch. */
+  --pb-well: rgb(5 5 10 / 0.5);
+  --pb-faint: rgb(244 239 230 / 0.035);
+  --pb-hover: rgb(244 239 230 / 0.03);
+  /* Borders of controls (checkboxes, radios, switches): ≥ 3:1 against the surface. */
+  --pb-control: rgb(244 239 230 / 0.42);
+  --pb-tick: rgb(245 185 66 / 0.6);
+  --pb-amber-edge: rgb(245 185 66 / 0.5);
+  --pb-checked-tint: rgb(245 185 66 / 0.07);
+  --pb-light: rgb(245 185 66 / 0.13);
+}
+.pb.theme-light,
+.pb-panel.theme-light {
+  --pb-bg: color-mix(in srgb, var(--dawn) 55%, #fff);
+  --pb-hi: var(--ink);
+  --pb-glass: color-mix(in srgb, var(--pb-bg) 94%, transparent);
+  --pb-glass-shadow: 0 -24px 48px -32px rgb(28 24 18 / 0.35);
+  --pb-well: rgb(17 17 20 / 0.06);
+  --pb-faint: rgb(255 255 255 / 0.55);
+  --pb-hover: rgb(17 17 20 / 0.035);
+  --pb-control: rgb(17 17 20 / 0.5);
+  --pb-tick: rgb(138 90 0 / 0.6);
+  --pb-amber-edge: rgb(138 90 0 / 0.45);
+  --pb-checked-tint: rgb(245 185 66 / 0.14);
+  --pb-light: rgb(255 214 128 / 0.45);
+}
 @media (min-width: 640px) {
   .pb {
     --pb-pad: 1.75rem;
@@ -21,14 +62,15 @@
 /* ------------------------------------------------------------------ */
 @media (min-width: 768px) {
   .sheet[data-variant='drawer'] .sheet-panel.pb-panel {
-    width: min(720px, 100vw);
+    width: min(720px, calc(100% - 48px));
   }
 }
 .pb-panel-inner {
   position: relative;
   height: 100%;
   overflow: hidden;
-  background: var(--night);
+  background: var(--pb-bg);
+  color: var(--fg);
 }
 /* The one light source: a corona glow from the top right corner. */
 .pb-panel-light {
@@ -38,7 +80,7 @@
   width: 30rem;
   height: 30rem;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(245 185 66 / 0.13), transparent);
+  background: radial-gradient(closest-side, var(--pb-light), transparent);
   pointer-events: none;
 }
 
@@ -146,7 +188,7 @@
   margin-inline: calc(-1 * var(--gutter));
   padding-inline: var(--gutter);
   border-bottom: 1px solid var(--line);
-  background: rgb(12 12 20 / 0.9);
+  background: var(--pb-glass);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   backdrop-filter: blur(14px) saturate(140%);
 }
@@ -214,7 +256,7 @@
   color: var(--fg);
 }
 .pb-stepper li[data-state='current'] .pb-stepper-glyph {
-  color: var(--corona);
+  color: var(--accent);
   filter: drop-shadow(0 0 6px rgb(245 185 66 / 0.6));
 }
 @media (hover: hover) {
@@ -298,8 +340,8 @@
   z-index: 1;
   grid-area: glyph;
   border-radius: 50%;
-  background: var(--night);
-  box-shadow: 0 0 0 4px var(--night);
+  background: var(--pb-bg);
+  box-shadow: 0 0 0 4px var(--pb-bg);
 }
 .pb-stepper--rail .pb-stepper-index {
   grid-area: index;
@@ -317,7 +359,7 @@
   white-space: nowrap;
 }
 .pb-stepper--rail li[data-state='current'] .pb-stepper-preview {
-  color: var(--flare);
+  color: var(--pb-hi);
 }
 
 /* ------------------------------------------------------------------ */
@@ -434,11 +476,11 @@
   transform: scaleY(1);
 }
 .pb-row[data-checked] {
-  background: linear-gradient(90deg, rgb(245 185 66 / 0.07), transparent 70%);
+  background: linear-gradient(90deg, var(--pb-checked-tint), transparent 70%);
 }
 @media (hover: hover) {
   .pb-row:hover {
-    background-color: rgb(244 239 230 / 0.03);
+    background-color: var(--pb-hover);
   }
 }
 .pb-row:has(input:focus-visible) {
@@ -479,7 +521,7 @@
   color: var(--fg-muted);
 }
 .pb-row[data-checked] .pb-row-meta {
-  color: var(--corona);
+  color: var(--accent);
 }
 .pb-row-price {
   display: grid;
@@ -510,7 +552,7 @@
   height: 1.25rem;
   margin-top: 0.08rem;
   place-items: center;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--pb-control);
   border-radius: 0.3rem;
   color: var(--void);
   transition:
@@ -529,6 +571,9 @@
 .pb-mark[data-checked] {
   border-color: var(--corona);
   background: var(--corona);
+}
+.theme-light .pb-mark[data-checked] {
+  border-color: var(--corona-deep);
 }
 .pb-mark[data-checked] svg {
   opacity: 1;
@@ -565,8 +610,8 @@
   color: var(--fg-muted);
 }
 .pb-tag--accent {
-  border-color: rgb(245 185 66 / 0.5);
-  color: var(--corona);
+  border-color: var(--pb-amber-edge);
+  color: var(--accent);
 }
 
 /* Step 1 */
@@ -606,7 +651,7 @@
 /* Step 2 */
 .pb-package-head {
   --tick: 12px;
-  --tick-c: rgb(245 185 66 / 0.6);
+  --tick-c: var(--pb-tick);
   margin-bottom: 2rem;
   padding: 1rem 1.1rem;
   background-color: rgb(245 185 66 / 0.05);
@@ -620,12 +665,30 @@
 }
 .pb-package-head-price {
   font-size: 1rem;
-  color: var(--flare);
+  color: var(--pb-hi);
 }
 .pb-package-head-note {
   margin-top: 0.4rem;
   font-size: 0.875rem;
   color: var(--fg-muted);
+}
+/* The package's gift piece (Voz / Automatiza → premium landing): named, never priced. */
+.pb-bonus-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--fg);
+}
+.pb-row-free {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 .pb-package-head-actions {
   display: flex;
@@ -663,13 +726,13 @@
   align-items: start;
   column-gap: 0.7rem;
   padding: 0.7rem 0.9rem 0.25rem;
-  border: 1px solid rgb(245 185 66 / 0.3);
+  border: 1px solid var(--pb-amber-edge);
   background: rgb(245 185 66 / 0.06);
   animation: pb-rise 0.5s var(--ease-expo) both;
 }
 .pb-preload-glyph {
   margin-top: 0.15rem;
-  color: var(--corona);
+  color: var(--accent);
 }
 .pb-preload-text {
   font-size: 0.875rem;
@@ -792,7 +855,7 @@
   margin: 0.55rem 0 0.4rem 2.35rem;
   font-size: 0.8125rem;
   line-height: 1.45;
-  color: var(--flare);
+  color: var(--pb-hi);
 }
 .pb-hint--quiet {
   color: var(--fg-muted);
@@ -838,7 +901,7 @@
   font-size: 0.5625rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--corona);
+  color: var(--accent);
 }
 .pb-billing-opt[data-checked] .pb-billing-free {
   background: var(--corona);
@@ -860,7 +923,7 @@
   color: var(--accent);
 }
 .pb-note--accent {
-  color: var(--flare);
+  color: var(--pb-hi);
 }
 /* Said before the options: why one of them is already checked. */
 .pb-note--lead {
@@ -878,9 +941,9 @@
   width: 2.5rem;
   height: 1.5rem;
   flex: none;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--pb-control);
   border-radius: 999px;
-  background: rgb(5 5 10 / 0.5);
+  background: var(--pb-well);
   transition:
     background-color 0.25s ease,
     border-color 0.25s ease;
@@ -902,6 +965,9 @@
   border-color: var(--corona);
   background: var(--corona);
 }
+.theme-light .pb-switch[data-checked] {
+  border-color: var(--corona-deep);
+}
 .pb-switch[data-checked]::after {
   background: var(--void);
   transform: translateX(1rem);
@@ -917,18 +983,18 @@
   gap: 0.75rem 0.9rem;
   margin-bottom: 1.75rem;
   padding: 1rem 1.1rem;
-  border: 1px solid rgb(245 185 66 / 0.4);
+  border: 1px solid var(--pb-amber-edge);
   background: linear-gradient(100deg, rgb(245 185 66 / 0.13), rgb(245 185 66 / 0.03) 70%);
   animation: pb-rise 0.5s var(--ease-expo) both;
 }
 .pb-detect-glyph {
   margin-top: 0.1rem;
-  color: var(--corona);
+  color: var(--accent);
 }
 .pb-detect-title {
   font-weight: 500;
   line-height: 1.35;
-  color: var(--flare);
+  color: var(--pb-hi);
 }
 .pb-detect-body {
   margin-top: 0.25rem;
@@ -944,11 +1010,11 @@
   gap: 0.5rem;
   min-height: 44px;
   padding: 0 1.1rem;
-  border: 1px solid rgb(245 185 66 / 0.6);
+  border: 1px solid var(--pb-amber-edge);
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--corona);
+  color: var(--accent);
   transition: background-color 0.2s ease;
 }
 .pb-detect-cta:hover {
@@ -985,10 +1051,10 @@
 /* "Solicitud de propuesta": what the summary is (and isn't), before any number. */
 .pb-proposal {
   --tick: 10px;
-  --tick-c: rgb(245 185 66 / 0.6);
+  --tick-c: var(--pb-tick);
   margin-bottom: 1.75rem;
   padding: 0.85rem 1rem 0.9rem;
-  background-color: rgb(244 239 230 / 0.035);
+  background-color: var(--pb-faint);
 }
 .pb-proposal-label {
   display: flex;
@@ -1068,7 +1134,7 @@
 }
 .pb-ledger-discount .pb-ledger-name,
 .pb-ledger-discount .pb-ledger-amount {
-  color: var(--corona);
+  color: var(--accent);
 }
 .pb-ledger-total {
   display: flex;
@@ -1084,7 +1150,7 @@
   font-size: 1.35rem;
   font-weight: 400;
   white-space: nowrap;
-  color: var(--flare);
+  color: var(--pb-hi);
 }
 .pb-ledger-period {
   margin-left: 0.15rem;
@@ -1140,7 +1206,7 @@
   margin: 0;
   padding: 1rem;
   border: 1px solid var(--line);
-  background: rgb(5 5 10 / 0.55);
+  background: var(--pb-well);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   line-height: 1.65;
@@ -1185,8 +1251,8 @@
   flex: none;
   padding-bottom: env(safe-area-inset-bottom);
   border-top: 1px solid var(--line);
-  background: rgb(12 12 20 / 0.94);
-  box-shadow: 0 -24px 48px -28px rgb(0 0 0 / 0.8);
+  background: var(--pb-glass);
+  box-shadow: var(--pb-glass-shadow);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
 }

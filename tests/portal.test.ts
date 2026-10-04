@@ -18,7 +18,9 @@ import {
   stagePosition,
   summarize,
   timeline,
+  tourHooks,
 } from '@/lib/portal/project';
+import { PORTAL_TOURS, PORTAL_TOUR_KEYS } from '@/lib/portal/tour';
 import { CHANGE_FLOW, MAIN_STAGES } from '@/lib/portal/types';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -277,5 +279,61 @@ describe('portal helpers', () => {
       ['agente-voz', 2],
     ]);
     expect(stagePhase(projectById('sitio-web')!)).toBeCloseTo(0.4);
+  });
+});
+
+describe('portal guide and "Más información"', () => {
+  const trees = Object.fromEntries(LOCALES.map((l) => [l, messages(l)])) as Record<string, Tree>;
+  const str = (l: string, key: string) => {
+    const value = get(trees[l], key);
+    return typeof value === 'string' && value.trim().length > 0;
+  };
+
+  it('every guide step has a title and a body in es, en and pt, plus the shared controls', () => {
+    for (const l of LOCALES) {
+      for (const key of ['help', 'helpHint', 'next', 'prev', 'done', 'skip', 'close', 'progress'])
+        expect(str(l, `portal.guide.${key}`), `${l}: guide.${key}`).toBe(true);
+      expect(String(get(trees[l], 'portal.guide.progress'))).toMatch(/\{current\}.*\{total\}/);
+      for (const [tour, steps] of Object.entries(PORTAL_TOURS)) {
+        expect(str(l, `portal.guide.${tour}.label`), `${l}: ${tour}.label`).toBe(true);
+        for (const step of steps) {
+          expect(str(l, `portal.guide.${tour}.${step.id}.title`), `${l}: ${tour}.${step.id}.title`).toBe(true);
+          expect(str(l, `portal.guide.${tour}.${step.id}.body`), `${l}: ${tour}.${step.id}.body`).toBe(true);
+        }
+      }
+    }
+  });
+
+  it('guides are short, have unique steps and targets, and are remembered under separate keys', () => {
+    for (const steps of Object.values(PORTAL_TOURS)) {
+      expect(steps.length).toBeGreaterThanOrEqual(3);
+      expect(steps.length).toBeLessThanOrEqual(6);
+      expect(unique(steps.map((s) => s.id))).toBe(true);
+      for (const step of steps) for (const target of step.targets) expect(target).toMatch(/^\[data-tour="pt-[a-z-]+"\]$/);
+    }
+    expect(unique(Object.values(PORTAL_TOUR_KEYS))).toBe(true);
+    // The guide says it is remembered only in this browser (no account in the mockup).
+    expect(String(get(trees.es, 'portal.guide.projects.help.body'))).toMatch(/navegador/);
+  });
+
+  it('the list guide points at a project with a stage and one waiting on the client', () => {
+    const hooks = PORTAL_PROJECTS.map((p) => tourHooks(p));
+    expect(hooks.filter((h) => h.stage).length).toBe(1);
+    expect(hooks.filter((h) => h.open).length).toBe(1);
+    const waiting = PORTAL_PROJECTS.filter((p, i) => hooks[i].turn);
+    expect(waiting.length).toBe(1);
+    expect(waiting[0].action).toBeDefined();
+  });
+
+  it('every "Más información" card has a title and a body (and a chip label in the legend)', () => {
+    for (const l of LOCALES) {
+      for (const key of ['more', 'close', 'legend']) expect(str(l, `portal.info.${key}`), `${l}: info.${key}`).toBe(true);
+      expect(String(get(trees[l], 'portal.info.more'))).toContain('{topic}');
+      for (const topic of ['stages', 'estimate', 'action', 'clientReview', 'support', 'changes']) {
+        expect(str(l, `portal.info.${topic}.title`), `${l}: ${topic}.title`).toBe(true);
+        expect(str(l, `portal.info.${topic}.body`), `${l}: ${topic}.body`).toBe(true);
+      }
+      for (const topic of ['stages', 'estimate', 'action']) expect(str(l, `portal.info.${topic}.chip`), `${l}: ${topic}.chip`).toBe(true);
+    }
   });
 });

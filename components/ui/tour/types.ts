@@ -49,4 +49,11 @@ export interface TourProps {
   onClose: (reason: TourCloseReason, lastIndex: number) => void;
   /** Start at this step (default 0). */
   initialStep?: number;
+  /** After a step is on screen (measured, focused, announced): analytics, a sound. */
+  onShown?: (step: TourStep, index: number) => void;
+  /**
+   * Let pointer events reach the lit targets (default false: the whole UI is inert while the
+   * tour is open, so a click can't change the demo under the card).
+   */
+  allowTargetInteraction?: boolean;
 }

@@ -62,15 +62,18 @@ export function Card({
   elevated = false,
   as: Tag = 'div',
   style,
+  tour,
 }: {
   children: ReactNode;
   className?: string;
   elevated?: boolean;
   as?: 'div' | 'section' | 'article' | 'figure' | 'li';
   style?: CSSProperties;
+  /** Guide hook: `data-tour` id (see README → Guide). */
+  tour?: string;
 }) {
   return (
-    <Tag className={`demo-card ${className}`} data-elevated={elevated ? '' : undefined} style={style}>
+    <Tag className={`demo-card ${className}`} data-elevated={elevated ? '' : undefined} data-tour={tour} style={style}>
       {children}
     </Tag>
   );

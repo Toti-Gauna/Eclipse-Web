@@ -57,7 +57,8 @@ const lineMs = (l: VoiceLine) => l.ms ?? (l.who === 'tool' ? 1000 : Math.max(130
 export function runVoice(script: VoiceScript, elapsed: number, options: { instant?: boolean } = {}): VoiceState {
   const ring = script.ringMs ?? 1800;
   if (script.missed) {
-    const at = options.instant ? ring : elapsed;
+    // `instant` shows the outcome once the call started (never before it).
+    const at = options.instant && elapsed >= 0 ? ring : elapsed;
     const base = { endsAt: ring, starts: [], elapsed: at, talkMs: 0, lines: [], current: -1, speaking: null };
     return { ...base, phase: at < 0 ? 'idle' : at < ring ? 'ringing' : 'missed' };
   }
@@ -69,7 +70,7 @@ export function runVoice(script: VoiceScript, elapsed: number, options: { instan
     c += ms + (l.gapMs ?? 300);
   });
   const endsAt = c + 200;
-  const at = options.instant ? endsAt : elapsed;
+  const at = options.instant && elapsed >= 0 ? endsAt : elapsed;
   const base = { endsAt, starts: timed.map((l) => l.start), elapsed: at };
   if (at < 0) return { ...base, phase: 'idle', talkMs: 0, lines: [], current: -1, speaking: null };
   if (at < ring) return { ...base, phase: 'ringing', talkMs: 0, lines: [], current: -1, speaking: null };
@@ -153,6 +154,8 @@ export interface VoiceCallProps {
   onOpen?: () => void;
   openLabel?: string;
   className?: string;
+  /** Guide hook: `data-tour` id. */
+  tour?: string;
 }
 
 /**
@@ -174,6 +177,7 @@ export function VoiceCall({
   onOpen,
   openLabel,
   className = '',
+  tour,
 }: VoiceCallProps) {
   const t = useTranslations('demoKit.voice');
   const fmt = useDemoFormat();
@@ -199,7 +203,7 @@ export function VoiceCall({
   const latest = state.lines[state.lines.length - 1];
 
   return (
-    <section className={`demo-voice ${className}`} data-variant={variant} data-phase={phase} aria-label={label}>
+    <section className={`demo-voice ${className}`} data-variant={variant} data-phase={phase} aria-label={label} data-tour={tour}>
       <header className="demo-voice-head">
         <span className="demo-voice-orb" aria-hidden>
           {phase === 'ringing' || phase === 'live' ? <span className="demo-voice-rings demo-loop" /> : null}
