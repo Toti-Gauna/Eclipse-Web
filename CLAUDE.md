@@ -91,8 +91,8 @@ reachable (folded is fine, deleted is not).
   THE eclipse takes the center at the hero's size (from the hero, the hero's own glides there), the moon slides,
   the diamond ring fires and the light floods the screen from it; closing reverses it. Reduced motion = fade.
   It has its own scroll; the page never moves (`lockScroll`, keeps the scrollbar gutter); Volver / Escape /
-  browser Back restore the exact scroll and focus (`data-demo-opener`). First open offers "Ver con guía" /
-  "Ver por mi cuenta" (remembered locally); the guide never starts by itself. Under the views: the complete
+  browser Back restore the exact scroll and focus (`data-demo-opener`). EVERY open of EVERY demo (and every page load) offers "Ver con guía" /
+  "Ver por mi cuenta" — nothing is remembered; the guide never starts by itself. Under the views: the complete
   project from `vertical.project` (package only when its approved audience names the vertical; otherwise the
   pieces with their published prices and no invented total), maintenance, process, CTAs.
 - **Demos are manual:** nothing animates, plays sound or advances by itself. Stories run on beats played from
