@@ -158,3 +158,21 @@ justo al terminar). Cierre: 1,8 s desde Escape.
 Lectura: la apertura nueva es más larga pero no más pesada por frame (mediana 17 ms, p95 ≤ 50 ms, como antes); las
 tareas largas dentro de la ventana bajan porque la demo se monta después de la luz. Solo anima transform, opacity y
 clip-path (corona CSS, sin WebGL). Mismos límites: Chromium headless sin GPU, sin dispositivos ni Safari reales.
+
+## Fase 4 — salida de la pantalla de carga (antes/después)
+
+La pantalla de carga ya no vuela hacia la esquina: el cielo se desvanece (opacity) y el eclipse con la marca se
+difuminan en el lugar (blur de la escena chica + opacity + un leve scale). Medición: build de producción, CPU 4×,
+4 rondas, frames entre 1,1 s y 2,3 s de la carga (la salida más la hidratación debajo). *Antes* = `main` (con #6),
+*después* = esta rama.
+
+| Pantalla | Mediana | p95 por ronda | Máximo por ronda | Frames > 50 ms por ronda |
+|---|---|---|---|---|
+| 1440 antes | 17 ms | 200 / 50 / 150 / 67 | 217 / 250 / 283 / 233 | 4 / 1 / 3 / 3 |
+| 1440 después | 17 ms | 67 / 83 / 67 / 67 | 250 / 233 / 250 / 250 | 3 / 4 / 3 / 3 |
+| 390 antes | 17 ms | 67 / 50 / 33 / 50 | 100 / 117 / 117 / 150 | 3 / 2 / 2 / 2 |
+| 390 después | 17 ms | 67 / 67 / 67 / 50 | 117 / 100 / 117 / 133 | 3 / 3 / 3 / 2 |
+
+Lectura: sin diferencia fuera del ruido (los frames largos son la hidratación del hero debajo, no la salida). No se
+afirma ninguna mejora; el blur se aplica solo a la escena (≈ 250 px de eclipse y el texto), no al cielo de pantalla
+completa. Movimiento reducido: sin cambios (fotograma final + fundido corto). Mismos límites: Chromium sin GPU.

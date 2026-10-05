@@ -27,12 +27,13 @@ const WORD = 'ECLIPSE';
 /**
  * The loading screen is the trailers' end card (components/trailers SceneLogo): the
  * moon slides over the sun, the corona blooms with a diamond-ring glint, the ECLIPSE
- * wordmark rises letter by letter over the end line. Then the dark sky itself — a
- * disc larger than the screen — passes away like the moon, uncovering the page.
+ * wordmark rises letter by letter over the end line. Then the whole screen dissolves in
+ * place — the dark sky fades, the eclipse and wordmark blur out — and the page appears.
  *
  * Pure CSS (see loader.css), shown on every full page load by the head script. It
  * never blocks: the page is painted and hydrates underneath from the first frame
- * (the hero H1 stays the LCP element), and the layer is only transform / opacity.
+ * (the hero H1 stays the LCP element), and the layer is only transform / opacity (plus the
+ * small scene's blur at the very end).
  * Decorative: hidden from assistive tech.
  */
 export function Loader({ endLine }: { endLine: string }) {

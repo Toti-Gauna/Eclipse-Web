@@ -6,12 +6,11 @@ import { ArrowLeft, Compass, MessageCircle } from 'lucide-react';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useSound } from '@/components/sound/SoundContext';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
-import { useTourSeen } from '@/components/ui/tour/useTourSeen';
 import { DEMO_TOURS } from '@/components/demos/tours';
 import { l, verticalById, type DemoId } from '@/lib/content';
 import { lockScroll } from '@/lib/scroll-lock';
 import { localeTags, type Locale } from '@/i18n/routing';
-import { buildTourSteps, GUIDE_CHOICE_KEY, type ViewTag } from './guide';
+import { buildTourSteps, type ViewTag } from './guide';
 import { Eclipse } from '@/components/hero/Eclipse';
 import { LIMB_POINT } from '@/components/hero/geometry';
 import { heroEclipseSize, holdHeroEclipse, OPEN_CUES, playClosing, playOpening, type LayerParts } from './motion';
@@ -127,9 +126,9 @@ function DemoLayer({ request }: { request: DemoRequest }) {
   );
 
   // ---- Guide or explore -------------------------------------------------------------
-  const { seen: choiceMade, markSeen: rememberChoice } = useTourSeen(GUIDE_CHOICE_KEY);
-  // The choice shows on open unless it was already answered once (any demo).
-  const [choice, setChoice] = useState<'pending' | 'done'>(() => (choiceMade ? 'done' : 'pending'));
+  // Every open of every demo (and every page load) asks "¿Cómo querés verla?" again: nothing is
+  // remembered. The layer is keyed by request, so this state starts fresh each time.
+  const [choice, setChoice] = useState<'pending' | 'done'>('pending');
   const [guide, setGuide] = useState<{ open: boolean; run: number }>({ open: false, run: 0 });
   const guideOpen = useRef(false);
   useEffect(() => {
@@ -152,20 +151,17 @@ function DemoLayer({ request }: { request: DemoRequest }) {
   const startGuide = useCallback(() => {
     if (!hasGuide) return;
     setChoice('done');
-    rememberChoice();
     setGuide((g) => ({ open: true, run: g.run + 1 }));
     play('open');
-  }, [hasGuide, rememberChoice, play]);
+  }, [hasGuide, play]);
   const explore = useCallback(() => {
     setChoice('done');
-    rememberChoice();
     play('select');
-  }, [rememberChoice, play]);
-  // Done, skipped or closed: either way the choice is answered (not offered again by itself).
+  }, [play]);
+  // Done, skipped or closed: the guide ends (it can be reopened from "Ver con guía").
   const endGuide = useCallback(() => {
     setGuide((g) => ({ ...g, open: false }));
-    rememberChoice();
-  }, [rememberChoice]);
+  }, []);
 
   // ---- One amber per viewport: the header CTA quiets while the block's CTA is visible.
   const [blockCtaInView, setBlockCtaInView] = useState(false);

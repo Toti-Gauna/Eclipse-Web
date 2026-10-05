@@ -32,6 +32,3 @@ export function buildTourSteps(demo: DemoId, steps: readonly DemoTourStep[], cop
     ];
   });
 }
-
-/** useTourSeen key: the visitor already answered "¿Cómo querés verla?" (any demo). */
-export const GUIDE_CHOICE_KEY = 'demo-choice';

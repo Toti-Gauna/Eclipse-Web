@@ -4,7 +4,7 @@
  *   0     sun fades in · moon glides over it (0.02–0.80 s)
  *   0.38  ECLIPSE letters rise, 45 ms apart · 0.66 the end line
  *   0.62  corona + glow bloom · 0.74 diamond-ring glint
- *   1.18  the moon (a disc the size of the screen) passes up and away → the page
+ *   1.18  the loading screen dissolves (sky fades, eclipse + wordmark blur out) → the page
  *   1.79  gone
  *
  * Reduced motion: the final frame, then a 260 ms fade from 120 ms (≤ 400 ms total).
