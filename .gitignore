@@ -159,3 +159,4 @@ next-env.d.ts
 
 # dev-only component labs (page.dev.tsx) and local QA
 /app/\[locale\]/lab/
+.live-shots

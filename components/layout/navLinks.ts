@@ -1,3 +1,5 @@
+import { IS_LIVE } from '@/lib/env';
+
 /**
  * Section anchors shown in the header, the phone menu and the footer, in the order the
  * v3 header lists them (Servicios · Demos · Precios · Cómo trabajamos). Labels: `nav.<id>`.
@@ -36,7 +38,10 @@ export type ChromeMode = 'landing' | 'plan' | 'portal';
 export function chromeRoute(pathname: string | null): { mode: ChromeMode; projects: boolean } {
   const path = (pathname ?? '/').replace(/\/+$/, '') || '/';
   if (path === '/portal' || path.startsWith('/portal/')) {
-    return { mode: 'portal', projects: path === '/portal/proyectos' || path.startsWith('/portal/proyectos/') };
+    const demoArea = path === '/portal/proyectos' || path.startsWith('/portal/proyectos/');
+    // Live portal: the private areas (projects, one project, requests) show the account links.
+    const liveArea = IS_LIVE && (demoArea || /^\/portal\/(proyecto|solicitudes|solicitud)$/.test(path));
+    return { mode: 'portal', projects: IS_LIVE ? liveArea : demoArea };
   }
   return { mode: path === '/plan' ? 'plan' : 'landing', projects: false };
 }

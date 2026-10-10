@@ -13,6 +13,8 @@ import { SoundBadge, SoundToggle } from '@/components/sound/SoundToggle';
 import { PrefsDisclosure } from './PrefsDisclosure';
 import { NAV_LINKS, PORTAL_ROUTES, type ChromeMode } from './navLinks';
 import { lockScroll } from '@/lib/scroll-lock';
+import { IS_LIVE } from '@/lib/env';
+import { livePaths } from '@/lib/portal/live';
 import './header.css';
 
 /**
@@ -176,9 +178,15 @@ export function MobileMenu({
                       </Link>
                     </li>
                     <li data-menu-item className="border-b border-line">
-                      <Link href={PORTAL_ROUTES.login} onClick={closeNow} className="menu-link">
-                        {t('header.exitDemo')}
-                      </Link>
+                      {IS_LIVE ? (
+                        <Link href={livePaths.requests} onClick={closeNow} className="menu-link">
+                          {t('header.myRequests')}
+                        </Link>
+                      ) : (
+                        <Link href={PORTAL_ROUTES.login} onClick={closeNow} className="menu-link">
+                          {t('header.exitDemo')}
+                        </Link>
+                      )}
                     </li>
                   </>
                 ) : null}
@@ -231,7 +239,7 @@ export function MobileMenu({
                   <Link href={PORTAL_ROUTES.login} prefetch={false} onClick={closeNow} className="hdr-login -ml-2 inline-flex">
                     <LogIn aria-hidden strokeWidth={1.5} />
                     {t('header.login')}
-                    <span className="sr-only"> {t('header.loginContext')}</span>
+                    <span className="sr-only"> {t(IS_LIVE ? 'header.loginContextLive' : 'header.loginContext')}</span>
                   </Link>
                 </div>
               </div>

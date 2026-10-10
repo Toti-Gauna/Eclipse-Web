@@ -10,6 +10,7 @@ import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
 import { LandingOnly } from './LandingOnly';
 import { PrefsDisclosure } from './PrefsDisclosure';
 import { NAV_LINKS, PORTAL_ROUTES } from './navLinks';
+import { IS_LIVE } from '@/lib/env';
 
 const BUILD_YEAR = new Date().getFullYear();
 
@@ -78,7 +79,7 @@ export function Footer() {
                   <li>
                     <Link href={PORTAL_ROUTES.login} prefetch={false} className={link}>
                       {t('header.login')}
-                      <span className="sr-only"> {t('header.loginContext')}</span>
+                      <span className="sr-only"> {t(IS_LIVE ? 'header.loginContextLive' : 'header.loginContext')}</span>
                     </Link>
                   </li>
                 </ul>
