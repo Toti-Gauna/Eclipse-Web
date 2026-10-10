@@ -10,6 +10,8 @@ nos escriba por WhatsApp.
 - Todo el contenido comercial vive en **`/content/*.json`** y todo el copy de la UI en **`/messages/*.json`**.
 - **Portal de clientes (mockup v3):** `/[locale]/portal/` dentro de la misma web, solo frontend y con datos ficticios
   rotulados; no tiene backend, login real ni persistencia (ver [Portal de clientes](#portal-de-clientes-mockup)).
+  Con `NEXT_PUBLIC_API_BASE_URL` + `NEXT_PUBLIC_PORTAL_MODE=live` el mismo portal se conecta al backend real
+  (cuentas, solicitudes de plan, proyectos, documentos): ver [docs/integration.md](docs/integration.md).
 
 ## Qué cambió en la v3 · fase 2 (demos, armador, calculadora y portal)
 
@@ -112,6 +114,8 @@ BASE_URL=http://localhost:4000/Eclipse-Web npm run test:e2e
 | `NEXT_PUBLIC_EMAIL` | Email de contacto | placeholder `hola@eclipse.example` |
 | `NEXT_PUBLIC_SITE_URL` | URL pública (canonical, hreflang, OG, JSON-LD) | `https://toti-gauna.github.io/Eclipse-Web` |
 | `NEXT_PUBLIC_BASE_PATH` | Prefijo de rutas y assets | `/Eclipse-Web` (vacío en dominio propio) |
+| `NEXT_PUBLIC_API_BASE_URL` | Origen del backend (sin `/` final). Vacío = sitio demo, sin red | vacío |
+| `NEXT_PUBLIC_PORTAL_MODE` | `live` conecta portal y solicitudes al backend (necesita la URL); si no, `demo` | `demo` |
 
 ---
 
@@ -207,7 +211,11 @@ El texto de la UI está en `messages/{es,en,pt}.json`. Las tres versiones tienen
 
 ---
 
-## Portal de clientes (mockup)
+## Portal de clientes (mockup y modo live)
+
+> Dos modos, elegidos en build: **demo** (lo de abajo; sin backend, nada sale del navegador) y **live** (conectado al
+> backend real, sin fixtures ni datos inventados; no apto para GitHub Pages ↔ Render por las cookies `SameSite=Lax`).
+> Variables, rutas, CSRF/refresh, mapeo del plan y límites: [docs/integration.md](docs/integration.md).
 
 Frontend de demostración del portal donde un cliente con proyecto confirmado va a seguir su avance. Vive en la misma
 app, con el mismo layout, header, idiomas y moneda, bajo el mismo origen (`/Eclipse-Web/es/portal/…` en Pages).

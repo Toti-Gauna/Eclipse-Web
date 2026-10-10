@@ -17,6 +17,7 @@ Static export (`output: 'export'`) deployed to GitHub Pages under `/Eclipse-Web`
 - `scripts/dev.sh <port>` — isolated `next dev` (own distDir), e.g. `scripts/dev.sh 3200` → http://localhost:3200/es/
 - `node scripts/shot.mjs <url> <outDir> --widths=360,1440 [--full] [--scroll=0,900] [--click=<css>] [--reduced] [--name=x]`
   screenshots with Playwright (prints console errors and horizontal-overflow warnings).
+- `npm run test:e2e:live` — Chromium run of the live portal against the backend's e2e server (needs `E2E_API`; skips without it).
 - Dev-only component labs: `app/[locale]/lab/<area>/page.dev.tsx` (gitignored, never exported).
 
 ## Non-negotiable rules
@@ -107,7 +108,22 @@ reachable (folded is fine, deleted is not).
 - **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in
   `/content` and `messages`. FAQ and conditions only reuse existing approved copy. A project starts after
   the seña. The builder summary is a proposal request, not a binding quote; the calculator is indicative.
-- **Client portal = frontend mockup only:** routes `/[locale]/portal/` (demo login),
+- **Client portal — two modes, chosen at build time** (`lib/env.ts`: `IS_LIVE`; details in `docs/integration.md`):
+  - **demo** (default; no `NEXT_PUBLIC_API_BASE_URL`, or mode ≠ `live`): the frontend mockup described next — no
+    backend, API, auth, persistence, uploads or emails; the site makes no network call for the portal. Everything below
+    about fixtures, the "Demo" labels and the visible notice applies to this mode only.
+  - **live** (`NEXT_PUBLIC_API_BASE_URL` + `NEXT_PUBLIC_PORTAL_MODE=live`): the portal talks to the real backend
+    (`lib/api/*`: HttpOnly cookies, CSRF in memory, one refresh + one retry on 401, Idempotency-Key reuse on retries).
+    It NEVER uses fixtures or invents data (the client DTO has no money, notes or Eclipse people: hide the section, don't
+    fill it). Live screens are client components under `components/portal/live/` with copy in `portalLive`
+    (server-only namespace, handed to the portal layout's own provider); session in `useSession()`
+    (`components/providers/SessionProvider.tsx`, requests nothing until a screen asks); real project ids are read at
+    runtime from `/portal/proyecto/?id=<uuid>` (never `generateStaticParams`). Tokens/CSRF/passwords never go to
+    storage, cookies we set or URLs; link tokens come in the URL fragment and are removed at once. "Enviar solicitud"
+    in the builder summary (`RequestAction`) sends the SELECTION, never prices (`lib/plan-request.ts`). Cross-site
+    hosting (GitHub Pages ↔ Render) is not supported in live mode.
+
+  Demo-mode mockup (unchanged): routes `/[locale]/portal/` (demo login),
   `/[locale]/portal/proyectos/` (Mis proyectos) and `/[locale]/portal/proyectos/[id]/` (detail), static
   export, same layout and tokens as the site. Fictional fixtures labeled "Demo" and the visible notice
   "Vista de demostración — datos ficticios; acceso real disponible cuando se implemente el backend." No
