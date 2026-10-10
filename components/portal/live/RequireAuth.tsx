@@ -28,7 +28,8 @@ export function RequireAuth({ children, verified = true }: { children: (client: 
 
   const anonymous = state.status === 'anonymous';
   const expired = state.status === 'anonymous' && state.expired;
-  const target = `${loginHref(here)}${expired ? `${loginHref(here).includes('?') ? '&' : '?'}expired=1` : ''}`;
+  const loggedOut = state.status === 'anonymous' && state.loggedOut === true;
+  const target = loggedOut ? loginHref(null) : `${loginHref(here)}${expired ? `${loginHref(here).includes('?') ? '&' : '?'}expired=1` : ''}`;
   useEffect(() => {
     if (anonymous) router.replace(target);
   }, [anonymous, router, target]);

@@ -78,19 +78,33 @@ export async function mailFor(email, tries = 30) {
 }
 
 /** Latest action token mailed to an address (verification or reset). */
-export async function latestToken(email, matcher = () => true) {
-  const list = (await mailFor(email)).filter(matcher);
+export async function latestToken(email, matcher = () => true, tries = 30) {
+  const list = (await mailFor(email, tries)).filter(matcher);
   const last = list[list.length - 1];
   return last?.token ?? null;
 }
 
 /** Registers + verifies a client through the public API; returns a logged-in http client and its profile. */
 export async function createVerifiedClient(email, password = 'Client-Password-2026!', displayName = 'Cliente de prueba') {
+  // The e2e database can be shared with other test servers that recreate its schema on start:
+  // a registration may vanish mid-flight. One more attempt is cheap and keeps runs reliable.
+  let lastError;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      return await createVerifiedClientOnce(attempt === 0 ? email : email.replace('@', `+${attempt}@`), password, displayName);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError;
+}
+
+async function createVerifiedClientOnce(email, password, displayName) {
   const http = new Http(apiRoot(), WEB_ORIGIN);
   await http.preauth();
   const reg = await http.request('POST', '/api/v1/auth/client/register', { body: { email, password, displayName } });
   if (reg.status !== 202) throw new Error(`register ${reg.status} ${reg.text}`);
-  const token = await latestToken(email);
+  const token = await latestToken(email, () => true, 15);
   if (!token) throw new Error('no verification mail');
   await http.preauth();
   const conf = await http.request('POST', '/api/v1/auth/client/email-verification/confirm', { body: { token } });
@@ -100,6 +114,15 @@ export async function createVerifiedClient(email, password = 'Client-Password-20
   if (login.status !== 200) throw new Error(`login ${login.status} ${login.text}`);
   http.csrf = login.json.csrfToken;
   return { http, client: login.json.client, password };
+}
+
+/** Registers an account WITHOUT verifying its email (for the "verify your email" states). */
+export async function registerUnverified(email, password = 'Client-Password-2026!') {
+  const http = new Http(apiRoot(), WEB_ORIGIN);
+  await http.preauth();
+  const reg = await http.request('POST', '/api/v1/auth/client/register', { body: { email, password } });
+  if (reg.status !== 202) throw new Error(`register ${reg.status} ${reg.text}`);
+  return { email, password };
 }
 
 /** Admin session (password + MFA). */

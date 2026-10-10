@@ -19,7 +19,7 @@ export type SessionState =
   | { status: 'disabled' }
   | { status: 'unknown' }
   | { status: 'loading' }
-  | { status: 'anonymous'; expired: boolean }
+  | { status: 'anonymous'; expired: boolean; /** The person just signed out: no "come back here" target. */ loggedOut?: boolean }
   | { status: 'authenticated'; client: ApiClientProfile }
   | { status: 'error' };
 
@@ -90,7 +90,7 @@ function LiveSession({ children }: { children: ReactNode }) {
       /* the local session is dropped either way */
     }
     asked.current = true;
-    setState({ status: 'anonymous', expired: false });
+    setState({ status: 'anonymous', expired: false, loggedOut: true });
   }, []);
 
   // The API client tells us when a refresh was refused: the session is over.

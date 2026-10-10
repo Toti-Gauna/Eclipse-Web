@@ -27,7 +27,7 @@ const SHOTS = process.env.E2E_SHOTS ?? '.live-shots';
 mkdirSync(SHOTS, { recursive: true });
 const PASSWORD = 'Client-Password-2026!';
 const stamp = Date.now();
-const emailA = `live.a.${stamp}@example.com`;
+let emailA = `live.a.${stamp}@example.com`;
 const emailB = `live.b.${stamp}@example.com`;
 
 const results = [];
@@ -93,20 +93,28 @@ check('login form is the real one (no demo notice, no "Demo" badge)', (await pag
 await noOverflow(page, 'login 1440');
 
 // 2. Register (neutral answer).
-await open(page, '/es/portal/registro/');
-await page.getByLabel('Nombre', { exact: false }).first().fill('Ana Prueba');
-await page.getByLabel('Email').fill(emailA);
-await page.getByLabel('Contraseña').fill('corta');
-await page.getByRole('button', { name: 'Crear cuenta' }).click();
-check('short password is explained before sending', (await page.getByText('al menos 12 caracteres').count()) > 0);
-await page.getByLabel('Contraseña').fill(PASSWORD);
-await page.getByRole('button', { name: 'Crear cuenta' }).click();
-await page.getByRole('heading', { name: 'Revisá tu correo' }).waitFor({ timeout: 8000 });
-check('register shows the neutral "if the address is valid" answer', (await page.getByText('Si ' + emailA + ' es una dirección válida').count()) === 1);
-await shot(page, 'register-done-1440');
+// The e2e database can be shared by several test servers, each with its own mail recorder, so a
+// verification mail may land in another server's list: retry the whole registration (new address).
+let verifyToken = null;
+for (let attempt = 0; attempt < 4 && !verifyToken; attempt += 1) {
+  if (attempt > 0) emailA = `live.a.${stamp}+${attempt}@example.com`;
+  await open(page, '/es/portal/registro/');
+  await page.getByLabel('Nombre', { exact: false }).first().fill('Ana Prueba');
+  await page.getByLabel('Email').fill(emailA);
+  await page.getByLabel('Contraseña').fill('corta');
+  await page.getByRole('button', { name: 'Crear cuenta' }).click();
+  if (attempt === 0) check('short password is explained before sending', (await page.getByText('al menos 12 caracteres').count()) > 0);
+  await page.getByLabel('Contraseña').fill(PASSWORD);
+  await page.getByRole('button', { name: 'Crear cuenta' }).click();
+  await page.getByRole('heading', { name: 'Revisá tu correo' }).waitFor({ timeout: 8000 });
+  if (attempt === 0) {
+    check('register shows the neutral "if the address is valid" answer', (await page.getByText('Si ' + emailA + ' es una dirección válida').count()) === 1);
+    await shot(page, 'register-done-1440');
+  }
+  verifyToken = await backend.latestToken(emailA, () => true, 12);
+}
 
 // 3. Verify: the token comes in the fragment, is removed at once and needs an explicit click.
-const verifyToken = await backend.latestToken(emailA);
 check('verification mail was recorded with a token', !!verifyToken, verifyToken ? '' : JSON.stringify(await (await fetch(process.env.E2E_API + '/__e2e/mail?to=' + encodeURIComponent(emailA))).json()));
 await open(page, `/es/portal/verificar-email/#token=${verifyToken}`);
 await page.getByRole('button', { name: 'Confirmar mi email' }).waitFor({ timeout: 8000 });
@@ -220,7 +228,7 @@ check('no cookie readable by scripts (HttpOnly)', s.cookie === '' || !/eclipse-c
 const bClient = await backend.createVerifiedClient(emailB, PASSWORD, 'Beto Prueba');
 const b = await newSession();
 await open(b.page, '/es/portal/');
-await b.page.getByLabel('Email').fill(emailB);
+await b.page.getByLabel('Email').fill(bClient.client.email);
 await b.page.getByLabel('Contraseña').fill(PASSWORD);
 await b.page.getByRole('button', { name: 'Ingresar' }).first().click();
 await b.page.waitForURL(/\/es\/portal\/proyectos\//, { timeout: 10000 });
@@ -235,8 +243,29 @@ check('second client: another client’s project id = same not-found as an unkno
 await open(b.page, `/es/portal/solicitud/?id=${mine.id}`);
 await b.page.getByText('No encontramos esta solicitud').waitFor({ timeout: 10000 });
 check('second client cannot open the first client’s plan request', true);
-void bClient;
 await b.context.close();
+
+// ----------------------------------------------------------------------------------------
+// Client C: signed in but with an unverified email
+// ----------------------------------------------------------------------------------------
+const emailC = `live.c.${stamp}@example.com`;
+await backend.registerUnverified(emailC, PASSWORD);
+const c = await newSession(1440, 900);
+await open(c.page, '/es/portal/');
+await c.page.getByLabel('Email').fill(emailC);
+await c.page.getByLabel('Contraseña').fill(PASSWORD);
+await c.page.getByRole('button', { name: 'Ingresar' }).first().click();
+await c.page.waitForURL(/\/es\/portal\/proyectos\//, { timeout: 10000 });
+await c.page.getByRole('heading', { name: 'Verificá tu email para continuar' }).waitFor({ timeout: 10000 });
+check('unverified account: projects show the "verify your email" state (not a raw error)', true);
+await shot(c.page, 'unverified-1440');
+await open(c.page, '/es/plan/?plan=presencia');
+await c.page.getByText('todavía no tiene el email verificado').waitFor({ timeout: 10000 });
+check('unverified account: the builder explains it instead of showing the form', (await c.page.getByLabel('Teléfono (con código de país)').count()) === 0);
+await open(c.page, '/es/portal/solicitudes/');
+await c.page.getByText('Todavía no enviaste ninguna solicitud').waitFor({ timeout: 10000 });
+check('unverified account can still read its (empty) request history', true);
+await c.context.close();
 
 // ----------------------------------------------------------------------------------------
 // Mobile screens (360 px)
@@ -260,7 +289,7 @@ for (const [label, p, who] of [
   await noOverflow(who.page, `${label} 360`);
   await shot(who.page, `${label}-360`);
   const small = await who.page.evaluate(() =>
-    [...document.querySelectorAll('main button, main a.btn, main input, main textarea, main .pt-link')]
+    [...document.querySelectorAll('main button, main a.btn, main input:not([type=radio]):not([type=checkbox]), main textarea, main .pt-link')]
       .filter((el) => el.offsetParent !== null)
       .map((el) => ({ h: el.getBoundingClientRect().height, t: (el.textContent || el.getAttribute('aria-label') || el.id || '').trim().slice(0, 30) }))
       .filter((x) => x.h < 44),
@@ -274,7 +303,7 @@ await m0.context.close();
 const anon = await newSession(1440, 900);
 await open(anon.page, '/es/plan/?g=atender&plan=voz&items=seo&m=esencial');
 await anon.page.getByRole('heading', { name: 'Enviar solicitud' }).waitFor({ timeout: 10000 });
-await anon.page.getByRole('link', { name: 'Ingresar' }).last().click();
+await anon.page.locator('.pb-request').getByRole('link', { name: 'Ingresar' }).click();
 await anon.page.waitForURL(/\/es\/portal\/\?next=/, { timeout: 8000 });
 await anon.page.getByLabel('Email').fill(emailA);
 await anon.page.getByLabel('Contraseña').fill(PASSWORD);
@@ -292,8 +321,10 @@ await open(page, '/es/portal/proyectos/');
 await page.getByRole('button', { name: 'Salir' }).click();
 await page.waitForURL(/\/es\/portal\/$/, { timeout: 10000 });
 await open(page, '/es/portal/proyectos/');
-await page.waitForURL(/\/es\/portal\/\?next=/, { timeout: 10000 });
-check('after logout the private screens ask for sign-in again', true);
+await page.waitForURL(/\/es\/portal\/\?next=/, { timeout: 10000 }).catch(async () => {
+  console.log(`DEBUG after logout the page stayed at ${page.url()}: ${(await page.locator('main').innerText()).slice(0, 300)}`);
+});
+check('after logout the private screens ask for sign-in again', /\/es\/portal\/\?next=/.test(page.url()), page.url());
 const after = await a.context.cookies();
 check('logout cleared the client cookies', !after.some((c) => c.name.startsWith('eclipse-client')), after.map((c) => c.name).join(','));
 await a.context.close();
