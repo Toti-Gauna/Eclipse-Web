@@ -1,0 +1,388 @@
+/*
+ * Live portal (v8) — the few pieces the demo portal didn't need: account bar, state panels
+ * (checking / error / needs login / unverified), form feedback, plan-request cards and the
+ * estimate ledger. Same language as portal.css: hairlines, mono readouts, ink on dawn, amber
+ * only where attention belongs. Nothing animates.
+ */
+
+/* ---- Account bar ------------------------------------------------------------ */
+.lv-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin-top: 4px;
+  border-bottom: 1px solid var(--line);
+}
+.lv-bar-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lv-bar-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 6px;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+}
+.lv-bar-link:hover {
+  color: var(--fg);
+}
+.lv-bar-link[aria-current='page'] {
+  color: var(--fg);
+  text-decoration-color: var(--corona-deep, var(--accent));
+  text-decoration-thickness: 2px;
+}
+.lv-bar-who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding-bottom: 4px;
+}
+.lv-bar-email {
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fg-muted);
+}
+@media (max-width: 479px) {
+  .lv-bar-who {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ---- State panels ----------------------------------------------------------- */
+.lv-state {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  max-width: 40rem;
+  margin-top: 28px;
+  padding: 22px 0 8px;
+  border-top: 1px solid var(--fg);
+}
+.lv-state-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.lv-state-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.lv-state-lead {
+  margin: 0;
+}
+.lv-checking {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 28px 0 0;
+}
+.lv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  margin-top: 14px;
+}
+.lv-actions .btn {
+  min-height: 44px;
+}
+.lv-linkbtn {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.pt-detail-meta .lv-linkbtn {
+  margin-left: 12px;
+  font-size: 0.8125rem;
+}
+
+/* ---- Forms ------------------------------------------------------------------ */
+.lv-optional {
+  font-weight: 400;
+  color: var(--fg-muted);
+}
+.lv-field-error {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #9b1c1c;
+}
+.lv-field-error:empty {
+  display: none;
+}
+.lv-error {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgb(155 28 28 / 0.35);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.7);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #7f1d1d;
+}
+.lv-ref,
+.lv-ref-line {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+.lv-live:empty {
+  display: none;
+}
+.lv-live {
+  margin-top: 14px;
+}
+.lv-note {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--dawn);
+  font-size: 0.875rem;
+}
+.lv-links {
+  display: grid;
+  gap: 2px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.lv-done-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lv-done-title svg {
+  flex: none;
+  color: var(--accent);
+}
+.lv-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border: 1px solid rgb(138 90 0 / 0.5);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.7);
+}
+.lv-warn svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--accent);
+}
+.lv-warn-title {
+  margin: 0 0 2px;
+  font-weight: 600;
+}
+
+/* ---- Detail pieces ---------------------------------------------------------- */
+.lv-pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.lv-actions-list {
+  display: grid;
+  gap: 14px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lv-actions-list li + li {
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.lv-update-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0 0 4px;
+}
+.lv-history {
+  margin-top: 12px;
+}
+.lv-history summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.lv-history ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lv-doc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 10px;
+}
+
+/* ---- Plan requests ---------------------------------------------------------- */
+.lv-requests {
+  display: grid;
+  gap: 16px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 900px) {
+  .lv-requests {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+.lv-request {
+  display: grid;
+  gap: 10px;
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgb(255 255 255 / 0.6);
+}
+@media (min-width: 768px) {
+  .lv-request {
+    padding: 22px 22px;
+  }
+}
+.lv-request-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.lv-request-top p {
+  margin: 0;
+}
+.lv-request-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.lv-response {
+  padding: 12px 14px;
+  border-left: 2px solid var(--corona-deep, var(--accent));
+  background: rgb(255 255 255 / 0.7);
+}
+.lv-response p {
+  margin: 0;
+}
+.lv-response .label {
+  margin-bottom: 4px;
+}
+.lv-more summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.lv-request-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.lv-cancel {
+  display: grid;
+  gap: 6px;
+}
+.lv-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+.lv-confirm p {
+  flex: 1 1 100%;
+  margin: 0;
+}
+
+/* Estimate ledger: names, dotted leaders, mono amounts. */
+.lv-ledger {
+  display: grid;
+  gap: 8px;
+}
+.lv-ledger .label {
+  margin: 0;
+}
+.lv-led-lines {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lv-led-line,
+.lv-led-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+}
+.lv-led-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.lv-led-amount,
+.lv-led-sum {
+  flex: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+}
+.lv-led-from {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+.lv-led-total {
+  padding-top: 8px;
+  border-top: 1px solid var(--line-strong);
+  font-weight: 600;
+}
+.lv-led-line .leader,
+.lv-led-total .leader {
+  flex: 1 1 auto;
+  min-width: 12px;
+}

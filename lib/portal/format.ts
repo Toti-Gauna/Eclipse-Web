@@ -22,3 +22,23 @@ export function formatDate(iso: IsoDate, locale: Locale): string {
   const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? '';
   return `${part('day')} ${part('month').replace(/\.$/, '')} ${part('year')}`;
 }
+
+const tsFormatters = new Map<Locale, Intl.DateTimeFormat>();
+
+/**
+ * A timestamp from the API (`2026-10-10T16:26:21.500Z`) as the same "02 oct 2026" readout,
+ * in the visitor's own time zone (a late-evening update must not jump to tomorrow). Only
+ * for client-side rendering: server and browser could disagree on the zone.
+ */
+export function formatTimestamp(iso: string, locale: Locale): string {
+  let fmt = tsFormatters.get(locale);
+  if (!fmt) {
+    fmt = new Intl.DateTimeFormat(localeTags[locale], { day: '2-digit', month: 'short', year: 'numeric' });
+    tsFormatters.set(locale, fmt);
+  }
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  const parts = fmt.formatToParts(date);
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? '';
+  return `${part('day')} ${part('month').replace(/\.$/, '')} ${part('year')}`;
+}

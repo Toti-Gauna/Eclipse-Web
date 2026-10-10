@@ -56,7 +56,9 @@
     "portal": "Client portal",
     "backToSite": "Back to the site",
     "myProjects": "My projects",
-    "exitDemo": "Exit the demo"
+    "exitDemo": "Exit the demo",
+    "myRequests": "My requests",
+    "loginContextLive": "to the client portal"
   },
   "currency": {
     "ARS": "Argentine pesos",
@@ -491,7 +493,67 @@
     "bonusIn": "Bonus of the {plan} package: no extra charge",
     "bonusFree": "no charge",
     "bonusDetect": "It also comes with a gift: {name}.",
-    "bonusShort": "+ Bonus: {name}, at no charge"
+    "bonusShort": "+ Bonus: {name}, at no charge",
+    "request": {
+      "label": "Request to the team",
+      "title": "Send request",
+      "intro": "We send your plan to the team from here and it’s saved in your account. We reply with the next steps. WhatsApp is still available below.",
+      "checking": "Checking your session…",
+      "sessionError": "We couldn’t check your session. Try again or use WhatsApp.",
+      "anonymous": "To send the request you need an account. Sign in or create one in a minute: your plan is kept in the link and you pick up where you left off.",
+      "keepsPlan": "We don’t store your selection on any server until you send it.",
+      "login": "Sign in",
+      "register": "Create account",
+      "unverified": "Your account ({email}) doesn’t have a verified email yet, and we need it to take the request. Open the link in the email we sent you.",
+      "resend": "Send me a new link",
+      "sendingLink": "Sending…",
+      "linkSent": "Done, the email is on its way. It can take a few minutes.",
+      "recheck": "I already verified",
+      "drift": "The prices on this site and the team’s may differ slightly. The estimate that gets stored is the team’s.",
+      "name": "Your name",
+      "phone": "Phone (with country code)",
+      "phoneHint": "With the + sign and your country code, for example +54 9 223 555 0000.",
+      "note": "Message for the team",
+      "optional": "optional",
+      "errors": {
+        "name": {
+          "required": "Enter your name.",
+          "long": "Use up to {max} characters."
+        },
+        "phone": {
+          "required": "Enter a phone number so the team can reach you.",
+          "format": "Write it with + and the country code, digits only: +54 9 223 555 0000."
+        },
+        "message": {
+          "long": "The message can be up to {max} characters."
+        },
+        "offline": "We couldn’t reach the server, so the request wasn’t confirmed.",
+        "rateLimited": "Too many attempts, or too many open requests. Wait a moment or message us on WhatsApp.",
+        "rateLimitedFor": "Too many attempts. Try again in {seconds, plural, one {# second} other {# seconds}}.",
+        "unavailable": "The server isn’t available right now. The request wasn’t confirmed.",
+        "sessionExpired": "Your session expired. Sign in again: your plan is kept in the link.",
+        "forbidden": "We can’t take it yet: verify your email first.",
+        "notFound": "We couldn’t find the service. Try later or use WhatsApp.",
+        "conflict": "We couldn’t save it: something changed on the team’s side. Review the summary and send it again.",
+        "catalogChanged": "We updated the prices while you were building your plan. Check the total and send it again.",
+        "invalid": "The server didn’t accept the details. Check your selection, name and phone.",
+        "tooLarge": "The message is too long.",
+        "unknown": "Something went wrong and the request wasn’t confirmed."
+      },
+      "retryHint": "Trying again is safe: it won’t create a duplicate request.",
+      "reference": "Reference for support: {id}",
+      "submit": "Send request",
+      "sending": "Sending…",
+      "retry": "Try again",
+      "notBinding": "This is a request for a proposal, not a quote or a charge. Scope and final price are confirmed in writing.",
+      "sent": "Request sent",
+      "sentAgain": "This request was already saved",
+      "sentBody": "Thanks, {name}. The team will review it and reply; the reply shows up in “My requests”.",
+      "sentEstimate": "Stored estimate: {amount} one-time (provisional).",
+      "sentDiffers": "This is the team’s calculation and may differ from the total you saw here. The team’s figure is the one that counts.",
+      "viewRequest": "View my request",
+      "another": "Send another"
+    }
   },
   "pricing": {
     "title": "What it costs,<br></br> and how you pay.",
@@ -4830,6 +4892,347 @@
           "body": "See this guide again whenever you want. It's remembered only in this browser; in the real portal, in your account."
         }
       }
+    }
+  },
+  "portalLive": {
+    "meta": {
+      "loginLiveTitle": "Sign in to the client portal — Eclipse",
+      "loginLiveDescription": "Sign in to see your projects, your plan requests and the documents we share with you.",
+      "projectsLiveTitle": "My projects — Eclipse",
+      "projectsLiveDescription": "The stage, next milestone, updates and documents of your projects with Eclipse.",
+      "registerTitle": "Create an account — Eclipse",
+      "registerDescription": "Create your account to send plan requests and follow your project.",
+      "verifyTitle": "Verify your email — Eclipse",
+      "verifyDescription": "Confirm your email to send plan requests and see your projects.",
+      "resetTitle": "Reset your password — Eclipse",
+      "resetDescription": "Ask for a link to choose a new password.",
+      "requestsTitle": "My requests — Eclipse",
+      "requestsDescription": "The plan requests you sent, their status and the team’s reply.",
+      "requestTitle": "Plan request — Eclipse",
+      "requestDescription": "A plan request: what you asked for, the stored estimate and the team’s reply.",
+      "projectTitle": "Project — Eclipse",
+      "projectDescription": "Stage, timeline, scope, changes and documents of your project."
+    },
+    "notLive": {
+      "title": "This screen needs the connected portal",
+      "body": "This version of the site is a demonstration: it is not connected to a server, so there are no real accounts or requests.",
+      "cta": "See the example portal"
+    },
+    "demoOff": {
+      "title": "This example view isn’t available",
+      "body": "This site is connected to the server: here you only see your real projects.",
+      "cta": "Go to my projects"
+    },
+    "common": {
+      "loading": "Loading…",
+      "retry": "Try again",
+      "optional": "optional"
+    },
+    "nav": {
+      "areas": "Your account",
+      "projects": "My projects",
+      "requests": "My requests",
+      "login": "Sign in",
+      "logout": "Sign out",
+      "leaving": "Signing out…",
+      "signedInAs": "Signed in: {email}"
+    },
+    "errors": {
+      "title": "We couldn’t complete that",
+      "offline": "Can’t reach the server. Check your connection and try again.",
+      "rateLimited": "Too many attempts in a row. Wait a moment and try again.",
+      "rateLimitedFor": "Too many attempts in a row. Try again in {seconds, plural, one {# second} other {# seconds}}.",
+      "unavailable": "The server isn’t available right now. Try again in a few minutes.",
+      "sessionExpired": "Your session expired. Sign in again to continue.",
+      "forbidden": "This account can’t do that yet. If you haven’t verified your email, do that first.",
+      "notFound": "We couldn’t find what you were looking for.",
+      "conflict": "Something changed in the meantime. Refresh the screen and try again.",
+      "invalid": "Check the details: the server didn’t accept them.",
+      "tooLarge": "That’s too large to send.",
+      "unknown": "Something went wrong. Try again.",
+      "ref": "Reference for support: {id}"
+    },
+    "session": {
+      "checking": "Checking your session…",
+      "errorTitle": "We couldn’t check your session",
+      "errorBody": "The server seems unreachable. You haven’t been signed out: try again.",
+      "needLoginTitle": "Sign in to see this",
+      "needLoginBody": "We’ll take you to sign-in and bring you back here.",
+      "expiredTitle": "Your session expired",
+      "expiredBody": "For your safety we closed the session. Sign in again and pick up where you left off."
+    },
+    "unverified": {
+      "title": "Verify your email to continue",
+      "body": "Your account ({email}) doesn’t have a verified email yet. Until then we can’t show projects or take requests. Open the link in the email we sent you.",
+      "resend": "Send me a new link",
+      "recheck": "I already verified",
+      "help": "More help"
+    },
+    "login": {
+      "label": "Client portal",
+      "title": "Follow your project, <em>stage by stage</em>.",
+      "lead": "Sign in to see the stage, next milestone, updates and documents of your projects, and the status of your plan requests.",
+      "formLabel": "Access",
+      "formTitle": "Sign in",
+      "nextHint": "Sign in and we’ll bring you back to your plan, just as you left it.",
+      "email": "Email",
+      "emailInvalid": "Enter a valid email, like name@company.com.",
+      "password": "Password",
+      "passwordRequired": "Enter your password.",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "invalid": "The email and password don’t match. Check them and try again.",
+      "forgot": "I forgot my password",
+      "noAccount": "Don’t have an account yet?",
+      "createAccount": "Create an account",
+      "alreadyTitle": "You’re already signed in",
+      "alreadyBody": "You’re signed in as {email}.",
+      "helpTitle": "Already working with Eclipse?",
+      "help": "Your project shows up here once the team links it to your account, after the deposit. If you can’t see it, message us.",
+      "helpCta": "Message us on WhatsApp",
+      "helpMessage": "Hi Eclipse. I’d like to know how my project is going."
+    },
+    "register": {
+      "crumb": "Create account",
+      "label": "New account",
+      "title": "Create your account, <em>send your plan</em>.",
+      "lead": "With an account you send your plan to the team, see how the request is going and, once there’s a project, follow it from here. It’s free and commits you to nothing.",
+      "formLabel": "Account",
+      "formTitle": "Create account",
+      "formHint": "Then we’ll email you to confirm the address.",
+      "name": "Name",
+      "nameLong": "Use up to {max} characters.",
+      "passwordHint": "At least {min} characters. A long phrase works.",
+      "passwordShort": "The password needs at least {min} characters.",
+      "passwordLong": "The password can be up to {max} characters.",
+      "rejected": "We couldn’t use those details. Check the email and password.",
+      "submit": "Create account",
+      "submitting": "Creating…",
+      "haveAccount": "Already have an account?",
+      "doneTitle": "Check your email",
+      "doneBody": "If {email} is a valid address, we sent it a link to confirm it.",
+      "doneNote": "It can take a few minutes; check spam too. Once the email is confirmed, sign in.",
+      "noMail": "I didn’t get the email"
+    },
+    "verify": {
+      "crumb": "Verify email",
+      "label": "Verification",
+      "title": "Confirm your <em>email</em>.",
+      "lead": "It’s the last step to send plan requests and see your projects. The link works only once.",
+      "formLabel": "Email",
+      "confirmTitle": "One click and done",
+      "confirmBody": "Press the button to confirm your address. We don’t do it automatically when the link opens.",
+      "confirm": "Confirm my email",
+      "confirming": "Confirming…",
+      "doneTitle": "Email verified",
+      "doneBody": "Done: you can now send plan requests and see your projects.",
+      "invalidTitle": "This link no longer works",
+      "invalidBody": "It expired, was already used or you asked for a newer one. Ask for another below.",
+      "noTokenTitle": "We couldn’t find the verification link",
+      "noTokenBody": "Open the full link from the email, or ask for a new one below.",
+      "requestTitle": "Ask for a new link",
+      "requestBody": "Enter your email and, if it has an unverified account, we’ll send a new link.",
+      "requestSigned": "We’ll send a new link to {email}. The previous one stops working.",
+      "send": "Send link",
+      "sending": "Sending…",
+      "requested": "Done. If there’s an account to verify, the email is on its way (it can take a few minutes).",
+      "alreadyTitle": "Your email is already verified",
+      "alreadyBody": "There’s nothing else to do here."
+    },
+    "reset": {
+      "crumb": "Reset password",
+      "label": "Recover access",
+      "title": "Choose a <em>new password</em>.",
+      "lead": "We email you a link. It lasts 30 minutes and works once. Changing the password signs you out everywhere.",
+      "formLabel": "Password",
+      "requestTitle": "Ask for the link",
+      "requestBody": "Enter your account’s email.",
+      "send": "Send link",
+      "sending": "Sending…",
+      "backToLogin": "Back to sign in",
+      "requestedTitle": "Check your email",
+      "requestedBody": "If that email has an account, we sent you a link to choose a new password.",
+      "requestedNote": "It can take a few minutes; check spam too. If you ask for another, only the latest works.",
+      "invalidTitle": "This link no longer works",
+      "invalidBody": "It expired or was already used. Ask for a new one.",
+      "newTitle": "Your new password",
+      "newBody": "Pick one you don’t use anywhere else.",
+      "newPassword": "New password",
+      "repeatPassword": "Repeat the password",
+      "mismatch": "The two passwords must match.",
+      "save": "Save password",
+      "saving": "Saving…",
+      "doneTitle": "Password updated",
+      "doneBody": "We signed out your open sessions. Sign in with the new password."
+    },
+    "projects": {
+      "title": "My projects",
+      "helloAnon": "Your projects.",
+      "loading": "Loading your projects…",
+      "count": "{count, plural, =0 {No projects with Eclipse} one {# project with Eclipse} other {# projects with Eclipse}}",
+      "total": "{count, plural, one {# project} other {# projects}}",
+      "tableCaption": "Your projects with Eclipse",
+      "columns": {
+        "plannedEnd": "Estimated delivery"
+      },
+      "empty": {
+        "title": "You don’t have any projects yet.",
+        "body": "Your projects appear here once the team links them to your account, after the deposit. In the meantime you can follow your plan requests.",
+        "cta": "Message us on WhatsApp",
+        "message": "Hi Eclipse. I signed in to the portal and I can’t see my project yet.",
+        "requests": "See my requests"
+      }
+    },
+    "detail": {
+      "crumb": "Project",
+      "notFoundTitle": "We couldn’t find this project",
+      "notFoundBody": "The link may be incomplete or the project may not be linked to your account. Go back to your list.",
+      "refresh": "Refresh",
+      "role": {
+        "client_admin": "You manage this project",
+        "client_collaborator": "You collaborate on this project"
+      },
+      "party": {
+        "eclipse": "Eclipse",
+        "client": "Your team"
+      },
+      "startedOn": "Started {date}",
+      "pausedNote": "Work is on hold. Message us and we’ll tell you what’s needed to resume.",
+      "closedOn": "Closed {date}.",
+      "closedNote": "The project is closed.",
+      "noDate": "No date yet",
+      "noMilestone": "No next milestone has been published yet.",
+      "noMilestoneNote": "It shows up here once the team publishes it.",
+      "actionUntitled": "Request from the team",
+      "due": "Due",
+      "noDue": "No deadline",
+      "actionHow": "Reply through the agreed channel; the team marks it as resolved on their side.",
+      "actionCta": "Reply on WhatsApp",
+      "actionMessage": "Hi Eclipse. I’m writing about what you asked for in my project.",
+      "timelineNoDates": "Dates per stage aren’t published: only the estimated delivery.",
+      "follow": {
+        "intro": "Every dated update, the milestones, scope, requested changes and documents."
+      },
+      "tabs": {
+        "milestones": "Milestones"
+      },
+      "byEclipse": "Eclipse",
+      "updates": {
+        "empty": "No updates have been published yet.",
+        "actionOpen": "Request for you",
+        "resolved": "Resolved"
+      },
+      "milestones": {
+        "empty": "No milestones have been published yet.",
+        "status": {
+          "upcoming": "Upcoming",
+          "current": "In progress",
+          "done": "Done"
+        },
+        "plannedOn": "Planned: {date}",
+        "doneOn": "Completed {date}"
+      },
+      "scope": {
+        "history": "Earlier scope versions ({count})",
+        "closedTitle": "Closed or rejected requests",
+        "scheduleImpact": "Schedule impact",
+        "days": "{count, plural, one {# day} other {# days}}",
+        "requestedOn": "Requested {date}",
+        "decidedOn": "Decided {date}",
+        "requestMessage": "Hi Eclipse. I’d like to request a change to the project “{name}”."
+      },
+      "facts": {
+        "role": "Your role"
+      }
+    },
+    "docs": {
+      "title": "Documents and deliverables",
+      "loading": "Loading documents…",
+      "empty": "The team hasn’t shared any documents for this project yet.",
+      "note": "Documents open only with your session: there are no public links.",
+      "kind": "Type",
+      "date": "Date",
+      "file": "File",
+      "kinds": {
+        "contract": "Contract",
+        "quote": "Quote",
+        "invoice": "Invoice",
+        "deliverable": "Deliverable",
+        "guide": "Guide",
+        "other": "Other"
+      },
+      "download": "Download",
+      "downloading": "Downloading…",
+      "done": "Download ready"
+    },
+    "requests": {
+      "crumb": "My requests",
+      "detailCrumb": "Request",
+      "label": "Plan requests",
+      "title": "Your requests.",
+      "lead": "What you sent from “Build your plan” and what the team replied.",
+      "count": "{count, plural, =0 {You haven’t sent any requests yet} one {# request sent} other {# requests sent}}",
+      "loading": "Loading your requests…",
+      "empty": {
+        "title": "You haven’t sent any requests yet.",
+        "body": "Build your plan and, in the summary, send it to the team. You see the status and reply here.",
+        "cta": "Build your plan"
+      },
+      "notFoundTitle": "We couldn’t find this request",
+      "notFoundBody": "The link may be incomplete or the request may not be yours. Go back to your list.",
+      "backToList": "Back to my requests",
+      "sentOn": "Sent {date}",
+      "noPieces": "Request with no pieces",
+      "packageHead": "{plan} package",
+      "status": {
+        "submitted": "Sent",
+        "under_review": "Under review",
+        "reviewed": "Reviewed",
+        "accepted": "Accepted",
+        "rejected": "Not moving forward",
+        "cancelled": "Cancelled"
+      },
+      "statusHelp": {
+        "submitted": "It reached the team. Nobody has reviewed it yet.",
+        "under_review": "The team is looking at it.",
+        "reviewed": "The team reviewed it. We’ll coordinate next steps with you.",
+        "accepted": "The team accepted the proposal. This isn’t a quote or a charge: scope and final price are confirmed in writing.",
+        "rejected": "We can’t move forward with this proposal for now. You can build another or message us.",
+        "cancelled": "You cancelled it. Nothing will be done with it."
+      },
+      "responseLabel": "Team reply",
+      "contact": "Contact",
+      "vertical": "Business type",
+      "goals": "Goals",
+      "goalNames": {
+        "encontrar": "Be found",
+        "atender": "Answer 24/7",
+        "ordenar": "Organize bookings and orders",
+        "vender": "Sell online",
+        "fidelizar": "Keep customers coming back",
+        "app": "Have my own app",
+        "diagnostico": "A diagnosis first"
+      },
+      "note": "Your message",
+      "seeEstimate": "See the stored estimate",
+      "open": "View request",
+      "estimateLabel": "Stored estimate",
+      "from": "from",
+      "total": "Estimated one-time payment",
+      "founder": "Founder price",
+      "range": "The package goes up to {to} depending on scope.",
+      "maintenanceMonth": "{name} maintenance: {price} per month.",
+      "maintenanceYear": "{name} maintenance: {price} per year ({months} months charged).",
+      "maintenanceNone": "No maintenance.",
+      "voiceUsage": "Voice agent: {price} per month, plus minutes by usage.",
+      "estimateNote": "This is a provisional estimate calculated by the team, not a quote. Scope and final price are confirmed in writing.",
+      "cancel": "Cancel this request",
+      "cancelAsk": "Cancel the request? This can’t be undone.",
+      "cancelYes": "Yes, cancel",
+      "cancelNo": "No, keep it",
+      "cancelling": "Cancelling…",
+      "cancelled": "Request cancelled.",
+      "cancelConflict": "The request changed in the meantime (the team updated it). Check its status and, if you still want to, cancel it again."
     }
   },
   "shortcuts": {

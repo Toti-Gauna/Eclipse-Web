@@ -33,6 +33,7 @@ export function StepSummary({
   message,
   shareUrl,
   bonusName = null,
+  request = null,
   Sub,
 }: {
   quote: Quote;
@@ -48,6 +49,8 @@ export function StepSummary({
   shareUrl: () => string;
   /** The chosen package's bonus piece (no price): "Incluido sin cargo: …". */
   bonusName?: string | null;
+  /** Live mode only: the server-side "Enviar solicitud" block (the WhatsApp action stays in the dock). */
+  request?: React.ReactNode;
   Sub: 'h3' | 'h4';
 }) {
   const t = useTranslations('builder');
@@ -211,6 +214,8 @@ export function StepSummary({
           ) : null}
         </section>
       </div>
+
+      {request}
 
       <div className="pb-share">
         <CopyButton

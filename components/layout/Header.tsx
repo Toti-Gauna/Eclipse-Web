@@ -13,6 +13,8 @@ import { PrefsMenu } from './PrefsMenu';
 import { MobileMenu } from './MobileMenu';
 import { NAV_LINKS, PORTAL_ROUTES, chromeRoute } from './navLinks';
 import { usePageCtaInView } from './usePageCtaInView';
+import { IS_LIVE } from '@/lib/env';
+import { livePaths } from '@/lib/portal/live';
 import './header.css';
 
 /**
@@ -124,9 +126,15 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href={PORTAL_ROUTES.login} className="hdr-link inline-flex">
-                          {t('header.exitDemo')}
-                        </Link>
+                        {IS_LIVE ? (
+                          <Link href={livePaths.requests} className="hdr-link inline-flex">
+                            {t('header.myRequests')}
+                          </Link>
+                        ) : (
+                          <Link href={PORTAL_ROUTES.login} className="hdr-link inline-flex">
+                            {t('header.exitDemo')}
+                          </Link>
+                        )}
                       </li>
                       <li aria-hidden className="mx-1 flex">
                         <span className="hdr-rule" />
@@ -169,7 +177,7 @@ export function Header() {
                 <Link href={PORTAL_ROUTES.login} prefetch={false} className="hdr-login hidden lg:inline-flex">
                   <LogIn aria-hidden strokeWidth={1.5} />
                   {t('header.login')}
-                  <span className="sr-only"> {t('header.loginContext')}</span>
+                  <span className="sr-only"> {t(IS_LIVE ? 'header.loginContextLive' : 'header.loginContext')}</span>
                 </Link>
                 <span aria-hidden className="hdr-rule mx-1 hidden lg:block" />
                 {mode === 'landing' ? (

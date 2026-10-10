@@ -1248,6 +1248,165 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* "Enviar solicitud" (live mode): the server-side request              */
+/* ------------------------------------------------------------------ */
+.pb-request {
+  --tick: 10px;
+  --tick-c: var(--pb-tick);
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  padding: 1rem 1rem 1.1rem;
+  background-color: var(--pb-faint);
+}
+.pb-request-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--accent);
+}
+.pb-request-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.pb-request-text {
+  margin: 0;
+  font-size: 0.925rem;
+  line-height: 1.5;
+  color: var(--fg);
+}
+.pb-request-fine {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.pb-request-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.25rem;
+}
+.pb-request-actions .btn {
+  min-height: 44px;
+}
+.pb-request-form {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 0.4rem;
+}
+.pb-request-field {
+  display: grid;
+  gap: 0.35rem;
+}
+.pb-request-field label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+.pb-request-opt {
+  font-weight: 400;
+  color: var(--fg-muted);
+}
+.pb-request-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--pb-control);
+  border-radius: 12px;
+  background: var(--pb-well);
+  color: var(--fg);
+  font: inherit;
+  font-size: 1rem; /* ≥16px: no zoom on iOS */
+}
+.pb-request-input:hover {
+  border-color: var(--fg);
+}
+.pb-request-input[aria-invalid='true'] {
+  border-color: var(--accent);
+}
+.pb-request-textarea {
+  resize: vertical;
+  min-height: 5.5rem;
+}
+.pb-request-error {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--accent);
+}
+.pb-request-error:empty {
+  display: none;
+}
+.pb-request-status:empty {
+  display: none;
+}
+.pb-request-status:focus-visible {
+  outline-offset: 4px;
+}
+.pb-request-fail {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--pb-amber-edge);
+  border-radius: 12px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.pb-request-fail p {
+  margin: 0;
+}
+.pb-request-ref {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+.pb-request-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--fg);
+}
+.pb-request-warn svg {
+  flex: none;
+  margin-top: 0.15rem;
+  color: var(--accent);
+}
+.pb-request-submit {
+  justify-self: start;
+  min-height: 48px;
+}
+.pb-request-ok {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-weight: 600;
+}
+.pb-request-ok svg {
+  color: var(--accent);
+}
+.pb-request-done {
+  display: grid;
+  gap: 0.4rem;
+}
+@media (max-width: 479px) {
+  .pb-request-submit {
+    justify-self: stretch;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Dock                                                                 */
 /* ------------------------------------------------------------------ */
 .pb-dock-wrap {

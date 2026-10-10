@@ -56,7 +56,9 @@
     "portal": "Portal do cliente",
     "backToSite": "Voltar ao site",
     "myProjects": "Meus projetos",
-    "exitDemo": "Sair da demo"
+    "exitDemo": "Sair da demo",
+    "myRequests": "Minhas solicitações",
+    "loginContextLive": "ao portal de clientes"
   },
   "currency": {
     "ARS": "Pesos argentinos",
@@ -491,7 +493,67 @@
     "bonusIn": "Bônus do pacote {plan}: sem custo extra",
     "bonusFree": "sem custo",
     "bonusDetect": "E ainda vem de presente: {name}.",
-    "bonusShort": "+ Bônus: {name}, sem custo"
+    "bonusShort": "+ Bônus: {name}, sem custo",
+    "request": {
+      "label": "Solicitação à equipe",
+      "title": "Enviar solicitação",
+      "intro": "Enviamos seu plano à equipe daqui e ele fica registrado na sua conta. Respondemos com os próximos passos. O WhatsApp continua disponível abaixo.",
+      "checking": "Verificando sua sessão…",
+      "sessionError": "Não conseguimos verificar sua sessão. Tente de novo ou use o WhatsApp.",
+      "anonymous": "Para enviar a solicitação você precisa de uma conta. Entre ou crie uma em um minuto: seu plano fica guardado no link e você retoma de onde parou.",
+      "keepsPlan": "Não guardamos sua seleção em nenhum servidor até você enviar.",
+      "login": "Entrar",
+      "register": "Criar conta",
+      "unverified": "Sua conta ({email}) ainda não tem o e-mail verificado, e precisamos dele para receber a solicitação. Abra o link do e-mail que enviamos.",
+      "resend": "Enviar outro link",
+      "sendingLink": "Enviando…",
+      "linkSent": "Pronto, o e-mail está a caminho. Pode levar alguns minutos.",
+      "recheck": "Já verifiquei",
+      "drift": "Os preços deste site e os da equipe podem diferir um pouco. A estimativa registrada é a da equipe.",
+      "name": "Seu nome",
+      "phone": "Telefone (com código do país)",
+      "phoneHint": "Com o sinal + e o código do seu país, por exemplo +55 11 91234 5678.",
+      "note": "Mensagem para a equipe",
+      "optional": "opcional",
+      "errors": {
+        "name": {
+          "required": "Digite seu nome.",
+          "long": "Use até {max} caracteres."
+        },
+        "phone": {
+          "required": "Digite um telefone para a equipe poder falar com você.",
+          "format": "Escreva com + e o código do país, só números: +55 11 91234 5678."
+        },
+        "message": {
+          "long": "A mensagem aceita até {max} caracteres."
+        },
+        "offline": "Não conseguimos conectar ao servidor, então a solicitação não foi confirmada.",
+        "rateLimited": "Muitas tentativas ou solicitações abertas demais. Aguarde um momento ou fale com a gente no WhatsApp.",
+        "rateLimitedFor": "Muitas tentativas. Tente de novo em {seconds, plural, one {# segundo} other {# segundos}}.",
+        "unavailable": "O servidor não está disponível agora. A solicitação não foi confirmada.",
+        "sessionExpired": "Sua sessão expirou. Entre de novo: seu plano fica guardado no link.",
+        "forbidden": "Ainda não podemos recebê-la: verifique seu e-mail primeiro.",
+        "notFound": "Não encontramos o serviço. Tente mais tarde ou use o WhatsApp.",
+        "conflict": "Não conseguimos registrar: algo mudou do lado da equipe. Revise o resumo e envie de novo.",
+        "catalogChanged": "Atualizamos os preços enquanto você montava o plano. Confira o total e envie de novo.",
+        "invalid": "O servidor não aceitou os dados. Revise sua seleção, o nome e o telefone.",
+        "tooLarge": "A mensagem é longa demais.",
+        "unknown": "Algo deu errado e a solicitação não foi confirmada."
+      },
+      "retryHint": "Tentar de novo é seguro: não cria uma solicitação duplicada.",
+      "reference": "Referência para o suporte: {id}",
+      "submit": "Enviar solicitação",
+      "sending": "Enviando…",
+      "retry": "Tentar de novo",
+      "notBinding": "É uma solicitação de proposta, não um orçamento nem uma cobrança. O escopo e o preço final são confirmados por escrito.",
+      "sent": "Solicitação enviada",
+      "sentAgain": "Esta solicitação já estava registrada",
+      "sentBody": "Obrigado, {name}. A equipe analisa e responde; a resposta aparece em “Minhas solicitações”.",
+      "sentEstimate": "Estimativa registrada: {amount} de pagamento único (provisória).",
+      "sentDiffers": "É o cálculo da equipe e pode diferir do total que você viu aqui. Vale o da equipe.",
+      "viewRequest": "Ver minha solicitação",
+      "another": "Enviar outra"
+    }
   },
   "pricing": {
     "title": "Quanto custa<br></br> e como você paga.",
@@ -4830,6 +4892,347 @@
           "body": "Veja este guia de novo quando quiser. Ele fica lembrado só neste navegador; no portal real, na sua conta."
         }
       }
+    }
+  },
+  "portalLive": {
+    "meta": {
+      "loginLiveTitle": "Entrar no portal de clientes — Eclipse",
+      "loginLiveDescription": "Entre para ver seus projetos, suas solicitações de plano e os documentos que compartilhamos com você.",
+      "projectsLiveTitle": "Meus projetos — Eclipse",
+      "projectsLiveDescription": "A etapa, o próximo marco, as atualizações e os documentos dos seus projetos com a Eclipse.",
+      "registerTitle": "Criar conta — Eclipse",
+      "registerDescription": "Crie sua conta para enviar solicitações de plano e acompanhar seu projeto.",
+      "verifyTitle": "Verificar e-mail — Eclipse",
+      "verifyDescription": "Confirme seu e-mail para enviar solicitações de plano e ver seus projetos.",
+      "resetTitle": "Recuperar senha — Eclipse",
+      "resetDescription": "Peça um link para escolher uma nova senha.",
+      "requestsTitle": "Minhas solicitações — Eclipse",
+      "requestsDescription": "As solicitações de plano que você enviou, o status e a resposta da equipe.",
+      "requestTitle": "Solicitação de plano — Eclipse",
+      "requestDescription": "Uma solicitação de plano: o que você pediu, a estimativa registrada e a resposta da equipe.",
+      "projectTitle": "Projeto — Eclipse",
+      "projectDescription": "Etapa, cronograma, escopo, mudanças e documentos do seu projeto."
+    },
+    "notLive": {
+      "title": "Esta tela precisa do portal conectado",
+      "body": "Esta versão do site é uma demonstração: não está conectada a um servidor, então não há contas nem solicitações reais.",
+      "cta": "Ver o portal de exemplo"
+    },
+    "demoOff": {
+      "title": "Esta visão de exemplo não está disponível",
+      "body": "Este site está conectado ao servidor: aqui você só vê seus projetos reais.",
+      "cta": "Ir para meus projetos"
+    },
+    "common": {
+      "loading": "Carregando…",
+      "retry": "Tentar de novo",
+      "optional": "opcional"
+    },
+    "nav": {
+      "areas": "Sua conta",
+      "projects": "Meus projetos",
+      "requests": "Minhas solicitações",
+      "login": "Entrar",
+      "logout": "Sair",
+      "leaving": "Saindo…",
+      "signedInAs": "Sessão: {email}"
+    },
+    "errors": {
+      "title": "Não conseguimos concluir a ação",
+      "offline": "Sem conexão com o servidor. Verifique sua internet e tente de novo.",
+      "rateLimited": "Muitas tentativas seguidas. Aguarde um momento e tente de novo.",
+      "rateLimitedFor": "Muitas tentativas seguidas. Tente de novo em {seconds, plural, one {# segundo} other {# segundos}}.",
+      "unavailable": "O servidor não está disponível agora. Tente de novo em alguns minutos.",
+      "sessionExpired": "Sua sessão expirou. Entre de novo para continuar.",
+      "forbidden": "Esta conta ainda não pode fazer isso. Se você não verificou seu e-mail, faça isso primeiro.",
+      "notFound": "Não encontramos o que você procurava.",
+      "conflict": "Algo mudou nesse meio tempo. Atualize a tela e tente de novo.",
+      "invalid": "Revise os dados: o servidor não os aceitou.",
+      "tooLarge": "O envio é grande demais.",
+      "unknown": "Algo deu errado. Tente de novo.",
+      "ref": "Referência para o suporte: {id}"
+    },
+    "session": {
+      "checking": "Verificando sua sessão…",
+      "errorTitle": "Não conseguimos verificar sua sessão",
+      "errorBody": "O servidor parece inacessível. Você não foi desconectado: tente de novo.",
+      "needLoginTitle": "Entre para ver isto",
+      "needLoginBody": "Levamos você ao login e você volta aqui ao terminar.",
+      "expiredTitle": "Sua sessão expirou",
+      "expiredBody": "Por segurança encerramos a sessão. Entre de novo e continue de onde parou."
+    },
+    "unverified": {
+      "title": "Verifique seu e-mail para continuar",
+      "body": "Sua conta ({email}) ainda não tem o e-mail verificado. Até lá não podemos mostrar projetos nem receber solicitações. Abra o link do e-mail que enviamos.",
+      "resend": "Enviar outro link",
+      "recheck": "Já verifiquei",
+      "help": "Mais ajuda"
+    },
+    "login": {
+      "label": "Portal de clientes",
+      "title": "Acompanhe seu projeto, <em>etapa por etapa</em>.",
+      "lead": "Entre para ver a etapa, o próximo marco, as atualizações e os documentos dos seus projetos, e o status das suas solicitações de plano.",
+      "formLabel": "Acesso",
+      "formTitle": "Entrar",
+      "nextHint": "Entre e voltamos ao seu plano, do jeito que você deixou.",
+      "email": "E-mail",
+      "emailInvalid": "Digite um e-mail válido, como nome@empresa.com.",
+      "password": "Senha",
+      "passwordRequired": "Digite sua senha.",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "invalid": "O e-mail e a senha não conferem. Revise e tente de novo.",
+      "forgot": "Esqueci minha senha",
+      "noAccount": "Ainda não tem conta?",
+      "createAccount": "Criar conta",
+      "alreadyTitle": "Você já entrou",
+      "alreadyBody": "Sua sessão está aberta como {email}.",
+      "helpTitle": "Já trabalha com a Eclipse?",
+      "help": "Seu projeto aparece aqui quando a equipe o vincula à sua conta, depois do sinal. Se não o vir, fale com a gente.",
+      "helpCta": "Fale com a gente no WhatsApp",
+      "helpMessage": "Olá Eclipse. Quero saber como está o meu projeto."
+    },
+    "register": {
+      "crumb": "Criar conta",
+      "label": "Conta nova",
+      "title": "Crie sua conta, <em>envie seu plano</em>.",
+      "lead": "Com uma conta você envia seu plano à equipe, vê como a solicitação avança e, quando houver projeto, acompanha por aqui. É grátis e não compromete nada.",
+      "formLabel": "Conta",
+      "formTitle": "Criar conta",
+      "formHint": "Depois enviamos um e-mail para confirmar o endereço.",
+      "name": "Nome",
+      "nameLong": "Use até {max} caracteres.",
+      "passwordHint": "Mínimo de {min} caracteres. Uma frase longa funciona.",
+      "passwordShort": "A senha precisa de pelo menos {min} caracteres.",
+      "passwordLong": "A senha aceita até {max} caracteres.",
+      "rejected": "Não conseguimos usar esses dados. Revise o e-mail e a senha.",
+      "submit": "Criar conta",
+      "submitting": "Criando…",
+      "haveAccount": "Já tem conta?",
+      "doneTitle": "Confira seu e-mail",
+      "doneBody": "Se {email} for um endereço válido, enviamos um link para confirmá-lo.",
+      "doneNote": "Pode levar alguns minutos; olhe também o spam. Com o e-mail confirmado, você entra.",
+      "noMail": "Não recebi o e-mail"
+    },
+    "verify": {
+      "crumb": "Verificar e-mail",
+      "label": "Verificação",
+      "title": "Confirme seu <em>e-mail</em>.",
+      "lead": "É o último passo para enviar solicitações de plano e ver seus projetos. O link funciona uma única vez.",
+      "formLabel": "E-mail",
+      "confirmTitle": "Um clique e pronto",
+      "confirmBody": "Toque o botão para confirmar seu endereço. Não fazemos isso sozinhos ao abrir o link.",
+      "confirm": "Confirmar meu e-mail",
+      "confirming": "Confirmando…",
+      "doneTitle": "E-mail verificado",
+      "doneBody": "Pronto: agora você pode enviar solicitações de plano e ver seus projetos.",
+      "invalidTitle": "Este link não funciona mais",
+      "invalidBody": "Expirou, já foi usado ou você pediu um mais novo. Peça outro abaixo.",
+      "noTokenTitle": "Não encontramos o link de verificação",
+      "noTokenBody": "Abra o link completo do e-mail ou peça um novo abaixo.",
+      "requestTitle": "Pedir um novo link",
+      "requestBody": "Digite seu e-mail e, se houver uma conta sem verificação, enviamos um novo link.",
+      "requestSigned": "Enviamos um novo link para {email}. O anterior deixa de funcionar.",
+      "send": "Enviar link",
+      "sending": "Enviando…",
+      "requested": "Pronto. Se houver uma conta para verificar, o e-mail está a caminho (pode levar alguns minutos).",
+      "alreadyTitle": "Seu e-mail já está verificado",
+      "alreadyBody": "Não há mais nada a fazer aqui."
+    },
+    "reset": {
+      "crumb": "Recuperar senha",
+      "label": "Recuperar acesso",
+      "title": "Escolha uma <em>nova senha</em>.",
+      "lead": "Enviamos um link por e-mail. Vale por 30 minutos e funciona uma única vez. Ao trocar a senha, todas as suas sessões são encerradas.",
+      "formLabel": "Senha",
+      "requestTitle": "Pedir o link",
+      "requestBody": "Digite o e-mail da sua conta.",
+      "send": "Enviar link",
+      "sending": "Enviando…",
+      "backToLogin": "Voltar para entrar",
+      "requestedTitle": "Confira seu e-mail",
+      "requestedBody": "Se esse e-mail tiver uma conta, enviamos um link para escolher uma nova senha.",
+      "requestedNote": "Pode levar alguns minutos; olhe também o spam. Se pedir outro, só o último funciona.",
+      "invalidTitle": "Este link não funciona mais",
+      "invalidBody": "Expirou ou já foi usado. Peça um novo.",
+      "newTitle": "Sua nova senha",
+      "newBody": "Escolha uma que você não use em outro lugar.",
+      "newPassword": "Nova senha",
+      "repeatPassword": "Repita a senha",
+      "mismatch": "As duas senhas precisam ser iguais.",
+      "save": "Salvar senha",
+      "saving": "Salvando…",
+      "doneTitle": "Senha atualizada",
+      "doneBody": "Encerramos suas sessões abertas. Entre com a nova senha."
+    },
+    "projects": {
+      "title": "Meus projetos",
+      "helloAnon": "Seus projetos.",
+      "loading": "Carregando seus projetos…",
+      "count": "{count, plural, =0 {Sem projetos com a Eclipse} one {# projeto com a Eclipse} other {# projetos com a Eclipse}}",
+      "total": "{count, plural, one {# projeto} other {# projetos}}",
+      "tableCaption": "Seus projetos com a Eclipse",
+      "columns": {
+        "plannedEnd": "Entrega estimada"
+      },
+      "empty": {
+        "title": "Você ainda não tem projetos atribuídos.",
+        "body": "Seus projetos aparecem aqui quando a equipe os vincula à sua conta, depois do sinal. Enquanto isso, você pode acompanhar suas solicitações de plano.",
+        "cta": "Fale com a gente no WhatsApp",
+        "message": "Olá Eclipse. Entrei no portal e ainda não vejo o meu projeto.",
+        "requests": "Ver minhas solicitações"
+      }
+    },
+    "detail": {
+      "crumb": "Projeto",
+      "notFoundTitle": "Não encontramos este projeto",
+      "notFoundBody": "O link pode estar incompleto ou o projeto pode não estar vinculado à sua conta. Volte à sua lista.",
+      "refresh": "Atualizar",
+      "role": {
+        "client_admin": "Você administra este projeto",
+        "client_collaborator": "Você colabora neste projeto"
+      },
+      "party": {
+        "eclipse": "Eclipse",
+        "client": "Sua equipe"
+      },
+      "startedOn": "Iniciado em {date}",
+      "pausedNote": "O trabalho está em pausa. Fale com a gente e contamos o que falta para retomar.",
+      "closedOn": "Encerrado em {date}.",
+      "closedNote": "O projeto está encerrado.",
+      "noDate": "Sem data ainda",
+      "noMilestone": "Ainda não há um próximo marco publicado.",
+      "noMilestoneNote": "Quando a equipe publicar, aparece aqui.",
+      "actionUntitled": "Pedido da equipe",
+      "due": "Para",
+      "noDue": "Sem prazo",
+      "actionHow": "Responda pelo canal combinado; a equipe marca como resolvido do lado dela.",
+      "actionCta": "Responder no WhatsApp",
+      "actionMessage": "Olá Eclipse. Escrevo sobre o que vocês pediram no meu projeto.",
+      "timelineNoDates": "As datas por etapa não são publicadas: apenas a entrega estimada.",
+      "follow": {
+        "intro": "Cada atualização com data, os marcos, o escopo, as mudanças pedidas e os documentos."
+      },
+      "tabs": {
+        "milestones": "Marcos"
+      },
+      "byEclipse": "Eclipse",
+      "updates": {
+        "empty": "Ainda não há atualizações publicadas.",
+        "actionOpen": "Pedido para você",
+        "resolved": "Resolvido"
+      },
+      "milestones": {
+        "empty": "Ainda não há marcos publicados.",
+        "status": {
+          "upcoming": "Próximo",
+          "current": "Em andamento",
+          "done": "Concluído"
+        },
+        "plannedOn": "Previsto: {date}",
+        "doneOn": "Concluído em {date}"
+      },
+      "scope": {
+        "history": "Versões anteriores do escopo ({count})",
+        "closedTitle": "Pedidos encerrados ou recusados",
+        "scheduleImpact": "Impacto no prazo",
+        "days": "{count, plural, one {# dia} other {# dias}}",
+        "requestedOn": "Pedido em {date}",
+        "decidedOn": "Decidido em {date}",
+        "requestMessage": "Olá Eclipse. Quero pedir uma mudança no projeto “{name}”."
+      },
+      "facts": {
+        "role": "Seu papel"
+      }
+    },
+    "docs": {
+      "title": "Documentos e entregáveis",
+      "loading": "Carregando documentos…",
+      "empty": "A equipe ainda não compartilhou documentos deste projeto.",
+      "note": "Os documentos só abrem com a sua sessão: não há links públicos.",
+      "kind": "Tipo",
+      "date": "Data",
+      "file": "Arquivo",
+      "kinds": {
+        "contract": "Contrato",
+        "quote": "Orçamento",
+        "invoice": "Fatura",
+        "deliverable": "Entregável",
+        "guide": "Guia",
+        "other": "Outro"
+      },
+      "download": "Baixar",
+      "downloading": "Baixando…",
+      "done": "Download pronto"
+    },
+    "requests": {
+      "crumb": "Minhas solicitações",
+      "detailCrumb": "Solicitação",
+      "label": "Solicitações de plano",
+      "title": "Suas solicitações.",
+      "lead": "O que você enviou em “Monte seu plano” e o que a equipe respondeu.",
+      "count": "{count, plural, =0 {Você ainda não enviou solicitações} one {# solicitação enviada} other {# solicitações enviadas}}",
+      "loading": "Carregando suas solicitações…",
+      "empty": {
+        "title": "Você ainda não enviou nenhuma solicitação.",
+        "body": "Monte seu plano e, no resumo, envie à equipe. Aqui você vê o status e a resposta.",
+        "cta": "Monte seu plano"
+      },
+      "notFoundTitle": "Não encontramos esta solicitação",
+      "notFoundBody": "O link pode estar incompleto ou a solicitação pode não ser sua. Volte à sua lista.",
+      "backToList": "Voltar às minhas solicitações",
+      "sentOn": "Enviada em {date}",
+      "noPieces": "Solicitação sem peças",
+      "packageHead": "Pacote {plan}",
+      "status": {
+        "submitted": "Enviada",
+        "under_review": "Em análise",
+        "reviewed": "Analisada",
+        "accepted": "Aceita",
+        "rejected": "Não avançou",
+        "cancelled": "Cancelada"
+      },
+      "statusHelp": {
+        "submitted": "Chegou à equipe. Ninguém a analisou ainda.",
+        "under_review": "A equipe está analisando.",
+        "reviewed": "A equipe analisou. Combinamos os próximos passos com você.",
+        "accepted": "A equipe aceitou a proposta. Isto não é um orçamento nem uma cobrança: escopo e preço final são confirmados por escrito.",
+        "rejected": "Por enquanto não podemos avançar com esta proposta. Você pode montar outra ou falar com a gente.",
+        "cancelled": "Você cancelou. Nada será feito com ela."
+      },
+      "responseLabel": "Resposta da equipe",
+      "contact": "Contato",
+      "vertical": "Segmento",
+      "goals": "Objetivos",
+      "goalNames": {
+        "encontrar": "Ser encontrado",
+        "atender": "Atender 24/7",
+        "ordenar": "Organizar agendamentos e pedidos",
+        "vender": "Vender online",
+        "fidelizar": "Fidelizar clientes",
+        "app": "Ter o meu app",
+        "diagnostico": "Um diagnóstico primeiro"
+      },
+      "note": "Sua mensagem",
+      "seeEstimate": "Ver a estimativa registrada",
+      "open": "Ver solicitação",
+      "estimateLabel": "Estimativa registrada",
+      "from": "a partir de",
+      "total": "Pagamento único estimado",
+      "founder": "Preço de fundador",
+      "range": "O pacote vai até {to} conforme o escopo.",
+      "maintenanceMonth": "Manutenção {name}: {price} por mês.",
+      "maintenanceYear": "Manutenção {name}: {price} por ano ({months} meses pagos).",
+      "maintenanceNone": "Sem manutenção.",
+      "voiceUsage": "Agente de voz: {price} por mês, mais os minutos conforme o uso.",
+      "estimateNote": "É uma estimativa provisória calculada pela equipe, não um orçamento. O escopo e o preço final são confirmados por escrito.",
+      "cancel": "Cancelar esta solicitação",
+      "cancelAsk": "Cancelar a solicitação? Não dá para desfazer.",
+      "cancelYes": "Sim, cancelar",
+      "cancelNo": "Não, manter",
+      "cancelling": "Cancelando…",
+      "cancelled": "Solicitação cancelada.",
+      "cancelConflict": "A solicitação mudou nesse meio tempo (a equipe a atualizou). Veja o status e, se ainda quiser, cancele de novo."
     }
   },
   "shortcuts": {

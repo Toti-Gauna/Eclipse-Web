@@ -32,7 +32,7 @@ import {
 import { isOfferActive, type Billing } from '@/lib/pricing';
 import { encodePlanState } from '@/lib/plan-url';
 import { buildPlanMessage, type Translate } from '@/lib/plan-message';
-import { absoluteUrl } from '@/lib/env';
+import { absoluteUrl, IS_LIVE } from '@/lib/env';
 import { track } from '@/lib/analytics';
 import type { Locale } from '@/i18n/routing';
 import { Dock } from './Dock';
@@ -71,6 +71,7 @@ import type { SurfaceTheme } from './surface';
 import { StepCare } from './StepCare';
 import { StepGoals } from './StepGoals';
 import { StepPieces, type PieceView } from './StepPieces';
+import { RequestAction } from './RequestAction';
 import { StepSummary } from './StepSummary';
 import { Stepper } from './Stepper';
 import { usePlanState, type BuilderMode } from './usePlanState';
@@ -419,6 +420,11 @@ export function PlanBuilder({
         message={message}
         shareUrl={shareUrl}
         bonusName={bonusName}
+        request={
+          IS_LIVE ? (
+            <RequestAction state={state} active={step === 'resumen'} localTotalUsd={q.totalUsd} onNavigate={onClose} Sub={Sub} />
+          ) : null
+        }
         Sub={Sub}
       />
     ),
