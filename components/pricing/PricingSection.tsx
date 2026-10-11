@@ -63,7 +63,7 @@ export function PricingSection() {
       id={SECTION_IDS.pricing}
       aria-labelledby="pricing-title"
       data-header-theme="light"
-      className="pricing theme-light relative isolate overflow-hidden bg-dawn py-24 md:py-36"
+      className="pricing theme-light relative isolate overflow-hidden bg-dawn py-24 md:py-36 lg:pt-24"
     >
       <div aria-hidden className="pricing-light" />
 

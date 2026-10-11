@@ -44,7 +44,7 @@ export function ExamplesSection() {
     <section
       id={SECTION_IDS.examples}
       aria-labelledby="examples-title"
-      className="examples theme-dark relative isolate overflow-hidden bg-night py-24 md:py-32"
+      className="examples theme-dark relative isolate overflow-hidden bg-night py-24 md:py-32 lg:pt-24"
     >
       <div aria-hidden className="examples-ambient" />
       <div className="container-x">

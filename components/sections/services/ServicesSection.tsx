@@ -25,7 +25,7 @@ export function ServicesSection() {
     <section
       id={SECTION_IDS.services}
       aria-labelledby="services-title"
-      className="services theme-dark relative isolate overflow-clip bg-night py-24 md:py-36"
+      className="services theme-dark relative isolate overflow-clip bg-night py-24 md:py-36 lg:pt-24"
     >
       <div aria-hidden className="services-light" />
       <div className="container-x">

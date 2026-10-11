@@ -35,7 +35,16 @@
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
     align-items: end;
     gap: 72px;
-    margin-top: 36px;
+    margin-top: 28px;
+  }
+}
+/* v3d · Desktop density: the heading is still the section's one serif moment, but it no
+   longer fills the first screen — the stage / list / prices start above the fold
+   (measured at 1440×900, 1366×768 and 1280×800). */
+@media (min-width: 1024px) {
+  .svc-title {
+    max-width: 24ch;
+    font-size: clamp(3.4rem, 4.8vw, 5rem);
   }
 }
 

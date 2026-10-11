@@ -99,7 +99,21 @@
     gap: 64px;
   }
   .pr-sub {
-    margin-top: 32px;
+    margin-top: 20px;
+  }
+}
+/* v3d · Desktop density: the heading is still the section's one serif moment, but it no
+   longer fills the first screen — the stage / list / prices start above the fold
+   (measured at 1440×900, 1366×768 and 1280×800). */
+@media (min-width: 1024px) {
+  .pr-title {
+    font-size: clamp(3.4rem, 5vw, 5.25rem);
+  }
+  .pr-block--tabs {
+    margin-top: 56px;
+  }
+  .pr-panel {
+    padding-top: 18px;
   }
 }
 
@@ -556,7 +570,7 @@
 }
 @media (min-width: 1024px) {
   .pr-group {
-    margin-top: 64px;
+    margin-top: 48px;
   }
 }
 .pr-group-head {
