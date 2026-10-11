@@ -11,6 +11,7 @@ import { useExperience } from '@/components/providers/ExperienceProvider';
 import { useSound } from '@/components/sound/SoundContext';
 import { FAMILIES, familyCategory, familyItems } from '@/components/sections/services/services';
 import { PriceReadout } from './PriceReadout';
+import { piecesFamilyAnchor } from './anchors';
 
 /**
  * Tab B · Pieza por pieza: the 16 pieces grouped by family (same families, order and
@@ -48,7 +49,7 @@ export function PiecesPanel({ onShowPackages }: { onShowPackages: () => void }) 
       <div className="pr-fams">
         {FAMILIES.map((family, fi) => {
           const pieces = familyItems(family);
-          const titleId = `pr-fam-${family.id}`;
+          const titleId = piecesFamilyAnchor(family.id);
           return (
             <section key={family.id} aria-labelledby={titleId} className="pr-fam">
               <h3 id={titleId} className="pr-fam-title">

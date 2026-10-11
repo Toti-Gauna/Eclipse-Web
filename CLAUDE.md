@@ -64,10 +64,12 @@ reachable (folded is fine, deleted is not).
 - **Goal:** a new visitor understands what Eclipse offers in ~30 s and finds a demo, an entry price,
   maintenance and the next step in < 2 min. Summarize on the surface and fold details (tabs, accordions,
   "Ver la cuenta"); never hide price, scope, maintenance or conditions behind a CTA.
-- **Page order (ids unchanged):** 01 hero `#inicio` (+ shortcuts to Demos, Soluciones, Precios, Armar plan) ·
+- **Page order (ids unchanged):** 01 hero `#inicio` (one action «Pedí tu demo» + the rubro keys; no repeated nav) ·
   02 demos `#ejemplos` · 03 soluciones `#servicios` · 04 precios `#precios` · 05 calculadora `#problema` ·
   06 cómo trabajamos `#proceso` · 07 fundadores `#fundadores` · 08 preguntas y contacto `#contacto` · footer.
   Sky: hero void → demos/soluciones night → `<SkyTransition>` → dawn from precios on.
+  Soluciones explains what each family solves and includes — NO prices or «Sumar» there: pieces are priced and
+  added only in Precios (tab «Pieza por pieza», `requestPiecesTab`) and in the builder.
 - **Header:** Servicios · Demos · Precios · Cómo trabajamos; "Pedí tu demo" is THE primary CTA and stays
   reachable on desktop and mobile; "Armá tu plan" is secondary; "Ingresar" is discreet and opens
   `/[locale]/portal/`. Language, currency and sound sit together behind one preferences trigger.

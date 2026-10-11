@@ -432,12 +432,6 @@
   height: 1px;
   background: var(--line-strong);
 }
-.hero-pick-optional {
-  padding: 0 0.5rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  line-height: 1.25rem;
-}
 .hero-chips {
   display: flex;
   flex-wrap: wrap;
@@ -538,88 +532,3 @@
   }
 }
 
-/* ------------------------------------------------------------------ */
-/* Shortcuts row (HeroShortcuts.tsx): closes the hero, replaces the     */
-/* v2 "scroll" hint. An instrument scale: hairline, mono index, name.   */
-/* ------------------------------------------------------------------ */
-.hero-shortcuts {
-  margin-top: 1.75rem;
-  border-top: 1px solid var(--line);
-}
-.hero-shortcuts-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.hero-shortcuts-list > li {
-  display: flex;
-}
-.hero-shortcut {
-  display: inline-flex;
-  flex: 1;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 48px;
-  padding: 0 0.75rem 0 0;
-  color: var(--fg);
-  font-size: 0.875rem;
-  line-height: 1.2;
-  white-space: nowrap;
-  transition: color 0.25s ease;
-}
-.hero-shortcut-index {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
-  color: var(--fg-muted);
-  transition: color 0.25s ease;
-}
-.hero-shortcut-icon {
-  width: 0.95rem;
-  height: 0.95rem;
-  flex: none;
-  color: var(--fg-muted);
-  transition:
-    color 0.25s ease,
-    transform 0.35s var(--ease-expo);
-}
-.hero-shortcut-icon--plan {
-  color: var(--corona);
-}
-.hero-shortcut:hover,
-.hero-shortcut:focus-visible {
-  color: var(--accent);
-}
-.hero-shortcut:hover .hero-shortcut-index,
-.hero-shortcut:focus-visible .hero-shortcut-index,
-.hero-shortcut:hover .hero-shortcut-icon,
-.hero-shortcut:focus-visible .hero-shortcut-icon {
-  color: var(--accent);
-}
-.hero-shortcut:hover .hero-shortcut-icon:not(.hero-shortcut-icon--plan) {
-  transform: translateY(2px);
-}
-/* From sm up the four sit in one row (they wrap if the column is narrow). */
-@media (min-width: 640px) {
-  .hero-shortcuts-list {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 1.5rem;
-  }
-  .hero-shortcut {
-    flex: none;
-    padding-right: 0;
-  }
-}
-@media (min-width: 768px) and (orientation: landscape) and (max-height: 800px),
-  (min-width: 1024px) and (max-height: 800px) {
-  .hero-shortcuts {
-    margin-top: 1rem;
-  }
-  .hero-shortcut {
-    min-height: 44px;
-  }
-}

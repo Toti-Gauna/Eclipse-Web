@@ -9,6 +9,7 @@ import { useSound } from '@/components/sound/SoundContext';
 import { Packages } from './Packages';
 import { PiecesPanel } from './PiecesPanel';
 import { PRICING_ANCHORS } from './anchors';
+import { onPiecesRequest, takePiecesRequest } from './tabRequest';
 
 const TABS = ['packages', 'pieces'] as const;
 type Tab = (typeof TABS)[number];
@@ -37,6 +38,15 @@ export function BuyTabs({ billing, now }: { billing: Billing; now: number | null
     setTab(next);
     play('select');
   };
+
+  // "Ver precios de …" (03 · Soluciones) asks for tab B, also before this section hydrated.
+  useEffect(() => {
+    const take = () => {
+      if (takePiecesRequest()) setTab('pieces');
+    };
+    take();
+    return onPiecesRequest(take);
+  }, []);
 
   // Links (or a #hash) pointing inside the hidden panel open that panel first.
   useEffect(() => {

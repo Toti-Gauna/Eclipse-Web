@@ -81,10 +81,9 @@
     "eyebrow": "Desenvolvimento · IA · Automação",
     "title": "Antes de conversar, mostramos <em>o seu negócio</em> funcionando.",
     "subtitle": "Sites, sistemas e agentes de IA para negócios que não podem esperar.",
-    "pickVertical": "Escolha seu setor e veja",
+    "pickVertical": "Ou veja uma demo do seu setor, agora",
     "ctaDemo": "Peça sua demo",
-    "ctaPlan": "Monte seu plano",
-    "pickOptional": "Opcional"
+    "ctaPlan": "Monte seu plano"
   },
   "whatsapp": {
     "greeting": "Olá, Eclipse.",
@@ -223,8 +222,6 @@
     "title": "O que construímos, <em>peça por peça</em>.",
     "sub": "{families} famílias, {count} peças. Cada uma é vendida avulsa ou dentro de um pacote, e você vê tudo funcionando com o seu negócio antes.",
     "resultLabel": "Resultado",
-    "from": "a partir de",
-    "add": "Adicionar",
     "key": {
       "pieceTerm": "Peça avulsa",
       "pieceText": "Comprada sozinha. Pagamento único, preço a partir de.",
@@ -233,8 +230,7 @@
       "includedLink": "Ver pacotes"
     },
     "pieces": "{count, plural, one {# peça} other {# peças}}",
-    "piecesTitle": "Peças avulsas · pagamento único",
-    "addLabel": "Adicionar {name} ao seu plano",
+    "piecesTitle": "O que inclui",
     "includedIn": "Incluída em",
     "goToPlan": "Ver o pacote {name}",
     "extra": "Extra: entra em qualquer pacote",
@@ -303,7 +299,10 @@
           "priority": "Prioridade 1: seu perfil no Google"
         }
       }
-    }
+    },
+    "seePrices": "Ver os preços de {family}",
+    "add": "Adicionar",
+    "addLabel": "Adicionar {name} ao seu plano"
   },
   "process": {
     "title": "Primeiro você vê sua demo. Depois a gente conversa.",
@@ -5234,10 +5233,6 @@
       "cancelled": "Solicitação cancelada.",
       "cancelConflict": "A solicitação mudou nesse meio tempo (a equipe a atualizou). Veja o status e, se ainda quiser, cancele de novo."
     }
-  },
-  "shortcuts": {
-    "label": "Atalhos",
-    "plan": "Montar plano"
   },
   "tour": {
     "label": "Guia",

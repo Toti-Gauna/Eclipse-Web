@@ -233,15 +233,6 @@
   letter-spacing: 0.02em;
   color: var(--fg-muted);
 }
-.svc-from .readout {
-  color: var(--fg);
-}
-.svc-from-label {
-  text-transform: lowercase;
-}
-.svc-count::before {
-  content: ' · ';
-}
 .svc-chevron {
   grid-area: chev;
   align-self: center;
@@ -291,7 +282,6 @@
   .svc-from {
     font-size: 0.8125rem;
   }
-  .svc-count,
   .svc-chevron {
     display: none;
   }
@@ -364,101 +354,22 @@
   padding: 12px 0 4px;
   border-bottom: 1px solid var(--line);
 }
-/* Phones: name / price on the left, the add pill on the right.
-   Desktop: name ····· price  [+ Sumar] on one line (the name may wrap). */
+/* Name, and under it what the piece does (no prices here: they live in 04 · Precios). */
 .svc-piece-main {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas:
-    'name add'
-    'price add';
-  align-items: center;
-  column-gap: 14px;
-  row-gap: 3px;
+  gap: 3px;
   margin: 0;
 }
 .svc-piece-name {
-  grid-area: name;
   min-width: 0;
   font-size: 0.975rem;
   line-height: 1.35;
   color: var(--fg);
 }
-.svc-piece-main .leader {
-  display: none;
-  grid-area: leader;
-}
-.svc-piece-price {
-  display: flex;
-  grid-area: price;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 10px;
-}
-.svc-piece-price .readout {
-  font-size: 0.9375rem;
-  color: var(--fg);
-}
-.svc-piece-price .svc-piece-usd {
-  font-size: 0.6875rem;
+.svc-piece-desc {
+  font-size: 0.875rem;
+  line-height: 1.45;
   color: var(--fg-muted);
-}
-.svc-piece-main .svc-add {
-  grid-area: add;
-}
-@media (min-width: 640px) {
-  .svc-piece-main {
-    grid-template-columns: minmax(0, max-content) minmax(1.5rem, 1fr) auto auto;
-    grid-template-areas: 'name leader price add';
-    align-items: baseline;
-  }
-  .svc-piece-main .leader {
-    display: block;
-  }
-  .svc-piece-price {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0;
-    text-align: right;
-  }
-}
-
-.svc-add {
-  position: relative;
-  display: inline-flex;
-  flex: none;
-  align-self: center;
-  align-items: center;
-  gap: 6px;
-  height: 36px;
-  padding: 0 14px 0 11px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--fg);
-  transition:
-    border-color 0.25s ease,
-    background-color 0.25s ease,
-    transform 0.25s var(--ease-expo);
-}
-/* 44px hit area around a 36px pill. */
-.svc-add::before {
-  content: '';
-  position: absolute;
-  inset: -4px -2px;
-}
-.svc-add svg {
-  width: 14px;
-  height: 14px;
-  color: var(--accent);
-}
-.svc-add:hover {
-  border-color: var(--accent);
-  background: rgb(245 185 66 / 0.08);
-}
-.svc-add:active {
-  transform: scale(0.97);
 }
 
 /* "Incluida en": chips that jump to the package in 06 · Precios. */
@@ -501,6 +412,33 @@
 .svc-piece-in a:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+/* The family's one way to its prices: Precios → Pieza por pieza. */
+.svc-prices-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 14px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: rgb(245 185 66 / 0.4);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.25s ease;
+}
+.svc-prices-link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.35s var(--ease-expo);
+}
+.svc-prices-link:hover {
+  text-decoration-color: currentColor;
+}
+.svc-prices-link:hover svg {
+  transform: translateY(2px);
 }
 
 /* ---- Desktop stage ---------------------------------------------------------- */

@@ -9,7 +9,7 @@ import { openerKey, preloadDemoExperience } from '@/components/demo-experience/s
 import { useHeroState } from './HeroState';
 
 /**
- * "Elegí tu rubro y miralo" (optional — the hero's actions don't depend on it): one
+ * "O mirá una demo de tu rubro, ahora" (the hero's second way in, under "Pedí tu demo"): one
  * instrument key per rubro (01 Clínicas … 07 Otro). Hovering or focusing a key turns
  * the dial around the eclipse to its number; pressing it records the rubro and opens its
  * demo in the "Ver demo" layer, born from the key (or, for "Otro", opens "Armá tu plan").
@@ -29,10 +29,6 @@ export function VerticalChips() {
       <p id="hero-pick-vertical" className="hero-pick label">
         <span>{t('pickVertical')}</span>
         <span aria-hidden className="hero-pick-rule" />
-        <span className="hero-pick-optional">
-          <span className="sr-only">, </span>
-          {t('pickOptional')}
-        </span>
       </p>
       <div className="hero-chips-scroller no-scrollbar">
         <ul className="hero-chips" onPointerLeave={() => aim(null, 'hover')}>

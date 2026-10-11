@@ -81,10 +81,9 @@
     "eyebrow": "Development · AI · Automation",
     "title": "Before we talk, we show you <em>your business</em> already working.",
     "subtitle": "Websites, systems and AI agents for businesses that can't wait.",
-    "pickVertical": "Pick your industry and see it",
+    "pickVertical": "Or see a demo for your industry, now",
     "ctaDemo": "Get your demo",
-    "ctaPlan": "Build your plan",
-    "pickOptional": "Optional"
+    "ctaPlan": "Build your plan"
   },
   "whatsapp": {
     "greeting": "Hi Eclipse.",
@@ -223,8 +222,6 @@
     "title": "What we build, <em>piece by piece</em>.",
     "sub": "{families} families, {count} pieces. Buy each one on its own or inside a package, and see it working for your business first.",
     "resultLabel": "The result",
-    "from": "from",
-    "add": "Add",
     "key": {
       "pieceTerm": "Single piece",
       "pieceText": "Bought on its own. One-time payment, starting price.",
@@ -233,8 +230,7 @@
       "includedLink": "See packages"
     },
     "pieces": "{count, plural, one {# piece} other {# pieces}}",
-    "piecesTitle": "Single pieces · one-time payment",
-    "addLabel": "Add {name} to your plan",
+    "piecesTitle": "What it includes",
     "includedIn": "Included in",
     "goToPlan": "See the {name} package",
     "extra": "Extra: add it to any package",
@@ -303,7 +299,10 @@
           "priority": "Priority 1: your Google profile"
         }
       }
-    }
+    },
+    "seePrices": "See the {family} prices",
+    "add": "Add",
+    "addLabel": "Add {name} to your plan"
   },
   "process": {
     "title": "First you see your demo. Then we talk.",
@@ -5234,10 +5233,6 @@
       "cancelled": "Request cancelled.",
       "cancelConflict": "The request changed in the meantime (the team updated it). Check its status and, if you still want to, cancel it again."
     }
-  },
-  "shortcuts": {
-    "label": "Shortcuts",
-    "plan": "Build a plan"
   },
   "tour": {
     "label": "Guide",

@@ -1,23 +1,21 @@
 import { useTranslations } from 'next-intl';
 import { SECTION_IDS } from '@/components/layout/navLinks';
-import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
 import { DemoCta } from '@/components/ui/DemoCta';
 import { SectionMark } from '@/components/ui/SectionMark';
 import { HeroStateProvider } from './HeroState';
 import { HeroStage } from './HeroStage';
 import { HeroCopy } from './HeroCopy';
-import { HeroShortcuts } from './HeroShortcuts';
 import { VerticalChips } from './VerticalChips';
 import { DemoExperienceHost } from '@/components/demo-experience/DemoExperienceHost';
 import './hero.css';
 
 /**
- * Hero (v3). One message, one concrete line, then the two actions: "Pedí tu demo"
- * (primary, `data-hero-cta` — the header quiets its own CTA while this one is on
- * screen) and "Armá tu plan" (secondary). The rubro keys come after, as an optional
- * shortcut (they open that rubro's demo in the "Ver demo" layer, born from the key); the
- * shortcuts row closes the hero (Demos · Soluciones · Precios · Armar plan) instead of a
- * "scroll" hint.
+ * Hero (v3d). One message, one concrete line and two ways to see it, nothing else:
+ * "Pedí tu demo" (THE primary action, `data-hero-cta` — the header quiets its own CTA
+ * while this one is on screen: a demo of YOUR business, by WhatsApp) and, right under it,
+ * the rubro keys ("o mirá una demo de tu rubro, ahora": they open that rubro's demo in the
+ * "Ver demo" layer). "Armá tu plan" and the section links live in the header (and the
+ * phone menu): repeating them here only added controls to the first screen.
  *
  * The H1 is server-rendered and visible from the first paint (it is the LCP
  * element): no entrance animation ever hides it.
@@ -66,18 +64,11 @@ export function Hero() {
                   <div data-hero-enter data-hero-cta className="flex">
                     <DemoCta origin="hero" className="btn btn-primary w-full sm:w-auto" />
                   </div>
-                  <div data-hero-enter className="flex">
-                    <BuildPlanButton source="hero" className="btn btn-ghost w-full sm:w-auto">
-                      {t('ctaPlan')}
-                    </BuildPlanButton>
-                  </div>
                 </div>
 
                 <div className="hero-pick-wrap">
                   <VerticalChips />
                 </div>
-
-                <HeroShortcuts />
               </div>
             </div>
           </HeroCopy>

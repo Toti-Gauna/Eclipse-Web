@@ -45,8 +45,8 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const ctaBox = await page.locator('[data-hero-cta]').first().boundingBox();
   const ctaBottom = ctaBox ? Math.round(ctaBox.y + ctaBox.height) : NaN;
   check('hero CTAs on the first screen at 360×780', ctaBottom <= 780, `${ctaBottom}px`);
-  const shortcutHrefs = await page.getByRole('navigation', { name: 'Atajos' }).locator('a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
-  check('hero shortcuts to demos, soluciones and precios', ['#ejemplos', '#servicios', '#precios'].every((h) => shortcutHrefs.includes(h)), shortcutHrefs.join(' '));
+  // v3d: one action plus the rubro keys; no repeated "Armá tu plan" or section shortcuts.
+  check('hero: one action and the rubro keys', (await page.locator('#inicio .hero-ctas a, #inicio .hero-ctas button').count()) === 1 && (await page.locator('#inicio [data-hero-chip]').count()) >= 6);
 
   // Sections hydrate lazily: the calculator reacts once it is reached.
   await page.evaluate(() => document.getElementById('problema')?.scrollIntoView());
@@ -114,6 +114,19 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   }
   check('nav link scrolls to #precios', Math.abs(top) < 200, `${Math.round(top)}px`);
   check('hash updated', page.url().endsWith('#precios'));
+
+  // Soluciones has no prices (v3d): each family links to Precios → Pieza por pieza, also
+  // when Precios hasn't hydrated yet.
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(1800);
+  check('Soluciones lists no prices', (await page.locator('#servicios .svc-piece .readout, #servicios .svc-add').count()) === 0);
+  await page.evaluate(() => document.getElementById('servicios')?.scrollIntoView());
+  await page.waitForTimeout(1200);
+  await page.locator('#servicios .svc-prices-link').first().click();
+  await page.waitForTimeout(2500);
+  check('family link opens Precios → Pieza por pieza', (await page.locator('#pr-tab-pieces').getAttribute('aria-selected')) === 'true' && (await page.locator('#pr-panel-pieces').isVisible()));
+  const tabTop = await page.evaluate(() => document.getElementById('pr-tab-pieces')?.getBoundingClientRect().top ?? 9999);
+  check('…and lands on it', tabTop > 0 && tabTop < 400, `${Math.round(tabTop)}px`);
 
   // "Ver demo" opens one light layer (the eclipse takes the center, the light floods it): the page never scrolls,
   // and closing restores the exact position and focus.

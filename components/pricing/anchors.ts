@@ -7,5 +7,8 @@ export const PRICING_ANCHORS = {
   care: 'mantenimiento',
 } as const;
 
+/** Anchor of a family in Precios → Pieza por pieza (03 · Soluciones links each family here). */
+export const piecesFamilyAnchor = (family: string) => `pr-fam-${family}`;
+
 /** Anchor of a package row: "Incluida en: Sistema" in 03 · Qué construimos jumps here. */
 export const planAnchor = (id: PlanId) => `plan-${id}`;
