@@ -552,7 +552,9 @@
       "sentDiffers": "É o cálculo da equipe e pode diferir do total que você viu aqui. Vale o da equipe.",
       "viewRequest": "Ver minha solicitação",
       "another": "Enviar outra"
-    }
+    },
+    "liveTitle": "Seu plano, ao vivo",
+    "liveEmpty": "Escolha um objetivo ou uma peça e a conta aparece aqui."
   },
   "pricing": {
     "title": "Quanto custa<br></br> e como você paga.",

@@ -104,7 +104,10 @@ reachable (folded is fine, deleted is not).
   own AppShell structure (`layout.nav/density/icons`, `phoneNav`) and 4–6 guide steps (`<demo>/tour.ts`,
   `data-tour` marks in both views, copy in `demoTours`). See components/demos/README.md.
 - **Builder:** always enters from the right; its surface follows the section it was opened from
-  (`builder.theme`, `openBuilder(source, preset?, { theme?, from? })`).
+  (`builder.theme`, `openBuilder(source, preset?, { theme?, from? })`). From 1024px it is fullscreen: rail of steps
+  with previews on the left, the step in the centre, and from 1280px `<LiveSummary>` (the plan, read-only) on the
+  right — except on step 4, where the full ledger is already in the centre. Phones keep the drawer and the bar stepper.
+  Still a proposal request: no payments in the builder.
 - **Package bonus:** `plan.bonus` (Voz, Automatiza: the premium landing) is shown only as "incluido": never in
   `plan.items`, never with a price, strikethrough or saving.
 - **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in

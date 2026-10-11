@@ -552,7 +552,9 @@
       "sentDiffers": "This is the team’s calculation and may differ from the total you saw here. The team’s figure is the one that counts.",
       "viewRequest": "View my request",
       "another": "Send another"
-    }
+    },
+    "liveTitle": "Your plan, live",
+    "liveEmpty": "Pick a goal or a piece and the numbers show up here."
   },
   "pricing": {
     "title": "What it costs,<br></br> and how you pay.",

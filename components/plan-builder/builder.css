@@ -65,6 +65,13 @@
     width: min(720px, calc(100% - 48px));
   }
 }
+/* v3: from 1024px the builder takes the whole screen (still entering from the right). */
+@media (min-width: 1024px) {
+  .sheet[data-variant='drawer'] .sheet-panel.pb-panel {
+    width: 100%;
+    border-left: 0;
+  }
+}
 .pb-panel-inner {
   position: relative;
   height: 100%;
@@ -137,6 +144,123 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+/* Rail and live summary: only in the fullscreen layout (≥1024px). */
+.pb[data-mode='sheet'] .pb-rail,
+.pb-live {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .pb[data-mode='sheet'] .pb-sheet-head {
+    padding-inline: clamp(1.5rem, 3vw, 3rem);
+  }
+  .pb[data-mode='sheet'] .pb-sheet-head .pb-stepper {
+    display: none;
+  }
+  .pb[data-mode='sheet'] .pb-sheet-title {
+    font-size: 2.25rem;
+  }
+  .pb[data-mode='sheet'] .pb-body {
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 1fr);
+    column-gap: clamp(1.5rem, 3vw, 3.5rem);
+    padding-inline: clamp(1.5rem, 3vw, 3rem);
+  }
+  .pb[data-mode='sheet'] .pb-rail {
+    display: block;
+    min-height: 0;
+    padding-top: 1.75rem;
+    overflow-y: auto;
+  }
+  .pb[data-mode='sheet'] .pb-scroll {
+    scrollbar-gutter: stable;
+  }
+  .pb[data-mode='sheet'] .pb-steps {
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+  .pb[data-mode='sheet'] .pb-step {
+    padding-inline: 0;
+  }
+  .pb[data-mode='sheet'] .pb-dock-wrap > div {
+    max-width: calc(48rem + 2 * var(--pb-pad));
+    margin-inline: auto;
+  }
+}
+/* The live summary needs room: a third column from 1280px (not on the summary step,
+   where the full ledger is already in the centre). */
+@media (min-width: 1280px) {
+  .pb[data-mode='sheet']:not([data-step='resumen']) .pb-body {
+    grid-template-columns: 15rem minmax(0, 1fr) 20rem;
+  }
+  .pb[data-mode='sheet']:not([data-step='resumen']) .pb-live {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-height: 0;
+    padding: 1.75rem 0 1.5rem 1.5rem;
+    overflow-y: auto;
+    border-left: 1px solid var(--line);
+  }
+}
+.pb-live-title {
+  color: var(--fg);
+}
+.pb-live-sub {
+  margin-top: 0.9rem;
+}
+.pb-live-empty,
+.pb-live-note {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.pb-live-note {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  font-size: 0.8rem;
+}
+.pb-live-lines {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+}
+.pb-live-lines li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.pb-live-lines li > span:first-child {
+  min-width: 0;
+}
+.pb-live-lines .leader {
+  flex: 1 1 1rem;
+}
+.pb-live-lines .readout,
+.pb-live-total .readout {
+  flex: none;
+  white-space: nowrap;
+}
+.pb-live-month {
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--line);
+  color: var(--pb-hi);
+}
+.pb-live-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line-strong);
+  color: var(--pb-hi);
+}
+.pb-live-total .readout {
+  font-size: 1.35rem;
 }
 
 /* ------------------------------------------------------------------ */

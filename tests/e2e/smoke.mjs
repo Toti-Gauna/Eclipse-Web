@@ -170,6 +170,20 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const goal = page.locator('dialog[open] input[type="checkbox"]').first();
   await goal.check({ force: true });
   await page.waitForTimeout(800);
+  // v3d: fullscreen on desktop — rail of steps, the step, and the plan live on the right.
+  const full = await page.evaluate(() => {
+    const d = document.querySelector('dialog[open]');
+    const panel = d?.querySelector('.sheet-panel')?.getBoundingClientRect();
+    const live = d?.querySelector('.pb-live');
+    const rail = d?.querySelector('.pb-rail');
+    return {
+      // The dialog leaves the scrollbar gutter that lockScroll keeps; the panel fills the rest.
+      wide: !!panel && !!d && panel.width >= d.getBoundingClientRect().width - 1 && panel.width > 1200,
+      live: !!live && getComputedStyle(live).display !== 'none' && /\$\s?[\d.]+/.test(live.textContent ?? ''),
+      rail: !!rail && getComputedStyle(rail).display !== 'none',
+    };
+  });
+  check('builder is fullscreen with rail and live plan (desktop)', full.wide && full.live && full.rail, JSON.stringify(full));
   for (let i = 0; i < 3; i++) {
     const next = page.locator('dialog[open] button', { hasText: /Siguiente/ }).first();
     if (!(await next.count())) break;
