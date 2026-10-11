@@ -60,17 +60,10 @@
 /* ------------------------------------------------------------------ */
 /* Sheet frame                                                          */
 /* ------------------------------------------------------------------ */
-@media (min-width: 768px) {
-  .sheet[data-variant='drawer'] .sheet-panel.pb-panel {
-    width: min(720px, calc(100% - 48px));
-  }
-}
-/* v3: from 1024px the builder takes the whole screen (still entering from the right). */
-@media (min-width: 1024px) {
-  .sheet[data-variant='drawer'] .sheet-panel.pb-panel {
-    width: 100%;
-    border-left: 0;
-  }
+/* The builder takes the whole screen at every width (still entering from the right). */
+dialog.sheet[data-variant='drawer'].pb-sheet > .sheet-panel.pb-panel {
+  width: 100%;
+  border-left: 0;
 }
 .pb-panel-inner {
   position: relative;
@@ -145,7 +138,16 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-/* Rail and live summary: only in the fullscreen layout (≥1024px). */
+/* Full screen on tablets too: one centred column (bar stepper, step, dock). */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .pb[data-mode='sheet'] .pb-sheet-head > *,
+  .pb[data-mode='sheet'] .pb-steps,
+  .pb[data-mode='sheet'] .pb-dock-wrap > div {
+    max-width: calc(48rem + 2 * var(--pb-pad));
+    margin-inline: auto;
+  }
+}
+/* Rail and live summary: only in the wide layout (≥1024px). */
 .pb[data-mode='sheet'] .pb-rail,
 .pb-live {
   display: none;
@@ -166,11 +168,10 @@
     column-gap: clamp(1.5rem, 3vw, 3.5rem);
     padding-inline: clamp(1.5rem, 3vw, 3rem);
   }
+  /* No overflow on the rail: it would clip the current glyph's halo (and 4 steps always fit). */
   .pb[data-mode='sheet'] .pb-rail {
     display: block;
-    min-height: 0;
     padding-top: 1.75rem;
-    overflow-y: auto;
   }
   .pb[data-mode='sheet'] .pb-scroll {
     scrollbar-gutter: stable;
@@ -434,11 +435,17 @@
   position: relative;
   display: grid;
 }
-.pb-stepper--rail ol::before {
+/* The ephemeris line: each step draws its stretch, from its glyph's centre to the next one's
+   (glyph centre = 0.75rem padding + half of the 22px first row), so it starts and ends on a
+   glyph whatever the height of each step. */
+.pb-stepper--rail li {
+  position: relative;
+}
+.pb-stepper--rail li:not(:last-child)::before {
   content: '';
   position: absolute;
-  top: 1.6rem;
-  bottom: 1.6rem;
+  top: calc(0.75rem + 11px);
+  bottom: calc(-0.75rem - 11px);
   left: 10.5px;
   width: 1px;
   background: var(--line-strong);
@@ -449,11 +456,13 @@
     'glyph index name'
     '. . preview';
   grid-template-columns: 22px 1.9rem minmax(0, 1fr);
+  grid-template-rows: 22px auto;
   align-items: center;
+  align-content: start;
   column-gap: 0.75rem;
-  row-gap: 0.2rem;
+  row-gap: 0.25rem;
   width: 100%;
-  min-height: 4.25rem;
+  min-height: 4.5rem;
   padding: 0.75rem 0;
 }
 .pb-stepper--rail .pb-stepper-mark {
