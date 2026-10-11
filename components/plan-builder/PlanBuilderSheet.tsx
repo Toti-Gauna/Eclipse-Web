@@ -7,8 +7,8 @@ import { useSound } from '@/components/sound/SoundContext';
 import { PlanBuilder } from './PlanBuilder';
 
 /**
- * "Armá tu plan" as a drawer that always enters from the right (on phones it leaves a
- * sliver of the page visible on the left). Its surface follows the section it was opened
+ * "Armá tu plan" as a full-screen layer that always enters from the right (builder.css widens
+ * the drawer to the whole screen at every width). Its surface follows the section it was opened
  * from (`builder.theme`, captured by openBuilder): light over dawn, dark over night.
  * Lazy-loaded by BuilderHost on first open and kept mounted afterwards.
  * `suppressed` keeps it closed on /plan, where the page itself is the builder.
