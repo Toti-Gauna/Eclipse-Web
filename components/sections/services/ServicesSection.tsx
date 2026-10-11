@@ -11,11 +11,11 @@ import { ServicesIndex } from './ServicesIndex';
 import { FAMILIES } from './services';
 
 /**
- * 03 · Soluciones (#servicios): the catalog of pieces. Six families (the item
- * categories of content/items.json) as an index: each row shows the family's result
- * and its "desde"; one family opens at a time with every piece, its single price
- * ("pieza suelta", pago único), the packages that already include it and "Sumar"
- * (opens "Armá tu plan" with it). Precios (#precios) follows right below.
+ * 03 · Soluciones (#servicios): what we build. Six families (the item categories of
+ * content/items.json) as an index: each row shows the family's result; one family opens
+ * at a time with what it includes and the packages that already bring each piece. No
+ * prices here (v3d): they live only in 04 · Precios, right below, where each family links.
+ * `overflow-clip` (not hidden) clips the light without breaking the sticky preview.
  */
 export function ServicesSection() {
   const t = useTranslations('services');
@@ -25,7 +25,7 @@ export function ServicesSection() {
     <section
       id={SECTION_IDS.services}
       aria-labelledby="services-title"
-      className="services theme-dark relative isolate overflow-hidden bg-night py-24 md:py-36"
+      className="services theme-dark relative isolate overflow-clip bg-night py-24 md:py-36 lg:pt-24"
     >
       <div aria-hidden className="services-light" />
       <div className="container-x">

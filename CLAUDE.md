@@ -64,10 +64,12 @@ reachable (folded is fine, deleted is not).
 - **Goal:** a new visitor understands what Eclipse offers in ~30 s and finds a demo, an entry price,
   maintenance and the next step in < 2 min. Summarize on the surface and fold details (tabs, accordions,
   "Ver la cuenta"); never hide price, scope, maintenance or conditions behind a CTA.
-- **Page order (ids unchanged):** 01 hero `#inicio` (+ shortcuts to Demos, Soluciones, Precios, Armar plan) ·
+- **Page order (ids unchanged):** 01 hero `#inicio` (one action «Pedí tu demo» + the rubro keys; no repeated nav) ·
   02 demos `#ejemplos` · 03 soluciones `#servicios` · 04 precios `#precios` · 05 calculadora `#problema` ·
   06 cómo trabajamos `#proceso` · 07 fundadores `#fundadores` · 08 preguntas y contacto `#contacto` · footer.
   Sky: hero void → demos/soluciones night → `<SkyTransition>` → dawn from precios on.
+  Soluciones explains what each family solves and includes — NO prices or «Sumar» there: pieces are priced and
+  added only in Precios (tab «Pieza por pieza», `requestPiecesTab`) and in the builder.
 - **Header:** Servicios · Demos · Precios · Cómo trabajamos; "Pedí tu demo" is THE primary CTA and stays
   reachable on desktop and mobile; "Armá tu plan" is secondary; "Ingresar" is discreet and opens
   `/[locale]/portal/`. Language, currency and sound sit together behind one preferences trigger.
@@ -102,7 +104,10 @@ reachable (folded is fine, deleted is not).
   own AppShell structure (`layout.nav/density/icons`, `phoneNav`) and 4–6 guide steps (`<demo>/tour.ts`,
   `data-tour` marks in both views, copy in `demoTours`). See components/demos/README.md.
 - **Builder:** always enters from the right; its surface follows the section it was opened from
-  (`builder.theme`, `openBuilder(source, preset?, { theme?, from? })`).
+  (`builder.theme`, `openBuilder(source, preset?, { theme?, from? })`). From 1024px it is fullscreen: rail of steps
+  with previews on the left, the step in the centre, and from 1280px `<LiveSummary>` (the plan, read-only) on the
+  right — except on step 4, where the full ledger is already in the centre. Phones keep the drawer and the bar stepper.
+  Still a proposal request: no payments in the builder.
 - **Package bonus:** `plan.bonus` (Voz, Automatiza: the premium landing) is shown only as "incluido": never in
   `plan.items`, never with a price, strikethrough or saving.
 - **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in

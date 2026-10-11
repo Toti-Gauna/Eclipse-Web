@@ -81,10 +81,9 @@
     "eyebrow": "Desarrollo · IA · Automatización",
     "title": "Antes de hablar, te mostramos <em>tu negocio</em> funcionando.",
     "subtitle": "Webs, sistemas y agentes de IA para negocios que no pueden esperar.",
-    "pickVertical": "Elegí tu rubro y miralo",
+    "pickVertical": "O mirá una demo de tu rubro, ahora",
     "ctaDemo": "Pedí tu demo",
-    "ctaPlan": "Armá tu plan",
-    "pickOptional": "Opcional"
+    "ctaPlan": "Armá tu plan"
   },
   "whatsapp": {
     "greeting": "Hola Eclipse.",
@@ -223,8 +222,6 @@
     "title": "Lo que construimos, <em>pieza por pieza</em>.",
     "sub": "{families} familias, {count} piezas. Cada una se compra suelta o dentro de un paquete, y primero la ves funcionando con tu negocio.",
     "resultLabel": "Resultado",
-    "from": "desde",
-    "add": "Sumar",
     "key": {
       "pieceTerm": "Pieza suelta",
       "pieceText": "Se compra sola. Pago único, precio desde.",
@@ -233,8 +230,7 @@
       "includedLink": "Ver paquetes"
     },
     "pieces": "{count, plural, one {# pieza} other {# piezas}}",
-    "piecesTitle": "Piezas sueltas · pago único",
-    "addLabel": "Sumar {name} a tu plan",
+    "piecesTitle": "Qué incluye",
     "includedIn": "Incluida en",
     "goToPlan": "Ver el paquete {name}",
     "extra": "Extra: se suma a cualquier paquete",
@@ -303,7 +299,10 @@
           "priority": "Prioridad 1: tu ficha de Google"
         }
       }
-    }
+    },
+    "seePrices": "Ver los precios de {family}",
+    "add": "Sumar",
+    "addLabel": "Sumar {name} a tu plan"
   },
   "process": {
     "title": "Primero ves tu demo. Después hablamos.",
@@ -553,7 +552,9 @@
       "sentDiffers": "Es el cálculo del equipo y puede diferir del total que viste acá. Vale el del equipo.",
       "viewRequest": "Ver mi solicitud",
       "another": "Enviar otra"
-    }
+    },
+    "liveTitle": "Tu plan, en vivo",
+    "liveEmpty": "Elegí un objetivo o una pieza y acá vas a ver la cuenta."
   },
   "pricing": {
     "title": "Cuánto cuesta<br></br> y cómo se paga.",
@@ -5234,10 +5235,6 @@
       "cancelled": "Solicitud cancelada.",
       "cancelConflict": "La solicitud cambió mientras tanto (el equipo la actualizó). Revisá su estado y, si querés, cancelala de nuevo."
     }
-  },
-  "shortcuts": {
-    "label": "Atajos",
-    "plan": "Armar plan"
   },
   "tour": {
     "label": "Guía",

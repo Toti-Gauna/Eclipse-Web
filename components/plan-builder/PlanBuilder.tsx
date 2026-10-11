@@ -74,6 +74,7 @@ import { StepPieces, type PieceView } from './StepPieces';
 import { RequestAction } from './RequestAction';
 import { StepSummary } from './StepSummary';
 import { Stepper } from './Stepper';
+import { LiveSummary } from './LiveSummary';
 import { usePlanState, type BuilderMode } from './usePlanState';
 
 const groups = groupByCategory();
@@ -471,7 +472,12 @@ export function PlanBuilder({
               <Stepper step={step} onGo={go} variant="bar" />
             </div>
           </>
-        ) : null}
+        ) : (
+          // Fullscreen sheet, desktop: the same rail as /plan (CSS shows it from 1024px).
+          <div className="pb-rail">
+            <Stepper step={step} onGo={go} variant="rail" previews={previews} />
+          </div>
+        )}
 
         <div ref={scrollRef} className="pb-scroll">
           <div ref={stepsRef} className="pb-steps">
@@ -494,6 +500,10 @@ export function PlanBuilder({
             ))}
           </div>
         </div>
+
+        {mode === 'sheet' ? (
+          <LiveSummary quote={q} empty={empty} bonusName={bonusName} founder={founderOffer ?? null} />
+        ) : null}
       </div>
 
       <div className={`pb-dock-wrap ${mode === 'page' ? 'pb-dock-wrap--page' : ''}`}>

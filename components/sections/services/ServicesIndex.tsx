@@ -2,29 +2,28 @@
 
 import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { ChevronDown, Plus } from 'lucide-react';
+import { ArrowDown, ChevronDown } from 'lucide-react';
 import { l, type Item } from '@/lib/content';
-import { formatMoney, plansIncluding } from '@/lib/pricing';
-import { isApproximate } from '@/lib/currency';
+import { plansIncluding } from '@/lib/pricing';
 import type { Locale } from '@/i18n/routing';
-import { useCurrency } from '@/components/providers/CurrencyProvider';
-import { useExperience } from '@/components/providers/ExperienceProvider';
 import { useSound } from '@/components/sound/SoundContext';
 import { useMediaQuery } from '@/components/motion/useMediaQuery';
 import { Occult } from '@/components/motion/Occult';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { planAnchor } from '@/components/pricing/anchors';
-import { PriceReadout } from '@/components/pricing/PriceReadout';
+import { requestPiecesTab } from '@/components/pricing/tabRequest';
 import { ServicePreview } from './ServicePreview';
-import { FAMILIES, familyCategory, familyFromUsd, familyItems } from './services';
+import { FAMILIES, familyCategory, familyItems } from './services';
 
 const DESKTOP = '(min-width: 1024px)';
 
 /**
- * The index of families (01–06), v3: every row already answers "what do I get"
- * (the family's result) and "from how much" (its cheapest piece, pago único);
- * opening a row shows the description and every piece with its price, the
- * packages that include it and "Sumar". One family open at a time.
+ * The index of families (01–06), v3d: what we solve, not what it costs. Every row
+ * answers "what do I get" (the family's result); opening it shows the description,
+ * what it includes (each piece with its one-line description and the packages that
+ * already bring it) and one link to that family's prices in 04 · Precios — the ONE
+ * place where pieces are priced and added to the plan (before v3d the 16 pieces, their
+ * prices and "Sumar" were listed here and again in Precios). One family open at a time.
  * Phones: all rows start closed (a short index). Desktop: one family is always
  * open and a static preview of it sits in a sticky stage on the right
  * (decorative: everything it shows is also in the list). The media query reads
@@ -86,7 +85,6 @@ export function ServicesIndex() {
           const isDefault = open === null && index === shown;
           const name = l(familyCategory(family)?.name, locale) ?? family.id;
           const pieces = familyItems(family);
-          const fromUsd = familyFromUsd(family);
           const headId = `${uid}-${family.id}-head`;
           const panelId = `${uid}-${family.id}-panel`;
           return (
@@ -116,11 +114,7 @@ export function ServicesIndex() {
                     <PhaseGlyph phase={(index + 1) / total} size={16} className="svc-glyph" />
                     <span className="svc-name">{name}</span>
                     <span aria-hidden className="leader svc-leader" />
-                    <span className="svc-from">
-                      <span className="svc-from-label">{t('from')}</span>{' '}
-                      {fromUsd !== null ? <PriceReadout usd={fromUsd} /> : null}
-                      <span className="svc-count">{t('pieces', { count: pieces.length })}</span>
-                    </span>
+                    <span className="svc-from">{t('pieces', { count: pieces.length })}</span>
                     <ChevronDown aria-hidden strokeWidth={1.5} className="svc-chevron" />
                   </button>
                 </h3>
@@ -138,7 +132,7 @@ export function ServicesIndex() {
                 className="svc-panel"
               >
                 <p className="svc-desc">{t(`families.${family.id}.description`)}</p>
-                <PiecesLedger pieces={pieces} />
+                <PiecesIncluded pieces={pieces} name={name} />
               </div>
             </li>
           );
@@ -177,14 +171,14 @@ function StageRuler({ active }: { active: number }) {
   );
 }
 
-/** The family's pieces: name ····· price [+ Sumar], and the packages that already include each one. */
-function PiecesLedger({ pieces }: { pieces: Item[] }) {
+/**
+ * What the family includes: each piece with its one-line description and the packages that
+ * already bring it (links to the package row in Precios). No prices here: the closing link
+ * goes to Precios → Pieza por pieza (`requestPiecesTab`), where every piece is priced.
+ */
+function PiecesIncluded({ pieces, name }: { pieces: Item[]; name: string }) {
   const t = useTranslations('services');
   const locale = useLocale() as Locale;
-  const { currency, rates } = useCurrency();
-  const { openBuilder } = useExperience();
-  const { play } = useSound();
-  const local = isApproximate(currency);
 
   return (
     <div className="svc-pieces">
@@ -193,30 +187,12 @@ function PiecesLedger({ pieces }: { pieces: Item[] }) {
       </p>
       <ul>
         {pieces.map((item) => {
-          const name = l(item.name, locale);
           const inPlans = plansIncluding(item.id);
           return (
             <li key={item.id} className="svc-piece">
               <p className="svc-piece-main">
-                <span className="svc-piece-name">{name}</span>
-                <span aria-hidden className="leader" />
-                <span className="svc-piece-price">
-                  <PriceReadout usd={item.priceUsd} />
-                  {local ? <span className="svc-piece-usd readout">{formatMoney(item.priceUsd, 'USD', rates, locale)}</span> : null}
-                </span>
-                <button
-                  type="button"
-                  aria-haspopup="dialog"
-                  aria-label={t('addLabel', { name })}
-                  onClick={() => {
-                    play('open');
-                    openBuilder('services', { items: [item.id] });
-                  }}
-                  className="svc-add"
-                >
-                  <Plus aria-hidden strokeWidth={1.75} />
-                  {t('add')}
-                </button>
+                <span className="svc-piece-name">{l(item.name, locale)}</span>
+                <span className="svc-piece-desc">{l(item.description, locale)}</span>
               </p>
               <p className="svc-piece-in">
                 {inPlans.length ? (
@@ -236,6 +212,12 @@ function PiecesLedger({ pieces }: { pieces: Item[] }) {
           );
         })}
       </ul>
+      {/* Lands on Precios' "Pieza por pieza" tab (always in the page, also before Precios
+          hydrates: the tab button is visible) and asks it to open; families are listed there. */}
+      <a href="#pr-tab-pieces" onClick={requestPiecesTab} className="svc-prices-link">
+        {t('seePrices', { family: name })}
+        <ArrowDown aria-hidden strokeWidth={1.5} />
+      </a>
     </div>
   );
 }

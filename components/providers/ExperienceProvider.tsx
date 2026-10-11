@@ -7,7 +7,7 @@ import { surfaceThemeOf, type SurfaceTheme } from '@/components/plan-builder/sur
 
 export type { SurfaceTheme };
 
-export type BuilderSource = 'header' | 'hero' | 'hero_shortcut' | 'hero_other' | 'pricing' | 'plan_card' | 'calculator' | 'menu' | 'founders' | 'final_cta' | 'examples' | 'footer' | 'services' | 'demo';
+export type BuilderSource = 'header' | 'hero' | 'hero_other' | 'pricing' | 'plan_card' | 'calculator' | 'menu' | 'founders' | 'final_cta' | 'examples' | 'footer' | 'services' | 'demo';
 
 export interface BuilderPreset {
   items?: ItemId[];
