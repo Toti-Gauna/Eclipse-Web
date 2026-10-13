@@ -97,6 +97,7 @@ export interface ApiPlanSelection {
 }
 
 export interface ApiEstimate {
+  terms?: { depositCents: number; balanceCents: number; bonusMonths: number; monthlyStarts: 'publication' | 'activation'; externalCostsIncluded: false; automaticDebit: false };
   currency: 'USD';
   provisional: true;
   lines: { id: string; kind: 'plan' | 'item'; priceCents: number; listCents: number }[];

@@ -1,18 +1,60 @@
 {
   "$comment": "Catálogo individual para 'Armá tu plan'. Precios en USD. Los planes (plans.json) y add-ons (addons.json) referencian estos ids.",
   "categories": [
-    { "id": "presencia", "name": { "es": "Web y marca", "en": "Web & brand", "pt": "Web e marca" } },
-    { "id": "sistemas", "name": { "es": "Gestión y operación", "en": "Operations", "pt": "Gestão e operação" } },
-    { "id": "comercio", "name": { "es": "Venta online", "en": "Online sales", "pt": "Venda online" } },
-    { "id": "plataformas", "name": { "es": "Apps a medida", "en": "Custom apps", "pt": "Apps sob medida" } },
-    { "id": "ia", "name": { "es": "IA y agentes", "en": "AI & agents", "pt": "IA e agentes" } },
-    { "id": "estrategia", "name": { "es": "Estrategia y crecimiento", "en": "Strategy & growth", "pt": "Estratégia e crescimento" } }
+    {
+      "id": "presencia",
+      "name": {
+        "es": "Web y marca",
+        "en": "Web & brand",
+        "pt": "Web e marca"
+      }
+    },
+    {
+      "id": "sistemas",
+      "name": {
+        "es": "Gestión y operación",
+        "en": "Operations",
+        "pt": "Gestão e operação"
+      }
+    },
+    {
+      "id": "comercio",
+      "name": {
+        "es": "Venta online",
+        "en": "Online sales",
+        "pt": "Venda online"
+      }
+    },
+    {
+      "id": "plataformas",
+      "name": {
+        "es": "Apps a medida",
+        "en": "Custom apps",
+        "pt": "Apps sob medida"
+      }
+    },
+    {
+      "id": "ia",
+      "name": {
+        "es": "IA y agentes",
+        "en": "AI & agents",
+        "pt": "IA e agentes"
+      }
+    },
+    {
+      "id": "estrategia",
+      "name": {
+        "es": "Estrategia y crecimiento",
+        "en": "Strategy & growth",
+        "pt": "Estratégia e crescimento"
+      }
+    }
   ],
   "items": [
     {
       "id": "landing",
       "category": "presencia",
-      "priceUsd": 250,
+      "priceUsd": 500,
       "icon": "MonitorPlay",
       "name": {
         "es": "Landing premium con motion graphics",
@@ -20,17 +62,22 @@
         "pt": "Landing page premium com motion graphics"
       },
       "description": {
-        "es": "Una página que se mueve, carga rápido y convierte.",
-        "en": "One page that moves, loads fast and converts.",
-        "pt": "Uma página que se move, carrega rápido e converte."
-      }
+        "es": "Una página, hasta seis secciones; identidad y contenidos aportados Responsive, motion reutilizado, CTA/formulario y una revisión Alcance concreto validado en propuesta; dominio y externos aparte",
+        "en": "One page, up to six sections; supplied identity and content Responsive, reused motion, CTA/form and one revision Scope validated in the proposal; domain and external services extra",
+        "pt": "Uma página, até seis seções; identidade e conteúdo fornecidos Responsivo, motion reutilizado, CTA/formulário e uma revisão Escopo validado na proposta; domínio e serviços externos à parte"
+      },
+      "campaign": true
     },
     {
       "id": "web-multi",
       "category": "presencia",
       "priceUsd": 450,
       "icon": "LayoutTemplate",
-      "name": { "es": "Web multipágina", "en": "Multi-page website", "pt": "Site com várias páginas" },
+      "name": {
+        "es": "Web multipágina",
+        "en": "Multi-page website",
+        "pt": "Site com várias páginas"
+      },
       "description": {
         "es": "Servicios, equipo, contacto y blog, cada uno en su página.",
         "en": "Services, team, contact and blog, each on its own page.",
@@ -42,7 +89,11 @@
       "category": "presencia",
       "priceUsd": 150,
       "icon": "Search",
-      "name": { "es": "SEO + analytics", "en": "SEO + analytics", "pt": "SEO + analytics" },
+      "name": {
+        "es": "SEO + analytics",
+        "en": "SEO + analytics",
+        "pt": "SEO + analytics"
+      },
       "description": {
         "es": "Que te encuentren en Google y saber qué funciona.",
         "en": "Get found on Google and know what works.",
@@ -70,7 +121,11 @@
       "category": "sistemas",
       "priceUsd": 400,
       "icon": "CalendarCheck",
-      "name": { "es": "Sistema de turnos", "en": "Booking system", "pt": "Sistema de agendamentos" },
+      "name": {
+        "es": "Sistema de turnos",
+        "en": "Booking system",
+        "pt": "Sistema de agendamentos"
+      },
       "description": {
         "es": "Agenda online, confirmaciones y lista de espera.",
         "en": "Online calendar, confirmations and a waitlist.",
@@ -82,7 +137,11 @@
       "category": "sistemas",
       "priceUsd": 400,
       "icon": "ClipboardList",
-      "name": { "es": "Sistema de pedidos", "en": "Ordering system", "pt": "Sistema de pedidos" },
+      "name": {
+        "es": "Sistema de pedidos",
+        "en": "Ordering system",
+        "pt": "Sistema de pedidos"
+      },
       "description": {
         "es": "Pedidos online que llegan completos y ordenados.",
         "en": "Online orders that arrive complete and organized.",
@@ -92,7 +151,7 @@
     {
       "id": "automatizacion",
       "category": "sistemas",
-      "priceUsd": 300,
+      "priceUsd": 500,
       "icon": "Workflow",
       "name": {
         "es": "Automatizaciones (recordatorios, mails, seguimiento)",
@@ -100,17 +159,22 @@
         "pt": "Automações (lembretes, e-mails, follow-up)"
       },
       "description": {
-        "es": "Lo repetitivo pasa solo, sin que nadie lo empuje.",
-        "en": "The repetitive work runs on its own.",
-        "pt": "O trabalho repetitivo roda sozinho."
-      }
+        "es": "Un número propio autorizado; un flujo determinista definido Hasta cinco respuestas aprobadas, una fuente de registro y derivación humana Cuenta, proveedor y accesos habilitados; sin campañas, IA completa ni landing bonus",
+        "en": "One authorized owned number; one defined deterministic flow Up to five approved replies, one record source and human handoff Enabled account, provider and access; no campaigns, full AI agent or bonus landing",
+        "pt": "Um número próprio autorizado; um fluxo determinístico definido Até cinco respostas aprovadas, uma fonte de registro e encaminhamento humano Conta, provedor e acessos habilitados; sem campanhas, agente IA completo ou landing bônus"
+      },
+      "campaign": true
     },
     {
       "id": "dashboard",
       "category": "sistemas",
       "priceUsd": 400,
       "icon": "LayoutDashboard",
-      "name": { "es": "Dashboard interno", "en": "Internal dashboard", "pt": "Dashboard interno" },
+      "name": {
+        "es": "Dashboard interno",
+        "en": "Internal dashboard",
+        "pt": "Dashboard interno"
+      },
       "description": {
         "es": "Los números del día en una sola pantalla.",
         "en": "Today's numbers on a single screen.",
@@ -138,7 +202,11 @@
       "category": "sistemas",
       "priceUsd": 700,
       "icon": "Trophy",
-      "name": { "es": "Gamificación y misiones", "en": "Gamification and missions", "pt": "Gamificação e missões" },
+      "name": {
+        "es": "Gamificación y misiones",
+        "en": "Gamification and missions",
+        "pt": "Gamificação e missões"
+      },
       "description": {
         "es": "Rachas, misiones y premios que hacen volver a tus clientes.",
         "en": "Streaks, missions and rewards that bring customers back.",
@@ -150,7 +218,11 @@
       "category": "comercio",
       "priceUsd": 1200,
       "icon": "ShoppingCart",
-      "name": { "es": "E-commerce completo", "en": "Full e-commerce", "pt": "E-commerce completo" },
+      "name": {
+        "es": "E-commerce completo",
+        "en": "Full e-commerce",
+        "pt": "E-commerce completo"
+      },
       "description": {
         "es": "Catálogo, carrito, pagos y envíos.",
         "en": "Catalog, cart, payments and shipping.",
@@ -162,7 +234,11 @@
       "category": "plataformas",
       "priceUsd": 3500,
       "icon": "Smartphone",
-      "name": { "es": "App on-demand", "en": "On-demand app", "pt": "App on-demand" },
+      "name": {
+        "es": "App on-demand",
+        "en": "On-demand app",
+        "pt": "App on-demand"
+      },
       "description": {
         "es": "Tu servicio en una app: pedidos, reservas y pagos.",
         "en": "Your service in an app: orders, bookings and payments.",
@@ -174,7 +250,11 @@
       "category": "ia",
       "priceUsd": 600,
       "icon": "AudioLines",
-      "name": { "es": "Agente de voz con IA", "en": "AI voice agent", "pt": "Agente de voz com IA" },
+      "name": {
+        "es": "Agente de voz con IA",
+        "en": "AI voice agent",
+        "pt": "Agente de voz com IA"
+      },
       "description": {
         "es": "Atiende llamadas, responde y agenda. 24/7.",
         "en": "Answers calls, replies and books. 24/7.",
@@ -218,12 +298,124 @@
       "category": "estrategia",
       "priceUsd": 150,
       "icon": "ScanSearch",
-      "name": { "es": "Auditoría digital", "en": "Digital audit", "pt": "Auditoria digital" },
+      "name": {
+        "es": "Auditoría digital",
+        "en": "Digital audit",
+        "pt": "Auditoria digital"
+      },
       "description": {
         "es": "Dónde estás perdiendo clientes hoy, con plan de acción.",
         "en": "Where you're losing customers today, with an action plan.",
         "pt": "Onde você está perdendo clientes hoje, com plano de ação."
       }
+    },
+    {
+      "id": "volta-base",
+      "category": "comercio",
+      "campaign": true,
+      "priceUsd": 500,
+      "icon": "ShoppingCart",
+      "name": {
+        "es": "Volta comercial",
+        "en": "Volta commercial",
+        "pt": "Volta comercial"
+      },
+      "description": {
+        "es": "Una marca/sede; hasta 25 productos y variantes aportados Un recorrido comercial con stacks Volta; consulta/pedido manual por WhatsApp Publicación, móvil, explicación y una revisión Sin pagos online, admin compartido ni gamificación productiva; extras sujetos a compatibilidad",
+        "en": "One brand/location; up to 25 supplied products and variants One commercial journey with Volta stacks; manual WhatsApp inquiry/order Publication, mobile, walkthrough and one revision No online payments, shared admin or production gamification; extras require compatibility",
+        "pt": "Uma marca/unidade; até 25 produtos e variantes fornecidos Um percurso comercial com stacks Volta; consulta/pedido manual por WhatsApp Publicação, mobile, explicação e uma revisão Sem pagamentos online, admin compartilhado ou gamificação produtiva; extras exigem compatibilidade"
+      }
+    },
+    {
+      "id": "velmar-base",
+      "category": "comercio",
+      "campaign": true,
+      "priceUsd": 500,
+      "icon": "ShoppingCart",
+      "name": {
+        "es": "Velmar comercial",
+        "en": "Velmar commercial",
+        "pt": "Velmar comercial"
+      },
+      "description": {
+        "es": "Una marca/sede; hasta 25 productos y variantes aportados Un recorrido comercial y personalización básica Velmar cuando corresponda Consulta/pedido manual por WhatsApp, publicación, móvil y una revisión Sin pagos online, admin compartido ni toda la demo; extras sujetos a compatibilidad",
+        "en": "One brand/location; up to 25 supplied products and variants One commercial journey and basic Velmar customization where applicable Manual WhatsApp inquiry/order, publication, mobile and one revision No online payments, shared admin or full demo; extras require compatibility",
+        "pt": "Uma marca/unidade; até 25 produtos e variantes fornecidos Um percurso comercial e personalização básica Velmar quando aplicável Consulta/pedido manual por WhatsApp, publicação, mobile e uma revisão Sem pagamentos online, admin compartilhado ou demo completa; extras exigem compatibilidade"
+      }
+    },
+    {
+      "id": "operativo-base",
+      "category": "sistemas",
+      "campaign": true,
+      "priceUsd": 750,
+      "icon": "CalendarCheck",
+      "name": {
+        "es": "Módulo operativo",
+        "en": "Operations module",
+        "pt": "Módulo operacional"
+      },
+      "description": {
+        "es": "Hasta tres usuarios; un módulo persistente y una fuente Roles, pruebas y alcance especificados en propuesta Integraciones y externos requieren validación técnica",
+        "en": "Up to three users; one persistent module and one source Roles, tests and scope specified in the proposal Integrations and external services require technical validation",
+        "pt": "Até três usuários; um módulo persistente e uma fonte Papéis, testes e escopo especificados na proposta Integrações e serviços externos exigem validação técnica"
+      }
+    },
+    {
+      "id": "ampliado-base",
+      "category": "sistemas",
+      "campaign": true,
+      "priceUsd": 1000,
+      "icon": "Workflow",
+      "name": {
+        "es": "Paquete operativo ampliado",
+        "en": "Extended operations package",
+        "pt": "Pacote operacional ampliado"
+      },
+      "description": {
+        "es": "Hasta cinco usuarios; dos módulos relacionados Una integración especificada, con accesos habilitados Pruebas, recuperación y continuidad/costo total explícitos en propuesta",
+        "en": "Up to five users; two related modules One specified integration with enabled access Tests, recovery and explicit continuation/total cost in the proposal",
+        "pt": "Até cinco usuários; dois módulos relacionados Uma integração especificada com acessos habilitados Testes, recuperação e continuidade/custo total explícitos na proposta"
+      }
+    },
+    {
+      "id": "whatsapp-extra",
+      "category": "comercio",
+      "priceUsd": 100,
+      "icon": "Workflow",
+      "name": {
+        "es": "WhatsApp estándar compatible",
+        "en": "Compatible standard WhatsApp",
+        "pt": "WhatsApp padrão compatível"
+      },
+      "description": {
+        "es": "Solo con Volta/Velmar compatible: un disparador reutilizable y una notificación/registro. Sin IA completa, campañas ni bandeja multiagente. Abrir un link manual no es automatización.",
+        "en": "Only with compatible Volta/Velmar: one reusable trigger and one notification/record. No full AI agent, campaigns or multi-agent inbox. A manual link is not automation.",
+        "pt": "Só com Volta/Velmar compatível: um disparador reutilizável e uma notificação/registro. Sem IA completa, campanhas ou caixa multiagente. Um link manual não é automação."
+      },
+      "compatiblePlans": [
+        "volta",
+        "velmar"
+      ]
+    },
+    {
+      "id": "landing-extra",
+      "category": "comercio",
+      "priceUsd": 50,
+      "icon": "Workflow",
+      "name": {
+        "es": "Landing comercial reutilizada",
+        "en": "Reused campaign landing",
+        "pt": "Landing comercial reutilizada"
+      },
+      "description": {
+        "es": "Solo dentro de Volta/Velmar compatible; misma base, marca y catálogo compartidos. No se vende por separado.",
+        "en": "Only within compatible Volta/Velmar; same base, shared brand and catalog. Never sold separately.",
+        "pt": "Só dentro de Volta/Velmar compatível; mesma base, marca e catálogo compartilhados. Não vendido separadamente."
+      },
+      "compatiblePlans": [
+        "volta",
+        "velmar"
+      ]
     }
   ]
 }

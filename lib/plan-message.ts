@@ -14,6 +14,7 @@
  *   Rubro: Clínicas
  *   Idioma: Español · Moneda: ARS
  */
+import { bonusMonths, campaignSelection, campaignProblem } from './campaign';
 import { annualMonthsCharged, type Rates } from '@/lib/content';
 import type { Currency } from '@/lib/currency';
 import { formatMoney, type Billing, type Quote } from '@/lib/pricing';
@@ -86,6 +87,14 @@ export function buildPlanMessage(input: PlanMessageInput, t: Translate): string 
     lines.push(t('voiceUsage', { price: money(m.voiceUsageMonthlyUsd) }));
   }
 
+  if (campaignSelection(quote.plan?.id, quote.lines.filter(l => l.kind === 'item').map(l => l.id))) {
+    const amount = Math.round(quote.totalUsd * 100);
+    lines.push(t('campaignPayments', { deposit: money(Math.ceil(amount / 2) / 100), balance: money(Math.floor(amount / 2) / 100) }));
+    lines.push(t(bonusMonths(quote.plan?.id, m.plan?.id) ? 'campaignBonus' : 'campaignActivation'));
+    lines.push(t('campaignExternals'));
+    lines.push(t('campaignScope'));
+  }
+  if (campaignProblem(quote.plan?.id, quote.lines.filter(l => l.kind === 'item').map(l => l.id))) lines.push(t('campaignInvalid'));
   if (input.offers?.length) lines.push(t('offers', { list: input.offers.join(', ') }));
   if (input.verticalName) lines.push(t('vertical', { name: input.verticalName }));
   lines.push(t('localeCurrency', { language: input.languageName, currency }));

@@ -39,9 +39,9 @@ export type ItemId =
   | 'voz'
   | 'chatbot'
   | 'marketing'
-  | 'auditoria';
+  | 'auditoria' | 'volta-base' | 'velmar-base' | 'operativo-base' | 'ampliado-base' | 'whatsapp-extra' | 'landing-extra';
 
-export type PlanId = 'diagnostico' | 'presencia' | 'voz' | 'automatiza' | 'sistema' | 'comercio' | 'plataforma';
+export type PlanId = 'diagnostico' | 'presencia' | 'voz' | 'automatiza' | 'sistema' | 'comercio' | 'plataforma' | 'volta' | 'velmar' | 'operativo' | 'ampliado';
 export type MaintenanceId = 'esencial' | 'crecimiento' | 'escala';
 export type VerticalId =
   | 'clinicas'
@@ -60,6 +60,8 @@ export interface ItemCategory {
 }
 
 export interface Item {
+  campaign?: boolean;
+  compatiblePlans?: PlanId[];
   id: ItemId;
   category: string;
   priceUsd: number;
@@ -72,6 +74,7 @@ export interface Item {
 export type PlanTier = 'starter' | 'complete';
 
 export interface Plan {
+  campaign?: boolean;
   id: PlanId;
   tier: PlanTier;
   priceUsd: { from: number; to: number };
@@ -90,6 +93,7 @@ export interface Plan {
 }
 
 export interface Addon {
+  compatiblePlans?: PlanId[];
   id: string;
   itemId: ItemId;
   priceUsd: number;

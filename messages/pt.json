@@ -119,7 +119,13 @@
     "usdRef": "({amount})",
     "perMonth": "por mês",
     "perYear": "por ano",
-    "bonusLine": "Incluído sem custo: {name} (bônus do pacote)"
+    "bonusLine": "Incluído sem custo: {name} (bônus do pacote)",
+    "campaignPayments": "Entrada 50%: {deposit} · saldo na entrega: {balance}. Sobre o total final da proposta.",
+    "campaignBonus": "Só Presença com Volta/Velmar: três meses grátis desde publicação; USD 20/mês a partir do quarto. Data pendente até publicar.",
+    "campaignActivation": "O serviço mensal começa na ativação; o acordo confirma a data. Sem ativação não há data de cobrança.",
+    "campaignExternals": "Domínio, APIs, compute, DB, storage, mensagens e LLM/voz à parte salvo custo incluído explicitamente validado. Sem consumo ilimitado.",
+    "campaignScope": "Escopo final validado na proposta. A demo completa, pagamentos online, admin compartilhado e gamificação não estão implícitos. A divisão 50/50 usa o total final.",
+    "campaignInvalid": "Revise a seleção: extras de 50/100 só com Volta/Velmar compatível, uma vez cada. Pacotes da campanha USD 500–1.000; outros escopos cotados separadamente."
   },
   "problem": {
     "title": "Quanto custa <em>não ter</em> isso?",
@@ -306,7 +312,7 @@
   },
   "process": {
     "title": "Primeiro você vê sua demo. Depois a gente conversa.",
-    "sub": "É assim que a gente vende: em {hours} horas montamos uma demo do seu negócio, antes de qualquer ligação. Se fizer sentido, seguimos.",
+    "sub": "Preparamos uma demo com dados fictícios e validamos escopo, acessos e datas na proposta.",
     "durationLabel": "Prazo",
     "hoursUnit": "h",
     "from": "A partir de",
@@ -322,7 +328,7 @@
       },
       "build": {
         "title": "Sinal e construção",
-        "body": "Com o sinal, a gente começa. Construímos em cima da demo que você já aprovou, e você acompanha cada avanço.",
+        "body": "Com acordo aceito e entrada creditada, Eclipse confirma o início. Acompanhe o escopo acordado no portal.",
         "meta": "Conforme o escopo"
       },
       "launch": {
@@ -570,7 +576,7 @@
       "free": "{months, plural, one {# mês grátis} other {# meses grátis}}"
     },
     "offers": {
-      "label": "Ofertas vigentes",
+      "label": "Promoções fora da campanha",
       "endsIn": "Termina em {time}",
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
@@ -582,13 +588,13 @@
       "comboText": "Pagamento único, se você adicionar ao {plans} ou a uma seleção de peças que chegue a {min} sem contar ele.",
       "comboIncluded": "{count, plural, one {{plans} já vem com ele incluído.} other {{plans} já vêm com ele incluído.}}",
       "founderWhat": "Vale sobre o pagamento único do projeto.",
-      "founderDeal": "Em troca: seu depoimento, permissão para mostrar seu caso e uma indicação."
+      "founderDeal": "Portfolio opcional, com permissão específica separada. Não é condição do preço da campanha."
     },
     "care": {
       "title": "Seu sistema não se apaga quando a gente termina.",
       "suggestedFor": "Sugerido para {plans}",
       "label": "Manutenção · opcional",
-      "text": "Hospedagem, segurança, backups e alterações por um preço fixo. Você escolhe o nível conforme o que construímos juntos.",
+      "text": "Domínio, APIs, compute, DB, storage, mensagens e LLM/voz à parte salvo custo incluído explicitamente validado. Sem consumo ilimitado. Selecionar um plano não confirma pagamento nem ativa débito ou renovação automática. ARS/BRL são referências, não câmbio contratual.",
       "annualNote": "Você paga {charged} meses e usa 12",
       "voice": "Só entra se o seu projeto tiver um: {price} por mês {note}. Sempre mensal, também no pagamento anual.",
       "live": "Manutenção com pagamento {billing}: preços {period}."
@@ -606,20 +612,20 @@
       "project": {
         "title": "Projeto",
         "when": "Pagamento único",
-        "text": "O que construímos para o seu negócio. Você vê um preço a partir de; o final a gente confirma por escrito depois da demo e da conversa.",
+        "text": "Novas ofertas da campanha: 50% de entrada e 50% na entrega, inclusive abaixo de USD 1.000. Acordo e crédito verificados separadamente.",
         "link": "Ver pacotes"
       },
       "care": {
         "title": "Manutenção",
         "when": "Por mês · opcional",
-        "text": "Hospedagem, segurança, backups e alterações, a partir de {price} por mês.",
+        "text": "Só Presença com Volta/Velmar: três meses grátis desde publicação; USD 20/mês a partir do quarto. Data pendente até publicar. O serviço mensal começa na ativação; o acordo confirma a data. Sem ativação não há data de cobrança.",
         "annual": "Pagando o ano, {months, plural, one {# mês sai grátis} other {# meses saem grátis}}.",
         "link": "Ver manutenção"
       },
       "extras": {
         "title": "Extras",
         "when": "Quando quiser",
-        "text": "Você adiciona peças quando precisar, pelo preço de cada uma.",
+        "text": "Domínio, APIs, compute, DB, storage, mensagens e LLM/voz à parte salvo custo incluído explicitamente validado. Sem consumo ilimitado.",
         "link": "Ver peças"
       }
     },
@@ -640,11 +646,11 @@
     },
     "groups": {
       "starter": {
-        "title": "Para começar",
-        "text": "Uma necessidade pontual, resolvida."
+        "title": "Implementação da campanha",
+        "text": "Escopo final validado na proposta. A demo completa, pagamentos online, admin compartilhado e gamificação não estão implícitos. A divisão 50/50 usa o total final."
       },
       "complete": {
-        "title": "Sistemas completos",
+        "title": "Fora da campanha · orçamento separado",
         "text": "Tudo conectado: o que o cliente vê e a operação por dentro."
       },
       "count": "{count, plural, one {# pacote} other {# pacotes}}"
@@ -2306,7 +2312,7 @@
   },
   "founders": {
     "title": "Clientes fundadores",
-    "sub": "Estamos escolhendo os {total} primeiros negócios. Preço de fundador, prioridade na fila e o seu caso contado aqui.",
+    "sub": "Fora da campanha: escopo e preço cotados separadamente. Condições históricas emitidas permanecem.",
     "subNoOffer": "Estamos escolhendo os {total} primeiros negócios para trabalhar lado a lado e contar o caso deles aqui.",
     "titleClients": "Clientes",
     "subClients": "Os primeiros negócios que confiaram na gente. Cada caso, contado com os números dele.",
@@ -2326,15 +2332,15 @@
       "title": "Um acordo de mão dupla",
       "get": "O que você recebe",
       "give": "O que pedimos",
-      "priceText": "Sobre o valor total do desenvolvimento, enquanto houver vagas.",
+      "priceText": "Fora da campanha: escopo e preço cotados separadamente. Condições históricas emitidas permanecem.",
       "maintenanceTitle": "Primeiro mês de manutenção",
-      "maintenanceText": "O plano de manutenção que você escolher, sem custo no primeiro mês.",
+      "maintenanceText": "Fora da campanha: escopo e preço cotados separadamente. Condições históricas emitidas permanecem.",
       "priorityTitle": "Prioridade na fila",
       "priorityText": "Seu projeto começa primeiro e seus pedidos passam na frente.",
       "testimonialTitle": "Seu depoimento",
       "testimonialText": "Com as suas palavras: como foi trabalhar com a gente.",
       "caseTitle": "Seu caso, contado aqui",
-      "caseText": "Seu negócio e seus resultados, contados nesta seção.",
+      "caseText": "Portfolio opcional, com permissão específica separada. Não é condição do preço da campanha.",
       "referralTitle": "Uma indicação",
       "referralText": "Você nos apresenta um negócio que possa precisar da gente.",
       "priceTitle": "Preço de fundador",
@@ -4335,9 +4341,9 @@
     "login": {
       "label": "Portal do cliente",
       "title": "Acompanhe seu projeto, <em>etapa por etapa</em>.",
-      "lead": "É para clientes com um projeto confirmado. O projeto começa com o sinal; depois mandamos um convite por e-mail para você entrar.",
-      "example": "Ver o portal de exemplo",
-      "exampleNote": "Projetos fictícios. Não precisa de conta.",
+      "lead": "Conta → revisar acordo → aceitar/assinar → entrada pendente → verificação Eclipse → projeto ativo",
+      "example": "Ver contratação demo",
+      "exampleNote": "DEMO · conta e oferta fictícias; nenhum contrato real salvo ou assinado.",
       "formLabel": "Acesso",
       "formTitle": "Entrar",
       "formHint": "É uma demonstração: ainda não existem contas. Não digite sua senha real.",
@@ -4354,9 +4360,9 @@
       "helpMessage": "Olá, Eclipse. Quero saber como está meu projeto.",
       "stepsTitle": "Como o acesso vai funcionar",
       "steps": {
-        "confirm": "Você aceita a proposta e paga o sinal: o projeto fica confirmado.",
-        "invite": "Mandamos um convite pessoal por e-mail.",
-        "enter": "Você entra e vê a etapa, o próximo marco, os avanços e as entregas."
+        "confirm": "Crie a conta e verifique identidade; registro não aceita um acordo.",
+        "invite": "Eclipse revisa e atribui sua oferta; primeiro acesso mostra o acordo antes do dashboard.",
+        "enter": "Conta → revisar acordo → aceitar/assinar → entrada pendente → verificação Eclipse → projeto ativo"
       }
     },
     "projects": {
@@ -4936,7 +4942,8 @@
       "login": "Entrar",
       "logout": "Sair",
       "leaving": "Saindo…",
-      "signedInAs": "Sessão: {email}"
+      "signedInAs": "Sessão: {email}",
+      "contracts": "Contratos e documentos"
     },
     "errors": {
       "title": "Não conseguimos concluir a ação",
@@ -4964,15 +4971,15 @@
     },
     "unverified": {
       "title": "Verifique seu e-mail para continuar",
-      "body": "Sua conta ({email}) ainda não tem o e-mail verificado. Até lá não podemos mostrar projetos nem receber solicitações. Abra o link do e-mail que enviamos.",
-      "resend": "Enviar outro link",
+      "body": "A conta exige verificação. Confirme o link do processo habilitado; se não receber, contate a Eclipse por WhatsApp. Identificador da conta: {email}.",
+      "resend": "Solicitar link de verificação",
       "recheck": "Já verifiquei",
       "help": "Mais ajuda"
     },
     "login": {
       "label": "Portal de clientes",
       "title": "Acompanhe seu projeto, <em>etapa por etapa</em>.",
-      "lead": "Entre para ver a etapa, o próximo marco, as atualizações e os documentos dos seus projetos, e o status das suas solicitações de plano.",
+      "lead": "Conta → revisar acordo → aceitar/assinar → entrada pendente → verificação Eclipse → projeto ativo",
       "formLabel": "Acesso",
       "formTitle": "Entrar",
       "nextHint": "Entre e voltamos ao seu plano, do jeito que você deixou.",
@@ -5000,7 +5007,7 @@
       "lead": "Com uma conta você envia seu plano à equipe, vê como a solicitação avança e, quando houver projeto, acompanha por aqui. É grátis e não compromete nada.",
       "formLabel": "Conta",
       "formTitle": "Criar conta",
-      "formHint": "Depois enviamos um e-mail para confirmar o endereço.",
+      "formHint": "A conta exige verificação. Confirme o link do processo habilitado; se não receber, contate a Eclipse por WhatsApp.",
       "name": "Nome",
       "nameLong": "Use até {max} caracteres.",
       "passwordHint": "Mínimo de {min} caracteres. Uma frase longa funciona.",
@@ -5011,7 +5018,7 @@
       "submitting": "Criando…",
       "haveAccount": "Já tem conta?",
       "doneTitle": "Confira seu e-mail",
-      "doneBody": "Se {email} for um endereço válido, enviamos um link para confirmá-lo.",
+      "doneBody": "A conta exige verificação. Confirme o link do processo habilitado; se não receber, contate a Eclipse por WhatsApp.",
       "doneNote": "Pode levar alguns minutos; olhe também o spam. Com o e-mail confirmado, você entra.",
       "noMail": "Não recebi o e-mail"
     },
@@ -5019,7 +5026,7 @@
       "crumb": "Verificar e-mail",
       "label": "Verificação",
       "title": "Confirme seu <em>e-mail</em>.",
-      "lead": "É o último passo para enviar solicitações de plano e ver seus projetos. O link funciona uma única vez.",
+      "lead": "A conta exige verificação. Confirme o link do processo habilitado; se não receber, contate a Eclipse por WhatsApp.",
       "formLabel": "E-mail",
       "confirmTitle": "Um clique e pronto",
       "confirmBody": "Toque o botão para confirmar seu endereço. Não fazemos isso sozinhos ao abrir o link.",
@@ -5038,7 +5045,8 @@
       "sending": "Enviando…",
       "requested": "Pronto. Se houver uma conta para verificar, o e-mail está a caminho (pode levar alguns minutos).",
       "alreadyTitle": "Seu e-mail já está verificado",
-      "alreadyBody": "Não há mais nada a fazer aqui."
+      "alreadyBody": "Não há mais nada a fazer aqui.",
+      "channelUnavailable": "O canal de verificação não está habilitado. Peça à Eclipse o passo aprovado por WhatsApp; este aviso não verifica sua conta."
     },
     "reset": {
       "crumb": "Recuperar senha",
@@ -5425,8 +5433,8 @@
     },
     "project": {
       "label": "O projeto completo",
-      "title": "O que você vê é uma amostra de um projeto completo.",
-      "leadPlan": "Para ter isso no seu negócio: o pacote {plan}, com tudo o que tem nesta demo.",
+      "title": "Um escopo para seu negócio",
+      "leadPlan": "Escopo final validado na proposta. A demo completa, pagamentos online, admin compartilhado e gamificação não estão implícitos. A divisão 50/50 usa o total final.",
       "leadPlanExtras": "Para ter isso no seu negócio: o pacote {plan}, {count, plural, one {mais # peça que também aparece nesta demo} other {mais # peças que também aparecem nesta demo}}.",
       "leadPieces": "Ela é feita com {count, plural, one {# peça} other {# peças}}, cada uma com seu preço publicado. O preço do projeto completo a gente confirma por escrito, depois da demo e da conversa.",
       "package": "Pacote",
@@ -5435,6 +5443,87 @@
       "pieces": "As peças desta demo",
       "piecesNote": "preço publicado de cada peça. O total do projeto a gente confirma por escrito.",
       "build": "Monte este projeto"
+    }
+  },
+  "campaign": {
+    "label": "Campanha · proposta sujeita ao escopo",
+    "total": "Total inicial estimado",
+    "deposit": "Entrada de 50% ao aceitar",
+    "balance": "Saldo de 50% na entrega",
+    "monthly": "Plano mensal selecionado",
+    "perMonth": "/mês",
+    "unselected": "A definir na proposta",
+    "bonus": "Só Presença com Volta/Velmar: três meses grátis desde publicação; USD 20/mês a partir do quarto. Data pendente até publicar.",
+    "activation": "O serviço mensal começa na ativação; o acordo confirma a data. Sem ativação não há data de cobrança.",
+    "externals": "Domínio, APIs, compute, DB, storage, mensagens e LLM/voz à parte salvo custo incluído explicitamente validado. Sem consumo ilimitado.",
+    "scope": "Escopo final validado na proposta. A demo completa, pagamentos online, admin compartilhado e gamificação não estão implícitos. A divisão 50/50 usa o total final.",
+    "noDebit": "Selecionar um plano não confirma pagamento nem ativa débito ou renovação automática. ARS/BRL são referências, não câmbio contratual.",
+    "outside": "Fora da campanha: escopo e preço cotados separadamente. Condições históricas emitidas permanecem.",
+    "incompatible": "Revise a seleção: extras de 50/100 só com Volta/Velmar compatível, uma vez cada. Pacotes da campanha USD 500–1.000; outros escopos cotados separadamente."
+  },
+  "contracting": {
+    "title": "Contratos e documentos",
+    "welcome": "Bem-vindo à Eclipse",
+    "sequence": "Conta → revisar acordo → aceitar/assinar → entrada pendente → verificação Eclipse → projeto ativo",
+    "demo": "DEMO · conta e oferta fictícias; nenhum contrato real salvo ou assinado.",
+    "sandbox": "SANDBOX · teste sem validade contratual",
+    "offer": "Oferta atribuída",
+    "loadError": "Não foi possível verificar o acordo. Tente novamente ou contate a Eclipse.",
+    "loading": "Consultando estado…",
+    "retry": "Tentar novamente",
+    "emptyTitle": "Você ainda não tem um acordo para revisar",
+    "emptyBody": "Criar uma conta não aceita oferta nem habilita projeto. A Eclipse deve revisar e atribuir sua proposta. Consulte as solicitações ou fale conosco.",
+    "requests": "Minhas solicitações",
+    "back": "Voltar ao site",
+    "clarify": "Pedir esclarecimento por WhatsApp",
+    "clarifyMessage": "Olá Eclipse, preciso de esclarecimento sobre meu acordo ou acesso ao portal.",
+    "logout": "Sair",
+    "projectActive": "Projeto ativo · acordo disponível no histórico",
+    "acceptedPending": "Teste do acordo concluído; verificação da entrada pendente",
+    "reviewPending": "Revise o acordo completo antes de pagar",
+    "total": "Total inicial",
+    "deposit": "Entrada",
+    "balance": "Saldo",
+    "monthly": "Mensalidade",
+    "perMonth": "/mês",
+    "paymentVerified": "Crédito verificado pela Eclipse (teste)",
+    "paymentPending": "Verificação Eclipse pendente",
+    "balanceSeparate": "Verificado separadamente em Pagamentos; a ata não confirma saldo",
+    "bonus": "Três meses grátis só em Presença para Volta/Velmar desde publicação. USD 20/mês a partir do quarto.",
+    "activation": "Plano desde ativação; Operação/Automação sem bônus automático.",
+    "firstCharge": "Primeira cobrança prevista",
+    "calendarPreview": "Preview de calendário pendente de aprovação; sem débito automático",
+    "noDates": "Publicação/ativação ainda não registrada; sem data de cobrança. Selecionar plano não ativa pagamentos.",
+    "legalBlock": "Não aprovado para contratação. Faltam modelo, partes fiscais, método de aceitação e retenção aprovados. Contratos produtivos não podem ser publicados ou assinados.",
+    "history": "Pendências e histórico de versões",
+    "startAgreement": "Acordo de início",
+    "delivery": "Ata de entrega",
+    "goProject": "Ver projeto e tour do portal",
+    "method": "Método real",
+    "version": "Versão do modelo",
+    "completedAt": "Teste concluído",
+    "expired": "Documento vencido. Peça à Eclipse uma emissão vigente; não aceite esta versão.",
+    "error": "Não foi possível concluir a ação. Sessão vencida ou documento revogado. Tente novamente para consultar o estado.",
+    "fullDocument": "Documento completo",
+    "download": "Baixar cópia",
+    "evidence": "Exportar evidência",
+    "testOnly": "Sandbox: testar percurso",
+    "readConfirm": "Li o rascunho completo e quero testar este passo. Isso não constitui aceitação do serviço.",
+    "portfolio": "Teste de permissão de portfolio opcional e separada; nunca exigida para contratar.",
+    "testAction": "Concluir teste sandbox",
+    "testDone": "Teste registrado no servidor. Não é assinatura nem pagamento. Eclipse verifica a entrada separadamente.",
+    "visualTestDone": "Teste visual concluído apenas na memória da demo. Não é assinatura, aceitação ou pagamento real.",
+    "nextStep": "Próximo passo: Eclipse revisa requisitos e verifica crédito; assinatura nunca confirma dinheiro.",
+    "observations": "Observações sobre entrega",
+    "sendObservation": "Registrar observação",
+    "observationDone": "Observação registrada; aceitação, preço e saldo separados.",
+    "visualObservation": "Observação fictícia da demo; não enviada nem salva.",
+    "demoOutline": "Esquema interno fictício. Partes e representação: [PENDENTE]. Preço, escopo e plano: resumo abaixo. Impostos/comissões, datas/dependências, materiais/acessos, propriedade/licenças, confidencialidade/dados/terceiros, responsabilidades de comércio/Eclipse, revisão/correção/cancelamento, retenção e método/contrassinatura: [PENDENTE IGNACIO/LEGAL]. Sem cláusulas jurídicas aprovadas.",
+    "states": {
+      "draft": "Rascunho interno",
+      "published": "Revisão necessária",
+      "test_completed": "Teste concluído — não assinatura real",
+      "revoked": "Revogado"
     }
   }
 }

@@ -4,49 +4,79 @@
   "plans": [
     {
       "id": "esencial",
-      "priceUsd": 25,
-      "name": { "es": "Esencial", "en": "Essential", "pt": "Essencial" },
+      "priceUsd": 20,
+      "name": {
+        "es": "Presencia",
+        "en": "Presence",
+        "pt": "Presença"
+      },
       "includes": {
-        "es": ["Hosting", "SSL", "Backups semanales", "1 cambio menor por mes"],
-        "en": ["Hosting", "SSL", "Weekly backups", "1 minor change per month"],
-        "pt": ["Hospedagem", "SSL", "Backups semanais", "1 alteração pequena por mês"]
+        "es": [
+          "Estático, revisión y correcciones de fallas del alcance",
+          "15 min mensuales de ajustes menores",
+          "Dominio y externos aparte"
+        ],
+        "en": [
+          "Static site, review and in-scope defect corrections",
+          "15 minutes of minor adjustments per month",
+          "Domain and external services extra"
+        ],
+        "pt": [
+          "Estático, revisão e correções de falhas do escopo",
+          "15 min mensais de pequenos ajustes",
+          "Domínio e serviços externos à parte"
+        ]
       }
     },
     {
       "id": "crecimiento",
-      "priceUsd": 79,
-      "name": { "es": "Crecimiento", "en": "Growth", "pt": "Crescimento" },
+      "priceUsd": 40,
+      "name": {
+        "es": "Operación",
+        "en": "Operations",
+        "pt": "Operação"
+      },
       "includes": {
-        "es": ["Todo lo de Esencial", "Base de datos", "Monitoreo", "3 h de cambios por mes", "Reporte mensual"],
-        "en": ["Everything in Essential", "Database", "Monitoring", "3 h of changes per month", "Monthly report"],
-        "pt": ["Tudo do Essencial", "Banco de dados", "Monitoramento", "3 h de alterações por mês", "Relatório mensal"]
+        "es": [
+          "Revisión operativa y respaldo pactado",
+          "30 min mensuales de soporte/ajustes",
+          "Compute, DB y storage aparte salvo costo validado"
+        ],
+        "en": [
+          "Operational review and agreed backup",
+          "30 minutes of support/adjustments per month",
+          "Compute, DB and storage extra unless validated"
+        ],
+        "pt": [
+          "Revisão operacional e backup acordado",
+          "30 min mensais de suporte/ajustes",
+          "Compute, DB e storage à parte salvo custo validado"
+        ]
       }
     },
     {
       "id": "escala",
-      "priceUsd": 199,
-      "name": { "es": "Escala", "en": "Scale", "pt": "Escala" },
+      "priceUsd": 100,
+      "name": {
+        "es": "Automatización",
+        "en": "Automation",
+        "pt": "Automação"
+      },
       "includes": {
         "es": [
-          "Todo lo de Crecimiento",
-          "Cloudflare Pro",
-          "Backups diarios",
-          "Respuesta en 24 h",
-          "8 h de cambios por mes"
+          "Monitoreo de un flujo/agente",
+          "Hasta 60 min mensuales de ajustes",
+          "APIs, mensajes, LLM/voz y consumos aparte; sin ilimitados"
         ],
         "en": [
-          "Everything in Growth",
-          "Cloudflare Pro",
-          "Daily backups",
-          "24 h response time",
-          "8 h of changes per month"
+          "Monitoring of one flow/agent",
+          "Up to 60 minutes of adjustments per month",
+          "APIs, messages, LLM/voice and usage extra; no unlimited consumption"
         ],
         "pt": [
-          "Tudo do Crescimento",
-          "Cloudflare Pro",
-          "Backups diários",
-          "Resposta em 24 h",
-          "8 h de alterações por mês"
+          "Monitoramento de um fluxo/agente",
+          "Até 60 min mensais de ajustes",
+          "APIs, mensagens, LLM/voz e consumos à parte; sem ilimitados"
         ]
       }
     }
@@ -55,7 +85,11 @@
     "id": "voz-uso",
     "priceUsd": 49,
     "whenItem": "voz",
-    "name": { "es": "Agente de voz", "en": "Voice agent", "pt": "Agente de voz" },
+    "name": {
+      "es": "Agente de voz",
+      "en": "Voice agent",
+      "pt": "Agente de voz"
+    },
     "note": {
       "es": "+ minutos según uso",
       "en": "+ minutes based on usage",

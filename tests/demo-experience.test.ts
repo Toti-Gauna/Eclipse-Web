@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+// Historical catalog regressions; current campaign behaviors are in campaign.test.ts.
+import { vi, describe, expect, it } from 'vitest';
 import { items, maintenanceById, offers, planById, verticals, type Offer, type Vertical } from '@/lib/content';
 import { maintenanceSuggestion } from '@/lib/pricing';
 import { projectSummary } from '@/components/demo-experience/project';
@@ -125,3 +126,5 @@ describe('buildTourSteps', () => {
     });
   });
 });
+
+vi.mock('@/lib/content', async () => ({ ...(await vi.importActual('@/lib/content')), ...(await import('./fixtures/historical-content')).historicalContent }));

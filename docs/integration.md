@@ -1,7 +1,7 @@
 # Integración con el backend (fase 8)
 
-La web pública puede conectarse al backend real (`Eclipse-be`, Express/Prisma, OpenAPI **0.7.0**) para tres cosas:
-cuentas de cliente, solicitudes de plan desde «Armá tu plan» y el portal (proyectos, avances y documentos).
+La web pública puede conectarse al backend real (`Eclipse-be`, Express/Prisma, OpenAPI **0.8.0**) para cuentas de cliente,
+solicitudes de plan desde «Armá tu plan», contratación pre-proyecto y el portal (proyectos, avances y documentos).
 **Sin backend configurado el sitio es exactamente el de siempre**: portal de demostración con fixtures rotulados
 «Demo» y el flujo por WhatsApp.
 
@@ -24,6 +24,10 @@ Son valores públicos; no hay secretos del lado del cliente ni se ponen en `.env
   `notice`, `login`, `guide`) no viaja al navegador (ver `app/[locale]/portal/layout.tsx`).
 
 ## Rutas
+
+Actualización 13/10: `bienvenida/` y `contratos/?id=<uuid>` muestran la contratación antes del dashboard según `GET /client/onboarding`. El backend vuelve a comprobar ese gate en proyectos/documentos. No basta `next`, una bandera local o un contrato histórico para aceptar una versión nueva. Sin oferta asignada se muestra bienvenida vacía. Documento completo, copia, evidencia y observaciones usan descargas/API privadas. En demo son fixtures ficticios en memoria; en live local la firma sigue siendo sandbox, nunca firma productiva. Detalles, catálogo versionado, pruebas y bloqueos en [reto-2026-10-13.md](reto-2026-10-13.md).
+
+Verificación: se conserva el circuito actual. Notion infraestructura del 10/10 habilitaba SMTP, mientras el encargo del 13/10 establece WhatsApp manual/sin SMTP nuevo. No se activa correo ni se suprime verificación; si las rutas de verificación están deshabilitadas, la UI explica el bloqueo y el canal productivo queda para decisión de Ignacio. Los tests utilizan recorder local existente, sin correo real.
 
 | Ruta (todas bajo `/[locale]/portal/`, `noindex`) | Modo | Qué hace |
 |---|---|---|

@@ -1754,3 +1754,12 @@
     border: 1px solid CanvasText;
   }
 }
+
+.campaign-summary { padding: 1.1rem; border: 1px solid currentColor; border-radius: .6rem; margin-block: 1rem; max-width: 100%; font-size: .88rem; line-height: 1.6; }
+.campaign-summary dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem 1.2rem; margin-block: .8rem; }
+.campaign-summary dt { opacity: .72; }
+.campaign-summary dd { margin: 0; font-variant-numeric: tabular-nums; }
+.campaign-summary p + p { margin-top: .4rem; }
+@media (max-width: 420px) { .campaign-summary dl { grid-template-columns: 1fr; } }
+
+.campaign-options { display: grid; gap: .65rem; margin-top: 1rem; } .campaign-options button { white-space: normal; text-align: left; line-height: 1.6; overflow-wrap: anywhere; }

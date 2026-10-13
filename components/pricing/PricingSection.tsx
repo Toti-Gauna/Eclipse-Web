@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { foundersRemaining, offers, type FounderOffer, type Offer, type ReferralOffer, type VoiceComboOffer } from '@/lib/content';
-import { annualFreeMonths, type Billing } from '@/lib/pricing';
+import { type Billing } from '@/lib/pricing';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { Reveal } from '@/components/motion/Reveal';
 import { Occult } from '@/components/motion/Occult';
@@ -94,7 +94,7 @@ export function PricingSection() {
 
         <Reveal className="pr-block">
           <div data-reveal>
-            <CarePanel billing={effectiveBilling} onBillingChange={changeBilling} annualOn={annualOn} referral={referralOffer} />
+            <CarePanel billing="monthly" onBillingChange={changeBilling} annualOn={false} referral={referralOffer} />
           </div>
         </Reveal>
 
@@ -108,7 +108,7 @@ export function PricingSection() {
 
         <Reveal className="pr-block">
           <div data-reveal>
-            <PayLedger freeMonths={annualOn ? annualFreeMonths() : null} />
+            <PayLedger freeMonths={null} />
           </div>
         </Reveal>
 

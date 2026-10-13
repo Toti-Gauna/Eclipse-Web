@@ -36,11 +36,11 @@ function liveSubset(portal: Record<string, Tree> | undefined): Tree {
 export default async function PortalLayout({ children, params }: { children: ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  if (!IS_LIVE) return <PortalFrame>{children}</PortalFrame>;
   const messages = await getMessages();
+  if (!IS_LIVE) return <NextIntlClientProvider messages={{ portal: messages.portal, tour: messages.tour, contracting: messages.contracting, campaign: messages.campaign }}><PortalFrame>{children}</PortalFrame></NextIntlClientProvider>;
   const portal = liveSubset(messages.portal as Record<string, Record<string, unknown>> | undefined);
   return (
-    <NextIntlClientProvider messages={{ portal, portalLive: messages.portalLive }}>
+    <NextIntlClientProvider messages={{ portal, portalLive: messages.portalLive, contracting: messages.contracting, campaign: messages.campaign }}>
       <PortalFrame>{children}</PortalFrame>
     </NextIntlClientProvider>
   );

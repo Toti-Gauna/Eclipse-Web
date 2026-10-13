@@ -8,6 +8,7 @@ import { livePaths } from '@/lib/portal/live';
 import { useLive } from './hooks';
 
 const LINKS = [
+  { key: 'contracts', href: '/portal/contratos/', match: ['/portal/contratos','/portal/bienvenida'] },
   { key: 'projects', href: livePaths.projects, match: ['/portal/proyectos', '/portal/proyecto'] },
   { key: 'requests', href: livePaths.requests, match: ['/portal/solicitudes', '/portal/solicitud'] },
 ] as const;

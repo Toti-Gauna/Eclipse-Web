@@ -7,11 +7,15 @@
       "active": true,
       "endsAt": null,
       "percentOff": 20,
-      "label": { "es": "Precio fundador −20%", "en": "Founder price −20%", "pt": "Preço de fundador −20%" },
+      "label": {
+        "es": "Precio fundador −20%",
+        "en": "Founder price −20%",
+        "pt": "Preço de fundador −20%"
+      },
       "description": {
-        "es": "Para los primeros 5 negocios. Incluye el primer mes de mantenimiento bonificado y prioridad en la cola.",
-        "en": "For the first 5 businesses. Includes the first month of maintenance free and priority in the queue.",
-        "pt": "Para os 5 primeiros negócios. Inclui o primeiro mês de manutenção grátis e prioridade na fila."
+        "es": "Para los primeros 5 negocios. Incluye el primer mes de mantenimiento bonificado y prioridad en la cola. Fuera del reto; no se acumula con sus paquetes. Portfolio opcional y separado.",
+        "en": "For the first 5 businesses. Includes the first month of maintenance free and priority in the queue. Outside the campaign; does not stack with its packages. Portfolio consent is optional and separate.",
+        "pt": "Para os 5 primeiros negócios. Inclui o primeiro mês de manutenção grátis e prioridade na fila. Fora da campanha; não acumula com seus pacotes. Portfolio opcional e separado."
       }
     },
     {
@@ -21,13 +25,21 @@
       "endsAt": null,
       "itemId": "voz",
       "priceUsd": 300,
-      "plans": ["sistema", "comercio", "plataforma"],
+      "plans": [
+        "sistema",
+        "comercio",
+        "plataforma"
+      ],
       "minSubtotalUsd": 1000,
-      "label": { "es": "Combo voz", "en": "Voice combo", "pt": "Combo voz" },
+      "label": {
+        "es": "Combo voz",
+        "en": "Voice combo",
+        "pt": "Combo voz"
+      },
       "description": {
-        "es": "Agente de voz con IA a USD 300 en planes desde Sistema.",
-        "en": "AI voice agent for USD 300 on plans from System up.",
-        "pt": "Agente de voz com IA por USD 300 nos planos a partir do Sistema."
+        "es": "Agente de voz con IA a USD 300 en planes desde Sistema. Fuera del reto; no se acumula con sus paquetes. Portfolio opcional y separado.",
+        "en": "AI voice agent for USD 300 on plans from System up. Outside the campaign; does not stack with its packages. Portfolio consent is optional and separate.",
+        "pt": "Agente de voz com IA por USD 300 nos planos a partir do Sistema. Fora da campanha; não acumula com seus pacotes. Portfolio opcional e separado."
       }
     },
     {
@@ -35,11 +47,15 @@
       "kind": "annualMaintenance",
       "active": true,
       "endsAt": null,
-      "label": { "es": "Pago anual: 2 meses gratis", "en": "Pay yearly: 2 months free", "pt": "Pagamento anual: 2 meses grátis" },
+      "label": {
+        "es": "Pago anual: 2 meses gratis",
+        "en": "Pay yearly: 2 months free",
+        "pt": "Pagamento anual: 2 meses grátis"
+      },
       "description": {
-        "es": "Pagás el mantenimiento anual y te bonificamos 2 meses.",
-        "en": "Pay for maintenance yearly and get 2 months free.",
-        "pt": "Pague a manutenção anual e ganhe 2 meses grátis."
+        "es": "Pagás el mantenimiento anual y te bonificamos 2 meses. Fuera del reto; no se acumula con sus paquetes. Portfolio opcional y separado.",
+        "en": "Pay for maintenance yearly and get 2 months free. Outside the campaign; does not stack with its packages. Portfolio consent is optional and separate.",
+        "pt": "Pague a manutenção anual e ganhe 2 meses grátis. Fora da campanha; não acumula com seus pacotes. Portfolio opcional e separado."
       }
     },
     {
@@ -47,11 +63,15 @@
       "kind": "referral",
       "active": true,
       "endsAt": null,
-      "label": { "es": "Referidos", "en": "Referrals", "pt": "Indicações" },
+      "label": {
+        "es": "Referidos",
+        "en": "Referrals",
+        "pt": "Indicações"
+      },
       "description": {
-        "es": "1 mes de mantenimiento gratis por cada cliente referido que cierre.",
-        "en": "1 free month of maintenance for every referred client who signs.",
-        "pt": "1 mês de manutenção grátis para cada cliente indicado que fechar."
+        "es": "1 mes de mantenimiento gratis por cada cliente referido que cierre. Fuera del reto; no se acumula con sus paquetes. Portfolio opcional y separado.",
+        "en": "1 free month of maintenance for every referred client who signs. Outside the campaign; does not stack with its packages. Portfolio consent is optional and separate.",
+        "pt": "1 mês de manutenção grátis para cada cliente indicado que fechar. Fora da campanha; não acumula com seus pacotes. Portfolio opcional e separado."
       }
     }
   ]

@@ -3,6 +3,7 @@
  * shared client (CSRF, refresh, timeouts) and validate just enough of each answer that a
  * malformed one fails as INVALID_RESPONSE instead of crashing a screen.
  */
+import type { Onboarding, Engagement } from './contracts';
 import { ApiError } from './errors';
 import type { ApiClient } from './client';
 import type {
@@ -144,6 +145,26 @@ export function createEndpoints(api: ApiClient) {
       return json.request as unknown as ApiPlanRequest;
     },
 
+    async onboarding(signal?: AbortSignal): Promise<Onboarding> {
+      const json = await api.request<unknown>({ path: '/client/onboarding', auth: 'session', signal });
+      if (!isObj(json) || !['verification_required','agreement_pending','deposit_pending','project_active','no_agreement'].includes(String(json.state)) || typeof json.required !== 'boolean' || (json.engagementId !== null && typeof json.engagementId !== 'string')) invalid();
+      return json as unknown as Onboarding;
+    },
+    async engagements(signal?: AbortSignal): Promise<Engagement[]> {
+      const json = await api.request<unknown>({ path: '/client/engagements', auth: 'session', signal });
+      if (!isObj(json) || !Array.isArray(json.engagements) || !json.engagements.every(hasId)) invalid();
+      return json.engagements as Engagement[];
+    },
+    async engagement(id: string, signal?: AbortSignal): Promise<Engagement> {
+      const json = await api.request<unknown>({ path: `/client/engagements/${guard(id)}`, auth: 'session', signal });
+      if (!isObj(json) || !hasId(json.engagement)) invalid();
+      return json.engagement as unknown as Engagement;
+    },
+    contractContent(id: string, signal?: AbortSignal) { return api.download(`/client/contracts/${guard(id)}/content`, { signal }); },
+    contractEvidence(id: string) { return api.download(`/client/contracts/${guard(id)}/evidence`); },
+    async contractSession(id: string) { return api.request<{sessionId:string;method:string;sandbox:boolean}>({ method:'POST', path:`/client/contracts/${guard(id)}/signature-session`,auth:'session',body:{confirm:true} }); },
+    async contractTest(id:string, body:{sessionId:string;documentHash:string;confirmTest:true;portfolio:boolean}, key:string) { return api.request({method:'POST',path:`/client/contracts/${guard(id)}/sandbox-event`,auth:'session',body,idempotencyKey:key}); },
+    async contractObservation(id:string,text:string,key:string) { return api.request({method:'POST',path:`/client/contracts/${guard(id)}/observations`,auth:'session',body:{text},idempotencyKey:key}); },
     // ---- projects -------------------------------------------------------------------
     async projects(signal?: AbortSignal): Promise<Page<ApiProjectSummary>> {
       const json = await api.request<unknown>({ path: '/client/projects', auth: 'session', signal });

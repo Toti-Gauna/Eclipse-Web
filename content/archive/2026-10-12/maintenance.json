@@ -1,0 +1,65 @@
+{
+  "$comment": "Planes mensuales de mantenimiento + hosting, en USD. 'voiceUsage' se suma solo cuando hay agente de voz (fijo mensual + minutos según uso). El pago anual cobra 'annualMonthsCharged' meses (10 = 2 meses gratis) y aplica a los planes, no a los minutos del agente de voz.",
+  "annualMonthsCharged": 10,
+  "plans": [
+    {
+      "id": "esencial",
+      "priceUsd": 25,
+      "name": { "es": "Esencial", "en": "Essential", "pt": "Essencial" },
+      "includes": {
+        "es": ["Hosting", "SSL", "Backups semanales", "1 cambio menor por mes"],
+        "en": ["Hosting", "SSL", "Weekly backups", "1 minor change per month"],
+        "pt": ["Hospedagem", "SSL", "Backups semanais", "1 alteração pequena por mês"]
+      }
+    },
+    {
+      "id": "crecimiento",
+      "priceUsd": 79,
+      "name": { "es": "Crecimiento", "en": "Growth", "pt": "Crescimento" },
+      "includes": {
+        "es": ["Todo lo de Esencial", "Base de datos", "Monitoreo", "3 h de cambios por mes", "Reporte mensual"],
+        "en": ["Everything in Essential", "Database", "Monitoring", "3 h of changes per month", "Monthly report"],
+        "pt": ["Tudo do Essencial", "Banco de dados", "Monitoramento", "3 h de alterações por mês", "Relatório mensal"]
+      }
+    },
+    {
+      "id": "escala",
+      "priceUsd": 199,
+      "name": { "es": "Escala", "en": "Scale", "pt": "Escala" },
+      "includes": {
+        "es": [
+          "Todo lo de Crecimiento",
+          "Cloudflare Pro",
+          "Backups diarios",
+          "Respuesta en 24 h",
+          "8 h de cambios por mes"
+        ],
+        "en": [
+          "Everything in Growth",
+          "Cloudflare Pro",
+          "Daily backups",
+          "24 h response time",
+          "8 h of changes per month"
+        ],
+        "pt": [
+          "Tudo do Crescimento",
+          "Cloudflare Pro",
+          "Backups diários",
+          "Resposta em 24 h",
+          "8 h de alterações por mês"
+        ]
+      }
+    }
+  ],
+  "voiceUsage": {
+    "id": "voz-uso",
+    "priceUsd": 49,
+    "whenItem": "voz",
+    "name": { "es": "Agente de voz", "en": "Voice agent", "pt": "Agente de voz" },
+    "note": {
+      "es": "+ minutos según uso",
+      "en": "+ minutes based on usage",
+      "pt": "+ minutos conforme o uso"
+    }
+  }
+}

@@ -1,5 +1,9 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+import oldPlans from '@/content/archive/2026-10-12/plans.json';
+import oldItems from '@/content/archive/2026-10-12/items.json';
+import oldCare from '@/content/archive/2026-10-12/maintenance.json';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import type { ApiPlanRequest } from '@/lib/api/types';
 import { itemById, l, maintenanceById, planById, verticalById } from '@/lib/content';
@@ -7,15 +11,16 @@ import { annualMonthsCharged } from '@/lib/content';
 import { useLive } from './hooks';
 
 /** Name of a plan/item/maintenance id from the commercial content; falls back to the id. */
-export function useNames() {
+export function useNames(catalogVersion?: string) {
+  const historical = catalogVersion?.startsWith('v1-') === true;
   const { locale } = useLive();
   return {
     line: (id: string, kind: 'plan' | 'item') => {
-      const entity = kind === 'plan' ? planById(id) : itemById(id);
+      const entity = historical ? (kind === 'plan' ? oldPlans.plans.find(x => x.id === id) : oldItems.items.find(x => x.id === id)) : kind === 'plan' ? planById(id) : itemById(id);
       return entity ? l(entity.name, locale) : id;
     },
     maintenance: (id: string | null) => {
-      const m = maintenanceById(id);
+      const m = historical ? oldCare.plans.find(x => x.id === id) : maintenanceById(id);
       return m ? l(m.name, locale) : null;
     },
     vertical: (id: string | null) => {
@@ -40,7 +45,8 @@ export function StatusTag({ status }: { status: ApiPlanRequest['status'] }) {
 export function EstimateLedger({ request }: { request: ApiPlanRequest }) {
   const { t } = useLive();
   const { format } = useCurrency();
-  const names = useNames();
+  const names = useNames(request.catalogVersion);
+  const campaign = useTranslations('campaign');
   const e = request.estimate;
   const usd = (cents: number) => format(cents / 100);
   const m = e.maintenance;
@@ -89,6 +95,7 @@ export function EstimateLedger({ request }: { request: ApiPlanRequest }) {
         <p className="pt-fine">{t('requests.maintenanceNone')}</p>
       )}
       {m.voiceUsageMonthlyCents > 0 ? <p className="pt-fine">{t('requests.voiceUsage', { price: usd(m.voiceUsageMonthlyCents) })}</p> : null}
+      {e.terms ? <div className="campaign-summary"><p>{campaign('deposit')}: {usd(e.terms.depositCents)}</p><p>{campaign('balance')}: {usd(e.terms.balanceCents)}</p><p>{campaign(e.terms.bonusMonths ? 'bonus' : 'activation')}</p><p>{campaign('externals')}</p><p>{campaign('noDebit')}</p></div> : null}
       <p className="pt-fine">{t('requests.estimateNote')}</p>
     </div>
   );

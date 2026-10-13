@@ -268,7 +268,7 @@ export function planSwitchSuggestion(state: PlanState, ctx: BuilderContext, plan
   const contained = new Set<string>(detectPlans(selection, planList).map((m) => m.plan.id));
   let best: PlanSwitch | null = null;
   for (const plan of planList) {
-    if (plan.id === state.planId || plan.items.length < 2) continue;
+    if (plan.campaign || plan.id === state.planId || plan.items.length < 2) continue;
     const adds = plan.items.filter((id) => !selected.has(id));
     const covered = plan.items.length - adds.length;
     const qualifies = contained.has(plan.id) || (adds.length > 0 && covered >= 2 && covered * 2 >= plan.items.length);

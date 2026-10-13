@@ -65,9 +65,9 @@ describe('content integrity', () => {
   it('matches the price table of the brief', () => {
     const table: Record<string, [number, number]> = {
       diagnostico: [150, 250],
-      presencia: [250, 400],
+      presencia: [500, 1000],
       voz: [500, 700],
-      automatiza: [400, 700],
+      automatiza: [500, 1000],
       sistema: [1000, 1500],
       comercio: [2000, 3500],
       plataforma: [4000, 7000],
@@ -77,9 +77,9 @@ describe('content integrity', () => {
       expect(plan.priceUsd).toEqual({ from, to });
     }
     expect(maintenancePlans.map((m) => [m.id, m.priceUsd])).toEqual([
-      ['esencial', 25],
-      ['crecimiento', 79],
-      ['escala', 199],
+      ['esencial', 20],
+      ['crecimiento', 40],
+      ['escala', 100],
     ]);
     expect(voiceUsage.priceUsd).toBe(49);
   });
