@@ -119,7 +119,13 @@
     "usdRef": "({amount})",
     "perMonth": "per month",
     "perYear": "per year",
-    "bonusLine": "Included at no charge: {name} (package bonus)"
+    "bonusLine": "Included at no charge: {name} (package bonus)",
+    "campaignPayments": "50% deposit: {deposit} · balance upon delivery: {balance}. Based on the final proposal total.",
+    "campaignBonus": "Presence with Volta/Velmar only: three free months from publication; USD 20/month from month four. Date pending until publication.",
+    "campaignActivation": "Monthly service starts upon activation; the agreement confirms the date. No activation date means no charge date.",
+    "campaignExternals": "Domain, APIs, compute, DB, storage, messages and LLM/voice extra unless explicitly validated as included. No unlimited usage.",
+    "campaignScope": "Final scope is validated in the proposal. The full demo, online payments, shared admin and gamification are not implied. The 50/50 split uses the final total.",
+    "campaignInvalid": "Review your selection: 50/100 extras only with compatible Volta/Velmar, once each. Campaign packages USD 500–1,000; other scopes quoted separately."
   },
   "problem": {
     "title": "What does <em>not having</em> this cost you?",
@@ -306,7 +312,7 @@
   },
   "process": {
     "title": "First you see your demo. Then we talk.",
-    "sub": "That's how we sell: within {hours} hours we build a demo of your business, before any call. If you like it, we keep going.",
+    "sub": "We prepare a demo with fictional data and validate scope, access and dates in your proposal.",
     "durationLabel": "Turnaround",
     "hoursUnit": "h",
     "from": "From",
@@ -322,7 +328,7 @@
       },
       "build": {
         "title": "Deposit and build",
-        "body": "The deposit gets us started. We build on the demo you already approved, and you see every step.",
+        "body": "With an accepted agreement and cleared deposit, Eclipse confirms the start. Follow the agreed scope in your portal.",
         "meta": "Based on scope"
       },
       "launch": {
@@ -570,7 +576,7 @@
       "free": "{months, plural, one {# month free} other {# months free}}"
     },
     "offers": {
-      "label": "Current offers",
+      "label": "Offers outside the campaign",
       "endsIn": "Ends in {time}",
       "days": "{days} d {hours} h",
       "hours": "{hours} h {minutes} min",
@@ -582,13 +588,13 @@
       "comboText": "One-time payment, when you add it to {plans} or to a selection of pieces that reaches {min} without it.",
       "comboIncluded": "{count, plural, one {{plans} already includes it.} other {{plans} already include it.}}",
       "founderWhat": "It applies to the project’s one-time payment.",
-      "founderDeal": "In return: your testimonial, permission to show your case and one referral."
+      "founderDeal": "Optional portfolio, with separate specific permission. Not a condition of campaign pricing."
     },
     "care": {
       "title": "Your system doesn't go dark when we're done.",
       "suggestedFor": "Suggested for {plans}",
       "label": "Maintenance · optional",
-      "text": "Hosting, security, backups and changes for a fixed price. Pick the level that fits what we build together.",
+      "text": "Domain, APIs, compute, DB, storage, messages and LLM/voice extra unless explicitly validated as included. No unlimited usage. Selecting a plan does not confirm payment or activate automatic debit or renewal. ARS/BRL are references, not contractual exchange rates.",
       "annualNote": "You pay {charged} months, you get 12",
       "voice": "Only if your project has one: {price} a month {note}. Always monthly, even on yearly billing.",
       "live": "Maintenance on {billing} billing: prices {period}."
@@ -606,20 +612,20 @@
       "project": {
         "title": "Project",
         "when": "One-time payment",
-        "text": "What we build for your business. You see a starting price; we confirm the final one in writing after the demo and the call.",
+        "text": "New campaign offers: 50% deposit and 50% upon delivery, including below USD 1,000. Agreement and cleared payment are verified separately.",
         "link": "See packages"
       },
       "care": {
         "title": "Maintenance",
         "when": "Monthly · optional",
-        "text": "Hosting, security, backups and changes, from {price} a month.",
+        "text": "Presence with Volta/Velmar only: three free months from publication; USD 20/month from month four. Date pending until publication. Monthly service starts upon activation; the agreement confirms the date. No activation date means no charge date.",
         "annual": "Pay for the year and {months, plural, one {# month is free} other {# months are free}}.",
         "link": "See maintenance"
       },
       "extras": {
         "title": "Extras",
         "when": "Whenever you want",
-        "text": "Add pieces when you need them, at each piece's price.",
+        "text": "Domain, APIs, compute, DB, storage, messages and LLM/voice extra unless explicitly validated as included. No unlimited usage.",
         "link": "See pieces"
       }
     },
@@ -640,11 +646,11 @@
     },
     "groups": {
       "starter": {
-        "title": "To get started",
-        "text": "One specific need, solved."
+        "title": "Campaign implementation",
+        "text": "Final scope is validated in the proposal. The full demo, online payments, shared admin and gamification are not implied. The 50/50 split uses the final total."
       },
       "complete": {
-        "title": "Complete systems",
+        "title": "Outside campaign · quoted separately",
         "text": "Everything connected: what your customers see and the back office."
       },
       "count": "{count, plural, one {# package} other {# packages}}"
@@ -2306,7 +2312,7 @@
   },
   "founders": {
     "title": "Founding clients",
-    "sub": "We're choosing our first {total} businesses. Founder pricing, priority in the queue and your story told right here.",
+    "sub": "Outside the campaign: scope and price quoted separately. Issued historical conditions remain unchanged.",
     "subNoOffer": "We're choosing our first {total} businesses to work with side by side and tell their story here.",
     "titleClients": "Clients",
     "subClients": "The first businesses that trusted us. Every case, told with its numbers.",
@@ -2326,15 +2332,15 @@
       "title": "A deal that goes both ways",
       "get": "What you get",
       "give": "What we ask",
-      "priceText": "On the full development price, while spots last.",
+      "priceText": "Outside the campaign: scope and price quoted separately. Issued historical conditions remain unchanged.",
       "maintenanceTitle": "First month of maintenance",
-      "maintenanceText": "Whichever maintenance plan you choose, free for the first month.",
+      "maintenanceText": "Outside the campaign: scope and price quoted separately. Issued historical conditions remain unchanged.",
       "priorityTitle": "Priority in the queue",
       "priorityText": "Your project starts first and your requests jump the line.",
       "testimonialTitle": "Your testimonial",
       "testimonialText": "In your own words: what it was like working with us.",
       "caseTitle": "Your case, told here",
-      "caseText": "Your business and your results, told in this section.",
+      "caseText": "Optional portfolio, with separate specific permission. Not a condition of campaign pricing.",
       "referralTitle": "One referral",
       "referralText": "You introduce us to a business that could use us.",
       "priceTitle": "Founder price",
@@ -4335,9 +4341,9 @@
     "login": {
       "label": "Client portal",
       "title": "Follow your project, <em>stage by stage</em>.",
-      "lead": "It's for clients with a confirmed project. A project starts once the deposit is paid; then we email you an invitation to sign in.",
-      "example": "See the example portal",
-      "exampleNote": "Fictional projects. No account needed.",
+      "lead": "Account → review agreement → accept/sign → deposit pending → Eclipse verifies → active project",
+      "example": "View contracting demo",
+      "exampleNote": "DEMO · fictional account and offer; no real contract is stored or signed.",
       "formLabel": "Access",
       "formTitle": "Sign in",
       "formHint": "This is a demo: there are no accounts yet. Don't type your real password.",
@@ -4354,9 +4360,9 @@
       "helpMessage": "Hi Eclipse. I'd like an update on my project.",
       "stepsTitle": "How access will work",
       "steps": {
-        "confirm": "You accept the proposal and pay the deposit: the project is confirmed.",
-        "invite": "We email you a personal invitation.",
-        "enter": "You sign in and see the stage, next milestone, updates and deliverables."
+        "confirm": "Create your account and verify identity; registration does not accept an agreement.",
+        "invite": "Eclipse reviews and assigns your offer; first entry shows the agreement before the dashboard.",
+        "enter": "Account → review agreement → accept/sign → deposit pending → Eclipse verifies → active project"
       }
     },
     "projects": {
@@ -4936,7 +4942,8 @@
       "login": "Sign in",
       "logout": "Sign out",
       "leaving": "Signing out…",
-      "signedInAs": "Signed in: {email}"
+      "signedInAs": "Signed in: {email}",
+      "contracts": "Contracts and documents"
     },
     "errors": {
       "title": "We couldn’t complete that",
@@ -4964,15 +4971,15 @@
     },
     "unverified": {
       "title": "Verify your email to continue",
-      "body": "Your account ({email}) doesn’t have a verified email yet. Until then we can’t show projects or take requests. Open the link in the email we sent you.",
-      "resend": "Send me a new link",
+      "body": "The account requires verification. Confirm the link from the enabled process; if you do not receive one, contact Eclipse on WhatsApp. Account identifier: {email}.",
+      "resend": "Request verification link",
       "recheck": "I already verified",
       "help": "More help"
     },
     "login": {
       "label": "Client portal",
       "title": "Follow your project, <em>stage by stage</em>.",
-      "lead": "Sign in to see the stage, next milestone, updates and documents of your projects, and the status of your plan requests.",
+      "lead": "Account → review agreement → accept/sign → deposit pending → Eclipse verifies → active project",
       "formLabel": "Access",
       "formTitle": "Sign in",
       "nextHint": "Sign in and we’ll bring you back to your plan, just as you left it.",
@@ -5000,7 +5007,7 @@
       "lead": "With an account you send your plan to the team, see how the request is going and, once there’s a project, follow it from here. It’s free and commits you to nothing.",
       "formLabel": "Account",
       "formTitle": "Create account",
-      "formHint": "Then we’ll email you to confirm the address.",
+      "formHint": "The account requires verification. Confirm the link from the enabled process; if you do not receive one, contact Eclipse on WhatsApp.",
       "name": "Name",
       "nameLong": "Use up to {max} characters.",
       "passwordHint": "At least {min} characters. A long phrase works.",
@@ -5011,7 +5018,7 @@
       "submitting": "Creating…",
       "haveAccount": "Already have an account?",
       "doneTitle": "Check your email",
-      "doneBody": "If {email} is a valid address, we sent it a link to confirm it.",
+      "doneBody": "The account requires verification. Confirm the link from the enabled process; if you do not receive one, contact Eclipse on WhatsApp.",
       "doneNote": "It can take a few minutes; check spam too. Once the email is confirmed, sign in.",
       "noMail": "I didn’t get the email"
     },
@@ -5019,7 +5026,7 @@
       "crumb": "Verify email",
       "label": "Verification",
       "title": "Confirm your <em>email</em>.",
-      "lead": "It’s the last step to send plan requests and see your projects. The link works only once.",
+      "lead": "The account requires verification. Confirm the link from the enabled process; if you do not receive one, contact Eclipse on WhatsApp.",
       "formLabel": "Email",
       "confirmTitle": "One click and done",
       "confirmBody": "Press the button to confirm your address. We don’t do it automatically when the link opens.",
@@ -5038,7 +5045,8 @@
       "sending": "Sending…",
       "requested": "Done. If there’s an account to verify, the email is on its way (it can take a few minutes).",
       "alreadyTitle": "Your email is already verified",
-      "alreadyBody": "There’s nothing else to do here."
+      "alreadyBody": "There’s nothing else to do here.",
+      "channelUnavailable": "The verification channel is not enabled. Ask Eclipse for the approved step on WhatsApp; this notice does not verify your account."
     },
     "reset": {
       "crumb": "Reset password",
@@ -5425,8 +5433,8 @@
     },
     "project": {
       "label": "The complete project",
-      "title": "What you see is a sample of a complete project.",
-      "leadPlan": "To have it in your business: the {plan} package, with everything in this demo.",
+      "title": "A scope for your business",
+      "leadPlan": "Final scope is validated in the proposal. The full demo, online payments, shared admin and gamification are not implied. The 50/50 split uses the final total.",
       "leadPlanExtras": "To have it in your business: the {plan} package, {count, plural, one {plus # piece that also shows up in this demo} other {plus # pieces that also show up in this demo}}.",
       "leadPieces": "It's built with {count, plural, one {# piece} other {# pieces}}, each with its published price. We confirm the price of the complete project in writing, after the demo and the call.",
       "package": "Package",
@@ -5435,6 +5443,87 @@
       "pieces": "The pieces in this demo",
       "piecesNote": "published price of each piece. We confirm the project total in writing.",
       "build": "Build this project"
+    }
+  },
+  "campaign": {
+    "label": "Campaign · proposal subject to scope",
+    "total": "Estimated initial total",
+    "deposit": "50% deposit upon acceptance",
+    "balance": "50% balance upon delivery",
+    "monthly": "Selected monthly plan",
+    "perMonth": "/month",
+    "unselected": "To be defined in the proposal",
+    "bonus": "Presence with Volta/Velmar only: three free months from publication; USD 20/month from month four. Date pending until publication.",
+    "activation": "Monthly service starts upon activation; the agreement confirms the date. No activation date means no charge date.",
+    "externals": "Domain, APIs, compute, DB, storage, messages and LLM/voice extra unless explicitly validated as included. No unlimited usage.",
+    "scope": "Final scope is validated in the proposal. The full demo, online payments, shared admin and gamification are not implied. The 50/50 split uses the final total.",
+    "noDebit": "Selecting a plan does not confirm payment or activate automatic debit or renewal. ARS/BRL are references, not contractual exchange rates.",
+    "outside": "Outside the campaign: scope and price quoted separately. Issued historical conditions remain unchanged.",
+    "incompatible": "Review your selection: 50/100 extras only with compatible Volta/Velmar, once each. Campaign packages USD 500–1,000; other scopes quoted separately."
+  },
+  "contracting": {
+    "title": "Contracts and documents",
+    "welcome": "Welcome to Eclipse",
+    "sequence": "Account → review agreement → accept/sign → deposit pending → Eclipse verifies → active project",
+    "demo": "DEMO · fictional account and offer; no real contract is stored or signed.",
+    "sandbox": "SANDBOX · test without contractual validity",
+    "offer": "Assigned offer",
+    "loadError": "We could not verify agreement status. Retry or contact Eclipse.",
+    "loading": "Checking status…",
+    "retry": "Retry",
+    "emptyTitle": "You do not have an agreement to review yet",
+    "emptyBody": "Creating an account does not accept an offer or enable a project. Eclipse must review and assign your proposal. You can check requests or contact us.",
+    "requests": "My requests",
+    "back": "Back to website",
+    "clarify": "Ask for clarification on WhatsApp",
+    "clarifyMessage": "Hello Eclipse, I need clarification about my agreement or portal access.",
+    "logout": "Sign out",
+    "projectActive": "Active project · agreement remains in history",
+    "acceptedPending": "Agreement test completed; deposit verification pending",
+    "reviewPending": "Review the complete agreement before paying",
+    "total": "Initial total",
+    "deposit": "Deposit",
+    "balance": "Balance",
+    "monthly": "Monthly plan",
+    "perMonth": "/month",
+    "paymentVerified": "Cleared payment verified by Eclipse (test)",
+    "paymentPending": "Eclipse verification pending",
+    "balanceSeparate": "Verified separately in Payments; delivery acceptance does not confirm balance",
+    "bonus": "Three free months only for Presence with Volta/Velmar from publication. USD 20/month from month four.",
+    "activation": "Plan starts at activation; Operations/Automation do not receive an automatic bonus.",
+    "firstCharge": "Expected first charge",
+    "calendarPreview": "Calendar preview pending approval; no automatic debit",
+    "noDates": "Publication/activation not recorded yet; no charge date. Selecting a plan does not activate payments.",
+    "legalBlock": "Not approved for contracting. Approved template, legal parties, acceptance method and retention policy are missing. Production contracts cannot be published or signed.",
+    "history": "Pending actions and version history",
+    "startAgreement": "Start agreement",
+    "delivery": "Delivery report",
+    "goProject": "View project and portal tour",
+    "method": "Actual method",
+    "version": "Template version",
+    "completedAt": "Test completed",
+    "expired": "Expired document. Ask Eclipse for a current issue; do not accept this version.",
+    "error": "The action could not be completed. Your session may have expired or the document may be revoked. Retry to check its status.",
+    "fullDocument": "Complete document",
+    "download": "Download copy",
+    "evidence": "Export evidence",
+    "testOnly": "Sandbox: test the journey",
+    "readConfirm": "I read the full draft and want to test this step. This does not accept a service.",
+    "portfolio": "Optional separate portfolio permission test; never required to contract.",
+    "testAction": "Complete sandbox test",
+    "testDone": "Test recorded on the server. Not a signature or payment. Eclipse verifies the deposit separately.",
+    "visualTestDone": "Visual test completed in this demo memory only. Not a real signature, acceptance or payment.",
+    "nextStep": "Next step: Eclipse reviews requirements and verifies cleared payment; a signature never confirms money.",
+    "observations": "Delivery observations",
+    "sendObservation": "Record observation",
+    "observationDone": "Observation recorded; acceptance, price and balance remain separate.",
+    "visualObservation": "Fictional demo observation; not sent or stored.",
+    "demoOutline": "Fictional internal outline. Parties and representation: [PENDING]. Price, scope and plan: summary below. Tax/fees, dates/dependencies, materials/access, ownership/licenses, confidentiality/data/third parties, commerce/Eclipse responsibilities, review/correction/cancellation, retention and method/countersignature: [PENDING IGNACIO/LEGAL]. No approved legal clauses.",
+    "states": {
+      "draft": "Internal draft",
+      "published": "Review required",
+      "test_completed": "Test completed — not a real signature",
+      "revoked": "Revoked"
     }
   }
 }

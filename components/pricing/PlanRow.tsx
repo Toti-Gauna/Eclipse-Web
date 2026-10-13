@@ -1,8 +1,12 @@
 'use client';
 
+import { CampaignSummary } from '@/components/pricing/CampaignSummary';
+
 import { useId, useMemo, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowUpRight, Check, ChevronDown, Gift, SlidersHorizontal } from 'lucide-react';
+import { addonsForPlan } from '@/lib/pricing';
+import { itemById, type ItemId } from '@/lib/content';
 import { formatAmount, formatMoney, maintenanceSuggestion, planSavings, quote, type Billing } from '@/lib/pricing';
 import { isApproximate } from '@/lib/currency';
 import { l, offerById, verticalById, type Plan } from '@/lib/content';
@@ -223,6 +227,15 @@ export function PlanRow({
           ) : null}
         </div>
 
+      {['volta', 'velmar'].includes(plan.id) ? <div className="campaign-options">
+        {[['landing-extra'], ['whatsapp-extra'], ['landing-extra', 'whatsapp-extra']].filter(ids => ids.every(id => addonsForPlan(plan.id).some(a => a.addon.itemId === id))).map(ids => {
+          const option = quote({planId:plan.id,itemIds:ids,maintenanceId});
+          return <button key={ids.join(',')} className="btn btn-ghost btn-sm" onClick={() => openBuilder('plan_card', {planId:plan.id,items:ids as ItemId[]})}>
+            {ids.map(id => l(itemById(id)!.name,locale)).join(' + ')} · {format(option.totalUsd)} · {format(option.totalUsd/2)} + {format(option.totalUsd/2)}
+          </button>;
+        })}
+      </div> : null}
+      <CampaignSummary quote={q} />
         <div className="pr-plan-actions">
           <WhatsAppLink
             origin="plan_card"

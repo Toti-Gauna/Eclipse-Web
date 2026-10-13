@@ -1,5 +1,6 @@
 'use client';
 
+import { campaignProblem } from '@/lib/campaign';
 import { useId } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -107,7 +108,7 @@ export function Dock({
         ) : null}
         {/* Mounted on every step (the message is always ready), shown on the summary. */}
         <span className="pb-dock-send" hidden={!last}>
-          <SendAction message={message} disabled={empty} describedBy={empty ? hintId : undefined} analytics={analytics} label={
+          <SendAction message={message} disabled={empty || !!campaignProblem(q.plan?.id, q.lines.filter(l => l.kind === 'item').map(l => l.id))} describedBy={empty ? hintId : undefined} analytics={analytics} label={
               <>
                 <span className="sm:hidden">{t('sendShort')}</span>
                 <span className="hidden sm:inline">{t('send')}</span>

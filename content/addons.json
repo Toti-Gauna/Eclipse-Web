@@ -7,7 +7,11 @@
       "priceUsd": 600,
       "offer": "combo-voz",
       "whenIncluded": "show",
-      "name": { "es": "Agente de voz con IA", "en": "AI voice agent", "pt": "Agente de voz com IA" }
+      "name": {
+        "es": "Agente de voz con IA",
+        "en": "AI voice agent",
+        "pt": "Agente de voz com IA"
+      }
     },
     {
       "id": "addon-marketing",
@@ -47,7 +51,41 @@
       "itemId": "seo",
       "priceUsd": 150,
       "whenIncluded": "show",
-      "name": { "es": "SEO + analytics", "en": "SEO + analytics", "pt": "SEO + analytics" }
+      "name": {
+        "es": "SEO + analytics",
+        "en": "SEO + analytics",
+        "pt": "SEO + analytics"
+      }
+    },
+    {
+      "id": "addon-whatsapp-extra",
+      "itemId": "whatsapp-extra",
+      "priceUsd": 100,
+      "whenIncluded": "hide",
+      "name": {
+        "es": "WhatsApp estándar compatible",
+        "en": "Compatible standard WhatsApp",
+        "pt": "WhatsApp padrão compatível"
+      },
+      "compatiblePlans": [
+        "volta",
+        "velmar"
+      ]
+    },
+    {
+      "id": "addon-landing-extra",
+      "itemId": "landing-extra",
+      "priceUsd": 50,
+      "whenIncluded": "hide",
+      "name": {
+        "es": "Landing comercial reutilizada",
+        "en": "Reused campaign landing",
+        "pt": "Landing comercial reutilizada"
+      },
+      "compatiblePlans": [
+        "volta",
+        "velmar"
+      ]
     }
   ]
 }

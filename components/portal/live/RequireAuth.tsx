@@ -1,5 +1,6 @@
 'use client';
 
+import { ContractGate } from './ContractGate';
 import { useEffect, type ReactNode } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import { usePathname } from '@/i18n/navigation';
@@ -17,7 +18,7 @@ import { useLive } from './hooks';
  * authenticated but unverified → clear "verify your email" state (the API answers 403 to
  * project reads and plan requests until then) · otherwise the screen.
  */
-export function RequireAuth({ children, verified = true }: { children: (client: { id: string; email: string; displayName: string | null }) => ReactNode; verified?: boolean }) {
+export function RequireAuth({ children, verified = true, contracting = true }: { children: (client: { id: string; email: string; displayName: string | null }) => ReactNode; verified?: boolean; contracting?: boolean }) {
   const { t } = useLive();
   const session = useSession({ ensure: true });
   const router = useRouter();
@@ -36,7 +37,7 @@ export function RequireAuth({ children, verified = true }: { children: (client: 
 
   if (state.status === 'authenticated') {
     if (verified && !state.client.emailVerified) return <VerifyNotice client={state.client} />;
-    return <>{children(state.client)}</>;
+    return contracting && state.client.emailVerified ? <ContractGate>{children(state.client)}</ContractGate> : <>{children(state.client)}</>;
   }
   if (state.status === 'error') {
     return (

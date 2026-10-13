@@ -58,6 +58,7 @@ export function Faq({ className = '' }: { className?: string }) {
   const tpr = useTranslations('process');
   const ts = useTranslations('services');
   const tc = useTranslations('currency');
+  const campaign = useTranslations('campaign');
   const locale = useLocale() as Locale;
   const { currency, rates, format } = useCurrency();
   const { play } = useSound();
@@ -86,7 +87,7 @@ export function Faq({ className = '' }: { className?: string }) {
         <p className="faq-tag">
           {tp('how.project.title')} · {tp('how.project.when')}
         </p>
-        <p>{tp('notes.from')}</p>
+        <p>{tp('notes.from')}</p><p>{tp('how.project.text')}</p><p>{campaign('scope')}</p>
       </>
     ),
     currency: (
@@ -102,7 +103,7 @@ export function Faq({ className = '' }: { className?: string }) {
     ),
     pieces: (
       <>
-        <p>{ts('key.pieceText')}</p>
+        <p>{ts('key.pieceText')}</p><p>{campaign('incompatible')}</p>
         <p>{tp('ways.bundles.text')}</p>
         <p>{tp('how.extras.text')}</p>
       </>
@@ -110,7 +111,7 @@ export function Faq({ className = '' }: { className?: string }) {
     maintenance: (
       <>
         <p className="faq-tag">{tp('care.label')}</p>
-        <p>{tp('care.text')}</p>
+        <p>{tp('care.text')}</p><p>{campaign('bonus')}</p><p>{campaign('activation')}</p><p>{campaign('noDebit')}</p>
         <ul className="faq-list">
           {maintenancePlans.map((m) => (
             <li key={m.id}>

@@ -1,0 +1,302 @@
+{
+  "$comment": "Rubros del hero, la calculadora y la sección Ejemplos. Los negocios son ficticios y siempre se rotulan como Demo. 'calculator' son los valores por defecto (ticket en USD). 'otro' no tiene demo: abre 'Armá tu plan'. 'project' (v3): piezas que muestra la demo y, solo si el 'audience' aprobado de un paquete nombra el rubro, ese paquete (si no, null; a validar por Ignacio).",
+  "verticals": [
+    {
+      "id": "clinicas",
+      "icon": "Stethoscope",
+      "demo": "clinic",
+      "name": { "es": "Clínicas", "en": "Clinics", "pt": "Clínicas" },
+      "longName": {
+        "es": "Clínicas (odontología y estética)",
+        "en": "Clinics (dental and aesthetics)",
+        "pt": "Clínicas (odontologia e estética)"
+      },
+      "business": "Clínica Aurora",
+      "pain": {
+        "es": "Turnos perdidos y ausencias",
+        "en": "Missed appointments and no-shows",
+        "pt": "Horários perdidos e faltas"
+      },
+      "keyNumber": {
+        "value": 12,
+        "prefix": "",
+        "suffix": "",
+        "headline": {
+          "es": "Recupera 12 turnos por semana",
+          "en": "Recovers 12 appointments a week",
+          "pt": "Recupera 12 horários por semana"
+        },
+        "label": {
+          "es": "turnos recuperados por semana",
+          "en": "appointments recovered per week",
+          "pt": "horários recuperados por semana"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 10,
+        "ticketUsd": 30,
+        "hoursPerWeek": 8,
+        "lostLabel": {
+          "es": "Turnos perdidos por semana",
+          "en": "Missed appointments per week",
+          "pt": "Horários perdidos por semana"
+        },
+        "ticketLabel": {
+          "es": "Valor promedio de un turno",
+          "en": "Average appointment value",
+          "pt": "Valor médio de um atendimento"
+        }
+      },
+      "project": { "plan": "sistema", "items": ["landing", "turnos", "voz", "automatizacion", "dashboard"] }
+    },
+    {
+      "id": "inmobiliarias",
+      "icon": "Building",
+      "demo": "realEstate",
+      "name": { "es": "Inmobiliarias", "en": "Real estate", "pt": "Imobiliárias" },
+      "longName": { "es": "Inmobiliarias", "en": "Real estate agencies", "pt": "Imobiliárias" },
+      "business": "Lumen Propiedades",
+      "pain": {
+        "es": "Consultas sin responder fuera de horario",
+        "en": "Inquiries left unanswered after hours",
+        "pt": "Contatos sem resposta fora do horário"
+      },
+      "keyNumber": {
+        "value": 100,
+        "prefix": "",
+        "suffix": "%",
+        "headline": {
+          "es": "Responde el 100% de las consultas en < 1 min",
+          "en": "Answers 100% of inquiries in < 1 min",
+          "pt": "Responde 100% dos contatos em < 1 min"
+        },
+        "label": {
+          "es": "de consultas respondidas en menos de 1 minuto",
+          "en": "of inquiries answered in under 1 minute",
+          "pt": "dos contatos respondidos em menos de 1 minuto"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 15,
+        "ticketUsd": 40,
+        "hoursPerWeek": 10,
+        "lostLabel": {
+          "es": "Consultas sin respuesta por semana",
+          "en": "Unanswered inquiries per week",
+          "pt": "Contatos sem resposta por semana"
+        },
+        "ticketLabel": {
+          "es": "Valor promedio de una consulta",
+          "en": "Average value of an inquiry",
+          "pt": "Valor médio de um contato"
+        }
+      },
+      "project": { "plan": null, "items": ["web-multi", "chatbot", "crm", "automatizacion"] }
+    },
+    {
+      "id": "gimnasios",
+      "icon": "Dumbbell",
+      "demo": "gym",
+      "name": { "es": "Gimnasios", "en": "Gyms", "pt": "Academias" },
+      "longName": { "es": "Gimnasios", "en": "Gyms and studios", "pt": "Academias" },
+      "business": "Órbita Fitness",
+      "pain": { "es": "Bajas de socios", "en": "Member churn", "pt": "Cancelamento de alunos" },
+      "keyNumber": {
+        "value": 25,
+        "prefix": "−",
+        "suffix": "%",
+        "headline": {
+          "es": "−25% de bajas con misiones y rachas",
+          "en": "−25% churn with missions and streaks",
+          "pt": "−25% de cancelamentos com missões e sequências"
+        },
+        "label": {
+          "es": "de bajas con misiones y rachas",
+          "en": "churn with missions and streaks",
+          "pt": "de cancelamentos com missões e sequências"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 3,
+        "ticketUsd": 30,
+        "hoursPerWeek": 6,
+        "lostLabel": {
+          "es": "Socios que se dan de baja por semana",
+          "en": "Members who cancel per week",
+          "pt": "Alunos que cancelam por semana"
+        },
+        "ticketLabel": {
+          "es": "Cuota mensual promedio",
+          "en": "Average monthly fee",
+          "pt": "Mensalidade média"
+        }
+      },
+      "project": { "plan": "sistema", "items": ["turnos", "gamificacion", "automatizacion", "dashboard"] }
+    },
+    {
+      "id": "tiendas",
+      "icon": "ShoppingBag",
+      "demo": "shop",
+      "name": { "es": "Tiendas online", "en": "Online stores", "pt": "Lojas online" },
+      "longName": {
+        "es": "Tiendas y marcas con venta online",
+        "en": "Shops and brands selling online",
+        "pt": "Lojas e marcas com venda online"
+      },
+      "business": "Bruma Tostadores",
+      "pain": {
+        "es": "Carritos abandonados y consultas sin responder",
+        "en": "Abandoned carts and unanswered questions",
+        "pt": "Carrinhos abandonados e dúvidas sem resposta"
+      },
+      "keyNumber": {
+        "value": 1,
+        "prefix": "",
+        "suffix": " / 5",
+        "headline": {
+          "es": "Recupera 1 de cada 5 carritos abandonados",
+          "en": "Recovers 1 in 5 abandoned carts",
+          "pt": "Recupera 1 em cada 5 carrinhos abandonados"
+        },
+        "label": {
+          "es": "carritos abandonados recuperados",
+          "en": "abandoned carts recovered",
+          "pt": "carrinhos abandonados recuperados"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 15,
+        "ticketUsd": 35,
+        "hoursPerWeek": 8,
+        "lostLabel": {
+          "es": "Carritos abandonados por semana",
+          "en": "Abandoned carts per week",
+          "pt": "Carrinhos abandonados por semana"
+        },
+        "ticketLabel": {
+          "es": "Ticket promedio de una compra",
+          "en": "Average order value",
+          "pt": "Ticket médio de uma compra"
+        }
+      },
+      "project": { "plan": "comercio", "items": ["ecommerce", "chatbot", "automatizacion", "dashboard"] }
+    },
+    {
+      "id": "restaurantes",
+      "icon": "UtensilsCrossed",
+      "demo": "restaurant",
+      "name": { "es": "Restaurantes", "en": "Restaurants", "pt": "Restaurantes" },
+      "longName": {
+        "es": "Restaurantes, bares y delivery",
+        "en": "Restaurants, bars and delivery",
+        "pt": "Restaurantes, bares e delivery"
+      },
+      "business": "Bodegón Lucero",
+      "pain": {
+        "es": "Pedidos y reservas perdidos en hora pico",
+        "en": "Orders and bookings lost at rush hour",
+        "pt": "Pedidos e reservas perdidos no horário de pico"
+      },
+      "keyNumber": {
+        "value": 3,
+        "prefix": "",
+        "suffix": "",
+        "headline": {
+          "es": "Atiende 3 llamadas a la vez en hora pico",
+          "en": "Answers 3 calls at once at rush hour",
+          "pt": "Atende 3 ligações ao mesmo tempo no pico"
+        },
+        "label": {
+          "es": "llamadas a la vez, sin tono de ocupado",
+          "en": "calls at once, never a busy tone",
+          "pt": "ligações ao mesmo tempo, sem sinal de ocupado"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 20,
+        "ticketUsd": 20,
+        "hoursPerWeek": 10,
+        "lostLabel": {
+          "es": "Pedidos o reservas perdidos por semana",
+          "en": "Orders or bookings lost per week",
+          "pt": "Pedidos ou reservas perdidos por semana"
+        },
+        "ticketLabel": {
+          "es": "Ticket promedio por pedido",
+          "en": "Average order value",
+          "pt": "Ticket médio por pedido"
+        }
+      },
+      "project": { "plan": null, "items": ["pedidos", "voz", "turnos", "dashboard"] }
+    },
+    {
+      "id": "academias",
+      "icon": "GraduationCap",
+      "demo": "academy",
+      "name": { "es": "Academias y cursos", "en": "Schools & courses", "pt": "Escolas e cursos" },
+      "longName": {
+        "es": "Academias, institutos y cursos online",
+        "en": "Language schools, institutes and online courses",
+        "pt": "Escolas de idiomas, institutos e cursos online"
+      },
+      "business": "Atrio Idiomas",
+      "pain": {
+        "es": "Alumnos que abandonan a mitad de curso",
+        "en": "Students who drop out halfway through",
+        "pt": "Alunos que desistem no meio do curso"
+      },
+      "keyNumber": {
+        "value": 82,
+        "prefix": "",
+        "suffix": "%",
+        "headline": {
+          "es": "82% de los alumnos termina el curso",
+          "en": "82% of students finish the course",
+          "pt": "82% dos alunos terminam o curso"
+        },
+        "label": {
+          "es": "de los alumnos termina el curso",
+          "en": "of students finish the course",
+          "pt": "dos alunos terminam o curso"
+        }
+      },
+      "calculator": {
+        "lostPerWeek": 3,
+        "ticketUsd": 50,
+        "hoursPerWeek": 10,
+        "lostLabel": {
+          "es": "Alumnos que abandonan por semana",
+          "en": "Students who drop out per week",
+          "pt": "Alunos que desistem por semana"
+        },
+        "ticketLabel": {
+          "es": "Cuota mensual promedio",
+          "en": "Average monthly fee",
+          "pt": "Mensalidade média"
+        }
+      },
+      "project": { "plan": null, "items": ["landing", "chatbot", "voz", "gamificacion", "automatizacion", "dashboard"] }
+    },
+    {
+      "id": "otro",
+      "icon": "Plus",
+      "demo": null,
+      "name": { "es": "Otro", "en": "Other", "pt": "Outro" },
+      "longName": { "es": "Otro rubro", "en": "Other industry", "pt": "Outro setor" },
+      "business": null,
+      "pain": null,
+      "keyNumber": null,
+      "calculator": {
+        "lostPerWeek": 5,
+        "ticketUsd": 30,
+        "hoursPerWeek": 6,
+        "lostLabel": {
+          "es": "Consultas o turnos perdidos por semana",
+          "en": "Lost inquiries or bookings per week",
+          "pt": "Contatos ou horários perdidos por semana"
+        },
+        "ticketLabel": { "es": "Ticket promedio", "en": "Average ticket", "pt": "Ticket médio" }
+      }
+    }
+  ]
+}

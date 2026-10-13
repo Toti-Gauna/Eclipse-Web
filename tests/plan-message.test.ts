@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+// Historical catalog regressions; current campaign behaviors are in campaign.test.ts.
+import { vi, describe, expect, it } from 'vitest';
 import { createTranslator } from 'next-intl';
 import es from '@/messages/es.json';
 import en from '@/messages/en.json';
@@ -100,3 +101,5 @@ describe('buildPlanMessage', () => {
     expect(msg).not.toContain('Agente de voz');
   });
 });
+
+vi.mock('@/lib/content', async () => ({ ...(await vi.importActual('@/lib/content')), ...(await import('./fixtures/historical-content')).historicalContent }));

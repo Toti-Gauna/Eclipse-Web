@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import catalog from './fixtures/backend-catalog.v1.json';
+import catalog from './fixtures/backend-catalog.reto-v2.json';
 import type { ApiCatalog } from '@/lib/api/types';
 import { buildPlanRequestBody, catalogMismatches, checkContact, hasProblems, toApiSelection } from '@/lib/plan-request';
 import { emptyPlanState, type PlanState } from '@/lib/plan-url';
@@ -72,7 +72,7 @@ describe('plan request — contact validation', () => {
 
 describe('plan request — web content vs the backend catalog', () => {
   it('matches the backend catalog snapshot 1:1 (prices, packages, maintenance, offers, enums)', () => {
-    // If this fails the web and the backend drifted: refresh tests/fixtures/backend-catalog.v1.json from
+    // If this fails the web and the backend drifted: refresh tests/fixtures/backend-catalog.reto-v2.json from
     // GET /api/v1/catalog/plans, review the differences and align /content (or ask for a new catalog).
     expect(catalogMismatches(api)).toEqual([]);
   });

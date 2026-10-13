@@ -29,6 +29,7 @@ import {
   type VerticalId,
   type VoiceComboOffer,
 } from '@/lib/content';
+import { campaignSelection } from '@/lib/campaign';
 import { isOfferActive, type Billing } from '@/lib/pricing';
 import { encodePlanState } from '@/lib/plan-url';
 import { buildPlanMessage, type Translate } from '@/lib/plan-message';
@@ -138,8 +139,9 @@ export function PlanBuilder({
   const comboOffer = (offers.find((o): o is VoiceComboOffer => o.kind === 'voiceCombo' && isOfferActive(o)) ?? null) as VoiceComboOffer | null;
   const founderOffer = offers.find((o): o is FounderOffer => o.kind === 'founder');
   const referral = offers.find((o): o is ReferralOffer => o.kind === 'referral');
-  const annualOffer = offers.find((o) => o.kind === 'annualMaintenance') ?? null;
-  const founderOpen = !!founderOffer && isOfferActive(founderOffer) && foundersLeft > 0;
+  const annualOffer = campaignSelection(state.planId, state.items) ? null : offers.find((o) => o.kind === 'annualMaintenance') ?? null;
+  const campaign = campaignSelection(state.planId, state.items);
+  const founderOpen = !campaign && !!founderOffer && isOfferActive(founderOffer) && foundersLeft > 0;
   const planName = q.plan ? l(q.plan.name, locale) : null;
   const rec = recurringSplit(q);
 

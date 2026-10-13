@@ -7,7 +7,7 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { useSession } from '@/components/providers/SessionProvider';
-import { errorKind } from '@/lib/api';
+import { endpoints, errorKind } from '@/lib/api';
 import { livePaths, looksLikeEmail, registerHref, safeNext } from '@/lib/portal/live';
 import { Breadcrumbs } from '../Breadcrumbs';
 import { Field, FormError } from './Field';
@@ -53,7 +53,8 @@ export function LiveLogin() {
     try {
       await session.login(value, password);
       setPassword('');
-      router.replace(next ?? livePaths.projects);
+      const onboarding = await endpoints.onboarding();
+      router.replace(onboarding.required || onboarding.state === 'deposit_pending' || onboarding.state === 'no_agreement' ? '/portal/bienvenida/' : next ?? livePaths.projects);
     } catch (error) {
       setPassword('');
       const info = describe(error);
@@ -93,7 +94,7 @@ export function LiveLogin() {
                 <h2 className="pt-login-form-title">{t('login.alreadyTitle')}</h2>
                 <p className="pt-fine pt-login-hint">{t('login.alreadyBody', { email: signedIn.email })}</p>
                 <div className="lv-actions">
-                  <Link href={next ?? livePaths.projects} className="btn pt-btn-ink btn-sm">
+                  <Link href="/portal/bienvenida/" className="btn pt-btn-ink btn-sm">
                     {t('nav.projects')}
                     <ArrowRight aria-hidden strokeWidth={1.6} />
                   </Link>

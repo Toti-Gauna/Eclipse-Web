@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { MailCheck } from 'lucide-react';
-import { endpoints } from '@/lib/api';
+import { endpoints, errorKind } from '@/lib/api';
+import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { useSession } from '@/components/providers/SessionProvider';
 import { Link } from '@/i18n/navigation';
 import { livePaths } from '@/lib/portal/live';
@@ -26,7 +27,8 @@ export function VerifyNotice({ client, compact = false }: { client: { email: str
       await endpoints.requestEmailVerification(client.email);
       setPhase('sent');
     } catch (error) {
-      setProblem(describe(error));
+      const detail = describe(error);
+      setProblem(errorKind(error) === 'notFound' ? { ...detail, message: t('verify.channelUnavailable') } : detail);
       setPhase('error');
     }
   };
@@ -52,6 +54,7 @@ export function VerifyNotice({ client, compact = false }: { client: { email: str
           {t('unverified.help')}
         </Link>
       </div>
+      <WhatsAppLink origin="portal" message={t('login.helpMessage')} className="pt-link">{t('login.helpCta')}</WhatsAppLink>
       <div role="status" aria-live="polite" className="lv-live">
         {phase === 'sent' ? <p className="pt-fine">{t('verify.requested')}</p> : null}
         {phase === 'error' && problem ? (

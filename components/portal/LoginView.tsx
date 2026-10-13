@@ -1,7 +1,6 @@
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
-import { portalPaths } from '@/lib/portal/routes';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { Breadcrumbs } from './Breadcrumbs';
 import { LoginForm } from './LoginForm';
@@ -31,7 +30,7 @@ export function LoginView() {
           <p className="pt-lead">{t('login.lead')}</p>
           <div className="pt-login-ctas">
             <div className="pt-login-main">
-              <Link href={portalPaths.projects} className="btn btn-primary" aria-describedby="pt-login-note">
+              <Link href="/portal/bienvenida/" className="btn btn-primary" aria-describedby="pt-login-note">
                 {t('login.example')}
                 <ArrowRight aria-hidden className="size-[1.1em]" strokeWidth={1.8} />
               </Link>

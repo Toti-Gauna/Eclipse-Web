@@ -67,7 +67,7 @@ function ListBody() {
 
 function RequestCard({ request, onChanged, detail = false }: { request: ApiPlanRequest; onChanged: () => void; detail?: boolean }) {
   const { t, locale, stamp } = useLive();
-  const names = useNames();
+  const names = useNames(request.catalogVersion);
   const sel = request.selection;
   const what = [sel.planId ? t('requests.packageHead', { plan: names.line(sel.planId, 'plan') }) : null, ...sel.items.map((id) => names.line(id, 'item'))]
     .filter(Boolean)

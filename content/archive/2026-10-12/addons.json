@@ -1,0 +1,53 @@
+{
+  "$comment": "Botones '+ Sumar' de cada card de plan. 'itemId' apunta a items.json: si el plan ya incluye ese ítem, el add-on se muestra como 'Incluido' (whenIncluded: show) o se oculta (whenIncluded: hide). 'offer' apunta a una oferta de offers.json que puede bajar el precio (combo voz).",
+  "addons": [
+    {
+      "id": "addon-voz",
+      "itemId": "voz",
+      "priceUsd": 600,
+      "offer": "combo-voz",
+      "whenIncluded": "show",
+      "name": { "es": "Agente de voz con IA", "en": "AI voice agent", "pt": "Agente de voz com IA" }
+    },
+    {
+      "id": "addon-marketing",
+      "itemId": "marketing",
+      "priceUsd": 400,
+      "whenIncluded": "show",
+      "name": {
+        "es": "Marketing + estudio de mercado",
+        "en": "Marketing + market research",
+        "pt": "Marketing + estudo de mercado"
+      }
+    },
+    {
+      "id": "addon-trailer",
+      "itemId": "trailer",
+      "priceUsd": 250,
+      "whenIncluded": "show",
+      "name": {
+        "es": "Trailer en motion graphics",
+        "en": "Motion graphics trailer",
+        "pt": "Trailer em motion graphics"
+      }
+    },
+    {
+      "id": "addon-chatbot",
+      "itemId": "chatbot",
+      "priceUsd": 350,
+      "whenIncluded": "hide",
+      "name": {
+        "es": "Chatbot IA en WhatsApp",
+        "en": "AI chatbot on WhatsApp",
+        "pt": "Chatbot com IA no WhatsApp"
+      }
+    },
+    {
+      "id": "addon-seo",
+      "itemId": "seo",
+      "priceUsd": 150,
+      "whenIncluded": "show",
+      "name": { "es": "SEO + analytics", "en": "SEO + analytics", "pt": "SEO + analytics" }
+    }
+  ]
+}

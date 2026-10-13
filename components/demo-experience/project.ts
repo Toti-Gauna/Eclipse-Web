@@ -83,7 +83,7 @@ export function projectSummary(
   }
 
   const annual = offers.find((o) => o.kind === 'annualMaintenance');
-  const freeMonths = maintenance && isOfferActive(annual, now) ? annualFreeMonths() : null;
+  const freeMonths = !plan?.campaign && maintenance && isOfferActive(annual, now) ? annualFreeMonths() : null;
 
   return {
     plan,

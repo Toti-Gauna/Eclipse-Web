@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+// Historical catalog regressions; current campaign behaviors are in campaign.test.ts.
+import { vi, describe, expect, it } from 'vitest';
 import { emptyPlanState, GOAL_IDS, type PlanState } from '@/lib/plan-url';
 import { itemCategories, items, plans, type ItemId } from '@/lib/content';
 import { quote } from '@/lib/pricing';
@@ -358,3 +359,5 @@ describe('folding categories (step 2)', () => {
     expect(openCategories(groups, { items: [] })).toEqual([groups[0].category.id]);
   });
 });
+
+vi.mock('@/lib/content', async () => ({ ...(await vi.importActual('@/lib/content')), ...(await import('./fixtures/historical-content')).historicalContent }));

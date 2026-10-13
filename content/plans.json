@@ -1,19 +1,28 @@
 {
   "$comment": "Planes (paquetes) con rango de precio en USD. 'tier' agrupa los paquetes en la sección de precios: starter = Para empezar, complete = Sistemas completos. 'items' referencia ids de items.json (se usa para detectar planes en 'Armá tu plan' y para la línea 'Por separado'). 'maintenance' es el mantenimiento sugerido por defecto (null = ninguno). 'bonus' (v3) es una pieza de regalo sin precio (Voz y Automatiza → landing premium): no va en 'items', así que no cambia la detección de paquetes ni el ahorro; solo describe lo que el ítem promete hoy.",
-  "featured": "sistema",
+  "featured": "volta",
   "plans": [
     {
       "id": "diagnostico",
-      "tier": "starter",
-      "priceUsd": { "from": 150, "to": 250 },
-      "items": ["auditoria"],
+      "tier": "complete",
+      "priceUsd": {
+        "from": 150,
+        "to": 250
+      },
+      "items": [
+        "auditoria"
+      ],
       "maintenance": null,
       "icon": "ScanSearch",
-      "name": { "es": "Diagnóstico", "en": "Diagnosis", "pt": "Diagnóstico" },
+      "name": {
+        "es": "Diagnóstico",
+        "en": "Diagnosis",
+        "pt": "Diagnóstico"
+      },
       "audience": {
-        "es": "Para decidir con datos antes de invertir.",
-        "en": "For deciding with data before you invest.",
-        "pt": "Para decidir com dados antes de investir."
+        "es": "Para decidir con datos antes de invertir. Fuera del reto: a cotizar por separado.",
+        "en": "For deciding with data before you invest. Outside the campaign: quoted separately.",
+        "pt": "Para decidir com dados antes de investir. Fora da campanha: orçamento separado."
       },
       "includes": {
         "es": [
@@ -31,54 +40,71 @@
           "Auditoria digital: site, Google, redes e WhatsApp",
           "Plano de ação priorizado"
         ]
-      }
+      },
+      "campaign": false
     },
     {
       "id": "presencia",
       "tier": "starter",
-      "priceUsd": { "from": 250, "to": 400 },
-      "items": ["landing"],
-      "maintenance": null,
+      "priceUsd": {
+        "from": 500,
+        "to": 1000
+      },
+      "items": [
+        "landing"
+      ],
+      "maintenance": "esencial",
       "icon": "MonitorPlay",
-      "name": { "es": "Presencia", "en": "Presence", "pt": "Presença" },
+      "name": {
+        "es": "Captación web",
+        "en": "Web acquisition",
+        "pt": "Captação web"
+      },
       "audience": {
-        "es": "Para negocios sin web, o con una que no vende.",
-        "en": "For businesses with no website, or one that doesn't sell.",
-        "pt": "Para negócios sem site, ou com um que não vende."
+        "es": "Desde USD 500, sujeto a alcance validado.",
+        "en": "From USD 500, subject to validated scope.",
+        "pt": "A partir de USD 500, sujeito a escopo validado."
       },
       "includes": {
         "es": [
-          "Landing premium con motion graphics",
-          "Responsive, pensada primero para el celular",
-          "SEO base: velocidad, metadatos e indexación",
-          "Sin mantenimiento incluido (opcional)"
+          "Una página, hasta seis secciones; identidad y contenidos aportados",
+          "Responsive, motion reutilizado, CTA/formulario y una revisión",
+          "Alcance concreto validado en propuesta; dominio y externos aparte"
         ],
         "en": [
-          "Premium landing page with motion graphics",
-          "Responsive, designed for phones first",
-          "Basic SEO: speed, metadata and indexing",
-          "No maintenance included (optional)"
+          "One page, up to six sections; supplied identity and content",
+          "Responsive, reused motion, CTA/form and one revision",
+          "Scope validated in the proposal; domain and external services extra"
         ],
         "pt": [
-          "Landing page premium com motion graphics",
-          "Responsiva, pensada primeiro para o celular",
-          "SEO básico: velocidade, metadados e indexação",
-          "Sem manutenção incluída (opcional)"
+          "Uma página, até seis seções; identidade e conteúdo fornecidos",
+          "Responsivo, motion reutilizado, CTA/formulário e uma revisão",
+          "Escopo validado na proposta; domínio e serviços externos à parte"
         ]
-      }
+      },
+      "campaign": true
     },
     {
       "id": "voz",
-      "tier": "starter",
-      "priceUsd": { "from": 500, "to": 700 },
-      "items": ["voz"],
+      "tier": "complete",
+      "priceUsd": {
+        "from": 500,
+        "to": 700
+      },
+      "items": [
+        "voz"
+      ],
       "maintenance": "esencial",
       "icon": "AudioLines",
-      "name": { "es": "Voz", "en": "Voice", "pt": "Voz" },
+      "name": {
+        "es": "Voz",
+        "en": "Voice",
+        "pt": "Voz"
+      },
       "audience": {
-        "es": "Para quien pierde llamadas mientras atiende.",
-        "en": "For teams that miss calls while they're busy.",
-        "pt": "Para quem perde ligações enquanto atende."
+        "es": "Para quien pierde llamadas mientras atiende. Fuera del reto: a cotizar por separado.",
+        "en": "For teams that miss calls while they're busy. Outside the campaign: quoted separately.",
+        "pt": "Para quem perde ligações enquanto atende. Fora da campanha: orçamento separado."
       },
       "includes": {
         "es": [
@@ -112,67 +138,76 @@
           "en": "One page that moves, loads fast and converts. It comes with the Voice package at no extra cost.",
           "pt": "Uma página que se move, carrega rápido e converte. Vem com o pacote Voz, sem custo extra."
         }
-      }
+      },
+      "campaign": false
     },
     {
       "id": "automatiza",
       "tier": "starter",
-      "priceUsd": { "from": 400, "to": 700 },
-      "items": ["chatbot", "automatizacion"],
-      "maintenance": "esencial",
+      "priceUsd": {
+        "from": 500,
+        "to": 1000
+      },
+      "items": [
+        "automatizacion"
+      ],
+      "maintenance": "escala",
       "icon": "Workflow",
-      "name": { "es": "Automatiza", "en": "Automate", "pt": "Automatiza" },
+      "name": {
+        "es": "Automatización",
+        "en": "Automation",
+        "pt": "Automação"
+      },
       "audience": {
-        "es": "Para quien contesta lo mismo 50 veces por día.",
-        "en": "For anyone answering the same question 50 times a day.",
-        "pt": "Para quem responde a mesma coisa 50 vezes por dia."
+        "es": "Desde USD 500, sujeto a alcance validado.",
+        "en": "From USD 500, subject to validated scope.",
+        "pt": "A partir de USD 500, sujeito a escopo validado."
       },
       "includes": {
         "es": [
-          "Chatbot IA en WhatsApp y en tu web",
-          "Recordatorios automáticos",
-          "Mails automáticos",
-          "Seguimiento de clientes sin hacerlo a mano"
+          "Un número propio autorizado; un flujo determinista definido",
+          "Hasta cinco respuestas aprobadas, una fuente de registro y derivación humana",
+          "Cuenta, proveedor y accesos habilitados; sin campañas, IA completa ni landing bonus"
         ],
         "en": [
-          "AI chatbot on WhatsApp and your website",
-          "Automatic reminders",
-          "Automatic emails",
-          "Customer follow-up without doing it by hand"
+          "One authorized owned number; one defined deterministic flow",
+          "Up to five approved replies, one record source and human handoff",
+          "Enabled account, provider and access; no campaigns, full AI agent or bonus landing"
         ],
         "pt": [
-          "Chatbot com IA no WhatsApp e no seu site",
-          "Lembretes automáticos",
-          "E-mails automáticos",
-          "Follow-up de clientes sem fazer à mão"
+          "Um número próprio autorizado; um fluxo determinístico definido",
+          "Até cinco respostas aprovadas, uma fonte de registro e encaminhamento humano",
+          "Conta, provedor e acessos habilitados; sem campanhas, agente IA completo ou landing bônus"
         ]
       },
-      "bonus": {
-        "itemId": "landing",
-        "title": {
-          "es": "Landing premium con motion graphics",
-          "en": "Premium landing page with motion graphics",
-          "pt": "Landing page premium com motion graphics"
-        },
-        "text": {
-          "es": "Una página que se mueve, carga rápido y convierte. Viene con el paquete Automatiza, sin cargo extra.",
-          "en": "One page that moves, loads fast and converts. It comes with the Automate package at no extra cost.",
-          "pt": "Uma página que se move, carrega rápido e converte. Vem com o pacote Automatiza, sem custo extra."
-        }
-      }
+      "campaign": true
     },
     {
       "id": "sistema",
       "tier": "complete",
-      "priceUsd": { "from": 1000, "to": 1500 },
-      "items": ["turnos", "pedidos", "automatizacion", "dashboard", "landing", "voz"],
+      "priceUsd": {
+        "from": 1000,
+        "to": 1500
+      },
+      "items": [
+        "turnos",
+        "pedidos",
+        "automatizacion",
+        "dashboard",
+        "landing",
+        "voz"
+      ],
       "maintenance": "crecimiento",
       "icon": "CalendarCheck",
-      "name": { "es": "Sistema", "en": "System", "pt": "Sistema" },
+      "name": {
+        "es": "Sistema",
+        "en": "System",
+        "pt": "Sistema"
+      },
       "audience": {
-        "es": "Para clínicas, estudios y gimnasios con la agenda llena.",
-        "en": "For clinics, studios and gyms with a full calendar.",
-        "pt": "Para clínicas, estúdios e academias com a agenda cheia."
+        "es": "Para clínicas, estudios y gimnasios con la agenda llena. Fuera del reto: a cotizar por separado.",
+        "en": "For clinics, studios and gyms with a full calendar. Outside the campaign: quoted separately.",
+        "pt": "Para clínicas, estúdios e academias com a agenda cheia. Fora da campanha: orçamento separado."
       },
       "includes": {
         "es": [
@@ -196,20 +231,36 @@
           "Landing page premium",
           "Agente de voz com IA"
         ]
-      }
+      },
+      "campaign": false
     },
     {
       "id": "comercio",
       "tier": "complete",
-      "priceUsd": { "from": 2000, "to": 3500 },
-      "items": ["ecommerce", "turnos", "pedidos", "automatizacion", "dashboard", "landing", "gamificacion"],
+      "priceUsd": {
+        "from": 2000,
+        "to": 3500
+      },
+      "items": [
+        "ecommerce",
+        "turnos",
+        "pedidos",
+        "automatizacion",
+        "dashboard",
+        "landing",
+        "gamificacion"
+      ],
       "maintenance": "escala",
       "icon": "ShoppingCart",
-      "name": { "es": "Comercio", "en": "Commerce", "pt": "Comércio" },
+      "name": {
+        "es": "Comercio",
+        "en": "Commerce",
+        "pt": "Comércio"
+      },
       "audience": {
-        "es": "Para vender online y ordenar todo lo de adentro.",
-        "en": "For selling online and running the back office.",
-        "pt": "Para vender online e organizar a operação."
+        "es": "Para vender online y ordenar todo lo de adentro. Fuera del reto: a cotizar por separado.",
+        "en": "For selling online and running the back office. Outside the campaign: quoted separately.",
+        "pt": "Para vender online e organizar a operação. Fora da campanha: orçamento separado."
       },
       "includes": {
         "es": [
@@ -236,20 +287,34 @@
           "Landing page premium",
           "Gamificação e missões"
         ]
-      }
+      },
+      "campaign": false
     },
     {
       "id": "plataforma",
       "tier": "complete",
-      "priceUsd": { "from": 4000, "to": 7000 },
-      "items": ["app-ondemand", "landing", "crm", "gamificacion", "voz"],
+      "priceUsd": {
+        "from": 4000,
+        "to": 7000
+      },
+      "items": [
+        "app-ondemand",
+        "landing",
+        "crm",
+        "gamificacion",
+        "voz"
+      ],
       "maintenance": "escala",
       "icon": "Smartphone",
-      "name": { "es": "Plataforma", "en": "Platform", "pt": "Plataforma" },
+      "name": {
+        "es": "Plataforma",
+        "en": "Platform",
+        "pt": "Plataforma"
+      },
       "audience": {
-        "es": "Para convertir tu servicio en una app propia.",
-        "en": "For turning your service into your own app.",
-        "pt": "Para transformar seu serviço em um app próprio."
+        "es": "Para convertir tu servicio en una app propia. Fuera del reto: a cotizar por separado.",
+        "en": "For turning your service into your own app. Outside the campaign: quoted separately.",
+        "pt": "Para transformar seu serviço em um app próprio. Fora da campanha: orçamento separado."
       },
       "includes": {
         "es": [
@@ -273,7 +338,179 @@
           "Gamificação e missões",
           "Agente de voz com IA"
         ]
+      },
+      "campaign": false
+    },
+    {
+      "id": "volta",
+      "tier": "starter",
+      "campaign": true,
+      "priceUsd": {
+        "from": 500,
+        "to": 500
+      },
+      "items": [
+        "volta-base"
+      ],
+      "maintenance": "esencial",
+      "icon": "ShoppingCart",
+      "name": {
+        "es": "Volta comercial",
+        "en": "Volta commercial",
+        "pt": "Volta comercial"
+      },
+      "audience": {
+        "es": "Adaptación acotada; la demo completa no está incluida.",
+        "en": "Bounded adaptation; the full demo is not included.",
+        "pt": "Adaptação limitada; a demo completa não está incluída."
+      },
+      "includes": {
+        "es": [
+          "Una marca/sede; hasta 25 productos y variantes aportados",
+          "Un recorrido comercial con stacks Volta; consulta/pedido manual por WhatsApp",
+          "Publicación, móvil, explicación y una revisión",
+          "Sin pagos online, admin compartido ni gamificación productiva; extras sujetos a compatibilidad"
+        ],
+        "en": [
+          "One brand/location; up to 25 supplied products and variants",
+          "One commercial journey with Volta stacks; manual WhatsApp inquiry/order",
+          "Publication, mobile, walkthrough and one revision",
+          "No online payments, shared admin or production gamification; extras require compatibility"
+        ],
+        "pt": [
+          "Uma marca/unidade; até 25 produtos e variantes fornecidos",
+          "Um percurso comercial com stacks Volta; consulta/pedido manual por WhatsApp",
+          "Publicação, mobile, explicação e uma revisão",
+          "Sem pagamentos online, admin compartilhado ou gamificação produtiva; extras exigem compatibilidade"
+        ]
+      }
+    },
+    {
+      "id": "velmar",
+      "tier": "starter",
+      "campaign": true,
+      "priceUsd": {
+        "from": 500,
+        "to": 500
+      },
+      "items": [
+        "velmar-base"
+      ],
+      "maintenance": "esencial",
+      "icon": "ShoppingCart",
+      "name": {
+        "es": "Velmar comercial",
+        "en": "Velmar commercial",
+        "pt": "Velmar comercial"
+      },
+      "audience": {
+        "es": "Adaptación acotada; la demo completa no está incluida.",
+        "en": "Bounded adaptation; the full demo is not included.",
+        "pt": "Adaptação limitada; a demo completa não está incluída."
+      },
+      "includes": {
+        "es": [
+          "Una marca/sede; hasta 25 productos y variantes aportados",
+          "Un recorrido comercial y personalización básica Velmar cuando corresponda",
+          "Consulta/pedido manual por WhatsApp, publicación, móvil y una revisión",
+          "Sin pagos online, admin compartido ni toda la demo; extras sujetos a compatibilidad"
+        ],
+        "en": [
+          "One brand/location; up to 25 supplied products and variants",
+          "One commercial journey and basic Velmar customization where applicable",
+          "Manual WhatsApp inquiry/order, publication, mobile and one revision",
+          "No online payments, shared admin or full demo; extras require compatibility"
+        ],
+        "pt": [
+          "Uma marca/unidade; até 25 produtos e variantes fornecidos",
+          "Um percurso comercial e personalização básica Velmar quando aplicável",
+          "Consulta/pedido manual por WhatsApp, publicação, mobile e uma revisão",
+          "Sem pagamentos online, admin compartilhado ou demo completa; extras exigem compatibilidade"
+        ]
+      }
+    },
+    {
+      "id": "operativo",
+      "tier": "starter",
+      "campaign": true,
+      "priceUsd": {
+        "from": 750,
+        "to": 750
+      },
+      "items": [
+        "operativo-base"
+      ],
+      "maintenance": "crecimiento",
+      "icon": "CalendarCheck",
+      "name": {
+        "es": "Módulo operativo",
+        "en": "Operations module",
+        "pt": "Módulo operacional"
+      },
+      "audience": {
+        "es": "Adaptación acotada; la demo completa no está incluida.",
+        "en": "Bounded adaptation; the full demo is not included.",
+        "pt": "Adaptação limitada; a demo completa não está incluída."
+      },
+      "includes": {
+        "es": [
+          "Hasta tres usuarios; un módulo persistente y una fuente",
+          "Roles, pruebas y alcance especificados en propuesta",
+          "Integraciones y externos requieren validación técnica"
+        ],
+        "en": [
+          "Up to three users; one persistent module and one source",
+          "Roles, tests and scope specified in the proposal",
+          "Integrations and external services require technical validation"
+        ],
+        "pt": [
+          "Até três usuários; um módulo persistente e uma fonte",
+          "Papéis, testes e escopo especificados na proposta",
+          "Integrações e serviços externos exigem validação técnica"
+        ]
+      }
+    },
+    {
+      "id": "ampliado",
+      "tier": "starter",
+      "campaign": true,
+      "priceUsd": {
+        "from": 1000,
+        "to": 1000
+      },
+      "items": [
+        "ampliado-base"
+      ],
+      "maintenance": "crecimiento",
+      "icon": "Workflow",
+      "name": {
+        "es": "Paquete operativo ampliado",
+        "en": "Extended operations package",
+        "pt": "Pacote operacional ampliado"
+      },
+      "audience": {
+        "es": "Adaptación acotada; la demo completa no está incluida.",
+        "en": "Bounded adaptation; the full demo is not included.",
+        "pt": "Adaptação limitada; a demo completa não está incluída."
+      },
+      "includes": {
+        "es": [
+          "Hasta cinco usuarios; dos módulos relacionados",
+          "Una integración especificada, con accesos habilitados",
+          "Pruebas, recuperación y continuidad/costo total explícitos en propuesta"
+        ],
+        "en": [
+          "Up to five users; two related modules",
+          "One specified integration with enabled access",
+          "Tests, recovery and explicit continuation/total cost in the proposal"
+        ],
+        "pt": [
+          "Até cinco usuários; dois módulos relacionados",
+          "Uma integração especificada com acessos habilitados",
+          "Testes, recuperação e continuidade/custo total explícitos na proposta"
+        ]
       }
     }
-  ]
+  ],
+  "catalogVersion": "eclipse-reto-2026-10-13-v2"
 }

@@ -38,6 +38,7 @@ import {
   type VoiceComboOffer,
   type VoiceUsage,
 } from '@/lib/content';
+import { campaignSelection } from './campaign';
 import { convert, isApproximate, roundForCurrency, type Currency } from '@/lib/currency';
 import { localeTags, type Locale } from '@/i18n/routing';
 
@@ -74,7 +75,7 @@ export function planSavings(plan: Plan, catalog: readonly Item[] = allItems): Pl
     separateUsd,
     savingsUsd,
     savingsPct,
-    show: plan.items.length >= 2 && savingsPct >= MIN_SAVINGS_PCT,
+    show: !plan.campaign && plan.items.length >= 2 && savingsPct >= MIN_SAVINGS_PCT,
   };
 }
 
@@ -239,6 +240,7 @@ export function maintenanceSuggestion(
   planList: readonly Plan[] = allPlans,
 ): MaintenanceId | null {
   const plan = input.planId ? planList.find((p) => p.id === input.planId) : undefined;
+  if (!plan && input.itemIds?.length && input.itemIds.every(id => allItems.find(i => i.id === id)?.campaign)) return input.itemIds.includes('automatizacion') ? 'escala' : 'esencial';
   const ids = new Set<string>([...(input.itemIds ?? []), ...(plan?.items ?? [])]);
   const has = (list: ItemId[]) => list.some((id) => ids.has(id));
   const fromItems: MaintenanceId | null = has(ITEMS_SCALE)
@@ -248,6 +250,7 @@ export function maintenanceSuggestion(
       : has(ITEMS_ESSENTIAL)
         ? 'esencial'
         : null;
+  if (plan?.campaign) return plan.maintenance;
   if (!plan) return fromItems;
   // A plan's suggestion is the floor; extras can raise it (e.g. Presencia + e-commerce).
   const rank = (m: MaintenanceId | null) => (m ? ['esencial', 'crecimiento', 'escala'].indexOf(m) : -1);
@@ -378,6 +381,7 @@ export const defaultCatalog: Catalog = {
 export function quote(input: QuoteInput, catalog: Catalog = defaultCatalog): Quote {
   const now = input.now ?? new Date();
   const plan = input.planId ? (catalog.plans.find((p) => p.id === input.planId) ?? null) : null;
+  const campaign = campaignSelection(input.planId, input.itemIds);
   const included = new Set<string>(plan?.items ?? []);
   const extras = [...new Set(input.itemIds)].filter((id) => !included.has(id));
   const extraItems = catalog.items.filter((i) => extras.includes(i.id));
@@ -385,7 +389,7 @@ export function quote(input: QuoteInput, catalog: Catalog = defaultCatalog): Quo
   const voiceId = catalog.voiceUsage.whenItem;
   const voiceExtra = extraItems.find((i) => i.id === voiceId);
   const restUsd = (plan?.priceUsd.from ?? 0) + extraItems.filter((i) => i.id !== voiceId).reduce((a, i) => a + i.priceUsd, 0);
-  const combo = voiceExtra ? voiceComboApplies({ planId: plan?.id, restUsd }, catalog.offers, now) : null;
+  const combo = !campaign && voiceExtra ? voiceComboApplies({ planId: plan?.id, restUsd }, catalog.offers, now) : null;
 
   const lines: QuoteLine[] = [];
   if (plan) lines.push({ id: plan.id, kind: 'plan', priceUsd: plan.priceUsd.from, listUsd: plan.priceUsd.from });
@@ -404,7 +408,7 @@ export function quote(input: QuoteInput, catalog: Catalog = defaultCatalog): Quo
     : null;
   // Annual billing *is* the annual offer: without it (inactive/expired) everything is monthly.
   const annualOffer = findOffer(catalog.offers, 'annualMaintenance');
-  const billing: Billing = input.billing === 'annual' && isOfferActive(annualOffer, now) ? 'annual' : 'monthly';
+  const billing: Billing = !campaign && input.billing === 'annual' && isOfferActive(annualOffer, now) ? 'annual' : 'monthly';
   const monthlyUsd = maintenancePlan?.priceUsd ?? 0;
   const periodUsd = billing === 'annual' ? annualize(monthlyUsd, catalog.annualMonths) : monthlyUsd;
 
@@ -416,7 +420,7 @@ export function quote(input: QuoteInput, catalog: Catalog = defaultCatalog): Quo
     billing,
     maintenanceMonthlyUsd: monthlyUsd,
     annualMonths: catalog.annualMonths,
-    offerList: catalog.offers,
+    offerList: campaign ? [] : catalog.offers,
     now,
   });
 
@@ -465,6 +469,8 @@ export function addonsForPlan(
   const selected = addonList.filter((a) => selectedAddonIds.includes(a.id));
   const result: PlanAddon[] = [];
   for (const addon of addonList) {
+    if (addon.compatiblePlans?.length && !addon.compatiblePlans.includes(planId)) continue;
+    if (plan.campaign && !addon.compatiblePlans?.includes(planId)) continue;
     const isIncluded = plan.items.includes(addon.itemId);
     if (isIncluded && addon.whenIncluded === 'hide') continue;
     if (isIncluded) {

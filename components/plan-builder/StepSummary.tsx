@@ -1,5 +1,8 @@
 'use client';
 
+import { campaignProblem } from '@/lib/campaign';
+import { CampaignSummary } from '@/components/pricing/CampaignSummary';
+
 import { useId } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRight, ChevronDown, Copy, Link2 } from 'lucide-react';
@@ -215,7 +218,8 @@ export function StepSummary({
         </section>
       </div>
 
-      {request}
+      <CampaignSummary quote={q} />
+      {campaignProblem(q.plan?.id, q.lines.filter(l => l.kind === 'item').map(l => l.id)) ? <p role="alert" className="pb-hint">{tAll('campaign.incompatible')}</p> : request}
 
       <div className="pb-share">
         <CopyButton

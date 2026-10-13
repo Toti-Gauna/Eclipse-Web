@@ -9,6 +9,7 @@
  * that: the browser sends the selection and never a price. `catalogMismatches` is the
  * safety net: if the two ever drift, the UI says the saved estimate is the team's.
  */
+import { campaignProblem } from './campaign';
 import type { ApiCatalog, ApiPlanSelection } from '@/lib/api/types';
 import { annualMonthsCharged, items, maintenancePlans, offers, plans, verticals, voiceUsage, founders } from '@/lib/content';
 import type { VoiceComboOffer, FounderOffer } from '@/lib/content';
@@ -60,6 +61,7 @@ export const hasProblems = (p: ContactProblem): boolean => Object.keys(p).length
 /** The POST body. Throws if the selection is empty (the API needs a package or at least one piece). */
 export function buildPlanRequestBody(state: PlanState, contact: ContactInput, catalogVersion: string) {
   const selection = toApiSelection(state);
+  if (campaignProblem(selection.planId, selection.items)) throw new Error('Incompatible campaign selection');
   if (!selection.planId && selection.items.length === 0) throw new Error('Empty selection');
   const message = contact.message?.trim();
   return {

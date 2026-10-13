@@ -1,5 +1,7 @@
 'use client';
 
+import { CampaignSummary } from '@/components/pricing/CampaignSummary';
+import { quote } from '@/lib/pricing';
 import { useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Check, SlidersHorizontal } from 'lucide-react';
@@ -118,6 +120,7 @@ export function ProjectBlock({
         <p className="dx-project-lead">{lead}</p>
       </div>
 
+      <CampaignSummary quote={quote({planId: plan?.id, itemIds: pieces.map(i => i.id), maintenanceId: maintenance?.id})} />
       <div className="dx-project-grid">
         {plan ? (
           <article className="dx-pack ticks" aria-labelledby="dx-pack-name">
