@@ -16,7 +16,7 @@ import {
   type PlanId,
   type VoiceComboOffer,
 } from '@/lib/content';
-import { detectPlans, isOfferActive, maintenanceSuggestion, MIN_SAVINGS_PCT, quote, type Quote } from '@/lib/pricing';
+import { detectPlans, isOfferActive, maintenanceSuggestion, MIN_SAVINGS_PCT, quote, resolveCombos, expandCovered, type Quote, type QuoteLine } from '@/lib/pricing';
 import type { PlanState } from '@/lib/plan-url';
 
 /** What other parts of the page can pre-load into the builder (pricing cards, service cards). */
@@ -98,7 +98,7 @@ export function planById(planId: PlanId | null | undefined, list: readonly Plan[
 
 /** Item ids covered by the selected package. */
 export function includedIds(state: Pick<PlanState, 'planId'>): ItemId[] {
-  return planById(state.planId)?.items ?? [];
+  return expandCovered(planById(state.planId)?.items ?? []) as ItemId[];
 }
 
 /**
@@ -132,11 +132,20 @@ export function isEmptyState(state: Pick<PlanState, 'planId' | 'items'>): boolea
 /** Extras never repeat an item the package already includes (or gives as its bonus). */
 export function normalizeState(state: PlanState): PlanState {
   const included = new Set<string>(coveredIds(state));
-  return { ...state, items: sortItemIds(state.items.filter((id) => !included.has(id))) };
+  return { ...state, items: sortItemIds(resolveCombos(state.items).filter((id) => !included.has(id))) };
 }
 
+/**
+ * Turning a piece on or off. A combo and the pieces it replaces are one choice: turning the
+ * combo off drops it; turning one of its pieces off while the combo is on keeps the other.
+ */
 export function toggleItem(state: PlanState, id: ItemId): PlanState {
   if (coveredIds(state).includes(id)) return state;
+  const combo = allItems.find((i) => i.replaces?.includes(id) && state.items.includes(i.id));
+  if (combo) {
+    const rest = (combo.replaces ?? []).filter((p) => p !== id);
+    return normalizeState({ ...state, items: [...state.items.filter((i) => i !== combo.id), ...rest] });
+  }
   const items = state.items.includes(id) ? state.items.filter((i) => i !== id) : [...state.items, id];
   return normalizeState({ ...state, items });
 }
@@ -213,14 +222,14 @@ export function builderQuote(state: PlanState, ctx: BuilderContext): Quote {
 }
 
 /**
- * What is paid again and again, split by period: monthly maintenance + the voice
- * agent's fixed fee per month; annual maintenance per year (it is billed yearly).
+ * What is paid again and again: the one monthly plan (annual billing only for historical
+ * agreements, its offer is inactive). There is no per-channel or per-voice monthly fee.
  */
 export function recurringSplit(q: Pick<Quote, 'maintenance'>): { monthlyUsd: number; yearlyUsd: number } {
   const m = q.maintenance;
   const maintenance = m.plan ? m.periodUsd : 0;
   return {
-    monthlyUsd: (m.billing === 'monthly' ? maintenance : 0) + m.voiceUsageMonthlyUsd,
+    monthlyUsd: m.billing === 'monthly' ? maintenance : 0,
     yearlyUsd: m.billing === 'annual' ? maintenance : 0,
   };
 }
@@ -230,10 +239,22 @@ export function recurringSplit(q: Pick<Quote, 'maintenance'>): { monthlyUsd: num
  * `null` when the selected package already includes it (or gives it as its bonus).
  */
 export function priceIfSelected(state: PlanState, id: ItemId, ctx: BuilderContext): number | null {
+  return lineIfSelected(state, id, ctx)?.priceUsd ?? null;
+}
+
+/**
+ * The quote line an item would have if selected now: independent or add-on price. null when
+ * the package covers it, when it is quoted after review (migration) or when a combo absorbs it.
+ */
+export function lineIfSelected(state: PlanState, id: ItemId, ctx: BuilderContext): QuoteLine | null {
   if (coveredIds(state).includes(id)) return null;
   const next = state.items.includes(id) ? state : toggleItem(state, id);
-  const line = builderQuote(next, ctx).lines.find((l) => l.kind === 'item' && l.id === id);
-  return line ? line.priceUsd : null;
+  return builderQuote(next, ctx).lines.find((l) => l.kind === 'item' && l.id === id) ?? null;
+}
+
+/** The selected combo that holds this piece (both advisory sessions), or null. */
+export function comboHolding(state: Pick<PlanState, 'items'>, id: ItemId): Item | null {
+  return allItems.find((i) => i.replaces?.includes(id) && state.items.includes(i.id)) ?? null;
 }
 
 // ---------------------------------------------------------------------------
@@ -268,7 +289,8 @@ export function planSwitchSuggestion(state: PlanState, ctx: BuilderContext, plan
   const contained = new Set<string>(detectPlans(selection, planList).map((m) => m.plan.id));
   let best: PlanSwitch | null = null;
   for (const plan of planList) {
-    if (plan.id === state.planId || plan.items.length < 2) continue;
+    // The 16/10 offers (compare: false) are chosen explicitly: never suggested from a selection.
+    if (plan.id === state.planId || plan.items.length < 2 || plan.compare === false) continue;
     const adds = plan.items.filter((id) => !selected.has(id));
     const covered = plan.items.length - adds.length;
     const qualifies = contained.has(plan.id) || (adds.length > 0 && covered >= 2 && covered * 2 >= plan.items.length);
@@ -316,9 +338,9 @@ export type HintId = 'dashboard' | 'chatbot';
 
 const HINT_RULES: { id: HintId; itemId: ItemId; worksBestWith: ItemId[] }[] = [
   // A dashboard needs data: bookings, orders, a store, an app or a CRM behind it.
-  { id: 'dashboard', itemId: 'dashboard', worksBestWith: ['turnos', 'pedidos', 'ecommerce', 'app-ondemand', 'crm'] },
-  // A chatbot answers; automations follow up.
-  { id: 'chatbot', itemId: 'chatbot', worksBestWith: ['automatizacion'] },
+  { id: 'dashboard', itemId: 'dashboard', worksBestWith: ['turnos', 'pedidos', 'catalogo', 'app-fase', 'crm'] },
+  // A chatbot answers; a standard WhatsApp flow follows up.
+  { id: 'chatbot', itemId: 'chatbot', worksBestWith: ['whatsapp'] },
 ];
 
 export interface SoftHint {

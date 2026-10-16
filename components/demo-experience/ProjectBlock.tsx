@@ -3,16 +3,14 @@
 import { useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Check, SlidersHorizontal } from 'lucide-react';
-import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { useSound } from '@/components/sound/SoundContext';
 import { Money } from '@/components/ui/Money';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { PROCESS_STEPS, stepPhase, type ProcessStep } from '@/components/sections/process/steps';
-import { isApproximate } from '@/lib/currency';
 import { l, type Vertical } from '@/lib/content';
-import { formatAmount, formatMoney, lowestMaintenance, voiceComboPlans } from '@/lib/pricing';
-import { localeTags, type Locale } from '@/i18n/routing';
+import { lowestMaintenance } from '@/lib/pricing';
+import type { Locale } from '@/i18n/routing';
 import { projectSummary } from './project';
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -20,14 +18,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const PROJECT_FROM = PROCESS_STEPS.findIndex((s) => s.id === 'build');
 
 /**
- * "The complete project" under the demo: what the demo is a sample of and what it costs,
- * straight from /content through project.ts (never re-priced here). Package → its range
- * ("Desde … · Pago único", "Hasta … según alcance"), who it's for, what it includes, the demo
- * pieces it doesn't include (each at its published price), its bonus as "Incluido" only, and
- * the suggested maintenance. No package → the pieces at their published prices and no project
- * price. Then "Cómo trabajamos" (the five steps, their times, the project starts with the
- * seña) and the two actions. All copy is the pricing / process sections' approved copy except
- * the block's own heading and leads.
+ * "The complete project" under the demo, straight from /content through project.ts (never
+ * re-priced here): what you can try (the demo, a front-end simulation), what would be
+ * contracted (the product adaptation, "desde", what it includes) and what needs a validated
+ * integration (the simulated channels, each at its add-on price, never preselected). Then the
+ * suggested monthly plan, "Cómo trabajamos" and the two actions.
  */
 export function ProjectBlock({
   vertical,
@@ -42,11 +37,8 @@ export function ProjectBlock({
 }) {
   const t = useTranslations('demoExperience.project');
   const tp = useTranslations('pricing');
-  const tm = useTranslations('planMessage');
-  const tc = useTranslations('common');
   const ts = useTranslations('sections');
   const locale = useLocale() as Locale;
-  const { currency, rates, format } = useCurrency();
   const { openBuilder } = useExperience();
   const { play } = useSound();
   const summary = useMemo(() => projectSummary(vertical), [vertical]);
@@ -67,24 +59,7 @@ export function ProjectBlock({
   }, [onBlockCta, scroller]);
 
   if (!summary) return null;
-  const { plan, pieces, covered, bonus, maintenance, voiceUsage, voiceCombo, annualFreeMonths } = summary;
-  const list = new Intl.ListFormat(localeTags[locale], { type: 'conjunction' });
-  const local = isApproximate(currency);
-
-  const lead = plan
-    ? pieces.length
-      ? t('leadPlanExtras', { plan: l(plan.name, locale), count: pieces.length })
-      : t('leadPlan', { plan: l(plan.name, locale) })
-    : t('leadPieces', { count: pieces.length });
-
-  const range = plan
-    ? local
-      ? tp('plan.rangeLocal', {
-          from: formatMoney(plan.priceUsd.from, 'USD', rates, locale),
-          to: formatAmount(plan.priceUsd.to, 'USD', rates, locale),
-        })
-      : tp('plan.rangeUsd', { to: formatMoney(plan.priceUsd.to, 'USD', rates, locale) })
-    : null;
+  const { plan, pieces, maintenance } = summary;
 
   const pieceRows = (
     <ul className="dx-pieces">
@@ -92,21 +67,13 @@ export function ProjectBlock({
         <li key={item.id} className="dx-piece" data-item={item.id}>
           <span className="dx-piece-name">{l(item.name, locale)}</span>
           <span aria-hidden className="dx-piece-leader leader" />
-          <Money usd={item.priceUsd} className="readout dx-piece-price" />
+          <span className="readout dx-piece-price">
+            {tp('plan.from')} <Money usd={item.addonUsd ?? item.priceUsd} />
+          </span>
         </li>
       ))}
     </ul>
   );
-
-  const combo = voiceCombo ? (
-    <p className="dx-note" data-dx-combo>
-      <strong>{tp('offers.comboTitle', { price: formatMoney(voiceCombo.priceUsd, 'USD', rates, locale) })}.</strong>{' '}
-      {tp('offers.comboText', {
-        plans: list.format(voiceComboPlans(voiceCombo).addTo.map((p) => l(p.name, locale))),
-        min: formatMoney(voiceCombo.minSubtotalUsd, 'USD', rates, locale),
-      })}
-    </p>
-  ) : null;
 
   return (
     <section className="dx-project" aria-labelledby="dx-project-title" data-dx-project={plan?.id ?? 'pieces'}>
@@ -115,71 +82,51 @@ export function ProjectBlock({
         <h3 id="dx-project-title" className="display dx-project-title">
           {t('title')}
         </h3>
-        <p className="dx-project-lead">{lead}</p>
+        <p className="dx-project-lead">{t('lead')}</p>
       </div>
 
       <div className="dx-project-grid">
-        {plan ? (
-          <article className="dx-pack ticks" aria-labelledby="dx-pack-name">
-            <p className="label">{t('package')}</p>
-            <h4 id="dx-pack-name" className="display dx-pack-name">
-              {l(plan.name, locale)}
-            </h4>
-            <p className="dx-pack-audience">
-              <span className="sr-only">{tp('plan.audienceLabel')}: </span>
-              {l(plan.audience, locale)}
-            </p>
-            <div className="dx-pack-price" data-dx-price>
-              <p className="label">
-                {tp('plan.from')} · {tp('plan.once')}
+        <article className="dx-pack ticks" aria-labelledby="dx-pack-name">
+          {plan ? (
+            <>
+              <p className="label">{t('contracted')}</p>
+              <h4 id="dx-pack-name" className="display dx-pack-name">
+                {l(plan.name, locale)}
+              </h4>
+              <p className="dx-pack-audience">
+                <span className="sr-only">{tp('plan.audienceLabel')}: </span>
+                {l(plan.audience, locale)}
               </p>
-              <Money usd={plan.priceUsd.from} className="readout dx-pack-from" />
-              <p className="dx-pack-range">{range}</p>
-            </div>
-            <p className="label dx-sub">{tp('plan.includes')}</p>
-            <ul className="dx-includes" aria-label={tp('plan.includes')}>
-              {l(plan.includes, locale).map((line) => (
-                <li key={line}>
-                  <Check aria-hidden strokeWidth={1.75} />
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ul>
-            {bonus ? (
-              <p className="dx-bonus" data-dx-bonus>
-                <span className="dx-bonus-tag">{tc('included')}</span>
-                <span>
-                  <strong>{l(bonus.title, locale)}.</strong> {l(bonus.text, locale)}
-                </span>
-              </p>
-            ) : null}
-            {pieces.length ? (
-              <div className="dx-extras" data-dx-extras>
-                <p className="label dx-sub">{t('extras')}</p>
-                {pieceRows}
-                <p className="dx-note">
-                  {tp('plan.once')} · {tp('how.extras.text')}
+              <div className="dx-pack-price" data-dx-price>
+                <p className="label">
+                  {tp('plan.from')} · {tp('plan.once')}
                 </p>
-                {combo}
+                <Money usd={plan.priceUsd.from} className="readout dx-pack-from" />
               </div>
-            ) : null}
-            {covered.length ? (
-              <p className="dx-covered">{t('covered', { pieces: list.format(covered.map((i) => l(i.name, locale))) })}</p>
-            ) : null}
-          </article>
-        ) : (
-          <article className="dx-pack ticks" aria-labelledby="dx-pack-name">
-            <p className="label">{t('pieces')}</p>
+              <p className="label dx-sub">{tp('plan.includes')}</p>
+              <ul className="dx-includes" aria-label={tp('plan.includes')}>
+                {l(plan.includes, locale).map((line) => (
+                  <li key={line}>
+                    <Check aria-hidden strokeWidth={1.75} />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
             <h4 id="dx-pack-name" className="sr-only">
               {t('pieces')}
             </h4>
-            {pieceRows}
-            <p className="dx-note">
-              {tp('plan.once')} · {t('piecesNote')}
-            </p>
-            {combo}
-          </article>
-        )}
+          )}
+          {pieces.length ? (
+            <div className="dx-extras" data-dx-extras>
+              <p className="label dx-sub">{t('extras')}</p>
+              {pieceRows}
+              <p className="dx-note">{t('extrasNote')}</p>
+            </div>
+          ) : null}
+          <p className="dx-note">{t('simulation')}</p>
+        </article>
 
         {maintenance ? (
           <aside className="dx-care" aria-labelledby="dx-care-title" data-dx-care={maintenance.id}>
@@ -200,8 +147,6 @@ export function ProjectBlock({
                 </li>
               ))}
             </ul>
-            {annualFreeMonths ? <p className="dx-note">{tp('how.care.annual', { months: annualFreeMonths })}</p> : null}
-            {voiceUsage ? <p className="dx-note">{tm('voiceUsage', { price: format(voiceUsage.priceUsd) })}</p> : null}
           </aside>
         ) : null}
       </div>

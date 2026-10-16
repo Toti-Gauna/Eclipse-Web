@@ -27,7 +27,6 @@ import {
   type PlanId,
   type ReferralOffer,
   type VerticalId,
-  type VoiceComboOffer,
 } from '@/lib/content';
 import { isOfferActive, type Billing } from '@/lib/pricing';
 import { encodePlanState } from '@/lib/plan-url';
@@ -50,7 +49,8 @@ import {
   coveredIds,
   isEmptyState,
   planSwitchSuggestion,
-  priceIfSelected,
+  lineIfSelected,
+  comboHolding,
   recurringSplit,
   removePlan,
   selectionIds,
@@ -62,7 +62,6 @@ import {
   switchToPlan,
   togglePlan,
   toggleItem,
-  voiceComboGap,
   type HintId,
   type Preset,
   type StepId,
@@ -135,7 +134,6 @@ export function PlanBuilder({
   const maintenanceAuto = state.maintenance === undefined && maintenanceId !== null;
   const fromGoals = suggestedIds(state);
   const notes = preloadNotes(state, preload);
-  const comboOffer = (offers.find((o): o is VoiceComboOffer => o.kind === 'voiceCombo' && isOfferActive(o)) ?? null) as VoiceComboOffer | null;
   const founderOffer = offers.find((o): o is FounderOffer => o.kind === 'founder');
   const referral = offers.find((o): o is ReferralOffer => o.kind === 'referral');
   const annualOffer = offers.find((o) => o.kind === 'annualMaintenance') ?? null;
@@ -145,14 +143,16 @@ export function PlanBuilder({
 
   const views: Record<string, PieceView> = {};
   for (const item of catalogItems) {
-    const price = priceIfSelected(state, item.id, ctx);
+    const line = lineIfSelected(state, item.id, ctx);
+    const holder = comboHolding(state, item.id);
     views[item.id] = {
       item,
-      checked: included.has(item.id) || state.items.includes(item.id),
+      checked: included.has(item.id) || state.items.includes(item.id) || !!holder,
       includedIn: included.has(item.id) ? planName : null,
+      inCombo: holder ? l(holder.name, locale) : null,
       bonus: bonus?.itemId === item.id,
-      priceUsd: price ?? item.priceUsd,
-      combo: price !== null && price < item.priceUsd,
+      priceUsd: line?.priceUsd ?? item.priceUsd,
+      addon: !!line?.addon,
       suggested: fromGoals.has(item.id),
       hint: hints.get(item.id) ?? null,
     };
@@ -165,6 +165,7 @@ export function PlanBuilder({
     const entity = line.kind === 'plan' ? planById(line.id) : itemById(line.id);
     names[line.id] = entity ? l(entity.name, locale) : line.id;
   }
+  for (const p of q.pending) names[p.id] = l(itemById(p.id)?.name, locale) ?? p.id;
   const vertical = verticalById(state.vertical);
   const goalNames = state.goals.map((g) => {
     const name = t(`goals.${g}.name`);
@@ -331,7 +332,6 @@ export function PlanBuilder({
   const Sub = mode === 'page' ? 'h3' : 'h4';
   const em = (chunks: ReactNode) => <em>{chunks}</em>;
   const analytics = { items: selection.join(','), plan: state.planId ?? 'none', total: q.totalUsd, count: selection.length };
-  const comboPlan = comboOffer ? plans.find((p) => p.id === comboOffer.plans[0]) : null;
 
   const copyLink = (compact: boolean) => (
     <CopyButton
@@ -382,9 +382,6 @@ export function PlanBuilder({
           update(dropPlan);
           setStatus(t('packageDropped'));
         }}
-        comboOffer={comboOffer}
-        comboGap={voiceComboGap(state, ctx)}
-        comboPlanName={comboPlan ? l(comboPlan.name, locale) : ''}
         highlight={highlight}
         active={step === 'piezas'}
         Sub={Sub}
@@ -417,7 +414,6 @@ export function PlanBuilder({
         onSwitch={onSwitch}
         onGo={go}
         founder={founderOffer ? { offer: founderOffer } : null}
-        offersById={offersById}
         message={message}
         shareUrl={shareUrl}
         bonusName={bonusName}

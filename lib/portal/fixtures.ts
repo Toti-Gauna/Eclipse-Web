@@ -108,7 +108,7 @@ export const PORTAL_PROJECTS: readonly PortalProject[] = [
   {
     id: 'recordatorios',
     code: 'DEMO-03',
-    items: ['automatizacion'],
+    items: ['whatsapp'],
     maintenance: 'esencial',
     stage: 'support',
     startedOn: '2026-07-06',

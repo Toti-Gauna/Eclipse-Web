@@ -14,9 +14,10 @@ import { PriceReadout } from './PriceReadout';
 import { piecesFamilyAnchor } from './anchors';
 
 /**
- * Tab B · Pieza por pieza: the 16 pieces grouped by family (same families, order and
- * prices as 03 · Soluciones and the builder), each with its single price (pago único)
- * and "Sumar", which opens "Armá tu plan" with it; plus the builder itself.
+ * Tab B · Pieza por pieza: the pieces grouped by family (same families and order as
+ * 03 · Soluciones and the builder), each with its two alternative prices — as its own project
+ * ("desde") and as a compatible add-on on a base — or, for the migration, the range quoted
+ * after review; and "Sumar", which opens "Armá tu plan" with it; plus the builder itself.
  */
 export function PiecesPanel({ onShowPackages }: { onShowPackages: () => void }) {
   const t = useTranslations('pricing');
@@ -64,11 +65,29 @@ export function PiecesPanel({ onShowPackages }: { onShowPackages: () => void }) 
                   const name = l(item.name, locale);
                   return (
                     <li key={item.id} className="pr-piece">
-                      <span className="pr-piece-name">{name}</span>
+                      <span className="pr-piece-name">
+                        {name}
+                        {item.addonUsd != null ? (
+                          <span className="pr-piece-addon">{t('pieces.addon', { price: format(item.addonUsd) })}</span>
+                        ) : item.reviewRangeUsd ? (
+                          <span className="pr-piece-addon">{t('pieces.review')}</span>
+                        ) : (
+                          <span className="pr-piece-addon">{t('pieces.alone')}</span>
+                        )}
+                        {item.validate ? <span className="pr-piece-addon">{t('plan.validate')}</span> : null}
+                      </span>
                       <span aria-hidden className="leader pr-piece-leader" />
                       <span className="pr-piece-price">
-                        <PriceReadout usd={item.priceUsd} />
-                        {local ? <span className="pr-piece-usd readout">{formatMoney(item.priceUsd, 'USD', rates, locale)}</span> : null}
+                        {item.reviewRangeUsd ? (
+                          <span className="readout">
+                            {format(item.reviewRangeUsd.from)}–{format(item.reviewRangeUsd.to)}
+                          </span>
+                        ) : (
+                          <>
+                            <PriceReadout usd={item.priceUsd} />
+                            {local ? <span className="pr-piece-usd readout">{formatMoney(item.priceUsd, 'USD', rates, locale)}</span> : null}
+                          </>
+                        )}
                       </span>
                       <button
                         type="button"

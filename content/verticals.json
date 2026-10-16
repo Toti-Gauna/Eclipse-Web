@@ -1,11 +1,15 @@
 {
-  "$comment": "Rubros del hero, la calculadora y la sección Ejemplos. Los negocios son ficticios y siempre se rotulan como Demo. 'calculator' son los valores por defecto (ticket en USD). 'otro' no tiene demo: abre 'Armá tu plan'. 'project' (v3): piezas que muestra la demo y, solo si el 'audience' aprobado de un paquete nombra el rubro, ese paquete (si no, null; a validar por Ignacio).",
+  "$comment": "Rubros del hero, la calculadora y la sección Ejemplos. Los negocios son ficticios y siempre se rotulan como Demo. 'calculator' son los valores por defecto (ticket en USD). 'otro' no tiene demo: abre 'Armá tu plan'. 'project' (v3): piezas que muestra la demo y, solo si el 'audience' aprobado de un paquete nombra el rubro, ese paquete (si no, null; a validar por Ignacio). project (16/10/2026): la demo es un producto existente → se contrata como 'adaptacion'; 'items' = canales que la demo SIMULA (voz, chatbot, WhatsApp): se muestran como complementos a validar y nunca se preseleccionan.",
   "verticals": [
     {
       "id": "clinicas",
       "icon": "Stethoscope",
       "demo": "clinic",
-      "name": { "es": "Clínicas", "en": "Clinics", "pt": "Clínicas" },
+      "name": {
+        "es": "Clínicas",
+        "en": "Clinics",
+        "pt": "Clínicas"
+      },
       "longName": {
         "es": "Clínicas (odontología y estética)",
         "en": "Clinics (dental and aesthetics)",
@@ -47,14 +51,28 @@
           "pt": "Valor médio de um atendimento"
         }
       },
-      "project": { "plan": "sistema", "items": ["landing", "turnos", "voz", "automatizacion", "dashboard"] }
+      "project": {
+        "plan": "adaptacion",
+        "items": [
+          "voz",
+          "whatsapp"
+        ]
+      }
     },
     {
       "id": "inmobiliarias",
       "icon": "Building",
       "demo": "realEstate",
-      "name": { "es": "Inmobiliarias", "en": "Real estate", "pt": "Imobiliárias" },
-      "longName": { "es": "Inmobiliarias", "en": "Real estate agencies", "pt": "Imobiliárias" },
+      "name": {
+        "es": "Inmobiliarias",
+        "en": "Real estate",
+        "pt": "Imobiliárias"
+      },
+      "longName": {
+        "es": "Inmobiliarias",
+        "en": "Real estate agencies",
+        "pt": "Imobiliárias"
+      },
       "business": "Lumen Propiedades",
       "pain": {
         "es": "Consultas sin responder fuera de horario",
@@ -91,16 +109,34 @@
           "pt": "Valor médio de um contato"
         }
       },
-      "project": { "plan": null, "items": ["web-multi", "chatbot", "crm", "automatizacion"] }
+      "project": {
+        "plan": "adaptacion",
+        "items": [
+          "chatbot",
+          "whatsapp"
+        ]
+      }
     },
     {
       "id": "gimnasios",
       "icon": "Dumbbell",
       "demo": "gym",
-      "name": { "es": "Gimnasios", "en": "Gyms", "pt": "Academias" },
-      "longName": { "es": "Gimnasios", "en": "Gyms and studios", "pt": "Academias" },
+      "name": {
+        "es": "Gimnasios",
+        "en": "Gyms",
+        "pt": "Academias"
+      },
+      "longName": {
+        "es": "Gimnasios",
+        "en": "Gyms and studios",
+        "pt": "Academias"
+      },
       "business": "Órbita Fitness",
-      "pain": { "es": "Bajas de socios", "en": "Member churn", "pt": "Cancelamento de alunos" },
+      "pain": {
+        "es": "Bajas de socios",
+        "en": "Member churn",
+        "pt": "Cancelamento de alunos"
+      },
       "keyNumber": {
         "value": 25,
         "prefix": "−",
@@ -131,13 +167,22 @@
           "pt": "Mensalidade média"
         }
       },
-      "project": { "plan": "sistema", "items": ["turnos", "gamificacion", "automatizacion", "dashboard"] }
+      "project": {
+        "plan": "adaptacion",
+        "items": [
+          "whatsapp"
+        ]
+      }
     },
     {
       "id": "tiendas",
       "icon": "ShoppingBag",
       "demo": "shop",
-      "name": { "es": "Tiendas online", "en": "Online stores", "pt": "Lojas online" },
+      "name": {
+        "es": "Tiendas online",
+        "en": "Online stores",
+        "pt": "Lojas online"
+      },
       "longName": {
         "es": "Tiendas y marcas con venta online",
         "en": "Shops and brands selling online",
@@ -179,13 +224,23 @@
           "pt": "Ticket médio de uma compra"
         }
       },
-      "project": { "plan": "comercio", "items": ["ecommerce", "chatbot", "automatizacion", "dashboard"] }
+      "project": {
+        "plan": "adaptacion",
+        "items": [
+          "chatbot",
+          "whatsapp"
+        ]
+      }
     },
     {
       "id": "restaurantes",
       "icon": "UtensilsCrossed",
       "demo": "restaurant",
-      "name": { "es": "Restaurantes", "en": "Restaurants", "pt": "Restaurantes" },
+      "name": {
+        "es": "Restaurantes",
+        "en": "Restaurants",
+        "pt": "Restaurantes"
+      },
       "longName": {
         "es": "Restaurantes, bares y delivery",
         "en": "Restaurants, bars and delivery",
@@ -227,13 +282,22 @@
           "pt": "Ticket médio por pedido"
         }
       },
-      "project": { "plan": null, "items": ["pedidos", "voz", "turnos", "dashboard"] }
+      "project": {
+        "plan": "adaptacion",
+        "items": [
+          "voz"
+        ]
+      }
     },
     {
       "id": "academias",
       "icon": "GraduationCap",
       "demo": "academy",
-      "name": { "es": "Academias y cursos", "en": "Schools & courses", "pt": "Escolas e cursos" },
+      "name": {
+        "es": "Academias y cursos",
+        "en": "Schools & courses",
+        "pt": "Escolas e cursos"
+      },
       "longName": {
         "es": "Academias, institutos y cursos online",
         "en": "Language schools, institutes and online courses",
@@ -275,14 +339,29 @@
           "pt": "Mensalidade média"
         }
       },
-      "project": { "plan": null, "items": ["landing", "chatbot", "voz", "gamificacion", "automatizacion", "dashboard"] }
+      "project": {
+        "plan": "adaptacion",
+        "items": [
+          "chatbot",
+          "voz",
+          "whatsapp"
+        ]
+      }
     },
     {
       "id": "otro",
       "icon": "Plus",
       "demo": null,
-      "name": { "es": "Otro", "en": "Other", "pt": "Outro" },
-      "longName": { "es": "Otro rubro", "en": "Other industry", "pt": "Outro setor" },
+      "name": {
+        "es": "Otro",
+        "en": "Other",
+        "pt": "Outro"
+      },
+      "longName": {
+        "es": "Otro rubro",
+        "en": "Other industry",
+        "pt": "Outro setor"
+      },
       "business": null,
       "pain": null,
       "keyNumber": null,
@@ -295,7 +374,11 @@
           "en": "Lost inquiries or bookings per week",
           "pt": "Contatos ou horários perdidos por semana"
         },
-        "ticketLabel": { "es": "Ticket promedio", "en": "Average ticket", "pt": "Ticket médio" }
+        "ticketLabel": {
+          "es": "Ticket promedio",
+          "en": "Average ticket",
+          "pt": "Ticket médio"
+        }
       }
     }
   ]

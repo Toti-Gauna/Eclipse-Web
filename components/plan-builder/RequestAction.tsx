@@ -81,6 +81,7 @@ export function RequestAction({
     return () => controller.abort();
   }, [active, verified, catalog]);
 
+  /** The team's catalog differs from these prices: sending is blocked (see submit). */
   const drift = catalog ? catalogMismatches(catalog).length > 0 : false;
   const planHref = `/plan/?${encodePlanState(state)}`;
 
@@ -95,6 +96,12 @@ export function RequestAction({
     try {
       const latest = catalog ?? (await endpoints.catalog());
       if (!catalog) setCatalog(latest);
+      // The team's catalog doesn't match these prices (e.g. it predates the 16/10 offer): send
+      // nothing rather than store an estimate with other prices. WhatsApp carries this plan.
+      if (catalogMismatches(latest).length > 0) {
+        setPhase('form');
+        return;
+      }
       const body = buildPlanRequestBody(state, { name, phone, message: note }, latest.version);
       // Same content = same submission = same key (safe retry). Different content = new key.
       const fingerprint = JSON.stringify(body);
@@ -308,7 +315,7 @@ export function RequestAction({
           ) : null}
         </div>
 
-        <button type="submit" className="btn btn-ghost pb-request-submit" disabled={sending} aria-busy={sending || undefined}>
+        <button type="submit" className="btn btn-ghost pb-request-submit" disabled={sending || drift} aria-busy={sending || undefined}>
           <Send aria-hidden className="size-4 shrink-0" strokeWidth={1.7} />
           {sending ? t('sending') : phase === 'failed' && failure?.retryable ? t('retry') : t('submit')}
         </button>

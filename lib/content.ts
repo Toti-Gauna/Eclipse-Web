@@ -12,6 +12,7 @@ import verticalsJson from '@/content/verticals.json';
 import foundersJson from '@/content/founders.json';
 import unitsJson from '@/content/units.json';
 import ratesFallbackJson from '@/content/rates.fallback.json';
+import legacyJson from '@/content/legacy.json';
 
 export type Localized<T = string> = Record<Locale, T>;
 
@@ -30,19 +31,23 @@ export type ItemId =
   | 'trailer'
   | 'turnos'
   | 'pedidos'
-  | 'automatizacion'
+  | 'whatsapp'
   | 'dashboard'
   | 'crm'
   | 'gamificacion'
-  | 'ecommerce'
-  | 'app-ondemand'
-  | 'voz'
+  | 'migracion'
+  | 'catalogo'
+  | 'app-fase'
   | 'chatbot'
+  | 'voz'
+  | 'asesoria-growth'
+  | 'asesoria-economica'
+  | 'asesorias'
   | 'marketing'
   | 'auditoria';
 
-export type PlanId = 'diagnostico' | 'presencia' | 'voz' | 'automatiza' | 'sistema' | 'comercio' | 'plataforma';
-export type MaintenanceId = 'esencial' | 'crecimiento' | 'escala';
+export type PlanId = 'adaptacion' | 'pack';
+export type MaintenanceId = 'esencial' | 'conectado' | 'ia';
 export type VerticalId =
   | 'clinicas'
   | 'inmobiliarias'
@@ -62,7 +67,19 @@ export interface ItemCategory {
 export interface Item {
   id: ItemId;
   category: string;
+  /** Independent project, "desde". */
   priceUsd: number;
+  /**
+   * Compatible add-on on top of a base (an offer or another project), "desde". null = not
+   * sold as an add-on. Independent and add-on are alternatives for the same work: never both.
+   */
+  addonUsd: number | null;
+  /** Quoted after reviewing a sample (migration): shown as a range, never added to the total. */
+  reviewRangeUsd?: { from: number; to: number };
+  /** A combo that replaces these pieces (both advisory sessions). */
+  replaces?: ItemId[];
+  /** Availability / feasibility subject to validation (provider, capacity). */
+  validate?: boolean;
   icon: string;
   name: Localized;
   description: Localized;
@@ -87,30 +104,29 @@ export interface Plan {
    * and never carries a price, a strikethrough or a saving: only what can be promised today.
    */
   bonus?: { itemId: ItemId; title: Localized; text: Localized };
+  /** false = no "por separado / ahorrás" comparison (16/10 offers). */
+  compare?: boolean;
+  /** Availability subject to validation (the pack's finance advice). */
+  validate?: boolean;
+  /** Monthly plan credit: `monthlyUsd` off per month during the first `months` months after launch. */
+  careCredit?: { months: number; monthlyUsd: number };
 }
 
+/** "+ Sumar" on an offer: the price is the piece's add-on price (items.json addonUsd). */
 export interface Addon {
   id: string;
   itemId: ItemId;
-  priceUsd: number;
   offer?: OfferId;
   whenIncluded: 'show' | 'hide';
-  name: Localized;
 }
 
 export interface MaintenancePlan {
   id: MaintenanceId;
   priceUsd: number;
+  /** Third-party budget (hosting, data, tools, usage) already inside the monthly price. */
+  thirdPartyUsd: number;
   name: Localized;
   includes: Localized<string[]>;
-}
-
-export interface VoiceUsage {
-  id: 'voz-uso';
-  priceUsd: number;
-  whenItem: ItemId;
-  name: Localized;
-  note: Localized;
 }
 
 interface OfferBase {
@@ -204,8 +220,12 @@ export const plans = plansJson.plans as Plan[];
 export const featuredPlanId = plansJson.featured as PlanId;
 export const addons = addonsJson.addons as Addon[];
 export const maintenancePlans = maintenanceJson.plans as MaintenancePlan[];
-export const voiceUsage = maintenanceJson.voiceUsage as VoiceUsage;
+/** Historical: months charged per year on the (now inactive) annual offer. */
 export const annualMonthsCharged = maintenanceJson.annualMonthsCharged;
+/** Human hours per month included in every monthly plan, in total (not per category). */
+export const careHoursMonthly = maintenanceJson.hoursMonthly;
+/** Share of the implementation paid upfront (the rest is the balance). */
+export const depositPct = plansJson.depositPct;
 export const offers = offersJson.offers as Offer[];
 export const verticals = verticalsJson.verticals as Vertical[];
 export const founders = foundersJson as { total: number; slots: FounderSlot[] };
@@ -218,6 +238,16 @@ export const fallbackRates: Rates = {
 };
 
 export const itemById = (id: string) => items.find((i) => i.id === id);
+
+/**
+ * Names of ids retired with the 16/10 offer, to show historical requests and agreements with
+ * their original name (never renamed to a new scope, never selectable). null when unknown.
+ */
+export function legacyName(kind: 'item' | 'plan' | 'maintenance', id: string | null | undefined): Localized | null {
+  if (!id) return null;
+  const table = (kind === 'item' ? legacyJson.items : kind === 'plan' ? legacyJson.plans : legacyJson.maintenance) as Record<string, Localized>;
+  return table[id] ?? null;
+}
 export const planById = (id: string) => plans.find((p) => p.id === id);
 export const verticalById = (id: string | null | undefined) => verticals.find((v) => v.id === id);
 export const maintenanceById = (id: string | null | undefined) => maintenancePlans.find((m) => m.id === id);

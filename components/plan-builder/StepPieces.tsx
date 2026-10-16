@@ -8,7 +8,7 @@ import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useSound } from '@/components/sound/SoundContext';
 import { Money } from '@/components/ui/Money';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
-import { itemById, l, type Item, type ItemId, type Plan, type VoiceComboOffer } from '@/lib/content';
+import { itemById, l, type Item, type ItemId, type Plan } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
 import type { CategoryGroup, HintId } from './rules';
 import { openCategories, type PreloadNotes } from './preload';
@@ -21,10 +21,12 @@ export interface PieceView {
   includedIn: string | null;
   /** It is the package's bonus piece: included at no extra cost (no price shown). */
   bonus: boolean;
-  /** Effective price if selected (voice combo aware). */
+  /** Combo name when a selected combo holds it (both advisory sessions): checked, not locked. */
+  inCombo: string | null;
+  /** Price if selected: independent, or add-on on top of a base. */
   priceUsd: number;
-  /** The voice combo sets this price. */
-  combo: boolean;
+  /** Charged as a compatible add-on (on the offer or the independent project). */
+  addon: boolean;
   /** A chosen goal suggested it. */
   suggested: boolean;
   hint: HintId | null;
@@ -54,9 +56,6 @@ export function StepPieces({
   onDropPlan,
   onUndoAdded,
   onEditGoals,
-  comboOffer,
-  comboGap,
-  comboPlanName,
   highlight,
   active,
   Sub,
@@ -72,10 +71,6 @@ export function StepPieces({
   onDropPlan: () => void;
   onUndoAdded: () => void;
   onEditGoals: () => void;
-  comboOffer: VoiceComboOffer | null;
-  comboGap: { offer: VoiceComboOffer; missingUsd: number } | null;
-  /** First package of the combo ("Sistema"). */
-  comboPlanName: string;
   highlight: readonly ItemId[];
   active: boolean;
   Sub: 'h3' | 'h4';
@@ -174,8 +169,13 @@ export function StepPieces({
             </span>
           </p>
           <p className="pb-package-head-note">
-            {notes.packageFromPreset ? t('packageFromPreset', { count: plan.items.length }) : t('packageIncludes', { count: plan.items.length })}
+            {plan.compare === false
+              ? t('offerIncludes', { list: l(plan.includes, locale).join(' · ') })
+              : notes.packageFromPreset
+                ? t('packageFromPreset', { count: plan.items.length })
+                : t('packageIncludes', { count: plan.items.length })}
           </p>
+          {plan.validate ? <p className="pb-package-head-note">{t('offerValidate')}</p> : null}
           {plan.bonus && !plan.items.includes(plan.bonus.itemId) ? (
             <p className="pb-bonus-note">
               <span className="pb-tag pb-tag--accent">{t('bonusTag')}</span>
@@ -183,9 +183,11 @@ export function StepPieces({
             </p>
           ) : null}
           <p className="pb-package-head-actions">
-            <button type="button" className="pb-link" onClick={onEditPieces}>
-              {t('editPieces')}
-            </button>
+            {plan.compare === false ? null : (
+              <button type="button" className="pb-link" onClick={onEditPieces}>
+                {t('editPieces')}
+              </button>
+            )}
             <button type="button" className="pb-link" onClick={onDropPlan}>
               {t('dropPackage')}
             </button>
@@ -258,44 +260,39 @@ export function StepPieces({
                           {l(item.name, locale)}
                           {view.bonus ? <span className="pb-tag pb-tag--accent">{t('bonusTag')}</span> : null}
                           {view.suggested && !locked ? <span className="pb-tag">{t('suggestedTag')}</span> : null}
-                          {view.combo && comboOffer && !locked ? <span className="pb-tag pb-tag--accent">{l(comboOffer.label, locale)}</span> : null}
+                          {view.addon && !locked ? <span className="pb-tag">{t('addonTag')}</span> : null}
+                          {item.validate && !locked ? <span className="pb-tag">{t('validateTag')}</span> : null}
                         </span>
                         <span id={descId} className="pb-row-desc">
                           {view.bonus ? (
                             <span className="pb-row-included">{t('bonusIn', { plan: view.includedIn ?? '' })}</span>
                           ) : locked ? (
                             <span className="pb-row-included">{t('includedIn', { plan: view.includedIn ?? '' })}</span>
+                          ) : view.inCombo ? (
+                            <span className="pb-row-included">{t('inCombo', { combo: view.inCombo })}</span>
                           ) : (
                             l(item.description, locale)
                           )}
                         </span>
                       </span>
                       <span className="pb-row-price readout">
-                        {view.bonus ? <span className="pb-row-free">{t('bonusFree')}</span> : locked ? <span aria-hidden>—</span> : <Money usd={view.priceUsd} />}
+                        {view.bonus ? (
+                          <span className="pb-row-free">{t('bonusFree')}</span>
+                        ) : locked || view.inCombo ? (
+                          <span aria-hidden>—</span>
+                        ) : item.reviewRangeUsd ? (
+                          <span className="pb-row-review">
+                            {t('reviewRange', { from: format(item.reviewRangeUsd.from), to: format(item.reviewRangeUsd.to) })}
+                          </span>
+                        ) : (
+                          <Money usd={view.priceUsd} />
+                        )}
                       </span>
                     </label>
                     {view.hint && view.checked ? (
                       <p className="pb-hint">
                         <Lightbulb aria-hidden className="size-4 shrink-0 text-accent" strokeWidth={1.5} />
                         {t(HINT_KEYS[view.hint])}
-                      </p>
-                    ) : null}
-                    {item.id === comboOffer?.itemId && comboGap && view.checked && !locked ? (
-                      <p className="pb-hint">
-                        {t('comboGap', {
-                          min: format(comboGap.offer.minSubtotalUsd),
-                          price: format(comboGap.offer.priceUsd),
-                          missing: format(comboGap.missingUsd),
-                        })}
-                      </p>
-                    ) : null}
-                    {item.id === comboOffer?.itemId && view.combo && !locked ? (
-                      <p className="pb-hint pb-hint--quiet">
-                        {t('comboNote', {
-                          price: format(comboOffer.priceUsd),
-                          min: format(comboOffer.minSubtotalUsd),
-                          plan: comboPlanName,
-                        })}
                       </p>
                     ) : null}
                   </li>

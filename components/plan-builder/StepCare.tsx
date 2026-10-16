@@ -4,7 +4,7 @@ import { useId } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Gift, Info } from 'lucide-react';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
-import { annualMonthsCharged, l, maintenancePlans, voiceUsage, type FounderOffer, type MaintenanceId, type Offer, type ReferralOffer } from '@/lib/content';
+import { annualMonthsCharged, careHoursMonthly, l, maintenancePlans, type FounderOffer, type MaintenanceId, type Offer, type ReferralOffer } from '@/lib/content';
 import { annualize, type Billing, type Quote } from '@/lib/pricing';
 import type { PlanState } from '@/lib/plan-url';
 import type { Locale } from '@/i18n/routing';
@@ -12,9 +12,10 @@ import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { Mark, OfferCountdown } from './parts';
 
 /**
- * Step 3 — maintenance + hosting: one billing switch (monthly / yearly) for every
- * option, the suggested level marked (and, while the plan follows it, said why it is
- * checked), the voice agent's monthly fee explained apart, and the founder price as an opt-in.
+ * Step 3 — the one monthly plan (30/75/150): the suggested level marked (and, while the
+ * plan follows it, said why it is checked), the third-party budget inside each price, the
+ * service terms (2 h in total, notice at 80 %, no automatic surcharges) and, with the pack,
+ * its first months. Historical offers (annual billing, founder, referral) only show if active.
  */
 export function StepCare({
   state,
@@ -95,7 +96,9 @@ export function StepCare({
                   {m ? l(m.name, locale) : t('maintenanceNone')}
                   {isSuggested ? <span className="pb-tag pb-tag--accent">{t('suggested')}</span> : null}
                 </span>
-                <span className="pb-row-desc">{m ? l(m.includes, locale).join(' · ') : t('noneDetail')}</span>
+                <span className="pb-row-desc">
+                  {m ? `${l(m.includes, locale).join(' · ')} · ${t('careBudget', { budget: format(m.thirdPartyUsd) })}` : t('noneDetail')}
+                </span>
               </span>
               <span className="pb-row-price readout">
                 {m ? (
@@ -114,12 +117,21 @@ export function StepCare({
 
       {annual && savedPerYear > 0 ? <p className="pb-note pb-note--accent">{t('annualApplied', { amount: format(savedPerYear) })}</p> : null}
 
-      {q.maintenance.voiceUsageMonthlyUsd > 0 ? (
-        <p className="pb-note">
-          <Info aria-hidden className="pb-note-icon" strokeWidth={1.5} />
-          <span>{t('voiceNote', { price: format(q.maintenance.voiceUsageMonthlyUsd), note: l(voiceUsage.note, locale) })}</span>
+      {q.maintenance.intro && q.maintenance.plan ? (
+        <p className="pb-note pb-note--accent">
+          {t('careIntro', {
+            months: q.maintenance.intro.months,
+            intro: format(q.maintenance.intro.monthlyUsd),
+            regular: format(q.maintenance.monthlyUsd),
+            next: q.maintenance.intro.months + 1,
+          })}
         </p>
       ) : null}
+
+      <p className="pb-note">
+        <Info aria-hidden className="pb-note-icon" strokeWidth={1.5} />
+        <span>{t('careTermsLong', { hours: careHoursMonthly })}</span>
+      </p>
 
       {founder ? (
         <section className="pb-offer" aria-labelledby={`${uid}-founder`}>

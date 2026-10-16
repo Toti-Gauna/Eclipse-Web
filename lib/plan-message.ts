@@ -5,12 +5,12 @@
  *
  * Example (es, ARS):
  *   Hola Eclipse. Armé mi plan en la web:
- *   • Paquete Sistema — desde ≈ $ 1.450.000 (USD 1.000)
- *   • Trailer en motion graphics — ≈ $ 363.000 (USD 250)
- *   Total estimado: ≈ $ 1.813.000 (USD 1.250)
- *   Mantenimiento Crecimiento: ≈ $ 115.000/mes (USD 79)
- *   Agente de voz: ≈ $ 71.000/mes (USD 49) + minutos según uso
- *   Ofertas: Combo voz
+ *   • Pack lanzamiento — desde ≈ $ 1.015.000 (USD 700)
+ *   • Chatbot IA (WhatsApp o web) (complemento) — ≈ $ 363.000 (USD 250)
+ *   Implementación estimada: ≈ $ 1.378.000 (USD 950)
+ *   Anticipo 50%: … · Saldo: …
+ *   Plan mensual Automatización e IA: ≈ $ 218.000/mes (USD 150)
+ *   Meses 1 a 3 desde la publicación: USD 120/mes; desde el mes 4: USD 150/mes
  *   Rubro: Clínicas
  *   Idioma: Español · Moneda: ARS
  */
@@ -55,8 +55,8 @@ export function buildPlanMessage(input: PlanMessageInput, t: Translate): string 
     if (line.kind === 'plan') {
       lines.push(`• ${t('planLine', { name, price: money(line.priceUsd) })}`);
     } else {
-      const combo = line.priceUsd < line.listUsd ? ` ${t('comboTag')}` : '';
-      lines.push(`• ${t('itemLine', { name, price: money(line.priceUsd) })}${combo}`);
+      const tag = line.addon ? ` ${t('addonTag')}` : '';
+      lines.push(`• ${t('itemLine', { name: `${name}${tag}`, price: money(line.priceUsd) })}`);
     }
   }
 
@@ -67,6 +67,12 @@ export function buildPlanMessage(input: PlanMessageInput, t: Translate): string 
   }
   if (quote.totalUsd < quote.subtotalUsd) {
     lines.push(t('totalWithOffers', { price: money(quote.totalUsd) }));
+  }
+  if (quote.totalUsd > 0) {
+    lines.push(t('split', { deposit: money(quote.depositUsd), balance: money(quote.balanceUsd) }));
+  }
+  for (const p of quote.pending) {
+    lines.push(`• ${t('pendingLine', { name: names[p.id] ?? p.id, from: money(p.fromUsd), to: money(p.toUsd) })}`);
   }
 
   const m = quote.maintenance;
@@ -82,9 +88,10 @@ export function buildPlanMessage(input: PlanMessageInput, t: Translate): string 
   } else {
     lines.push(t('maintenanceNone'));
   }
-  if (m.voiceUsageMonthlyUsd > 0) {
-    lines.push(t('voiceUsage', { price: money(m.voiceUsageMonthlyUsd) }));
+  if (m.plan && m.intro) {
+    lines.push(t('careIntro', { months: m.intro.months, intro: money(m.intro.monthlyUsd), regular: money(m.monthlyUsd), next: m.intro.months + 1 }));
   }
+  lines.push(t('proposal'));
 
   if (input.offers?.length) lines.push(t('offers', { list: input.offers.join(', ') }));
   if (input.verticalName) lines.push(t('vertical', { name: input.verticalName }));

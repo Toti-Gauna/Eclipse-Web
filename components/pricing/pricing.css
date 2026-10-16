@@ -1754,3 +1754,36 @@
     border: 1px solid CanvasText;
   }
 }
+
+/* 16/10 offers: compatible add-ons at their add-on price, under "Qué incluye". */
+.pr-plan-addons {
+  margin-top: 1.1rem;
+}
+.pr-plan-addon-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+}
+.pr-plan-addon-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.pr-plan-addon-list .leader {
+  flex: 1 1 1rem;
+}
+.pr-plan-addon-list .readout {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* Pieza por pieza: the add-on price (or "a revisar") under the piece's name. */
+.pr-piece-addon {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+}

@@ -5,12 +5,14 @@ import { useLocale, useTranslations } from 'next-intl';
 import { ArrowUp, Plus } from 'lucide-react';
 import {
   annualMonthsCharged,
+  careHoursMonthly,
   founders,
   foundersRemaining,
   l,
   maintenancePlans,
   offers,
-  voiceUsage,
+  itemById,
+  type ItemId,
   type AnnualOffer,
   type FounderOffer,
   type ReferralOffer,
@@ -24,6 +26,9 @@ import { offerLive, useNow } from '@/components/pricing/useNow';
 import { useSound } from '@/components/sound/SoundContext';
 import { DEMO_HOURS } from '@/components/sections/process/steps';
 import './faq.css';
+
+/** The three channel services of the 16/10 offer, each with its independent and add-on price. */
+const CHANNEL_IDS: ItemId[] = ['whatsapp', 'chatbot', 'voz'];
 
 const founderOffer = offers.find((o) => o.kind === 'founder') as FounderOffer | undefined;
 const annualOffer = offers.find((o) => o.kind === 'annualMaintenance') as AnnualOffer | undefined;
@@ -47,7 +52,7 @@ export type FaqId = (typeof FAQ_IDS)[number];
  *   currency    currency.notice · pricing.rate.note · pricing.rate.value + currency.source(Fallback)
  *   pieces      services.key.pieceText · pricing.ways.bundles.text · pricing.how.extras.text
  *   maintenance pricing.care.label · pricing.care.text · content/maintenance.json plans
- *   voice       content/maintenance.json voiceUsage · pricing.care.voice
+ *   voice       content/items.json whatsapp/chatbot/voz · faq.channelPrices/channelsRule/channelsDemo
  *   annual      content/offers.json annual.description · pricing.care.annualNote
  *   founder     pricing.offers.founderWhat · offers.json founder.description · pricing.offers.founderDeal/founderHow/founderLeft
  *   referral    content/offers.json referral.description
@@ -86,6 +91,7 @@ export function Faq({ className = '' }: { className?: string }) {
         <p className="faq-tag">
           {tp('how.project.title')} · {tp('how.project.when')}
         </p>
+        <p>{tp('how.project.text')}</p>
         <p>{tp('notes.from')}</p>
       </>
     ),
@@ -117,16 +123,32 @@ export function Faq({ className = '' }: { className?: string }) {
               <span className="faq-list-head">
                 <strong>{l(m.name, locale)}</strong> · {format(m.priceUsd)} {tp('perMonth')}
               </span>
-              <span className="faq-list-text">{l(m.includes, locale).join(' · ')}</span>
+              <span className="faq-list-text">
+                {l(m.includes, locale).join(' · ')} · {tp('care.budget', { budget: format(m.thirdPartyUsd) })}
+              </span>
             </li>
           ))}
         </ul>
+        <p>{tp('care.terms', { hours: careHoursMonthly })}</p>
       </>
     ),
     voice: (
-      <p>
-        <strong>{l(voiceUsage.name, locale)}.</strong> {tp('care.voice', { price: format(voiceUsage.priceUsd), note: l(voiceUsage.note, locale) })}
-      </p>
+      <>
+        <ul className="faq-list">
+          {CHANNEL_IDS.map((id) => itemById(id)).map((item) =>
+            item ? (
+              <li key={item.id}>
+                <span className="faq-list-head">
+                  <strong>{l(item.name, locale)}</strong> · {t('channelPrices', { alone: format(item.priceUsd), addon: format(item.addonUsd ?? item.priceUsd) })}
+                </span>
+                <span className="faq-list-text">{l(item.description, locale)}</span>
+              </li>
+            ) : null,
+          )}
+        </ul>
+        <p>{t('channelsRule')}</p>
+        <p>{t('channelsDemo')}</p>
+      </>
     ),
     annual:
       annualOffer && offerLive(annualOffer, now) ? (

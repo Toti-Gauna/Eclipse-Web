@@ -101,25 +101,28 @@
     "demoNotice": "The businesses shown in the demos are fictional."
   },
   "planMessage": {
-    "introCard": "Hi Eclipse. I'd like this package:",
+    "introCard": "Hi Eclipse. I want this offer:",
     "introBuilder": "Hi Eclipse. I built my plan on your website:",
-    "planLine": "{name} package — from {price}",
+    "planLine": "{name} — from {price}",
     "itemLine": "{name} — {price}",
-    "comboTag": "(combo)",
-    "total": "Estimated total: {price}",
-    "totalRange": "Estimated total: {from} to {to}",
+    "total": "Estimated implementation: {price}",
+    "totalRange": "Estimated implementation: {from} to {to}",
     "totalWithOffers": "With offers: {price}",
-    "maintenance": "{name} maintenance: {price} {period}",
+    "maintenance": "Monthly plan {name}: {price} {period}",
     "maintenanceAnnual": "{name} maintenance: {price} {period} (paid yearly, {months, plural, one {# month free} other {# months free}})",
-    "maintenanceNone": "No maintenance for now",
-    "voiceUsage": "Voice agent: {price} per month + minutes based on usage",
+    "maintenanceNone": "No monthly plan for now",
     "offers": "Offers: {list}",
     "vertical": "Industry: {name}",
     "localeCurrency": "Language: {language} · Currency: {currency}",
     "usdRef": "({amount})",
     "perMonth": "per month",
     "perYear": "per year",
-    "bonusLine": "Included at no charge: {name} (package bonus)"
+    "bonusLine": "Included at no charge: {name} (package bonus)",
+    "addonTag": "(add-on)",
+    "split": "50% upfront: {deposit} · Balance: {balance}",
+    "pendingLine": "{name}: {from} to {to}, quoted after reviewing a sample (not in the total)",
+    "careIntro": "Months 1 to {months} after launch: {intro} per month; from month {next}: {regular} per month",
+    "proposal": "This is a proposal request, not a quote: scope and feasibility to be confirmed."
   },
   "problem": {
     "title": "What does <em>not having</em> this cost you?",
@@ -220,20 +223,20 @@
   },
   "services": {
     "title": "What we build, <em>piece by piece</em>.",
-    "sub": "{families} families, {count} pieces. Buy each one on its own or inside a package, and see it working for your business first.",
+    "sub": "{families} families, {count} pieces. Each one is contracted as its own project or as an add-on on an offer, and you see it working for your business first.",
     "resultLabel": "The result",
     "key": {
       "pieceTerm": "Single piece",
-      "pieceText": "Bought on its own. One-time payment, starting price.",
+      "pieceText": "Its own project or an add-on: only one is charged. 50% upfront and 50% balance.",
       "includedTerm": "Included in",
-      "includedText": "The packages that already come with it.",
-      "includedLink": "See packages"
+      "includedText": "The offers that already include it.",
+      "includedLink": "See offers"
     },
     "pieces": "{count, plural, one {# piece} other {# pieces}}",
     "piecesTitle": "What it includes",
     "includedIn": "Included in",
-    "goToPlan": "See the {name} package",
-    "extra": "Extra: add it to any package",
+    "goToPlan": "See the {name} offer",
+    "extra": "Added as an add-on on a base",
     "preview": "Preview",
     "families": {
       "web": {
@@ -269,7 +272,7 @@
         }
       },
       "sales": {
-        "description": "Catalog, cart, payments and shipping, with your brand's identity.",
+        "description": "A catalog of your products and the enquiries that reach you, with your brand.",
         "result": "You sell around the clock, even when the shop is closed.",
         "preview": {
           "store": "Online store",
@@ -351,20 +354,19 @@
     "copyFailed": "Couldn't copy",
     "vertical": "Your industry",
     "optional": "optional",
-    "includedIn": "Included in the {plan} package",
-    "hintDashboard": "A dashboard shines with a system behind it: add bookings, orders or e-commerce.",
+    "includedIn": "Included in {plan}",
+    "hintDashboard": "A dashboard shines with a system behind it: add bookings, orders or a catalog.",
     "hintChatbot": "The chatbot does more with automations: it replies and also follows up.",
     "detectTitle": "Switch to the {plan} package and save ≈ {pct}%",
     "detectBody": "You pay {amount} less than piece by piece.",
     "detectCta": "Switch to the package",
     "switched": "Switched to the {plan} package.",
     "planRemoved": "Now piece by piece.",
-    "totalAnnounce": "One-time payment: {amount}.",
+    "totalAnnounce": "Implementation: {amount}.",
     "suggested": "Suggested",
-    "noneDetail": "You handle it",
+    "noneDetail": "Only for one-off services (advice, research, trailer)",
     "billingLegend": "Maintenance billing",
     "freeMonths": "{count, plural, one {# month free} other {# months free}}",
-    "comboGap": "If the rest of your plan reaches {min}, the voice agent drops to {price}. You are {missing} away.",
     "annualApplied": "You save {amount} a year on maintenance.",
     "founderApplied": "You save {amount} on the one-time payment.",
     "founderToggle": "I want the founder price (−{pct}%)",
@@ -377,7 +379,7 @@
     "sendDisabled": "Pick at least one piece to send your plan.",
     "copySummary": "Copy summary",
     "summaryCopied": "Summary copied",
-    "notice": "Estimated prices. The demo and the final proposal tune the number to your business.",
+    "notice": "“From” prices, in USD. This is a proposal request: we confirm scope, feasibility and price in writing.",
     "stepsLabel": "Plan steps",
     "stepOf": "Step {n} of {total}",
     "goToStep": "Step {n}: {name}",
@@ -390,17 +392,17 @@
       "piezas": {
         "name": "Pieces",
         "title": "Fine-tune the pieces",
-        "help": "Tap to add or remove. If a package is a better deal, we tell you."
+        "help": "Tap to add or remove. On top of an offer, each extra goes at its add-on price."
       },
       "mantenimiento": {
-        "name": "Maintenance",
-        "title": "Maintenance and hosting",
-        "help": "A fixed fee to keep everything running: hosting, security, backups and changes. Optional."
+        "name": "Monthly plan",
+        "title": "One monthly plan",
+        "help": "Just one per project: maintenance, hosting and what your product needs to keep running."
       },
       "resumen": {
         "name": "Summary",
         "title": "Your plan, at a glance",
-        "help": "What you pay once and what you pay every month, side by side."
+        "help": "The implementation with its upfront and balance, and the monthly plan, separately."
       }
     },
     "back": "Back",
@@ -412,23 +414,23 @@
       },
       "atender": {
         "name": "Answer 24/7",
-        "desc": "A voice agent and a chatbot that reply on their own."
+        "desc": "An AI chatbot and a voice agent, each for one use case."
       },
       "ordenar": {
         "name": "Organize bookings and orders",
-        "desc": "All online, with automatic reminders."
+        "desc": "Online bookings or orders, with WhatsApp notices."
       },
       "vender": {
         "name": "Sell online",
-        "desc": "Your own store with payments and shipping."
+        "desc": "A catalog of your products and enquiries that reach you."
       },
       "fidelizar": {
         "name": "Keep customers coming back",
-        "desc": "Missions, rewards and follow-ups."
+        "desc": "Missions and WhatsApp follow-up so they come back."
       },
       "app": {
         "name": "My own app",
-        "desc": "Your service in an app: orders, bookings and payments."
+        "desc": "The first useful phase of your app; the rest, in phases."
       },
       "diagnostico": {
         "name": "Not sure: I'd like a diagnosis",
@@ -438,39 +440,36 @@
     "pieceCount": "{count, plural, one {# piece} other {# pieces}}",
     "goalsChosen": "{count, plural, =0 {None yet} one {# chosen} other {# chosen}}",
     "verticalNone": "Not specified",
-    "fromPackage": "Or start from a package",
+    "fromPackage": "Or start from an offer",
     "chosen": "Chosen",
-    "packageHead": "{plan} package",
+    "packageHead": "{plan}",
     "packageIncludes": "Includes {count, plural, one {# piece} other {# pieces}}. Add any others you want.",
     "editPieces": "Edit piece by piece",
-    "dropPackage": "Remove package",
+    "dropPackage": "Remove offer",
     "suggestedTag": "Suggested",
-    "comboNote": "Combo: the voice agent drops to {price} with the {plan} package or above, or when the rest of your plan adds up to {min} or more.",
     "detectMoreTitle": "The {plan} package has all this plus {count, plural, one {# more piece} other {# more pieces}}: save ≈ {pct}%",
     "detectMoreBody": "It adds {list}. You still pay {amount} less.",
     "detectCtaShort": "Switch",
-    "packageDropped": "Package removed.",
-    "maintenanceNone": "No maintenance",
+    "packageDropped": "Offer removed.",
+    "maintenanceNone": "No monthly plan",
     "perMonthLong": "a month",
     "perYearLong": "a year",
-    "voiceNote": "The voice agent adds {price} a month {note}. It is separate from maintenance and always billed monthly.",
     "founderTitle": "Founder price",
     "referralTitle": "Referrals",
-    "ledgerOneTime": "One-time payment",
+    "ledgerOneTime": "Implementation",
     "ledgerMonthly": "Every month",
     "ledgerYearly": "Every year",
     "ledgerTotal": "Total",
     "ledgerFrom": "from",
     "edit": "Edit",
-    "rangeNote": "Packages have a “from” price: depending on scope, the total can go up to {to}. We confirm the number before we start.",
-    "maintenanceLine": "{name} maintenance",
+    "rangeNote": "Offers have a “from” price: depending on scope, the total can go up to {to}. We confirm the number before we start.",
+    "maintenanceLine": "{name} plan",
     "maintenanceAnnualLine": "{name} maintenance, billed yearly",
-    "voiceLine": "Voice agent (fixed fee)",
-    "nothingMonthly": "Nothing fixed: no maintenance.",
+    "nothingMonthly": "Nothing fixed: no monthly plan.",
     "emptyTitle": "You haven't picked anything yet.",
     "emptyCta": "Pick what you want to solve",
     "messagePreview": "See the message we send",
-    "dockOneTime": "One-time",
+    "dockOneTime": "Implementation",
     "dockFrom": "from",
     "recurringAnnounce": "Plus {amount} {period}.",
     "goalsLine": "Goal: {list}",
@@ -508,7 +507,7 @@
       "sendingLink": "Sending…",
       "linkSent": "Done, the email is on its way. It can take a few minutes.",
       "recheck": "I already verified",
-      "drift": "The prices on this site and the team’s may differ slightly. The estimate that gets stored is the team’s.",
+      "drift": "The team doesn't have these prices loaded yet, so the request can't be saved from here for now. Send your plan on WhatsApp: the message carries the selection and the amounts you see.",
       "name": "Your name",
       "phone": "Phone (with country code)",
       "phoneHint": "With the + sign and your country code, for example +54 9 223 555 0000.",
@@ -548,13 +547,27 @@
       "sent": "Request sent",
       "sentAgain": "This request was already saved",
       "sentBody": "Thanks, {name}. The team will review it and reply; the reply shows up in “My requests”.",
-      "sentEstimate": "Stored estimate: {amount} one-time (provisional).",
+      "sentEstimate": "Stored estimate: {amount} implementation (provisional).",
       "sentDiffers": "This is the team’s calculation and may differ from the total you saw here. The team’s figure is the one that counts.",
       "viewRequest": "View my request",
       "another": "Send another"
     },
     "liveTitle": "Your plan, live",
-    "liveEmpty": "Pick a goal or a piece and the numbers show up here."
+    "liveEmpty": "Pick a goal or a piece and the numbers show up here.",
+    "addonTag": "Add-on",
+    "validateTag": "To validate",
+    "inCombo": "Inside “{combo}”",
+    "reviewRange": "{from}–{to} · after review",
+    "pendingTag": "To quote",
+    "pendingNote": "Items pending review are not in the total or the upfront payment: they are quoted after seeing a sample.",
+    "deposit": "Upfront (50%)",
+    "balance": "Balance (50%)",
+    "careIntro": "With the pack: months 1 to {months} after launch, {intro} per month; from month {next}, {regular} per month.",
+    "careTerms": "Includes up to {hours} h of human work per month in total and up to {budget} per month of third-party costs (hosting, data, tools).",
+    "careBudget": "third-party costs up to {budget}/mo included",
+    "careTermsLong": "One plan per project, not one per channel. Every plan includes up to {hours} h of human work per month in total (they don't roll over) for maintenance, setup and prioritized improvements. The third-party budget is already inside the price: we warn you at 80% and there are no automatic surcharges; if it falls short, we agree together on how to expand it and your product and data stay available.",
+    "offerIncludes": "Includes: {list}. What it includes isn't charged again; what you add goes as an add-on.",
+    "offerValidate": "Availability subject to validation: we confirm dates and scope before starting."
   },
   "pricing": {
     "title": "What it costs,<br></br> and how you pay.",
@@ -562,9 +575,9 @@
     "perMonth": "per month",
     "perYear": "per year",
     "cta": "I want it",
-    "ctaLabel": "I want it: {name} package, on WhatsApp",
+    "ctaLabel": "I want it: {name}, on WhatsApp",
     "billing": {
-      "label": "Maintenance billing",
+      "label": "Monthly plan billing",
       "monthly": "Monthly",
       "annual": "Yearly",
       "free": "{months, plural, one {# month free} other {# months free}}"
@@ -585,13 +598,15 @@
       "founderDeal": "In return: your testimonial, permission to show your case and one referral."
     },
     "care": {
-      "title": "Your system doesn't go dark when we're done.",
+      "title": "One monthly plan. Just one.",
       "suggestedFor": "Suggested for {plans}",
-      "label": "Maintenance · optional",
-      "text": "Hosting, security, backups and changes for a fixed price. Pick the level that fits what we build together.",
+      "label": "Monthly plan · one per project",
+      "text": "Maintenance, hosting and what your product needs to keep running. You pick the level by what we build; you don't pay one per channel.",
       "annualNote": "You pay {charged} months, you get 12",
-      "voice": "Only if your project has one: {price} a month {note}. Always monthly, even on yearly billing.",
-      "live": "Maintenance on {billing} billing: prices {period}."
+      "live": "Maintenance on {billing} billing: prices {period}.",
+      "budget": "Third-party costs up to {budget}/mo, inside the price",
+      "terms": "Every plan includes up to {hours} h of human work per month in total (they don't roll over) for maintenance, setup and prioritized improvements. Third-party costs (hosting, data, tools and compatible usage) are already inside: we warn you at 80% and there are no automatic surcharges; if it falls short, we agree on how to expand it and your product and data stay available. The domain is separate.",
+      "packCredit": "Months 1 to {months} after launch: {list}, from month {next}."
     },
     "sub": "Prices in US dollars, no fine print. What you see is the starting point: we confirm the final number in writing, after the demo.",
     "approx": "approximately",
@@ -604,72 +619,83 @@
     "how": {
       "label": "How you pay",
       "project": {
-        "title": "Project",
-        "when": "One-time payment",
-        "text": "What we build for your business. You see a starting price; we confirm the final one in writing after the demo and the call.",
-        "link": "See packages"
+        "title": "Implementation",
+        "when": "50% upfront · 50% balance",
+        "text": "What we build or adapt for your business. The project starts with the upfront payment; the balance, on delivery. We confirm the final price in writing after the demo.",
+        "link": "See offers"
       },
       "care": {
-        "title": "Maintenance",
-        "when": "Monthly · optional",
-        "text": "Hosting, security, backups and changes, from {price} a month.",
+        "title": "Monthly plan",
+        "when": "Monthly · one per project",
+        "text": "Maintenance, hosting and up to 2 h a month, from {price} per month.",
         "annual": "Pay for the year and {months, plural, one {# month is free} other {# months are free}}.",
-        "link": "See maintenance"
+        "link": "See plans"
       },
       "extras": {
         "title": "Extras",
         "when": "Whenever you want",
-        "text": "Add pieces when you need them, at each piece's price.",
+        "text": "Each piece has a price as its own project or, lower, as an add-on on a base. Never both.",
         "link": "See pieces"
       }
     },
     "ways": {
       "label": "Two ways to buy",
       "bundles": {
-        "title": "Packages",
-        "text": "Ready-made combinations for the most common cases. The multi-piece ones cost less than the pieces one by one.",
-        "count": "{count} packages, in {groups} groups"
+        "title": "Offers",
+        "text": "Adaptation of one of our products, or the pack to launch with everything.",
+        "count": "{count} offers"
       },
       "pieces": {
         "title": "Piece by piece",
-        "text": "Pick only what you need and see the total instantly, in your currency.",
+        "text": "Its own project or an add-on on a base. See the total, upfront and balance instantly.",
         "cta": "Build it piece by piece",
-        "from": "Pieces from {price}."
+        "from": "From {price}."
       },
       "options": "{count, plural, one {# option} other {# options}}"
     },
     "groups": {
       "starter": {
-        "title": "To get started",
-        "text": "One specific need, solved."
+        "title": "To start",
+        "text": "A product that already works, with your brand."
       },
       "complete": {
         "title": "Complete systems",
         "text": "Everything connected: what your customers see and the back office."
       },
-      "count": "{count, plural, one {# package} other {# packages}}"
+      "count": "{count, plural, one {# offer} other {# offers}}"
     },
     "plan": {
       "from": "From",
-      "once": "One-time payment",
+      "once": "Implementation",
       "rangeLocal": "{from} · up to {to} depending on scope",
       "rangeUsd": "Up to {to} depending on scope",
       "includes": "What's included",
       "savings": "Save <pct></pct> vs. single pieces",
       "customize": "Customize",
-      "customizeLabel": "Customize the {name} package in the plan builder",
+      "customizeLabel": "Customize {name} in the builder",
       "audienceLabel": "Who it's for",
-      "maintenanceLabel": "Suggested maintenance",
+      "maintenanceLabel": "Suggested monthly plan",
       "maintenanceValue": "{name} · {price} {period}",
-      "maintenanceNone": "None (optional)",
+      "maintenanceNone": "None",
       "bonusBadge": "Premium landing page included",
       "bonusLabel": "Bonus included",
-      "bonusNote": "The package price stays the same."
+      "bonusNote": "The package price stays the same.",
+      "split": "Upfront {deposit} · balance {balance}",
+      "validate": "Availability subject to validation.",
+      "addonFrom": "add-on",
+      "addonsLabel": "Compatible add-ons",
+      "addonsNote": "Each for one use case, subject to validating provider and scope. If the offer already covers it, it isn't charged.",
+      "careIntro": "Months 1 to {months} after launch: {intro} per month; the regular price from month {next}."
     },
-    "noneFits": "No package fits?",
+    "noneFits": "No offer fits?",
     "noneFitsCta": "Build it piece by piece",
     "notes": {
       "from": "“From” is the starting price: the final one depends on scope, and we confirm it in writing before we start."
+    },
+    "pieces": {
+      "addon": "As an add-on on a base: from {price}",
+      "review": "Quoted after reviewing a sample of your files",
+      "alone": "Only as its own project"
     }
   },
   "demoShowcase": {
@@ -4300,15 +4326,18 @@
     "items": {
       "demo": "How does the demo work?",
       "start": "When does the project start?",
-      "from": "What does “From” mean?",
+      "from": "What does “From” mean? How do I pay?",
       "currency": "What currency are the prices in?",
       "pieces": "Can I buy just one piece?",
-      "maintenance": "Is maintenance required? What does it include?",
-      "voice": "Does the voice agent have a monthly cost?",
+      "maintenance": "What is the monthly plan? What does it include?",
+      "voice": "How are WhatsApp, the AI chatbot and the voice agent priced?",
       "annual": "Is there a discount for paying maintenance yearly?",
       "founder": "What is the founder program?",
       "referral": "Do I get anything for referring someone?"
-    }
+    },
+    "channelPrices": "from {alone} as its own project, or from {addon} as an add-on",
+    "channelsRule": "Its own project or an add-on are two ways of contracting the same work: only one is charged. If your offer or plan already covers that setup, it isn't charged again. There is no monthly fee per channel: running it goes into your one monthly plan (standard WhatsApp in Connected; chatbot or voice in Automation & AI), as long as it fits its budget; if it doesn't, we tell you before you contract. Provider, account and telephony are validated before starting.",
+    "channelsDemo": "In the demos, chats, WhatsApp messages and calls are simulated in the browser: no real messages are sent and no real calls are made."
   },
   "portal": {
     "meta": {
@@ -5184,7 +5213,7 @@
       "backToList": "Back to my requests",
       "sentOn": "Sent {date}",
       "noPieces": "Request with no pieces",
-      "packageHead": "{plan} package",
+      "packageHead": "{plan}",
       "status": {
         "submitted": "Sent",
         "under_review": "Under review",
@@ -5219,12 +5248,12 @@
       "open": "View request",
       "estimateLabel": "Stored estimate",
       "from": "from",
-      "total": "Estimated one-time payment",
+      "total": "Estimated implementation",
       "founder": "Founder price",
       "range": "The package goes up to {to} depending on scope.",
-      "maintenanceMonth": "{name} maintenance: {price} per month.",
+      "maintenanceMonth": "{name} plan: {price} per month.",
       "maintenanceYear": "{name} maintenance: {price} per year ({months} months charged).",
-      "maintenanceNone": "No maintenance.",
+      "maintenanceNone": "No monthly plan.",
       "voiceUsage": "Voice agent: {price} per month, plus minutes by usage.",
       "estimateNote": "This is a provisional estimate calculated by the team, not a quote. Scope and final price are confirmed in writing.",
       "cancel": "Cancel this request",
@@ -5425,16 +5454,14 @@
     },
     "project": {
       "label": "The complete project",
-      "title": "What you see is a sample of a complete project.",
-      "leadPlan": "To have it in your business: the {plan} package, with everything in this demo.",
-      "leadPlanExtras": "To have it in your business: the {plan} package, {count, plural, one {plus # piece that also shows up in this demo} other {plus # pieces that also show up in this demo}}.",
-      "leadPieces": "It's built with {count, plural, one {# piece} other {# pieces}}, each with its published price. We confirm the price of the complete project in writing, after the demo and the call.",
-      "package": "Package",
-      "covered": "From this demo, the package already includes: {pieces}.",
-      "extras": "Also in this demo",
+      "title": "What you see is a demo. This is what you'd contract.",
+      "extras": "Needs a validated integration",
       "pieces": "The pieces in this demo",
-      "piecesNote": "published price of each piece. We confirm the project total in writing.",
-      "build": "Build this project"
+      "build": "Build this project",
+      "lead": "The demo is free to try. To have it in your business we adapt the product; the channels the demo simulates are added apart, only once validated.",
+      "contracted": "What you'd contract",
+      "extrasNote": "Add-on price on top of the adaptation, each for one use case. Subject to validating provider, account and scope. Not preselected: you add them.",
+      "simulation": "Simulated in the browser: no real messages are sent and no real calls are made, and the data and metrics are fictional."
     }
   }
 }

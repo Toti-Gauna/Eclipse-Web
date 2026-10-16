@@ -21,15 +21,15 @@ export function goalPieces(goal: GoalId, vertical: VerticalId | null = null): It
     case 'atender':
       return ['voz', 'chatbot'];
     case 'ordenar':
-      if (vertical && BOOKING_VERTICALS.has(vertical)) return ['turnos', 'automatizacion'];
-      if (vertical && ORDER_VERTICALS.has(vertical)) return ['pedidos', 'automatizacion'];
-      return ['turnos', 'pedidos', 'automatizacion'];
+      if (vertical && BOOKING_VERTICALS.has(vertical)) return ['turnos', 'whatsapp'];
+      if (vertical && ORDER_VERTICALS.has(vertical)) return ['pedidos', 'whatsapp'];
+      return ['turnos', 'pedidos', 'whatsapp'];
     case 'vender':
-      return ['ecommerce'];
+      return ['catalogo'];
     case 'fidelizar':
-      return ['automatizacion', 'gamificacion'];
+      return ['whatsapp', 'gamificacion'];
     case 'app':
-      return ['app-ondemand'];
+      return ['app-fase'];
     case 'diagnostico':
       return ['auditoria'];
   }
