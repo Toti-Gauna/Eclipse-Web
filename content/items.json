@@ -1,18 +1,61 @@
 {
-  "$comment": "Catálogo individual para 'Armá tu plan'. Precios en USD. Los planes (plans.json) y add-ons (addons.json) referencian estos ids.",
+  "$comment": "Catálogo para 'Armá tu plan' y Precios (oferta aprobada el 16/10/2026). USD. priceUsd = proyecto independiente 'desde'; addonUsd = complemento compatible sobre una base (adaptación/pack u otro proyecto); null = no se vende como complemento. Son alternativas del mismo trabajo: nunca se cobran las dos. reviewRangeUsd = se cotiza tras revisar una muestra: no suma al total. replaces = combo que reemplaza a esas piezas. validate = disponibilidad/factibilidad sujeta a validación.",
   "categories": [
-    { "id": "presencia", "name": { "es": "Web y marca", "en": "Web & brand", "pt": "Web e marca" } },
-    { "id": "sistemas", "name": { "es": "Gestión y operación", "en": "Operations", "pt": "Gestão e operação" } },
-    { "id": "comercio", "name": { "es": "Venta online", "en": "Online sales", "pt": "Venda online" } },
-    { "id": "plataformas", "name": { "es": "Apps a medida", "en": "Custom apps", "pt": "Apps sob medida" } },
-    { "id": "ia", "name": { "es": "IA y agentes", "en": "AI & agents", "pt": "IA e agentes" } },
-    { "id": "estrategia", "name": { "es": "Estrategia y crecimiento", "en": "Strategy & growth", "pt": "Estratégia e crescimento" } }
+    {
+      "id": "presencia",
+      "name": {
+        "es": "Web y marca",
+        "en": "Web & brand",
+        "pt": "Web e marca"
+      }
+    },
+    {
+      "id": "sistemas",
+      "name": {
+        "es": "Gestión y operación",
+        "en": "Operations",
+        "pt": "Gestão e operação"
+      }
+    },
+    {
+      "id": "comercio",
+      "name": {
+        "es": "Venta online",
+        "en": "Online sales",
+        "pt": "Venda online"
+      }
+    },
+    {
+      "id": "plataformas",
+      "name": {
+        "es": "Apps a medida",
+        "en": "Custom apps",
+        "pt": "Apps sob medida"
+      }
+    },
+    {
+      "id": "ia",
+      "name": {
+        "es": "IA y agentes",
+        "en": "AI & agents",
+        "pt": "IA e agentes"
+      }
+    },
+    {
+      "id": "estrategia",
+      "name": {
+        "es": "Estrategia y crecimiento",
+        "en": "Strategy & growth",
+        "pt": "Estratégia e crescimento"
+      }
+    }
   ],
   "items": [
     {
       "id": "landing",
       "category": "presencia",
-      "priceUsd": 250,
+      "priceUsd": 500,
+      "addonUsd": 200,
       "icon": "MonitorPlay",
       "name": {
         "es": "Landing premium con motion graphics",
@@ -20,39 +63,50 @@
         "pt": "Landing page premium com motion graphics"
       },
       "description": {
-        "es": "Una página que se mueve, carga rápido y convierte.",
-        "en": "One page that moves, loads fast and converts.",
-        "pt": "Uma página que se move, carrega rápido e converte."
+        "es": "Una página de hasta 6 secciones, rápida y pensada para el celular.",
+        "en": "One page with up to 6 sections, fast and phone-first.",
+        "pt": "Uma página de até 6 seções, rápida e pensada para o celular."
       }
     },
     {
       "id": "web-multi",
       "category": "presencia",
-      "priceUsd": 450,
+      "priceUsd": 500,
+      "addonUsd": 150,
       "icon": "LayoutTemplate",
-      "name": { "es": "Web multipágina", "en": "Multi-page website", "pt": "Site com várias páginas" },
+      "name": {
+        "es": "Web multipágina",
+        "en": "Multi-page website",
+        "pt": "Site com várias páginas"
+      },
       "description": {
-        "es": "Servicios, equipo, contacto y blog, cada uno en su página.",
-        "en": "Services, team, contact and blog, each on its own page.",
-        "pt": "Serviços, equipe, contato e blog, cada um na sua página."
+        "es": "Hasta 4 páginas sobre plantilla. Como extra: hasta 3 páginas más.",
+        "en": "Up to 4 pages on a template. As an add-on: up to 3 more pages.",
+        "pt": "Até 4 páginas sobre template. Como complemento: até 3 páginas a mais."
       }
     },
     {
       "id": "seo",
       "category": "presencia",
-      "priceUsd": 150,
+      "priceUsd": 500,
+      "addonUsd": 100,
       "icon": "Search",
-      "name": { "es": "SEO + analytics", "en": "SEO + analytics", "pt": "SEO + analytics" },
+      "name": {
+        "es": "SEO técnico básico + analytics",
+        "en": "Basic technical SEO + analytics",
+        "pt": "SEO técnico básico + analytics"
+      },
       "description": {
-        "es": "Que te encuentren en Google y saber qué funciona.",
-        "en": "Get found on Google and know what works.",
-        "pt": "Ser encontrado no Google e saber o que funciona."
+        "es": "Un sitio: velocidad, metadatos, indexación y medición.",
+        "en": "One site: speed, metadata, indexing and tracking.",
+        "pt": "Um site: velocidade, metadados, indexação e medição."
       }
     },
     {
       "id": "trailer",
       "category": "presencia",
-      "priceUsd": 250,
+      "priceUsd": 500,
+      "addonUsd": 100,
       "icon": "Clapperboard",
       "name": {
         "es": "Trailer en motion graphics",
@@ -60,169 +114,293 @@
         "pt": "Trailer em motion graphics"
       },
       "description": {
-        "es": "15 segundos que explican tu negocio mejor que un folleto.",
-        "en": "15 seconds that explain your business better than a brochure.",
-        "pt": "15 segundos que explicam seu negócio melhor que um folheto."
+        "es": "Hasta 15 segundos sobre plantilla, con los materiales que nos pases.",
+        "en": "Up to 15 seconds on a template, with the materials you send.",
+        "pt": "Até 15 segundos sobre template, com os materiais que você enviar."
       }
     },
     {
       "id": "turnos",
       "category": "sistemas",
-      "priceUsd": 400,
+      "priceUsd": 750,
+      "addonUsd": 250,
       "icon": "CalendarCheck",
-      "name": { "es": "Sistema de turnos", "en": "Booking system", "pt": "Sistema de agendamentos" },
+      "name": {
+        "es": "Turnos administrativos",
+        "en": "Booking admin",
+        "pt": "Agendamentos"
+      },
       "description": {
-        "es": "Agenda online, confirmaciones y lista de espera.",
-        "en": "Online calendar, confirmations and a waitlist.",
-        "pt": "Agenda online, confirmações e lista de espera."
+        "es": "Una agenda, hasta 3 usuarios.",
+        "en": "One calendar, up to 3 users.",
+        "pt": "Uma agenda, até 3 usuários."
       }
     },
     {
       "id": "pedidos",
       "category": "sistemas",
-      "priceUsd": 400,
+      "priceUsd": 750,
+      "addonUsd": 250,
       "icon": "ClipboardList",
-      "name": { "es": "Sistema de pedidos", "en": "Ordering system", "pt": "Sistema de pedidos" },
+      "name": {
+        "es": "Sistema de pedidos",
+        "en": "Ordering system",
+        "pt": "Sistema de pedidos"
+      },
       "description": {
-        "es": "Pedidos online que llegan completos y ordenados.",
-        "en": "Online orders that arrive complete and organized.",
-        "pt": "Pedidos online que chegam completos e organizados."
+        "es": "Un flujo de pedidos que queda guardado, hasta 3 usuarios.",
+        "en": "One saved order flow, up to 3 users.",
+        "pt": "Um fluxo de pedidos salvo, até 3 usuários."
       }
     },
     {
-      "id": "automatizacion",
+      "id": "whatsapp",
       "category": "sistemas",
-      "priceUsd": 300,
-      "icon": "Workflow",
+      "priceUsd": 500,
+      "addonUsd": 100,
+      "icon": "MessageSquare",
       "name": {
-        "es": "Automatizaciones (recordatorios, mails, seguimiento)",
-        "en": "Automations (reminders, emails, follow-up)",
-        "pt": "Automações (lembretes, e-mails, follow-up)"
+        "es": "WhatsApp estándar (sin IA)",
+        "en": "Standard WhatsApp (no AI)",
+        "pt": "WhatsApp padrão (sem IA)"
       },
       "description": {
-        "es": "Lo repetitivo pasa solo, sin que nadie lo empuje.",
-        "en": "The repetitive work runs on its own.",
-        "pt": "O trabalho repetitivo roda sozinho."
+        "es": "Un flujo de aviso o seguimiento. Sin agente IA ni envíos masivos.",
+        "en": "One notification or follow-up flow. No AI agent, no bulk sending.",
+        "pt": "Um fluxo de aviso ou acompanhamento. Sem agente IA nem envios em massa."
       }
     },
     {
       "id": "dashboard",
       "category": "sistemas",
-      "priceUsd": 400,
+      "priceUsd": 750,
+      "addonUsd": 250,
       "icon": "LayoutDashboard",
-      "name": { "es": "Dashboard interno", "en": "Internal dashboard", "pt": "Dashboard interno" },
+      "name": {
+        "es": "Dashboard interno",
+        "en": "Internal dashboard",
+        "pt": "Dashboard interno"
+      },
       "description": {
-        "es": "Los números del día en una sola pantalla.",
-        "en": "Today's numbers on a single screen.",
-        "pt": "Os números do dia em uma tela só."
+        "es": "Una fuente de datos, hasta 3 usuarios.",
+        "en": "One data source, up to 3 users.",
+        "pt": "Uma fonte de dados, até 3 usuários."
       }
     },
     {
       "id": "crm",
       "category": "sistemas",
-      "priceUsd": 600,
+      "priceUsd": 750,
+      "addonUsd": 250,
       "icon": "BookUser",
       "name": {
-        "es": "CRM + documentación interna",
-        "en": "CRM + internal documentation",
-        "pt": "CRM + documentação interna"
+        "es": "CRM y documentación básica",
+        "en": "Basic CRM and docs",
+        "pt": "CRM e documentação básica"
       },
       "description": {
-        "es": "Clientes, historial y procesos del equipo en un solo lugar.",
-        "en": "Clients, history and team processes in one place.",
-        "pt": "Clientes, histórico e processos da equipe em um só lugar."
+        "es": "Un pipeline de clientes, hasta 3 usuarios.",
+        "en": "One client pipeline, up to 3 users.",
+        "pt": "Um pipeline de clientes, até 3 usuários."
       }
     },
     {
       "id": "gamificacion",
       "category": "sistemas",
-      "priceUsd": 700,
+      "priceUsd": 500,
+      "addonUsd": 150,
       "icon": "Trophy",
-      "name": { "es": "Gamificación y misiones", "en": "Gamification and missions", "pt": "Gamificação e missões" },
+      "name": {
+        "es": "Gamificación y misiones",
+        "en": "Gamification and missions",
+        "pt": "Gamificação e missões"
+      },
       "description": {
-        "es": "Rachas, misiones y premios que hacen volver a tus clientes.",
-        "en": "Streaks, missions and rewards that bring customers back.",
-        "pt": "Sequências, missões e prêmios que fazem o cliente voltar."
+        "es": "Una mecánica, hasta 3 misiones. Premios y campañas, aparte.",
+        "en": "One mechanic, up to 3 missions. Prizes and campaigns quoted apart.",
+        "pt": "Uma mecânica, até 3 missões. Prêmios e campanhas, à parte."
       }
     },
     {
-      "id": "ecommerce",
+      "id": "migracion",
+      "category": "sistemas",
+      "priceUsd": 100,
+      "addonUsd": null,
+      "icon": "FileSpreadsheet",
+      "name": {
+        "es": "Migración de Excel/PDF",
+        "en": "Excel/PDF migration",
+        "pt": "Migração de Excel/PDF"
+      },
+      "description": {
+        "es": "Una vez. El precio sale de revisar una muestra de tus archivos.",
+        "en": "One-off. The price comes from reviewing a sample of your files.",
+        "pt": "Uma vez. O preço sai de revisar uma amostra dos seus arquivos."
+      },
+      "reviewRangeUsd": {
+        "from": 100,
+        "to": 300
+      }
+    },
+    {
+      "id": "catalogo",
       "category": "comercio",
-      "priceUsd": 1200,
-      "icon": "ShoppingCart",
-      "name": { "es": "E-commerce completo", "en": "Full e-commerce", "pt": "E-commerce completo" },
+      "priceUsd": 500,
+      "addonUsd": null,
+      "icon": "ShoppingBag",
+      "name": {
+        "es": "Catálogo y consultas",
+        "en": "Catalog and enquiries",
+        "pt": "Catálogo e consultas"
+      },
       "description": {
-        "es": "Catálogo, carrito, pagos y envíos.",
-        "en": "Catalog, cart, payments and shipping.",
-        "pt": "Catálogo, carrinho, pagamentos e frete."
+        "es": "Hasta 25 productos que nos pases; las consultas llegan a mano.",
+        "en": "Up to 25 products you send; enquiries arrive for you to answer.",
+        "pt": "Até 25 produtos que você enviar; as consultas chegam para você responder."
       }
     },
     {
-      "id": "app-ondemand",
+      "id": "app-fase",
       "category": "plataformas",
-      "priceUsd": 3500,
+      "priceUsd": 1000,
+      "addonUsd": null,
       "icon": "Smartphone",
-      "name": { "es": "App on-demand", "en": "On-demand app", "pt": "App on-demand" },
+      "name": {
+        "es": "App on-demand: primera fase",
+        "en": "On-demand app: first phase",
+        "pt": "App on-demand: primeira fase"
+      },
       "description": {
-        "es": "Tu servicio en una app: pedidos, reservas y pagos.",
-        "en": "Your service in an app: orders, bookings and payments.",
-        "pt": "Seu serviço em um app: pedidos, reservas e pagamentos."
-      }
-    },
-    {
-      "id": "voz",
-      "category": "ia",
-      "priceUsd": 600,
-      "icon": "AudioLines",
-      "name": { "es": "Agente de voz con IA", "en": "AI voice agent", "pt": "Agente de voz com IA" },
-      "description": {
-        "es": "Atiende llamadas, responde y agenda. 24/7.",
-        "en": "Answers calls, replies and books. 24/7.",
-        "pt": "Atende ligações, responde e agenda. 24/7."
+        "es": "Dos módulos relacionados y una integración. El resto, por fases.",
+        "en": "Two related modules and one integration. The rest, in phases.",
+        "pt": "Dois módulos relacionados e uma integração. O resto, por fases."
       }
     },
     {
       "id": "chatbot",
       "category": "ia",
-      "priceUsd": 350,
+      "priceUsd": 750,
+      "addonUsd": 250,
       "icon": "Bot",
       "name": {
-        "es": "Chatbot IA en WhatsApp/web",
-        "en": "AI chatbot on WhatsApp/web",
-        "pt": "Chatbot com IA no WhatsApp/site"
+        "es": "Chatbot IA (WhatsApp o web)",
+        "en": "AI chatbot (WhatsApp or web)",
+        "pt": "Chatbot IA (WhatsApp ou web)"
       },
       "description": {
-        "es": "Responde al instante y te pasa los clientes listos.",
-        "en": "Replies instantly and hands you qualified leads.",
-        "pt": "Responde na hora e te passa o cliente pronto."
+        "es": "Un canal, un caso de uso, tus documentos y pase a una persona.",
+        "en": "One channel, one use case, your documents and hand-off to a person.",
+        "pt": "Um canal, um caso de uso, seus documentos e passagem para uma pessoa."
+      },
+      "validate": true
+    },
+    {
+      "id": "voz",
+      "category": "ia",
+      "priceUsd": 750,
+      "addonUsd": 250,
+      "icon": "AudioLines",
+      "name": {
+        "es": "Agente de voz con IA",
+        "en": "AI voice agent",
+        "pt": "Agente de voz com IA"
+      },
+      "description": {
+        "es": "Un caso de uso, guion y pase a una persona. Telefonía a validar.",
+        "en": "One use case, script and hand-off to a person. Telephony to be validated.",
+        "pt": "Um caso de uso, roteiro e passagem para uma pessoa. Telefonia a validar."
+      },
+      "validate": true
+    },
+    {
+      "id": "asesoria-growth",
+      "category": "estrategia",
+      "priceUsd": 150,
+      "addonUsd": 150,
+      "icon": "Megaphone",
+      "name": {
+        "es": "Asesoría growth, marketing y marca",
+        "en": "Growth, marketing & brand advice",
+        "pt": "Assessoria de growth, marketing e marca"
+      },
+      "description": {
+        "es": "Diagnóstico y recomendaciones, una vez.",
+        "en": "Diagnosis and recommendations, one-off.",
+        "pt": "Diagnóstico e recomendações, uma vez."
       }
+    },
+    {
+      "id": "asesoria-economica",
+      "category": "estrategia",
+      "priceUsd": 150,
+      "addonUsd": 150,
+      "icon": "Calculator",
+      "name": {
+        "es": "Asesoría de gestión económica",
+        "en": "Business finance advice",
+        "pt": "Assessoria de gestão econômica"
+      },
+      "description": {
+        "es": "Costos, márgenes y escenarios con tus datos. Una vez.",
+        "en": "Costs, margins and scenarios with your data. One-off.",
+        "pt": "Custos, margens e cenários com seus dados. Uma vez."
+      },
+      "validate": true
+    },
+    {
+      "id": "asesorias",
+      "category": "estrategia",
+      "priceUsd": 250,
+      "addonUsd": 250,
+      "icon": "Compass",
+      "name": {
+        "es": "Las dos asesorías",
+        "en": "Both advisory sessions",
+        "pt": "As duas assessorias"
+      },
+      "description": {
+        "es": "Growth/marca + gestión económica. Reemplaza a las dos sueltas.",
+        "en": "Growth/brand + business finance. Replaces the two separate ones.",
+        "pt": "Growth/marca + gestão econômica. Substitui as duas avulsas."
+      },
+      "replaces": [
+        "asesoria-growth",
+        "asesoria-economica"
+      ],
+      "validate": true
     },
     {
       "id": "marketing",
       "category": "estrategia",
-      "priceUsd": 400,
-      "icon": "Megaphone",
+      "priceUsd": 500,
+      "addonUsd": 150,
+      "icon": "ScanSearch",
       "name": {
-        "es": "Marketing + estudio de mercado",
-        "en": "Marketing + market research",
-        "pt": "Marketing + estudo de mercado"
+        "es": "Estudio de mercado",
+        "en": "Market research",
+        "pt": "Estudo de mercado"
       },
       "description": {
-        "es": "Qué hace tu competencia y cómo ganarle.",
-        "en": "What your competitors do and how to beat them.",
-        "pt": "O que a concorrência faz e como vencê-la."
+        "es": "Un nicho, una muestra de hasta 30 negocios.",
+        "en": "One niche, a sample of up to 30 businesses.",
+        "pt": "Um nicho, uma amostra de até 30 negócios."
       }
     },
     {
       "id": "auditoria",
       "category": "estrategia",
-      "priceUsd": 150,
-      "icon": "ScanSearch",
-      "name": { "es": "Auditoría digital", "en": "Digital audit", "pt": "Auditoria digital" },
+      "priceUsd": 500,
+      "addonUsd": 100,
+      "icon": "ScanLine",
+      "name": {
+        "es": "Auditoría digital",
+        "en": "Digital audit",
+        "pt": "Auditoria digital"
+      },
       "description": {
-        "es": "Dónde estás perdiendo clientes hoy, con plan de acción.",
-        "en": "Where you're losing customers today, with an action plan.",
-        "pt": "Onde você está perdendo clientes hoje, com plano de ação."
+        "es": "Un sitio o recorrido, con plan de acción. No es un pentest.",
+        "en": "One site or journey, with an action plan. Not a pentest.",
+        "pt": "Um site ou percurso, com plano de ação. Não é pentest."
       }
     }
   ]

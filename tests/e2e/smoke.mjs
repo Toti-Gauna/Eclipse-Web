@@ -60,7 +60,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.evaluate(() => document.getElementById('precios')?.scrollIntoView());
   await page.waitForTimeout(1500);
   const rows = page.locator('#precios .pr-plan');
-  check('pricing package rows present', (await rows.count()) >= 7, `${await rows.count()}`);
+  check('pricing offer rows present (Adaptación + Pack)', (await rows.count()) === 2, `${await rows.count()}`);
   const toggle = rows.first().locator('.pr-plan-toggle').first();
   await toggle.scrollIntoViewIfNeeded();
   await page.waitForTimeout(600);
@@ -193,7 +193,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const send = page.locator('dialog[open] a[href^="https://wa.me/"]').first();
   const href = (await send.count()) ? await send.getAttribute('href') : '';
   const msg = decodeURIComponent((href ?? '').split('text=')[1] ?? '');
-  check('builder WhatsApp message has items, total, language and currency', /Armé mi plan/.test(msg) && /Total estimado/.test(msg) && /Idioma: Español/.test(msg) && /Moneda: ARS/.test(msg), msg.split('\n').slice(0, 3).join(' / '));
+  check('builder WhatsApp message has items, total, language and currency', /Armé mi plan/.test(msg) && /Implementación estimada/.test(msg) && /Anticipo 50%/.test(msg) && /Idioma: Español/.test(msg) && /Moneda: ARS/.test(msg), msg.split('\n').slice(0, 3).join(' / '));
   await page.keyboard.press('Escape');
   await page.waitForTimeout(600);
   check('no page errors (desktop home)', errors.length === 0, errors.slice(0, 3).join(' | '));
@@ -203,10 +203,11 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
 // 4. Shareable plan route reads the URL state.
 {
   const { ctx, page, errors } = await newPage(1280, 900);
-  await page.goto(`${BASE}/en/plan/?items=turnos,pedidos,automatizacion,dashboard,landing,voz&m=crecimiento`);
+  await page.goto(`${BASE}/en/plan/?plan=pack&items=chatbot&m=ia`);
   await page.waitForTimeout(2500);
   const text = await page.locator('main').innerText();
-  check('/plan detects the System package from the URL', /System (plan|package)/i.test(text), '');
+  // 16/10 offer: pack 700 + chatbot add-on 250 = 950, half upfront; the pack's first months at 120.
+  check('/plan reads the pack from the URL with its add-on, 50/50 and first months', /Launch pack/.test(text) && /\$950/.test(text) && /\$475/.test(text) && /\$120/.test(text), '');
   check('no page errors (/plan)', errors.length === 0, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }

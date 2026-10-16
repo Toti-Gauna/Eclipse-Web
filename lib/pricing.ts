@@ -1,18 +1,21 @@
 /**
- * Pure pricing logic shared by the plan cards and "Armá tu plan".
+ * Pure pricing logic shared by the offer cards, the price lists and "Armá tu plan".
  * All amounts are USD; conversion/formatting happens at the edge (formatMoney).
  *
- * Rules (see README → Precios):
- * - Plan price = "desde" (priceUsd.from); the range is shown alongside.
- * - "Por separado / ahorrás" compares the plan's items at catalog price vs. the plan's
- *   "desde" price. Only bundles (2+ items) with a real saving show it.
- * - Voice combo: the voice agent costs offer.priceUsd (300) when the plan is one of
- *   offer.plans (Sistema or higher) OR when the rest of the selection — everything
- *   except the voice agent itself — reaches offer.minSubtotalUsd (1000). Measuring
- *   "the rest" avoids the circular case where the discount drops the total below 1000.
- * - Founder price: −percentOff on the one-time total, opt-in, only while slots remain.
- * - Annual maintenance: plan × annualMonthsCharged (10 = 2 months free). The voice
- *   agent usage fee stays monthly (it depends on minutes).
+ * Rules (offer approved on 16/10/2026):
+ * - An offer (Adaptación 500, Pack 700) is chosen explicitly: never inferred from a total.
+ *   What it covers (`plan.items`) is never charged again.
+ * - Every piece has an independent price and, most, a compatible add-on price. They are
+ *   alternatives for the same work, never both: on top of an offer every extra is an
+ *   add-on; without an offer the widest piece is the independent project and the rest
+ *   are add-ons on it. A piece without an add-on price is always independent.
+ * - Both advisory sessions (150 + 150) become the 250 combo, which replaces them.
+ * - Migration is quoted after reviewing a sample: a pending range, never in the total.
+ * - Implementation: depositPct (50) upfront, the rest as balance.
+ * - One monthly plan (30/75/150). The pack credits `careCredit.monthlyUsd` per month for its
+ *   first months after launch (0/45/120, then 30/75/150).
+ * - Historical offers (founder, voice combo, annual, referral) are inactive: the code that
+ *   reads them stays so it can still describe older agreements if they are ever re-enabled.
  */
 import {
   addons as allAddons,
@@ -21,7 +24,6 @@ import {
   maintenancePlans as allMaintenance,
   offers as allOffers,
   plans as allPlans,
-  voiceUsage as defaultVoiceUsage,
   type Addon,
   type AnnualOffer,
   type FounderOffer,
@@ -36,7 +38,7 @@ import {
   type PlanTier,
   type Rates,
   type VoiceComboOffer,
-  type VoiceUsage,
+  depositPct as defaultDepositPct,
 } from '@/lib/content';
 import { convert, isApproximate, roundForCurrency, type Currency } from '@/lib/currency';
 import { localeTags, type Locale } from '@/i18n/routing';
@@ -67,6 +69,7 @@ export interface PlanSavings {
 }
 
 export function planSavings(plan: Plan, catalog: readonly Item[] = allItems): PlanSavings {
+  if (plan.compare === false) return { separateUsd: 0, savingsUsd: 0, savingsPct: 0, show: false };
   const separateUsd = sumItems(plan.items, catalog);
   const savingsUsd = Math.max(0, separateUsd - plan.priceUsd.from);
   const savingsPct = separateUsd > 0 ? Math.round((savingsUsd / separateUsd) * 100) : 0;
@@ -224,33 +227,29 @@ export function applyOffers({
 // Maintenance
 // ---------------------------------------------------------------------------
 
-const ITEMS_SCALE: ItemId[] = ['ecommerce', 'app-ondemand'];
-const ITEMS_GROWTH: ItemId[] = ['turnos', 'pedidos', 'dashboard', 'crm', 'gamificacion'];
-const ITEMS_ESSENTIAL: ItemId[] = ['voz', 'chatbot', 'automatizacion'];
+/** Pieces whose operation runs on an AI flow (Automatización e IA). */
+const ITEMS_AI: ItemId[] = ['chatbot', 'voz'];
+/** Pieces that run one standard integration (Conectado). */
+const ITEMS_CONNECTED: ItemId[] = ['whatsapp'];
+/** One-off services: they never create a monthly plan on their own. */
+const ITEMS_ONE_OFF: ItemId[] = ['trailer', 'migracion', 'asesoria-growth', 'asesoria-economica', 'asesorias', 'marketing', 'auditoria'];
 
 /**
- * Suggested maintenance plan.
- * With a plan: the plan's own suggestion (Presencia/Diagnóstico → none, Voz/Automatiza
- * → Esencial, Sistema → Crecimiento, Comercio/Plataforma → Escala).
- * Free selection: the same rules expressed over items.
+ * Suggested monthly plan (one per project, never a sum): chatbot/voice → Automatización e
+ * IA; standard WhatsApp → Conectado; any other product (an offer or a built piece) →
+ * Esencial; only one-off services → none. A plan's own suggestion is the floor.
  */
 export function maintenanceSuggestion(
   input: { planId?: PlanId | null; itemIds?: readonly string[] },
   planList: readonly Plan[] = allPlans,
 ): MaintenanceId | null {
   const plan = input.planId ? planList.find((p) => p.id === input.planId) : undefined;
-  const ids = new Set<string>([...(input.itemIds ?? []), ...(plan?.items ?? [])]);
+  const ids = new Set<string>(input.itemIds ?? []);
   const has = (list: ItemId[]) => list.some((id) => ids.has(id));
-  const fromItems: MaintenanceId | null = has(ITEMS_SCALE)
-    ? 'escala'
-    : has(ITEMS_GROWTH)
-      ? 'crecimiento'
-      : has(ITEMS_ESSENTIAL)
-        ? 'esencial'
-        : null;
+  const builds = [...ids].some((id) => !ITEMS_ONE_OFF.includes(id as ItemId));
+  const fromItems: MaintenanceId | null = has(ITEMS_AI) ? 'ia' : has(ITEMS_CONNECTED) ? 'conectado' : builds ? 'esencial' : null;
   if (!plan) return fromItems;
-  // A plan's suggestion is the floor; extras can raise it (e.g. Presencia + e-commerce).
-  const rank = (m: MaintenanceId | null) => (m ? ['esencial', 'crecimiento', 'escala'].indexOf(m) : -1);
+  const rank = (m: MaintenanceId | null) => (m ? ['esencial', 'conectado', 'ia'].indexOf(m) : -1);
   return rank(fromItems) > rank(plan.maintenance) ? fromItems : plan.maintenance;
 }
 
@@ -327,20 +326,33 @@ export interface QuoteInput {
 export interface QuoteLine {
   id: string;
   kind: 'plan' | 'item';
-  /** Price charged (after the voice combo, if any). */
+  /** Price charged. */
   priceUsd: number;
-  /** Catalog price. */
+  /** The piece's independent price (for an add-on line, what it would cost alone). */
   listUsd: number;
+  /** Charged as an add-on on top of a base (offer or project). */
+  addon?: boolean;
   included?: boolean;
+}
+
+export interface PendingLine {
+  id: ItemId;
+  fromUsd: number;
+  toUsd: number;
 }
 
 export interface Quote {
   plan: Plan | null;
   lines: QuoteLine[];
-  /** One-time subtotal with item-level prices (voice combo applied). */
+  /** Quoted after review (migration): shown apart, never in the total or the deposit. */
+  pending: PendingLine[];
+  /** One-time subtotal. */
   subtotalUsd: number;
-  /** One-time total after founder discount. */
+  /** Implementation total (after founder discount, inactive since 16/10). */
   totalUsd: number;
+  /** Upfront share of the implementation (depositPct) and the balance. */
+  depositUsd: number;
+  balanceUsd: number;
   /** "desde–hasta" when a plan sets a range. */
   rangeUsd: { from: number; to: number } | null;
   voiceCombo: boolean;
@@ -348,11 +360,12 @@ export interface Quote {
   maintenance: {
     plan: MaintenancePlan | null;
     billing: Billing;
+    /** Regular monthly price (from month `intro.months + 1`, or from launch). */
     monthlyUsd: number;
     /** What is charged per period (month or year) for the maintenance plan. */
     periodUsd: number;
-    /** Voice agent fixed fee, always monthly (+ minutes). */
-    voiceUsageMonthlyUsd: number;
+    /** The pack's first months: what is charged per month during them. */
+    intro: { months: number; monthlyUsd: number } | null;
   };
   offers: ApplyOffersResult;
 }
@@ -361,44 +374,80 @@ export interface Catalog {
   items: readonly Item[];
   plans: readonly Plan[];
   maintenance: readonly MaintenancePlan[];
-  voiceUsage: VoiceUsage;
   offers: readonly Offer[];
   annualMonths: number;
+  depositPct: number;
 }
 
 export const defaultCatalog: Catalog = {
   items: allItems,
   plans: allPlans,
   maintenance: allMaintenance,
-  voiceUsage: defaultVoiceUsage,
   offers: allOffers,
   annualMonths: defaultAnnualMonths,
+  depositPct: defaultDepositPct,
 };
+
+/**
+ * Ids of a selection with combos resolved: both advisory sessions become the combo that
+ * replaces them, and a combo drops the single pieces it replaces. Unknown ids are kept
+ * (the caller filters against its catalog).
+ */
+export function resolveCombos(ids: readonly string[], catalog: readonly Item[] = allItems): string[] {
+  let out = [...new Set(ids)];
+  for (const combo of catalog.filter((i) => i.replaces?.length)) {
+    const parts = combo.replaces ?? [];
+    if (parts.every((id) => out.includes(id)) && !out.includes(combo.id)) out.push(combo.id);
+    if (out.includes(combo.id)) out = out.filter((id) => !parts.includes(id as ItemId));
+  }
+  return out;
+}
+
+/** What an offer covers, with the pieces of a covered combo (both advisory sessions) included. */
+export function expandCovered(ids: readonly string[], catalog: readonly Item[] = allItems): string[] {
+  const out = new Set<string>(ids);
+  for (const i of catalog) if (out.has(i.id)) for (const part of i.replaces ?? []) out.add(part);
+  return [...out];
+}
+
+/** Upfront share in whole cents (USD), the balance is the rest. */
+export function splitPayment(totalUsd: number, pct: number = defaultDepositPct): { depositUsd: number; balanceUsd: number } {
+  const depositUsd = Math.round(totalUsd * pct) / 100;
+  return { depositUsd, balanceUsd: Math.round((totalUsd - depositUsd) * 100) / 100 };
+}
 
 export function quote(input: QuoteInput, catalog: Catalog = defaultCatalog): Quote {
   const now = input.now ?? new Date();
   const plan = input.planId ? (catalog.plans.find((p) => p.id === input.planId) ?? null) : null;
-  const included = new Set<string>(plan?.items ?? []);
-  const extras = [...new Set(input.itemIds)].filter((id) => !included.has(id));
-  const extraItems = catalog.items.filter((i) => extras.includes(i.id));
+  const covered = new Set<string>(expandCovered(plan?.items ?? [], catalog.items));
+  const wanted = resolveCombos(input.itemIds, catalog.items).filter((id) => !covered.has(id));
+  const selected = catalog.items.filter((i) => wanted.includes(i.id));
+  const pendingItems = selected.filter((i) => i.reviewRangeUsd);
+  const extraItems = selected.filter((i) => !i.reviewRangeUsd);
 
-  const voiceId = catalog.voiceUsage.whenItem;
-  const voiceExtra = extraItems.find((i) => i.id === voiceId);
-  const restUsd = (plan?.priceUsd.from ?? 0) + extraItems.filter((i) => i.id !== voiceId).reduce((a, i) => a + i.priceUsd, 0);
-  const combo = voiceExtra ? voiceComboApplies({ planId: plan?.id, restUsd }, catalog.offers, now) : null;
+  // Without an offer, the widest piece is the independent project the add-ons sit on.
+  const anchor = plan
+    ? null
+    : extraItems.reduce<Item | null>((best, i) => (!best || i.priceUsd > best.priceUsd ? i : best), null);
 
   const lines: QuoteLine[] = [];
   if (plan) lines.push({ id: plan.id, kind: 'plan', priceUsd: plan.priceUsd.from, listUsd: plan.priceUsd.from });
   for (const item of extraItems) {
-    const price = combo && item.id === combo.itemId ? Math.min(combo.priceUsd, item.priceUsd) : item.priceUsd;
-    lines.push({ id: item.id, kind: 'item', priceUsd: price, listUsd: item.priceUsd });
+    // An add-on price equal to the independent one (advisory sessions) is just the price: no tag.
+    const asAddon = item !== anchor && item.addonUsd != null && item.addonUsd < item.priceUsd;
+    lines.push({
+      id: item.id,
+      kind: 'item',
+      priceUsd: asAddon ? (item.addonUsd as number) : item.priceUsd,
+      listUsd: item.priceUsd,
+      ...(asAddon ? { addon: true } : {}),
+    });
   }
 
   const subtotalUsd = lines.reduce((a, l) => a + l.priceUsd, 0);
-  const voiceComboSavingsUsd = lines.reduce((a, l) => a + (l.listUsd - l.priceUsd), 0);
   const extrasUsd = subtotalUsd - (plan?.priceUsd.from ?? 0);
+  const hasVoice = covered.has('voz') || extraItems.some((i) => i.id === 'voz');
 
-  const hasVoice = included.has(voiceId) || !!voiceExtra;
   const maintenancePlan = input.maintenanceId
     ? (catalog.maintenance.find((m) => m.id === input.maintenanceId) ?? null)
     : null;
@@ -407,10 +456,12 @@ export function quote(input: QuoteInput, catalog: Catalog = defaultCatalog): Quo
   const billing: Billing = input.billing === 'annual' && isOfferActive(annualOffer, now) ? 'annual' : 'monthly';
   const monthlyUsd = maintenancePlan?.priceUsd ?? 0;
   const periodUsd = billing === 'annual' ? annualize(monthlyUsd, catalog.annualMonths) : monthlyUsd;
+  const credit = plan?.careCredit;
+  const intro =
+    credit && maintenancePlan ? { months: credit.months, monthlyUsd: Math.max(0, monthlyUsd - credit.monthlyUsd) } : null;
 
   const offers = applyOffers({
     subtotalUsd,
-    voiceComboSavingsUsd,
     founderOptIn: input.founderOptIn,
     foundersLeft: input.foundersLeft,
     billing,
@@ -423,62 +474,51 @@ export function quote(input: QuoteInput, catalog: Catalog = defaultCatalog): Quo
   return {
     plan,
     lines,
+    pending: pendingItems.map((i) => ({ id: i.id, fromUsd: i.reviewRangeUsd!.from, toUsd: i.reviewRangeUsd!.to })),
     subtotalUsd,
     totalUsd: offers.totalUsd,
-    rangeUsd: plan ? { from: plan.priceUsd.from + extrasUsd, to: plan.priceUsd.to + extrasUsd } : null,
-    voiceCombo: !!combo,
+    ...splitPayment(offers.totalUsd, catalog.depositPct),
+    rangeUsd: plan && plan.priceUsd.to > plan.priceUsd.from ? { from: plan.priceUsd.from + extrasUsd, to: plan.priceUsd.to + extrasUsd } : null,
+    voiceCombo: false,
     hasVoice,
-    maintenance: {
-      plan: maintenancePlan,
-      billing,
-      monthlyUsd,
-      periodUsd,
-      voiceUsageMonthlyUsd: hasVoice ? catalog.voiceUsage.priceUsd : 0,
-    },
+    maintenance: { plan: maintenancePlan, billing, monthlyUsd, periodUsd, intro },
     offers,
   };
 }
 
 // ---------------------------------------------------------------------------
-// Add-ons on plan cards
+// Add-ons on offer cards
 // ---------------------------------------------------------------------------
 
 export interface PlanAddon {
   addon: Addon;
+  item: Item;
   status: 'available' | 'included';
-  /** Effective price given the current card selection (voice combo aware). */
+  /** Add-on price of the piece (items.json addonUsd). */
   priceUsd: number;
-  /** True when the voice combo lowers this add-on's price. */
   discounted: boolean;
 }
 
-/** Add-ons for a plan card. Hidden ones are omitted; included ones are flagged. */
+/** Add-ons for an offer card. Hidden ones and pieces without an add-on price are omitted. */
 export function addonsForPlan(
   planId: PlanId,
-  selectedAddonIds: readonly string[] = [],
   addonList: readonly Addon[] = allAddons,
   catalog: Catalog = defaultCatalog,
-  now: Date = new Date(),
 ): PlanAddon[] {
   const plan = catalog.plans.find((p) => p.id === planId);
   if (!plan) return [];
-  const selected = addonList.filter((a) => selectedAddonIds.includes(a.id));
   const result: PlanAddon[] = [];
   for (const addon of addonList) {
-    const isIncluded = plan.items.includes(addon.itemId);
+    const item = catalog.items.find((i) => i.id === addon.itemId);
+    if (!item) continue;
+    const isIncluded = expandCovered(plan.items, catalog.items).includes(addon.itemId);
     if (isIncluded && addon.whenIncluded === 'hide') continue;
     if (isIncluded) {
-      result.push({ addon, status: 'included', priceUsd: 0, discounted: false });
+      result.push({ addon, item, status: 'included', priceUsd: 0, discounted: false });
       continue;
     }
-    let priceUsd = addon.priceUsd;
-    if (addon.offer) {
-      const restUsd =
-        plan.priceUsd.from + selected.filter((a) => a.id !== addon.id && a.itemId !== addon.itemId).reduce((s, a) => s + a.priceUsd, 0);
-      const combo = voiceComboApplies({ planId, restUsd }, catalog.offers, now);
-      if (combo && combo.id === addon.offer) priceUsd = Math.min(priceUsd, combo.priceUsd);
-    }
-    result.push({ addon, status: 'available', priceUsd, discounted: priceUsd < addon.priceUsd });
+    if (item.addonUsd == null) continue;
+    result.push({ addon, item, status: 'available', priceUsd: item.addonUsd, discounted: false });
   }
   return result;
 }

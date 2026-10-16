@@ -1,0 +1,69 @@
+{
+  "$comment": "Nombres de ids retirados con la oferta del 16/10/2026. Solo para mostrar solicitudes y acuerdos históricos con su nombre original (el portal no los recalcula ni los renombra a los alcances nuevos). No se pueden elegir.",
+  "items": {
+    "automatizacion": {
+      "es": "Automatizaciones (recordatorios, mails, seguimiento)",
+      "en": "Automations (reminders, emails, follow-up)",
+      "pt": "Automações (lembretes, e-mails, follow-up)"
+    },
+    "ecommerce": {
+      "es": "E-commerce completo",
+      "en": "Full e-commerce",
+      "pt": "E-commerce completo"
+    },
+    "app-ondemand": {
+      "es": "App on-demand",
+      "en": "On-demand app",
+      "pt": "App on-demand"
+    }
+  },
+  "plans": {
+    "diagnostico": {
+      "es": "Paquete Diagnóstico",
+      "en": "Diagnosis package",
+      "pt": "Pacote Diagnóstico"
+    },
+    "presencia": {
+      "es": "Paquete Presencia",
+      "en": "Presence package",
+      "pt": "Pacote Presença"
+    },
+    "voz": {
+      "es": "Paquete Voz",
+      "en": "Voice package",
+      "pt": "Pacote Voz"
+    },
+    "automatiza": {
+      "es": "Paquete Automatiza",
+      "en": "Automate package",
+      "pt": "Pacote Automatiza"
+    },
+    "sistema": {
+      "es": "Paquete Sistema",
+      "en": "System package",
+      "pt": "Pacote Sistema"
+    },
+    "comercio": {
+      "es": "Paquete Comercio",
+      "en": "Commerce package",
+      "pt": "Pacote Comércio"
+    },
+    "plataforma": {
+      "es": "Paquete Plataforma",
+      "en": "Platform package",
+      "pt": "Pacote Plataforma"
+    }
+  },
+  "maintenance": {
+    "crecimiento": {
+      "es": "Crecimiento",
+      "en": "Growth",
+      "pt": "Crescimento"
+    },
+    "escala": {
+      "es": "Escala",
+      "en": "Scale",
+      "pt": "Escala"
+    }
+  }
+}

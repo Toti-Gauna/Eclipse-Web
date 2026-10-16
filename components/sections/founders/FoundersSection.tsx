@@ -72,7 +72,8 @@ export function FoundersSection({ data = foundersContent, demoFilled = false }: 
             {allFilled ? t('subClients') : t(offerOpen ? 'sub' : 'subNoOffer', { total })}
           </p>
 
-          {!allFilled ? (
+          {/* The "quedan X" counter only goes with a live founder offer: without one it would be urgency for nothing. */}
+          {!allFilled && offerOpen ? (
             <div data-reveal className="fd-readout">
               <p className="sr-only">{t('counterSr', { left: remaining, total })}</p>
               <p aria-hidden className="fd-readout-num">

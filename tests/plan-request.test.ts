@@ -3,7 +3,7 @@ import catalog from './fixtures/backend-catalog.v1.json';
 import type { ApiCatalog } from '@/lib/api/types';
 import { buildPlanRequestBody, catalogMismatches, checkContact, hasProblems, toApiSelection } from '@/lib/plan-request';
 import { emptyPlanState, type PlanState } from '@/lib/plan-url';
-import { items, plans } from '@/lib/content';
+import { items, maintenancePlans, plans } from '@/lib/content';
 
 const api = catalog as unknown as ApiCatalog;
 const state = (over: Partial<PlanState>): PlanState => ({ ...emptyPlanState, ...over });
@@ -11,13 +11,13 @@ const state = (over: Partial<PlanState>): PlanState => ({ ...emptyPlanState, ...
 describe('plan request — selection mapping', () => {
   it('maps the builder state 1:1 to the API selection (no prices, no extras repeated from the package)', () => {
     const sel = toApiSelection(
-      state({ goals: ['atender', 'encontrar'], planId: 'sistema', items: ['trailer', 'landing', 'seo'], maintenance: 'escala', billing: 'annual', vertical: 'clinicas', founder: true }),
+      state({ goals: ['atender', 'encontrar'], planId: 'pack', items: ['trailer', 'landing', 'seo', 'voz'], maintenance: 'ia', billing: 'annual', vertical: 'clinicas', founder: true }),
     );
     expect(sel).toEqual({
       goals: ['encontrar', 'atender'],
-      planId: 'sistema',
-      items: ['seo', 'trailer'], // landing is included in Sistema: never sent twice
-      maintenance: 'escala',
+      planId: 'pack',
+      items: ['trailer', 'voz'], // landing and SEO are covered by the pack: never sent twice
+      maintenance: 'ia',
       billing: 'annual',
       vertical: 'clinicas',
       founder: true,
@@ -30,22 +30,15 @@ describe('plan request — selection mapping', () => {
     expect(toApiSelection(state({ items: ['seo'], maintenance: 'esencial' })).maintenance).toBe('esencial');
   });
 
-  it("drops a package's free bonus piece from the extras (Voz and Automatiza include the premium landing)", () => {
-    expect(toApiSelection(state({ planId: 'voz', items: ['landing', 'seo'] })).items).toEqual(['seo']);
-  });
-
-  it('only sends ids the API enumerates', () => {
-    const ids = new Set(api.items.map((i) => i.id));
-    for (const item of items) expect(ids.has(item.id)).toBe(true);
-    const planIds = new Set(api.plans.map((p) => p.id));
-    for (const plan of plans) expect(planIds.has(plan.id)).toBe(true);
+  it('sends the advisory combo instead of its two pieces, and never a price', () => {
+    expect(toApiSelection(state({ items: ['asesoria-growth', 'asesoria-economica'] })).items).toEqual(['asesorias']);
   });
 
   it('builds the body with the catalog version and a trimmed, E.164 contact', () => {
-    const body = buildPlanRequestBody(state({ planId: 'presencia' }), { name: '  Ana Pérez ', phone: '+54 9 223 555-0000', message: '  Hola ' }, api.version);
+    const body = buildPlanRequestBody(state({ planId: 'adaptacion' }), { name: '  Ana Pérez ', phone: '+54 9 223 555-0000', message: '  Hola ' }, api.version);
     expect(body).toEqual({
       catalogVersion: api.version,
-      selection: expect.objectContaining({ planId: 'presencia' }),
+      selection: expect.objectContaining({ planId: 'adaptacion' }),
       contact: { name: 'Ana Pérez', phone: '+5492235550000' },
       message: 'Hola',
     });
@@ -71,19 +64,35 @@ describe('plan request — contact validation', () => {
 });
 
 describe('plan request — web content vs the backend catalog', () => {
-  it('matches the backend catalog snapshot 1:1 (prices, packages, maintenance, offers, enums)', () => {
-    // If this fails the web and the backend drifted: refresh tests/fixtures/backend-catalog.v1.json from
-    // GET /api/v1/catalog/plans, review the differences and align /content (or ask for a new catalog).
-    expect(catalogMismatches(api)).toEqual([]);
+  /** A catalog built from /content, as the backend would publish it once it carries the 16/10 offer. */
+  const fromContent = (): ApiCatalog => ({
+    ...api,
+    items: items.map((i) => ({ id: i.id, category: i.category, name: i.name, priceCents: i.priceUsd * 100, addonCents: i.addonUsd == null ? null : i.addonUsd * 100 })),
+    plans: plans.map((p) => ({ id: p.id, name: p.name, tier: p.tier, rangeCents: { from: p.priceUsd.from * 100, to: p.priceUsd.to * 100 }, items: p.items, maintenance: p.maintenance, bonusItemId: null })),
+    maintenance: maintenancePlans.map((m) => ({ id: m.id, name: m.name, monthlyCents: m.priceUsd * 100 })),
+    voiceUsage: undefined,
+    offers: api.offers.map((o) => ({ ...o, active: false })),
   });
 
-  it('detects a changed price, package or offer', () => {
-    const changed = structuredClone(api);
+  it('BLOCKER: the backend catalog v1 predates the 16/10 offer, and the web detects it', () => {
+    // tests/fixtures/backend-catalog.v1.json is GET /api/v1/catalog/plans before the 16/10 offer.
+    // Until Eclipse-be publishes the new catalog, every request is drift: RequestAction sends
+    // nothing and points to WhatsApp. Refresh the fixture when the backend is updated.
+    const found = catalogMismatches(api).map((m) => `${m.area}:${m.id}`);
+    expect(found).toEqual(expect.arrayContaining(['items:whatsapp', 'plans:pack', 'maintenance:conectado', 'voice:voz-uso']));
+  });
+
+  it('a backend catalog that carries the 16/10 offer matches 1:1', () => {
+    expect(catalogMismatches(fromContent())).toEqual([]);
+  });
+
+  it('detects a changed price, add-on price, offer contents or plan', () => {
+    const changed = fromContent();
     changed.items[0].priceCents += 100;
-    changed.plans[2].items = changed.plans[2].items.slice(1);
+    changed.items[1].addonCents = 1;
+    changed.plans[1].items = changed.plans[1].items.slice(1);
     changed.maintenance[1].monthlyCents = 1;
-    changed.offers.find((o) => o.kind === 'voiceCombo')!.priceCents = 1;
     const found = catalogMismatches(changed).map((m) => `${m.area}:${m.id}`);
-    expect(found).toEqual(expect.arrayContaining(['items:landing', 'plans:voz', 'maintenance:crecimiento', 'offers:combo-voz']));
+    expect(found).toEqual(expect.arrayContaining(['items:landing', 'items:web-multi', 'plans:pack', 'maintenance:conectado']));
   });
 });

@@ -1,65 +1,88 @@
 {
-  "$comment": "Planes mensuales de mantenimiento + hosting, en USD. 'voiceUsage' se suma solo cuando hay agente de voz (fijo mensual + minutos según uso). El pago anual cobra 'annualMonthsCharged' meses (10 = 2 meses gratis) y aplica a los planes, no a los minutos del agente de voz.",
+  "$comment": "Un solo plan mensual por proyecto (16/10/2026), USD/mes. Todos incluyen hasta 'hoursMonthly' horas humanas en total por mes (no acumulables). 'thirdPartyUsd' = presupuesto de terceros (alojamiento, datos, herramientas y consumos compatibles) que ya está dentro de la mensualidad: no es un cargo aparte ni un saldo. Aviso al 80%; sin recargos automáticos. annualMonthsCharged (10) es histórico: solo sirve para leer acuerdos con pago anual previos; la oferta 'annual' está apagada.",
+  "hoursMonthly": 2,
   "annualMonthsCharged": 10,
   "plans": [
     {
       "id": "esencial",
-      "priceUsd": 25,
-      "name": { "es": "Esencial", "en": "Essential", "pt": "Essencial" },
-      "includes": {
-        "es": ["Hosting", "SSL", "Backups semanales", "1 cambio menor por mes"],
-        "en": ["Hosting", "SSL", "Weekly backups", "1 minor change per month"],
-        "pt": ["Hospedagem", "SSL", "Backups semanais", "1 alteração pequena por mês"]
-      }
-    },
-    {
-      "id": "crecimiento",
-      "priceUsd": 79,
-      "name": { "es": "Crecimiento", "en": "Growth", "pt": "Crescimento" },
-      "includes": {
-        "es": ["Todo lo de Esencial", "Base de datos", "Monitoreo", "3 h de cambios por mes", "Reporte mensual"],
-        "en": ["Everything in Essential", "Database", "Monitoring", "3 h of changes per month", "Monthly report"],
-        "pt": ["Tudo do Essencial", "Banco de dados", "Monitoramento", "3 h de alterações por mês", "Relatório mensal"]
-      }
-    },
-    {
-      "id": "escala",
-      "priceUsd": 199,
-      "name": { "es": "Escala", "en": "Scale", "pt": "Escala" },
+      "priceUsd": 30,
+      "thirdPartyUsd": 5,
+      "name": {
+        "es": "Esencial",
+        "en": "Essential",
+        "pt": "Essencial"
+      },
       "includes": {
         "es": [
-          "Todo lo de Crecimiento",
-          "Cloudflare Pro",
-          "Backups diarios",
-          "Respuesta en 24 h",
-          "8 h de cambios por mes"
+          "Mantenimiento",
+          "Alojamiento y datos básicos",
+          "Gamificación estándar",
+          "Mejoras pequeñas"
         ],
         "en": [
-          "Everything in Growth",
-          "Cloudflare Pro",
-          "Daily backups",
-          "24 h response time",
-          "8 h of changes per month"
+          "Maintenance",
+          "Basic hosting and data",
+          "Standard gamification",
+          "Small improvements"
         ],
         "pt": [
-          "Tudo do Crescimento",
-          "Cloudflare Pro",
-          "Backups diários",
-          "Resposta em 24 h",
-          "8 h de alterações por mês"
+          "Manutenção",
+          "Hospedagem e dados básicos",
+          "Gamificação padrão",
+          "Melhorias pequenas"
+        ]
+      }
+    },
+    {
+      "id": "conectado",
+      "priceUsd": 75,
+      "thirdPartyUsd": 15,
+      "name": {
+        "es": "Conectado",
+        "en": "Connected",
+        "pt": "Conectado"
+      },
+      "includes": {
+        "es": [
+          "Todo lo de Esencial",
+          "Una integración estándar con un flujo definido"
+        ],
+        "en": [
+          "Everything in Essential",
+          "One standard integration with one defined flow"
+        ],
+        "pt": [
+          "Tudo do Essencial",
+          "Uma integração padrão com um fluxo definido"
+        ]
+      }
+    },
+    {
+      "id": "ia",
+      "priceUsd": 150,
+      "thirdPartyUsd": 40,
+      "name": {
+        "es": "Automatización e IA",
+        "en": "Automation & AI",
+        "pt": "Automação e IA"
+      },
+      "includes": {
+        "es": [
+          "Todo lo de Conectado",
+          "Hasta 2 flujos estándar en total",
+          "Uno puede usar IA, con una tarea concreta y pase a una persona"
+        ],
+        "en": [
+          "Everything in Connected",
+          "Up to 2 standard flows in total",
+          "One can use AI, with a concrete task and hand-off to a person"
+        ],
+        "pt": [
+          "Tudo do Conectado",
+          "Até 2 fluxos padrão no total",
+          "Um pode usar IA, com uma tarefa concreta e passagem para uma pessoa"
         ]
       }
     }
-  ],
-  "voiceUsage": {
-    "id": "voz-uso",
-    "priceUsd": 49,
-    "whenItem": "voz",
-    "name": { "es": "Agente de voz", "en": "Voice agent", "pt": "Agente de voz" },
-    "note": {
-      "es": "+ minutos según uso",
-      "en": "+ minutes based on usage",
-      "pt": "+ minutos conforme o uso"
-    }
-  }
+  ]
 }

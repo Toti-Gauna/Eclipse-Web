@@ -139,7 +139,8 @@ export interface ApiCatalog {
   version: string;
   currency: 'USD';
   provisional: true;
-  items: { id: string; category: string; name: Localized3; priceCents: number }[];
+  /** addonCents: add-on price (16/10 catalog); absent on catalogs older than that offer. */
+  items: { id: string; category: string; name: Localized3; priceCents: number; addonCents?: number | null }[];
   plans: {
     id: string;
     name: Localized3;
@@ -151,7 +152,8 @@ export interface ApiCatalog {
   }[];
   maintenance: { id: string; name: Localized3; monthlyCents: number }[];
   annualMonthsCharged: number;
-  voiceUsage: { id: string; itemId: string; monthlyCents: number };
+  /** Historical automatic voice fee; absent or 0 since the 16/10 offer. */
+  voiceUsage?: { id: string; itemId: string; monthlyCents: number };
   goals: string[];
   verticals: { id: string; name: Localized3 }[];
   founders: { total: number; remainingSnapshot: number; reservesSlots: false };

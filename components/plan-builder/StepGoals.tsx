@@ -99,9 +99,7 @@ export function StepGoals({
                     ) : null}
                   </span>
                   <span className="pb-row-price readout">
-                    <span className="pb-row-from">
-                      {t('ledgerFrom')} · {t('pieceCount', { count: plan.items.length })}
-                    </span>
+                    <span className="pb-row-from">{t('ledgerFrom')}</span>
                     <Money usd={plan.priceUsd.from} />
                   </span>
                 </button>

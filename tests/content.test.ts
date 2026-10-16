@@ -9,7 +9,6 @@ import {
   plans,
   units,
   verticals,
-  voiceUsage,
   featuredPlanId,
   fallbackRates,
 } from '@/lib/content';
@@ -62,26 +61,25 @@ describe('content integrity', () => {
     expect(planIds.has(featuredPlanId)).toBe(true);
   });
 
-  it('matches the price table of the brief', () => {
-    const table: Record<string, [number, number]> = {
-      diagnostico: [150, 250],
-      presencia: [250, 400],
-      voz: [500, 700],
-      automatiza: [400, 700],
-      sistema: [1000, 1500],
-      comercio: [2000, 3500],
-      plataforma: [4000, 7000],
-    };
-    for (const [id, [from, to]] of Object.entries(table)) {
-      const plan = plans.find((p) => p.id === id)!;
-      expect(plan.priceUsd).toEqual({ from, to });
-    }
-    expect(maintenancePlans.map((m) => [m.id, m.priceUsd])).toEqual([
-      ['esencial', 25],
-      ['crecimiento', 79],
-      ['escala', 199],
+  it('matches the price table of the 16/10 offer', () => {
+    expect(plans.map((p) => [p.id, p.priceUsd])).toEqual([
+      ['adaptacion', { from: 500, to: 500 }],
+      ['pack', { from: 700, to: 700 }],
     ]);
-    expect(voiceUsage.priceUsd).toBe(49);
+    expect(maintenancePlans.map((m) => [m.id, m.priceUsd, m.thirdPartyUsd])).toEqual([
+      ['esencial', 30, 5],
+      ['conectado', 75, 15],
+      ['ia', 150, 40],
+    ]);
+    expect(plans.find((p) => p.id === 'pack')?.careCredit).toEqual({ months: 3, monthlyUsd: 30 });
+  });
+
+  it('offer coverage and combos reference real pieces; add-ons are cheaper than the piece alone', () => {
+    for (const plan of plans) for (const id of plan.items) expect(itemIds.has(id), `${plan.id} → ${id}`).toBe(true);
+    for (const item of items) {
+      for (const id of item.replaces ?? []) expect(itemIds.has(id), `${item.id} → ${id}`).toBe(true);
+      if (item.addonUsd != null) expect(item.addonUsd, item.id).toBeLessThanOrEqual(item.priceUsd);
+    }
   });
 
   it('addons reference existing items and offers', () => {
@@ -92,9 +90,9 @@ describe('content integrity', () => {
     }
   });
 
-  it('offers reference existing plans/items', () => {
+  it('live offers reference existing plans/items (inactive ones are historical records)', () => {
     for (const offer of offers) {
-      if (offer.kind === 'voiceCombo') {
+      if (offer.kind === 'voiceCombo' && offer.active) {
         expect(itemIds.has(offer.itemId)).toBe(true);
         for (const p of offer.plans) expect(planIds.has(p), p).toBe(true);
       }
@@ -142,7 +140,7 @@ describe('content integrity', () => {
   });
 
   it('every localized field has es, en and pt', () => {
-    const all = { itemCategories, items, plans, addons, maintenancePlans, voiceUsage, offers, verticals, founders, units };
+    const all = { itemCategories, items, plans, addons, maintenancePlans, offers, verticals, founders, units };
     expect(missingTranslations(all)).toEqual([]);
   });
 });

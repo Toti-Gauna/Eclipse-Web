@@ -10,7 +10,7 @@
  * safety net: if the two ever drift, the UI says the saved estimate is the team's.
  */
 import type { ApiCatalog, ApiPlanSelection } from '@/lib/api/types';
-import { annualMonthsCharged, items, maintenancePlans, offers, plans, verticals, voiceUsage, founders } from '@/lib/content';
+import { annualMonthsCharged, items, maintenancePlans, offers, plans, verticals, founders } from '@/lib/content';
 import type { VoiceComboOffer, FounderOffer } from '@/lib/content';
 import { normalizeState, sortItemIds } from '@/components/plan-builder/rules';
 import { GOAL_IDS, sortGoals, type PlanState } from '@/lib/plan-url';
@@ -98,6 +98,10 @@ export function catalogMismatches(catalog: ApiCatalog): CatalogMismatch[] {
     const api = catalog.items.find((i) => i.id === item.id);
     if (!api) push('items', item.id, 'missing in API');
     else if (api.priceCents !== cents(item.priceUsd)) push('items', item.id, `price ${cents(item.priceUsd)} vs ${api.priceCents}`);
+    // Since 16/10 every piece also has an add-on price; an API that doesn't know it can't match.
+    else if ((api.addonCents ?? undefined) !== (item.addonUsd == null ? undefined : cents(item.addonUsd)) && !(api.addonCents === null && item.addonUsd == null)) {
+      push('items', item.id, 'addon price');
+    }
   }
   for (const api of catalog.items) if (!items.some((i) => i.id === api.id)) push('items', api.id, 'missing in web');
 
@@ -124,10 +128,8 @@ export function catalogMismatches(catalog: ApiCatalog): CatalogMismatch[] {
   for (const api of catalog.maintenance) if (!maintenancePlans.some((m) => m.id === api.id)) push('maintenance', api.id, 'missing in web');
   if (catalog.annualMonthsCharged !== annualMonthsCharged) push('maintenance', 'annualMonthsCharged', 'months');
 
-  // voice usage
-  if (catalog.voiceUsage.monthlyCents !== cents(voiceUsage.priceUsd) || catalog.voiceUsage.itemId !== voiceUsage.whenItem) {
-    push('voice', voiceUsage.id, 'usage fee');
-  }
+  // voice usage: since 16/10 there is no automatic monthly voice fee (it runs inside the one plan).
+  if (catalog.voiceUsage && catalog.voiceUsage.monthlyCents !== 0) push('voice', catalog.voiceUsage.id, 'usage fee');
 
   // offers that move money
   const combo = offers.find((o): o is VoiceComboOffer => o.kind === 'voiceCombo');

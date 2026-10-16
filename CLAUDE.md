@@ -109,6 +109,15 @@ reachable (folded is fine, deleted is not).
   current glyph's halo), the step in the centre, and from 1280px `<LiveSummary>` (the plan, read-only) on the
   right — except on step 4, where the full ledger is already in the centre. Below 1024px: the bar stepper.
   Still a proposal request: no payments in the builder.
+- **Offer of 16/10/2026 (commercial model):** two explicit offers in `plans.json` — Adaptación de producto (500) and
+  Pack lanzamiento (700, `validate`, `careCredit` 3 months × 30) — never inferred from a total, never suggested
+  (`compare: false`). Every piece has `priceUsd` (independent) and `addonUsd` (compatible add-on, or null): alternatives
+  for the same work, never both; on an offer extras go at add-on price, without one the widest piece is the project.
+  `asesorias` replaces both advisory sessions; `migracion` is a `reviewRangeUsd` outside totals. Implementation is 50/50
+  (`depositPct`). ONE monthly plan (30/75/150, `thirdPartyUsd` 5/15/40 inside the price, 2 h in total): no voice or
+  per-channel fee. Founder/combo/annual/referral offers are inactive (historical). Demos are contracted as the
+  adaptation; their simulated channels are add-ons, never preselected. Retired ids keep their names in
+  `content/legacy.json` for historical requests. Live «Enviar solicitud» is blocked while the backend catalog differs.
 - **Package bonus:** `plan.bonus` (Voz, Automatiza: the premium landing) is shown only as "incluido": never in
   `plan.items`, never with a price, strikethrough or saving.
 - **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in

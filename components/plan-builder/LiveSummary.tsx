@@ -78,6 +78,25 @@ export function LiveSummary({
               <AnimatedMoney usd={q.totalUsd} />
             </span>
           </p>
+          <ul className="pb-live-lines">
+            <li>
+              <span>{t('deposit')}</span>
+              <span aria-hidden className="leader" />
+              <span className="readout">{format(q.depositUsd)}</span>
+            </li>
+            <li>
+              <span>{t('balance')}</span>
+              <span aria-hidden className="leader" />
+              <span className="readout">{format(q.balanceUsd)}</span>
+            </li>
+            {q.pending.map((p) => (
+              <li key={p.id}>
+                <span>{name(p.id, 'item')}</span>
+                <span aria-hidden className="leader" />
+                <span className="readout">{t('reviewRange', { from: format(p.fromUsd), to: format(p.toUsd) })}</span>
+              </li>
+            ))}
+          </ul>
 
           <p className="label pb-live-sub">{t('ledgerMonthly')}</p>
           {rec.monthlyUsd > 0 ? (
@@ -87,13 +106,6 @@ export function LiveSummary({
                   <span>{t('maintenanceLine', { name: l(m.plan.name, locale) })}</span>
                   <span aria-hidden className="leader" />
                   <span className="readout">{format(m.periodUsd)}</span>
-                </li>
-              ) : null}
-              {m.voiceUsageMonthlyUsd > 0 ? (
-                <li>
-                  <span>{t('voiceLine')}</span>
-                  <span aria-hidden className="leader" />
-                  <span className="readout">{format(m.voiceUsageMonthlyUsd)}</span>
                 </li>
               ) : null}
               <li className="pb-live-month">
@@ -108,6 +120,11 @@ export function LiveSummary({
           ) : (
             <p className="pb-live-empty">{rec.yearlyUsd > 0 ? '—' : t('nothingMonthly')}</p>
           )}
+          {m.intro && m.plan ? (
+            <p className="pb-live-empty">
+              {t('careIntro', { months: m.intro.months, intro: format(m.intro.monthlyUsd), regular: format(m.monthlyUsd), next: m.intro.months + 1 })}
+            </p>
+          ) : null}
         </>
       )}
       <p className="pb-live-note">{t('proposalText')}</p>

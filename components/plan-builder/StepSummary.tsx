@@ -6,7 +6,7 @@ import { ArrowRight, ChevronDown, Copy, Link2 } from 'lucide-react';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { CurrencySwitcher } from '@/components/layout/CurrencySwitcher';
 import { AnimatedMoney } from '@/components/ui/Money';
-import { annualMonthsCharged, itemById, l, planById, voiceUsage, type FounderOffer, type Offer } from '@/lib/content';
+import { annualMonthsCharged, careHoursMonthly, itemById, l, planById, type FounderOffer } from '@/lib/content';
 import type { Quote } from '@/lib/pricing';
 import type { Locale } from '@/i18n/routing';
 import type { PlanSwitch, StepId } from './rules';
@@ -29,7 +29,6 @@ export function StepSummary({
   onSwitch,
   onGo,
   founder,
-  offersById,
   message,
   shareUrl,
   bonusName = null,
@@ -44,7 +43,6 @@ export function StepSummary({
   onSwitch: () => void;
   onGo: (step: StepId) => void;
   founder: { offer: FounderOffer } | null;
-  offersById: Partial<Record<string, Offer>>;
   message: string;
   shareUrl: () => string;
   /** The chosen package's bonus piece (no price): "Incluido sin cargo: …". */
@@ -75,7 +73,6 @@ export function StepSummary({
     const entity = kind === 'plan' ? planById(id) : itemById(id);
     return entity ? l(entity.name, locale) : id;
   };
-  const combo = offersById['combo-voz'];
   const founderApplied = q.offers.applied.find((a) => a.kind === 'founder');
   const range = q.plan && q.rangeUsd && q.rangeUsd.to > q.rangeUsd.from ? q.rangeUsd : null;
   const rec = recurringSplit(q);
@@ -110,7 +107,7 @@ export function StepSummary({
               <li key={`${line.kind}-${line.id}`} className="pb-ledger-line">
                 <span className="pb-ledger-name">
                   {line.kind === 'plan' ? t('packageHead', { plan: name(line.id, 'plan') }) : name(line.id, 'item')}
-                  {line.priceUsd < line.listUsd && combo ? <span className="pb-tag pb-tag--accent">{l(combo.label, locale)}</span> : null}
+                  {line.addon ? <span className="pb-tag">{t('addonTag')}</span> : null}
                 </span>
                 <span aria-hidden className="leader" />
                 <span className="pb-ledger-amount readout">
@@ -146,6 +143,27 @@ export function StepSummary({
             </span>
           </p>
           {range ? <p className="pb-ledger-note">{t('rangeNote', { to: format(range.to) })}</p> : null}
+          <p className="pb-ledger-line pb-ledger-split">
+            <span className="pb-ledger-name">{t('deposit')}</span>
+            <span aria-hidden className="leader" />
+            <span className="pb-ledger-amount readout">{format(q.depositUsd)}</span>
+          </p>
+          <p className="pb-ledger-line pb-ledger-split">
+            <span className="pb-ledger-name">{t('balance')}</span>
+            <span aria-hidden className="leader" />
+            <span className="pb-ledger-amount readout">{format(q.balanceUsd)}</span>
+          </p>
+          {q.pending.map((p) => (
+            <p key={p.id} className="pb-ledger-line pb-ledger-pending">
+              <span className="pb-ledger-name">
+                {name(p.id, 'item')}
+                <span className="pb-tag">{t('pendingTag')}</span>
+              </span>
+              <span aria-hidden className="leader" />
+              <span className="pb-ledger-amount readout">{t('reviewRange', { from: format(p.fromUsd), to: format(p.toUsd) })}</span>
+            </p>
+          ))}
+          {q.pending.length ? <p className="pb-ledger-note">{t('pendingNote')}</p> : null}
         </section>
 
         <section className="pb-ledger-block" aria-labelledby={`${uid}-month`}>
@@ -171,16 +189,6 @@ export function StepSummary({
                     <span className="pb-ledger-amount readout">{format(m.periodUsd)}</span>
                   </li>
                 ) : null}
-                {m.voiceUsageMonthlyUsd > 0 ? (
-                  <li className="pb-ledger-line">
-                    <span className="pb-ledger-name">
-                      {t('voiceLine')}
-                      <span className="pb-ledger-sub">{l(voiceUsage.note, locale)}</span>
-                    </span>
-                    <span aria-hidden className="leader" />
-                    <span className="pb-ledger-amount readout">{format(m.voiceUsageMonthlyUsd)}</span>
-                  </li>
-                ) : null}
               </ul>
               <p className="pb-ledger-total">
                 <span>{t('ledgerTotal')}</span>
@@ -194,6 +202,14 @@ export function StepSummary({
           ) : (
             <p className="pb-ledger-note">{rec.yearlyUsd > 0 ? '—' : t('nothingMonthly')}</p>
           )}
+          {m.intro && m.plan ? (
+            <p className="pb-ledger-note">
+              {t('careIntro', { months: m.intro.months, intro: format(m.intro.monthlyUsd), regular: format(m.monthlyUsd), next: m.intro.months + 1 })}
+            </p>
+          ) : null}
+          {m.plan ? (
+            <p className="pb-ledger-note">{t('careTerms', { hours: careHoursMonthly, budget: format(m.plan.thirdPartyUsd) })}</p>
+          ) : null}
 
           {rec.yearlyUsd > 0 && m.plan ? (
             <div className="pb-ledger-year">

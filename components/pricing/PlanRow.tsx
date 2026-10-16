@@ -3,7 +3,7 @@
 import { useId, useMemo, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowUpRight, Check, ChevronDown, Gift, SlidersHorizontal } from 'lucide-react';
-import { formatAmount, formatMoney, maintenanceSuggestion, planSavings, quote, type Billing } from '@/lib/pricing';
+import { addonsForPlan, formatAmount, formatMoney, maintenanceSuggestion, planSavings, quote, type Billing } from '@/lib/pricing';
 import { isApproximate } from '@/lib/currency';
 import { l, offerById, verticalById, type Plan } from '@/lib/content';
 import { buildPlanMessage, type Translate } from '@/lib/plan-message';
@@ -20,9 +20,9 @@ import { BonusMock } from './BonusMock';
 import { planAnchor } from './anchors';
 
 /**
- * One package of tab A, with the same fields as every other package:
- *   para quién · qué incluye · desde (pago único, range, saving vs. pieces) ·
- *   mantenimiento sugerido (+ the voice agent's monthly usage when it has one) · CTAs.
+ * One offer of tab A, with the same fields as every other one:
+ *   para quién · qué incluye · desde (pago único, 50/50 split) · compatible add-ons at their
+ *   add-on price · plan mensual sugerido (+ the pack's first months) · CTAs.
  * Desktop: one row, the fields in columns (see .pr-cols). Phones: a compact row
  * (name, who it's for, the "desde") that opens to the details.
  * Arriving from an "Incluida en" chip (the row gets focus) opens and flashes it.
@@ -90,8 +90,12 @@ export function PlanRow({
     bonusTitle ? tm('bonusLine', { name: bonusTitle }) : '',
   );
 
-  // ---- range: "US$ 1.000 · hasta 1.500 según alcance" (local) / "Hasta US$ 1.500 según alcance" (USD)
-  const range = local
+  // ---- range: "US$ 1.000 · hasta 1.500 según alcance" (local) / "Hasta US$ 1.500 según alcance" (USD).
+  // An offer with a single "desde" shows its 50/50 split instead.
+  const addons = addonsForPlan(plan.id).filter((a) => a.status === 'available');
+  const range = plan.priceUsd.to <= plan.priceUsd.from
+    ? t('plan.split', { deposit: format(q.depositUsd), balance: format(q.balanceUsd) })
+    : local
     ? t('plan.rangeLocal', {
         from: formatMoney(plan.priceUsd.from, 'USD', rates, locale),
         to: formatAmount(plan.priceUsd.to, 'USD', rates, locale),
@@ -188,6 +192,22 @@ export function PlanRow({
               </li>
             ))}
           </ul>
+          {plan.validate ? <p className="pr-plan-care-voice">{t('plan.validate')}</p> : null}
+          {addons.length ? (
+            <div className="pr-plan-addons">
+              <p className="pr-plan-care-label">{t('plan.addonsLabel')}</p>
+              <ul className="pr-plan-addon-list">
+                {addons.map((a) => (
+                  <li key={a.addon.id}>
+                    <span>{l(a.item.name, locale)}</span>
+                    <span aria-hidden className="leader" />
+                    <span className="readout">+{format(a.priceUsd)}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="pr-plan-care-voice">{t('plan.addonsNote')}</p>
+            </div>
+          ) : null}
 
           {bonus && bonusTitle ? (
             <div className="pr-bonus" data-bonus={bonus.itemId}>
@@ -218,8 +238,14 @@ export function PlanRow({
                 })
               : t('plan.maintenanceNone')}
           </p>
-          {q.maintenance.voiceUsageMonthlyUsd > 0 ? (
-            <p className="pr-plan-care-voice">{tm('voiceUsage', { price: format(q.maintenance.voiceUsageMonthlyUsd) })}</p>
+          {q.maintenance.intro && q.maintenance.plan ? (
+            <p className="pr-plan-care-voice">
+              {t('plan.careIntro', {
+                months: q.maintenance.intro.months,
+                intro: format(q.maintenance.intro.monthlyUsd),
+                next: q.maintenance.intro.months + 1,
+              })}
+            </p>
           ) : null}
         </div>
 

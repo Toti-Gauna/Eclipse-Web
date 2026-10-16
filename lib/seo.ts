@@ -45,7 +45,10 @@ export function baseMetadata(opts: {
   };
 }
 
-/** JSON-LD: Organization + one Service per plan (with its real USD range). */
+/**
+ * JSON-LD: Organization + one Service per offer (with its real USD "desde"). Offers whose
+ * availability is still subject to validation (the pack) are left out of the metadata.
+ */
 export function jsonLd(locale: Locale, organizationDescription: string) {
   const orgId = absoluteUrl('/#organization');
   return {
@@ -66,7 +69,7 @@ export function jsonLd(locale: Locale, organizationDescription: string) {
           availableLanguage: ['Spanish', 'English', 'Portuguese'],
         },
       },
-      ...plans.map((plan) => ({
+      ...plans.filter((plan) => !plan.validate).map((plan) => ({
         '@type': 'Service',
         name: `Eclipse ${l(plan.name, locale)}`,
         description: l(plan.audience, locale),

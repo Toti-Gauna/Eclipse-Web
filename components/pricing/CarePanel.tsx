@@ -1,8 +1,8 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { AudioLines, Check, Gift } from 'lucide-react';
-import { annualMonthsCharged, l, maintenancePlans, plans, voiceUsage, type ReferralOffer } from '@/lib/content';
+import { Check, Gift, Info } from 'lucide-react';
+import { annualMonthsCharged, careHoursMonthly, l, maintenancePlans, plans, type ReferralOffer } from '@/lib/content';
 import { annualFreeMonths, annualize, formatMoney, type Billing } from '@/lib/pricing';
 import { isApproximate } from '@/lib/currency';
 import { localeTags, type Locale } from '@/i18n/routing';
@@ -13,10 +13,10 @@ import { PriceReadout } from './PriceReadout';
 import { PRICING_ANCHORS } from './anchors';
 
 /**
- * ② Mantenimiento: optional, monthly. The three plans with what each includes, the
- * section's only Mensual/Anual switch (annual = pay `annualMonthsCharged` months, only
- * while the annual offer is live), the voice agent's usage fee (always monthly) and
- * the referral program.
+ * ② Plan mensual: one per project (30/75/150). Each with what it includes and the
+ * third-party budget already inside its price; the shared terms (2 h in total, notice at
+ * 80 %, no automatic surcharges) and the pack's first months. The annual switch and the
+ * referral program only show while those (historical) offers are active.
  */
 export function CarePanel({
   billing,
@@ -37,6 +37,8 @@ export function CarePanel({
   const annual = billing === 'annual';
   const period = t(annual ? 'perYear' : 'perMonth');
   const local = isApproximate(currency);
+  const packPlan = plans.find((p) => p.careCredit);
+  const packCredit = packPlan?.careCredit ? { plan: packPlan, credit: packPlan.careCredit } : null;
 
   return (
     <div id={PRICING_ANCHORS.care} className="pr-care" role="group" aria-labelledby="pr-care-title">
@@ -70,6 +72,7 @@ export function CarePanel({
                   {annual ? t('care.annualNote', { charged: annualMonthsCharged }) : null}
                 </p>
               ) : null}
+              <p className="pr-care-for">{t('care.budget', { budget: format(m.thirdPartyUsd) })}</p>
               {suggestedFor.length ? <p className="pr-care-for">{t('care.suggestedFor', { plans: list.format(suggestedFor) })}</p> : null}
               <ul className="pr-care-includes">
                 {l(m.includes, locale).map((line) => (
@@ -86,12 +89,26 @@ export function CarePanel({
 
       <div className="pr-care-notes">
         <p className="pr-care-note">
-          <AudioLines aria-hidden strokeWidth={1.5} />
-          <span>
-            <strong>{l(voiceUsage.name, locale)}.</strong>{' '}
-            {t('care.voice', { price: format(voiceUsage.priceUsd), note: l(voiceUsage.note, locale) })}
-          </span>
+          <Info aria-hidden strokeWidth={1.5} />
+          <span>{t('care.terms', { hours: careHoursMonthly })}</span>
         </p>
+        {packCredit ? (
+          <p className="pr-care-note">
+            <Gift aria-hidden strokeWidth={1.5} />
+            <span>
+              <strong>{l(packCredit.plan.name, locale)}.</strong>{' '}
+              {t('care.packCredit', {
+                months: packCredit.credit.months,
+                next: packCredit.credit.months + 1,
+                list: list.format(
+                  maintenancePlans.map(
+                    (m) => `${l(m.name, locale)} ${format(Math.max(0, m.priceUsd - packCredit.credit.monthlyUsd))} → ${format(m.priceUsd)}`,
+                  ),
+                ),
+              })}
+            </span>
+          </p>
+        ) : null}
         {referral ? (
           <p className="pr-care-note">
             <Gift aria-hidden strokeWidth={1.5} />

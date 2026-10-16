@@ -2,21 +2,25 @@
 
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import type { ApiPlanRequest } from '@/lib/api/types';
-import { itemById, l, maintenanceById, planById, verticalById } from '@/lib/content';
+import { itemById, l, legacyName, maintenanceById, planById, verticalById } from '@/lib/content';
 import { annualMonthsCharged } from '@/lib/content';
 import { useLive } from './hooks';
 
-/** Name of a plan/item/maintenance id from the commercial content; falls back to the id. */
+/**
+ * Name of a plan/item/maintenance id from the commercial content; ids retired with the 16/10
+ * offer keep their original name (content/legacy.json); unknown ids fall back to the id.
+ */
 export function useNames() {
   const { locale } = useLive();
   return {
     line: (id: string, kind: 'plan' | 'item') => {
       const entity = kind === 'plan' ? planById(id) : itemById(id);
-      return entity ? l(entity.name, locale) : id;
+      const name = entity?.name ?? legacyName(kind, id);
+      return name ? l(name, locale) : id;
     },
     maintenance: (id: string | null) => {
-      const m = maintenanceById(id);
-      return m ? l(m.name, locale) : null;
+      const name = maintenanceById(id)?.name ?? legacyName('maintenance', id);
+      return name ? l(name, locale) : null;
     },
     vertical: (id: string | null) => {
       const v = verticalById(id);
