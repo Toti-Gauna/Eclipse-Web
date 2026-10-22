@@ -56,6 +56,10 @@ Hasta entonces conserva el placeholder, según el alcance inicial del despliegue
 - Antes de copiar, se crea un respaldo completo en el directorio privado del dominio
   `.eclipse-deploy/backups/<release>.tar.gz`, fuera de `public_html`. Los assets se copian
   primero; se conservan assets anteriores y archivos ajenos al export, sin `--delete`.
+- Los archivos públicos se publican con permisos 644 y sus directorios con 755; se
+  corrigen también los archivos existentes de una publicación anterior. Los respaldos
+  conservan permisos privados. La recuperación preserva los modos del archivo original
+  y utiliza un manifiesto privado, compatible con shells sin `/dev/fd`.
 - Se serializan despliegues y se verifica la raíz, el portal real, la redirección y la
   salud de la API. Si falla la copia o los chequeos posteriores, se restaura el respaldo
   y se retiran los archivos introducidos por esa publicación.
