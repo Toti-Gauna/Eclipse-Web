@@ -1,0 +1,7 @@
+# Eclipse Hostinger managed static export
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+# A temporary redirect preserves the query string and uses the existing Spanish routes.
+RewriteRule ^portal(?:/(.*))?$ /es/portal/$1 [R=302,L]
