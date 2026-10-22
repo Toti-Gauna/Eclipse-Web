@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, chmodSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, chmodSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -41,12 +41,42 @@ describe('Hostinger publication and recovery', () => {
     expect(readFileSync(path.join(f.target, '.well-known/keep.txt'), 'utf8')).toBe('unrelated');
     expect(readFileSync(path.join(f.target, '_next/static/old.js'), 'utf8')).toBe('old asset');
     expect(existsSync(path.join(f.target, 'es/portal/index.html'))).toBe(true);
+    expect(statSync(path.join(f.target, 'index.html')).mode & 0o777).toBe(0o644);
+    expect(statSync(path.join(f.target, 'es/portal')).mode & 0o777).toBe(0o755);
     const rollback = f.run('rollback');
     expect(rollback.status, rollback.stderr).toBe(0);
     expect(existsSync(path.join(f.target, 'index.html'))).toBe(false);
     expect(existsSync(path.join(f.target, '.htaccess'))).toBe(false);
     expect(existsSync(path.join(f.target, '_next/static/new.js'))).toBe(false);
     expect(readFileSync(path.join(f.target, 'default.php'), 'utf8')).toBe('original welcome');
+  });
+
+  it('repairs existing private public files and keeps backups private', () => {
+    const f = fixture();
+    f.put(path.join(f.target, 'index.html'), 'previous page');
+    f.put(path.join(f.target, 'es/portal/index.html'), 'previous login');
+    chmodSync(path.join(f.target, 'index.html'), 0o600);
+    chmodSync(path.join(f.target, 'es/portal/index.html'), 0o600);
+    chmodSync(path.join(f.target, 'es/portal'), 0o700);
+    chmodSync(path.join(f.target, 'es'), 0o700);
+    const result = f.run();
+    expect(result.status, result.stderr).toBe(0);
+    for (const file of ['index.html', '.htaccess', 'es/portal/index.html', '_next/static/new.js']) {
+      expect(statSync(path.join(f.target, file)).mode & 0o777).toBe(0o644);
+    }
+    for (const directory of ['es', 'es/portal', '_next', '_next/static']) {
+      expect(statSync(path.join(f.target, directory)).mode & 0o777).toBe(0o755);
+    }
+    expect(statSync(path.join(f.base, 'backups')).mode & 0o777).toBe(0o700);
+    expect(statSync(path.join(f.base, 'backups', `${release}.tar.gz`)).mode & 0o777).toBe(0o600);
+  });
+
+  it('restores archived permissions despite the private backup umask', () => {
+    const f = fixture();
+    chmodSync(path.join(f.target, 'default.php'), 0o644);
+    expect(f.run().status).toBe(0);
+    expect(f.run('rollback').status).toBe(0);
+    expect(statSync(path.join(f.target, 'default.php')).mode & 0o777).toBe(0o644);
   });
 
   it('restores an existing managed page and htaccess', () => {

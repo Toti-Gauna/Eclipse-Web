@@ -23,14 +23,18 @@ trap 'rmdir "$base/lock"' EXIT
 
 restore() {
   [[ -f "$backup" && -f "$backup.list" && -d "$stage" ]] || return 1
+  # Jailed Hostinger shells may not expose /dev/fd for Bash process substitution.
+  # Use a private on-disk manifest instead, including when restoring an older release.
+  local incoming="$base/backups/$release.incoming"
+  find "$stage" -type f -print0 > "$incoming" || return 1
   # Remove only files introduced by this release, then restore the complete backup.
   while IFS= read -r -d '' file; do
     relative=${file#"$stage/"}
     if ! grep -Fxq -- "./$relative" "$backup.list"; then
       rm -f -- "$target/$relative" || return 1
     fi
-  done < <(find "$stage" -type f -print0)
-  tar -xzf "$backup" -C "$target" || return 1
+  done < "$incoming"
+  tar --same-permissions -xzf "$backup" -C "$target" || return 1
   echo "Restored backup for release $release."
 }
 
@@ -66,8 +70,11 @@ publication_failed() {
 trap publication_failed ERR
 find "$stage" -type d -exec chmod 755 {} +
 find "$stage" -type f -exec chmod 644 {} +
+# The private backup uses umask 077; public files must retain the readable modes
+# above, including when overwriting files left private by an earlier deployment.
+umask 022
 # Assets first; keep old hashed assets so previously opened pages keep working.
-cp -R "$stage/_next" "$target/"
-cp -R "$stage/." "$target/"
+cp -R --preserve=mode "$stage/_next" "$target/"
+cp -R --preserve=mode "$stage/." "$target/"
 trap - ERR
 echo "Published release $release. Backup: $backup"
