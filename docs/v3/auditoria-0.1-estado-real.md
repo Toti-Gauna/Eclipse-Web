@@ -7,7 +7,7 @@
 
 - **Qué cambió:** se revalidó el inventario contra el HEAD real de los cinco repos y la PR #1 (SHA coinciden con la base del 23/10, sin deltas) y se agregó lo que faltaba: botón por botón de Lumen, la lista exacta de ids/campos divergentes FE↔BE, el mapa de anclas y tres contradicciones nuevas (§7, C12, C13 y C14).
 - **Qué quedó abierto:** E2 (levantar la web y recapturar el HEAD) no se hizo porque `Eclipse-Web` no tiene `node_modules` y instalar está fuera de este lote; nada de lo descrito como «funciona» está probado en ejecución en este lote.
-- **Qué necesita el OK de Ignacio:** (1) cuál es el CTA vigente: el código dice «Pedí tu demo», la instrucción actual dice «Quiero potenciar mi negocio» (C2); (2) autorizar el lote que reconcilie el catálogo BE con la tarifa aprobada (C6, lote 2.2); (3) si el estilo «referencia tachada» de `Eclipse-email-kit` se acepta o se corrige (C12). Gasto de este lote: USD 0.
+- **Qué necesitaba el OK de Ignacio (resuelto el 24/10/2026, ver §15):** (1) CTA «Quiero potenciar mi negocio» (C2) · (2) lote 2.2 de reconciliación del catálogo autorizado y EstateOS usa el BE de Eclipse por ahora (C6) · (3) los email kits se rehacen, los viejos se conservan (C12). Gasto de este lote: USD 0.
 
 ## 1. Repositorios, ref y cobertura
 
@@ -167,17 +167,17 @@ Orden de precedencia: instrucción expresa de Ignacio → Eclipse v3 → Context
 | # | Contradicción | Resolución | Estado |
 |---|---|---|---|
 | C1 | Cuatro unidades históricas vs. cinco líneas transversales. **Evidencia nueva:** en la PR #1 la versión Claude Code de `eclipse-ux-ui.md` aún dice «cuatro recorridos (SaaS, Agency, Studio, Equipamiento)» y la versión Codex dice «cinco líneas (…Academy…)» | Cinco líneas, Intelligence transversal; Handy aparte. Corregir la versión Claude Code de `eclipse-ux-ui.md` en la PR | Abierto (archivo de otra PR) |
-| C2 | CTA: el código y `CLAUDE.md` dicen «Pedí tu demo» (`messages/es.json:85`) y prohíben «potenciá»; el anexo dice que prevalece «Quiero potenciar mi negocio». `grep` de «potenciar» en `messages/es.json`: 0 resultados. La captura histórica muestra «Quiero esto para mi negocio» (`wantThis`, `es.json:5443`) en la capa de demo | Requiere OK de Ignacio sobre qué CTA va en qué lugar; no se cambió copy | **Necesita OK** |
+| C2 | CTA: el código y `CLAUDE.md` dicen «Pedí tu demo» (`messages/es.json:85`) y prohíben «potenciá»; el anexo dice que prevalece «Quiero potenciar mi negocio». `grep` de «potenciar» en `messages/es.json`: 0 resultados. La captura histórica muestra «Quiero esto para mi negocio» (`wantThis`, `es.json:5443`) en la capa de demo | Ignacio aprobó el CTA nuevo el 24/10/2026 (§15). No se cambió copy en este lote | **Resuelto: decisión; implementación pendiente** |
 | C3 | Nueve fases técnicas históricas vs. cinco macrofases y 28 lotes | Prevalecen las cinco macrofases | Resuelto (E0) |
 | C4 | Sonnet exclusivo / Opus por arquitectura vs. «Opus según necesidad, sin límite fijo de dos». La PR #1 dice «inicialmente dos intervenciones» y «Opus NO se auto-invoca» | Prevalece la instrucción actual; Chief registra motivo y consumo; gasto extra con su gate | Resuelto (E0) |
 | C5 | «Backend pendiente» (Notion) vs. código existente | Existe código; producción sin comprobar (§6.2) | Resuelto (E1) |
-| C6 | Catálogo FE (500/700, 3×30, 50 % seña) vs. BE (planes históricos, 25/79/199, ofertas activas) | Registrado en §6.1; **no sincronizar ni saltar el guard**; reconciliar contra tarifa aprobada con compatibilidad histórica en 2.2 | Abierto |
+| C6 | Catálogo FE (500/700, 3×30, 50 % seña) vs. BE (planes históricos, 25/79/199, ofertas activas) | Registrado en §6.1; **no sincronizar ni saltar el guard**; reconciliar contra tarifa aprobada con compatibilidad histórica en 2.2 (autorizado el 24/10/2026, §15) | **Autorizado; sin ejecutar** |
 | C7 | Mantenimiento aprobado 30/75/150 (terceros 5/15/40, 2 h) vs. propuesta 30/75/150/199 + Studio/Academy | Conservar lo vigente; el 199 y nuevas inclusiones esperan margen | Abierto (hipótesis) |
 | C8 | EstateOS «desde USD 50/mes» | Hipótesis sectorial; no asumir setup gratis ni CRM productivo por 50 | Abierto (hipótesis) |
 | C9 | Inteligencia nacional privada ≠ demo inmobiliaria pública | Fixtures separadas; cero arrastre de compradores reales | Resuelto (regla) |
 | C10 | Gateway mínimo en fase 3; fase 4 consolida | No bloquea la primera venta | Resuelto (E0) |
 | C11 | Contrato actual: explorar libremente y «Ver con guía/por mi cuenta» en cada apertura; PR #1 y anexo: cine opt-in dentro de «Ver con guía», sin autoplay | Hoy el cine no es opt-in (se reproduce al abrir, saltable con click/tecla); cambiarlo es un lote futuro, no de este | Abierto |
-| **C12** (nuevo) | `Eclipse-email-kit` presenta precios con «referencia tachada» y «50 % de descuento» (ARS 750.000 → 375.000) y fue pensado para Volta. `CLAUDE.md` de Eclipse-Web prohíbe tachados, «antes $X» y solo admite ofertas de `content/offers.json`. Su README declara «no listo para envío» | No mezclar con Eclipse-Web. Decidir con Ignacio si es una regla solo del sitio o de toda comunicación; no se tocó | **Necesita OK** |
+| **C12** (nuevo) | `Eclipse-email-kit` presenta precios con «referencia tachada» y «50 % de descuento» (ARS 750.000 → 375.000) y fue pensado para Volta. `CLAUDE.md` de Eclipse-Web prohíbe tachados, «antes $X» y solo admite ofertas de `content/offers.json`. Su README declara «no listo para envío» | No mezclar con Eclipse-Web. Ignacio decidió el 24/10/2026 (§15): se rehacen todos los email kits, los actuales se conservan sin tocar. No se tocó nada en este lote | **Resuelto: decisión; trabajo pendiente** |
 | **C13** (nuevo) | `docs/v3/inventario.md` lista precios, paquetes y ofertas de v2 como si fueran el estado del sitio; el código vigente tiene otros (§6) | Mantener como inventario histórico de bloques (esta auditoría no lo edita) y no citarlo para precios | Registrado |
 | C14 (nuevo, menor) | `AGENTS.md` de Web pide leer `node_modules/next/dist/docs/` antes de usar APIs de Next; `node_modules` no existe en este entorno | No hay API de Next que usar en este lote; el límite queda declarado | Límite |
 
@@ -239,4 +239,12 @@ Loader, hero, header, capa «Ver demo», kit de demos, Lumen (acciones y estados
 
 Modelo configurado: Claude Sonnet 5.5, una sesión, sin reintentos de corrección, sin subagentes. Uso visible de cuenta: no medido. Gasto externo: USD 0. Hora de inicio/fin: no registrada por la sesión. Rollback: borrar este archivo; no hay otro cambio.
 
-**Próximo paso concreto:** que Ignacio resuelva C2, C6 (autorizar 2.2) y C12; en paralelo, quien tenga el entorno ejecuta el comando E2 de §9 para cerrar el 0.1 con capturas del HEAD.
+**Próximo paso concreto:** cerrar 0.1 con la aceptación de Ignacio sobre E1 o, si se prefiere E2, con las capturas del HEAD (comando en §9).
+
+## 15. Decisiones de Ignacio (24/10/2026, en la conversación de esta sesión)
+
+Registro, no ejecución: ninguna de estas decisiones se implementó en este lote.
+
+1. **CTA (C2):** aprobado el CTA nuevo «Quiero potenciar mi negocio». Queda por definir en el lote que lo implemente: en qué lugares reemplaza a «Pedí tu demo» (header, hero, `data-page-cta`) y si afecta a «Quiero esto para mi negocio» (`wantThis`) de la capa de demo; versiones en/pt; y actualizar la regla de `CLAUDE.md` que prohíbe «potenciá» (que ahora contradice esta decisión). Supersede la regla de copy anterior; fuente: Ignacio, 24/10/2026.
+2. **Catálogo (C6):** se autoriza el lote 2.2 (reconciliar el catálogo BE con la tarifa aprobada, con compatibilidad histórica). **EstateOS usa el BE de Eclipse por ahora.** Consecuencias a resolver en 0.2/2.2, no decididas acá: (a) las solicitudes de EstateOS pasarían por el mismo guard de catálogo (§6.1); (b) cómo separar datos y permisos de EstateOS de los de Eclipse en un BE compartido, para respetar C9 (cero arrastre de datos reales a la demo pública); (c) `AUTH_ENABLED`, SMTP y despliegue siguen sin verificarse (§6.2). No implica backend nuevo.
+3. **Email kits (C12):** se rehacen todos; los viejos se conservan sin modificar; se crean kits nuevos para Eclipse y para EstateOS. Los nuevos deberán respetar las reglas de honestidad de Eclipse (sin precios tachados ni «antes $X», solo ofertas de `content/offers.json`). Pendiente de SDD propio; no es parte de 0.1.
