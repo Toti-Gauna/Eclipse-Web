@@ -328,3 +328,29 @@ Registro de decisiones; ninguna está implementada. Fuente: conversación de est
 **Lista de merges realizados por mí:** (vacía; se completa a medida que ocurran).
 
 **`messages/drafts/`.** `CLAUDE.md` pide poner el copy nuevo en `messages/drafts/<área>.json` mientras varios agentes trabajan en paralelo, para que no se pisen en `messages/*.json`. El build de producción **ignora los drafts**: un texto que quede solo en `drafts/` y se mergee a `main` no aparece en el sitio. Con un solo ejecutor, la regla no hace falta; por defecto edito `messages/{es,en,pt}.json` directamente y dejo corriendo el test de paridad de claves. Actualizo esa línea de `CLAUDE.md` en el lote 1.2.
+
+## 19. Visión y catálogo EstateOS vigentes (contexto entregado por Ignacio, 24/10/2026)
+
+Ignacio compartió la visión completa del programa. Contrasté sus cambios contra Notion (páginas editadas el 24/10/2026 a las 22:25 UTC): anexo A «Planes y cupos EstateOS», anexo C «Módulos y entregas futuras» (S3 y «Chatbot CRM · alcance separado») y las menciones en 2.3, 3.6, 3.8, 3.9 y la bienvenida. Coinciden.
+
+**Cambio de catálogo respecto de lo que leí a las 16:27 UTC:**
+
+| Plan | Antes | Ahora (vigente) |
+|---|---|---|
+| Growth · USD 75 | mapas MDP y métricas, Academy, imágenes, 1 tour | **+ panel del propietario** (inmuebles propios, rendiciones, cobros confirmados y pendientes, gastos y seguimiento de inversión, comunicación con la inmobiliaria) |
+| Hípergrowth · USD 150 | módulo propietario/cobros/ROI + Intelligence con asistente | **Intelligence de análisis y recomendaciones** (el panel se hereda desde Growth) |
+| Deluxe · USD 200 | administración (expensas, reclamos, correo) | **+ chatbot integrado al CRM** para el equipo inmobiliario, más administración |
+| Partner · USD 500 (propuesta) | Deluxe + sedes y producción | hereda el chatbot; sigue propuesto |
+
+**Lo que NO cambió:** Contact 30 y Escalar 100; los cupos siguen siendo un borrador a costear; Partner y su economía siguen pendientes de OK.
+
+**Estado de cada módulo (regla del programa: «aparece en una demo» no equivale a «operativo»):**
+- Panel del propietario (Growth): *objetivo*. Requiere entrega S3 (rendiciones, ROI, cobros, conciliación con proveedor). Dinero recibido y proyección se muestran separados.
+- Chatbot del CRM (Deluxe): *objetivo; demo guionada y rotulada*. Requiere SDD propio. Proveedor del modelo, consumos y cupos sin definir; que Claude sea la herramienta de desarrollo no decide el modelo del producto. Debe respetar permisos, separar datos por inmobiliaria, citar fuentes, permitir intervención humana y pedir confirmación antes de modificar registros. No incluye bot público ni de WhatsApp.
+- Intelligence (Growth: mapas y métricas; Hípergrowth: análisis y recomendaciones): demostrativo con fixtures rotuladas; la capa de barrios sigue bloqueada por licencia (ver §16).
+- Lumen actual: simulación local (ver §5); no acredita multiempresa, chat real ni WhatsApp.
+
+**Preguntas derivadas (no resueltas):**
+1. *Dónde viven los módulos reales.* Notion (anexo C, S1) exige aislamiento multiempresa contra un backend. Con la decisión de §17.1 (EstateOS es una demo sin BE y los pagos se derivan a la app de Eclipse), mi lectura es que panel del propietario, chats, suscripciones y chatbot se construirían después en la plataforma de Eclipse con un BE multiempresa. *Es una inferencia mía; se confirma en el SDD de S1.*
+2. *Alcance económico:* un panel con cobros dentro de USD 75 y un chatbot dentro de USD 200 sin costo de proveedor definido. Notion lo declara pendiente; no se publica como disponible ni como rentable.
+3. El texto de contexto termina con «el primer paso sigue siendo 0.1»: está superado, 0.1 se cerró en E1 (§15.4). El siguiente es 0.2.
