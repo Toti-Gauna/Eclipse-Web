@@ -148,6 +148,8 @@ Método: script de solo lectura (`node --experimental-strip-types`) que importa 
 
 **Ofertas:** BE tiene `founder` (−20 %), `combo-voz` (voz a 300), `annual` y `referral` **activas**. FE las tiene las cuatro **inactivas** (históricas). `founders.total` = 5 en ambos; ids de `goals` y `verticals` coinciden (7 y 7).
 
+**Qué lado está al día:** el tarifario aprobado de Notion («Ofertas y precios», actualización del 16/10/2026: adaptación 500, pack 700, planes 30/75/150 con terceros 5/15/40 y 2 h, seña 50/50, 3 meses bonificados) coincide con el **FE**; el que está desactualizado es el snapshot del **BE**. Las inclusiones nuevas (USD 199, Studio) siguen siendo hipótesis no aprobadas.
+
 **Efecto:** `catalogMismatches()` devolvería una lista no vacía, así que «Enviar solicitud» en modo live **está bloqueado por diseño** contra este BE. La prueba `tests/plan-request.test.ts` solo comprueba que no hay divergencia cuando el catálogo se arma desde `/content`; no valida contra este snapshot de BE.
 
 ### 6.2 Qué se puede y qué no afirmar del backend
@@ -173,13 +175,15 @@ Orden de precedencia: instrucción expresa de Ignacio → Eclipse v3 → Context
 | C5 | «Backend pendiente» (Notion) vs. código existente | Existe código; producción sin comprobar (§6.2) | Resuelto (E1) |
 | C6 | Catálogo FE (500/700, 3×30, 50 % seña) vs. BE (planes históricos, 25/79/199, ofertas activas) | Registrado en §6.1; **no sincronizar ni saltar el guard**; reconciliar contra tarifa aprobada con compatibilidad histórica en 2.2 (autorizado el 24/10/2026, §15) | **Autorizado; sin ejecutar** |
 | C7 | Mantenimiento aprobado 30/75/150 (terceros 5/15/40, 2 h) vs. propuesta 30/75/150/199 + Studio/Academy | Conservar lo vigente; el 199 y nuevas inclusiones esperan margen | Abierto (hipótesis) |
-| C8 | EstateOS «desde USD 50/mes» | Hipótesis sectorial; no asumir setup gratis ni CRM productivo por 50 | Abierto (hipótesis) |
+| C8 | EstateOS «desde USD 50/mes» (así figura en las secciones 03 de los prompts 0.1–0.3 de Notion) | **Supersedida el 24/10/2026** (Contexto Eclipse, «Ofertas y precios», lote 2.3): dirección del propietario Contact 30 · Growth 75 · Escalar 100 · Hípergrowth 150 · Deluxe 200 USD/mes; Partner 500 y todos los cupos son **propuesta** pendiente de costeo. Es un catálogo sectorial distinto del general 30/75/150: mismo importe no implica misma oferta, y los contratos emitidos se conservan. Los prompts 0.1–0.3 de Notion aún citan el «50»; ver §16 | Resuelta (E0); economía sin validar |
 | C9 | Inteligencia nacional privada ≠ demo inmobiliaria pública | Fixtures separadas; cero arrastre de compradores reales | Resuelto (regla) |
 | C10 | Gateway mínimo en fase 3; fase 4 consolida | No bloquea la primera venta | Resuelto (E0) |
 | C11 | Contrato actual: explorar libremente y «Ver con guía/por mi cuenta» en cada apertura; PR #1 y anexo: cine opt-in dentro de «Ver con guía», sin autoplay | Hoy el cine no es opt-in (se reproduce al abrir, saltable con click/tecla); cambiarlo es un lote futuro, no de este | Abierto |
 | **C12** (nuevo) | `Eclipse-email-kit` presenta precios con «referencia tachada» y «50 % de descuento» (ARS 750.000 → 375.000) y fue pensado para Volta. `CLAUDE.md` de Eclipse-Web prohíbe tachados, «antes $X» y solo admite ofertas de `content/offers.json`. Su README declara «no listo para envío» | No mezclar con Eclipse-Web. Ignacio decidió el 24/10/2026 (§15): se rehacen todos los email kits, los actuales se conservan sin tocar. No se tocó nada en este lote | **Resuelto: decisión; trabajo pendiente** |
 | **C13** (nuevo) | `docs/v3/inventario.md` lista precios, paquetes y ofertas de v2 como si fueran el estado del sitio; el código vigente tiene otros (§6) | Mantener como inventario histórico de bloques (esta auditoría no lo edita) y no citarlo para precios | Registrado |
 | C14 (nuevo, menor) | `AGENTS.md` de Web pide leer `node_modules/next/dist/docs/` antes de usar APIs de Next; `node_modules` no existe en este entorno | No hay API de Next que usar en este lote; el límite queda declarado | Límite |
+| **C15** (nuevo) | Notion (Contexto y Portal interno, decisión 07/10/2026): comunicación al cliente por **WhatsApp manual, sin SMTP**. BE: el registro de clientes, la verificación de email y la recuperación de contraseña dependen de `SMTP_ENABLED`, y `docs/produccion-hoy.md` deja el portal de clientes live «para después» por falta de correo | Hay que decidir en el SDD del portal cliente si el live espera SMTP o se define otro método de alta (no investigado). No es de este lote | Abierto |
+| **C16** (nuevo) | Notion tarifario: la tabla del 14/10 da USD 50 de complemento para landing; la actualización del 16/10 (que prevalece) da USD 200. FE usa 200 (`items.json`) | Sin acción: FE sigue la fuente que prevalece | Registrado |
 
 ## 8. Evidencia visual (histórica, no del HEAD)
 
@@ -193,7 +197,7 @@ Orden de precedencia: instrucción expresa de Ignacio → Eclipse v3 → Context
 - **E2 pendiente:** `Eclipse-Web` no tiene `node_modules`; levantar la web requiere `npm ci`, que este lote excluye. No se ejecutó `npm test`, `typecheck`, `lint`, `build`, e2e, ni se tomaron capturas. Acción para 1.5 / quien tenga el entorno: `npm ci` → `scripts/dev.sh 3200` → `node scripts/shot.mjs http://localhost:3200/es/ <outDir> --widths=360,1440`.
 - Ninguna pantalla se abrió en un navegador; el comportamiento descrito sale de leer código.
 - Cinco de las seis demos no se leyeron vista por vista; BE y portal interno se leyeron en sus puntos de entrada, no completos; Volta y email-kit apenas en cabecera.
-- No se revisó `.env*` ni secretos. No se consultó Notion (las seis fuentes Notion no se abrieron: se trabajó con el anexo del prompt y los archivos de los repos). **Fuente no leída: Notion Eclipse v3, Contexto Eclipse, Eclipse Agency, Landing UX/UI v3, Portal interno v3, Sales Intelligence Lote 0**; el dossier de Sales Intelligence no apareció en el portal interno (ramas: solo `main` y la de trabajo).
+- No se revisó `.env*` ni secretos. Notion se leyó después de la primera versión de este documento, el 24/10/2026 (§16). El dossier de Sales Intelligence no apareció en el portal interno (ramas: solo `main` y la de trabajo); según Notion sus ramas `docs/sales-intelligence-ar-lote-0` son locales y sin push, así que no se pueden recuperar desde este entorno.
 - `agents` y Volta se agregaron a la sesión por `add_repo` (lectura); no se escribió en ellos.
 - Cobertura de «47 repos accesibles»: no se re-listó; se consultó `list_repos` solo por nombre (`agents`, `supplements-ecommerce`).
 - Palabras «probado / live / desplegado»: este documento no afirma ninguna de las tres como hecho. «Live» aparece solo como modo de código.
@@ -246,5 +250,39 @@ Modelo configurado: Claude Sonnet 5.5, una sesión, sin reintentos de correcció
 Registro, no ejecución: ninguna de estas decisiones se implementó en este lote.
 
 1. **CTA (C2):** aprobado el CTA nuevo «Quiero potenciar mi negocio». Queda por definir en el lote que lo implemente: en qué lugares reemplaza a «Pedí tu demo» (header, hero, `data-page-cta`) y si afecta a «Quiero esto para mi negocio» (`wantThis`) de la capa de demo; versiones en/pt; y actualizar la regla de `CLAUDE.md` que prohíbe «potenciá» (que ahora contradice esta decisión). Supersede la regla de copy anterior; fuente: Ignacio, 24/10/2026.
-2. **Catálogo (C6):** se autoriza el lote 2.2 (reconciliar el catálogo BE con la tarifa aprobada, con compatibilidad histórica). **EstateOS usa el BE de Eclipse por ahora.** Consecuencias a resolver en 0.2/2.2, no decididas acá: (a) las solicitudes de EstateOS pasarían por el mismo guard de catálogo (§6.1); (b) cómo separar datos y permisos de EstateOS de los de Eclipse en un BE compartido, para respetar C9 (cero arrastre de datos reales a la demo pública); (c) `AUTH_ENABLED`, SMTP y despliegue siguen sin verificarse (§6.2). No implica backend nuevo.
+2. **Catálogo (C6):** se autoriza el lote 2.2 (reconciliar el catálogo BE con la tarifa aprobada, con compatibilidad histórica). ~~EstateOS usa el BE de Eclipse por ahora.~~ **Reemplazado el mismo día (24/10/2026, Ignacio):** EstateOS tendrá un BE **distinto** del de Eclipse, por seguridad. EstateOS es solo una demo: si el visitante elige un plan de pago, se lo deriva a la app de Eclipse. Quedan abiertas, sin decidir acá: (a) **cuándo** existe ese BE: el anexo C de 2.3 define S0 (demo pública, comparador y configurador sin checkout) como entregable sin backend y reserva el aislamiento multiempresa y los datos reales para S1; hoy no hay evidencia de que S0 necesite BE; (b) **costo e infraestructura:** Render + Neon son por proyecto y el plan Hostinger actual no admite Node.js (Contexto Eclipse); un BE nuevo es infraestructura nueva y necesita gate de gasto separado; (c) **dónde aterriza el pedido de plan:** si se deriva a la app de Eclipse, el BE de Eclipse tendría que reconocer un catálogo sectorial EstateOS o recibir un pedido genérico: es una decisión de 2.2/2.3; (d) el guard de catálogo y `AUTH_ENABLED`/SMTP siguen como en §6. No se creó ni se provisionó nada.
 3. **Email kits (C12):** se rehacen todos; los viejos se conservan sin modificar; se crean kits nuevos para Eclipse y para EstateOS. Los nuevos deberán respetar las reglas de honestidad de Eclipse (sin precios tachados ni «antes $X», solo ofertas de `content/offers.json`). Pendiente de SDD propio; no es parte de 0.1.
+4. **Cierre de 0.1 (24/10/2026, Ignacio):** «cerramos 0.1». Cierre en cobertura E1; el E2 (capturas del HEAD) queda para 1.5. No se marcó nada en Notion.
+
+## 16. Lectura de Notion (24/10/2026)
+
+**Leído por mí:** «Eclipse v3» (índice), Contexto Eclipse, Eclipse Agency (índice), Ofertas y precios, Modelos y control de consumo, Orden de ejecución, Referencias históricas 00–08, páginas de Fase 0–4, lotes 0.1, 0.2, 0.3, 0.4, 1.1, 2.2, 2.3 (con anexos A y C), Landing UX/UI v3, Portal interno v3, Sales Intelligence Lote 0.
+**Leído por un subagente** (resumen de segunda mano, no verificado línea por línea): lotes 1.2–1.5, 2.1, 2.4, 2.5, 3.1–3.9, 4.1–4.5, anexo B (bienvenida), biblia/escenas y «Stack · skills, mods y plugins».
+**No leído:** las 12 fichas de escena 00–11 de la biblia, «Inventario interno» y «Diseño premium» de Stack, «Auditoría de skills» (0.3).
+
+**Programa (orden de ejecución, un lote activo por vez):** 0.1 → 0.2 → 0.3 → 0.4 → 1.1 → 1.4 → 1.2 → 1.3 → 1.5 → 2.1 → 2.2 → 2.3 → 2.4 → 2.5 → 3.1 … 3.9 → 4.1 … 4.5. Son documentales 0.1–0.4, 1.1, 1.4, 2.1, 2.3–2.5, 3.1 y 4.3–4.5; producen cambios locales en rama (o assets, con gasto aparte) 1.2, 1.3, 1.5, 2.2, 3.2–3.9, 4.1 y 4.2; en ningún caso hay merge ni deploy. Modelo por defecto Sonnet; Opus high solo en 3.1 (y en la revisión O2 de 3.9). Gates de gasto y publicación separados en todos.
+
+**Qué consume de este inventario cada lote cercano:**
+- **0.2 (agentes y PR #1):** revisión documental de los seis archivos de la PR, corrección de «cuatro líneas» a cinco, RACI, política Opus consolidada y prueba en papel de cinco rutas. No edita la PR.
+- **0.3 (skills):** manifiesto de instalación, sin instalar nada.
+- **0.4 (SDD y control financiero):** contrato base, ledger y matriz de modelos y gates. Cierra Fase 0; recién entonces arranca 1.1.
+- **1.1:** mapa de contenidos, wireflows y contrato de URL (`?rubro=inmobiliarias&vista=…&area=…`, propuesto). Un único propietario de `History`.
+- **2.2:** conciliación FE/BE (ya autorizada); carril A catálogo aprobado, carril B comparador v3 solo borrador.
+
+**Tensiones nuevas entre Notion y el código o `CLAUDE.md` (registro, no resolución):**
+
+| # | Tensión | Qué hay que decidir y dónde |
+|---|---|---|
+| C17 | **BE propio de EstateOS vs. diseño de Notion.** 2.3 (anexo C), 2.5 y 4.1 suponen un único BE y un único catálogo: el CRM interno de Eclipse recibe los leads de EstateOS, el catálogo versionado alimenta panel y configurador, y el micrositio vive dentro de Eclipse-Web. La decisión de Ignacio del 24/10 (BE separado, pago derivado a la app de Eclipse) no figura en ninguna página | Reflejarla en 0.4 (SDD) y 2.3; definir dónde aterriza el pedido de plan. Mientras tanto, S0 (demo, comparador, configurador sin checkout) no necesita BE |
+| C18 | **Bienvenida ES-INTRO (2.3 anexo B, 3.5) vs. contrato de demos de `CLAUDE.md`.** ES-INTRO reproduce en la primera visita y guarda una preferencia local de «ya vista»; `CLAUDE.md` dice que nada se reproduce solo, que nada se recuerda y que en cada apertura se ofrece «Ver con guía / Ver por mi cuenta». Notion lo acota (muda, saltable, enlace directo la omite) pero el conflicto con «nada se recuerda» queda abierto | Decisión de Ignacio antes de 3.5; actualizar `CLAUDE.md` si se aprueba |
+| C19 | **CTA en 1.2:** el primario «Quiero potenciar mi negocio» y el secundario «Ver opciones» abren el selector, no WhatsApp; «Armá tu plan» no aparece. `CLAUDE.md` define «Pedí tu demo» como CTA primario y «Armá tu plan» como secundario. Orden de home de Notion (qué ofrecemos → PyME → precios) distinto del actual | Aprobado el texto del CTA (C2); falta aprobar el reparto de CTAs y el orden de home en 1.1/1.2 |
+| C20 | **Texto desactualizado dentro de Notion:** el «EstateOS desde USD 50» sigue en los prompts 0.1–0.3, 1.2–1.5, 2.1 (incluido el cuerpo), 3.2, 3.3, 3.7 y 4.2–4.5; los lotes 2.4, 2.5, 3.4–3.6, 3.8, 3.9 y 4.1 ya tienen la revisión del 24/10 | Limpiar en Notion; este documento sigue la revisión del 24/10 (C8) |
+| C21 | **Opus:** la política general dice «sin límite fijo de dos»; 3.9 describe O2 como «la segunda y última intervención Opus planificada» | Prevalece la política general; ajustar 3.9 |
+| C22 | **Selector de dos rubros (Inmobiliarias, Ecommerce)** vs. seis demos en el sitio y Volta/Velmar externos | Notion lo fija en dos hasta nueva decisión comercial (4.2); no hay conflicto de código, sí de alcance visible |
+| C23 | **Notion asume auth y entitlements activos** («suscriptor», «plan activo», Academy privada verificada en servidor) mientras `AUTH_ENABLED=false` por defecto y no hay modelo de suscripción | Notion lo difiere a una entrega posterior (S1); no entra en el piloto |
+
+**Datos de Notion que conviene tener a mano (no verificados en este lote):**
+- Candidatos del lote comercial 3.9: cinco inmobiliarias de Mar del Plata, sin contactar y no calificados. No se transcriben acá.
+- Costos ilustrativos de Higgsfield, ElevenLabs y Suno en 3.3/3.4 son precios públicos observados por otra sesión, no cotizaciones de la cuenta; no autorizan gasto.
+- El dataset municipal de barrios devolvió 403 y la licencia de las capas IGN no está demostrada (Sales Intelligence Lote 0; 3.8). El mapa de barrios de 3.8 queda bloqueado hasta resolverlo.
+- `AGENTS.md` de Volta cita `docs/panel-demo.md`, que según 4.5 no existe en HEAD; no verificado por mí.
