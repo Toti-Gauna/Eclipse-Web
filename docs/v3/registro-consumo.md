@@ -117,3 +117,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Reintentos / correcciones propias:** (1) 11 pruebas fallaron por el cambio de modelo y se actualizaron una por una (no se relajó ninguna); (2) 3 comprobaciones e2e dependían de las ofertas (filas, precio en la demo, enlace `/plan` con pack) y se reescribieron; (3) el check «header claro sobre precios» dependía de haber hecho clic en una fila: se scrollea a la tabla; (4) una nota de CLAUDE.md afirmaba que Studio/Academy cuentan dentro de las 2 h sin que Ignacio lo hubiera dicho: se corrigió a «por confirmar». Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
 
+## 12. Lote 2.3 · EstateOS · planes y bienvenida (26/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high. **Opus:** 0. **Subagente:** 1 de solo lectura (auditoría de `Eclipse-be` y del portal interno), verificado por mí en los puntos clave. **Gasto externo:** USD 0.
+- **Resultado:** `lote-2.3-estateos-planes-bienvenida.md` (documental), catálogo versionado `estateos/catalogo-estateos.v1.json` con digest y 10 pruebas que lo vigilan; matriz requisito → estado real; hoja económica con margen indeterminado; guion ES-INTRO con dos correcciones medidas; wireflows; brechas S0–S4; decisiones D19–D23.
+- **Reintentos / correcciones propias:** (1) tres páginas de tarifas externas no abrieron (el entorno bloquea los hosts): se registró el límite y se usaron solo referencias secundarias rotuladas «no validadas»; (2) una frase sobre los topes de proveedor no tenía sustento y se reemplazó antes del commit; (3) el guion del anexo B tenía un capítulo a 3,14 palabras/s y otro con la oferta vieja de Contact: se detectaron midiendo y se corrigieron. Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
+
