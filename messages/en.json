@@ -48,7 +48,6 @@
     "language": "Language",
     "currency": "Currency",
     "progress": "Reading progress: {value}%",
-    "buildPlan": "Build your plan",
     "progressLabel": "Reading progress",
     "login": "Log in",
     "loginContext": "to the client portal (demo)",
@@ -84,7 +83,7 @@
     "pickVertical": "Or see a demo now",
     "ctaPotenciar": "I want to boost my business",
     "ctaDemo": "Get your demo",
-    "ctaPlan": "Build your plan"
+    "noscript": "The interactive demo needs JavaScript. You can still reach us: the contact section is further down this page."
   },
   "whatsapp": {
     "greeting": "Hi Eclipse.",
@@ -139,7 +138,6 @@
     "lostRevenue": "Revenue slipping away",
     "timeCost": "Your team's hours",
     "cta": "Win it back: get your demo",
-    "ctaPlan": "Build your plan",
     "whatsapp": "Hi Eclipse. I used the calculator on your site: with my numbers I'm losing about {amount} a month ({lost} {unit} and {hours} h of repetitive tasks a week). I want it back. Can you show me a demo? Industry: {vertical}.",
     "whatsappNoVertical": "Hi Eclipse. I used the calculator on your site: with my numbers I'm losing about {amount} a month ({lost} {unit} and {hours} h of repetitive tasks a week). I want it back. Can you show me a demo?",
     "lead": "I run <vertical></vertical>.",
@@ -305,8 +303,6 @@
       }
     },
     "seePrices": "See the {family} prices",
-    "add": "Add",
-    "addLabel": "Add {name} to your plan",
     "piecesToggle": "See all {count} pieces, one by one"
   },
   "process": {
@@ -649,8 +645,7 @@
       },
       "pieces": {
         "title": "Piece by piece",
-        "text": "Its own project or an add-on on a base. See the total, upfront and balance instantly.",
-        "cta": "Build it piece by piece",
+        "text": "Its own project or an add-on on a base.",
         "from": "From {price}."
       },
       "options": "{count, plural, one {# option} other {# options}}"
@@ -673,8 +668,6 @@
       "rangeUsd": "Up to {to} depending on scope",
       "includes": "What's included",
       "savings": "Save <pct></pct> vs. single pieces",
-      "customize": "Customize",
-      "customizeLabel": "Customize {name} in the builder",
       "audienceLabel": "Who it's for",
       "maintenanceLabel": "Suggested monthly plan",
       "maintenanceValue": "{name} · {price} {period}",
@@ -2383,7 +2376,7 @@
   },
   "agent": {
     "title": "Your business, <em>in full light</em>.",
-    "sub": "Get your demo and see your business working within {hours} hours, before any call. Rather see numbers first? Build your plan.",
+    "sub": "Get your demo and see your business working within {hours} hours, before any call.",
     "chat": {
       "label": "Eclipse agent preview",
       "name": "Eclipse agent",
@@ -5463,6 +5456,11 @@
       "contracted": "What you'd contract",
       "extrasNote": "Add-on price on top of the adaptation, each for one use case. Subject to validating provider, account and scope. Not preselected: you add them.",
       "simulation": "Simulated in the browser: no real messages are sent and no real calls are made, and the data and metrics are fictional."
+    },
+    "loadFail": {
+      "title": "The demo couldn't load",
+      "body": "Try again, or message us and we'll show it to you ourselves.",
+      "retry": "Try again"
     }
   },
   "offerings": {
@@ -5535,5 +5533,26 @@
     },
     "calcLink": "Do the math: what not having this costs you",
     "pricesLink": "See pricing"
+  },
+  "selector": {
+    "title": "Which business do you want to boost?",
+    "lede": "Pick your industry and watch a demo of that business at work.",
+    "cta": "Boost my business",
+    "ctaShort": "Boost",
+    "groupLabel": "Industries",
+    "inmobiliarias": {
+      "product": "Eclipse · EstateOS",
+      "text": "A demo real estate agency answering inquiries, sorting its pipeline and booking visits.",
+      "action": "See the Real estate demo"
+    },
+    "ecommerce": {
+      "name": "Ecommerce",
+      "product": "Eclipse",
+      "soon": "Coming soon",
+      "text": "We're building its catalog and its demo. No plans are published yet."
+    },
+    "notListed": "Don't see your industry?",
+    "notListedAction": "Message us and we'll look at it",
+    "whatsapp": "Hi Eclipse. My industry wasn't on the list and I want to boost my business."
   }
 }

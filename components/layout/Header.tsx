@@ -6,8 +6,8 @@ import { ArrowLeft, LogIn } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { ScrollTrigger, useGSAP } from '@/components/motion/gsap';
 import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
-import { useExperience } from '@/components/providers/ExperienceProvider';
 import { DemoCta } from '@/components/ui/DemoCta';
+import { PotenciarCta } from '@/components/ui/PotenciarCta';
 import { MiniEclipse } from './MiniEclipse';
 import { PrefsMenu } from './PrefsMenu';
 import { MobileMenu } from './MobileMenu';
@@ -23,12 +23,15 @@ import './header.css';
  *
  * Desktop (≥ 1024px): logo · Servicios · Demos · Precios · Cómo trabajamos · one
  * preferences trigger (language, currency, sound) · "Ingresar" (portal mockup) ·
- * "Armá tu plan" (secondary) · "Pedí tu demo" (THE primary CTA).
- * Phones and tablets: logo · a compact "Pedí tu demo" · the menu button.
+ * «Potenciar mi negocio» (THE primary CTA: opens the rubro selector).
+ * Phones and tablets: logo · a compact «Potenciar» · the menu button.
+ * There is no "Armá tu plan" (the builder is dormant, lote 1.3); on /plan the CTA stays the
+ * WhatsApp "Pedí tu demo" (the selector lives on the home).
  *
- * One solid amber button per viewport: "Pedí tu demo" is quiet (outline) while the
- * hero's own CTA — or another page-level primary CTA — is on screen, and on /plan
- * (the builder has its own primary action); otherwise it is the solid amber one.
+ * One solid amber button per viewport: the CTA is quiet (outline) while the hero's own CTA
+ * — or another page-level primary CTA — is on screen, and on /plan; otherwise it is the
+ * solid amber one. Over the page the header floats: a surface (`.hdr-row::before`) fades in
+ * once the page has scrolled (header.css); the reserved height never changes.
  *
  * Portal routes (/portal…): logo (→ landing) · "Volver al sitio" (+ "Mis proyectos" and
  * "Salir de la demo" inside /portal/proyectos) · preferences. No landing nav, no sales CTAs.
@@ -37,7 +40,6 @@ export function Header() {
   const t = useTranslations();
   const pathname = usePathname();
   const { mode, projects } = chromeRoute(pathname);
-  const { openBuilder } = useExperience();
   const ref = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [light, setLight] = useState(false);
@@ -107,7 +109,7 @@ export function Header() {
         className={`site-header fixed inset-x-0 top-0 z-50 ${light ? 'theme-light' : 'theme-dark'}`}
       >
         {/* `relative`: the preferences popover anchors to this row. */}
-        <div className="container-x relative flex h-[var(--header-h)] items-center gap-1.5 min-[360px]:gap-2 xl:gap-3">
+        <div className="hdr-row container-x relative flex h-[var(--header-h)] items-center gap-1.5 min-[360px]:gap-2 xl:gap-3">
           <Link href="/" aria-label={t('header.home')} className="-ml-1 flex min-h-11 shrink-0 items-center gap-2.5 rounded-full px-1">
             <MiniEclipse />
             <span className="text-[0.8rem] font-medium tracking-[0.32em] text-fg">ECLIPSE</span>
@@ -181,16 +183,19 @@ export function Header() {
                 </Link>
                 <span aria-hidden className="hdr-rule mx-1 hidden lg:block" />
                 {mode === 'landing' ? (
-                  <button
-                    type="button"
-                    aria-haspopup="dialog"
-                    onClick={() => openBuilder('header')}
-                    className="btn btn-ghost btn-sm hidden !px-3.5 text-[0.85rem] lg:inline-flex xl:!px-5"
+                  <PotenciarCta
+                    origin="header"
+                    label={t('selector.cta')}
+                    className={`btn hdr-cta ${ctaSolid ? 'btn-primary' : 'hdr-cta-quiet'}`}
                   >
-                    {t('header.buildPlan')}
-                  </button>
-                ) : null}
-                <DemoCta origin="header" className={`btn hdr-cta ${ctaSolid ? 'btn-primary' : 'hdr-cta-quiet'}`} />
+                    <span className="hdr-cta-long">{t('selector.cta')}</span>
+                    <span aria-hidden className="hdr-cta-short">
+                      {t('selector.ctaShort')}
+                    </span>
+                  </PotenciarCta>
+                ) : (
+                  <DemoCta origin="header" className={`btn hdr-cta ${ctaSolid ? 'btn-primary' : 'hdr-cta-quiet'}`} />
+                )}
                 <MobileMenu mode={mode} projects={projects} className="lg:hidden" />
               </div>
             </>

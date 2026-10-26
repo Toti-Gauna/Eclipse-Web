@@ -2,7 +2,7 @@
 
 import { useId, useMemo, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { ArrowUpRight, Check, ChevronDown, Gift, SlidersHorizontal } from 'lucide-react';
+import { ArrowUpRight, Check, ChevronDown, Gift } from 'lucide-react';
 import { addonsForPlan, formatAmount, formatMoney, maintenanceSuggestion, planSavings, quote, type Billing } from '@/lib/pricing';
 import { isApproximate } from '@/lib/currency';
 import { l, offerById, verticalById, type Plan } from '@/lib/content';
@@ -12,6 +12,7 @@ import { track } from '@/lib/analytics';
 import type { Locale } from '@/i18n/routing';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { useExperience } from '@/components/providers/ExperienceProvider';
+import { PotenciarCta } from '@/components/ui/PotenciarCta';
 import { useSound } from '@/components/sound/SoundContext';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { CountUp } from '@/components/motion/CountUp';
@@ -45,7 +46,7 @@ export function PlanRow({
   const tl = useTranslations('languages');
   const locale = useLocale() as Locale;
   const { currency, rates, format } = useCurrency();
-  const { vertical, openBuilder } = useExperience();
+  const { vertical } = useExperience();
   const { play } = useSound();
   const uid = useId();
   const [open, setOpen] = useState(featured);
@@ -265,19 +266,7 @@ export function PlanRow({
             {t('cta')}
             <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.75} />
           </WhatsAppLink>
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            aria-label={t('plan.customizeLabel', { name })}
-            onClick={() => {
-              play('open');
-              openBuilder('plan_card', { planId: plan.id });
-            }}
-            className="pr-plan-customize"
-          >
-            <SlidersHorizontal aria-hidden strokeWidth={1.5} />
-            {t('plan.customize')}
-          </button>
+          <PotenciarCta origin="plan_card" className="pr-plan-customize" />
         </div>
       </div>
     </article>

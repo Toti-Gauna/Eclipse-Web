@@ -65,22 +65,38 @@ reachable (folded is fine, deleted is not).
   maintenance and the next step in < 2 min. Summarize on the surface and fold details (tabs, accordions,
   "Ver la cuenta"); never hide price, scope, maintenance or conditions behind a CTA.
 - **Page order (ids unchanged; v3e, lote 1.2, 26/10/2026):** 01 hero `#inicio` (one action «Quiero potenciar mi negocio» — a real
-  link to `#contacto` until lote 1.3 opens the rubro selector — plus one direct key: the demo on show) · 02 qué ofrecemos
+  link to `#contacto` that opens the rubro selector — plus one direct key: the demo on show) · 02 qué ofrecemos
   `#servicios` (five lines SaaS · Agency · Studio · Academy · Equipamiento + Intelligence) · 03 para tu PyME `#pyme` ·
   04 demos `#ejemplos` · 05 precios `#precios` · 06 calculadora `#problema` · 07 cómo trabajamos `#proceso` ·
   08 preguntas y contacto `#contacto` · footer. Numbers come from `components/ui/sectionIndex.ts`. **Fundadores was removed**
   (decision of Ignacio; the founder offer is inactive in `content/offers.json`). Sky: hero void → qué ofrecemos / pyme / demos
   night → `<SkyTransition>` → dawn from precios on.
   «Qué ofrecemos» explains what each line solves and includes — NO prices or «Sumar» there: pieces are priced and
-  added only in Precios (tab «Pieza por pieza», `requestPiecesTab`). The builder is dormant (no new entry points; D6 pending).
+  added only in Precios (tab «Pieza por pieza», `requestPiecesTab`). The builder is dormant: no entry point on the home (D2/D6, lote 1.3); the code, `/plan/` and its tests stay.
   Demos in `standby` (`content/verticals.json`: clinic, gym, restaurant, academy, Bruma) stay in the repo but are not shown:
   use `showcaseVerticals` for anything the visitor sees. The hero H1 is «Potenciá y visibilizá tu negocio, y fidelizá clientes
   con Eclipse.» («potenciá» is an exception to the v2 copy rule below, by the owner's choice).
-- **Header:** Servicios · Demos · Precios · Cómo trabajamos; "Pedí tu demo" is THE primary CTA and stays
-  reachable on desktop and mobile; "Armá tu plan" is secondary; "Ingresar" is discreet and opens
-  `/[locale]/portal/`. Language, currency and sound sit together behind one preferences trigger.
-  Naming follows the brief: the header says «Servicios», the section label says «Qué ofrecemos»
-  (same anchor `#servicios`).
+- **Header:** Servicios · Demos · Precios · Cómo trabajamos; «Potenciar mi negocio» is THE primary CTA
+  (`<PotenciarCta origin>`, «Potenciar» below 430 px) and stays reachable on desktop and mobile; there is NO "Armá tu plan";
+  "Ingresar" is discreet and opens `/[locale]/portal/`. Language, currency and sound sit together behind one
+  preferences trigger. On `/plan` the CTA stays WhatsApp «Pedí tu demo» (the selector lives on the home). The header
+  floats once the page scrolls: a surface (`.hdr-row::before`, header.css) fades in with `data-scrolled`, fixed 10 px
+  blur, opaque fallback; its reserved height (`--header-h`) never changes. Naming follows the brief: the header says
+  «Servicios», the section label says «Qué ofrecemos» (same anchor `#servicios`).
+- **«Potenciar mi negocio» / selector (lote 1.3, D6):** every commercial entry (hero, header, phone menu, plan cards,
+  «Pieza por pieza», calculator, closing block) is a REAL `<a href="#contacto">` (`components/ui/PotenciarCta.tsx`,
+  `data-opens-selector` so `SmoothAnchors` leaves it alone) that opens the selector «¿Qué negocio querés potenciar?»
+  (`components/demo-experience/SelectorLayer.tsx`): exactly two rows, Inmobiliarias (opens the Lumen demo) and Ecommerce
+  («Próximamente», `aria-disabled`; built after EstateOS, D7). If the chunk can't load the link just goes to the contact.
+  Choosing Inmobiliarias hands off to the demo layer (`entry: 'handoff'`): ONE eclipse, played by the demo.
+  Pieces in «Pieza por pieza» are a read-only price list (no «Sumar»).
+- **Showroom History and URL (one owner):** only `components/demo-experience/showroomHistory.ts` calls
+  `pushState`/`replaceState` for the selector and the demo layer (marker `{ eclipseShowroom: { v: 1, level } }`, no user
+  data; it replaces the old `eclipseDemo` token). The URL contract is `lib/showroom.ts` (`?rubro=inmobiliarias|ecommerce
+  &vista=…&area=…`, allow-list, any value off the list cleans the three params and focuses the H1, foreign params are
+  kept, never in `/portal`). A direct load opens with no film and closing it cleans the URL (never `history.back()`);
+  Forward onto our entry reopens the layer. Only the Lumen demo exists behind it: `vista=entrada|branding|…` and `area`
+  open the same demo until the gateway (3.x) exists. Any new `pushState` for the showroom goes through this module.
 - **One amber per viewport:** the hero's CTA wrapper carries `data-hero-cta`; a section's solid amber CTA carries
   `data-page-cta` (`<DemoCta pageCta>`). While one is on screen the header CTA turns to outline (`usePageCtaInView`).
   Mark any new solid amber CTA the same way.
@@ -114,7 +130,8 @@ reachable (folded is fine, deleted is not).
   (no page sliver). From 1024px: rail of steps with previews on the left (no overflow on it: it would clip the
   current glyph's halo), the step in the centre, and from 1280px `<LiveSummary>` (the plan, read-only) on the
   right — except on step 4, where the full ledger is already in the centre. Below 1024px: the bar stepper.
-  Still a proposal request: no payments in the builder.
+  Still a proposal request: no payments in the builder. **Dormant since lote 1.3** (D2): no entry point on the home; the route
+  `/plan/` (shared links) and `openBuilder` keep working. Future: pay-by-link.
 - **Offer of 16/10/2026 (commercial model):** two explicit offers in `plans.json` — Adaptación de producto (500) and
   Pack lanzamiento (700, `validate`, `careCredit` 3 months × 30) — never inferred from a total, never suggested
   (`compare: false`). Every piece has `priceUsd` (independent) and `addonUsd` (compatible add-on, or null): alternatives

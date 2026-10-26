@@ -378,22 +378,7 @@
 /* No `scroll-behavior: smooth` and no `html:has(...)` rules on the root: both made Chrome
    re-style the whole document repeatedly (see <SmoothAnchors> and lib/scroll-lock.ts). */
 
-.site-header {
-  transition:
-    background-color 0.4s ease,
-    border-color 0.4s ease,
-    color 0.4s ease;
-  border-bottom: 1px solid transparent;
-}
-.site-header[data-scrolled] {
-  background: rgb(5 5 10 / 0.62);
-  border-bottom-color: var(--line);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
-}
-.site-header.theme-light[data-scrolled] {
-  background: rgb(244 239 230 / 0.78);
-}
+/* The header's floating surface lives in components/layout/header.css (.hdr-row::before). */
 
 /* Diagonal amber beam used by <LightSweep> */
 .light-sweep-beam {

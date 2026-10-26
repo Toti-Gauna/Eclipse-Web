@@ -6,7 +6,7 @@ import { Mail, MessageCircle } from 'lucide-react';
 import { CONTACT_EMAIL } from '@/lib/env';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { Reveal } from '@/components/motion/Reveal';
-import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
+import { PotenciarCta } from '@/components/ui/PotenciarCta';
 import { DemoCta } from '@/components/ui/DemoCta';
 import { SectionMark } from '@/components/ui/SectionMark';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
@@ -27,7 +27,6 @@ import './agent.css';
 export function AgentSection() {
   const t = useTranslations('agent');
   const tf = useTranslations('faq');
-  const th = useTranslations('hero');
   const tl = useTranslations('sections.labels');
   const tw = useTranslations('whatsapp');
   const tfo = useTranslations('footer');
@@ -69,9 +68,7 @@ export function AgentSection() {
             </p>
             <div data-reveal className="agent-ctas">
               <DemoCta origin="final_cta" pageCta className="btn btn-primary w-full sm:w-auto" />
-              <BuildPlanButton source="final_cta" className="btn btn-ghost w-full sm:w-auto">
-                {th('ctaPlan')}
-              </BuildPlanButton>
+              <PotenciarCta origin="final_cta" className="btn btn-ghost w-full sm:w-auto" />
             </div>
             <div data-reveal className="agent-contact">
               <h3 className="agent-contact-label">{tfo('contact')}</h3>

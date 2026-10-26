@@ -6,8 +6,8 @@ import { ArrowLeft, LogIn, Menu, X } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { gsap } from '@/components/motion/gsap';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
-import { useExperience } from '@/components/providers/ExperienceProvider';
 import { DemoCta } from '@/components/ui/DemoCta';
+import { PotenciarCta } from '@/components/ui/PotenciarCta';
 import { useSound } from '@/components/sound/SoundContext';
 import { SoundBadge, SoundToggle } from '@/components/sound/SoundToggle';
 import { PrefsDisclosure } from './PrefsDisclosure';
@@ -36,7 +36,6 @@ export function MobileMenu({
 }) {
   const t = useTranslations();
   const pathname = usePathname();
-  const { openBuilder } = useExperience();
   const { play } = useSound();
   const [open, setOpen] = useState(false);
   const button = useRef<HTMLButtonElement>(null);
@@ -123,6 +122,7 @@ export function MobileMenu({
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-label={t('header.menu')}
+        data-demo-opener="selector:menu"
         onClick={() => {
           setOpen(true);
           play('open');
@@ -216,24 +216,14 @@ export function MobileMenu({
               </nav>
 
               <div className="container-x pt-7">
-                <div data-menu-item className={`grid gap-3 sm:max-w-md ${mode === 'landing' ? 'min-[360px]:grid-cols-2' : ''}`}>
-                  <DemoCta origin="header" className="btn btn-primary !px-4" />
+                <div data-menu-item className={`grid gap-3 sm:max-w-md`}>
                   {mode === 'landing' ? (
-                    <button
-                      type="button"
-                      aria-haspopup="dialog"
-                      className="btn btn-ghost !px-4"
-                      onClick={() => {
-                        // The dialog hands focus back to the menu button before the builder
-                        // opens, so closing the builder returns focus there. No 'close' sound:
-                        // the builder opening is the moment.
-                        closeNow();
-                        openBuilder('menu');
-                      }}
-                    >
-                      {t('header.buildPlan')}
-                    </button>
-                  ) : null}
+                    // Closes the menu at once (no 'close' sound: the selector opening is the moment);
+                    // focus comes back to the menu button, which is marked as this CTA's opener.
+                    <PotenciarCta origin="menu" markOpener={false} onActivate={closeNow} className="btn btn-primary !px-4" />
+                  ) : (
+                    <DemoCta origin="header" className="btn btn-primary !px-4" />
+                  )}
                 </div>
                 <div data-menu-item className="mt-2">
                   <Link href={PORTAL_ROUTES.login} prefetch={false} onClick={closeNow} className="hdr-login -ml-2 inline-flex">

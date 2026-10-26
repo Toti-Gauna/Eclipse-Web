@@ -48,7 +48,6 @@
     "language": "Idioma",
     "currency": "Moneda",
     "progress": "Progreso de lectura: {value}%",
-    "buildPlan": "Armá tu plan",
     "progressLabel": "Progreso de lectura",
     "login": "Ingresar",
     "loginContext": "al portal de clientes (demo)",
@@ -84,7 +83,7 @@
     "pickVertical": "O mirá una demo ahora",
     "ctaPotenciar": "Quiero potenciar mi negocio",
     "ctaDemo": "Pedí tu demo",
-    "ctaPlan": "Armá tu plan"
+    "noscript": "La demo interactiva necesita JavaScript. Podés escribirnos igual: el contacto está más abajo, en esta misma página."
   },
   "whatsapp": {
     "greeting": "Hola Eclipse.",
@@ -139,7 +138,6 @@
     "lostRevenue": "Ingresos que se escapan",
     "timeCost": "Horas de tu equipo",
     "cta": "Recuperalo: pedí tu demo",
-    "ctaPlan": "Armá tu plan",
     "whatsapp": "Hola Eclipse. Usé la calculadora de la web: con mis números pierdo unos {amount} por mes ({lost} {unit} y {hours} h de tareas repetitivas por semana). Quiero recuperarlo. ¿Me muestran una demo? Rubro: {vertical}.",
     "whatsappNoVertical": "Hola Eclipse. Usé la calculadora de la web: con mis números pierdo unos {amount} por mes ({lost} {unit} y {hours} h de tareas repetitivas por semana). Quiero recuperarlo. ¿Me muestran una demo?",
     "lead": "Tengo <vertical></vertical>.",
@@ -305,8 +303,6 @@
       }
     },
     "seePrices": "Ver los precios de {family}",
-    "add": "Sumar",
-    "addLabel": "Sumar {name} a tu plan",
     "piecesToggle": "Ver las {count} piezas, una por una"
   },
   "process": {
@@ -649,8 +645,7 @@
       },
       "pieces": {
         "title": "Pieza por pieza",
-        "text": "Proyecto propio o complemento sobre una base. Mirá el total, el anticipo y el saldo al instante.",
-        "cta": "Armar pieza por pieza",
+        "text": "Proyecto propio o complemento sobre una base.",
         "from": "Desde {price}."
       },
       "options": "{count, plural, one {# opción} other {# opciones}}"
@@ -673,8 +668,6 @@
       "rangeUsd": "Hasta {to} según alcance",
       "includes": "Qué incluye",
       "savings": "Ahorrás <pct></pct> vs. piezas sueltas",
-      "customize": "Personalizar",
-      "customizeLabel": "Personalizar {name} en el armador",
       "audienceLabel": "Para quién",
       "maintenanceLabel": "Plan mensual sugerido",
       "maintenanceValue": "{name} · {price} {period}",
@@ -2383,7 +2376,7 @@
   },
   "agent": {
     "title": "Tu negocio, <em>a plena luz</em>.",
-    "sub": "Pedí tu demo: en {hours} horas ves tu negocio funcionando, antes de cualquier llamada. ¿Preferís ver números primero? Armá tu plan.",
+    "sub": "Pedí tu demo: en {hours} horas ves tu negocio funcionando, antes de cualquier llamada.",
     "chat": {
       "label": "Vista previa del agente de Eclipse",
       "name": "Agente Eclipse",
@@ -5463,6 +5456,11 @@
       "contracted": "Lo que se contrata",
       "extrasNote": "Precio de complemento sobre la adaptación, cada uno para un caso de uso. Sujeto a validar proveedor, cuenta y alcance. No vienen marcados: los sumás vos.",
       "simulation": "Simulación en el navegador: no se envían mensajes ni se hacen llamadas reales, y los datos y las métricas son ficticios."
+    },
+    "loadFail": {
+      "title": "No se pudo cargar la demo",
+      "body": "Probá de nuevo o escribinos y te la mostramos nosotros.",
+      "retry": "Reintentar"
     }
   },
   "offerings": {
@@ -5535,5 +5533,26 @@
     },
     "calcLink": "Hacé la cuenta: cuánto te cuesta no tenerlo",
     "pricesLink": "Ver los precios"
+  },
+  "selector": {
+    "title": "¿Qué negocio querés potenciar?",
+    "lede": "Elegí tu rubro y mirá una demo de ese negocio funcionando.",
+    "cta": "Potenciar mi negocio",
+    "ctaShort": "Potenciar",
+    "groupLabel": "Rubros",
+    "inmobiliarias": {
+      "product": "Eclipse · EstateOS",
+      "text": "Una inmobiliaria Demo que responde consultas, ordena su pipeline y agenda visitas.",
+      "action": "Ver la demo de Inmobiliarias"
+    },
+    "ecommerce": {
+      "name": "Ecommerce",
+      "product": "Eclipse",
+      "soon": "Próximamente",
+      "text": "Estamos armando su catálogo y su demo. Todavía no hay planes publicados."
+    },
+    "notListed": "¿No ves tu rubro?",
+    "notListedAction": "Escribinos y lo vemos",
+    "whatsapp": "Hola Eclipse. Mi rubro no estaba en la lista y quiero potenciar mi negocio."
   }
 }

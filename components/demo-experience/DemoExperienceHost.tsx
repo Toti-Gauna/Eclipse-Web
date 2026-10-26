@@ -1,6 +1,6 @@
 'use client';
 
-import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowLeft, Compass, MessageCircle } from 'lucide-react';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
@@ -8,6 +8,7 @@ import { useSound } from '@/components/sound/SoundContext';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { DEMO_TOURS } from '@/components/demos/tours';
 import { l, verticalById, type DemoId } from '@/lib/content';
+import { isPortalPath, parseShowroomParams } from '@/lib/showroom';
 import { lockScroll } from '@/lib/scroll-lock';
 import { localeTags, type Locale } from '@/i18n/routing';
 import { buildTourSteps, type ViewTag } from './guide';
@@ -15,41 +16,24 @@ import { Eclipse } from '@/components/hero/Eclipse';
 import { LIMB_POINT } from '@/components/hero/geometry';
 import { heroEclipseSize, holdHeroEclipse, OPEN_CUES, playClosing, playOpening, type LayerParts } from './motion';
 import { projectSummary } from './project';
-import { clearDemoRequest, layerBodyLoader, useDemoRequest, type DemoRequest } from './store';
+import { cycleFocus } from './cycleFocus';
+import { LayerBoundary } from './LayerBoundary';
+import {
+  clearDemoRequest,
+  getDemoRequest,
+  getSelectorRequest,
+  layerBodyLoader,
+  openDemoExperience,
+  openSelector,
+  useDemoRequest,
+  useSelectorRequest,
+  type DemoRequest,
+} from './store';
+import { cleanShowroomUrl, currentMarker, focusHomeHeading, rubroOfVertical, writeView } from './showroomHistory';
 import './demo-experience.css';
 
-const DemoLayerBody = lazy(() => layerBodyLoader().then((m) => ({ default: m.DemoLayerBody })));
-
-/** History entry the layer pushes on open (same URL): Back closes it. */
-interface LayerHistoryState {
-  eclipseDemo?: string;
-}
-const historyToken = () => (window.history.state as LayerHistoryState | null)?.eclipseDemo;
-
-const TABBABLE =
-  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-/**
- * Keeps Tab / Shift+Tab cycling inside the layer (a modal <dialog> lets focus reach the
- * browser UI after its last control). The guide's card handles its own Tab first.
- */
-function cycleFocus(e: KeyboardEvent<HTMLDialogElement>) {
-  if (e.key !== 'Tab' || e.defaultPrevented) return;
-  const items = Array.from(e.currentTarget.querySelectorAll<HTMLElement>(TABBABLE)).filter(
-    (el) => !el.closest('[inert]') && el.getClientRects().length > 0 && (el.checkVisibility?.({ visibilityProperty: true }) ?? true),
-  );
-  if (!items.length) return;
-  const first = items[0];
-  const last = items[items.length - 1];
-  const active = document.activeElement;
-  if (e.shiftKey && (active === first || !e.currentTarget.contains(active))) {
-    e.preventDefault();
-    last.focus();
-  } else if (!e.shiftKey && (active === last || !e.currentTarget.contains(active))) {
-    e.preventDefault();
-    first.focus();
-  }
-}
+const SelectorLayer = lazy(() => import('./SelectorLayer').then((m) => ({ default: m.SelectorLayer })));
+const loadBody = () => lazy(() => layerBodyLoader().then((m) => ({ default: m.DemoLayerBody })));
 
 /**
  * The page's one "Ver demo" layer (v3b). Mounted once (the hero renders it); opened from any
@@ -58,7 +42,64 @@ function cycleFocus(e: KeyboardEvent<HTMLDialogElement>) {
  */
 export function DemoExperienceHost() {
   const request = useDemoRequest();
-  return request ? <DemoLayer key={request.id} request={request} /> : null;
+  const selector = useSelectorRequest();
+  useShowroomUrl();
+  return (
+    <>
+      {selector ? (
+        <Suspense fallback={null}>
+          <SelectorLayer key={selector.id} request={selector} />
+        </Suspense>
+      ) : null}
+      {request ? <DemoLayer key={request.id} request={request} /> : null}
+    </>
+  );
+}
+
+/**
+ * The URL side of the showroom (lib/showroom.ts contract, history owner: showroomHistory.ts).
+ * On load: `?rubro=inmobiliarias` opens the Lumen demo with no opening film; `?rubro=ecommerce`
+ * opens the selector (that rubro has no demo yet); any value off the allow-list is cleaned and
+ * focus goes to the home's H1. Afterwards, the browser's Forward onto an entry we own brings the
+ * layer back (Back is closed by the layers themselves). Never in the portal.
+ */
+function useShowroomUrl() {
+  useEffect(() => {
+    if (isPortalPath(window.location.pathname)) return;
+    const parsed = parseShowroomParams(window.location.search);
+    if (parsed === null) return;
+    if (parsed === 'invalid') {
+      cleanShowroomUrl();
+      focusHomeHeading();
+      return;
+    }
+    if (parsed.rubro === 'inmobiliarias') {
+      const v = verticalById('inmobiliarias');
+      if (v?.demo) openDemoExperience({ vertical: v.id, demo: v.demo, origin: 'url', entry: 'direct' }, null);
+      else cleanShowroomUrl();
+    } else {
+      // Ecommerce: no demo to open. The selector shows it as «Próximamente»; the URL is cleaned.
+      cleanShowroomUrl();
+      openSelector({ origin: 'url', entry: 'direct' }, null);
+    }
+  }, []);
+
+  useEffect(() => {
+    const onPop = () => {
+      if (isPortalPath(window.location.pathname) || getDemoRequest() || getSelectorRequest()) return;
+      const marker = currentMarker();
+      if (!marker) return;
+      if (marker.level === 'selector') {
+        openSelector({ origin: 'url', entry: 'restore' }, null);
+        return;
+      }
+      const parsed = parseShowroomParams(window.location.search);
+      const v = parsed && parsed !== 'invalid' && parsed.rubro === 'inmobiliarias' ? verticalById('inmobiliarias') : undefined;
+      if (v?.demo) openDemoExperience({ vertical: v.id, demo: v.demo, origin: 'url', entry: 'restore' }, null);
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 }
 
 type Phase = 'opening' | 'open' | 'closing';
@@ -108,7 +149,9 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     sounded: false,
     cues: [] as number[],
   });
-  const token = `eclipse-demo-${request.id}`;
+  const direct = request.entry === 'direct';
+  // A new lazy per attempt (set from the retry button): a failed chunk is fetched again, not replayed from React's cache.
+  const [Body, setBody] = useState(loadBody);
   const getDialog = useCallback(() => dialog.current, []);
   const getScroller = useCallback(() => scroller.current, []);
   const layerParts = useCallback(
@@ -129,15 +172,15 @@ function DemoLayer({ request }: { request: DemoRequest }) {
   // Every open of every demo (and every page load) asks "¿Cómo querés verla?" again: nothing is
   // remembered. The layer is keyed by request, so this state starts fresh each time.
   const [choice, setChoice] = useState<'pending' | 'done'>('pending');
-  const [guide, setGuide] = useState<{ open: boolean; run: number }>({ open: false, run: 0 });
+  const [guide, setGuide] = useState<{ open: boolean; run: number }>({
+    open: false,
+    run: 0,
+  });
   const guideOpen = useRef(false);
   useEffect(() => {
     guideOpen.current = guide.open;
   }, [guide.open]);
-  const tagFor = useCallback(
-    (view: ViewTag) => tt(view === 'laptop' ? 'tagDesktop' : view === 'phone' ? 'tagMobile' : 'tagBoth'),
-    [tt],
-  );
+  const tagFor = useCallback((view: ViewTag) => tt(view === 'laptop' ? 'tagDesktop' : view === 'phone' ? 'tagMobile' : 'tagBoth'), [tt]);
   const steps = useMemo(
     () =>
       buildTourSteps(demo, DEMO_TOURS[demo] ?? [], {
@@ -169,7 +212,7 @@ function DemoLayer({ request }: { request: DemoRequest }) {
   // ---- Open / close -----------------------------------------------------------------
   const findOpener = useCallback((): HTMLElement | null => {
     const node = request.opener;
-    if (node?.isConnected) return node;
+    if (node?.isConnected && (node.checkVisibility?.() ?? true)) return node;
     return document.querySelector<HTMLElement>(`[data-demo-opener="${CSS.escape(request.openerKey)}"]`);
   }, [request]);
 
@@ -191,7 +234,9 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     l.cues = [];
     holdHeroEclipse(false);
     restorePage();
-    findOpener()?.focus({ preventScroll: true });
+    const opener = findOpener();
+    if (opener) opener.focus({ preventScroll: true });
+    else focusHomeHeading();
     // The browser's own focus return / history traversal may still move it: once more next frame.
     requestAnimationFrame(() => {
       const { x, y } = life.current.saved;
@@ -207,9 +252,12 @@ function DemoLayer({ request }: { request: DemoRequest }) {
       l.closing = true;
       setPhase('closing');
       if (reason !== 'native') play('close');
-      if (reason !== 'history' && historyToken() === token) {
-        l.ignorePop = true;
-        window.history.back();
+      if (reason !== 'history') {
+        if (request.ownsEntry && currentMarker()?.level === 'view') {
+          // Our entry is the top one: step back onto the home it was opened from.
+          l.ignorePop = true;
+          window.history.back();
+        } else if (!request.ownsEntry) cleanShowroomUrl();
       }
       const parts = layerParts();
       if (reason === 'native' || !parts) {
@@ -220,10 +268,13 @@ function DemoLayer({ request }: { request: DemoRequest }) {
       l.cues.forEach((id) => window.clearTimeout(id));
       l.cues = [];
       l.anims.forEach((a) => a.cancel());
-      l.anims = playClosing(parts, { reduced: prefersReducedMotion(), toHero: request.origin === 'hero' });
+      l.anims = playClosing(parts, {
+        reduced: prefersReducedMotion() || direct,
+        toHero: request.origin === 'hero',
+      });
       Promise.allSettled(l.anims.map((a) => a.finished)).then(finish);
     },
-    [finish, layerParts, play, token, request.origin],
+    [finish, layerParts, play, request.origin, request.ownsEntry, direct],
   );
   const closeRef = useRef(requestClose);
   useLayoutEffect(() => {
@@ -240,8 +291,16 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     l.release = lockScroll();
     if (!d.open) d.showModal();
     heading.current?.focus({ preventScroll: true });
-    if (historyToken() !== token) window.history.pushState({ eclipseDemo: token } satisfies LayerHistoryState, '');
-    const reduced = prefersReducedMotion();
+    // History (showroomHistory.ts owns every push/replace): a new entry with the contract's query,
+    // the selector's entry reused on hand-off, none when the browser's Forward brought us here,
+    // and only our marker when the page loaded with the query already in the URL.
+    const rubro = rubroOfVertical(request.vertical);
+    if (request.entry === 'push') {
+      if (currentMarker()?.level !== 'view') writeView('push', rubro); // (dev StrictMode replays this effect)
+    } else if (request.entry === 'handoff') writeView('replace', rubro);
+    else if (request.entry === 'direct') writeView('mark', rubro);
+    // Direct entries and reduced motion play no film: a short fade, and never a sound on page load.
+    const reduced = prefersReducedMotion() || direct;
     // The centered eclipse is exactly the hero's size (CSS has the same rule as a fallback).
     const size = heroEclipseSize();
     if (size) stage.current?.style.setProperty('--dx-ecl-size', `${size}px`);
@@ -249,12 +308,10 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     l.anims = parts ? playOpening(parts, { reduced, fromHero: request.origin === 'hero' }) : [];
     if (!l.sounded) {
       l.sounded = true;
-      if (reduced) play('open');
-      else
-        l.cues = [
-          window.setTimeout(() => play('glint'), OPEN_CUES.glint),
-          window.setTimeout(() => play('whoosh'), OPEN_CUES.whoosh),
-        ];
+      if (direct) {
+        // no cue: the page just loaded
+      } else if (reduced) play('open');
+      else l.cues = [window.setTimeout(() => play('glint'), OPEN_CUES.glint), window.setTimeout(() => play('whoosh'), OPEN_CUES.whoosh)];
     }
     let live = true;
     Promise.allSettled(l.anims.map((a) => a.finished)).then(() => {
@@ -275,7 +332,7 @@ function DemoLayer({ request }: { request: DemoRequest }) {
         l.ignorePop = false;
         return;
       }
-      if (historyToken() !== token) closeRef.current('history');
+      if (currentMarker()?.level !== 'view') closeRef.current('history');
     };
     // Escape: the tour (when open) prevents this itself; otherwise it is ours to animate.
     const onCancel = (e: Event) => {
@@ -320,15 +377,32 @@ function DemoLayer({ request }: { request: DemoRequest }) {
     ? tAll('whatsapp.wantThis', { business, vertical: verticalName })
     : summary.plan
       ? summary.pieces.length
-        ? t('whatsapp.planExtras', { business, vertical: verticalName, plan: l(summary.plan.name, locale), pieces: names(summary.pieces) })
-        : t('whatsapp.plan', { business, vertical: verticalName, plan: l(summary.plan.name, locale) })
-      : t('whatsapp.pieces', { business, vertical: verticalName, pieces: names(summary.pieces) });
+        ? t('whatsapp.planExtras', {
+            business,
+            vertical: verticalName,
+            plan: l(summary.plan.name, locale),
+            pieces: names(summary.pieces),
+          })
+        : t('whatsapp.plan', {
+            business,
+            vertical: verticalName,
+            plan: l(summary.plan.name, locale),
+          })
+      : t('whatsapp.pieces', {
+          business,
+          vertical: verticalName,
+          pieces: names(summary.pieces),
+        });
 
   const wantThis = (className: string, extra?: Record<string, string>) => (
     <WhatsAppLink
       origin="demo_layer"
       message={message}
-      extra={{ vertical: vertical.id, from: request.origin, plan: summary?.plan?.id ?? 'none' }}
+      extra={{
+        vertical: vertical.id,
+        from: request.origin,
+        plan: summary?.plan?.id ?? 'none',
+      }}
       className={className}
       onClick={() => play('glint')}
       {...extra}
@@ -339,19 +413,18 @@ function DemoLayer({ request }: { request: DemoRequest }) {
   );
 
   return (
-    <dialog
-      ref={dialog}
-      aria-labelledby={titleId}
-      data-demo-layer={demo}
-      data-phase={phase}
-      className="dx-layer"
-      onKeyDown={cycleFocus}
-    >
+    <dialog ref={dialog} aria-labelledby={titleId} data-demo-layer={demo} data-phase={phase} className="dx-layer" onKeyDown={cycleFocus}>
       {/* The opening's stage: the void and THE eclipse, centered, the hero's size (motion.ts). */}
       <div ref={voidEl} aria-hidden className="dx-void" />
       <div ref={stage} aria-hidden className="dx-ecl">
         <Eclipse size="var(--dx-ecl-size)" />
-        <span className="dx-diamond" style={{ left: `${LIMB_POINT.x * 100}%`, top: `${LIMB_POINT.y * 100}%` }}>
+        <span
+          className="dx-diamond"
+          style={{
+            left: `${LIMB_POINT.x * 100}%`,
+            top: `${LIMB_POINT.y * 100}%`,
+          }}
+        >
           <span data-dx-flare className="dx-diamond-flare" />
           <span data-dx-core className="dx-diamond-core" />
         </span>
@@ -400,28 +473,50 @@ function DemoLayer({ request }: { request: DemoRequest }) {
             </div>
           </header>
 
-          <Suspense fallback={<BodyFallback demo={demo} label={t('loading', { business })} />}>
-            <DemoLayerBody
-              demo={demo}
-              vertical={vertical}
-              origin={request.origin}
-              active={phase !== 'closing'}
-              ready={phase !== 'opening'}
-              choice={choice}
-              hasGuide={hasGuide}
-              guideOpen={guide.open}
-              guideRun={guide.run}
-              steps={steps}
-              onGuide={startGuide}
-              onExplore={explore}
-              onGuideClose={endGuide}
-              dialog={getDialog}
-              scroller={getScroller}
-              wantThis={wantThis}
-              blockCtaInView={blockCtaInView}
-              onBlockCta={setBlockCtaInView}
-            />
-          </Suspense>
+          <LayerBoundary
+            fallback={(retry) => (
+              <div role="alert" className="dx-fail" data-dx-fail>
+                <h3 className="display dx-fail-title">{t('loadFail.title')}</h3>
+                <p>{t('loadFail.body')}</p>
+                <div className="dx-fail-actions">
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => {
+                      setBody(loadBody);
+                      retry();
+                    }}
+                  >
+                    {t('loadFail.retry')}
+                  </button>
+                  {wantThis('btn btn-primary')}
+                </div>
+              </div>
+            )}
+          >
+            <Suspense fallback={<BodyFallback demo={demo} label={t('loading', { business })} />}>
+              <Body
+                demo={demo}
+                vertical={vertical}
+                origin={request.origin}
+                active={phase !== 'closing'}
+                ready={phase !== 'opening'}
+                choice={choice}
+                hasGuide={hasGuide}
+                guideOpen={guide.open}
+                guideRun={guide.run}
+                steps={steps}
+                onGuide={startGuide}
+                onExplore={explore}
+                onGuideClose={endGuide}
+                dialog={getDialog}
+                scroller={getScroller}
+                wantThis={wantThis}
+                blockCtaInView={blockCtaInView}
+                onBlockCta={setBlockCtaInView}
+              />
+            </Suspense>
+          </LayerBoundary>
         </div>
       </div>
       <div ref={halo} aria-hidden className="dx-halo" />

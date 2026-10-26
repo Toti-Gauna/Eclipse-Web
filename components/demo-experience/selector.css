@@ -1,0 +1,231 @@
+/*
+ * The rubro selector (SelectorLayer). A native <dialog> in the night theme: the page behind
+ * is dimmed by the dialog's own fade (motion is WAAPI, SelectorLayer.tsx: opacity + a 12 px
+ * rise only). Lit from one side by a still corona glow; nothing here animates by itself.
+ * Two table rows, full width, hairlines between them; the name is the one big moment.
+ */
+.sx-layer {
+  position: fixed;
+  inset: 0;
+  /* 100vw: also covers the scrollbar gutter kept while the page is locked (lib/scroll-lock.ts). */
+  width: 100vw;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: var(--void);
+  color: var(--fg);
+}
+.sx-layer::backdrop {
+  background: transparent;
+}
+.sx-layer[data-phase='closing'] {
+  pointer-events: none;
+}
+
+.sx-surface {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 70% 55% at 100% 0%, rgb(245 185 66 / 0.14), transparent 70%),
+    var(--void);
+}
+
+.sx-bar {
+  flex: none;
+  height: var(--header-h);
+}
+.sx-bar-inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.sx-back {
+  min-height: 44px;
+}
+
+.sx-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-block: clamp(1rem, 5vh, 3.5rem) max(2rem, env(safe-area-inset-bottom));
+}
+.sx-title {
+  margin: 0;
+  max-width: 22ch;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 3.4vw, 2.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.sx-title:focus-visible {
+  outline-offset: 6px;
+}
+.sx-lede {
+  margin: 0.75rem 0 0;
+  max-width: 46ch;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* ---- The two rows -------------------------------------------------------------- */
+.sx-rows {
+  margin: clamp(1.75rem, 6vh, 3.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+.sx-rows > li {
+  border-top: 1px solid var(--line);
+}
+.sx-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.75rem;
+  grid-template-areas:
+    'main glyph'
+    'text glyph';
+  column-gap: 1rem;
+  row-gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  min-height: 88px;
+  padding: 1.25rem 0.25rem;
+  background: none;
+  border: 0;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  isolation: isolate;
+}
+.sx-row::before {
+  /* The warm wash behind a row that is about to be chosen (opacity only). */
+  content: '';
+  position: absolute;
+  inset: 0 -0.75rem;
+  z-index: -1;
+  background: linear-gradient(90deg, rgb(245 185 66 / 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-expo);
+}
+.sx-row:focus-visible::before {
+  opacity: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .sx-row:not([aria-disabled='true']):hover::before {
+    opacity: 1;
+  }
+}
+.sx-row[aria-disabled='true'] {
+  cursor: default;
+  color: var(--fg-muted);
+}
+.sx-row-main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.sx-row-name {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.sx-row-product {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.sx-row-soon {
+  color: var(--fg);
+}
+.sx-row-text {
+  grid-area: text;
+  max-width: 52ch;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.sx-row-glyph {
+  grid-area: glyph;
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--accent);
+  justify-self: end;
+}
+.sx-row-glyph[data-soon] {
+  color: var(--fg-muted);
+}
+.sx-row-glyph > svg {
+  position: absolute;
+  inset: 0;
+}
+.sx-glyph-full {
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-expo);
+}
+.sx-row:focus-visible .sx-glyph-full {
+  opacity: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .sx-row:not([aria-disabled='true']):hover .sx-glyph-full {
+    opacity: 1;
+  }
+}
+.sx-row[aria-disabled='true']:focus-visible .sx-glyph-full {
+  opacity: 0;
+}
+
+/* From 768px: name left, sentence in the middle, glyph at the end of the row. */
+@media (min-width: 768px) {
+  .sx-row {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) 3.5rem;
+    grid-template-areas: 'main text glyph';
+    column-gap: 2rem;
+    min-height: 132px;
+    padding-block: 1.75rem;
+  }
+  .sx-row-glyph {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
+.sx-contact {
+  margin: 1.5rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--fg-muted);
+}
+.sx-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sx-row::before,
+  .sx-glyph-full {
+    transition: opacity 0.12s linear;
+  }
+}

@@ -2,9 +2,7 @@
 
 import { useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Check, SlidersHorizontal } from 'lucide-react';
-import { useExperience } from '@/components/providers/ExperienceProvider';
-import { useSound } from '@/components/sound/SoundContext';
+import { Check } from 'lucide-react';
 import { Money } from '@/components/ui/Money';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { PROCESS_STEPS, stepPhase, type ProcessStep } from '@/components/sections/process/steps';
@@ -39,8 +37,6 @@ export function ProjectBlock({
   const tp = useTranslations('pricing');
   const ts = useTranslations('sections');
   const locale = useLocale() as Locale;
-  const { openBuilder } = useExperience();
-  const { play } = useSound();
   const summary = useMemo(() => projectSummary(vertical), [vertical]);
   const actions = useRef<HTMLDivElement>(null);
 
@@ -153,18 +149,6 @@ export function ProjectBlock({
 
       <div ref={actions} className="dx-actions" data-dx-actions>
         {wantThis('btn btn-primary dx-actions-main', { 'data-dx-cta': 'block' })}
-        <button
-          type="button"
-          className="btn btn-ghost"
-          data-dx-build
-          onClick={() => {
-            play('select');
-            openBuilder('demo', summary.preset);
-          }}
-        >
-          <SlidersHorizontal aria-hidden className="size-4" strokeWidth={1.6} />
-          {t('build')}
-        </button>
       </div>
 
       <ProcessLedger label={ts('labels.process')} />
