@@ -291,7 +291,7 @@ Si el selector, el gateway y la capa de demo empujaran **cada uno** su propio es
 | Necesidad | Sin JS | Evidencia / límite |
 |---|---|---|
 | Entender la propuesta (hero, soluciones, proceso, FAQ, condiciones) | **Se lee** | E1 |
-| Ver precios | **Probable, no verificado.** `Money` formatea con `useCurrency()` (contexto del cliente); el HTML exportado debería traer USD, pero **no se abrió** | Comprobar en el HTML de `out/` en 1.5 (`npm run build` + buscar los importes de `content/plans.json` en `out/es/index.html`) |
+| Ver precios | **Verificado (E2, 26/10/2026, lote 1.4):** el HTML exportado trae los precios (en pesos aproximados) y el plan mensual en US$. Texto anterior: «Probable, no verificado.» `Money` formatea con `useCurrency()` (contexto del cliente); el HTML exportado debería traer USD, pero **no se abrió** | Comprobar en el HTML de `out/` en 1.5 (`npm run build` + buscar los importes de `content/plans.json` en `out/es/index.html`) |
 | Contactar | **Funciona** (WhatsApp y email son enlaces reales) | E1 |
 | CTA principal | Hoy es un enlace a WhatsApp y funciona. El CTA nuevo debe seguir siendo un `<a href>` real (ver §3.1, fila 4) | propuesta |
 | Navegar | En ≥ 1024 px, enlaces del header; en < 1024 px **no hay menú** (el `MobileMenu` es un botón con `<dialog>`): se navega por scroll | E1 |
@@ -370,7 +370,7 @@ Criterio de aceptación sin JS (a comprobar en 1.5 con el HTML exportado): preci
 | Todo contenido histórico vigente tiene destino y enlace | **Cumplido (E1)** | §3: 30 filas; origen en archivo o `content/*.json`. Las 5 demos y las 4 ofertas inactivas figuran como standby e histórico, no borradas |
 | Dos rubros iniciales y cuatro accesos separados | **Cumplido** | R1, R7, §5, §6.2 |
 | Refresh, deep link, Back, Forward y Escape definidos por estado | **Cumplido (especificado)** | §5, §6.2, §7.2 (tabla de eventos) |
-| Sin JS se pueden leer precios y contactar | **Parcial**: contacto y lectura, E1; **precios no verificados** en el HTML exportado | §8; verificación en 1.5 |
+| Sin JS se pueden leer precios y contactar | **Cumplido (E2 en 1.4):** precios en el HTML exportado, 13 enlaces `wa.me` y 2 `mailto:` | §8 y `lote-1.4-motion-direccion-visual.md` §2 |
 | Criterios 30 s / 120 s no se declaran pasados sin personas reales | **Cumplido** | §9: protocolo escrito, no ejecutado |
 | Cada afirmación de funcionamiento con evidencia o rótulo no probada/simulada | **Cumplido** | Niveles E1 y rótulos «propuesto» en todo lo nuevo |
 | Sin gastos, publicaciones ni cambios de alcance implícitos | **Cumplido** | USD 0; nada instalado ni publicado |
