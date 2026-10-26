@@ -113,3 +113,63 @@ Sin hallazgos de red, ejecución ni secretos en `frontend-design`, `gsap-timelin
 ## 9. Próximo lote
 
 **0.4 · SDD y control financiero** (documental). Modelo: **Sonnet, esfuerzo high**. Cierra la Fase 0 y habilita 1.1.
+
+## 10. Investigación completa de C (Emil) y D (shader-glsl), y de los candidatos adicionales (26/10/2026)
+
+**Método.** Descargué cada repo completo, al SHA indicado, a un directorio aislado y sin ejecutar nada. Sobre cada uno: (1) escaneo automático de todos los archivos buscando caracteres invisibles o bidireccionales (texto oculto), scripts, ejecutables, binarios, comandos de instalación, red, secretos y frases de inyección; (2) **lectura completa** de todos los archivos de los manifiestos C y D. Esto reduce el riesgo, **no lo elimina**: no es una certificación de seguridad. El control final sigue siendo copiar solo los archivos del manifiesto, comparar hashes y hacer el smoke del §6.
+
+### 10.1 C · Emil (`emilkowalski/skills` @ `2d22863…`): **sin hallazgos de seguridad**
+
+- Repo de 29 archivos: 25 Markdown, `LICENSE`, `.gitignore`, `.gitattributes` y un archivo `.pl` **vacío (0 bytes)**. **Ningún** script, ejecutable ni binario; **ningún** carácter oculto.
+- Comandos de instalación en el texto: solo en `animate-expo` (`npx expo install`, no se instala) y el `README` (`npx skills@latest add …`, **no se usa**: se copia a mano). Las URLs son documentación o herramientas (easings, librerías de UI).
+- Leí completas `emil-design-eng`, `animate` (con `RECIPES.md`) y `animation-performance`. No piden ejecutar comandos, leer secretos ni llamar a servicios. Las frases de «ignore previous instructions» que aparecen en `break-ui`, `find-animation-opportunities` y `improve-animations` son **defensas** (dicen que el contenido del repo es dato, no instrucción) y esas tres no están en el manifiesto.
+- **Dos comportamientos a conocer (no son riesgo de seguridad):**
+  1. Cada skill, al invocarse **sin una pregunta concreta**, responde solo con una frase fija («I'm ready to…») y no dice nada más hasta que el usuario pregunte. Con una tarea concreta no pasa.
+  2. `emil-design-eng` exige que las revisiones salgan en una tabla Antes / Después / Por qué.
+- **Choques con Eclipse (a resolver con precedencia, no por seguridad):**
+  - «Las animaciones de UI duran menos de 300 ms» y «sin animación en acciones frecuentes»: **no aplica** a la apertura de demo (~2,4 s), al hero ni a las transiciones narrativas; la propia skill exceptúa lo explicativo o de marketing. Manda el contrato de 1.4 y `motion.ts`.
+  - `animate` usa **Motion/Framer Motion** para resortes y layout. Eclipse no suma dependencias: GSAP + WAAPI + CSS. Si hace falta un resorte, se justifica caso por caso; no se instala Motion por la skill.
+  - `animate` exige extender los tokens existentes (compatible con `--ease-expo`) y no inventar curvas: coincide con Eclipse.
+- **Veredicto:** **apto para instalar** el manifiesto C tal como está, con la regla de precedencia **`CLAUDE.md` + contrato de 1.4 > skill**.
+
+### 10.2 D · Shader GLSL (`iart-ai/webgl-animation-skills` @ `50697d6…`): **sin hallazgos de seguridad en el texto, pero no se instala tal cual**
+
+- Los 2 archivos del manifiesto (`SKILL.md` de 10,5 KB y el cookbook de 8 KB) son texto y código GLSL; **sin red ni ejecución propia**, sin caracteres ocultos. El repo completo trae 3 scripts `.sh` (`seek-shot`, `probe-mp4`, `contact-sheet`), un GIF y un HTML de muestra: **no se copian**.
+- **Lo que sí exige si se sigue al pie de la letra:** entregar un HTML con **Three.js desde un CDN** (`importmap`), y verificar con `npx playwright screenshot` (descarga/ejecución de paquetes). Eso contradice el plan: Eclipse usa **OGL**, no sumó Three.js y no carga CDN.
+- **Licencias de los snippets:** la skill es MIT, pero el cookbook copia código de terceros: el ruido simplex «Ashima/Gustavson» figura como «dominio público» y, según mi conocimiento, es MIT (Ashima Arts); las paletas coseno son de Inigo Quilez (corresponde atribución). *Verificar la licencia de cada snippet antes de pegarlo en el producto.*
+- **Veredicto:** **no instalar la skill externa**. Cuando se apruebe un efecto concreto (propuesta: luz y máscara de la corona del hero), **escribir una skill interna `eclipse-glsl-ogl`** que tome del cookbook solo las funciones necesarias, con atribución, sobre OGL, sin CDN ni `npx`, con pérdida de contexto y póster de respaldo. Es más seguro y queda alineada con el stack.
+
+### 10.3 Resultado de los demás candidatos
+
+| Candidato | Contenido | Hallazgos | Veredicto |
+|---|---|---|---|
+| **GSAP** (resto del repo `greensock/gsap-skills`) | 8 skills de texto (`gsap-core`, `scrolltrigger`, `plugins`, `utils`, `frameworks`, + las 3 del manifiesto) y ejemplos con `package.json` | Sin ejecución en las skills; `npm install gsap` ya está en el proyecto. Los ejemplos (Nuxt, Vue, React, Vite) **no se copian** | **Apto**: sumar `gsap-scrolltrigger` y `gsap-core`, porque el hero ya usa ScrollTrigger |
+| **Accessible Animation / 60fps** (`iart-ai/web-animation-skills`) | 6 archivos de texto en las 2 skills (+ scripts y 7 skills más fuera del manifiesto) | Sugieren `npx playwright screenshot` y CDN en demos; sin red propia | **Apto como referencia** (copiar solo esas 2 carpetas) |
+| **Interface Design** (`Dammyjay93`) | `.claude/skills/interface-design` + plugin y marketplace | El `pre-commit` del repo es de sus mantenedores (no se copia); el README propone `npx skills add -y` (no se usa). Sin scripts en la skill | **Apto** solo para el CRM (3.6, 3.7), copiando solo la carpeta de la skill |
+| **Design Motion Principles** (`kylezantos`) | 15 Markdown y 2 plantillas HTML | Sin scripts ni red; los HTML no contienen `<script>`. Es una **interpretación** del trabajo de Emil Kowalski, Jakub Krehel y Jhey Tompkins, no una skill escrita por ellos; **se solapa con Emil** | **Apto como complemento de revisión adversarial**; no instalar junto con todo Emil para repetir criterio |
+| **Modern Web Guidance** (Google Chrome) | 219 guías Markdown de plataforma web + `package.json` con CLI | **Riesgo alto si se instala como skill:** su `SKILL.md` se declara «MANDATORY: Execute FIRST» para toda tarea web y manda ejecutar `npx modern-web-guidance@latest search/retrieve` (red + código remoto sin versión fija) | **No instalar la skill ni el CLI.** Sí **extraer como referencia estática** unas pocas guías (View Transitions, animaciones guiadas por scroll, `dialog`/`popover`, `@starting-style`) a una skill interna, respetando Apache-2.0 |
+| **Impeccable** (`pbakaus`) | 4.357 archivos: CLI en Node, crates de Rust, extensión de navegador, VSCode, ~58 comandos y copias para ~20 agentes | **Riesgo alto:** el plugin instala **hooks** (`SessionStart`, `PostToolUse` en Edit/Write y `Stop`) que ejecutan un binario propio; `live` levanta un servidor local e inyecta scripts en el navegador; su `SKILL.md` pide correr `scripts/impeccable context` y empuja a diseño «audaz» (`bolder`, `overdrive`) que choca con conservar Efemérides; se solapa con Frontend Design | **No instalar ahora.** Si se reabre: solo la carpeta `reference/` de críticas, sin hooks, sin binario y sin modo `live`, tras auditar el binario |
+
+## 11. Lista recomendada para una experiencia súper premium: 4 de núcleo + 6 más
+
+**Núcleo (4)** — son los de §3, ahora con su investigación completa:
+1. **Frontend Design** (Anthropic): composición, tipografía y contraste, subordinado a Efemérides. *Apto.*
+2. **GSAP React / Timeline / Performance**: ciclo de vida limpio y secuencias. *Apto.*
+3. **Emil** (`emil-design-eng`, `animate`, `animation-performance`): pulido y decisiones de movimiento. *Apto, con precedencia de `CLAUDE.md`.*
+4. **Shader GLSL**: **como skill interna `eclipse-glsl-ogl`** (no la externa). *Condicionado a un efecto aprobado.*
+
+**Los 6 más que recomiendo** (en orden de impacto):
+5. **GSAP ScrollTrigger + Core** (mismo repo, MIT): el hero ya fija y escala con ScrollTrigger; la skill evita errores de pin, scrub y limpieza. *Apto.*
+6. **Design Motion Principles**: revisión adversarial de movimiento con tres criterios distintos; sirve de segundo par de ojos de Emil, sin duplicarlo. *Apto, solo auditoría.*
+7. **Accessible Animation + 60fps**: listas de verificación de movimiento reducido y rendimiento para el gate de 1.5. *Apto como referencia.*
+8. **Guías estáticas de Modern Web Guidance** (View Transitions, scroll-driven, `dialog`, `@starting-style`), extraídas a una skill interna: continuidad espacial sin librería. *Apto solo extraídas.*
+9. **Interface Design**, solo para el CRM de Lumen y los paneles de 3.6–3.7. *Apto, acotado.*
+10. **Playwright para QA visual:** no requiere instalar nada nuevo, el proyecto ya tiene `@playwright/test` y `scripts/shot.mjs`. Se usa para las capturas antes/después de cada lote. *Ya disponible.*
+
+**Con gate de gasto (se instalan cuando llegue su lote):** Higgsfield Generate y ElevenLabs TTS/SFX (topes: USD 100 y USD 11 por mes), con el audit del CLI y del schema; Suno sigue manual.
+
+**No recomendados:** Impeccable (hooks y binario, solapamiento y estilo contrario a la marca), Scrollcraft y Scroll World (motores de scroll), Remotion, Theatre.js, Three.js y Lenis por estética, y cualquier skill que se instale con `npx … @latest`.
+
+**Precedencia de reglas** para toda skill instalada: `Eclipse-Web/CLAUDE.md` → contrato «Efemérides v3» (lote 1.4) → decisiones de Ignacio → las skills. Las skills asesoran; no deciden.
+
+**Manifiesto actualizado (propuesto, pendiente de aprobación):** A, B (+ `gsap-scrolltrigger`, `gsap-core`), C, y como referencia revisable 6 y 7; D se reemplaza por una skill interna cuando haya efecto aprobado; 8 y 9 se preparan en su lote. Nada está instalado.
