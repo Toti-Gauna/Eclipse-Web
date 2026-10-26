@@ -131,3 +131,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Reintentos / correcciones propias:** (1) el botón principal decía «Potenciar mi negocio» en los seis niveles: se cambió a «Ver la demo»; (2) el e2e buscaba «Propuesta» y el texto sale en mayúsculas por CSS: se hizo insensible a mayúsculas; (3) un import sin uso. Alcance decidido a partir de una aclaración de Ignacio, sin respuesta explícita al «¿hago el 2.3b?»: queda como PR para su revisión. Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
 
+## 14. Lote 2.4 · Packs inmobiliarios (26/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · medium (según el prompt del lote). **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** `lote-2.4-packs-inmobiliarios.md` (documental), catálogo versionado `estateos/packs-inmobiliarios.v1.json` con digest y 9 pruebas que lo vigilan; modelo de presupuesto con supuestos rotulados; equivalencias con los cupos de los planes; regla de geometría del plano 2D; canales del kit de redes; decisiones D24–D26.
+- **Reintentos / correcciones propias:** dos cifras que había puesto sin respaldo («hasta 6 imágenes de referencia» y «hasta 10 fotos») se quitaron antes del commit porque el prompt no las fija. Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
+
