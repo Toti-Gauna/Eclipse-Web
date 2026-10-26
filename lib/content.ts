@@ -11,6 +11,7 @@ import offersJson from '@/content/offers.json';
 import verticalsJson from '@/content/verticals.json';
 import foundersJson from '@/content/founders.json';
 import unitsJson from '@/content/units.json';
+import linesJson from '@/content/lines.json';
 import ratesFallbackJson from '@/content/rates.fallback.json';
 import legacyJson from '@/content/legacy.json';
 
@@ -56,6 +57,7 @@ export type VerticalId =
   | 'restaurantes'
   | 'academias'
   | 'otro';
+export type LineId = 'saas' | 'agency' | 'studio' | 'academy' | 'equipment';
 export type DemoId = 'clinic' | 'realEstate' | 'gym' | 'shop' | 'restaurant' | 'academy';
 export type OfferId = 'founder' | 'combo-voz' | 'annual' | 'referral';
 
@@ -167,6 +169,11 @@ export interface Vertical {
   id: VerticalId;
   icon: string;
   demo: DemoId | null;
+  /**
+   * Hidden demo kept in the repo (Ignacio, 26/10/2026): never shown in the hero or in the
+   * demos section, nothing deleted. Use `showcaseVerticals` for anything the visitor sees.
+   */
+  standby?: boolean;
   name: Localized;
   longName: Localized;
   business: string | null;
@@ -187,6 +194,21 @@ export interface Vertical {
    * one by one and the builder opens with them.
    */
   project?: { plan: PlanId | null; items: ItemId[] };
+}
+
+/** One of the five lines of Eclipse (content/lines.json). Names and copy live in messages (`offerings.lines.<id>`). */
+export interface Line {
+  id: LineId;
+  /** 'catalog': pieces with a published price exist; 'quote': priced per business. */
+  availability: 'catalog' | 'quote';
+  demo: DemoId | null;
+  examples: ItemId[];
+}
+
+/** A starting point for a small business (content/lines.json `needs`): orientation, not a priced plan. */
+export interface LineNeed {
+  id: 'start' | 'order' | 'grow';
+  lines: LineId[];
 }
 
 export interface FounderSlot {
@@ -228,8 +250,12 @@ export const careHoursMonthly = maintenanceJson.hoursMonthly;
 export const depositPct = plansJson.depositPct;
 export const offers = offersJson.offers as Offer[];
 export const verticals = verticalsJson.verticals as Vertical[];
+/** Rubros whose demo is on show: with a demo and not in standby. */
+export const showcaseVerticals = verticals.filter((v) => v.demo && !v.standby);
 export const founders = foundersJson as { total: number; slots: FounderSlot[] };
 export const units = unitsJson.units as Unit[];
+export const lines = linesJson.lines as Line[];
+export const lineNeeds = linesJson.needs as LineNeed[];
 export const fallbackRates: Rates = {
   ARS: ratesFallbackJson.ARS,
   BRL: ratesFallbackJson.BRL,

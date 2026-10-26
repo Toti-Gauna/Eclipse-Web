@@ -1,0 +1,72 @@
+{
+  "$comment": "Las cinco líneas de Eclipse (26/10/2026): SaaS, Agency, Studio, Academy y Equipamiento; sirven a cualquier rubro. Intelligence es transversal (no es una sexta línea). 'availability': 'catalog' = hay piezas con precio publicado en items.json; 'quote' = se cotiza según el negocio (no hay precio público). 'examples': piezas de items.json que se muestran como ejemplo de la línea (nombres desde el catálogo; sin precios acá). 'demo': demo que ilustra la línea (null = ninguna). Orientación comercial mínima de lote 1.2; la matriz completa necesidades/líneas/capacidades es del lote 2.1. 'needs': tres puntos de partida (empezar, ordenar, crecer) con las líneas que combinan; son orientación, no planes con precio.",
+  "lines": [
+    {
+      "id": "saas",
+      "availability": "catalog",
+      "demo": "realEstate",
+      "examples": [
+        "crm",
+        "turnos",
+        "pedidos",
+        "dashboard"
+      ]
+    },
+    {
+      "id": "agency",
+      "availability": "catalog",
+      "demo": null,
+      "examples": [
+        "chatbot",
+        "voz",
+        "app-fase"
+      ]
+    },
+    {
+      "id": "studio",
+      "availability": "catalog",
+      "demo": null,
+      "examples": [
+        "landing",
+        "web-multi",
+        "trailer"
+      ]
+    },
+    {
+      "id": "academy",
+      "availability": "quote",
+      "demo": null,
+      "examples": []
+    },
+    {
+      "id": "equipment",
+      "availability": "quote",
+      "demo": null,
+      "examples": []
+    }
+  ],
+  "needs": [
+    {
+      "id": "start",
+      "lines": [
+        "saas",
+        "studio"
+      ]
+    },
+    {
+      "id": "order",
+      "lines": [
+        "saas",
+        "agency"
+      ]
+    },
+    {
+      "id": "grow",
+      "lines": [
+        "studio",
+        "saas",
+        "academy"
+      ]
+    }
+  ]
+}

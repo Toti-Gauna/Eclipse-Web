@@ -6,10 +6,10 @@ import { Hero } from '@/components/hero/Hero';
 import { SkyTransition } from '@/components/sections/SkyTransition';
 import { ExamplesSection } from '@/components/sections/examples/ExamplesSection';
 import { ServicesSection } from '@/components/sections/services/ServicesSection';
+import { PymeSection } from '@/components/sections/pyme/PymeSection';
 import { PricingSection } from '@/components/pricing/PricingSection';
 import { ProblemSection } from '@/components/sections/problem/ProblemSection';
 import { ProcessSection } from '@/components/sections/process/ProcessSection';
-import { FoundersSection } from '@/components/sections/founders/FoundersSection';
 import { AgentSection } from '@/components/sections/agent/AgentSection';
 import { EphemerisRail } from '@/components/ui/EphemerisRail';
 import { ContentVisibilitySync } from '@/components/motion/ContentVisibilitySync';
@@ -28,14 +28,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
       <Hero />
       <SkyTransition from="void" to="night" />
-      {/* v3 order (ids unchanged; components/ui/sectionIndex.ts numbers them 01–08):
-          demos → soluciones → [sunrise] → precios → calculadora → cómo trabajamos →
-          fundadores → preguntas y contacto. */}
-      <LazyHydrate className="cv-section">
-        <ExamplesSection />
-      </LazyHydrate>
+      {/* v3e order (ids unchanged; components/ui/sectionIndex.ts numbers them 01–08):
+          qué ofrecemos → para tu PyME → demos → [sunrise] → precios → calculadora →
+          cómo trabajamos → preguntas y contacto (fundadores salió el 26/10/2026: decisión de Ignacio). */}
       <LazyHydrate className="cv-section">
         <ServicesSection />
+      </LazyHydrate>
+      <LazyHydrate className="cv-section">
+        <PymeSection />
+      </LazyHydrate>
+      <LazyHydrate className="cv-section">
+        <ExamplesSection />
       </LazyHydrate>
       <SkyTransition from="night" to="dawn" />
       <LazyHydrate className="cv-section">
@@ -46,9 +49,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </LazyHydrate>
       <LazyHydrate className="cv-section">
         <ProcessSection />
-      </LazyHydrate>
-      <LazyHydrate className="cv-section">
-        <FoundersSection />
       </LazyHydrate>
       <LazyHydrate className="cv-section">
         <AgentSection />

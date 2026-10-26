@@ -1,19 +1,19 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { Plus } from 'lucide-react';
-import { verticals, l } from '@/lib/content';
+import { verticals, showcaseVerticals, l } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
 import { useExperience } from '@/components/providers/ExperienceProvider';
 import { openerKey, preloadDemoExperience } from '@/components/demo-experience/store';
 import { useHeroState } from './HeroState';
 
 /**
- * "O mirá una demo de tu rubro, ahora" (the hero's second way in, under "Pedí tu demo"): one
- * instrument key per rubro (01 Clínicas … 07 Otro). Hovering or focusing a key turns
- * the dial around the eclipse to its number; pressing it records the rubro and opens its
- * demo in the "Ver demo" layer, born from the key (or, for "Otro", opens "Armá tu plan").
- * The last chosen rubro stays lit (`data-chosen`, not a second solid amber button).
+ * "O mirá una demo ahora" (the hero's second way in, under the primary CTA): one instrument
+ * key per demo on show (`showcaseVerticals`; today Inmobiliarias, number 02 on the dial — the
+ * demos in standby and "Otro" have no key). Hovering or focusing a key turns the dial around
+ * the eclipse to its number; pressing it records the rubro and opens its demo in the "Ver
+ * demo" layer, born from the key. The chosen rubro stays lit (`data-chosen`, not a second
+ * solid amber button).
  *
  * Phones: two tidy rows that scroll sideways (snap, edge fade). From md up the
  * keys simply wrap in the copy column.
@@ -33,7 +33,7 @@ export function VerticalChips() {
       <div className="hero-chips-scroller no-scrollbar">
         <ul className="hero-chips" onPointerLeave={() => aim(null, 'hover')}>
           {verticals.map((v, i) => {
-            const other = v.id === 'otro';
+            if (!showcaseVerticals.includes(v)) return null;
             const demo = v.demo;
             const preload = demo ? () => preloadDemoExperience(demo, locale) : undefined;
             return (
@@ -42,7 +42,7 @@ export function VerticalChips() {
                   type="button"
                   data-hero-chip={v.id}
                   data-demo-opener={demo ? openerKey('hero', demo) : undefined}
-                  data-chosen={vertical === v.id && !other ? '' : undefined}
+                  data-chosen={vertical === v.id ? '' : undefined}
                   aria-haspopup="dialog"
                   onPointerEnter={(e) => {
                     preload?.();
@@ -61,7 +61,6 @@ export function VerticalChips() {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <span className="hero-chip-name">{l(v.name, locale)}</span>
-                  {other ? <Plus aria-hidden className="hero-chip-plus" strokeWidth={1.5} /> : null}
                 </button>
               </li>
             );

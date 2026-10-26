@@ -16,6 +16,7 @@ export const SECTION_IDS = {
   hero: 'inicio',
   problem: 'problema',
   services: 'servicios',
+  pyme: 'pyme',
   examples: 'ejemplos',
   process: 'proceso',
   pricing: 'precios',

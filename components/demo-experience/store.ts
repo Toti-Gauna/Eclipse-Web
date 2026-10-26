@@ -6,7 +6,7 @@ import { demoLoaders } from '@/components/demos/registry';
 import { track } from '@/lib/analytics';
 
 /** Where a demo was opened from (analytics `origin`, builder source, focus return). */
-export type DemoOrigin = 'hero' | 'examples';
+export type DemoOrigin = 'hero' | 'examples' | 'offerings';
 
 export interface DemoRequest {
   vertical: VerticalId;

@@ -9,6 +9,7 @@ export type WhatsAppOrigin =
   | 'calculator'
   | 'examples'
   | 'examples_not_listed'
+  | 'offerings'
   | 'demo_layer'
   | 'demo'
   | 'plan_card'

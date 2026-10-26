@@ -1,0 +1,353 @@
+/*
+ * «Qué ofrecemos» (components/sections/services/LinesIndex.tsx): the five lines as an index,
+ * one open at a time (always one), with a decorative sticky stage on desktop. It reuses the
+ * stage frame of the pieces index (`.svc-stage*`, services.css). Only opacity / transform are
+ * animated, and only after the visitor picks a line (`data-touched`).
+ */
+
+.off-index {
+  margin-top: 40px;
+}
+@media (min-width: 1024px) {
+  .off-index {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 56px;
+    align-items: start;
+    margin-top: 56px;
+  }
+}
+
+.off-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.off-row {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+/* The open line is lit: an amber hairline draws over its top edge. */
+.off-row::before {
+  content: '';
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, var(--corona), rgb(245 185 66 / 0.15));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.8s var(--ease-expo);
+  pointer-events: none;
+}
+.off-row[data-open]::before {
+  transform: scaleX(1);
+}
+
+.off-head {
+  margin: 0;
+  font: inherit;
+}
+.off-head-btn {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr) 1.75rem;
+  grid-template-areas:
+    'glyph name chev'
+    '.     line line';
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 6px;
+  width: 100%;
+  min-height: 64px;
+  padding: 20px 0 18px;
+  text-align: left;
+  color: var(--fg);
+}
+.off-head-btn:focus-visible {
+  outline: none;
+}
+.off-head-btn:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: 4px -8px;
+  border-radius: 12px;
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.off-glyph {
+  grid-area: glyph;
+  color: var(--fg-muted);
+  transition: color 0.3s ease;
+}
+.off-name {
+  grid-area: name;
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 8.5vw, 3.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--fg-muted);
+  transition: color 0.3s ease;
+}
+.off-line {
+  grid-area: line;
+  max-width: 34rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
+  transition: color 0.3s ease;
+}
+.off-chevron {
+  grid-area: chev;
+  justify-self: end;
+  width: 20px;
+  height: 20px;
+  color: var(--fg-muted);
+  transition: transform 0.5s var(--ease-expo);
+}
+.off-row[data-open] .off-glyph {
+  color: var(--accent);
+}
+.off-row[data-open] .off-name,
+.off-row[data-open] .off-line {
+  color: var(--fg);
+}
+.off-row[data-open] .off-chevron {
+  transform: rotate(180deg);
+}
+@media (hover: hover) {
+  .off-head-btn:hover .off-name,
+  .off-head-btn:hover .off-line {
+    color: var(--fg);
+  }
+  .off-head-btn:hover .off-glyph {
+    color: var(--accent);
+  }
+}
+@media (min-width: 1024px) {
+  .off-head-btn {
+    grid-template-columns: 1.6rem minmax(0, 1fr);
+    grid-template-areas:
+      'glyph name'
+      '.     line';
+    column-gap: 18px;
+    padding: 26px 0 22px;
+  }
+  .off-name {
+    font-size: clamp(2.75rem, 3.4vw, 3.5rem);
+  }
+  .off-line {
+    font-size: 1rem;
+  }
+  .off-chevron {
+    display: none;
+  }
+}
+
+/* ---- Open panel --------------------------------------------------------- */
+.off-panel {
+  padding: 0 0 28px;
+}
+.off-panel[hidden] {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .off-panel {
+    padding: 0 0 34px calc(1.6rem + 18px);
+  }
+}
+.off-index[data-touched] .off-row[data-open] .off-panel > * {
+  animation: off-in 0.28s var(--ease-expo) both;
+}
+.off-index[data-touched] .off-row[data-open] .off-panel > :nth-child(2) {
+  animation-delay: 0.035s;
+}
+.off-index[data-touched] .off-row[data-open] .off-panel > :nth-child(3) {
+  animation-delay: 0.07s;
+}
+.off-index[data-touched] .off-row[data-open] .off-panel > :nth-child(4) {
+  animation-delay: 0.105s;
+}
+/* Reduced motion = fewer and gentler, not zero: a plain fade, no movement (Emil, `animate` §7). */
+@media (prefers-reduced-motion: reduce) {
+  .off-index[data-touched] .off-row[data-open] .off-panel > * {
+    animation: off-fade 0.15s ease both;
+    animation-delay: 0s;
+  }
+}
+@keyframes off-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes off-fade {
+  from {
+    opacity: 0;
+  }
+}
+.off-detail {
+  max-width: 36rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+.off-avail {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+.off-avail::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--fg-muted);
+}
+.off-avail[data-availability='catalog']::before {
+  border-color: var(--corona);
+  background: var(--corona);
+}
+.off-examples {
+  margin-top: 18px;
+}
+.off-examples-title {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.off-examples ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.off-examples li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9375rem;
+  color: var(--fg);
+}
+.off-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+  margin-top: 14px;
+}
+.off-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: rgb(245 185 66 / 0.4);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.25s ease;
+}
+.off-action svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+.off-action:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ---- Typographic stage (lines with no product to sketch) --------------------- */
+.off-stage-type {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  min-height: 21rem;
+  padding: 28px;
+  text-align: center;
+  color: var(--accent);
+}
+.off-stage-name {
+  margin: 0;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  line-height: 1;
+  color: var(--fg);
+}
+.off-stage-avail {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* ---- The pieces index, folded under the lines ---------------------------------- */
+.off-pieces {
+  margin-top: 56px;
+  border-top: 1px solid var(--line);
+}
+.off-pieces-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  padding: 14px 0;
+  cursor: pointer;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4.5vw, 2rem);
+  line-height: 1.1;
+  color: var(--fg);
+  list-style: none;
+}
+.off-pieces-toggle::-webkit-details-marker {
+  display: none;
+}
+.off-pieces-toggle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+.off-pieces-toggle svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--fg-muted);
+  transition: transform 0.5s var(--ease-expo);
+}
+.off-pieces[open] .off-pieces-toggle svg {
+  transform: rotate(180deg);
+}
+.off-pieces-body {
+  padding-top: 24px;
+}
+.off-intelligence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 18px;
+  margin-top: 28px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line);
+}
+.off-intelligence-name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--fg);
+}
+.off-intelligence-text {
+  margin: 0;
+  max-width: 40rem;
+  font-size: 0.9375rem;
+  color: var(--fg-muted);
+}

@@ -12,6 +12,7 @@ export type AnalyticsEvent =
   | 'builder_item_toggled'
   | 'builder_sent'
   | 'founder_cta_clicked'
+  | 'hero_cta_clicked'
   | 'whatsapp_opened'
   | 'locale_changed'
   | 'currency_changed';

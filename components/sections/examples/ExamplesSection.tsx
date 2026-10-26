@@ -10,7 +10,7 @@ import { SectionMark } from '@/components/ui/SectionMark';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { TRAILER_DURATION } from '@/components/trailers/constants';
 import { DEMO_HOURS } from '@/components/sections/process/steps';
-import { verticals } from '@/lib/content';
+import { showcaseVerticals } from '@/lib/content';
 import { DemoTheater } from './DemoTheater';
 
 /**
@@ -24,7 +24,7 @@ export function ExamplesSection() {
   const t = useTranslations('examples');
   // "Lo armamos en 48 h." wraps as one unit instead of leaving "Lo" alone at a line end.
   const emUnit = (chunks: ReactNode) => <em className="inline-block">{chunks}</em>;
-  const ids = verticals.filter((v) => v.id !== 'otro' && v.demo && v.business && v.keyNumber).map((v) => v.id);
+  const ids = showcaseVerticals.filter((v) => v.business && v.keyNumber).map((v) => v.id);
 
   const more = (
     <div className="ex-more-card">

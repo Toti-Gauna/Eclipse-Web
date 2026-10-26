@@ -1,8 +1,9 @@
 {
-  "$comment": "Rubros del hero, la calculadora y la sección Ejemplos. Los negocios son ficticios y siempre se rotulan como Demo. 'calculator' son los valores por defecto (ticket en USD). 'otro' no tiene demo: abre 'Armá tu plan'. 'project' (v3): piezas que muestra la demo y, solo si el 'audience' aprobado de un paquete nombra el rubro, ese paquete (si no, null; a validar por Ignacio). project (16/10/2026): la demo es un producto existente → se contrata como 'adaptacion'; 'items' = canales que la demo SIMULA (voz, chatbot, WhatsApp): se muestran como complementos a validar y nunca se preseleccionan.",
+  "$comment": "Rubros del hero, la calculadora y la sección Ejemplos. Los negocios son ficticios y siempre se rotulan como Demo. 'calculator' son los valores por defecto (ticket en USD). 'otro' no tiene demo (hoy no se ofrece como entrada directa). 'standby' (26/10/2026, decisión de Ignacio): demo oculta, conservada en el repo (código, copy, tests y registro intactos) para reutilizarla en otros productos; no se muestra en el hero ni en Ejemplos. 'project' (v3): piezas que muestra la demo y, solo si el 'audience' aprobado de un paquete nombra el rubro, ese paquete (si no, null; a validar por Ignacio). project (16/10/2026): la demo es un producto existente → se contrata como 'adaptacion'; 'items' = canales que la demo SIMULA (voz, chatbot, WhatsApp): se muestran como complementos a validar y nunca se preseleccionan.",
   "verticals": [
     {
       "id": "clinicas",
+      "standby": true,
       "icon": "Stethoscope",
       "demo": "clinic",
       "name": {
@@ -119,6 +120,7 @@
     },
     {
       "id": "gimnasios",
+      "standby": true,
       "icon": "Dumbbell",
       "demo": "gym",
       "name": {
@@ -176,6 +178,7 @@
     },
     {
       "id": "tiendas",
+      "standby": true,
       "icon": "ShoppingBag",
       "demo": "shop",
       "name": {
@@ -234,6 +237,7 @@
     },
     {
       "id": "restaurantes",
+      "standby": true,
       "icon": "UtensilsCrossed",
       "demo": "restaurant",
       "name": {
@@ -291,6 +295,7 @@
     },
     {
       "id": "academias",
+      "standby": true,
       "icon": "GraduationCap",
       "demo": "academy",
       "name": {

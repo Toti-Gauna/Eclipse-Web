@@ -30,7 +30,7 @@ export interface HeroMotionBus {
 interface HeroStateValue {
   /**
    * A rubro key was pressed: records the vertical (calculator, WhatsApp messages) and opens
-   * its demo in the "Ver demo" layer from the key (or "Armá tu plan" for "Otro").
+   * its demo in the "Ver demo" layer from the key.
    */
   choose: (id: VerticalId, opener: HTMLElement) => void;
   bus: React.RefObject<HeroMotionBus>;
@@ -48,7 +48,7 @@ const HeroStateContext = createContext<HeroStateValue | null>(null);
 
 /** Hero-local state: the dial and the motion bus. The demo itself opens in the shared layer. */
 export function HeroStateProvider({ children }: { children: ReactNode }) {
-  const { selectVertical, openBuilder } = useExperience();
+  const { selectVertical } = useExperience();
   const bus = useRef<HeroMotionBus>({ scroll: 0, scrollMoon: { x: 0, y: 0 }, revealMoon: { x: 0, y: 0 } });
   const dial = useRef<DialController | null>(null);
   const aimed = useRef<{ hover: VerticalId | null; focus: VerticalId | null; open: VerticalId | null }>({
@@ -99,13 +99,10 @@ export function HeroStateProvider({ children }: { children: ReactNode }) {
     (id, opener) => {
       selectVertical(id, 'hero');
       const demo = verticalById(id)?.demo;
-      if (id === 'otro' || !demo) {
-        openBuilder('hero_other');
-        return;
-      }
+      if (!demo) return;
       openDemoExperience({ vertical: id, demo, origin: 'hero' }, opener);
     },
-    [selectVertical, openBuilder],
+    [selectVertical],
   );
 
   const value = useMemo(() => ({ choose, bus, aim, registerDial }), [choose, aim, registerDial]);

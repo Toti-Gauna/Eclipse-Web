@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import { ScrollTrigger } from '@/components/motion/gsap';
 import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
 import { LIGHT_ZONES_EVENT } from './EphemerisRail';
-import { foundersState } from '@/lib/founders';
 import { SECTION_KEYS, phaseAt, sectionDomId, type SectionKey } from './sectionIndex';
 import './ephemeris-rail.css';
 
@@ -43,9 +42,7 @@ export default function EphemerisRailView() {
   const corona = useRef<SVGGElement>(null);
   const head = useRef<HTMLSpanElement>(null);
   const maskId = `eph${useId().replace(/[^a-zA-Z0-9_-]/g, '')}-moon`;
-  const clients = foundersState().allFilled;
-
-  const label = (key: SectionKey) => (key === 'founders' && clients ? t('clients') : t(`labels.${key}`));
+  const label = (key: SectionKey) => t(`labels.${key}`);
 
   useEffect(() => {
     let tops: number[] = [];
@@ -85,7 +82,7 @@ export default function EphemerisRailView() {
         corona.current?.setAttribute('opacity', Math.min(1, Math.max(0, (phase - 0.9) / 0.08)).toFixed(2));
       }
 
-      // Over a light zone (pricing, founders, final CTA, footer, the hero's demo light)?
+      // Over a light zone (pricing, final CTA, footer, the hero's demo light)?
       let over = false;
       for (const [a, b] of zones) {
         if (a <= line && b >= line) {

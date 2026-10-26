@@ -74,3 +74,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Uso visible antes:** entrada 15.414 · salida 404.016 · caché 64.412.618 / 2.259.637 · `cost_usd` 19,13 (acumulado de sesión). **Después:** la herramienta devolvió **los mismos valores** a las 14:47 UTC (su campo de uso no se actualizó durante el lote): **consumo de la intervención no disponible**.
 - **Trabajo hecho por Opus en lugar de Sonnet:** también el baseline (capturas y mediciones), que el plan híbrido asignaba a Sonnet, porque Ignacio pidió avanzar en el mismo turno.
 - **Aceptación:** pendiente de Ignacio. La puerta estética real se pasa en 1.2/1.3 contra el baseline. Cada una se registra aquí con la ficha de seis campos (lote · problema · evidencia de entrada · beneficio · entrega · criterio de salida) y modelo efectivo, esfuerzo, hora, uso antes/después y aceptación.
+
+## 6. Lote 1.2 · Home, loader y hero (26/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high (Ignacio volvió con `/model` tras 1.4). **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** código de la home + `lote-1.2-home-loader-hero.md`; rúbrica 12/14 contra el baseline de 1.4. PR abierto, sin mergear.
+- **Reintentos / correcciones propias antes del commit:** titular en portugués acortado (4 líneas → 3); ajuste de `lines.css`; chips del chat del agente filtrados a los rubros vigentes (B3); 6 pruebas de e2e actualizadas por el cambio de estructura. Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
