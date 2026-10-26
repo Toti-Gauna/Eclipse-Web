@@ -7,7 +7,7 @@
 
 - **Qué cambió:** la web actual (1.2 + 1.3) se comparó contra la anterior a 1.2 (`6e34310`) con la misma matriz, los mismos scripts y el mismo método: **150 celdas** (caso × ancho × preferencia) sin desbordes ni errores; teclado, History, deep links, cinco aperturas sin acumulación, fallos de red/chunk/medios y **HTML sin JavaScript** probados. Salieron **5 defectos reales** y los cinco quedaron corregidos y re-medidos: los enlaces con `#ancla` aterrizaban hasta ~3.000 px lejos (P1, ya ocurría antes), los enlaces del header bajaban a 2,2:1 de contraste (P1, ya ocurría antes), el header del portal parpadeaba en tema oscuro (P2), tres animaciones infinitas fuera de pantalla (P2) y un texto que prometía una herramienta dormida (P2). **Cero P0/P1 abiertos.**
 - **Qué quedó abierto:** las tareas largas de la primera bajada subieron en la mediana (+189 ms celular, +169 ms escritorio; A2) y falta atribuirles causa; La **prueba de usabilidad con 5 personas no se hizo** (no hay participantes: queda «no comprobada»). Solo se probó en Chromium: sin Safari/iPad reales, sin Firefox/WebKit, sin lector de pantalla, sin INP (el laboratorio no lo mide).
-- **Qué necesita el OK de Ignacio:** aprobar el PR. Habilita la **Fase 2** (2.1 en adelante) y, si confirmás **D11**, un lote nuevo «1.6 · Repo y subdominio EstateOS» antes de la Fase 2 (§9).
+- **Qué necesita el OK de Ignacio:** aprobar el PR. Habilita la **Fase 2** (2.1 en adelante) y el lote nuevo **1.6 · Repo y subdominio EstateOS** (D11, ya aceptado) antes de la Fase 2 (§12).
 
 ## 1. Registro de entrada (G0)
 
@@ -178,5 +178,5 @@ Honestidad: «Ver demo» y el selector rotulan «Demo»; Ecommerce dice «Próxi
 ## 12. Handoff
 
 - **Habilita la Fase 2** (2.1 · Arquitectura comercial, Sonnet · high).
-- **D11 (propuesta de Ignacio, 26/10/2026, pendiente de confirmar):** EstateOS en **repositorio y subdominio propios** (Hostinger; el subdominio ya existe). Efectos: 3.5–3.9 se construirían en el repo nuevo; 4.1 consolida allí; 4.3 se reduce; la fila «Inmobiliarias» del selector pasaría a enlazar al subdominio (la demo de Lumen actual queda de respaldo); `?rubro&vista&area` se muda al sitio nuevo e idioma y moneda viajan por la URL. Faltan nombre del repo, dominio exacto, el lote («1.6 · Repo y subdominio EstateOS» antes de la Fase 2, recomendado) y el permiso para crear el repo.
+- **D11 (resuelta por Ignacio, 26/10/2026): EstateOS en repositorio y subdominio propios.** Repo **`roofy`** «por ahora» y dominio **`roofy.eclipse-business.com`** (ya creado en Hostinger). Nuevo lote **1.6 · Repo y subdominio EstateOS** (Sonnet · high) entre 1.5 y 2.1: esqueleto, publicación de prueba y contrato de enlace con Eclipse-Web. **Ignacio crea el repositorio cuando se llegue al 1.6**; hasta entonces no se crea ni se toca nada fuera de Eclipse-Web. Efectos en 3.5–3.9, 4.1, 4.3 y el selector: ver `lote-0.4-sdd-control-financiero.md`. El modal «¿Cómo la querés ver?» («Ver con guía» / «Ver por mi cuenta») pasa a ser la primera pantalla del sitio nuevo.
 - Scripts reutilizables de este QA: `docs/v3/qa-1.5/scripts/` (matriz, robustez, contraste, rendimiento, anclas, fugas).

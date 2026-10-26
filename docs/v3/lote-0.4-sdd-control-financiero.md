@@ -112,6 +112,7 @@ Fuente: «Orden de ejecución y entregables» (Notion, 24/10/2026). El **orden n
 | 7 | **1.2** Home, loader y hero | 1.1, 1.4 | Sonnet · high | Ajuste local de portada sobre componentes existentes, capturas/QA, inventario conservado | **aceptado** (PR #18 mergeado por Ignacio, 26/10/2026; `lote-1.2-home-loader-hero.md`) |
 | 8 | **1.3** Header y selector inmersivo | 1.2, 1.4 | Sonnet · high | Selector/header integrados localmente con prueba de History, foco, fallback y captura | verificado local (26/10/2026); PR a la espera de Ignacio (`lote-1.3-header-selector.md`) |
 | 9 | **1.5** QA visual y rendimiento | 1.2, 1.3 | Sonnet · high | Informe de QA, capturas, métricas y defectos por severidad | especificado |
+| 9.1 | **1.6** Repo y subdominio EstateOS (nuevo, D11) | 1.5 | Sonnet · high | Esqueleto del repo `roofy`, publicación de prueba en `roofy.eclipse-business.com` y contrato de enlace con Eclipse-Web (idioma y moneda por URL) | especificado (propuesto y aceptado por Ignacio, 26/10/2026; el repo lo crea Ignacio cuando se llegue) |
 | 10 | **2.1** Arquitectura comercial | 0.4, 1.1 | Sonnet · high | Matriz necesidades/líneas/capacidades y copy con fuentes (cambios tras el gate 1.5) | especificado |
 | 11 | **2.2** Precios y catálogo coherente | 2.1 | Sonnet · high | Catálogo aprobado conciliado en cambio revisable; comparador v3 con escenarios de costos | especificado |
 | 12 | **2.3** EstateOS · planes y bienvenida | 0.4, 2.1, 2.2 | Sonnet · high | Seis niveles, cuotas propuestas, economía, video de bienvenida, configurador | especificado |
@@ -121,7 +122,7 @@ Fuente: «Orden de ejecución y entregables» (Notion, 24/10/2026). El **orden n
 | 16 | **3.2** Imágenes clave | 3.1 | Sonnet · medium | Seis imágenes aprobadas y manifest, o paquete con bloqueo explícito de generación (gasto de imagen) | especificado |
 | 17 | **3.3** Producción Higgsfield | 3.2 | Sonnet · high | Clips 01 y 03 aprobados, masters/posters, manifest, parámetros y costo medido (schema/quote/tope) | especificado |
 | 18 | **3.4** Locución y sonido | 3.1 | Sonnet · medium | Cue sheet, voz/stems si se autorizaron, transcripciones y derechos (sonido actual como fallback) | especificado |
-| 19 | **3.5** Integración interactiva | 1.5, 3.1 | Sonnet · high | Gateway piloto y recorrido integrado con pruebas, capturas y manifest (assets 3.3/3.4 o fallback declarado) | especificado |
+| 19 | **3.5** Integración interactiva | 1.5, 1.6, 3.1 | Sonnet · high | Gateway piloto y recorrido integrado con pruebas, capturas y manifest (assets 3.3/3.4 o fallback declarado) | especificado |
 | 20 | **3.6** CRM y flujos demostrativos | 3.5 | Sonnet · high | CRM demostrativo ampliado solo donde faltaba, pruebas y matriz de capacidades | especificado |
 | 21 | **3.7** Presentación de propiedades | 3.6 | Sonnet · medium | Ficha completa, materiales vinculados, plano válido o estado honesto, pruebas y manifest | especificado |
 | 22 | **3.8** Intelligence inmobiliario | 3.5 | Sonnet · high | Módulo con fixture/tabla, cartografía si se validó, registro de fuentes/bloqueos | especificado |
@@ -132,7 +133,9 @@ Fuente: «Orden de ejecución y entregables» (Notion, 24/10/2026). El **orden n
 | 27 | **4.4** Restaurantes · plan siguiente | 4.1, 4.3 | Sonnet · medium | Plan de expansión con descubrimiento y presupuesto por validar | especificado |
 | 28 | **4.5** Ecommerce y próximas industrias | 4.4 | Sonnet · medium | Plan de ecommerce y cola posterior con criterios de activación | especificado |
 
-**Verificación (script, ejecutado en este lote, 26/10/2026):** 28 lotes, 42 dependencias, **0 violaciones**: toda dependencia aparece antes del lote que la usa, así que el grafo es **acíclico**. Se verificó contra la tabla de Notion, no contra el estado real de cada lote.
+**D11 (Ignacio, 26/10/2026): EstateOS en repositorio y subdominio propios.** Nombre del repo **`roofy`** «por ahora» y dominio `roofy.eclipse-business.com` (el subdominio ya está creado en Hostinger). Efectos: el lote **1.6** (nuevo, entre 1.5 y 2.1) deja el esqueleto y la publicación de prueba; **3.5–3.9** construyen EstateOS en ese repo; **4.1** consolida allí; **4.3** se reduce a lo que falte de reutilización; la fila «Inmobiliarias» del selector de Eclipse-Web pasa a enlazar al subdominio (la demo de Lumen actual queda de respaldo hasta que esté publicado). Ignacio crea el repositorio cuando se llegue al 1.6. «Roofy» aparece en Notion como otro proyecto fuera de alcance: aquí es solo el nombre técnico del repo y del subdominio (a confirmar si se renombra).
+
+**Verificación (script, ejecutado en este lote, 26/10/2026, antes de agregar 1.6):** 28 lotes, 42 dependencias, **0 violaciones**: toda dependencia aparece antes del lote que la usa, así que el grafo es **acíclico**. Se verificó contra la tabla de Notion, no contra el estado real de cada lote.
 
 **Notas de lectura:**
 - Las fases 2, 3 y 4 listan sus lotes en orden lineal (2.1→2.5, 3.1→3.9, 4.1→4.5). Se **conserva el orden lineal** como orden de ejecución aunque varias dependencias sean más débiles, para mantener «un lote activo por vez».
