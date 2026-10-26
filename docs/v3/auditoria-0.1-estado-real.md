@@ -354,3 +354,18 @@ Ignacio compartió la visión completa del programa. Contrasté sus cambios cont
 1. *Dónde viven los módulos reales.* Notion (anexo C, S1) exige aislamiento multiempresa contra un backend. Con la decisión de §17.1 (EstateOS es una demo sin BE y los pagos se derivan a la app de Eclipse), mi lectura es que panel del propietario, chats, suscripciones y chatbot se construirían después en la plataforma de Eclipse con un BE multiempresa. *Es una inferencia mía; se confirma en el SDD de S1.*
 2. *Alcance económico:* un panel con cobros dentro de USD 75 y un chatbot dentro de USD 200 sin costo de proveedor definido. Notion lo declara pendiente; no se publica como disponible ni como rentable.
 3. El texto de contexto termina con «el primer paso sigue siendo 0.1»: está superado, 0.1 se cerró en E1 (§15.4). El siguiente es 0.2.
+
+## 20. Decisiones de Ignacio, tercera tanda (26/10/2026)
+
+Registro; ninguna está implementada.
+
+1. **Bienvenida (ajusta §17.2):** el modal «Ver con guía» / «Ver por mi cuenta» aparece **en cada recarga** de EstateOS. «Ver con guía» activa el teaser. El teaser guarda «visto» en `localStorage` y no se repite solo salvo que el usuario pida verlo desde cero. Reemplaza la interpretación de §17.2 («con visto se omite el modal»).
+2. **PR #10 del BE:** el lote 2.2 se construye **por encima** de la rama del PR #10 para poder avanzar. No se mergea el PR #10 por esto.
+3. **«Armá tu plan» no existe** en el diseño nuevo. «Quiero potenciar mi negocio» abre un **cuestionario modal** que redirige al rubro específico: **ecommerce, salud y animales, inmobiliarias, compliance para empresas, restaurantes**, cada uno «con sus plantillas y los 5 planes mencionados». *Choca con* Notion 1.3 / 4.2 («exactamente dos rubros iniciales»), con §17.3 y con §17.4. *Preguntas abiertas:* (a) ¿los cinco rubros están activos desde el inicio o los que aún no tienen micrositio se muestran como «próximamente»? (no se enlaza a algo que no existe); (b) «los 5 planes» ¿son los cinco planes de EstateOS o las cinco líneas de Eclipse? (c) el armador `/plan` queda en standby en el repo, no se borra.
+4. **Demos ocultas (ajusta §17.4):** Bruma (`shop`) también pasa a standby. Todas las demos ocultas se **conservan dentro de Eclipse-Web** para migrarlas después a otros repositorios como productos por tipo de comercio. No se borra código, copy ni tests.
+5. **Alcance de «hacer todo» (§17.5), explicado:** mientras una capacidad no está construida y probada, la web la muestra dentro del plan como «objetivo» o «en desarrollo», nunca como «disponible». Y antes de generar imágenes, video, voz o música (lotes 3.2–3.4) pido un tope en USD y lo registro.
+6. **Merges y PRs:** hago commits, merges de integración y PRs; Ignacio aprueba los PRs; le aviso cuando haya uno y le indico el **modelo y esfuerzo del lote siguiente**. Lista de merges: §18.
+7. **«EstateOS desde USD 50» en Notion:** reemplazar por el catálogo vigente. Se ejecuta en las páginas de lote que contienen la frase; ver el informe de la sesión.
+8. **Incoherencia de 1.4:** explicada y corregida en Notion (§17.12). Sin cambios adicionales.
+9. **Catálogos separados (§17.9):** de acuerdo.
+10. **Fechas y capacidad (§17.11):** no se consideran; se ejecuta lote por lote.
