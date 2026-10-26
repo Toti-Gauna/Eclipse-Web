@@ -279,15 +279,15 @@ export function lowestItemPrice(ids: readonly string[], catalog: readonly Item[]
   return prices.length ? Math.min(...prices) : null;
 }
 
-/** Plans (packages) that already include an item, in plans.json order. */
-export function plansIncluding(itemId: string, planList: readonly Plan[] = allPlans): Plan[] {
+/** Plans (packages) on sale that already include an item, in plans.json order. */
+export function plansIncluding(itemId: string, planList: readonly Plan[] = allPlans.filter((p) => !p.hidden)): Plan[] {
   return planList.filter((p) => p.items.includes(itemId as ItemId));
 }
 
 export const PLAN_TIERS: readonly PlanTier[] = ['starter', 'complete'];
 
 /** Plans grouped by their presentational tier, tiers in PLAN_TIERS order, plans in plans.json order. */
-export function plansByTier(planList: readonly Plan[] = allPlans): { tier: PlanTier; plans: Plan[] }[] {
+export function plansByTier(planList: readonly Plan[] = allPlans.filter((p) => !p.hidden)): { tier: PlanTier; plans: Plan[] }[] {
   return PLAN_TIERS.map((tier) => ({ tier, plans: planList.filter((p) => p.tier === tier) })).filter((g) => g.plans.length > 0);
 }
 

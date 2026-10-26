@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { items, l } from '@/lib/content';
+import { l, sellableItems as items } from '@/lib/content';
 import { formatMoney, lowestItemPrice } from '@/lib/pricing';
 import { isApproximate } from '@/lib/currency';
 import type { Locale } from '@/i18n/routing';
@@ -18,7 +18,7 @@ import { piecesFamilyAnchor } from './anchors';
  * ("desde") and as a compatible add-on on a base — or, for the migration, the range quoted
  * after review. Read-only: the builder is dormant (lote 1.3), so the only action is «Potenciar mi negocio».
  */
-export function PiecesPanel({ onShowPackages }: { onShowPackages: () => void }) {
+export function PiecesPanel({ onShowPlans }: { onShowPlans: () => void }) {
   const t = useTranslations('pricing');
   const ts = useTranslations('services');
   const tsel = useTranslations('selector');
@@ -93,9 +93,9 @@ export function PiecesPanel({ onShowPackages }: { onShowPackages: () => void }) 
 
       <p className="pr-nonefits">
         <span>{ts('key.pieceText')}</span>
-        <button type="button" aria-controls="pr-panel-packages" onClick={onShowPackages} className="pr-link">
+        <button type="button" aria-controls="pr-panel-packages" onClick={onShowPlans} className="pr-link">
           <ArrowLeft aria-hidden strokeWidth={1.5} />
-          {t('how.project.link')}
+          {t('monthly.back')}
         </button>
       </p>
     </div>

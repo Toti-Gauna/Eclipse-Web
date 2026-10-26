@@ -64,20 +64,20 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.waitForTimeout(900);
   check('calculator +1 updates the sentence and the total', (await page.locator('#problema').innerText()) !== calcBefore);
 
-  // Pricing: package rows open on phones after lazy hydration.
+  // Pricing (lote 2.2b): three monthly plans in a ledger, same fields in the same place, hours before the action.
   await page.evaluate(() => document.getElementById('precios')?.scrollIntoView());
   await page.waitForTimeout(1500);
-  const rows = page.locator('#precios .pr-plan');
-  check('pricing offer rows present (Adaptación + Pack)', (await rows.count()) === 2, `${await rows.count()}`);
-  const toggle = rows.first().locator('.pr-plan-toggle').first();
-  await toggle.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(600);
-  await toggle.click();
-  await page.waitForTimeout(800);
-  check('package row opens after lazy hydration', (await toggle.getAttribute('aria-expanded')) === 'true');
+  const plansLedger = page.locator('#precios .pr-mp-plan');
+  check('pricing shows the three monthly plans (30 / 75 / 150)', (await plansLedger.count()) === 3, `${await plansLedger.count()}`);
+  check('no retired offer on the page (Adaptación / Pack lanzamiento)', !/Pack lanzamiento|Adaptación de producto/.test(await page.locator('#precios').innerText()));
+  check('each plan states its human hours', (await plansLedger.locator('.pr-mp-row', { hasText: '2 h' }).count()) === 3);
+  check('Esencial brings no Studio/Academy and says so', (await plansLedger.first().locator('.pr-mp-row[data-empty]').count()) === 2);
+  check('Conectado brings Academy inicial', /Academy inicial/.test(await plansLedger.nth(1).innerText()));
   check('one monthly/annual switch on the page', (await page.locator('#precios [role="radiogroup"], #precios [data-billing-toggle]').count()) <= 1);
 
   // Header flips to the light theme over the dawn sections.
+  await plansLedger.first().scrollIntoViewIfNeeded();
+  await page.waitForTimeout(700);
   const headerLight = await page.evaluate(() => document.querySelector('header.site-header')?.classList.contains('theme-light'));
   check('header light over pricing', !!headerLight);
 
@@ -155,7 +155,8 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   check('hero chip opens the demo layer', await page.locator('dialog[data-demo-layer] h2', { hasText: 'Lumen Propiedades' }).isVisible());
   check('opening a demo does not scroll the page', (await page.evaluate(() => window.scrollY)) === yBefore);
   await page.waitForTimeout(1200);
-  check('demo layer shows the complete project with its price', (await page.locator('[data-dx-project] [data-dx-price]').count()) > 0);
+  // Lote 2.2b: no offer is on sale, so the demo's simulated channels show at their own price.
+  check('demo layer shows the complete project with its pieces and prices', (await page.locator('[data-dx-project] [data-dx-extras] .dx-piece-price').count()) > 0 && (await page.locator('[data-dx-project] [data-dx-price]').count()) === 0);
   await page.keyboard.press('Escape');
   await page.waitForSelector('dialog[data-demo-layer]', { state: 'detached' });
   check('layer closes, scroll kept', (await page.evaluate(() => window.scrollY)) === yBefore);
@@ -258,11 +259,12 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
 // 4. Shareable plan route reads the URL state.
 {
   const { ctx, page, errors } = await newPage(1280, 900);
+  // A link made while the Launch pack existed: the retired offer is dropped, the rest is kept (lote 2.2b).
   await page.goto(`${BASE}/en/plan/?plan=pack&items=chatbot&m=ia`);
   await page.waitForTimeout(2500);
   const text = await page.locator('main').innerText();
-  // 16/10 offer: pack 700 + chatbot add-on 250 = 950, half upfront; the pack's first months at 120.
-  check('/plan reads the pack from the URL with its add-on, 50/50 and first months', /Launch pack/.test(text) && /\$950/.test(text) && /\$475/.test(text) && /\$120/.test(text), '');
+  // The chatbot is its own project now: 750, half upfront.
+  check('/plan drops the retired pack from an old link and prices the chatbot alone, 50/50', !/Launch pack/.test(text) && /\$750/.test(text) && /\$375/.test(text), '');
   check('no page errors (/plan)', errors.length === 0, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }

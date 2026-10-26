@@ -1,5 +1,5 @@
 {
-  "$comment": "Un solo plan mensual por proyecto (16/10/2026), USD/mes. Todos incluyen hasta 'hoursMonthly' horas humanas en total por mes (no acumulables). 'thirdPartyUsd' = presupuesto de terceros (alojamiento, datos, herramientas y consumos compatibles) que ya está dentro de la mensualidad: no es un cargo aparte ni un saldo. Aviso al 80%; sin recargos automáticos. annualMonthsCharged (10) es histórico: solo sirve para leer acuerdos con pago anual previos; la oferta 'annual' está apagada.",
+  "$comment": "Un solo plan mensual por proyecto (16/10/2026), USD/mes. Todos incluyen hasta 'hoursMonthly' horas humanas en total por mes (no acumulables). 'thirdPartyUsd' = presupuesto de terceros (alojamiento, datos, herramientas y consumos compatibles) que ya está dentro de la mensualidad: no es un cargo aparte ni un saldo. Aviso al 80%; sin recargos automáticos. annualMonthsCharged (10) es histórico: solo sirve para leer acuerdos con pago anual previos; la oferta 'annual' está apagada. 'audience', 'studio' y 'academy' (lote 2.2b, 26/10/2026): prestaciones por plan aprobadas por Ignacio (Academy inicial desde Conectado); el nivel 199 no se publica.",
   "hoursMonthly": 2,
   "annualMonthsCharged": 10,
   "plans": [
@@ -7,6 +7,13 @@
       "id": "esencial",
       "priceUsd": 30,
       "thirdPartyUsd": 5,
+      "audience": {
+        "es": "Para tener tu producto en pie: alojado, cuidado y con mejoras chicas.",
+        "en": "To keep your product up: hosted, looked after, with small improvements.",
+        "pt": "Para manter seu produto de pé: hospedado, cuidado e com pequenas melhorias."
+      },
+      "studio": null,
+      "academy": null,
       "name": {
         "es": "Esencial",
         "en": "Essential",
@@ -37,6 +44,21 @@
       "id": "conectado",
       "priceUsd": 75,
       "thirdPartyUsd": 15,
+      "audience": {
+        "es": "Para conectar tu producto con un canal o un flujo que ya usás.",
+        "en": "To connect your product to a channel or flow you already use.",
+        "pt": "Para conectar seu produto a um canal ou fluxo que você já usa."
+      },
+      "studio": {
+        "es": "Informe mensual de lectura: qué se usó y qué conviene mejorar.",
+        "en": "Monthly reading report: what was used and what is worth improving.",
+        "pt": "Relatório mensal de leitura: o que foi usado e o que vale melhorar."
+      },
+      "academy": {
+        "es": "Academy inicial: una sesión para que tu equipo aprenda a usar lo que contrataste.",
+        "en": "Starter Academy: one session so your team learns to use what you hired.",
+        "pt": "Academy inicial: uma sessão para sua equipe aprender a usar o que contratou."
+      },
       "name": {
         "es": "Conectado",
         "en": "Connected",
@@ -61,6 +83,21 @@
       "id": "ia",
       "priceUsd": 150,
       "thirdPartyUsd": 40,
+      "audience": {
+        "es": "Para que un asistente o un flujo con IA atienda a tus clientes, con una persona detrás.",
+        "en": "For an assistant or AI flow that serves your customers, with a person behind it.",
+        "pt": "Para que um assistente ou fluxo com IA atenda seus clientes, com uma pessoa por trás."
+      },
+      "studio": {
+        "es": "Informe mensual de lectura y una iniciativa de crecimiento por trimestre.",
+        "en": "Monthly report and one growth initiative per quarter.",
+        "pt": "Relatório mensal e uma iniciativa de crescimento por trimestre."
+      },
+      "academy": {
+        "es": "Academy: una sesión de capacitación por trimestre.",
+        "en": "Academy: one training session per quarter.",
+        "pt": "Academy: uma sessão de capacitação por trimestre."
+      },
       "name": {
         "es": "Automatización e IA",
         "en": "Automation & AI",

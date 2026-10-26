@@ -366,9 +366,9 @@ export interface CategoryGroup {
   items: Item[];
 }
 
-/** Items grouped by category, in the order of items.json → categories. Empty groups are dropped. */
+/** Items grouped by category, in the order of items.json → categories. Empty groups are dropped. Retired pieces are not offered. */
 export function groupByCategory(
-  list: readonly Item[] = allItems,
+  list: readonly Item[] = allItems.filter((item) => !item.hidden),
   categories: readonly ItemCategory[] = allCategories,
 ): CategoryGroup[] {
   return categories

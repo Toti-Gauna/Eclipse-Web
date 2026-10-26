@@ -41,7 +41,9 @@ describe('catalog grouping', () => {
   it('groups every item under its category, in category order', () => {
     const groups = groupByCategory();
     expect(groups.map((g) => g.category.id)).toEqual(itemCategories.map((c) => c.id));
-    expect(groups.flatMap((g) => g.items).length).toBe(items.length);
+    // Retired pieces (hidden since lote 2.2b) are not offered in the catalog.
+    expect(groups.flatMap((g) => g.items).length).toBe(items.filter((i) => !i.hidden).length);
+    expect(groups.flatMap((g) => g.items).map((i) => i.id)).not.toContain('asesorias');
     expect(groups[0].items.map((i) => i.id)).toEqual(['landing', 'web-multi', 'seo', 'trailer']);
   });
   it('drops empty categories', () => {

@@ -2,7 +2,7 @@ import './services.css';
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowDown, ChevronDown } from 'lucide-react';
-import { items } from '@/lib/content';
+import { sellableItems as items, sellablePlans } from '@/lib/content';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { Reveal } from '@/components/motion/Reveal';
 import { Occult } from '@/components/motion/Occult';
@@ -68,16 +68,18 @@ export function ServicesSection() {
                   <dt>{ts('key.pieceTerm')}</dt>
                   <dd>{ts('key.pieceText')}</dd>
                 </div>
-                <div>
-                  <dt>{ts('key.includedTerm')}</dt>
-                  <dd>
-                    {ts('key.includedText')}{' '}
-                    <a href={`#${SECTION_IDS.pricing}`} className="svc-key-link">
-                      {ts('key.includedLink')}
-                      <ArrowDown aria-hidden strokeWidth={1.5} />
-                    </a>
-                  </dd>
-                </div>
+                {sellablePlans.length ? (
+                  <div>
+                    <dt>{ts('key.includedTerm')}</dt>
+                    <dd>
+                      {ts('key.includedText')}{' '}
+                      <a href={`#${SECTION_IDS.pricing}`} className="svc-key-link">
+                        {ts('key.includedLink')}
+                        <ArrowDown aria-hidden strokeWidth={1.5} />
+                      </a>
+                    </dd>
+                  </div>
+                ) : null}
               </dl>
             </div>
             <div className="mt-12 md:mt-16">

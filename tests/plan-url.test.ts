@@ -12,14 +12,14 @@ describe('plan URL state', () => {
   it('round-trips a full state', () => {
     const state = {
       goals: ['encontrar' as const, 'atender' as const],
-      planId: 'pack' as const,
+      planId: null,
       items: ['voz' as const],
       maintenance: null,
       billing: 'annual' as const,
       vertical: 'clinicas' as const,
       founder: true,
     };
-    expect(encodePlanState(state)).toBe('g=encontrar,atender&plan=pack&items=voz&m=none&b=annual&v=clinicas&f=1');
+    expect(encodePlanState(state)).toBe('g=encontrar,atender&items=voz&m=none&b=annual&v=clinicas&f=1');
     expect(decodePlanState(encodePlanState(state))).toEqual(state);
   });
   it('drops unknown or duplicated ids', () => {
@@ -33,11 +33,16 @@ describe('plan URL state', () => {
     expect(decodePlanState('')).toEqual(emptyPlanState);
   });
   it('links made before goals existed still work and are re-encoded unchanged', () => {
-    for (const old of ['items=landing', 'items=turnos,pedidos,dashboard,landing,voz&m=esencial', 'plan=adaptacion&items=seo&m=none&v=clinicas']) {
+    for (const old of ['items=landing', 'items=turnos,pedidos,dashboard,landing,voz&m=esencial', 'items=seo&m=none&v=clinicas']) {
       const state = decodePlanState(`?${old}`);
       expect(state.goals).toEqual([]);
       expect(encodePlanState(state)).toBe(old);
     }
+  });
+  it('links made while the offers were on sale lose the retired plan and pieces (lote 2.2b), keeping the rest', () => {
+    const state = decodePlanState('?plan=pack&items=voz,asesorias,asesoria-economica,landing&m=esencial');
+    expect(state).toMatchObject({ planId: null, items: ['voz', 'landing'], maintenance: 'esencial' });
+    expect(encodePlanState(state)).not.toContain('plan=');
   });
   it('links from before the 16/10 offer drop the retired ids and never revive old promotions', () => {
     const state = decodePlanState('?plan=sistema&items=seo,automatizacion,ecommerce,voz&m=crecimiento&b=annual&f=1');
