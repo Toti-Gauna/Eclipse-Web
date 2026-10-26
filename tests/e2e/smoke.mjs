@@ -64,19 +64,19 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.waitForTimeout(900);
   check('calculator +1 updates the sentence and the total', (await page.locator('#problema').innerText()) !== calcBefore);
 
-  // Pricing (lote 2.2b): three monthly plans in a ledger, same fields in the same place, hours before the action.
+  // Pricing (lote 2.3b): the ladder of six monthly levels; demo first, then ask for the plan.
   await page.evaluate(() => document.getElementById('precios')?.scrollIntoView());
   await page.waitForTimeout(1500);
-  const plansLedger = page.locator('#precios .pr-mp-plan');
-  check('pricing shows the three monthly plans (30 / 75 / 150)', (await plansLedger.count()) === 3, `${await plansLedger.count()}`);
-  check('no retired offer on the page (Adaptación / Pack lanzamiento)', !/Pack lanzamiento|Adaptación de producto/.test(await page.locator('#precios').innerText()));
-  check('each plan states its human hours', (await plansLedger.locator('.pr-mp-row', { hasText: '2 h' }).count()) === 3);
-  check('Esencial brings no Studio/Academy and says so', (await plansLedger.first().locator('.pr-mp-row[data-empty]').count()) === 2);
-  check('Conectado brings Academy inicial', /Academy inicial/.test(await plansLedger.nth(1).innerText()));
+  const levelRows = page.locator('#precios .pr-lv-row');
+  check('pricing shows the six levels (30 / 75 / 100 / 150 / 200 / 500)', (await levelRows.count()) === 6, `${await levelRows.count()}`);
+  check('no retired offer or old monthly plan on the page', !/Pack lanzamiento|Adaptación de producto|Esencial|Conectado|Automatización e IA/.test(await page.locator('#precios').innerText()));
+  check('Partner is marked as a proposal', /propuesta/i.test(await levelRows.last().innerText()));
+  check('every level offers the demo first and then asks for the plan', (await page.locator('#precios .pr-lv-demo').count()) === 6 && (await page.locator('#precios .pr-lv-ask').count()) === 6);
+  check('asking for a plan opens WhatsApp with the plan in the message', /wa\.me/.test((await page.locator('#precios .pr-lv-ask').first().getAttribute('href')) ?? '') && /Contact/.test(decodeURIComponent((await page.locator('#precios .pr-lv-ask').first().getAttribute('href')) ?? '')));
   check('one monthly/annual switch on the page', (await page.locator('#precios [role="radiogroup"], #precios [data-billing-toggle]').count()) <= 1);
 
   // Header flips to the light theme over the dawn sections.
-  await plansLedger.first().scrollIntoViewIfNeeded();
+  await levelRows.first().scrollIntoViewIfNeeded();
   await page.waitForTimeout(700);
   const headerLight = await page.evaluate(() => document.querySelector('header.site-header')?.classList.contains('theme-light'));
   check('header light over pricing', !!headerLight);

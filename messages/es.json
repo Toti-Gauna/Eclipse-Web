@@ -623,7 +623,7 @@
       "care": {
         "title": "Plan mensual",
         "when": "Por mes · uno por proyecto",
-        "text": "Mantenimiento, alojamiento y hasta 2 h por mes, desde {price} por mes.",
+        "text": "Tu plan mensual, desde {price} por mes. Elegís el nivel después de ver la demo.",
         "annual": "Si pagás el año, {months, plural, one {# mes es gratis} other {# meses son gratis}}.",
         "link": "Ver planes"
       },
@@ -637,8 +637,8 @@
     "ways": {
       "label": "Lo que se paga",
       "bundles": {
-        "title": "Planes mensuales",
-        "text": "Un plan por proyecto: mantenimiento, horas humanas y, desde Conectado, Studio y Academy.",
+        "title": "Planes",
+        "text": "Seis niveles mensuales: primero la demo, después el plan.",
         "count": "{count} planes"
       },
       "pieces": {
@@ -659,6 +659,24 @@
       "hoursValue": "Hasta {hours} h por mes, en total",
       "none": "No incluye",
       "back": "Ver planes mensuales"
+    },
+    "levels": {
+      "label": "Planes mensuales · seis niveles",
+      "title": "Seis niveles. Elegís el tuyo.",
+      "text": "Primero mirás la demo, que es lo que estás comprando. Después elegís el nivel que necesitás y te mandamos la propuesta.",
+      "proposal": "Propuesta",
+      "seeDemoLabel": "Ver la demo del plan {name}",
+      "ask": "Pedir este plan",
+      "askLabel": "Pedir la propuesta del plan {name}",
+      "whatsapp": "Hola Eclipse. Quiero la propuesta del plan {plan} (USD {price} por mes). ¿Me la pasan?",
+      "notes": {
+        "example": "Ejemplo con inmobiliarias (EstateOS), el primer rubro. Cada rubro llena estos niveles con lo suyo; lo que trae el tuyo se confirma en la propuesta.",
+        "pay": "Precios mensuales objetivo, en USD. La puesta en marcha y los consumos externos se definen en tu propuesta. Partner y los cupos son propuesta. La forma de pago se acuerda con la propuesta."
+      },
+      "asideLabel": "Planes mensuales",
+      "asideTitle": "Seis niveles",
+      "asideText": "Elegís el nivel después de ver la demo. Los ves en Precios; cada propuesta confirma qué trae el tuyo.",
+      "seeDemo": "Ver la demo"
     },
     "groups": {
       "starter": {

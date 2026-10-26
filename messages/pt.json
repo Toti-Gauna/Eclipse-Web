@@ -623,7 +623,7 @@
       "care": {
         "title": "Plano mensal",
         "when": "Por mês · um por projeto",
-        "text": "Manutenção, hospedagem e até 2 h por mês, a partir de {price} por mês.",
+        "text": "Seu plano mensal, a partir de {price} por mês. Você escolhe o nível depois de ver a demo.",
         "annual": "Pagando o ano, {months, plural, one {# mês sai grátis} other {# meses saem grátis}}.",
         "link": "Ver planos"
       },
@@ -637,8 +637,8 @@
     "ways": {
       "label": "O que você paga",
       "bundles": {
-        "title": "Planos mensais",
-        "text": "Um plano por projeto: manutenção, horas humanas e, a partir do Conectado, Studio e Academy.",
+        "title": "Planos",
+        "text": "Seis níveis mensais: primeiro a demo, depois o plano.",
         "count": "{count} planos"
       },
       "pieces": {
@@ -659,6 +659,24 @@
       "hoursValue": "Até {hours} h por mês, no total",
       "none": "Não inclui",
       "back": "Ver planos mensais"
+    },
+    "levels": {
+      "label": "Planos mensais · seis níveis",
+      "title": "Seis níveis. Escolha o seu.",
+      "text": "Primeiro você vê a demo, que é o que está comprando. Depois escolhe o nível de que precisa e enviamos a proposta.",
+      "proposal": "Proposta",
+      "seeDemoLabel": "Ver a demo do plano {name}",
+      "ask": "Pedir este plano",
+      "askLabel": "Pedir a proposta do plano {name}",
+      "whatsapp": "Olá, Eclipse. Quero a proposta do plano {plan} (USD {price} por mês). Podem me enviar?",
+      "notes": {
+        "example": "Exemplo com imobiliárias (EstateOS), o primeiro segmento. Cada segmento preenche esses níveis com o que é seu; o que o seu traz se confirma na proposta.",
+        "pay": "Preços mensais alvo, em USD. A implantação e os consumos externos são definidos na sua proposta. Partner e as cotas são proposta. A forma de pagamento é combinada com a proposta."
+      },
+      "asideLabel": "Planos mensais",
+      "asideTitle": "Seis níveis",
+      "asideText": "Você escolhe o nível depois de ver a demo. Eles estão em Preços; cada proposta confirma o que o seu traz.",
+      "seeDemo": "Ver a demo"
     },
     "groups": {
       "starter": {

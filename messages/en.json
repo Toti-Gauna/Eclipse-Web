@@ -623,7 +623,7 @@
       "care": {
         "title": "Monthly plan",
         "when": "Monthly · one per project",
-        "text": "Maintenance, hosting and up to 2 h a month, from {price} per month.",
+        "text": "Your monthly plan, from {price} per month. You pick the level after watching the demo.",
         "annual": "Pay for the year and {months, plural, one {# month is free} other {# months are free}}.",
         "link": "See plans"
       },
@@ -637,8 +637,8 @@
     "ways": {
       "label": "What you pay for",
       "bundles": {
-        "title": "Monthly plans",
-        "text": "One plan per project: maintenance, human hours and, from Connected, Studio and Academy.",
+        "title": "Plans",
+        "text": "Six monthly levels: demo first, then the plan.",
         "count": "{count} plans"
       },
       "pieces": {
@@ -659,6 +659,24 @@
       "hoursValue": "Up to {hours} h per month, in total",
       "none": "Not included",
       "back": "See monthly plans"
+    },
+    "levels": {
+      "label": "Monthly plans · six levels",
+      "title": "Six levels. Pick yours.",
+      "text": "First you watch the demo, which is what you are buying. Then you pick the level you need and we send you the proposal.",
+      "proposal": "Proposal",
+      "seeDemoLabel": "See the demo of the {name} plan",
+      "ask": "Ask for this plan",
+      "askLabel": "Ask for the proposal of the {name} plan",
+      "whatsapp": "Hi Eclipse. I'd like the proposal for the {plan} plan (USD {price} per month). Can you send it?",
+      "notes": {
+        "example": "Example with real estate agencies (EstateOS), the first rubro. Each rubro fills these levels with its own features; what yours gets is confirmed in the proposal.",
+        "pay": "Target monthly prices, in USD. Setup and external usage are defined in your proposal. Partner and quotas are a proposal. The payment method is agreed with the proposal."
+      },
+      "asideLabel": "Monthly plans",
+      "asideTitle": "Six levels",
+      "asideText": "You pick the level after watching the demo. You see them in Pricing; each proposal confirms what yours includes.",
+      "seeDemo": "See the demo"
     },
     "groups": {
       "starter": {

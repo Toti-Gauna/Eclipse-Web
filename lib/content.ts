@@ -14,6 +14,7 @@ import unitsJson from '@/content/units.json';
 import linesJson from '@/content/lines.json';
 import ratesFallbackJson from '@/content/rates.fallback.json';
 import legacyJson from '@/content/legacy.json';
+import levelsJson from '@/content/levels.json';
 
 export type Localized<T = string> = Record<Locale, T>;
 
@@ -119,6 +120,19 @@ export interface Plan {
 }
 
 /** "+ Sumar" on an offer: the price is the piece's add-on price (items.json addonUsd). */
+/** One of the six monthly levels (Contact → Partner); the same ladder for every rubro, EstateOS first. */
+export type LevelId = 'contact' | 'growth' | 'escalar' | 'hipergrowth' | 'deluxe' | 'partner';
+export interface Level {
+  id: LevelId;
+  priceUsd: number;
+  /** owner = the owner's direction; proposal = still a proposal (Partner). */
+  priceStatus: 'owner' | 'proposal';
+  name: Localized;
+  lead: Localized;
+  audience: Localized;
+  includes: Localized<string[]>;
+}
+
 export interface Addon {
   id: string;
   itemId: ItemId;
@@ -254,6 +268,10 @@ export const sellablePlans = plans.filter((p) => !p.hidden);
 export const featuredPlanId = plansJson.featured as PlanId;
 export const addons = addonsJson.addons as Addon[];
 export const maintenancePlans = maintenanceJson.plans as MaintenancePlan[];
+export const levels = levelsJson.levels as Level[];
+export const levelsCatalogVersion = levelsJson.catalogVersion;
+/** "Desde": the cheapest level, in USD. */
+export const lowestLevelUsd = Math.min(...levels.map((lv) => lv.priceUsd));
 /** Historical: months charged per year on the (now inactive) annual offer. */
 export const annualMonthsCharged = maintenanceJson.annualMonthsCharged;
 /** Human hours per month included in every monthly plan, in total (not per category). */

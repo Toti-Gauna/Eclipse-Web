@@ -124,3 +124,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Reintentos / correcciones propias:** (1) tres páginas de tarifas externas no abrieron (el entorno bloquea los hosts): se registró el límite y se usaron solo referencias secundarias rotuladas «no validadas»; (2) una frase sobre los topes de proveedor no tenía sustento y se reemplazó antes del commit; (3) el guion del anexo B tenía un capítulo a 3,14 palabras/s y otro con la oferta vieja de Contact: se detectaron midiendo y se corrigieron. Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
 
+## 13. Lote 2.3b · Modelo único de planes (26/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high. **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** `lote-2.3b-modelo-unico-de-planes.md`; `content/levels.json`, `Levels` en «Precios», FAQ/«Cómo se paga»/bloque de proyecto sin los tres planes viejos; 425 pruebas unitarias y e2e 75/75; capturas 360/1440.
+- **Reintentos / correcciones propias:** (1) el botón principal decía «Potenciar mi negocio» en los seis niveles: se cambió a «Ver la demo»; (2) el e2e buscaba «Propuesta» y el texto sale en mayúsculas por CSS: se hizo insensible a mayúsculas; (3) un import sin uso. Alcance decidido a partir de una aclaración de Ignacio, sin respuesta explícita al «¿hago el 2.3b?»: queda como PR para su revisión. Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
+

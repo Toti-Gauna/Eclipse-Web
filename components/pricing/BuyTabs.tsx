@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { flushSync } from 'react-dom';
 import { useTranslations } from 'next-intl';
-import { maintenancePlans, sellableItems } from '@/lib/content';
+import { levels, sellableItems } from '@/lib/content';
 import { useSound } from '@/components/sound/SoundContext';
-import { MonthlyPlans } from './MonthlyPlans';
+import { Levels } from './Levels';
 import { PiecesPanel } from './PiecesPanel';
 import { PRICING_ANCHORS } from './anchors';
 import { onPiecesRequest, takePiecesRequest } from './tabRequest';
@@ -18,7 +18,7 @@ const panelId = (tab: Tab) => `pr-panel-${tab}`;
 
 /**
  * "Dos formas de comprar" as tabs (WAI-ARIA tabs, automatic activation):
- *   A · Planes mensuales (3) — the monthly plans compared field by field (lote 2.2b: no packs any more)
+ *   A · Planes (6) — the ladder of six monthly levels, demo first (lotes 2.2b/2.3b: no packs, no cart)
  *   B · Pieza por pieza — every piece by family, with its price
  * Arrow keys / Home / End move between tabs. An in-page link to something inside
  * the hidden panel (e.g. a plan anchor, #plan-ia) switches to it
@@ -29,7 +29,7 @@ export function BuyTabs() {
   const { play } = useSound();
   const [tab, setTab] = useState<Tab>('packages');
   const tabs = useRef<Record<Tab, HTMLButtonElement | null>>({ packages: null, pieces: null });
-  const counts: Record<Tab, number> = { packages: maintenancePlans.length, pieces: sellableItems.length };
+  const counts: Record<Tab, number> = { packages: levels.length, pieces: sellableItems.length };
 
   const select = (next: Tab, focus = false) => {
     if (focus) tabs.current[next]?.focus();
@@ -121,7 +121,7 @@ export function BuyTabs() {
       </div>
 
       <div id={panelId('packages')} role="tabpanel" aria-labelledby={tabId('packages')} hidden={tab !== 'packages'} className="pr-panel">
-        <MonthlyPlans />
+        <Levels />
       </div>
       <div id={panelId('pieces')} role="tabpanel" aria-labelledby={tabId('pieces')} hidden={tab !== 'pieces'} className="pr-panel">
         <PiecesPanel onShowPlans={() => select('packages', true)} />

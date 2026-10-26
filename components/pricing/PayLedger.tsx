@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { ArrowUp } from 'lucide-react';
-import { lowestMaintenance } from '@/lib/pricing';
+import { lowestLevelUsd } from '@/lib/content';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { DrawLine } from '@/components/motion/DrawLine';
@@ -28,7 +28,6 @@ const ENTRIES: { key: 'project' | 'care' | 'extras'; rhythm: Rhythm; href: strin
 export function PayLedger({ freeMonths }: { freeMonths: number | null }) {
   const t = useTranslations('pricing.how');
   const { format } = useCurrency();
-  const low = lowestMaintenance();
 
   return (
     <div className="pr-how" role="group" aria-labelledby="pr-how-title">
@@ -37,7 +36,7 @@ export function PayLedger({ freeMonths }: { freeMonths: number | null }) {
       </h3>
       <ol className="pr-how-list">
         {ENTRIES.map((entry, i) => {
-          let text = t(`${entry.key}.text`, { price: low ? format(low.priceUsd) : '' });
+          let text = t(`${entry.key}.text`, { price: format(lowestLevelUsd) });
           if (entry.key === 'care' && freeMonths) text = `${text} ${t('care.annual', { months: freeMonths })}`;
           return (
             <li key={entry.key} className="pr-how-item" data-rhythm={entry.rhythm}>

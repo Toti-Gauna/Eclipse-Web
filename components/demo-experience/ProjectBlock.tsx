@@ -6,7 +6,7 @@ import { Check } from 'lucide-react';
 import { Money } from '@/components/ui/Money';
 import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
 import { PROCESS_STEPS, stepPhase, type ProcessStep } from '@/components/sections/process/steps';
-import { l, type Vertical } from '@/lib/content';
+import { l, lowestLevelUsd, type Vertical } from '@/lib/content';
 import { lowestMaintenance } from '@/lib/pricing';
 import type { Locale } from '@/i18n/routing';
 import { projectSummary } from './project';
@@ -55,7 +55,7 @@ export function ProjectBlock({
   }, [onBlockCta, scroller]);
 
   if (!summary) return null;
-  const { plan, pieces, maintenance } = summary;
+  const { plan, pieces } = summary;
 
   const pieceRows = (
     <ul className="dx-pieces">
@@ -124,27 +124,18 @@ export function ProjectBlock({
           <p className="dx-note">{t('simulation')}</p>
         </article>
 
-        {maintenance ? (
-          <aside className="dx-care" aria-labelledby="dx-care-title" data-dx-care={maintenance.id}>
-            <p className="label">{tp('plan.maintenanceLabel')}</p>
-            <h4 id="dx-care-title" className="display dx-care-name">
-              {l(maintenance.name, locale)}
-            </h4>
-            <p className="dx-care-price">
-              <Money usd={maintenance.priceUsd} className="readout dx-care-readout" />
-              <span className="dx-care-period">{tp('perMonth')}</span>
-            </p>
-            <p className="label">{tp('how.care.when')}</p>
-            <ul className="dx-includes">
-              {l(maintenance.includes, locale).map((line) => (
-                <li key={line}>
-                  <Check aria-hidden strokeWidth={1.75} />
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        ) : null}
+        <aside className="dx-care" aria-labelledby="dx-care-title" data-dx-care="levels">
+          <p className="label">{tp('levels.asideLabel')}</p>
+          <h4 id="dx-care-title" className="display dx-care-name">
+            {tp('levels.asideTitle')}
+          </h4>
+          <p className="dx-care-price">
+            <span className="dx-care-period">{tp('plan.from')}</span>
+            <Money usd={lowestLevelUsd} className="readout dx-care-readout" />
+            <span className="dx-care-period">{tp('perMonth')}</span>
+          </p>
+          <p className="dx-note">{tp('levels.asideText')}</p>
+        </aside>
       </div>
 
       <div ref={actions} className="dx-actions" data-dx-actions>
