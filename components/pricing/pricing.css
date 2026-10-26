@@ -1103,13 +1103,13 @@
   padding: 0;
   list-style: none;
 }
-/* name / price on the left, the add pill on the right (wide: name ···· price  [+ Sumar]). */
+/* name above its price (the pieces are read-only since lote 1.3: the builder is dormant). */
 .pr-piece {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    'name add'
-    'price add';
+    'name'
+    'price';
   align-items: center;
   column-gap: 12px;
   row-gap: 2px;
@@ -1139,43 +1139,6 @@
   font-size: 0.6875rem;
   color: var(--fg-muted);
 }
-.pr-piece-add {
-  position: relative;
-  display: inline-flex;
-  grid-area: add;
-  align-items: center;
-  gap: 6px;
-  height: 36px;
-  padding: 0 13px 0 10px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--fg);
-  transition:
-    border-color 0.25s ease,
-    background-color 0.25s ease,
-    transform 0.25s var(--ease-expo);
-}
-/* 44px hit area around a 36px pill. */
-.pr-piece-add::before {
-  content: '';
-  position: absolute;
-  inset: -4px -2px;
-}
-.pr-piece-add svg {
-  width: 14px;
-  height: 14px;
-  color: var(--accent);
-}
-.pr-piece-add:hover {
-  border-color: var(--fg);
-  background: rgb(255 255 255 / 0.6);
-}
-.pr-piece-add:active {
-  transform: scale(0.97);
-}
-
 /* ---- Offers ---------------------------------------------------------------------------- */
 .pr-offer-list {
   display: grid;

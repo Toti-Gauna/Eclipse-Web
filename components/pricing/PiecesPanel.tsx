@@ -1,14 +1,13 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { ArrowLeft, ArrowRight, Plus } from 'lucide-react';
-import { items, l, type ItemId } from '@/lib/content';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { items, l } from '@/lib/content';
 import { formatMoney, lowestItemPrice } from '@/lib/pricing';
 import { isApproximate } from '@/lib/currency';
 import type { Locale } from '@/i18n/routing';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
-import { useExperience } from '@/components/providers/ExperienceProvider';
-import { useSound } from '@/components/sound/SoundContext';
+import { PotenciarCta } from '@/components/ui/PotenciarCta';
 import { FAMILIES, familyCategory, familyItems } from '@/components/sections/services/services';
 import { PriceReadout } from './PriceReadout';
 import { piecesFamilyAnchor } from './anchors';
@@ -17,22 +16,16 @@ import { piecesFamilyAnchor } from './anchors';
  * Tab B · Pieza por pieza: the pieces grouped by family (same families and order as
  * 03 · Soluciones and the builder), each with its two alternative prices — as its own project
  * ("desde") and as a compatible add-on on a base — or, for the migration, the range quoted
- * after review; and "Sumar", which opens "Armá tu plan" with it; plus the builder itself.
+ * after review. Read-only: the builder is dormant (lote 1.3), so the only action is «Potenciar mi negocio».
  */
 export function PiecesPanel({ onShowPackages }: { onShowPackages: () => void }) {
   const t = useTranslations('pricing');
   const ts = useTranslations('services');
+  const tsel = useTranslations('selector');
   const locale = useLocale() as Locale;
   const { currency, rates, format } = useCurrency();
-  const { openBuilder } = useExperience();
-  const { play } = useSound();
   const local = isApproximate(currency);
   const cheapest = lowestItemPrice(items.map((i) => i.id));
-
-  const open = (itemIds?: ItemId[]) => {
-    play('open');
-    openBuilder('pricing', itemIds ? { items: itemIds } : undefined);
-  };
 
   return (
     <div className="pr-pieces">
@@ -41,10 +34,10 @@ export function PiecesPanel({ onShowPackages }: { onShowPackages: () => void }) 
           <span>{t('ways.pieces.text')}</span>
           {cheapest !== null ? <span className="pr-panel-meta">{t('ways.pieces.from', { price: format(cheapest) })}</span> : null}
         </p>
-        <button type="button" aria-haspopup="dialog" onClick={() => open()} className="btn btn-sm pr-btn-ghost pr-pieces-cta">
-          {t('ways.pieces.cta')}
+        <PotenciarCta origin="pricing" className="btn btn-sm pr-btn-ghost pr-pieces-cta">
+          {tsel('cta')}
           <ArrowRight aria-hidden className="size-4" strokeWidth={1.5} />
-        </button>
+        </PotenciarCta>
       </div>
 
       <div className="pr-fams">
@@ -89,16 +82,6 @@ export function PiecesPanel({ onShowPackages }: { onShowPackages: () => void }) 
                           </>
                         )}
                       </span>
-                      <button
-                        type="button"
-                        aria-haspopup="dialog"
-                        aria-label={ts('addLabel', { name })}
-                        onClick={() => open([item.id])}
-                        className="pr-piece-add"
-                      >
-                        <Plus aria-hidden strokeWidth={1.75} />
-                        <span>{ts('add')}</span>
-                      </button>
                     </li>
                   );
                 })}

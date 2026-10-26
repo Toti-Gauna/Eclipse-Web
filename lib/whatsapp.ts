@@ -6,6 +6,7 @@ export type WhatsAppOrigin =
   | 'header'
   | 'hero'
   | 'hero_demo'
+  | 'selector'
   | 'calculator'
   | 'examples'
   | 'examples_not_listed'

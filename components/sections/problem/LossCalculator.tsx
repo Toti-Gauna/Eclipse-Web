@@ -8,7 +8,7 @@ import { useExperience } from '@/components/providers/ExperienceProvider';
 import { Occult } from '@/components/motion/Occult';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useSound } from '@/components/sound/SoundContext';
-import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
+import { PotenciarCta } from '@/components/ui/PotenciarCta';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { localeTags, type Locale } from '@/i18n/routing';
 import { l, verticalById, verticals, type VerticalId } from '@/lib/content';
@@ -580,9 +580,7 @@ export function LossCalculator({ header }: { header?: ReactNode }) {
               <MessageCircle aria-hidden className="size-[1.1em] shrink-0" strokeWidth={1.8} />
               {t('cta')}
             </WhatsAppLink>
-            <BuildPlanButton source="calculator" className="btn btn-ghost calc-cta">
-              {t('ctaPlan')}
-            </BuildPlanButton>
+            <PotenciarCta origin="calculator" className="btn btn-ghost calc-cta" />
           </div>
         </aside>
       </Occult>

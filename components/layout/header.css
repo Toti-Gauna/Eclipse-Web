@@ -1,7 +1,56 @@
 /*
- * Header chrome (v3): nav links, "Ingresar", the demo CTA's two tones, portal mode.
+ * Header chrome (v3): the floating surface, nav links, "Ingresar", the CTA's two tones, portal mode.
  * Colours follow the header's theme (.theme-dark / .theme-light flip over light zones).
  */
+
+/*
+ * The floating surface (lote 1.3). The header keeps its full-width, fixed-height row (anchors and
+ * `--header-h` never change); once the page has scrolled (`data-scrolled`, set from ONE
+ * ScrollTrigger, not per pixel) a rounded surface inset from the edges fades in behind the
+ * content: opacity + a 8 px drop only, 220 ms. The blur is a fixed 10 px (its radius is never
+ * animated); browsers without backdrop-filter get an opaque-enough tint instead.
+ */
+.hdr-row {
+  isolation: isolate;
+}
+.hdr-row::before {
+  content: '';
+  position: absolute;
+  inset: 6px 8px;
+  z-index: -1;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgb(5 5 10 / 0.86);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.22s var(--ease-expo),
+    transform 0.22s var(--ease-expo);
+  pointer-events: none;
+}
+.site-header[data-scrolled] .hdr-row::before {
+  opacity: 1;
+  transform: none;
+}
+.site-header.theme-light .hdr-row::before {
+  background: rgb(244 239 230 / 0.92);
+}
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .hdr-row::before {
+    background: rgb(5 5 10 / 0.6);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
+  }
+  .site-header.theme-light .hdr-row::before {
+    background: rgb(244 239 230 / 0.74);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hdr-row::before {
+    transform: none;
+    transition: opacity 0.12s linear;
+  }
+}
 
 /*
  * No `display` in these classes: utilities set it (`hidden lg:inline-flex`), and this
@@ -65,7 +114,7 @@
 }
 
 /*
- * "Pedí tu demo" — THE primary CTA, in one of two tones:
+ * «Potenciar mi negocio» (on /plan: "Pedí tu demo") — THE primary CTA, in one of two tones:
  * solid (.btn-primary, the amber light) or quiet (an outline) while the hero's own CTA
  * (or another page-level primary CTA) is on screen, so a viewport never shows two
  * solid amber buttons. Both tones keep a 1px border: switching never moves the row.
@@ -79,8 +128,8 @@
   border: 1px solid transparent;
   font-size: 0.84rem;
 }
-/* Quiet ≠ the neutral ghost of "Armá tu plan": an amber hairline and a faint warm tint
-   keep it reading as the primary action without a second solid amber. */
+/* Quiet ≠ a neutral ghost: an amber hairline and a faint warm tint keep it reading as the
+   primary action without a second solid amber. */
 .hdr-cta-quiet {
   border-color: color-mix(in oklab, var(--accent) 60%, transparent);
   background: color-mix(in oklab, var(--accent) 8%, transparent);
@@ -92,6 +141,18 @@
 }
 .hdr-cta-quiet svg {
   color: var(--accent);
+}
+/* The CTA's label: «Potenciar» on phones, the whole phrase from 430px (the full name stays in aria-label). */
+.hdr-cta-long {
+  display: none;
+}
+@media (min-width: 430px) {
+  .hdr-cta-long {
+    display: inline;
+  }
+  .hdr-cta-short {
+    display: none;
+  }
 }
 /* Below 360px (not a target, but no spill): no glyph, a tighter pill. */
 @media (max-width: 359.98px) {

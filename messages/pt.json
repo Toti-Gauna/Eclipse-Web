@@ -48,7 +48,6 @@
     "language": "Idioma",
     "currency": "Moeda",
     "progress": "Progresso de leitura: {value}%",
-    "buildPlan": "Monte seu plano",
     "progressLabel": "Progresso de leitura",
     "login": "Entrar",
     "loginContext": "no portal do cliente (demo)",
@@ -84,7 +83,7 @@
     "pickVertical": "Ou veja uma demo agora",
     "ctaPotenciar": "Quero potencializar meu negócio",
     "ctaDemo": "Peça sua demo",
-    "ctaPlan": "Monte seu plano"
+    "noscript": "A demo interativa precisa de JavaScript. Você pode falar com a gente do mesmo jeito: o contato está mais abaixo, nesta mesma página."
   },
   "whatsapp": {
     "greeting": "Olá, Eclipse.",
@@ -139,7 +138,6 @@
     "lostRevenue": "Receita que escapa",
     "timeCost": "Horas da sua equipe",
     "cta": "Recupere: peça sua demo",
-    "ctaPlan": "Monte seu plano",
     "whatsapp": "Olá, Eclipse. Usei a calculadora do site: com os meus números perco cerca de {amount} por mês ({lost} {unit} e {hours} h de tarefas repetitivas por semana). Quero recuperar isso. Podem me mostrar uma demo? Setor: {vertical}.",
     "whatsappNoVertical": "Olá, Eclipse. Usei a calculadora do site: com os meus números perco cerca de {amount} por mês ({lost} {unit} e {hours} h de tarefas repetitivas por semana). Quero recuperar isso. Podem me mostrar uma demo?",
     "lead": "Tenho <vertical></vertical>.",
@@ -305,8 +303,6 @@
       }
     },
     "seePrices": "Ver os preços de {family}",
-    "add": "Adicionar",
-    "addLabel": "Adicionar {name} ao seu plano",
     "piecesToggle": "Ver as {count} peças, uma a uma"
   },
   "process": {
@@ -649,8 +645,7 @@
       },
       "pieces": {
         "title": "Peça por peça",
-        "text": "Projeto próprio ou complemento sobre uma base. Veja total, entrada e saldo na hora.",
-        "cta": "Montar peça por peça",
+        "text": "Projeto próprio ou complemento sobre uma base.",
         "from": "A partir de {price}."
       },
       "options": "{count, plural, one {# opção} other {# opções}}"
@@ -673,8 +668,6 @@
       "rangeUsd": "Até {to} conforme o escopo",
       "includes": "O que inclui",
       "savings": "Economize <pct></pct> vs. peças avulsas",
-      "customize": "Personalizar",
-      "customizeLabel": "Personalizar {name} no montador",
       "audienceLabel": "Para quem",
       "maintenanceLabel": "Plano mensal sugerido",
       "maintenanceValue": "{name} · {price} {period}",
@@ -2383,7 +2376,7 @@
   },
   "agent": {
     "title": "Seu negócio, <em>em plena luz</em>.",
-    "sub": "Peça sua demo e em {hours} horas você vê seu negócio funcionando, antes de qualquer ligação. Prefere ver valores primeiro? Monte seu plano.",
+    "sub": "Peça sua demo e em {hours} horas você vê seu negócio funcionando, antes de qualquer ligação.",
     "chat": {
       "label": "Prévia do agente da Eclipse",
       "name": "Agente Eclipse",
@@ -5463,6 +5456,11 @@
       "contracted": "O que se contrata",
       "extrasNote": "Preço de complemento sobre a adaptação, cada um para um caso de uso. Sujeito a validar fornecedor, conta e escopo. Não vêm marcados: você soma.",
       "simulation": "Simulação no navegador: nenhuma mensagem é enviada e nenhuma ligação real é feita, e os dados e métricas são fictícios."
+    },
+    "loadFail": {
+      "title": "Não foi possível carregar a demo",
+      "body": "Tente de novo ou fale com a gente e nós mostramos a demo.",
+      "retry": "Tentar de novo"
     }
   },
   "offerings": {
@@ -5535,5 +5533,26 @@
     },
     "calcLink": "Faça a conta: quanto custa não ter isso",
     "pricesLink": "Ver os preços"
+  },
+  "selector": {
+    "title": "Que negócio você quer potencializar?",
+    "lede": "Escolha seu setor e veja uma demo desse negócio funcionando.",
+    "cta": "Potencializar meu negócio",
+    "ctaShort": "Potencializar",
+    "groupLabel": "Setores",
+    "inmobiliarias": {
+      "product": "Eclipse · EstateOS",
+      "text": "Uma imobiliária Demo que responde consultas, organiza o funil e agenda visitas.",
+      "action": "Ver a demo de Imobiliárias"
+    },
+    "ecommerce": {
+      "name": "Ecommerce",
+      "product": "Eclipse",
+      "soon": "Em breve",
+      "text": "Estamos montando o catálogo e a demo. Ainda não há planos publicados."
+    },
+    "notListed": "Não encontrou seu setor?",
+    "notListedAction": "Fale com a gente e a gente vê",
+    "whatsapp": "Olá, Eclipse. Meu setor não estava na lista e quero potencializar meu negócio."
   }
 }

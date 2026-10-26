@@ -94,6 +94,8 @@ Cada demo conserva su comportamiento (navegable, loop con historia, interaccione
 
 ## Armador de plan (Objetivo → Piezas → Mantenimiento → Resumen)
 
+> **Actualización v3e (26/10/2026, lote 1.3):** el armador está **dormido** (D2): ya no hay botones que lo abran en la home (header, menú, footer, cierre, calculadora, tarjetas de plan, «Pieza por pieza» ni la capa de demo; todos pasan a «Potenciar mi negocio» → selector, D6). Se conservan el código, la ruta `/[locale]/plan/` (los enlaces de plan ya compartidos siguen funcionando), `lib/pricing.ts` y los tests. Futuro: flujo de pago con link.
+
 - Objetivos (7): Que me encuentren · Atender 24/7 · Ordenar turnos y pedidos · Vender online · Fidelizar clientes · Una app propia · No sé: quiero un diagnóstico
 - Piezas por categoría con precio e "incluida en el paquete X"; detección de paquete que conviene; un solo switch mensual/anual; uso del agente de voz aparte; precio fundador opt-in; resumen con pago único vs por mes, copiar link (URL compartible), copiar resumen y vista previa del mensaje de WhatsApp.
 

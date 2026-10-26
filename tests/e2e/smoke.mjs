@@ -98,7 +98,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await ctx.close();
 }
 
-// 3. Desktop: nav link scrolls to section + focus moves, hero chip reveals a demo, builder opens.
+// 3. Desktop: nav link scrolls to section + focus moves, the header CTA opens the rubro selector.
 {
   const { ctx, page, errors } = await newPage(1440, 900);
   await page.goto(`${BASE}/es/`);
@@ -177,39 +177,81 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(500);
 
-  await page.getByRole('banner').getByRole('button', { name: 'Armá tu plan' }).first().click();
-  await page.waitForTimeout(1500);
-  check('builder drawer opens from header', (await page.locator('dialog[open]').count()) === 1);
-  const goal = page.locator('dialog[open] input[type="checkbox"]').first();
-  await goal.check({ force: true });
-  await page.waitForTimeout(800);
-  // v3d: fullscreen on desktop — rail of steps, the step, and the plan live on the right.
-  const full = await page.evaluate(() => {
-    const d = document.querySelector('dialog[open]');
-    const panel = d?.querySelector('.sheet-panel')?.getBoundingClientRect();
-    const live = d?.querySelector('.pb-live');
-    const rail = d?.querySelector('.pb-rail');
-    return {
-      // The dialog leaves the scrollbar gutter that lockScroll keeps; the panel fills the rest.
-      wide: !!panel && !!d && panel.width >= d.getBoundingClientRect().width - 1 && panel.width > 1200,
-      live: !!live && getComputedStyle(live).display !== 'none' && /\$\s?[\d.]+/.test(live.textContent ?? ''),
-      rail: !!rail && getComputedStyle(rail).display !== 'none',
-    };
-  });
-  check('builder is fullscreen with rail and live plan (desktop)', full.wide && full.live && full.rail, JSON.stringify(full));
-  for (let i = 0; i < 3; i++) {
-    const next = page.locator('dialog[open] button', { hasText: /Siguiente/ }).first();
-    if (!(await next.count())) break;
-    await next.click();
-    await page.waitForTimeout(700);
-  }
-  const send = page.locator('dialog[open] a[href^="https://wa.me/"]').first();
-  const href = (await send.count()) ? await send.getAttribute('href') : '';
-  const msg = decodeURIComponent((href ?? '').split('text=')[1] ?? '');
-  check('builder WhatsApp message has items, total, language and currency', /Armé mi plan/.test(msg) && /Implementación estimada/.test(msg) && /Anticipo 50%/.test(msg) && /Idioma: Español/.test(msg) && /Moneda: ARS/.test(msg), msg.split('\n').slice(0, 3).join(' / '));
+  // v3e (lote 1.3): no "Armá tu plan" anywhere on the home (the builder is dormant); the header's
+  // CTA is «Potenciar mi negocio» and opens the rubro selector; Escape hands focus back to it.
+  check('no «Armá tu plan» entry point on the home', (await page.getByRole('button', { name: /Armá tu plan/ }).count()) === 0 && (await page.getByRole('link', { name: /Armá tu plan/ }).count()) === 0);
+  await hdrCta.click();
+  await page.waitForSelector('dialog[data-selector-layer][open]');
+  await page.waitForTimeout(500);
+  check('header CTA opens the selector with exactly two rows', (await page.locator('dialog[data-selector-layer] [data-sx-row]').count()) === 2 && (await page.locator('dialog[data-selector-layer] h2').innerText()) === '¿Qué negocio querés potenciar?');
+  check('Ecommerce row is aria-disabled and says «Próximamente»', (await page.locator('[data-sx-row="ecommerce"]').getAttribute('aria-disabled')) === 'true' && /próximamente/i.test(await page.locator('[data-sx-row="ecommerce"]').innerText()));
   await page.keyboard.press('Escape');
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(500);
+  check('Escape closes the selector and focus returns to the header CTA', (await page.locator('dialog[data-selector-layer]').count()) === 0 && (await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener'))) === 'selector:header');
   check('no page errors (desktop home)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  await ctx.close();
+}
+
+// 3b. Showroom (lote 1.3): selector → demo, History, direct entries, fallbacks.
+{
+  const { ctx, page, errors } = await newPage(1440, 900);
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(2500);
+  const state = () => page.evaluate(() => ({ path: location.pathname + location.search, len: history.length, sel: !!document.querySelector('dialog[data-selector-layer][open]'), demo: !!document.querySelector('dialog[data-demo-layer][open]'), lock: document.documentElement.style.overflow }));
+  const start = await state();
+  await page.locator('[data-hero-cta] a').click();
+  await page.waitForSelector('dialog[data-selector-layer][open]');
+  let st = await state();
+  check('hero CTA opens the selector, one history entry, same URL', st.sel && st.len === start.len + 1 && st.path === start.path, `${start.len}→${st.len}`);
+  await page.goBack();
+  await page.waitForTimeout(500);
+  st = await state();
+  check('browser Back closes the selector (no stuck scroll lock)', !st.sel && st.lock === '' && st.path === start.path);
+  await page.goForward();
+  await page.waitForTimeout(800);
+  check('Forward brings the selector back', (await state()).sel);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(500);
+  await page.locator('[data-hero-cta] a').click();
+  await page.waitForSelector('dialog[data-selector-layer][open]');
+  await page.locator('[data-sx-row="inmobiliarias"]').click();
+  await page.waitForSelector('dialog[data-demo-layer][open]');
+  await page.waitForTimeout(3200);
+  st = await state();
+  check('choosing Inmobiliarias hands off to the demo: URL contract, no second entry, selector gone', st.demo && !st.sel && /rubro=inmobiliarias&vista=guia/.test(st.path) && st.len === start.len + 1, st.path);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(2600);
+  st = await state();
+  check('closing the demo cleans the URL and restores the hero CTA focus', !st.demo && st.path === start.path && (await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener'))) === 'selector:hero');
+
+  // Direct entry: opens without the film, keeps foreign params, closing never leaves the site.
+  await page.goto(`${BASE}/es/?rubro=inmobiliarias&vista=guia&utm_source=ad`);
+  await page.waitForSelector('dialog[data-demo-layer][open]', { timeout: 15000 });
+  const entries = (await state()).len;
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(1200);
+  st = await state();
+  check('direct entry: Escape cleans the contract, keeps utm_source, stays on the site, focus on the H1', !st.demo && !/rubro/.test(st.path) && /utm_source=ad/.test(st.path) && st.len === entries && (await page.evaluate(() => document.activeElement?.tagName)) === 'H1', st.path);
+
+  // Anything off the allow-list is dropped.
+  await page.goto(`${BASE}/es/?rubro=clinicas&vista=guia`);
+  await page.waitForTimeout(2500);
+  st = await state();
+  check('invalid rubro: nothing opens and the params are cleaned', !st.demo && !st.sel && !/rubro|vista/.test(st.path), st.path);
+  await page.goto(`${BASE}/es/portal/?rubro=inmobiliarias`);
+  await page.waitForTimeout(2500);
+  st = await state();
+  check('portal never opens the showroom', !st.demo && !st.sel);
+  check('no page errors (showroom)', errors.length === 0, errors.slice(0, 3).join(' | '));
+
+  // The selector's chunk can't be fetched: the CTA does what the link says (goes to the contact).
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(2500);
+  await page.route('**/_next/static/chunks/**', (r) => r.abort());
+  await page.locator('[data-hero-cta] a').click();
+  await page.waitForTimeout(1500);
+  st = await state();
+  check('selector chunk fails: no dialog, page not locked, falls to #contacto', !st.sel && st.lock === '' && page.url().endsWith('#contacto'));
   await ctx.close();
 }
 

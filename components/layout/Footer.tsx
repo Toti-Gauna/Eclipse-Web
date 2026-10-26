@@ -6,7 +6,6 @@ import { CONTACT_EMAIL } from '@/lib/env';
 import type { Locale } from '@/i18n/routing';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { DemoCta } from '@/components/ui/DemoCta';
-import { BuildPlanButton } from '@/components/ui/BuildPlanButton';
 import { LandingOnly } from './LandingOnly';
 import { PrefsDisclosure } from './PrefsDisclosure';
 import { NAV_LINKS, PORTAL_ROUTES } from './navLinks';
@@ -71,11 +70,6 @@ export function Footer() {
                       </Link>
                     </li>
                   ))}
-                  <li>
-                    <BuildPlanButton source="footer" className={`${link} text-start`}>
-                      {t('header.buildPlan')}
-                    </BuildPlanButton>
-                  </li>
                   <li>
                     <Link href={PORTAL_ROUTES.login} prefetch={false} className={link}>
                       {t('header.login')}

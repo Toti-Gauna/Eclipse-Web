@@ -349,8 +349,8 @@ Criterio de aceptación sin JS (a comprobar en 1.5 con el HTML exportado): preci
 
 | # | Pregunta | Opciones | Recomendación |
 |---|---|---|---|
-| **D6** | ¿Qué reemplaza el botón de las tarjetas de plan y de «Pieza por pieza» ahora que el armador duerme? | (a) enlace de **WhatsApp con el plan o la pieza elegida** (patrón que ya existe: `WhatsAppLink`) · (b) sin botón, solo lectura | **(a)**: mantiene «un paso al siguiente paso» y no inventa pagos. Se define en 1.3 junto con el resto de los CTA |
-| **D7** | ¿Cuándo y cómo se construye el apartado Ecommerce (catálogo de planes y demo)? | (a) un lote nuevo antes de 1.2/1.3 · (b) después de EstateOS, como ya ordena Notion (4.5) con la fila «Próximamente» entre tanto · (c) adelantar 4.5 | **(b)**: respeta la prioridad EstateOS → restaurantes → ecommerce del programa. La fila queda visible y honesta |
+| **D6** | ¿Qué reemplaza el botón de las tarjetas de plan y de «Pieza por pieza» ahora que el armador duerme? | (a) enlace de **WhatsApp con el plan o la pieza elegida** (patrón que ya existe: `WhatsAppLink`) · (b) sin botón, solo lectura | **(a)**: mantiene «un paso al siguiente paso» y no inventa pagos. Se define en 1.3 junto con el resto de los CTA **Resuelta el 26/10/2026 (Ignacio):** «un botón de "Potenciar mi negocio" que te derive al modal que selecciona un negocio». Implementada en 1.3 (`lote-1.3-header-selector.md` §6). |
+| **D7** | ¿Cuándo y cómo se construye el apartado Ecommerce (catálogo de planes y demo)? | (a) un lote nuevo antes de 1.2/1.3 · (b) después de EstateOS, como ya ordena Notion (4.5) con la fila «Próximamente» entre tanto · (c) adelantar 4.5 | **(b)**: respeta la prioridad EstateOS → restaurantes → ecommerce del programa. La fila queda visible y honesta **Resuelta el 26/10/2026 (Ignacio):** «ecommerce se construye después de EstateOS» (opción b). |
 
 ## 12. Cambios que este lote deja pendientes en `CLAUDE.md` y tests (no se hicieron)
 

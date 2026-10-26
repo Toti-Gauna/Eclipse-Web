@@ -81,3 +81,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Resultado:** código de la home + `lote-1.2-home-loader-hero.md`; rúbrica 12/14 contra el baseline de 1.4. PR abierto, sin mergear.
 - **Reintentos / correcciones propias antes del commit:** titular en portugués acortado (4 líneas → 3); ajuste de `lines.css`; chips del chat del agente filtrados a los rubros vigentes (B3); 6 pruebas de e2e actualizadas por el cambio de estructura. Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
+
+## 7. Lote 1.3 · Header y selector inmersivo (26/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high. **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** código del header, selector, History y contrato de URL + `lote-1.3-header-selector.md`; rúbrica 12/14; 400 pruebas unitarias y 72 e2e. PR abierto, sin mergear.
+- **Reintentos / correcciones propias antes del commit:** (1) el CTA no abría el selector porque `SmoothAnchors` interceptaba el clic en captura → opt-out `data-opens-selector`; (2) `prettier` con su configuración por defecto reformateó archivos propios → reformateo con el estilo del repo; (3) regla de lint de componentes creados en render → el cuerpo reintentable pasó a `useState`; (4) tres expectativas del e2e (texto en mayúsculas por CSS, foco tras Adelante, error de chunk esperado). Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
