@@ -135,3 +135,12 @@ No se leyeron línea por línea las skills de backend, seguridad, juegos ni docu
 ## 10. Próximo lote
 
 **0.3 · Skills verificadas** (documental): catálogo con cobertura, compatibilidad, manifiestos de instalación propuestos, riesgos y pruebas. Modelo: **Sonnet, esfuerzo high** (según «Orden de ejecución»). No instala nada.
+
+## 11. Seguimiento: correcciones aplicadas a la PR #1 (26/10/2026)
+
+Ignacio autorizó al ejecutor a editar la PR («vos codeá… yo luego apruebo el PR 1»). Se aplicaron las 14 correcciones de §3 sobre la rama de la PR (`feature/eclipse-v3-core-agents`), commit **`60f3f75`** sobre `a6ee0c8`: 7 archivos, +54/−55 líneas. Cada reemplazo se hizo con coincidencia exacta; no quedó texto viejo (`grep` de las frases originales: 0 resultados).
+
+- **Aplicadas:** 1 (Opus), 2 (G1), 3 (catálogos de precios), 4 (Chief no escribe código), 5 (fuente de precios), 6 (título duplicado en Codex), 7 y 8 (cinco líneas con Academy y flujo de entrada), 9 (contrato de la guía de EstateOS), 10 (selección de skills), 11 (gate estético y un CTA ámbar), 12 (UX especifica, Frontend implementa), 13 (stack de IA), 14 (LinkedIn) y los pasajes equivalentes del README.
+- **No tocadas** (no están en la PR): las skills `creative-direction` y `ai-video-prompt` y el alias `Claude Sonnet 4.6 (copilot)` de los agentes que ya están en `main`. Siguen abiertas para antes de 3.1 y 3.3.
+- **No hecho:** el merge de la PR #1 a `main`. La aprueba Ignacio; sigue en borrador.
+- **Sigue sin probarse** (§7): que Claude Code acepte `model: sonnet` y el encabezado antes de instalar.

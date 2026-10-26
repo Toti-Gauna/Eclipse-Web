@@ -369,3 +369,16 @@ Registro; ninguna está implementada.
 8. **Incoherencia de 1.4:** explicada y corregida en Notion (§17.12). Sin cambios adicionales.
 9. **Catálogos separados (§17.9):** de acuerdo.
 10. **Fechas y capacidad (§17.11):** no se consideran; se ejecuta lote por lote.
+
+## 21. Decisiones de Ignacio, cuarta tanda (26/10/2026)
+
+Registro; salvo lo indicado, ninguna está implementada.
+
+1. **Opus:** su última afirmación es la vigente (0.2 §5): hitos justificados, estética igual o mejor que la línea base, sin límite fijo de dos.
+2. **Academy** forma parte de las cinco líneas en todos los agentes.
+3. **Precios:** los mencionados son los existentes: general 30/75/150 y sectorial EstateOS 30/75/100/150/200. *Sin cambio:* el nivel 199 y Partner 500 no figuran como aprobados por esta frase; se tratan como propuesta hasta aprobación explícita.
+4. **PR #1 de `agents`:** el ejecutor codea y mergea lo que corresponda; Ignacio aprueba el PR #1 para tener un `agents` más pulido. Aplicado: commit `60f3f75` (0.2 §11). El merge de la PR a `main` espera su aprobación.
+5. **Topes de producción (declarados):** ElevenLabs **USD 11** y Higgsfield **USD 100**. No se ejecutó ninguna compra. *Pendiente:* si son por mes o totales, y el tope de Suno.
+6. **Rubros del modal (ajusta §20.3):** respuesta ambigua. Se registra tal cual («no arrancamos con esos dos rubros del notion, pero más adelante vamos a ampliar la gama de lo que ofrece Eclipse») y se vuelve a preguntar al abrir el lote 1.1, antes de diseñar el selector. Hipótesis de trabajo hasta entonces: el selector no muestra enlaces a micrositios que no existen.
+7. **«Los 5 planes»** son los cinco planes de EstateOS (Contact, Growth, Escalar, Hípergrowth y Deluxe); Partner sigue como propuesta.
+8. **Lote 0.3 iniciado:** entregable en `docs/v3/lote-0.3-skills-verificadas.md`.
