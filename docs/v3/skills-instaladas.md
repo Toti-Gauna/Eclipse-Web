@@ -26,6 +26,7 @@ Descarga a un directorio aislado, al SHA fijado, sin ejecutar nada (`git fetch -
 - Frontmatter de las 9 `SKILL.md`: `name` igual al nombre de la carpeta y `description` presente.
 - Antes de instalar: `.claude/` **no existía** en Eclipse-Web (nada que pisar ni copiar). `.claude` no está en `.gitignore`: las skills quedan versionadas con el proyecto. `vitest` solo corre `tests/**`; `eslint` y `tsc` no leen Markdown, así que no afectan los chequeos del repo.
 - **No ejecutado:** el *smoke* en una conversación nueva (que Claude enumere las skills y responda con un plan sin ejecutarlo). Las skills de proyecto se cargan al **abrir** una sesión; esta sesión ya estaba abierta. **Primera tarea de la sesión de 1.1:** pedir que enumere nombre y descripción de las 9 skills y comprobar que no instala dependencias ni llama a servicios. Hasta entonces es *E1 (instalado y verificado en disco)*, no *E2 (cargado y probado)*.
+- **Actualización (26/10/2026, misma sesión):** tras el push, el cliente listó las 9 skills con su nombre y descripción (coinciden con los `SKILL.md`): evidencia parcial de que se **enumeran**. Sigue pendiente comprobar, en la sesión de 1.1, que responden con un plan sin instalar dependencias ni llamar a servicios.
 
 ## Hashes completos (SHA-256) de lo instalado
 
