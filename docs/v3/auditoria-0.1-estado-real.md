@@ -382,3 +382,11 @@ Registro; salvo lo indicado, ninguna está implementada.
 6. **Rubros del modal (ajusta §20.3):** respuesta ambigua. Se registra tal cual («no arrancamos con esos dos rubros del notion, pero más adelante vamos a ampliar la gama de lo que ofrece Eclipse») y se vuelve a preguntar al abrir el lote 1.1, antes de diseñar el selector. Hipótesis de trabajo hasta entonces: el selector no muestra enlaces a micrositios que no existen.
 7. **«Los 5 planes»** son los cinco planes de EstateOS (Contact, Growth, Escalar, Hípergrowth y Deluxe); Partner sigue como propuesta.
 8. **Lote 0.3 iniciado:** entregable en `docs/v3/lote-0.3-skills-verificadas.md`.
+
+## 22. Decisiones de Ignacio, quinta tanda (26/10/2026)
+
+1. **PR #1 de `agents`:** la aprueba Ignacio. El ejecutor no la mergea.
+2. **Topes de producción confirmados (ajusta §21.5):** **ElevenLabs USD 11 por mes** y **Higgsfield USD 100 por mes**. Registro de tope; no autoriza compras. Suno: sin tope declarado.
+3. **Precios (ajusta §21.3):** Partner **USD 500** y el nivel de **200** se usan en la oferta; Ignacio los llama «propuesta, así que hay que utilizarlos». Interpretación: Deluxe 200 ya era dirección suya y Partner 500 queda **aprobado como precio**; los **cupos** siguen siendo un borrador a costear y el alcance económico final sigue pendiente. *Si «el 200» se refería al nivel general de 199, hay que confirmarlo; hasta entonces el 199 general no se publica.*
+4. **Rubros del modal (resuelve §20.3 y §21.6):** se arranca con **Inmobiliarias y Ecommerce** (como dice Notion). Los demás rubros (salud y animales, restaurantes/bodegones, compliance para empresas, etc.) se suman después, cuando cada uno tenga su micrositio. Las demos ocultas siguen en standby dentro de Eclipse-Web (§20.4).
+5. **Manifiesto de 0.3:** pendiente de explicación y de aprobación; 0.3 no se da por aceptado hasta entonces.

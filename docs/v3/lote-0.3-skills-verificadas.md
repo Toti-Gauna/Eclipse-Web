@@ -6,7 +6,7 @@
 
 - **Qué cambió:** verifiqué los 10 repos del catálogo del 24/10 (9 sin cambios; `remotion-dev/skills` avanzó, pero está pospuesto) y preparé el manifiesto con SHA, archivos, hashes y pruebas de los 4 paquetes del núcleo (Frontend Design, GSAP React/Timeline/Performance, Emil, `shader-glsl`). Encontré 4 riesgos concretos que condicionan la instalación (§4).
 - **Qué quedó abierto:** nada está instalado; este contenedor no tiene ninguna skill de Eclipse cargada ni `.claude/` en los repos, y la máquina de Ignacio no es accesible desde acá. El manifiesto de Emil solo se escaneó por patrones, no se leyó completo. Falta decidir el SDD del único efecto que justificaría `shader-glsl`.
-- **Qué necesita el OK de Ignacio:** aprobar el manifiesto del §3 (qué paquetes entran y con qué alcance) y autorizar la sesión de instalación; el tope de gasto declarado para producción (ElevenLabs USD 11, Higgsfield USD 100) queda registrado, no ejecutado.
+- **Qué necesita el OK de Ignacio:** aprobar el manifiesto del §3 (qué paquetes entran y con qué alcance) y autorizar la sesión de instalación; el tope de gasto declarado para producción (ElevenLabs USD 11 por mes, Higgsfield USD 100 por mes, confirmados el 26/10/2026) queda registrado, no ejecutado.
 
 ## 1. Entradas
 
@@ -94,8 +94,8 @@ Sin hallazgos de red, ejecución ni secretos en `frontend-design`, `gsap-timelin
 
 ## 7. Servicios y topes de gasto (declarados, no ejecutados)
 
-- **ElevenLabs:** tope declarado por Ignacio **USD 11**. En Notion, el plan Creator figura en USD 22/mes con promoción inicial de USD 11 (y Starter en USD 6); la elegibilidad promocional no está comprobada. *Falta aclarar:* si USD 11 es por mes o total, y si la promoción no aplica (entonces Creator cuesta USD 22).
-- **Higgsfield:** tope declarado **USD 100**. Las tarifas públicas por segundo (3.3) dan un orden de USD 1–5 por clip de prueba; la cotización real de la cuenta prevalece. *Falta aclarar:* mensual o total.
+- **ElevenLabs:** tope declarado por Ignacio **USD 11 por mes** (26/10/2026). En Notion, el plan Creator figura en USD 22/mes con promoción inicial de USD 11 (y Starter en USD 6/mes). La elegibilidad promocional no está comprobada: si no aplica, Creator (22) supera el tope y habría que usar Starter (6) o fijar otro tope.
+- **Higgsfield:** tope declarado **USD 100 por mes** (26/10/2026). Las tarifas públicas por segundo (3.3) dan un orden de USD 1–5 por clip de prueba; la cotización real de la cuenta prevalece.
 - **Suno:** sin tope declarado.
 - Registrar un tope no autoriza comprar: cada compra pide cantidad, modelo, parámetros verificados y derechos antes de 3.2–3.4.
 
