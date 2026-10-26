@@ -19,7 +19,26 @@
 | Facturado | no disponible | idem | pendiente de Ignacio |
 | Prometido | no disponible | idem (las propuestas no son cobros) | — |
 | Gasto externo ejecutado en el programa v3 | **USD 0** | ninguna compra, render, instalación ni suscripción hecha por el ejecutor | verificado (E0) |
+| Costos fijos mensuales declarados (Ignacio, 26/10/2026) | **USD 281/mes**: infraestructura 100 · Claude 100 · Higgsfield 50 · GPT 20 · ElevenLabs 11 | mensaje de Ignacio | declarado, no verificado contra facturas (E0) |
 | Topes declarados | ElevenLabs 11/mes · Higgsfield 100/mes · Suno sin tope | mensajes de Ignacio, 24 y 26/10/2026 | **no son autorización** |
+
+## 2.b Base fija mensual y clientes para cubrirla (aritmética)
+
+Con los costos fijos declarados (**USD 281/mes**) y **sin** descontar horas humanas, comisiones, impuestos ni consumos variables, la cantidad de clientes de un mismo plan que cubriría esa base sale de `281 ÷ ingreso neto del plan` (redondeado hacia arriba):
+
+| Plan | Ingreso neto/mes | Clientes para cubrir USD 281 |
+|---|---|---|
+| EstateOS Contact | 30 | 10 |
+| EstateOS Growth | 75 | 4 |
+| EstateOS Escalar | 100 | 3 |
+| EstateOS Hípergrowth | 150 | 2 |
+| EstateOS Deluxe | 200 | 2 |
+| EstateOS Partner (propuesta) | 500 | 1 |
+| General Esencial (queda 25 tras terceros) | 25 | 12 |
+| General Conectado (queda 60) | 60 | 5 |
+| General Automatización e IA (queda 110) | 110 | 3 |
+
+Cautelas: es el punto donde el ingreso cubre la base fija, **no** un margen; los costos fijos son de toda Eclipse (no de un solo producto); el presupuesto de terceros del plan general ya paga parte de la infraestructura, así que **sumarlo a los USD 100 de infraestructura puede contar dos veces**; Higgsfield figura en USD 50 de costo actual mientras el tope declarado sigue en USD 100 (no se resuelve cuál manda hasta que Ignacio lo aclare; el techo por lote de §5 se mantiene en USD 50).
 
 ## 3. Escenario de soporte, tarifario general (aritmética, no margen)
 
@@ -119,9 +138,9 @@ Sin las nueve respuestas no se gasta. Si la suscripción mínima supera el costo
 ## 9. Datos que faltan para cerrar la economía (los aporta Ignacio)
 
 1. Costo horario interno de Eclipse (o el criterio para fijarlo).
-2. Comisiones de cobro (pasarela) y régimen de impuestos aplicable a cada ingreso.
+2. Comisiones de cobro (pasarela) y régimen de impuestos: **Ignacio los definirá al facturar**; hasta entonces los márgenes se leen antes de impuestos.
 3. Ingresos reales y propuestas vigentes (para llenar el libro §2).
-4. Costo del plan actual de Claude y su cuota efectiva (hoy no legible).
+4. Cuota efectiva de Claude (el costo de USD 100/mes ya está declarado; la cuota no es legible).
 5. Costos por clip, voz y mensajes **medidos** en la cuenta (Higgsfield, ElevenLabs, WhatsApp por mercado/categoría, telefonía y LLM de voz, LLM del chatbot).
 6. Decisión sobre el umbral de contribución, el techo por lote de render y el tope de Suno.
-7. Confirmación del «200» (Deluxe o general 199): hasta entonces el 199 general no se publica.
+7. ~~Confirmación del «200»~~ **Resuelto 26/10/2026:** el 200 es **Deluxe**; el 199 general sigue sin publicarse.

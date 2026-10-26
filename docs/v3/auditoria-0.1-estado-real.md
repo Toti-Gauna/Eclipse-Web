@@ -400,3 +400,6 @@ Se crearon **Eclipse Design** y **Eclipse Ads** a pedido de Ignacio (PR #2 de `a
 1. **Manifiesto de 0.3:** aprobado **A, B y C**; D no se instala (§22.5 queda resuelto). Instalación pendiente en sesión aparte (`lote-0.3-skills-verificadas.md` §13).
 2. **Lote 0.4:** OK explícito. Ejecutado como documental (`lote-0.4-sdd-control-financiero.md`, `ledger-financiero.md`, `registro-consumo.md`). Estado: **verificado local, pendiente de su aceptación**; habilita 1.1.
 3. **Lista de merges realizados por mí (§18):** sigue vacía. Pendiente de Ignacio: PR #1 y #2 de `agents`; el PR #15 de Eclipse-Web (borrador, solo documentos de Fase 0) **no se mergea** hasta su aprobación, porque un merge a `main` publica en producción.
+4. **El «200» es Deluxe** (resuelve §22.3). El nivel general de 199 sigue **sin publicarse**.
+5. **Costos fijos mensuales declarados:** infraestructura USD 100 · Claude USD 100 · Higgsfield USD 50 · GPT USD 20 · ElevenLabs USD 11 = **USD 281/mes**. Impuestos y comisiones: se definen al facturar. Ver `ledger-financiero.md` §2.b. Higgsfield: USD 50 de costo contra tope declarado de USD 100; pendiente aclarar cuál rige.
+6. **Contact:** se mantiene como web básica con enlace manual a WhatsApp (segmentación del 26/10); el «chat» del criterio de 2.3 se corrige en ese lote.
