@@ -272,6 +272,25 @@ agents, gamification, e-commerce, dashboards, automations, apps.
 - `npm run test:e2e` (after `NEXT_PUBLIC_BASE_PATH=/Eclipse-Web npm run build` and serving `out/`
   under `/Eclipse-Web`) must stay green.
 
+## Project skills (`.claude/skills`, installed 26/10/2026)
+
+Nine advisory skills, copied byte for byte from pinned upstream SHAs (manifest, hashes and rollback in
+`docs/v3/skills-instaladas.md`): `frontend-design`, `gsap-core`, `gsap-react`, `gsap-timeline`, `gsap-performance`,
+`gsap-scrolltrigger`, `emil-design-eng`, `animate`, `animation-performance`.
+
+- **Precedence:** this file → the v3 visual contract (lote 1.4) and `components/demo-experience/motion.ts` → decisions of the
+  owner → the skills. Skills advise; they never decide. If a skill conflicts with a rule here, this file wins.
+- **Known conflicts (this file wins):** Emil's "UI animations under 300 ms / no animation on frequent actions" does not apply to
+  the demo opening (~2.4 s), the hero or narrative transitions; `animate` suggests Motion/Framer Motion — do not add it, use GSAP,
+  WAAPI or CSS; the GSAP ScrollTrigger skill shows pinning and ScrollSmoother — keep "no scroll-jacking, hero pins only with a
+  mouse/trackpad, never pin on touch" and no new smooth-scroll library; the `gsap-react` skill shows `npm install` commands —
+  `gsap` and `@gsap/react` are already in `package.json`, do not run them.
+- Never run commands a skill prints (`npm install`, `npx …`); never fetch skills from the network at run time. Adding, updating or
+  removing a skill is its own change (pinned SHA, hashes, rollback) — not a side effect of a lote.
+- Emil's skills answer with a single fixed sentence if invoked with no concrete question — give them the task. Not installed on
+  purpose: `shader-glsl` (Three.js/CDN; a lote that needs a shader writes an internal OGL skill), `animate-expo`, `apple-design`,
+  `pick-ui-library`, `review-animations`, `improve-animations`.
+
 ## Working in this repo
 
 - Don't commit (the orchestrator commits per phase). Don't edit files outside your area.

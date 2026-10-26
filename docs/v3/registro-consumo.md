@@ -49,6 +49,12 @@ La sesión de Claude Code de Eclipse v3 (`session_01Tg555M4D4VmSrwxyrCMu2q`, cre
 - **Consumo de 0.4:** por lote **no disponible**; el acumulado de la sesión está en §3. Reintentos: 0 en este lote; una corrección propia de redacción en el ledger (hipótesis de horas de Growth) antes del commit.
 - **Opus:** 0. **Gasto externo:** USD 0.
 
+## 4.b Sesión de instalación de skills (26/10/2026, entre 0.4 y 1.1)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high (misma sesión). **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** 9 skills, 19 archivos instalados y verificados byte a byte; nada ejecutado de los repos de origen. Evidencia: `skills-instaladas.md`.
+- **Reintentos:** 0. **Pendiente:** *smoke* de carga (E2) en la sesión de 1.1. Consumo por tarea: no disponible.
+
 ## 5. Intervenciones Opus
 
 Ninguna hasta el 26/10/2026. Cada una se registra aquí con la ficha de seis campos (lote · problema · evidencia de entrada · beneficio · entrega · criterio de salida) y modelo efectivo, esfuerzo, hora, uso antes/después y aceptación.

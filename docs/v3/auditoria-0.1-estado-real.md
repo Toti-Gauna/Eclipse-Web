@@ -403,3 +403,4 @@ Se crearon **Eclipse Design** y **Eclipse Ads** a pedido de Ignacio (PR #2 de `a
 4. **El «200» es Deluxe** (resuelve §22.3). El nivel general de 199 sigue **sin publicarse**.
 5. **Costos fijos mensuales declarados:** infraestructura USD 100 · Claude USD 100 · Higgsfield USD 50 · GPT USD 20 · ElevenLabs USD 11 = **USD 281/mes**. Impuestos y comisiones: se definen al facturar. Ver `ledger-financiero.md` §2.b. Higgsfield: USD 50 de costo contra tope declarado de USD 100; pendiente aclarar cuál rige.
 6. **Contact:** se mantiene como web básica con enlace manual a WhatsApp (segmentación del 26/10); el «chat» del criterio de 2.3 se corrige en ese lote.
+7. **Instalación de skills (A, B, C):** ejecutada el 26/10/2026 a pedido de Ignacio, antes de 1.1. Ver `skills-instaladas.md`. Pendiente: *smoke* de carga en la sesión de 1.1.
