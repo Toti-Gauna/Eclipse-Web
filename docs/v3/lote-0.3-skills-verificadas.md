@@ -177,3 +177,7 @@ Sin hallazgos de red, ejecución ni secretos en `frontend-design`, `gsap-timelin
 ## 12. Agentes de diseño y publicidad (26/10/2026)
 
 Pedido de Ignacio: un agente de diseño «súper pro» y otro de publicidad. Se resolvió con **skills internas** (sin instalar nada externo): PR #2 de `agents` (borrador). Design: `brand-contract`, `typography-atlas`, `visual-styles-atlas`, `motion-atlas`, `three-d-webgl`, `higgsfield-direction`, `design-review-rubric`. Ads: `ad-brief-strategy`, `ad-hooks-copy`, `ad-video-direction`, `ad-platform-playbook`, `ad-compliance-honesty`, `ad-measurement-testing`. Las skills externas del §11 siguen siendo asesoras; la identidad visual la fija `brand-contract` y, por encima, `Eclipse-Web/CLAUDE.md`.
+
+## 13. Aceptación del manifiesto (26/10/2026)
+
+Ignacio aprobó el manifiesto **A, B y C** (Frontend Design; GSAP React/Timeline/Performance, con ScrollTrigger y Core; Emil: `emil-design-eng`, `animate`, `animation-performance`). **D** (`shader-glsl` externa) **no se instala**: se reemplaza por una skill interna sobre OGL cuando haya un efecto aprobado. Estado de 0.3: **aceptado con alcance A, B, C**. **Nada está instalado**: el lote 0.4 excluye instalar, así que la instalación va en una sesión propia, con el procedimiento del §6 (checkout al SHA, hashes, copia solo de las carpetas del manifiesto, rollback) y su OK de ejecución; propuesta: justo antes de 1.4, que es el primer lote que las usa.
