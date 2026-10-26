@@ -5,11 +5,10 @@ import { useLocale, useTranslations } from 'next-intl';
 import { ArrowUp, Plus } from 'lucide-react';
 import {
   annualMonthsCharged,
-  careHoursMonthly,
   founders,
   foundersRemaining,
   l,
-  maintenancePlans,
+  levels,
   offers,
   itemById,
   type ItemId,
@@ -51,7 +50,7 @@ export type FaqId = (typeof FAQ_IDS)[number];
  *   from        pricing.how.project.title/when · pricing.notes.from
  *   currency    currency.notice · pricing.rate.note · pricing.rate.value + currency.source(Fallback)
  *   pieces      services.key.pieceText · pricing.ways.pieces.text · pricing.how.extras.text
- *   maintenance pricing.care.label · pricing.care.text · content/maintenance.json plans
+ *   maintenance pricing.levels.label · pricing.levels.text · content/levels.json
  *   voice       content/items.json whatsapp/chatbot/voz · faq.channelPrices/channelsRule/channelsDemo
  *   annual      content/offers.json annual.description · pricing.care.annualNote
  *   founder     pricing.offers.founderWhat · offers.json founder.description · pricing.offers.founderDeal/founderHow/founderLeft
@@ -115,21 +114,19 @@ export function Faq({ className = '' }: { className?: string }) {
     ),
     maintenance: (
       <>
-        <p className="faq-tag">{tp('care.label')}</p>
-        <p>{tp('care.text')}</p>
+        <p className="faq-tag">{tp('levels.label')}</p>
+        <p>{tp('levels.text')}</p>
         <ul className="faq-list">
-          {maintenancePlans.map((m) => (
-            <li key={m.id}>
+          {levels.map((lv) => (
+            <li key={lv.id}>
               <span className="faq-list-head">
-                <strong>{l(m.name, locale)}</strong> · {format(m.priceUsd)} {tp('perMonth')}
+                <strong>{l(lv.name, locale)}</strong> · {format(lv.priceUsd)} {tp('perMonth')}
               </span>
-              <span className="faq-list-text">
-                {l(m.includes, locale).join(' · ')} · {tp('care.budget', { budget: format(m.thirdPartyUsd) })}
-              </span>
+              <span className="faq-list-text">{l(lv.lead, locale)}</span>
             </li>
           ))}
         </ul>
-        <p>{tp('care.terms', { hours: careHoursMonthly })}</p>
+        <p>{tp('levels.notes.pay')}</p>
       </>
     ),
     voice: (

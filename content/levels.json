@@ -1,0 +1,253 @@
+{
+  "$comment": "Escalera de seis niveles (decisión de Ignacio 26/10/2026, lote 2.3b): vale para todos los rubros; cada rubro llena cada nivel con lo suyo y el primero es EstateOS (inmobiliarias). priceStatus: owner = dirección del propietario; proposal = propuesta (Partner). Los cupos mensuales y la puesta en marcha NO viven acá: son propuesta y se definen en cada propuesta comercial (docs/v3/estateos/catalogo-estateos.v1.json, versión estateos-2026-10-26-v1). Una prueba compara estos precios con ese catálogo.",
+  "catalogVersion": "estateos-2026-10-26-v1",
+  "example": "estateos",
+  "levels": [
+    {
+      "id": "contact",
+      "priceUsd": 30,
+      "priceStatus": "owner",
+      "name": {
+        "es": "Contact",
+        "en": "Contact",
+        "pt": "Contact"
+      },
+      "lead": {
+        "es": "Tu web y tu CRM, completos",
+        "en": "Your website and your CRM, complete",
+        "pt": "Seu site e seu CRM, completos"
+      },
+      "audience": {
+        "es": "Para empezar a ordenar la operación.",
+        "en": "To start putting your operation in order.",
+        "pt": "Para começar a organizar a operação."
+      },
+      "includes": {
+        "es": [
+          "Web del producto",
+          "CRM completo del producto",
+          "Roles básicos",
+          "Centro de ayuda"
+        ],
+        "en": [
+          "Product website",
+          "Complete product CRM",
+          "Basic roles",
+          "Help center"
+        ],
+        "pt": [
+          "Site do produto",
+          "CRM completo do produto",
+          "Papéis básicos",
+          "Central de ajuda"
+        ]
+      }
+    },
+    {
+      "id": "growth",
+      "priceUsd": 75,
+      "priceStatus": "owner",
+      "name": {
+        "es": "Growth",
+        "en": "Growth",
+        "pt": "Growth"
+      },
+      "lead": {
+        "es": "Crecé y rendí cuentas",
+        "en": "Grow and report back",
+        "pt": "Cresça e preste contas"
+      },
+      "audience": {
+        "es": "Para equipos de 1 a 3 personas que quieren mostrar resultados.",
+        "en": "For teams of 1 to 3 people who want to show results.",
+        "pt": "Para equipes de 1 a 3 pessoas que querem mostrar resultados."
+      },
+      "includes": {
+        "es": [
+          "Todo Contact",
+          "Panel para el dueño del inmueble",
+          "Mapas y métricas",
+          "Academy inicial",
+          "Contenido mensual: imágenes, motion y un tour"
+        ],
+        "en": [
+          "Everything in Contact",
+          "Dashboard for the property owner",
+          "Maps and metrics",
+          "Starter Academy",
+          "Monthly content: images, motion and a tour"
+        ],
+        "pt": [
+          "Tudo do Contact",
+          "Painel para o dono do imóvel",
+          "Mapas e métricas",
+          "Academy inicial",
+          "Conteúdo mensal: imagens, motion e um tour"
+        ]
+      }
+    },
+    {
+      "id": "escalar",
+      "priceUsd": 100,
+      "priceStatus": "owner",
+      "name": {
+        "es": "Escalar",
+        "en": "Escalar",
+        "pt": "Escalar"
+      },
+      "lead": {
+        "es": "Coordiná al equipo",
+        "en": "Coordinate the team",
+        "pt": "Coordene a equipe"
+      },
+      "audience": {
+        "es": "Para equipos de hasta 6 personas que necesitan orden.",
+        "en": "For teams of up to 6 people who need order.",
+        "pt": "Para equipes de até 6 pessoas que precisam de ordem."
+      },
+      "includes": {
+        "es": [
+          "Todo Growth",
+          "Reparto y seguimiento de consultas",
+          "Campañas de 15 s en horizontal y vertical",
+          "Agente de voz",
+          "Kit para ofrecer tours"
+        ],
+        "en": [
+          "Everything in Growth",
+          "Inquiry assignment and follow-up",
+          "15 s campaigns, horizontal and vertical",
+          "Voice agent",
+          "Kit to offer tours"
+        ],
+        "pt": [
+          "Tudo do Growth",
+          "Distribuição e acompanhamento de contatos",
+          "Campanhas de 15 s na horizontal e na vertical",
+          "Agente de voz",
+          "Kit para oferecer tours"
+        ]
+      }
+    },
+    {
+      "id": "hipergrowth",
+      "priceUsd": 150,
+      "priceStatus": "owner",
+      "name": {
+        "es": "Hípergrowth",
+        "en": "Hípergrowth",
+        "pt": "Hípergrowth"
+      },
+      "lead": {
+        "es": "Decidí con datos",
+        "en": "Decide with data",
+        "pt": "Decida com dados"
+      },
+      "audience": {
+        "es": "Para equipos de hasta 10 personas con volumen.",
+        "en": "For teams of up to 10 people with volume.",
+        "pt": "Para equipes de até 10 pessoas com volume."
+      },
+      "includes": {
+        "es": [
+          "Todo Escalar",
+          "Intelligence: análisis y recomendaciones con fuente",
+          "Contratos y documentación con revisión",
+          "Más producción mensual"
+        ],
+        "en": [
+          "Everything in Escalar",
+          "Intelligence: analysis and recommendations with sources",
+          "Contracts and documents with review",
+          "More monthly production"
+        ],
+        "pt": [
+          "Tudo do Escalar",
+          "Intelligence: análises e recomendações com fonte",
+          "Contratos e documentação com revisão",
+          "Mais produção mensal"
+        ]
+      }
+    },
+    {
+      "id": "deluxe",
+      "priceUsd": 200,
+      "priceStatus": "owner",
+      "name": {
+        "es": "Deluxe",
+        "en": "Deluxe",
+        "pt": "Deluxe"
+      },
+      "lead": {
+        "es": "Sumá servicios nuevos",
+        "en": "Add new services",
+        "pt": "Some novos serviços"
+      },
+      "audience": {
+        "es": "Para equipos de hasta 15 personas que quieren administrar carteras.",
+        "en": "For teams of up to 15 people who want to manage portfolios.",
+        "pt": "Para equipes de até 15 pessoas que querem administrar carteiras."
+      },
+      "includes": {
+        "es": [
+          "Todo Hípergrowth",
+          "Chatbot integrado al CRM del equipo",
+          "Administración con tu marca",
+          "Más producción y voz"
+        ],
+        "en": [
+          "Everything in Hípergrowth",
+          "Chatbot built into the team’s CRM",
+          "Administration under your brand",
+          "More production and voice"
+        ],
+        "pt": [
+          "Tudo do Hípergrowth",
+          "Chatbot integrado ao CRM da equipe",
+          "Administração com a sua marca",
+          "Mais produção e voz"
+        ]
+      }
+    },
+    {
+      "id": "partner",
+      "priceUsd": 500,
+      "priceStatus": "proposal",
+      "name": {
+        "es": "Partner",
+        "en": "Partner",
+        "pt": "Partner"
+      },
+      "lead": {
+        "es": "Varias sedes, una visión",
+        "en": "Several sites, one view",
+        "pt": "Várias sedes, uma visão"
+      },
+      "audience": {
+        "es": "Para operaciones con varias sedes o carteras.",
+        "en": "For operations with several sites or portfolios.",
+        "pt": "Para operações com várias sedes ou carteiras."
+      },
+      "includes": {
+        "es": [
+          "Todo Deluxe",
+          "Varias sedes con permisos propios",
+          "Más capacidad y producción",
+          "Revisión mensual con recomendaciones"
+        ],
+        "en": [
+          "Everything in Deluxe",
+          "Several sites with their own permissions",
+          "More capacity and production",
+          "Monthly review with recommendations"
+        ],
+        "pt": [
+          "Tudo do Deluxe",
+          "Várias sedes com permissões próprias",
+          "Mais capacidade e produção",
+          "Revisão mensal com recomendações"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,472 @@
+{
+  "catalogVersion": "estateos-2026-10-26-v1",
+  "date": "2026-10-26",
+  "scope": "Catálogo SECTORIAL EstateOS. No es el catálogo general de Eclipse (Esencial 30 · Conectado 75 · Automatización e IA 150): mismo importe no implica misma oferta.",
+  "currency": "USD",
+  "period": "mes",
+  "sources": [
+    "Notion «Lote 2.3 · EstateOS · planes y bienvenida» (corrección vigente 26/10/2026)",
+    "Notion «Planes y cupos EstateOS» (anexo A)",
+    "Notion «Bienvenida · guion y producción» (anexo B)",
+    "Notion «Módulos y entregas futuras» (anexo C)",
+    "Notion «V4 · Eclipse y EstateOS · Evolución de portales» y subpáginas"
+  ],
+  "historical": [
+    {
+      "label": "EstateOS desde USD 50",
+      "status": "histórico, sustituido por la escalera 30/75/100/150/200 (24/10/2026); no usar en copy vigente"
+    }
+  ],
+  "ownerDirection": "Contact 30, Growth 75, Escalar 100, Hípergrowth 150, Deluxe 200 (propietario). Partner 500 y todos los cupos: propuesta.",
+  "plans": [
+    {
+      "id": "contact",
+      "name": "Contact",
+      "tagline": "Producto base completo",
+      "priceUsdMonthly": 30,
+      "priceStatus": "owner_direction",
+      "suggestedTeam": "operación inicial del producto completo (usuarios por definir)",
+      "teamIsContractualCap": false,
+      "inherits": null,
+      "capabilityIds": [
+        "web",
+        "crm_core",
+        "setup_brand"
+      ],
+      "quota": {
+        "tours15s": 0,
+        "campanas15sx2": 0,
+        "motionPlantilla": 0,
+        "imagenesFinales": 0,
+        "mensajesAutomatizadosSalientes": 0,
+        "minutosAgenteVoz": 0,
+        "consorciosAdministrados": 0,
+        "unidadesAdministradas": 0,
+        "sedesConfiguracionEstandar": 1
+      },
+      "quotaStatus": "proposed_to_cost",
+      "setupUsd": "A cotizar",
+      "state": "target_not_available"
+    },
+    {
+      "id": "growth",
+      "name": "Growth",
+      "tagline": "Crecimiento y seguimiento al propietario",
+      "priceUsdMonthly": 75,
+      "priceStatus": "owner_direction",
+      "suggestedTeam": "1–3 personas",
+      "teamIsContractualCap": false,
+      "inherits": "contact",
+      "capabilityIds": [
+        "owner_panel",
+        "maps_metrics",
+        "academy_initial",
+        "private_archive",
+        "content_monthly",
+        "local_recreation",
+        "whatsapp_auto"
+      ],
+      "quota": {
+        "tours15s": 1,
+        "campanas15sx2": 0,
+        "motionPlantilla": 1,
+        "imagenesFinales": 4,
+        "mensajesAutomatizadosSalientes": 300,
+        "minutosAgenteVoz": 0,
+        "consorciosAdministrados": 0,
+        "unidadesAdministradas": 0,
+        "sedesConfiguracionEstandar": 1
+      },
+      "quotaStatus": "proposed_to_cost",
+      "setupUsd": "A cotizar",
+      "state": "target_not_available"
+    },
+    {
+      "id": "escalar",
+      "name": "Escalar",
+      "tagline": "Coordinación comercial",
+      "priceUsdMonthly": 100,
+      "priceStatus": "owner_direction",
+      "suggestedTeam": "hasta 6",
+      "teamIsContractualCap": false,
+      "inherits": "growth",
+      "capabilityIds": [
+        "team_coordination",
+        "campaigns",
+        "voice_agent",
+        "tour_kit",
+        "contract_drafts"
+      ],
+      "quota": {
+        "tours15s": 2,
+        "campanas15sx2": 1,
+        "motionPlantilla": 0,
+        "imagenesFinales": 8,
+        "mensajesAutomatizadosSalientes": 600,
+        "minutosAgenteVoz": 15,
+        "consorciosAdministrados": 0,
+        "unidadesAdministradas": 0,
+        "sedesConfiguracionEstandar": 1
+      },
+      "quotaStatus": "proposed_to_cost",
+      "setupUsd": "A cotizar",
+      "state": "target_not_available"
+    },
+    {
+      "id": "hipergrowth",
+      "name": "Hípergrowth",
+      "tagline": "Decidir con datos",
+      "priceUsdMonthly": 150,
+      "priceStatus": "owner_direction",
+      "suggestedTeam": "hasta 10",
+      "teamIsContractualCap": false,
+      "inherits": "escalar",
+      "capabilityIds": [
+        "intelligence",
+        "compliance_docs"
+      ],
+      "quota": {
+        "tours15s": 3,
+        "campanas15sx2": 2,
+        "motionPlantilla": 0,
+        "imagenesFinales": 12,
+        "mensajesAutomatizadosSalientes": 1000,
+        "minutosAgenteVoz": 30,
+        "consorciosAdministrados": 0,
+        "unidadesAdministradas": 0,
+        "sedesConfiguracionEstandar": 1
+      },
+      "quotaStatus": "proposed_to_cost",
+      "setupUsd": "A cotizar",
+      "state": "target_not_available"
+    },
+    {
+      "id": "deluxe",
+      "name": "Deluxe",
+      "tagline": "Nuevos servicios",
+      "priceUsdMonthly": 200,
+      "priceStatus": "owner_direction",
+      "suggestedTeam": "hasta 15",
+      "teamIsContractualCap": false,
+      "inherits": "hipergrowth",
+      "capabilityIds": [
+        "crm_chatbot",
+        "administration"
+      ],
+      "quota": {
+        "tours15s": 4,
+        "campanas15sx2": 3,
+        "motionPlantilla": 0,
+        "imagenesFinales": 16,
+        "mensajesAutomatizadosSalientes": 2000,
+        "minutosAgenteVoz": 60,
+        "consorciosAdministrados": 1,
+        "unidadesAdministradas": 20,
+        "sedesConfiguracionEstandar": 1
+      },
+      "quotaStatus": "proposed_to_cost",
+      "setupUsd": "A cotizar",
+      "state": "target_not_available"
+    },
+    {
+      "id": "partner",
+      "name": "Partner",
+      "tagline": "Varias sedes y carteras",
+      "priceUsdMonthly": 500,
+      "priceStatus": "proposal",
+      "suggestedTeam": "equipos mayores o varias sedes",
+      "teamIsContractualCap": false,
+      "inherits": "deluxe",
+      "capabilityIds": [
+        "multi_site",
+        "monthly_review"
+      ],
+      "quota": {
+        "tours15s": 8,
+        "campanas15sx2": 5,
+        "motionPlantilla": 0,
+        "imagenesFinales": 24,
+        "mensajesAutomatizadosSalientes": 5000,
+        "minutosAgenteVoz": 150,
+        "consorciosAdministrados": 3,
+        "unidadesAdministradas": 60,
+        "sedesConfiguracionEstandar": 3
+      },
+      "quotaStatus": "proposed_to_cost",
+      "setupUsd": "A cotizar",
+      "state": "target_not_available"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "web",
+      "label": "Web pública del producto (fichas de propiedades, búsqueda, consulta)",
+      "fromPlan": "contact",
+      "availability": "demo_simulated",
+      "evidence": "components/demos/real-estate/views/Site.tsx (Lumen, datos ficticios)",
+      "futureLot": "3.5",
+      "sprint": "S0→S1",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "crm_core",
+      "label": "CRM completo del producto: contactos, consultas, propiedades, oportunidades, agenda, tareas e historial con roles básicos",
+      "fromPlan": "contact",
+      "availability": "demo_simulated",
+      "evidence": "views/{Inbox,Pipeline,Visits,Listings,Today}.tsx (estado local, sin servidor, sin roles)",
+      "futureLot": "3.5/3.6",
+      "sprint": "S1",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "setup_brand",
+      "label": "Puesta en marcha: rebranding acotado, auditoría de 2 perfiles, 12 hooks + 6 videos de ejemplo + guía operativa (una sola vez, cotizada)",
+      "fromPlan": "contact",
+      "availability": "planned",
+      "evidence": "sin código: es un servicio Studio manual",
+      "futureLot": "2.4/2.5",
+      "sprint": "S0 (manual)",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "owner_panel",
+      "label": "Panel del propietario: sus inmuebles, rendiciones, cobros y seguimiento de inversión",
+      "fromPlan": "growth",
+      "availability": "planned",
+      "evidence": "sin código: el demo no tiene rol propietario",
+      "futureLot": "3.6",
+      "sprint": "S3",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "maps_metrics",
+      "label": "Mapas (Mar del Plata) y métricas agregadas de la cuenta",
+      "fromPlan": "growth",
+      "availability": "planned",
+      "evidence": "sin cartografía licenciada; heatmap solo agregado de consultas registradas o fixture rotulada",
+      "futureLot": "3.8",
+      "sprint": "S2",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "academy_initial",
+      "label": "Academy inicial (biblioteca de marketing inmobiliario, hooks, medición básica)",
+      "fromPlan": "growth",
+      "availability": "planned",
+      "evidence": "muestra pública prevista en V3; biblioteca privada exige S1 (cuentas/derechos)",
+      "futureLot": "3.5",
+      "sprint": "S1/S2",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "private_archive",
+      "label": "Archivo privado por inmueble/operación con versiones y permisos",
+      "fromPlan": "growth",
+      "availability": "planned",
+      "evidence": "propuesta V4; sin código",
+      "futureLot": "V4",
+      "sprint": "S1",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "content_monthly",
+      "label": "Producción mensual: imágenes finales, motion de plantilla y tours de 15 s según cupo",
+      "fromPlan": "growth",
+      "availability": "planned",
+      "evidence": "sin pipeline de producción; Higgsfield/ElevenLabs/Suno sin gasto autorizado",
+      "futureLot": "3.1–3.4",
+      "sprint": "S2",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "local_recreation",
+      "label": "Recreación del local al activar el servicio (una vez, no mensual)",
+      "fromPlan": "growth",
+      "availability": "planned",
+      "evidence": "requiere fotos autorizadas del cliente; rotulada recreación IA",
+      "futureLot": "3.3",
+      "sprint": "S2",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "whatsapp_auto",
+      "label": "Mensajes automatizados salientes (WhatsApp Business Platform, cuota mensual)",
+      "fromPlan": "growth",
+      "availability": "planned",
+      "evidence": "sin integración; el demo simula seguimientos (views/Followups.tsx)",
+      "futureLot": "3.5",
+      "sprint": "S1",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "team_coordination",
+      "label": "Coordinación comercial: distribución/reasignación, carga del equipo, metas, conversiones, oportunidades estancadas",
+      "fromPlan": "escalar",
+      "availability": "planned",
+      "evidence": "el demo no tiene gerente ni metas",
+      "futureLot": "3.6",
+      "sprint": "S1/S3",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "campaigns",
+      "label": "Campañas de 15 s en 16:9 y 9:16 (mismo concepto)",
+      "fromPlan": "escalar",
+      "availability": "planned",
+      "evidence": "sin pipeline de producción",
+      "futureLot": "3.3",
+      "sprint": "S2",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "voice_agent",
+      "label": "Agente de voz (minutos conectados)",
+      "fromPlan": "escalar",
+      "availability": "planned",
+      "evidence": "sin proveedor ni telefonía integrados",
+      "futureLot": "3.5",
+      "sprint": "S2",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "tour_kit",
+      "label": "Kit para comercializar tours a propietarios, con precio y margen propios",
+      "fromPlan": "escalar",
+      "availability": "planned",
+      "evidence": "contenido de Academy/propuesta; sin código",
+      "futureLot": "2.4",
+      "sprint": "S2",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "contract_drafts",
+      "label": "Borradores de contratos desde plantillas aportadas por la inmobiliaria (PDF para revisión)",
+      "fromPlan": "escalar",
+      "availability": "planned",
+      "evidence": "propuesta V4; sin código",
+      "futureLot": "V4",
+      "sprint": "S3",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "intelligence",
+      "label": "Intelligence: análisis por canal, motivos de pérdida y recomendaciones explicables, con permisos",
+      "fromPlan": "hipergrowth",
+      "availability": "planned",
+      "evidence": "sin datos reales; el KPI del demo es de fixture (views/Today.tsx)",
+      "futureLot": "3.8",
+      "sprint": "S3",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "compliance_docs",
+      "label": "Compliance · contratos y documentación: revisión/aprobación, faltantes, estados de firma, vencimientos, evidencias",
+      "fromPlan": "hipergrowth",
+      "availability": "planned",
+      "evidence": "propuesta V4; sin código; no es asesoramiento jurídico",
+      "futureLot": "V4",
+      "sprint": "S3",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "crm_chatbot",
+      "label": "Chatbot integrado al CRM del equipo (consultas autorizadas, fuentes, salida al humano, confirmación antes de modificar)",
+      "fromPlan": "deluxe",
+      "availability": "planned",
+      "evidence": "el demo tiene el chat guionado del sitio (Lumi), no un asistente sobre datos",
+      "futureLot": "3.6",
+      "sprint": "S3",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "administration",
+      "label": "Administración con marca inmobiliaria: consorcios/unidades, expensas, reclamos, correo",
+      "fromPlan": "deluxe",
+      "availability": "planned",
+      "evidence": "producto nuevo respecto de Lumen; sin código",
+      "futureLot": "4.x",
+      "sprint": "S4",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "multi_site",
+      "label": "Varias sedes/carteras con permisos por sede y visión consolidada",
+      "fromPlan": "partner",
+      "availability": "planned",
+      "evidence": "sin multi-sede en el demo",
+      "futureLot": "4.x",
+      "sprint": "S1/S4",
+      "commercialState": "owner_direction"
+    },
+    {
+      "id": "monthly_review",
+      "label": "Revisión mensual de 45 min con agenda y recomendaciones (sin garantía de ingresos)",
+      "fromPlan": "partner",
+      "availability": "planned",
+      "evidence": "servicio humano",
+      "futureLot": "—",
+      "sprint": "manual",
+      "commercialState": "owner_direction"
+    }
+  ],
+  "quotaDefinitions": {
+    "note": "Totales mensuales de cada plan, NO sumas entre niveles. Borrador de capacidad a costear; no promesa de rentabilidad ni límite aprobado.",
+    "tour": "Montaje de 15 s para un inmueble, máx. 3 tomas, desde fotografías autorizadas y consistentes; un master y una relación de aspecto. No es 360°, escaneo ni recorrido libre; sin continuidad espacial comprobable se hace presentación animada de fotos rotulada.",
+    "campana": "Dos piezas finales de 15 s (16:9 y 9:16), mismo concepto; una ronda de cambios consolidada; reabrir el brief es extra. Dos conceptos independientes consumen dos campañas (interpretación propuesta, pendiente de aceptación).",
+    "imagen": "Arte final para un formato desde un concepto y referencias aprobadas; variantes/adaptaciones y revisiones se enumeran en el brief.",
+    "motion": "Pieza de motion por plantilla de 10–15 s; desde Escalar forma parte de las campañas (no hay cupo oculto adicional).",
+    "mensaje": "Mensaje saliente automatizado ENTREGADO (WhatsApp Business Platform), con reconciliación; separado del chat interno y de enlaces manuales; depende de cuenta autorizada, plantillas, consentimiento y costo país/categoría.",
+    "minuto": "Tiempo conectado del agente de voz, con unidad y redondeo del proveedor documentados; LLM y telefonía se cotizan en la economía; no son minutos de locución de tours.",
+    "revision": "Una revisión consolidada por pieza; la corrección de un error imputable a Eclipse no consume otra pieza del cliente.",
+    "marcaBlanca": "Interfaz con la marca de la inmobiliaria sobre el producto de Eclipse; sin propiedad del código ni reventa ilimitada."
+  },
+  "setupIncludes": [
+    "Configurar web/CRM sobre el producto existente",
+    "Adaptación o rebranding acotado a identidad acordada (diagnóstico, logo existente ajustado si procede, paleta, tipografía y plantillas)",
+    "Auditoría y mejora de biografía, portada, destacados y CTA en hasta dos perfiles",
+    "Biblioteca de 12 hooks con 6 videos representativos reutilizables y guía operativa (ejemplos educativos, no 6 anuncios exclusivos)"
+  ],
+  "setupExcludes": [
+    "Rediseño integral de identidad",
+    "Sesión fotográfica",
+    "Gestión continua de redes",
+    "Migraciones",
+    "Módulos nuevos"
+  ],
+  "modalities": [
+    {
+      "id": "mensual",
+      "status": "vigente en el catálogo"
+    },
+    {
+      "id": "anual_prepagado",
+      "status": "propuesta V4; precio/descuento no aprobados; no es propiedad perpetua del software"
+    },
+    {
+      "id": "compra_producto_mas_mantenimiento",
+      "status": "hipótesis de Ignacio (USD 200 producto básico) NO es precio de lista"
+    }
+  ],
+  "configuratorModules": [
+    "nucleo_crm_web",
+    "whatsapp",
+    "contenido_imagenes",
+    "tours",
+    "campanas",
+    "voz",
+    "academy",
+    "mapas_intelligence",
+    "propietario_cobros",
+    "administracion",
+    "equipamiento_puntual"
+  ],
+  "rules": [
+    "Cada nivel hereda el producto base completo de Contact",
+    "Los extras sin tarifa validada se muestran «A cotizar»; nunca cero ni total final falso",
+    "Mensual, setup y variables se muestran separados",
+    "No se cobra de nuevo lo ya incluido",
+    "Aviso al 80% de la cuota; al 100% se detiene solo el servicio consumible, sin sobrecargo automático",
+    "Las cuotas no se acumulan de un mes a otro"
+  ],
+  "digestSha256": "16664385e9dca7474d5992f64101545dc41f154fe67aa00ebc6b8011958d74d9"
+}
