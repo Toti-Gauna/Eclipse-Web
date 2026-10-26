@@ -108,7 +108,7 @@ Fuente: «Orden de ejecución y entregables» (Notion, 24/10/2026). El **orden n
 | 3 | **0.3** Skills verificadas | 0.2 | Sonnet · high | Catálogo, manifiestos, riesgos y pruebas, sin instalar | aceptado con alcance A, B, C; instalación pendiente |
 | 4 | **0.4** SDD y control financiero | 0.1, 0.2, 0.3 | Sonnet · high | Contrato base, ledger financiero, matriz de modelos y gates, criterios de parada | **aceptado** (Ignacio, 26/10/2026) |
 | 5 | **1.1** Arquitectura y wireflows | 0.4 | Sonnet · high | Mapa de contenidos, wireflows desktop/móvil, tabla URL/estado/foco, protocolo de usabilidad | **aceptado** con D1–D5 (Ignacio, 26/10/2026; `lote-1.1-arquitectura-wireflows.md`) |
-| 6 | **1.4** Motion y dirección visual | 1.1 | Opus · high (hito de dirección visual; propuesta, a confirmar) | Dirección de arte maestra, partitura y matriz de QA visual (antes de código) | listo por dependencias |
+| 6 | **1.4** Motion y dirección visual | 1.1 | Opus · high (ejecutado 26/10/2026) | Dirección de arte maestra, partitura y matriz de QA visual (antes de código) | verificado local; pendiente de aceptación (`lote-1.4-motion-direccion-visual.md`) |
 | 7 | **1.2** Home, loader y hero | 1.1, 1.4 | Sonnet · high | Ajuste local de portada sobre componentes existentes, capturas/QA, inventario conservado | especificado |
 | 8 | **1.3** Header y selector inmersivo | 1.2, 1.4 | Sonnet · high | Selector/header integrados localmente con prueba de History, foco, fallback y captura | especificado |
 | 9 | **1.5** QA visual y rendimiento | 1.2, 1.3 | Sonnet · high | Informe de QA, capturas, métricas y defectos por severidad | especificado |

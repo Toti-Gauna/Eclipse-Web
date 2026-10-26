@@ -35,6 +35,7 @@ La sesión de Claude Code de Eclipse v3 (`session_01Tg555M4D4VmSrwxyrCMu2q`, cre
 | 0.3 Skills verificadas | `claude-sonnet-5-5` · high | aceptado con alcance A, B, C; nada instalado | 0 | USD 0 | `lote-0.3-skills-verificadas.md` |
 | 0.4 SDD y control financiero | `claude-sonnet-5-5` · high | **aceptado** (Ignacio, 26/10/2026) | 0 | USD 0 | `lote-0.4-sdd-control-financiero.md` |
 | 1.1 Arquitectura y wireflows | `claude-sonnet-5-5` · high | **aceptado** con D1–D5 (Ignacio, 26/10/2026) | 0 | USD 0 | `lote-1.1-arquitectura-wireflows.md` |
+| 1.4 Motion y dirección visual | `claude-opus-5-5` · high | verificado local; pendiente de aceptación | **1** | USD 0 | `lote-1.4-motion-direccion-visual.md` |
 
 **Lectura de la herramienta de sesión, 26/10/2026 ≈ 13:33 UTC (10:33 ART), al abrir 0.4 (`get_session`):**
 - Tokens: entrada 13.760 · salida 259.575 · lectura de caché 41.984.086 · escritura de caché 1.927.672.
@@ -67,4 +68,9 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 
 ## 5. Intervenciones Opus
 
-Ninguna hasta el 26/10/2026. **Propuesta para 1.4:** una intervención Opus · high (`lote-1.1-arquitectura-wireflows.md` §16), a confirmar por Ignacio. Cada una se registra aquí con la ficha de seis campos (lote · problema · evidencia de entrada · beneficio · entrega · criterio de salida) y modelo efectivo, esfuerzo, hora, uso antes/después y aceptación.
+**O-1.4 · 26/10/2026.** Ignacio cambió el modelo a `claude-opus-5-5` con `/model` y pidió ejecutar 1.4 con Opus high.
+- **Ficha:** `lote-1.4-motion-direccion-visual.md` §1 (lote · problema · evidencia · beneficio · entrega · criterio de salida).
+- **Modelo y esfuerzo efectivos:** `claude-opus-5-5` · high (`get_session`). Inicio ≈ 14:34 UTC (11:34 ART).
+- **Uso visible antes:** entrada 15.414 · salida 404.016 · caché 64.412.618 / 2.259.637 · `cost_usd` 19,13 (acumulado de sesión). **Después:** la herramienta devolvió **los mismos valores** a las 14:47 UTC (su campo de uso no se actualizó durante el lote): **consumo de la intervención no disponible**.
+- **Trabajo hecho por Opus en lugar de Sonnet:** también el baseline (capturas y mediciones), que el plan híbrido asignaba a Sonnet, porque Ignacio pidió avanzar en el mismo turno.
+- **Aceptación:** pendiente de Ignacio. La puerta estética real se pasa en 1.2/1.3 contra el baseline. Cada una se registra aquí con la ficha de seis campos (lote · problema · evidencia de entrada · beneficio · entrega · criterio de salida) y modelo efectivo, esfuerzo, hora, uso antes/después y aceptación.
