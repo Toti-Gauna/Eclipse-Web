@@ -141,6 +141,12 @@ reachable (folded is fine, deleted is not).
   per-channel fee. Founder/combo/annual/referral offers are inactive (historical). Demos are contracted as the
   adaptation; their simulated channels are add-ons, never preselected. Retired ids keep their names in
   `content/legacy.json` for historical requests. Live «Enviar solicitud» is blocked while the backend catalog differs.
+- **Footer and catalog guard (lote 2.2, 26/10/2026):** the footer no longer lists the units Eclipse Agency/Media/Market (decision of Ignacio;
+  `content/units.json` stays as history). `tests/catalog-be-reconciliation.test.ts` runs `catalogMismatches` against the real backend
+  catalogs (`main` and PR #10): live «Enviar solicitud» stays blocked until the backend carries the 16/10 model — never disable the guard.
+- **Decision 26/10/2026 (lote 2.2, D16), not yet implemented:** the two offers (Adaptación 500, Pack lanzamiento 700, with `careCredit`) and
+  the financial-advisory pieces are to be retired; the model becomes the monthly plan 30/75/150 plus the piece price list (50/50). Until lote 2.2b
+  lands, the code above still describes the current behaviour. Level 199 stays unpublished.
 - **Package bonus:** `plan.bonus` (Voz, Automatiza: the premium landing) is shown only as "incluido": never in
   `plan.items`, never with a price, strikethrough or saving.
 - **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in

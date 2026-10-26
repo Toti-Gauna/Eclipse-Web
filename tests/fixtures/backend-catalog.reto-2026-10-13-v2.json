@@ -1,0 +1,962 @@
+{
+ "$comment": "Snapshot del backend en la rama feat/reto-2026-10-13-contracting (Eclipse-be PR #10, abierto al 26/10/2026; catálogo eclipse-reto-2026-10-13-v2, 864b90f). Anterior a la oferta del 16/10: la web debe detectarlo y bloquear el envío live. Solo lectura: no se edita a mano.",
+ "schemaVersion": 2,
+ "catalogVersion": "eclipse-reto-2026-10-13-v2",
+ "categories": [
+  {
+   "id": "presencia",
+   "name": {
+    "es": "Web y marca",
+    "en": "Web & brand",
+    "pt": "Web e marca"
+   }
+  },
+  {
+   "id": "sistemas",
+   "name": {
+    "es": "Gestión y operación",
+    "en": "Operations",
+    "pt": "Gestão e operação"
+   }
+  },
+  {
+   "id": "comercio",
+   "name": {
+    "es": "Venta online",
+    "en": "Online sales",
+    "pt": "Venda online"
+   }
+  },
+  {
+   "id": "plataformas",
+   "name": {
+    "es": "Apps a medida",
+    "en": "Custom apps",
+    "pt": "Apps sob medida"
+   }
+  },
+  {
+   "id": "ia",
+   "name": {
+    "es": "IA y agentes",
+    "en": "AI & agents",
+    "pt": "IA e agentes"
+   }
+  },
+  {
+   "id": "estrategia",
+   "name": {
+    "es": "Estrategia y crecimiento",
+    "en": "Strategy & growth",
+    "pt": "Estratégia e crescimento"
+   }
+  }
+ ],
+ "items": [
+  {
+   "id": "landing",
+   "category": "presencia",
+   "name": {
+    "es": "Landing premium con motion graphics",
+    "en": "Premium landing page with motion graphics",
+    "pt": "Landing page premium com motion graphics"
+   },
+   "priceCents": 50000,
+   "campaign": true,
+   "compatiblePlans": []
+  },
+  {
+   "id": "web-multi",
+   "category": "presencia",
+   "name": {
+    "es": "Web multipágina",
+    "en": "Multi-page website",
+    "pt": "Site com várias páginas"
+   },
+   "priceCents": 45000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "seo",
+   "category": "presencia",
+   "name": {
+    "es": "SEO + analytics",
+    "en": "SEO + analytics",
+    "pt": "SEO + analytics"
+   },
+   "priceCents": 15000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "trailer",
+   "category": "presencia",
+   "name": {
+    "es": "Trailer en motion graphics",
+    "en": "Motion graphics trailer",
+    "pt": "Trailer em motion graphics"
+   },
+   "priceCents": 25000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "turnos",
+   "category": "sistemas",
+   "name": {
+    "es": "Sistema de turnos",
+    "en": "Booking system",
+    "pt": "Sistema de agendamentos"
+   },
+   "priceCents": 40000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "pedidos",
+   "category": "sistemas",
+   "name": {
+    "es": "Sistema de pedidos",
+    "en": "Ordering system",
+    "pt": "Sistema de pedidos"
+   },
+   "priceCents": 40000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "automatizacion",
+   "category": "sistemas",
+   "name": {
+    "es": "Automatizaciones (recordatorios, mails, seguimiento)",
+    "en": "Automations (reminders, emails, follow-up)",
+    "pt": "Automações (lembretes, e-mails, follow-up)"
+   },
+   "priceCents": 50000,
+   "campaign": true,
+   "compatiblePlans": []
+  },
+  {
+   "id": "dashboard",
+   "category": "sistemas",
+   "name": {
+    "es": "Dashboard interno",
+    "en": "Internal dashboard",
+    "pt": "Dashboard interno"
+   },
+   "priceCents": 40000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "crm",
+   "category": "sistemas",
+   "name": {
+    "es": "CRM + documentación interna",
+    "en": "CRM + internal documentation",
+    "pt": "CRM + documentação interna"
+   },
+   "priceCents": 60000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "gamificacion",
+   "category": "sistemas",
+   "name": {
+    "es": "Gamificación y misiones",
+    "en": "Gamification and missions",
+    "pt": "Gamificação e missões"
+   },
+   "priceCents": 70000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "ecommerce",
+   "category": "comercio",
+   "name": {
+    "es": "E-commerce completo",
+    "en": "Full e-commerce",
+    "pt": "E-commerce completo"
+   },
+   "priceCents": 120000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "app-ondemand",
+   "category": "plataformas",
+   "name": {
+    "es": "App on-demand",
+    "en": "On-demand app",
+    "pt": "App on-demand"
+   },
+   "priceCents": 350000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "voz",
+   "category": "ia",
+   "name": {
+    "es": "Agente de voz con IA",
+    "en": "AI voice agent",
+    "pt": "Agente de voz com IA"
+   },
+   "priceCents": 60000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "chatbot",
+   "category": "ia",
+   "name": {
+    "es": "Chatbot IA en WhatsApp/web",
+    "en": "AI chatbot on WhatsApp/web",
+    "pt": "Chatbot com IA no WhatsApp/site"
+   },
+   "priceCents": 35000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "marketing",
+   "category": "estrategia",
+   "name": {
+    "es": "Marketing + estudio de mercado",
+    "en": "Marketing + market research",
+    "pt": "Marketing + estudo de mercado"
+   },
+   "priceCents": 40000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "auditoria",
+   "category": "estrategia",
+   "name": {
+    "es": "Auditoría digital",
+    "en": "Digital audit",
+    "pt": "Auditoria digital"
+   },
+   "priceCents": 15000,
+   "campaign": false,
+   "compatiblePlans": []
+  },
+  {
+   "id": "volta-base",
+   "category": "comercio",
+   "name": {
+    "es": "Volta comercial",
+    "en": "Volta commercial",
+    "pt": "Volta comercial"
+   },
+   "priceCents": 50000,
+   "campaign": true,
+   "compatiblePlans": []
+  },
+  {
+   "id": "velmar-base",
+   "category": "comercio",
+   "name": {
+    "es": "Velmar comercial",
+    "en": "Velmar commercial",
+    "pt": "Velmar comercial"
+   },
+   "priceCents": 50000,
+   "campaign": true,
+   "compatiblePlans": []
+  },
+  {
+   "id": "operativo-base",
+   "category": "sistemas",
+   "name": {
+    "es": "Módulo operativo",
+    "en": "Operations module",
+    "pt": "Módulo operacional"
+   },
+   "priceCents": 75000,
+   "campaign": true,
+   "compatiblePlans": []
+  },
+  {
+   "id": "ampliado-base",
+   "category": "sistemas",
+   "name": {
+    "es": "Paquete operativo ampliado",
+    "en": "Extended operations package",
+    "pt": "Pacote operacional ampliado"
+   },
+   "priceCents": 100000,
+   "campaign": true,
+   "compatiblePlans": []
+  },
+  {
+   "id": "whatsapp-extra",
+   "category": "comercio",
+   "name": {
+    "es": "WhatsApp estándar compatible",
+    "en": "Compatible standard WhatsApp",
+    "pt": "WhatsApp padrão compatível"
+   },
+   "priceCents": 10000,
+   "campaign": false,
+   "compatiblePlans": [
+    "volta",
+    "velmar"
+   ]
+  },
+  {
+   "id": "landing-extra",
+   "category": "comercio",
+   "name": {
+    "es": "Landing comercial reutilizada",
+    "en": "Reused campaign landing",
+    "pt": "Landing comercial reutilizada"
+   },
+   "priceCents": 5000,
+   "campaign": false,
+   "compatiblePlans": [
+    "volta",
+    "velmar"
+   ]
+  }
+ ],
+ "plans": [
+  {
+   "id": "diagnostico",
+   "name": {
+    "es": "Diagnóstico",
+    "en": "Diagnosis",
+    "pt": "Diagnóstico"
+   },
+   "tier": "complete",
+   "rangeCents": {
+    "from": 15000,
+    "to": 25000
+   },
+   "items": [
+    "auditoria"
+   ],
+   "maintenance": null,
+   "bonusItemId": null,
+   "campaign": false,
+   "scope": {
+    "es": [
+     "Estudio de mercado de tu rubro y tu zona",
+     "Auditoría digital: web, Google, redes y WhatsApp",
+     "Plan de acción priorizado"
+    ],
+    "en": [
+     "Market research for your industry and area",
+     "Digital audit: website, Google, social and WhatsApp",
+     "Prioritized action plan"
+    ],
+    "pt": [
+     "Estudo de mercado do seu setor e da sua região",
+     "Auditoria digital: site, Google, redes e WhatsApp",
+     "Plano de ação priorizado"
+    ]
+   }
+  },
+  {
+   "id": "presencia",
+   "name": {
+    "es": "Captación web",
+    "en": "Web acquisition",
+    "pt": "Captação web"
+   },
+   "tier": "starter",
+   "rangeCents": {
+    "from": 50000,
+    "to": 100000
+   },
+   "items": [
+    "landing"
+   ],
+   "maintenance": "esencial",
+   "bonusItemId": null,
+   "campaign": true,
+   "scope": {
+    "es": [
+     "Una página, hasta seis secciones; identidad y contenidos aportados",
+     "Responsive, motion reutilizado, CTA/formulario y una revisión",
+     "Alcance concreto validado en propuesta; dominio y externos aparte"
+    ],
+    "en": [
+     "One page, up to six sections; supplied identity and content",
+     "Responsive, reused motion, CTA/form and one revision",
+     "Scope validated in the proposal; domain and external services extra"
+    ],
+    "pt": [
+     "Uma página, até seis seções; identidade e conteúdo fornecidos",
+     "Responsivo, motion reutilizado, CTA/formulário e uma revisão",
+     "Escopo validado na proposta; domínio e serviços externos à parte"
+    ]
+   }
+  },
+  {
+   "id": "voz",
+   "name": {
+    "es": "Voz",
+    "en": "Voice",
+    "pt": "Voz"
+   },
+   "tier": "complete",
+   "rangeCents": {
+    "from": 50000,
+    "to": 70000
+   },
+   "items": [
+    "voz"
+   ],
+   "maintenance": "esencial",
+   "bonusItemId": "landing",
+   "campaign": false,
+   "scope": {
+    "es": [
+     "Agente de voz con IA que atiende llamadas",
+     "Responde con la información de tu negocio",
+     "Agenda turnos en tu calendario",
+     "Configuración y pruebas incluidas"
+    ],
+    "en": [
+     "AI voice agent that answers your calls",
+     "Replies using your business information",
+     "Books appointments in your calendar",
+     "Setup and testing included"
+    ],
+    "pt": [
+     "Agente de voz com IA que atende ligações",
+     "Responde com as informações do seu negócio",
+     "Agenda horários no seu calendário",
+     "Configuração e testes incluídos"
+    ]
+   }
+  },
+  {
+   "id": "automatiza",
+   "name": {
+    "es": "Automatización",
+    "en": "Automation",
+    "pt": "Automação"
+   },
+   "tier": "starter",
+   "rangeCents": {
+    "from": 50000,
+    "to": 100000
+   },
+   "items": [
+    "automatizacion"
+   ],
+   "maintenance": "escala",
+   "bonusItemId": null,
+   "campaign": true,
+   "scope": {
+    "es": [
+     "Un número propio autorizado; un flujo determinista definido",
+     "Hasta cinco respuestas aprobadas, una fuente de registro y derivación humana",
+     "Cuenta, proveedor y accesos habilitados; sin campañas, IA completa ni landing bonus"
+    ],
+    "en": [
+     "One authorized owned number; one defined deterministic flow",
+     "Up to five approved replies, one record source and human handoff",
+     "Enabled account, provider and access; no campaigns, full AI agent or bonus landing"
+    ],
+    "pt": [
+     "Um número próprio autorizado; um fluxo determinístico definido",
+     "Até cinco respostas aprovadas, uma fonte de registro e encaminhamento humano",
+     "Conta, provedor e acessos habilitados; sem campanhas, agente IA completo ou landing bônus"
+    ]
+   }
+  },
+  {
+   "id": "sistema",
+   "name": {
+    "es": "Sistema",
+    "en": "System",
+    "pt": "Sistema"
+   },
+   "tier": "complete",
+   "rangeCents": {
+    "from": 100000,
+    "to": 150000
+   },
+   "items": [
+    "turnos",
+    "pedidos",
+    "automatizacion",
+    "dashboard",
+    "landing",
+    "voz"
+   ],
+   "maintenance": "crecimiento",
+   "bonusItemId": null,
+   "campaign": false,
+   "scope": {
+    "es": [
+     "Sistema de turnos y pedidos",
+     "Automatizaciones",
+     "Dashboard interno",
+     "Landing premium",
+     "Agente de voz con IA"
+    ],
+    "en": [
+     "Booking and ordering system",
+     "Automations",
+     "Internal dashboard",
+     "Premium landing page",
+     "AI voice agent"
+    ],
+    "pt": [
+     "Sistema de agendamentos e pedidos",
+     "Automações",
+     "Dashboard interno",
+     "Landing page premium",
+     "Agente de voz com IA"
+    ]
+   }
+  },
+  {
+   "id": "comercio",
+   "name": {
+    "es": "Comercio",
+    "en": "Commerce",
+    "pt": "Comércio"
+   },
+   "tier": "complete",
+   "rangeCents": {
+    "from": 200000,
+    "to": 350000
+   },
+   "items": [
+    "ecommerce",
+    "turnos",
+    "pedidos",
+    "automatizacion",
+    "dashboard",
+    "landing",
+    "gamificacion"
+   ],
+   "maintenance": "escala",
+   "bonusItemId": null,
+   "campaign": false,
+   "scope": {
+    "es": [
+     "E-commerce completo",
+     "Sistema de turnos y pedidos",
+     "Automatizaciones",
+     "Dashboard interno",
+     "Landing premium",
+     "Gamificación y misiones"
+    ],
+    "en": [
+     "Full e-commerce",
+     "Booking and ordering system",
+     "Automations",
+     "Internal dashboard",
+     "Premium landing page",
+     "Gamification and missions"
+    ],
+    "pt": [
+     "E-commerce completo",
+     "Sistema de agendamentos e pedidos",
+     "Automações",
+     "Dashboard interno",
+     "Landing page premium",
+     "Gamificação e missões"
+    ]
+   }
+  },
+  {
+   "id": "plataforma",
+   "name": {
+    "es": "Plataforma",
+    "en": "Platform",
+    "pt": "Plataforma"
+   },
+   "tier": "complete",
+   "rangeCents": {
+    "from": 400000,
+    "to": 700000
+   },
+   "items": [
+    "app-ondemand",
+    "landing",
+    "crm",
+    "gamificacion",
+    "voz"
+   ],
+   "maintenance": "escala",
+   "bonusItemId": null,
+   "campaign": false,
+   "scope": {
+    "es": [
+     "App on-demand",
+     "Landing premium",
+     "Dashboard CRM y documentación interna",
+     "Gamificación y misiones",
+     "Agente de voz con IA"
+    ],
+    "en": [
+     "On-demand app",
+     "Premium landing page",
+     "CRM dashboard and internal documentation",
+     "Gamification and missions",
+     "AI voice agent"
+    ],
+    "pt": [
+     "App on-demand",
+     "Landing page premium",
+     "Dashboard CRM e documentação interna",
+     "Gamificação e missões",
+     "Agente de voz com IA"
+    ]
+   }
+  },
+  {
+   "id": "volta",
+   "name": {
+    "es": "Volta comercial",
+    "en": "Volta commercial",
+    "pt": "Volta comercial"
+   },
+   "tier": "starter",
+   "rangeCents": {
+    "from": 50000,
+    "to": 50000
+   },
+   "items": [
+    "volta-base"
+   ],
+   "maintenance": "esencial",
+   "bonusItemId": null,
+   "campaign": true,
+   "scope": {
+    "es": [
+     "Una marca/sede; hasta 25 productos y variantes aportados",
+     "Un recorrido comercial con stacks Volta; consulta/pedido manual por WhatsApp",
+     "Publicación, móvil, explicación y una revisión",
+     "Sin pagos online, admin compartido ni gamificación productiva; extras sujetos a compatibilidad"
+    ],
+    "en": [
+     "One brand/location; up to 25 supplied products and variants",
+     "One commercial journey with Volta stacks; manual WhatsApp inquiry/order",
+     "Publication, mobile, walkthrough and one revision",
+     "No online payments, shared admin or production gamification; extras require compatibility"
+    ],
+    "pt": [
+     "Uma marca/unidade; até 25 produtos e variantes fornecidos",
+     "Um percurso comercial com stacks Volta; consulta/pedido manual por WhatsApp",
+     "Publicação, mobile, explicação e uma revisão",
+     "Sem pagamentos online, admin compartilhado ou gamificação produtiva; extras exigem compatibilidade"
+    ]
+   }
+  },
+  {
+   "id": "velmar",
+   "name": {
+    "es": "Velmar comercial",
+    "en": "Velmar commercial",
+    "pt": "Velmar comercial"
+   },
+   "tier": "starter",
+   "rangeCents": {
+    "from": 50000,
+    "to": 50000
+   },
+   "items": [
+    "velmar-base"
+   ],
+   "maintenance": "esencial",
+   "bonusItemId": null,
+   "campaign": true,
+   "scope": {
+    "es": [
+     "Una marca/sede; hasta 25 productos y variantes aportados",
+     "Un recorrido comercial y personalización básica Velmar cuando corresponda",
+     "Consulta/pedido manual por WhatsApp, publicación, móvil y una revisión",
+     "Sin pagos online, admin compartido ni toda la demo; extras sujetos a compatibilidad"
+    ],
+    "en": [
+     "One brand/location; up to 25 supplied products and variants",
+     "One commercial journey and basic Velmar customization where applicable",
+     "Manual WhatsApp inquiry/order, publication, mobile and one revision",
+     "No online payments, shared admin or full demo; extras require compatibility"
+    ],
+    "pt": [
+     "Uma marca/unidade; até 25 produtos e variantes fornecidos",
+     "Um percurso comercial e personalização básica Velmar quando aplicável",
+     "Consulta/pedido manual por WhatsApp, publicação, mobile e uma revisão",
+     "Sem pagamentos online, admin compartilhado ou demo completa; extras exigem compatibilidade"
+    ]
+   }
+  },
+  {
+   "id": "operativo",
+   "name": {
+    "es": "Módulo operativo",
+    "en": "Operations module",
+    "pt": "Módulo operacional"
+   },
+   "tier": "starter",
+   "rangeCents": {
+    "from": 75000,
+    "to": 75000
+   },
+   "items": [
+    "operativo-base"
+   ],
+   "maintenance": "crecimiento",
+   "bonusItemId": null,
+   "campaign": true,
+   "scope": {
+    "es": [
+     "Hasta tres usuarios; un módulo persistente y una fuente",
+     "Roles, pruebas y alcance especificados en propuesta",
+     "Integraciones y externos requieren validación técnica"
+    ],
+    "en": [
+     "Up to three users; one persistent module and one source",
+     "Roles, tests and scope specified in the proposal",
+     "Integrations and external services require technical validation"
+    ],
+    "pt": [
+     "Até três usuários; um módulo persistente e uma fonte",
+     "Papéis, testes e escopo especificados na proposta",
+     "Integrações e serviços externos exigem validação técnica"
+    ]
+   }
+  },
+  {
+   "id": "ampliado",
+   "name": {
+    "es": "Paquete operativo ampliado",
+    "en": "Extended operations package",
+    "pt": "Pacote operacional ampliado"
+   },
+   "tier": "starter",
+   "rangeCents": {
+    "from": 100000,
+    "to": 100000
+   },
+   "items": [
+    "ampliado-base"
+   ],
+   "maintenance": "crecimiento",
+   "bonusItemId": null,
+   "campaign": true,
+   "scope": {
+    "es": [
+     "Hasta cinco usuarios; dos módulos relacionados",
+     "Una integración especificada, con accesos habilitados",
+     "Pruebas, recuperación y continuidad/costo total explícitos en propuesta"
+    ],
+    "en": [
+     "Up to five users; two related modules",
+     "One specified integration with enabled access",
+     "Tests, recovery and explicit continuation/total cost in the proposal"
+    ],
+    "pt": [
+     "Até cinco usuários; dois módulos relacionados",
+     "Uma integração especificada com acessos habilitados",
+     "Testes, recuperação e continuidade/custo total explícitos na proposta"
+    ]
+   }
+  }
+ ],
+ "maintenance": [
+  {
+   "id": "esencial",
+   "name": {
+    "es": "Presencia",
+    "en": "Presence",
+    "pt": "Presença"
+   },
+   "monthlyCents": 2000
+  },
+  {
+   "id": "crecimiento",
+   "name": {
+    "es": "Operación",
+    "en": "Operations",
+    "pt": "Operação"
+   },
+   "monthlyCents": 4000
+  },
+  {
+   "id": "escala",
+   "name": {
+    "es": "Automatización",
+    "en": "Automation",
+    "pt": "Automação"
+   },
+   "monthlyCents": 10000
+  }
+ ],
+ "annualMonthsCharged": 10,
+ "voiceUsage": {
+  "id": "voz-uso",
+  "itemId": "voz",
+  "name": {
+   "es": "Agente de voz",
+   "en": "Voice agent",
+   "pt": "Agente de voz"
+  },
+  "note": {
+   "es": "+ minutos según uso",
+   "en": "+ minutes based on usage",
+   "pt": "+ minutos conforme o uso"
+  },
+  "monthlyCents": 4900
+ },
+ "goals": [
+  "encontrar",
+  "atender",
+  "ordenar",
+  "vender",
+  "fidelizar",
+  "app",
+  "diagnostico"
+ ],
+ "verticals": [
+  {
+   "id": "clinicas",
+   "name": {
+    "es": "Clínicas",
+    "en": "Clinics",
+    "pt": "Clínicas"
+   }
+  },
+  {
+   "id": "inmobiliarias",
+   "name": {
+    "es": "Inmobiliarias",
+    "en": "Real estate",
+    "pt": "Imobiliárias"
+   }
+  },
+  {
+   "id": "gimnasios",
+   "name": {
+    "es": "Gimnasios",
+    "en": "Gyms",
+    "pt": "Academias"
+   }
+  },
+  {
+   "id": "tiendas",
+   "name": {
+    "es": "Tiendas online",
+    "en": "Online stores",
+    "pt": "Lojas online"
+   }
+  },
+  {
+   "id": "restaurantes",
+   "name": {
+    "es": "Restaurantes",
+    "en": "Restaurants",
+    "pt": "Restaurantes"
+   }
+  },
+  {
+   "id": "academias",
+   "name": {
+    "es": "Academias y cursos",
+    "en": "Schools & courses",
+    "pt": "Escolas e cursos"
+   }
+  },
+  {
+   "id": "otro",
+   "name": {
+    "es": "Otro",
+    "en": "Other",
+    "pt": "Outro"
+   }
+  }
+ ],
+ "founders": {
+  "total": 5,
+  "remainingSnapshot": 5,
+  "reservesSlots": false
+ },
+ "offers": [
+  {
+   "id": "founder",
+   "kind": "founder",
+   "active": true,
+   "endsAt": null,
+   "percentOff": 20,
+   "label": {
+    "es": "Precio fundador −20%",
+    "en": "Founder price −20%",
+    "pt": "Preço de fundador −20%"
+   },
+   "description": {
+    "es": "Para los primeros 5 negocios. Incluye el primer mes de mantenimiento bonificado y prioridad en la cola. Fuera del reto; no se acumula con sus paquetes. Portfolio opcional y separado.",
+    "en": "For the first 5 businesses. Includes the first month of maintenance free and priority in the queue. Outside the campaign; does not stack with its packages. Portfolio consent is optional and separate.",
+    "pt": "Para os 5 primeiros negócios. Inclui o primeiro mês de manutenção grátis e prioridade na fila. Fora da campanha; não acumula com seus pacotes. Portfolio opcional e separado."
+   }
+  },
+  {
+   "id": "combo-voz",
+   "kind": "voiceCombo",
+   "active": true,
+   "endsAt": null,
+   "itemId": "voz",
+   "plans": [
+    "sistema",
+    "comercio",
+    "plataforma"
+   ],
+   "label": {
+    "es": "Combo voz",
+    "en": "Voice combo",
+    "pt": "Combo voz"
+   },
+   "description": {
+    "es": "Agente de voz con IA a USD 300 en planes desde Sistema. Fuera del reto; no se acumula con sus paquetes. Portfolio opcional y separado.",
+    "en": "AI voice agent for USD 300 on plans from System up. Outside the campaign; does not stack with its packages. Portfolio consent is optional and separate.",
+    "pt": "Agente de voz com IA por USD 300 nos planos a partir do Sistema. Fora da campanha; não acumula com seus pacotes. Portfolio opcional e separado."
+   },
+   "priceCents": 30000,
+   "minSubtotalCents": 100000
+  },
+  {
+   "id": "annual",
+   "kind": "annualMaintenance",
+   "active": true,
+   "endsAt": null,
+   "label": {
+    "es": "Pago anual: 2 meses gratis",
+    "en": "Pay yearly: 2 months free",
+    "pt": "Pagamento anual: 2 meses grátis"
+   },
+   "description": {
+    "es": "Pagás el mantenimiento anual y te bonificamos 2 meses. Fuera del reto; no se acumula con sus paquetes. Portfolio opcional y separado.",
+    "en": "Pay for maintenance yearly and get 2 months free. Outside the campaign; does not stack with its packages. Portfolio consent is optional and separate.",
+    "pt": "Pague a manutenção anual e ganhe 2 meses grátis. Fora da campanha; não acumula com seus pacotes. Portfolio opcional e separado."
+   }
+  },
+  {
+   "id": "referral",
+   "kind": "referral",
+   "active": true,
+   "endsAt": null,
+   "label": {
+    "es": "Referidos",
+    "en": "Referrals",
+    "pt": "Indicações"
+   },
+   "description": {
+    "es": "1 mes de mantenimiento gratis por cada cliente referido que cierre. Fuera del reto; no se acumula con sus paquetes. Portfolio opcional y separado.",
+    "en": "1 free month of maintenance for every referred client who signs. Outside the campaign; does not stack with its packages. Portfolio consent is optional and separate.",
+    "pt": "1 mês de manutenção grátis para cada cliente indicado que fechar. Fora da campanha; não acumula com seus pacotes. Portfolio opcional e separado."
+   }
+  }
+ ]
+}

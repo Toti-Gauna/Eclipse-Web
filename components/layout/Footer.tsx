@@ -1,9 +1,7 @@
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { ArrowLeft, Mail, MessageCircle } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import { units, l } from '@/lib/content';
 import { CONTACT_EMAIL } from '@/lib/env';
-import type { Locale } from '@/i18n/routing';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
 import { DemoCta } from '@/components/ui/DemoCta';
 import { LandingOnly } from './LandingOnly';
@@ -15,20 +13,17 @@ const BUILD_YEAR = new Date().getFullYear();
 
 /**
  * Footer (dawn): the demo CTA, the essential links and contact, preferences folded in
- * one row (<PrefsDisclosure>: every option is still one tap away), the Eclipse units
- * teaser and the legal / demo notices.
+ * one row (<PrefsDisclosure>: every option is still one tap away) and the legal / demo
+ * notices. The "Eclipse Agency / Media / Market" units were taken out of the footer (lote 2.2,
+ * decision of Ignacio 26/10/2026: they collided with the Agency line); content/units.json stays as history.
  *
  * The CTA's wrapper is a page-level primary CTA ([data-page-cta]): while it is on screen
  * the header's "Pedí tu demo" turns quiet, so the footer never shows two amber buttons.
- * In the client portal the sales blocks (CTA, landing links, units teaser) give way to
+ * In the client portal the sales blocks (CTA, landing links) give way to
  * "Volver al sitio" (<LandingOnly>); contact, preferences and the notices stay.
  */
 export function Footer() {
   const t = useTranslations();
-  const locale = useLocale() as Locale;
-  const active = units.filter((u) => u.status === 'active');
-  const soon = units.filter((u) => u.status === 'comingSoon');
-  const em = (chunks: React.ReactNode) => <em className="em-accent">{chunks}</em>;
   const link = 'inline-flex min-h-11 items-center gap-2 transition-colors hover:text-[color:var(--accent)]';
 
   return (
@@ -102,25 +97,6 @@ export function Footer() {
 
         {/* Same content as the header popover and the phone menu, folded. */}
         <PrefsDisclosure layout="band" />
-
-        <LandingOnly>
-          <div className="grid gap-6 border-b border-line py-10 md:grid-cols-2 md:items-end md:gap-8 md:py-12">
-            <p className="display text-3xl md:text-4xl">{t.rich('footer.teaser', { em })}</p>
-            <ul className="flex flex-wrap gap-x-8 gap-y-3 md:justify-end">
-              {active.map((u) => (
-                <li key={u.id} className="text-sm font-medium uppercase tracking-[0.18em]">
-                  {u.name}
-                  {u.tagline ? <span className="sr-only"> — {l(u.tagline, locale)}</span> : null}
-                </li>
-              ))}
-              {soon.map((u) => (
-                <li key={u.id} className="text-sm uppercase tracking-[0.18em] text-fg-muted">
-                  {u.name} <span className="ml-1 text-[0.65rem] normal-case tracking-normal">· {t('footer.comingSoon')}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </LandingOnly>
 
         <div className="flex flex-col gap-3 pt-8 text-sm text-fg-muted md:flex-row md:items-start md:justify-between">
           <div className="space-y-1">
