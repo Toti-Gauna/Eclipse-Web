@@ -399,4 +399,4 @@ Se crearon **Eclipse Design** y **Eclipse Ads** a pedido de Ignacio (PR #2 de `a
 
 1. **Manifiesto de 0.3:** aprobado **A, B y C**; D no se instala (§22.5 queda resuelto). Instalación pendiente en sesión aparte (`lote-0.3-skills-verificadas.md` §13).
 2. **Lote 0.4:** OK explícito. Ejecutado como documental (`lote-0.4-sdd-control-financiero.md`, `ledger-financiero.md`, `registro-consumo.md`). Estado: **verificado local, pendiente de su aceptación**; habilita 1.1.
-3. **Lista de merges realizados por mí (§18):** sigue vacía. Pendiente de Ignacio: PR #1 y #2 de `agents`; el PR de Eclipse-Web con los documentos de Fase 0 se abre al cierre de 0.4 y **no se mergea** hasta su aprobación, porque un merge a `main` publica en producción.
+3. **Lista de merges realizados por mí (§18):** sigue vacía. Pendiente de Ignacio: PR #1 y #2 de `agents`; el PR #15 de Eclipse-Web (borrador, solo documentos de Fase 0) **no se mergea** hasta su aprobación, porque un merge a `main` publica en producción.
