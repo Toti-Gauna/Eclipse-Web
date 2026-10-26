@@ -403,3 +403,12 @@ Se crearon **Eclipse Design** y **Eclipse Ads** a pedido de Ignacio (PR #2 de `a
 4. **El «200» es Deluxe** (resuelve §22.3). El nivel general de 199 sigue **sin publicarse**.
 5. **Costos fijos mensuales declarados:** infraestructura USD 100 · Claude USD 100 · Higgsfield USD 50 · GPT USD 20 · ElevenLabs USD 11 = **USD 281/mes**. Impuestos y comisiones: se definen al facturar. Ver `ledger-financiero.md` §2.b. Higgsfield: USD 50 de costo contra tope declarado de USD 100; pendiente aclarar cuál rige.
 6. **Contact:** se mantiene como web básica con enlace manual a WhatsApp (segmentación del 26/10); el «chat» del criterio de 2.3 se corrige en ese lote.
+7. **Instalación de skills (A, B, C):** ejecutada el 26/10/2026 a pedido de Ignacio, antes de 1.1. Ver `skills-instaladas.md`. Pendiente: *smoke* de carga en la sesión de 1.1.
+8. **Lote 0.4 aceptado** por Ignacio (26/10/2026). La **Fase 0 queda cerrada**. Habilita 1.1. Orden siguiente: 1.1 → **1.4** → 1.2 → 1.3 → 1.5 (el texto de 1.1 en Notion dice «habilita 1.2 y 1.3»; manda el orden maestro y la página de Fase 1: la dirección visual 1.4 va antes).
+9. **Lote 1.1 ejecutado** (documental): `lote-1.1-arquitectura-wireflows.md`. **Pendiente de Ignacio:** aceptar 1.1 y decidir D1 (qué es «Ecommerce»), D2 (destino del armador), D3 (qué hace «visto»), D4 (orden de la home), D5 («Otro» del hero). Siguiente lote: **1.4**.
+
+## 25. Decisiones de Ignacio, séptima tanda (26/10/2026)
+
+1. **PR #15 de Eclipse-Web** y **PR #1 y #2 de `agents`** quedaron mergeados por Ignacio. El PR #2 se mergeó a la rama `feature/eclipse-v3-core-agents` un minuto **después** de que el #1 llegara a `main`, así que los agentes de Design y Ads **no estaban en `main`**: PR #3 de `agents` los lleva. El PR #15 se mergeó **antes** de las skills, de 0.4 aceptado y de 1.1: PR nuevo de Eclipse-Web los lleva.
+2. **Lote 1.1 aceptado** con las decisiones D1–D5 (`lote-1.1-arquitectura-wireflows.md` §11): **D1** Ecommerce será un apartado propio con sus planes, parecido a EstateOS (sin catálogo ni demo hoy: «Próximamente» hasta que se construya); **D2** el armador queda **dormido** y más adelante se transforma en el flujo de **pago con link**; **D3** **no hay variable «visto»** (el modal aparece en cada recarga; reemplaza §17.2 y §20.1 en lo que decían de `localStorage`); **D4** reordenar la home según A–F; **D5** el chip «Otro» desaparece.
+3. **Pregunta de Ignacio sobre 1.4:** ¿conviene Opus? Ver `lote-1.1-arquitectura-wireflows.md` §16: sí, una intervención Opus · high acotada y el resto con Sonnet · high.

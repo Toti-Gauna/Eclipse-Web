@@ -180,4 +180,8 @@ Pedido de Ignacio: un agente de diseño «súper pro» y otro de publicidad. Se 
 
 ## 13. Aceptación del manifiesto (26/10/2026)
 
-Ignacio aprobó el manifiesto **A, B y C** (Frontend Design; GSAP React/Timeline/Performance, con ScrollTrigger y Core; Emil: `emil-design-eng`, `animate`, `animation-performance`). **D** (`shader-glsl` externa) **no se instala**: se reemplaza por una skill interna sobre OGL cuando haya un efecto aprobado. Estado de 0.3: **aceptado con alcance A, B, C**. **Nada está instalado**: el lote 0.4 excluye instalar, así que la instalación va en una sesión propia, con el procedimiento del §6 (checkout al SHA, hashes, copia solo de las carpetas del manifiesto, rollback) y su OK de ejecución; propuesta: justo antes de 1.4, que es el primer lote que las usa.
+Ignacio aprobó el manifiesto **A, B y C** (Frontend Design; GSAP React/Timeline/Performance, con ScrollTrigger y Core; Emil: `emil-design-eng`, `animate`, `animation-performance`). **D** (`shader-glsl` externa) **no se instala**: se reemplaza por una skill interna sobre OGL cuando haya un efecto aprobado. Estado de 0.3: **aceptado con alcance A, B, C**. La instalación se hizo en una **sesión propia el 26/10/2026**, después de 0.4 y con el OK de Ignacio (ver §14).
+
+## 14. Instalación ejecutada (26/10/2026)
+
+**A, B y C quedaron instalados** en `.claude/skills/` de Eclipse-Web: 9 skills, 19 archivos, copias byte a byte de los SHAs fijados. Los 11 archivos con hash del manifiesto coincidieron (0 diferencias); `gsap-core` y `gsap-scrolltrigger` (ampliación del §11) se leyeron completas y se escanearon. **D no se instaló.** Detalle, hashes completos, rollback y reglas de precedencia en [`skills-instaladas.md`](skills-instaladas.md) y en la sección «Project skills» de `CLAUDE.md`. Estado de verificación: **E1** (instalado y comparado en disco); el *smoke* de carga en una conversación nueva (E2) es la primera tarea de la sesión de 1.1.

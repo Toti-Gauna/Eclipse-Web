@@ -33,7 +33,8 @@ La sesión de Claude Code de Eclipse v3 (`session_01Tg555M4D4VmSrwxyrCMu2q`, cre
 | 0.1 Estado real | `claude-sonnet-5-5` · high | aceptado (E2 diferido a 1.5) | 0 | USD 0 | `auditoria-0.1-estado-real.md` |
 | 0.2 Agentes y PR 1 | `claude-sonnet-5-5` · high | verificado local; PR #1 (`3c3f1cd`) y #2 (`061639e`) a la espera de Ignacio | 0 | USD 0 | `lote-0.2-agentes-pr1.md` §11–12 |
 | 0.3 Skills verificadas | `claude-sonnet-5-5` · high | aceptado con alcance A, B, C; nada instalado | 0 | USD 0 | `lote-0.3-skills-verificadas.md` |
-| 0.4 SDD y control financiero | `claude-sonnet-5-5` · high | verificado local; pendiente de aceptación | 0 | USD 0 | `lote-0.4-sdd-control-financiero.md` |
+| 0.4 SDD y control financiero | `claude-sonnet-5-5` · high | **aceptado** (Ignacio, 26/10/2026) | 0 | USD 0 | `lote-0.4-sdd-control-financiero.md` |
+| 1.1 Arquitectura y wireflows | `claude-sonnet-5-5` · high | **aceptado** con D1–D5 (Ignacio, 26/10/2026) | 0 | USD 0 | `lote-1.1-arquitectura-wireflows.md` |
 
 **Lectura de la herramienta de sesión, 26/10/2026 ≈ 13:33 UTC (10:33 ART), al abrir 0.4 (`get_session`):**
 - Tokens: entrada 13.760 · salida 259.575 · lectura de caché 41.984.086 · escritura de caché 1.927.672.
@@ -49,6 +50,21 @@ La sesión de Claude Code de Eclipse v3 (`session_01Tg555M4D4VmSrwxyrCMu2q`, cre
 - **Consumo de 0.4:** por lote **no disponible**; el acumulado de la sesión está en §3. Reintentos: 0 en este lote; una corrección propia de redacción en el ledger (hipótesis de horas de Growth) antes del commit.
 - **Opus:** 0. **Gasto externo:** USD 0.
 
+## 4.a Lectura de la herramienta de sesión durante 1.1 (26/10/2026 ≈ 14:19 UTC, 11:19 ART)
+
+Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 UTC), que cubre el cierre de 0.4, la instalación de skills y 1.1 juntos; no se puede separar por lote:**
+- Tokens de entrada +1.086 (→ 14.846) · salida +69.551 (→ 329.126) · lectura de caché +9.578.307 (→ 51.562.393) · escritura de caché +166.511 (→ 2.094.183).
+- `cost_usd` informado por la herramienta: de 14,108 a 16,433 (**+2,325**; valor de la herramienta, **no** un cargo a la suscripción ni un costo por lote).
+- Contexto de la ventana actual: 143.773 → 312.832 de 1.000.000.
+- Ventana de 5 horas: «allowed», sin *overage*. Cuota de suscripción: no disponible.
+- Reintentos de 1.1: 0 de regeneración; 6 correcciones de redacción propias antes del commit (CTA con enlace real, conteo de openers, nombre de la vertical `tiendas`, orden de reglas de URL, fila de «CTA principal» y de «Selector»).
+
+## 4.b Sesión de instalación de skills (26/10/2026, entre 0.4 y 1.1)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high (misma sesión). **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** 9 skills, 19 archivos instalados y verificados byte a byte; nada ejecutado de los repos de origen. Evidencia: `skills-instaladas.md`.
+- **Reintentos:** 0. **Pendiente:** *smoke* de carga (E2) en la sesión de 1.1. Consumo por tarea: no disponible.
+
 ## 5. Intervenciones Opus
 
-Ninguna hasta el 26/10/2026. Cada una se registra aquí con la ficha de seis campos (lote · problema · evidencia de entrada · beneficio · entrega · criterio de salida) y modelo efectivo, esfuerzo, hora, uso antes/después y aceptación.
+Ninguna hasta el 26/10/2026. **Propuesta para 1.4:** una intervención Opus · high (`lote-1.1-arquitectura-wireflows.md` §16), a confirmar por Ignacio. Cada una se registra aquí con la ficha de seis campos (lote · problema · evidencia de entrada · beneficio · entrega · criterio de salida) y modelo efectivo, esfuerzo, hora, uso antes/después y aceptación.

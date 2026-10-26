@@ -1,6 +1,6 @@
 # Lote 0.4 · SDD y control financiero
 
-**Fecha:** 26/10/2026 · **Modelo configurado y efectivo:** `claude-sonnet-5-5`, esfuerzo `high` (leído con `get_session`: `session_context.model` y `external_metadata.last_served_model` coinciden) · **Rama:** `claude/eclipse-v3-inventory-audit-2ukttn` · **Resultado:** documental; no se tocó código de producto, no se instaló nada, gasto externo ejecutado USD 0.
+**Fecha:** 26/10/2026 · **Modelo configurado y efectivo:** `claude-sonnet-5-5`, esfuerzo `high` (leído con `get_session`: `session_context.model` y `external_metadata.last_served_model` coinciden) · **Rama:** `claude/eclipse-v3-inventory-audit-2ukttn` · **Estado: aceptado por Ignacio el 26/10/2026 (habilita 1.1).** **Resultado:** documental; no se tocó código de producto, no se instaló nada, gasto externo ejecutado USD 0.
 **Fuente del lote:** Notion «Lote 0.4 · SDD y control financiero» (última edición 24/10/2026), «Modelos y control de consumo», «Orden de ejecución y entregables», y las páginas de fase 1–4 para los títulos. **Complementos:** [`ledger-financiero.md`](ledger-financiero.md) y [`registro-consumo.md`](registro-consumo.md).
 
 ## 0. Informe en tres líneas
@@ -106,9 +106,9 @@ Fuente: «Orden de ejecución y entregables» (Notion, 24/10/2026). El **orden n
 | 1 | **0.1** Estado real | — | Sonnet · high | Inventario E0/E1 con deltas, registro de contradicciones, ruta de reutilización | aceptado (E2 diferido a 1.5) |
 | 2 | **0.2** Agentes y PR 1 | 0.1 | Sonnet · high | Review por archivo, RACI, política de modelos y test de cinco rutas | verificado local; PR #1 y #2 de `agents` a la espera de Ignacio |
 | 3 | **0.3** Skills verificadas | 0.2 | Sonnet · high | Catálogo, manifiestos, riesgos y pruebas, sin instalar | aceptado con alcance A, B, C; instalación pendiente |
-| 4 | **0.4** SDD y control financiero | 0.1, 0.2, 0.3 | Sonnet · high | Contrato base, ledger financiero, matriz de modelos y gates, criterios de parada | verificado local; pendiente de aceptación |
-| 5 | **1.1** Arquitectura y wireflows | 0.4 | Sonnet · high | Mapa de contenidos, wireflows desktop/móvil, tabla URL/estado/foco, protocolo de usabilidad | especificado |
-| 6 | **1.4** Motion y dirección visual | 1.1 | Sonnet · high | Dirección de arte maestra, partitura y matriz de QA visual (antes de código) | especificado |
+| 4 | **0.4** SDD y control financiero | 0.1, 0.2, 0.3 | Sonnet · high | Contrato base, ledger financiero, matriz de modelos y gates, criterios de parada | **aceptado** (Ignacio, 26/10/2026) |
+| 5 | **1.1** Arquitectura y wireflows | 0.4 | Sonnet · high | Mapa de contenidos, wireflows desktop/móvil, tabla URL/estado/foco, protocolo de usabilidad | **aceptado** con D1–D5 (Ignacio, 26/10/2026; `lote-1.1-arquitectura-wireflows.md`) |
+| 6 | **1.4** Motion y dirección visual | 1.1 | Opus · high (hito de dirección visual; propuesta, a confirmar) | Dirección de arte maestra, partitura y matriz de QA visual (antes de código) | listo por dependencias |
 | 7 | **1.2** Home, loader y hero | 1.1, 1.4 | Sonnet · high | Ajuste local de portada sobre componentes existentes, capturas/QA, inventario conservado | especificado |
 | 8 | **1.3** Header y selector inmersivo | 1.2, 1.4 | Sonnet · high | Selector/header integrados localmente con prueba de History, foco, fallback y captura | especificado |
 | 9 | **1.5** QA visual y rendimiento | 1.2, 1.3 | Sonnet · high | Informe de QA, capturas, métricas y defectos por severidad | especificado |
