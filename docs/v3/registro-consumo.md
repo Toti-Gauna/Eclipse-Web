@@ -34,7 +34,7 @@ La sesión de Claude Code de Eclipse v3 (`session_01Tg555M4D4VmSrwxyrCMu2q`, cre
 | 0.2 Agentes y PR 1 | `claude-sonnet-5-5` · high | verificado local; PR #1 (`3c3f1cd`) y #2 (`061639e`) a la espera de Ignacio | 0 | USD 0 | `lote-0.2-agentes-pr1.md` §11–12 |
 | 0.3 Skills verificadas | `claude-sonnet-5-5` · high | aceptado con alcance A, B, C; nada instalado | 0 | USD 0 | `lote-0.3-skills-verificadas.md` |
 | 0.4 SDD y control financiero | `claude-sonnet-5-5` · high | **aceptado** (Ignacio, 26/10/2026) | 0 | USD 0 | `lote-0.4-sdd-control-financiero.md` |
-| 1.1 Arquitectura y wireflows | `claude-sonnet-5-5` · high | verificado local; pendiente de aceptación | 0 | USD 0 | `lote-1.1-arquitectura-wireflows.md` |
+| 1.1 Arquitectura y wireflows | `claude-sonnet-5-5` · high | **aceptado** con D1–D5 (Ignacio, 26/10/2026) | 0 | USD 0 | `lote-1.1-arquitectura-wireflows.md` |
 
 **Lectura de la herramienta de sesión, 26/10/2026 ≈ 13:33 UTC (10:33 ART), al abrir 0.4 (`get_session`):**
 - Tokens: entrada 13.760 · salida 259.575 · lectura de caché 41.984.086 · escritura de caché 1.927.672.
@@ -67,4 +67,4 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 
 ## 5. Intervenciones Opus
 
-Ninguna hasta el 26/10/2026. Cada una se registra aquí con la ficha de seis campos (lote · problema · evidencia de entrada · beneficio · entrega · criterio de salida) y modelo efectivo, esfuerzo, hora, uso antes/después y aceptación.
+Ninguna hasta el 26/10/2026. **Propuesta para 1.4:** una intervención Opus · high (`lote-1.1-arquitectura-wireflows.md` §16), a confirmar por Ignacio. Cada una se registra aquí con la ficha de seis campos (lote · problema · evidencia de entrada · beneficio · entrega · criterio de salida) y modelo efectivo, esfuerzo, hora, uso antes/después y aceptación.

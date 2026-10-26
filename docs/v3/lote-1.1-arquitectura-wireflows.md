@@ -1,13 +1,14 @@
 # Lote 1.1 · Arquitectura y wireflows
 
 **Fecha:** 26/10/2026 · **Modelo configurado y efectivo:** `claude-sonnet-5-5`, esfuerzo `high` (`get_session`) · **Rama:** `claude/eclipse-v3-inventory-audit-2ukttn` · **Resultado:** **documental**. No se modificó código de producto, no se instaló nada, gasto externo USD 0. Todo lo que dice «propuesto» **no existe** en el código.
+**Estado:** **aceptado con las decisiones D1–D5 de Ignacio (26/10/2026)**; ver §11.
 **Fuente del lote:** Notion «Lote 1.1 · Arquitectura y wireflows» (última edición 26/10/2026 12:11 UTC), «Lote 4.2» (para el alcance del selector) y las decisiones de Ignacio registradas en `auditoria-0.1-estado-real.md` §15–§24. Evidencia: **E1** (código y documentos leídos, nada ejecutado). El criterio de 5 personas **no se declara pasado** (§10).
 
 ## 0. Informe en tres líneas
 
 - **Qué cambió:** quedan escritos el **mapa de contenidos** (todo lo vigente tiene destino, §3 y §4), los **wireflows desktop y móvil** por estado con entrada, acción, salida, error, vacío y recuperación (§6), el **contrato de URL** `?rubro&vista&area` con lista blanca (§5), el **propietario único de History** y las reglas de foco y Escape (§7), el contenido **sin JS** (§8) y el **protocolo de usabilidad** de 5 personas (§9).
-- **Qué quedó abierto:** 5 decisiones (D1–D5, §11), sobre todo **qué es «Ecommerce»** en el selector (Bruma está en standby y Volta/Velmar no tienen URL verificada), **qué significa «visto»** del teaser y **dónde vive «Armá tu plan»**. La prueba con 5 personas, el HTML exportado sin JS y las capturas del HEAD **no se ejecutaron** (E2 → 1.5).
-- **Qué necesita el OK de Ignacio:** aceptar 1.1 y decidir D1–D5. Habilita **1.4** (dirección visual) y no 1.2/1.3 todavía: el orden maestro es 1.1 → 1.4 → 1.2 → 1.3 → 1.5.
+- **Qué quedó abierto:** las 5 decisiones D1–D5 **se resolvieron el 26/10/2026** (§11). Quedan dos consecuencias: **qué reemplaza los botones de las tarjetas de plan y de «Pieza por pieza»** ahora que el armador está dormido (D6), y **qué demo respalda el acceso «Ver con guía» de Ecommerce** (D7). La prueba con 5 personas, el HTML exportado sin JS y las capturas del HEAD **no se ejecutaron** (E2 → 1.5).
+- **Qué necesita el OK de Ignacio:** D6 y D7 (§11). Habilita **1.4** (dirección visual) y no 1.2/1.3 todavía: el orden maestro es 1.1 → 1.4 → 1.2 → 1.3 → 1.5.
 
 ## 1. Registro de entrada (G0)
 
@@ -27,12 +28,12 @@
 
 | # | Tema | Fuentes en conflicto | Resolución usada en este lote |
 |---|---|---|---|
-| R1 | Rubros del selector | Notion 1.1 y 4.2: solo Inmobiliarias y Ecommerce · Ignacio 24/10 (§20.3): cinco rubros · Ignacio 26/10 (§22.4): **empezar con Inmobiliarias y Ecommerce**, sumar los demás cuando tengan micrositio | **Dos rubros.** Los demás (salud y animales, restaurantes/bodegones, compliance) se agregan después, solo cuando exista su micrositio; nunca como enlace a algo inexistente |
-| R2 | «Armá tu plan» | `CLAUDE.md` (header: secundario) · Ignacio 26/10: «no existe»; el botón «Quiero potenciar mi negocio» lleva al **cuestionario modal** | «Armá tu plan» **sale del header, del menú móvil, del footer y de los chips del hero**. El armador (`/plan` y el overlay `openBuilder`) **no se borra**: queda alcanzable desde Precios y desde el bloque de proyecto de la demo, y como URL directa. Su destino final es D2 |
+| R1 | Rubros del selector (resuelto con D1) | Notion 1.1 y 4.2: solo Inmobiliarias y Ecommerce · Ignacio 24/10 (§20.3): cinco rubros · Ignacio 26/10 (§22.4): **empezar con Inmobiliarias y Ecommerce**, sumar los demás cuando tengan micrositio | **Dos rubros.** Ecommerce es **un apartado propio con sus planes**, parecido a «Eclipse · EstateOS» (D1). Los demás (salud y animales, restaurantes/bodegones, compliance) se agregan después, solo cuando exista su micrositio; nunca como enlace a algo inexistente |
+| R2 | «Armá tu plan» (resuelto con D2) | `CLAUDE.md` (header: secundario) · Ignacio 26/10: «no existe»; el botón «Quiero potenciar mi negocio» lleva al **cuestionario modal** | «Armá tu plan» **sale del header, del menú móvil, del footer y de los chips del hero**. El armador (`/plan` y el overlay `openBuilder`) queda **dormido** (D2): no se borra ni se muestra; más adelante se transformará en el flujo de **pago con link**. Ver §3.1 fila 17 y D6 |
 | R3 | CTA primario | `CLAUDE.md`: «Pedí tu demo» · Notion 1.2 y Ignacio 24/10: «Quiero potenciar mi negocio» (primario) y «Ver opciones» (secundario), ambos abren el selector | Se usa el CTA nuevo. `CLAUDE.md` y los tests que citan «Pedí tu demo» se actualizan en 1.2/1.3 (§12) |
-| R4 | Memoria del visitante | `CLAUDE.md`: «nada se recuerda» · Ignacio: en **EstateOS** el modal aparece **en cada recarga**; «Ver con guía» activa el teaser, que guarda «visto» en `localStorage` y no se repite solo salvo que el usuario pida verlo desde cero | Rige lo de Ignacio **solo para EstateOS**. Clave versionada `eclipse:estateos:intro-seen:v1`, lectura y escritura dentro de `try/catch`; sin storage la página funciona igual |
+| R4 | Memoria del visitante | `CLAUDE.md`: «nada se recuerda» · Ignacio: en **EstateOS** el modal aparece **en cada recarga**; «Ver con guía» activa el teaser, que guarda «visto» en `localStorage` y no se repite solo salvo que el usuario pida verlo desde cero | **Sin memoria (D3):** el modal aparece en cada recarga, así que **no hace falta ninguna variable «visto»**. No se usa `localStorage` ni `sessionStorage` para esto: rige `CLAUDE.md` sin excepción. Reemplaza lo registrado en la auditoría §17.2 y §20.1 y en la propuesta de clave `eclipse:estateos:intro-seen:v1` |
 | R5 | Qué es el «teaser» | Ignacio: «Ver con guía activa el teaser completo» · el teaser audiovisual no existe todavía (3.1–3.5) | Hasta que exista, «Ver con guía» abre la **guía actual de Lumen** (6 pasos, `components/demos/real-estate/tour.ts`). El teaser se enchufa en 3.5 sin cambiar el contrato |
-| R6 | Dónde se pregunta «guía o por mi cuenta» | Hoy la capa de demo lo pregunta **en cada apertura** · Ignacio: el modal de EstateOS lo pregunta **en cada recarga** | Se pregunta **una vez por carga de página** (la respuesta vive en memoria de la sesión, no en storage). Si el visitante responde en el prompt de EstateOS, la capa de demo **no lo vuelve a preguntar** en esa carga; una URL directa a la demo sí lo pregunta (la guía nunca arranca sola) |
+| R6 | Dónde se pregunta «guía o por mi cuenta» (solo EstateOS) | Hoy la capa de demo lo pregunta **en cada apertura** · Ignacio: el modal de EstateOS lo pregunta **en cada recarga** | Se pregunta **una vez por carga de página** (la respuesta vive en memoria, nunca en storage). Si el visitante responde en el prompt de EstateOS, la capa de demo **no lo vuelve a preguntar** en esa carga; una URL directa a la demo sí lo pregunta (la guía nunca arranca sola) |
 | R7 | Gateway | Notion: exactamente cuatro accesos, «Por mi cuenta» secundario dentro de guía | Cuatro accesos: **Ver con guía · Branding · Intelligence · Academy**. «Ver por mi cuenta» es la salida libre de la guía. Son **modos de demo**, no las cinco líneas de servicio |
 | R8 | Demos ocultas | `docs/v3/inventario.md`: todo contenido v2 sigue alcanzable · Ignacio (§20.4, §22.4): clinic, gym, restaurant, academy y Bruma quedan **ocultas en standby dentro de Eclipse-Web** | **Standby = no se muestran, no se borran** (código, copy, tests y registry intactos). El inventario histórico queda reemplazado en esto, con fuente y fecha |
 | R9 | Orden del lote siguiente | Notion 1.1: «habilita 1.2 y 1.3» · Orden maestro y Fase 1: 1.1 → 1.4 → 1.2 → 1.3 → 1.5 | Manda el orden maestro: sigue **1.4** |
@@ -50,7 +51,7 @@
 | 2 | Loader · `components/loader/Loader.tsx` | Sin cambio (no hay loader nuevo) | vigente | sí | `aria-hidden`, se salta con click/tecla/rueda/touch, no corre en `/portal`; **no se le suma espera a medios**. Entrada directa a una vista de showroom: sin cine nuevo |
 | 3 | Hero `#inicio` · promesa, eyebrow, H1, subtítulo | Home A (§4) | vigente | no | El H1 queda como LCP; no se toca el texto en este lote |
 | 4 | Hero · CTA «Pedí tu demo» (`DemoCta origin=hero`, `data-hero-cta`) | «Quiero potenciar mi negocio» → abre el **selector** | reubicado (R3) | sí (abre modal) | **Hoy `DemoCta` es un enlace real a WhatsApp** (E1: `DemoCta.tsx` usa `WhatsAppLink`). El CTA nuevo debe ser **un `<a>` con `href` real** (propuesta: `#contacto`, donde está WhatsApp) mejorado por JS para abrir el selector; si fuera solo un `<button>`, sin JS se pierde el contacto. Un solo CTA ámbar sólido por viewport se mantiene |
-| 5 | Hero · chips por rubro (`VerticalChips`: 7 claves) | El **selector de dos rubros** reemplaza a las siete claves | reubicado | sí | Las 5 claves ocultas siguen en `content/verticals.json` y el registry. «Otro» deja de abrir el armador: quien no encaja usa el contacto directo (propuesta, D2) |
+| 5 | Hero · chips por rubro (`VerticalChips`: 7 claves) | El **selector de dos rubros** reemplaza a las siete claves | reubicado | sí | Las 5 claves ocultas siguen en `content/verticals.json` y el registry. «Otro» **desaparece** (D5): quien no encaja usa el contacto directo |
 | 6 | Corona, `SkyTransition` ×2, `EphemerisRail` | Sin cambio | vigente | sí (decorativo) | — |
 | 7 | `#ejemplos` · 6 demos: Aurora, Lumen, Órbita, Bruma, Lucero, Atrio | Vitrina con **Lumen (Inmobiliarias)** y **Ecommerce (D1)** | Lumen vigente · otras 5 standby | la demo sí; el texto de la sección no | «Demo» visible en toda marca ficticia. Las 5 en standby conservan imports lazy, namespaces, guías, tests y trailers |
 | 8 | Capa «Ver demo» · `DemoExperienceHost` (`<dialog>`, una demo a la vez) | **Contenedor único del showroom**: el mismo `<dialog>` cambia de vista; no se apilan modales | vigente (ampliado) | sí | Hoy empuja un `pushState` con `{eclipseDemo}` a la misma URL (§7) |
@@ -62,7 +63,7 @@
 | 14 | `#proceso` · 5 etapas con plazo | Home F, sin cambio de contenido | vigente | no | «El proyecto arranca con la seña» se conserva |
 | 15 | `#fundadores` · programa fundador | Conserva id y componente | vigente (la oferta está **histórica**) | no | `FoundersSection` solo dibuja el libro fundador si `founderOfferOpen(...)` (E1, línea 47); qué muestra hoy cerrado se define en 2.1 |
 | 16 | `#contacto` · FAQ, condiciones, chat del agente (`AgentChat`, `MicButton`), cierre y `DemoCta final_cta` | Home F, sin cambio | vigente | FAQ/condiciones no; el chat sí | El CTA final es contacto directo |
-| 17 | Armador `/[locale]/plan/` y overlay `openBuilder` (6 puntos de apertura: header, menú, `hero_other`, `plan_card`, `pricing`, `ProjectBlock`; más el botón genérico `BuildPlanButton`, usado también en el footer) | Se retiran los openers de header, menú, footer y hero; **quedan** `plan_card`, `pricing` y `ProjectBlock` | reubicado (R2, D2) | sí | URL directa `/plan/` intacta; compartir plan por URL (`lib/plan-url.ts`) intacto |
+| 17 | Armador `/[locale]/plan/` y overlay `openBuilder` (6 puntos de apertura: header, menú, `hero_other`, `plan_card`, `pricing`, `ProjectBlock`; más el botón genérico `BuildPlanButton`, usado también en el footer) | **Dormido (D2)**: se retiran **todos** los puntos de apertura visibles. Quedan intactos el código, `lib/pricing.ts`, `lib/plan-url.ts`, `RequestAction`, los tests y la ruta `/plan/` (sin enlaces; mantiene vivos los links de plan ya compartidos). Futuro: se transforma en el flujo de **pago con link** (sin lote asignado) | standby | sí | Consecuencia: las tarjetas de plan y «Pieza por pieza» pierden su botón de «Sumar/armar»; qué lo reemplaza es **D6**. La regla v3 «las piezas se suman solo en Precios y en el armador» queda en suspenso mientras el armador duerme |
 
 ### 3.2 Chrome y transversales
 
@@ -195,8 +196,8 @@ Hay **un solo `<dialog>`** (el actual de la capa de demo): los estados Selector,
 |---|---|---|---|---|---|
 | **Home** | Carga normal o cierre del showroom | Leer, usar anclas, abrir selector | Cualquier estado | JS caído: la home se lee y los enlaces comerciales funcionan (§8) | Recargar |
 | **Selector** | CTA de A (o de B/C/F); sin URL propia (§5.2.8) | Elegir **Inmobiliarias** o **Ecommerce** | Entrada del rubro | Chunk del selector no carga: **no hay modal**; el CTA cae a WhatsApp (es un `<a>`) | Reintentar o WhatsApp |
-| **Entrada** (gateway) | `?rubro=…&vista=entrada` (por URL o desde el selector) | Elegir uno de 4 accesos | Guía · Branding · Intelligence · Academy · Volver | Rubro sin demo verificada (D1): la fila no se abre y dice «Próximamente» | Volver al selector |
-| **Prompt EstateOS** | Primera vez en la carga con `rubro=inmobiliarias` | «Ver con guía» o «Ver por mi cuenta» | Guía con guía abierta, o Entrada libre | Storage bloqueado: igual funciona; el «visto» no se guarda | Cerrar el panel = «por mi cuenta» |
+| **Entrada** (gateway) | `?rubro=…&vista=entrada` (por URL o desde el selector) | Elegir uno de 4 accesos | Guía · Branding · Intelligence · Academy · Volver | Ecommerce todavía **sin catálogo ni demo propia** (D1, D7): la fila lleva a un apartado «Próximamente» honesto, sin planes inventados | Volver al selector |
+| **Prompt EstateOS** | Primera vez en la carga con `rubro=inmobiliarias` | «Ver con guía» o «Ver por mi cuenta» | Guía con guía abierta, o Entrada libre | El teaser no existe todavía o su carga falla: «Ver con guía» abre la guía actual de Lumen; si tampoco carga, enlace a WhatsApp | Cerrar el panel = «por mi cuenta» |
 | **Guía** | Acceso «Ver con guía» o `vista=guia` | Capa de demo real (Lumen): vistas escritorio y celular, SimBar | `Volver` → Entrada; Escape → cierra el showroom | Demo no disponible o chunk lazy roto: panel de error con enlace «Abrir en nueva pestaña» o «Hablar por WhatsApp» | Volver |
 | **Área** | `area=…` con `vista=guia` | Aterrizar la guía/vista en esa pantalla | Igual que Guía | Área sin pantalla (D1/3.x): estado «Próximamente» honesto | Volver a Entrada |
 | **Branding · Intelligence · Academy** | Acceso o URL | Ver la presentación del producto | `Volver` → Entrada | Sin contenido hoy: **no se enlaza** hasta que exista; mientras, el acceso aparece con rótulo «Próximamente» y sin botón activo | Volver |
@@ -268,7 +269,7 @@ Si el selector, el gateway y la capa de demo empujaran **cada uno** su propio es
 | **Escape** | Cierra, en este orden: guía abierta · popover de ayuda · el **showroom completo** | Al **opener** (`data-demo-opener`) o, si no hay, al H1 de la home |
 | **«Volver» (botón)** | Sube **un nivel** (`history.back()` si la entrada anterior es nuestra; si no, `replaceState` al nivel superior) | Al título del nivel superior |
 | **Entrada directa** (URL con `rubro`) | `replaceState` marcando la entrada como inicial; **sin cine de apertura** (reducido: fade ≤ 150 ms); sin opener | Al título de la vista |
-| **Refresh** | La URL manda: se reconstruye el mismo estado; el prompt de EstateOS **vuelve a aparecer** (R4) | Al título de la vista |
+| **Refresh** | La URL manda: se reconstruye el mismo estado; el prompt de EstateOS **vuelve a aparecer** (R4, sin memoria) | Al título de la vista |
 | **Cerrar sin opener** (entrada directa) | No hay entrada propia anterior: `replaceState` **limpiando solo `rubro`, `vista` y `area`**; no se llama a `history.back()` (salir del sitio sería un error) | Al **H1 de la home** |
 | Hash (`#precios`) con showroom abierto | Se ignora; al cerrar se respeta | — |
 
@@ -334,24 +335,31 @@ Criterio de aceptación sin JS (a comprobar en 1.5 con el HTML exportado): preci
 | 2.1 (copy y matriz) | `messages/*.json`, `content/*.json` (solo bajo su alcance) |
 | 1.5 (QA) | `scripts/shot.mjs`, `tests/e2e/smoke.mjs` |
 
-## 11. Decisiones abiertas para Ignacio
+## 11. Decisiones de Ignacio (D1–D5, resueltas el 26/10/2026) y consecuencias
 
-| # | Decisión | Opciones | Recomendación |
+| # | Decisión | Respuesta de Ignacio | Consecuencia registrada |
 |---|---|---|---|
-| **D1** | **¿Qué es «Ecommerce» en el selector?** El rubro `tiendas` existe hoy en `content/verticals.json` con la demo Bruma (`shop`), que está en standby por decisión tuya; Volta/Velmar son repos aparte y su despliegue o iframe no está verificado (lote 4.2) | (a) Volta/Velmar externos, en pestaña nueva si el iframe no está permitido · (b) volver a mostrar Bruma · (c) fila «Ecommerce» visible pero «Próximamente» hasta verificar | **(c) hasta verificar (a)**: respeta «solo inmobiliarias y ecommerce», no enlaza algo inexistente y no reabre Bruma |
-| **D2** | **Destino del armador** (`/plan`, `openBuilder`) ahora que «Armá tu plan» no existe | (a) queda en Precios y en el bloque de proyecto · (b) standby total, solo URL directa · (c) se integra al cuestionario modal | **(a)**: es contenido comercial vigente y la regla v3 dice «plegado sí, borrado no» |
-| **D3** | **Qué hace «visto»** del teaser | (a) solo cambia el texto a «Ver de nuevo con guía», nunca autoarranca · (b) además omite el prompt | **(a)**: es coherente con «el modal aparece en cada recarga» y con «la guía nunca arranca sola» |
-| **D4** | **Orden de la home** | Opción 1 (reordenar ids A–F) u Opción 2 (mantener) | **Opción 1**, con medición de alturas en 1.5 |
-| **D5** | **«Otro» (el chip que abría el armador)** | (a) desaparece; el contacto directo cubre a quien no encaja · (b) abre el cuestionario con «otro rubro» | **(a)** hasta que el cuestionario exista |
+| **D1** | Qué es «Ecommerce» en el selector | «Será un apartado con los planes y demás, parecido a cómo queremos hacer *Eclipse · EstateOS*» | Ecommerce es **un producto sectorial con su propio catálogo de planes y su propia entrada**, con la misma estructura (selector → entrada → cuatro accesos). **Hoy no existe ni su catálogo ni su demo**, y en el programa de Notion ningún lote lo construye antes de 4.5 (que es un plan, sin build). Mientras tanto la fila existe pero lleva a un apartado «Próximamente» sin planes inventados. Cuándo se construye lo decide Ignacio (**D7**) |
+| **D2** | Destino del armador | «Lo transformaría para cuando el usuario va a hacer el pago con link; por ahora déjalo dormido» | Armador **dormido**: sin puntos de apertura visibles, código y ruta intactos (§3.1 fila 17). Futuro: pago con link, sin lote. Abre **D6** |
+| **D3** | Qué hace «visto» | «Era una variable por si ya lo vio, pero como aparece en cada refresh, no hace falta» | **No hay variable «visto» ni storage** (R4). Se actualizó el texto de los agentes (`agents` PR #3) |
+| **D4** | Orden de la home | «Me parecen buenas» | **Opción 1**: reordenar los ids según A–F (§4); se mide la altura de las secciones diferidas en 1.5; `CLAUDE.md` se actualiza en 1.2 |
+| **D5** | Chip «Otro» del hero | «De acuerdo» | Desaparece; el contacto directo cubre a quien no encaja |
+
+**Decisiones nuevas que se desprenden (abiertas):**
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| **D6** | ¿Qué reemplaza el botón de las tarjetas de plan y de «Pieza por pieza» ahora que el armador duerme? | (a) enlace de **WhatsApp con el plan o la pieza elegida** (patrón que ya existe: `WhatsAppLink`) · (b) sin botón, solo lectura | **(a)**: mantiene «un paso al siguiente paso» y no inventa pagos. Se define en 1.3 junto con el resto de los CTA |
+| **D7** | ¿Cuándo y cómo se construye el apartado Ecommerce (catálogo de planes y demo)? | (a) un lote nuevo antes de 1.2/1.3 · (b) después de EstateOS, como ya ordena Notion (4.5) con la fila «Próximamente» entre tanto · (c) adelantar 4.5 | **(b)**: respeta la prioridad EstateOS → restaurantes → ecommerce del programa. La fila queda visible y honesta |
 
 ## 12. Cambios que este lote deja pendientes en `CLAUDE.md` y tests (no se hicieron)
 
 | Texto actual | Conflicto | Lote |
 |---|---|---|
-| «Pedí tu demo» es THE primary CTA; «Armá tu plan» secundario; «Ingresar» discreto | R2, R3 | 1.2 / 1.3 |
+| «Pedí tu demo» es THE primary CTA; «Armá tu plan» secundario; «Ingresar» discreto; «pieces … added only in Precios and in the builder» | R2, R3, D2 (armador dormido) | 1.2 / 1.3 |
 | «Never "potenciá"» en la regla de copy | Contradice «Quiero potenciar mi negocio» (aprobado el 24/10) | 1.2 |
-| «Page order (ids unchanged)» | D4 | 1.2 |
-| «EVERY open … offers "Ver con guía" / "Ver por mi cuenta" — nothing is remembered» | R4, R6 (solo EstateOS) | 1.3 / 3.5 |
+| «Page order (ids unchanged)» | D4 (resuelto: reordenar según A–F) | 1.2 |
+| «EVERY open … offers "Ver con guía" / "Ver por mi cuenta"» | R6 (solo EstateOS: se pregunta **una vez por carga**; «nothing is remembered» **se mantiene**) | 1.3 / 3.5 |
 | «messages/drafts» (varios agentes) | Con un solo ejecutor se edita `messages/*.json` | 1.2 |
 | Tests que citen «Pedí tu demo» o los siete chips | Se actualizan junto al cambio | 1.2 / 1.3 |
 
@@ -377,6 +385,22 @@ Criterio de aceptación sin JS (a comprobar en 1.5 con el HTML exportado): preci
 
 ## 15. Handoff
 
-- **Habilita:** **1.4 · Motion y dirección visual** (Sonnet · high, según el orden maestro); después 1.2, 1.3 y 1.5.
+- **Habilita:** **1.4 · Motion y dirección visual**; después 1.2, 1.3 y 1.5. Modelo: ver §16.
 - **Para el lote siguiente leer:** §2 (R1–R10), §4 (A–F), §5 (contrato de URL), §7 (History) y §11 (D1–D5).
 - **Entrega de este lote:** este documento (mapa de contenidos, wireflows, tabla URL/estado/foco, protocolo de usabilidad).
+
+## 16. ¿Conviene Opus en 1.4? (consulta de Ignacio, 26/10/2026)
+
+**Respuesta: sí, en una sola intervención Opus · high, acotada; el resto de 1.4 lo hace Sonnet · high.** No xhigh.
+
+**Por qué sí.** 1.4 es el único lote donde se decide el lenguaje visual que gobierna 1.2, 1.3 y 3.x: un error acá se propaga a todo lo que se implemente después. Está en la lista de hitos de la política de modelos («concepto, dirección visual… y revisión»), y la página de 1.4 dice que Opus «puede definir y revisar este lenguaje visual».
+
+**Por qué no todo el lote.** La mayor parte es verificación mecánica que Sonnet hace igual de bien: comprobar tokens y tipos contra el código, armar la matriz de los siete eventos de motion con su archivo responsable, definir el perfil antes/después y el presupuesto visual. El anexo de Notion ya fija tokens, composición y tiempos: no hay que reinventarlos.
+
+**El riesgo a controlar (lección «TableFlow»).** 1.4 es documental: un texto elegante de Opus **no se puede comparar con el baseline en capturas** hasta que se implemente en 1.2/1.3. Por eso:
+1. **Antes de Opus**, Sonnet deja el baseline de la home actual (capturas a 360, 390, 768, 1024 y 1440, normal y *reduced*, con `scripts/shot.mjs`) y verifica tokens y tipografías contra el código. Es una corrida local, sin cambios de producto.
+2. **Ficha Opus de seis campos:** lote 1.4 · problema: definir el lenguaje visual de las composiciones nuevas («Qué ofrecemos», selector y gateway, planes de EstateOS) sin caer en tarjetas iguales · evidencia de entrada: baseline, tokens verificados y las seis referencias · beneficio: una dirección que Sonnet implementa tal cual · entrega: «Dirección de arte maestra» corregida, tres composiciones descritas en escritorio y móvil, partitura de los siete eventos · criterio de salida: rúbrica de 14 puntos con ≥ 12 y ningún eje en 0 sobre las capturas del baseline, tres defectos escritos, y bloqueantes binarios (foco, contraste, Atrás, *reduced*, marca «Demo»).
+3. **La puerta estética real** se pasa en 1.2/1.3, cuando el diseño existe en pantalla: se compara contra el baseline guardado y, si se ve peor, **no se mergea** aunque lo haya dirigido Opus.
+4. Se registra modelo efectivo, esfuerzo, hora y uso visible antes y después (`registro-consumo.md` §5).
+
+**Costo.** No convertible a USD (suscripción, uso visible solamente). Estimación de planificación, no medida: una sesión focal de Opus además de la de Sonnet.
