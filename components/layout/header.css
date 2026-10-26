@@ -37,7 +37,9 @@
 }
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .hdr-row::before {
-    background: rgb(5 5 10 / 0.6);
+    /* Dark surface at 0.88: the links (--fg-muted) keep ≥ 4.5:1 even over the cream of the dawn
+       while the sky changes under the header (measured in lote 1.5, was 2.2:1 at 0.6). */
+    background: rgb(5 5 10 / 0.88);
     -webkit-backdrop-filter: blur(10px) saturate(140%);
     backdrop-filter: blur(10px) saturate(140%);
   }
