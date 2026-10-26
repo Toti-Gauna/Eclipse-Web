@@ -95,3 +95,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Resultado:** `lote-1.5-qa-visual-rendimiento.md`, 150 celdas, 5 defectos corregidos (2 P1, 3 P2), A/B de 5 rondas, 33 comprobaciones de robustez, e2e 72/72. PR abierto, sin mergear.
 - **Reintentos / correcciones propias:** (1) la «fuga» de ~1.400 nodos por apertura era del arnés (`waitForSelector` retiene el elemento): se midió de nuevo con `locator().waitFor()` y los nodos quedan planos; (2) el detector de anillo de foco no veía el anillo dibujado en un `::after` (falso fallo); (3) el contraste «1,08:1» del portal era el parpadeo del header medido en el instante de carga; (4) un `pkill -f` cortó mi propia shell (sin pérdida). Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible. Duración larga por las corridas de rendimiento (≈ 25 min cada una de 3 y 5 rondas).
+
+## 9. Lote 2.1 · Arquitectura comercial (26/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high. **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** `lote-2.1-arquitectura-comercial.md` (documental): modelo de oferta, matriz de las 20 piezas contra las cinco líneas (generada desde `items.json`, verificada: 20/20, 0 diferencias de precio), cinco líneas con ejemplos por industria, orientaciones PyME, contrato de packs, copy propuesto, decisiones D12–D15. Sin cambios de producto.
+- **Reintentos / correcciones propias:** un identificador de Notion mal copiado (se reintentó con la URL); un script con delimitador de bloque mal cerrado (se reescribió desde archivo). Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
