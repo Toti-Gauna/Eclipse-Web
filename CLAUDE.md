@@ -292,6 +292,12 @@ agents, gamification, e-commerce, dashboards, automations, apps.
 - Demo copy (`demoKit` + one namespace per demo, listed in `components/demos/namespaces.ts`) is not in
   the page payload; it is loaded by `<DemoMessages>` inside `DemoShowcase` (in dev it stays in the payload
   so drafts reach the demos).
+- Shared links with `#hash` (`/#precios`) are kept on target after the deferred sections hydrate by `<SmoothAnchors>`
+  (`keepAligned`, also on load): without it the page landed up to ~3,000 px away (lote 1.5). No `infinite` CSS animation
+  may run while off-screen (the chat's typing dots stay still until the chat starts).
+- The header's floating surface stays at ≥ 0.88 opacity in the dark theme: the links (`--fg-muted`) fall to ~2.2:1 over the
+  dawn cream at 0.6 (measured). QA scripts: use `locator().waitFor()`, never `waitForSelector` (its ElementHandle keeps the
+  dialog alive and looks like a leak). Scripts and method: `docs/v3/qa-1.5/`.
 - `npm run test:e2e` (after `NEXT_PUBLIC_BASE_PATH=/Eclipse-Web npm run build` and serving `out/`
   under `/Eclipse-Web`) must stay green.
 

@@ -6,7 +6,7 @@
 ## 0. Informe en tres líneas
 
 - **Qué cambió:** la web actual (1.2 + 1.3) se comparó contra la anterior a 1.2 (`6e34310`) con la misma matriz, los mismos scripts y el mismo método: **150 celdas** (caso × ancho × preferencia) sin desbordes ni errores; teclado, History, deep links, cinco aperturas sin acumulación, fallos de red/chunk/medios y **HTML sin JavaScript** probados. Salieron **5 defectos reales** y los cinco quedaron corregidos y re-medidos: los enlaces con `#ancla` aterrizaban hasta ~3.000 px lejos (P1, ya ocurría antes), los enlaces del header bajaban a 2,2:1 de contraste (P1, ya ocurría antes), el header del portal parpadeaba en tema oscuro (P2), tres animaciones infinitas fuera de pantalla (P2) y un texto que prometía una herramienta dormida (P2). **Cero P0/P1 abiertos.**
-- **Qué quedó abierto:** las tareas largas de la primera bajada subieron en la mediana (+189 ms celular, +169 ms escritorio; A2) y falta atribuirles causa; La **prueba de usabilidad con 5 personas no se hizo** (no hay participantes: queda «no comprobada»). Solo se probó en Chromium: sin Safari/iPad reales, sin Firefox/WebKit, sin lector de pantalla, sin INP (el laboratorio no lo mide).
+- **Qué quedó abierto:** las **tareas largas de la primera bajada** son mayores que en el baseline (+300 ms celular, +164 ms escritorio; A2) y falta atribuirles causa; La **prueba de usabilidad con 5 personas no se hizo** (no hay participantes: queda «no comprobada»). Solo se probó en Chromium: sin Safari/iPad reales, sin Firefox/WebKit, sin lector de pantalla, sin INP (el laboratorio no lo mide).
 - **Qué necesita el OK de Ignacio:** aprobar el PR. Habilita la **Fase 2** (2.1 en adelante) y el lote nuevo **1.6 · Repo y subdominio EstateOS** (D11, ya aceptado) antes de la Fase 2 (§12).
 
 ## 1. Registro de entrada (G0)
@@ -107,7 +107,7 @@ Severidad: **P0** bloqueo o seguridad · **P1** navegación o conversión · **P
 | # | Sev. | Qué | Por qué queda |
 |---|---|---|---|
 | A1 | P2 | **Densidad de Precios** (B6 de 1.4): ~4,5 pantallas de 900 px a 1440 | rediseñarla es otro alcance («este lote no habilita un rediseño») |
-| A2 | P2 | **Tareas largas de la primera bajada** más altas que el baseline: celular 517 → 706 ms, escritorio 837 → 1.006 ms (mediana de 3, CPU 4×) | No es P1: los fps de la bajada en celular **mejoran** (30,9 → 34,5) y no hay efecto en reposo. Sospecha (no medida): la hidratación de las dos secciones nuevas; se confirma con las 5 rondas y un perfil por sección, que es un lote de optimización, no de QA |
+| A2 | P2 | **Tareas largas de la primera bajada** mayores que en el baseline: celular 510 → 810 ms, escritorio 780 → 944 ms (mediana de 5, CPU 4×; rangos crudos en el log) | No es P1: los fps de la bajada en celular **mejoran** (31,1 → 34,3), no hay efecto en reposo y el CLS mejora. Recomendación: un lote de optimización con perfil por sección **antes de sumar peso en la Fase 3** (la integración de EstateOS se hará en el repo nuevo y no agrega a este) |
 | A3 | P2 | Desplazamiento intermitente de `.hero-copy-inner` (CLS ~0,045 en 1 de 6 corridas en 1.2) | **No se reprodujo** en las corridas de rendimiento de este lote (CLS del candidato 0,0000–0,0022); se vigila, no se corrige a ciegas |
 | A4 | P2 | La nota de cotización del precio sigue en «≈» de referencia sin red | es el *fallback* diseñado; con red se actualiza |
 
@@ -115,26 +115,31 @@ Severidad: **P0** bloqueo o seguridad · **P1** navegación o conversión · **P
 
 Método de `rendimiento.md` sin cambios: CPU **4× más lenta** emulada, gestos de **rueda** sintéticos (la inercia del dedo no se reproduce), contexto nuevo por corrida, `/es/`, loader + 9 s de espera; fases en reposo / pasada del hero a 600 px/s / primera bajada y subida a 1.500 px/s; **rondas intercaladas** (el orden alterna); **medianas**. Celular = 390×844 @2×; escritorio = 1440×900 con WebGL por software (sin GPU: los fps absolutos de escritorio dicen poco). **Chromium headless en un contenedor compartido; no es un iPad ni un celular real, ni Safari.** Los umbrales LCP ≤ 2,5 s, CLS ≤ 0,1 e INP ≤ 200 ms son objetivos de producto: aquí se reportan valores de laboratorio y **no se mide INP**.
 
-**Corrida provisional de 3 rondas** (`qa-1.5/rendimiento-3-rondas.log`); la de 5 rondas con valores crudos por ronda está en curso y reemplaza esta tabla si cambia algo. *Antes* = baseline `6e34310`, *después* = candidato.
+**Corrida de 5 rondas intercaladas** (`qa-1.5/rendimiento-5-rondas.log`, con los valores crudos de cada ronda; la corrida previa de 3 rondas, `rendimiento-3-rondas.log`, da lo mismo). *Antes* = baseline `6e34310`, *después* = candidato con las correcciones de este lote. Medianas de 5.
 
 | Celular 390×844 @2× | En reposo | Pasada del hero | Primera bajada | Subida |
 |---|---|---|---|---|
-| fps (antes → después) | 60,0 → 60,0 | 33,0 → **40,5** | 30,9 → **34,5** | 44,5 → **50,9** |
-| frames > 33 ms | 0 → 0 % | 17,7 → **12,6 %** | 28,9 → **19,3 %** | 12,0 → **6,6 %** |
-| tareas largas | 0 → 0 ms | 387 → **49 ms** | 517 → **706 ms** (22 → 18) | 43 → 0 ms |
+| fps (antes → después) | 60,0 → 60,0 | 31,8 → **39,5** | 31,1 → **34,3** | 45,2 → **49,8** |
+| frames > 33 ms | 0 → 0 % | 19,0 → **14,0 %** | 26,8 → **19,0 %** | 11,9 → **6,6 %** |
+| tareas largas | 0 → 0 ms | 401 → **31 ms** | 510 → **810 ms** (18 → 18) | 21 → 7 ms |
 
 | Escritorio 1440×900 (WebGL por software) | En reposo | Pasada del hero | Primera bajada | Subida |
 |---|---|---|---|---|
-| fps | 60,0 → 60,0 | 15,8 → 15,3 | 39,5 → 36,3 | 59,6 → 59,0 |
-| frames > 33 ms | 0 → 0 % | 50,7 → 50,7 % | 8,6 → 12,1 % | 0,2 → 0,5 % |
-| tareas largas | 0 → 0 ms | 575 → 698 ms | 837 → **1.006 ms** | 0 → 0 ms |
+| fps | 60,0 → 60,0 | 16,5 → 15,8 | 40,0 → 36,9 | 60,0 → 58,7 |
+| frames > 33 ms | 0 → 0 % | 48,1 → 46,5 % | 8,8 → 12,3 % | 0,0 → 0,5 % |
+| tareas largas | 0 → 0 ms | 466 → 519 ms | 780 → **944 ms** (12 → 21) | 0 → 0 ms |
 
 | Carga | Celular antes → después | Escritorio antes → después |
 |---|---|---|
-| CLS (mediana) | 0,0011 → 0,0022 | **0,1801 → 0,0000** |
-| LCP (elemento: el H1) | 740 → 660 ms | 848 → 732 ms |
+| CLS (mediana; crudo) | 0,0011 → 0,0022 (0,001 ×5 → 0,002 ×5) | **0,1203 → 0,0000** (0,120 · 0,004 · 0,180 · 0,000 · 0,185 → 0,000 · 0,004 · 0,000 · 0,000 · 0,000) |
+| LCP (elemento: el H1) | 672 → 692 ms | 908 → 816 ms |
 
-Lectura honesta: en **reposo** no hay trabajo en ninguno de los dos builds. En el **celular** el candidato mejora la pasada del hero y la subida, y la bajada tiene menos frames lentos pero **más milisegundos de tareas largas** (+189 ms). En **escritorio** la bajada también suma tareas largas (+169 ms) y los fps de la bajada bajan algo; la pasada del hero queda igual (el límite es el WebGL por software). El **CLS** del baseline en escritorio es 0,18 (un salto en un SVG a los ~24 s de la corrida, por encima del objetivo de 0,1) y el candidato no lo reproduce; en celular ambos son despreciables. **No se afirma una mejora de rendimiento global**: la diferencia en tareas largas de la primera bajada va en contra y se registra como A2.
+Lectura honesta:
+- **En reposo no hay trabajo** en ninguno de los dos builds (60 fps, 0 ms de tareas largas).
+- **Celular:** el candidato mejora claramente la pasada del hero (tareas largas de 401 a 31 ms) y la subida, y la bajada tiene menos frames lentos (26,8 → 19,0 %) y más fps. Pero la bajada acumula **más tareas largas**: 510 → 810 ms; los rangos crudos casi no se tocan (443–553 antes, 532–906 después), así que la diferencia **es real**, aunque chica en fps.
+- **Escritorio:** la pasada del hero queda igual (el límite es el WebGL por software, que no dice nada de una GPU real). La bajada empeora algo: 40,0 → 36,9 fps y 780 → 944 ms de tareas largas (antes 553–884, después 815–1.824 con un valor atípico). Es la misma señal que en celular.
+- **CLS:** el baseline en escritorio supera el objetivo de 0,1 en 3 de 5 corridas (un salto de un SVG a los ~24 s, en la bajada) y el candidato no lo reproduce; en celular ambos son despreciables (≪ 0,1).
+- **No se afirma una mejora de rendimiento global.** Lo que mejora: pasada del hero, subida en celular y CLS en escritorio. Lo que empeora: tareas largas de la primera bajada (A2). La causa **no está atribuida**: la sospecha es la hidratación de las dos secciones nuevas («Qué ofrecemos» y «Para tu PyME»), pero eso se confirma con un perfil por sección, que es trabajo de optimización y el lote lo excluye.
 
 ## 8. Puerta visual adversarial (rúbrica de 1.4 §11 contra el baseline)
 
@@ -159,7 +164,7 @@ Honestidad: «Ver demo» y el selector rotulan «Demo»; Ecommerce dice «Próxi
 | Capturas normales/*reduced* y teclado documentadas | **Cumple** (§2, §3, `capturas/1.5/`) |
 | No desaparición de CTA/precio ni desborde a 360 | **Cumple** (150 celdas) |
 | Fallback completo y limpieza probados | **Cumple** (§3, §4) |
-| Rendimiento comparado con método reproducible; muestra humana real o pendiente explícita | **Cumple** el método (§7); la **muestra humana queda pendiente de forma explícita** |
+| Rendimiento comparado con método reproducible; muestra humana real o pendiente explícita | **Cumple** el método (§7, 5 rondas con valores crudos); un criterio sale peor (A2, P2, no crítico) y se informa; la **muestra humana queda pendiente de forma explícita** |
 | Cada afirmación con evidencia o rotulada no probada | **Cumple** (§10 lista lo no probado) |
 | Sin gastos, publicaciones ni cambios de alcance implícitos | **Cumple** (USD 0, sin merge ni deploy) |
 | Se preservó el contenido vigente | **Cumple** (el inventario de 1.1 no pierde bloques; solo se quitó texto que prometía el armador) |
