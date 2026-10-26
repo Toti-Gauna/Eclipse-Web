@@ -405,3 +405,4 @@ Se crearon **Eclipse Design** y **Eclipse Ads** a pedido de Ignacio (PR #2 de `a
 6. **Contact:** se mantiene como web básica con enlace manual a WhatsApp (segmentación del 26/10); el «chat» del criterio de 2.3 se corrige en ese lote.
 7. **Instalación de skills (A, B, C):** ejecutada el 26/10/2026 a pedido de Ignacio, antes de 1.1. Ver `skills-instaladas.md`. Pendiente: *smoke* de carga en la sesión de 1.1.
 8. **Lote 0.4 aceptado** por Ignacio (26/10/2026). La **Fase 0 queda cerrada**. Habilita 1.1. Orden siguiente: 1.1 → **1.4** → 1.2 → 1.3 → 1.5 (el texto de 1.1 en Notion dice «habilita 1.2 y 1.3»; manda el orden maestro y la página de Fase 1: la dirección visual 1.4 va antes).
+9. **Lote 1.1 ejecutado** (documental): `lote-1.1-arquitectura-wireflows.md`. **Pendiente de Ignacio:** aceptar 1.1 y decidir D1 (qué es «Ecommerce»), D2 (destino del armador), D3 (qué hace «visto»), D4 (orden de la home), D5 («Otro» del hero). Siguiente lote: **1.4**.
