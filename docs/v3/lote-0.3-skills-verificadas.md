@@ -173,3 +173,7 @@ Sin hallazgos de red, ejecución ni secretos en `frontend-design`, `gsap-timelin
 **Precedencia de reglas** para toda skill instalada: `Eclipse-Web/CLAUDE.md` → contrato «Efemérides v3» (lote 1.4) → decisiones de Ignacio → las skills. Las skills asesoran; no deciden.
 
 **Manifiesto actualizado (propuesto, pendiente de aprobación):** A, B (+ `gsap-scrolltrigger`, `gsap-core`), C, y como referencia revisable 6 y 7; D se reemplaza por una skill interna cuando haya efecto aprobado; 8 y 9 se preparan en su lote. Nada está instalado.
+
+## 12. Agentes de diseño y publicidad (26/10/2026)
+
+Pedido de Ignacio: un agente de diseño «súper pro» y otro de publicidad. Se resolvió con **skills internas** (sin instalar nada externo): PR #2 de `agents` (borrador). Design: `brand-contract`, `typography-atlas`, `visual-styles-atlas`, `motion-atlas`, `three-d-webgl`, `higgsfield-direction`, `design-review-rubric`. Ads: `ad-brief-strategy`, `ad-hooks-copy`, `ad-video-direction`, `ad-platform-playbook`, `ad-compliance-honesty`, `ad-measurement-testing`. Las skills externas del §11 siguen siendo asesoras; la identidad visual la fija `brand-contract` y, por encima, `Eclipse-Web/CLAUDE.md`.

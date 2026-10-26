@@ -390,3 +390,7 @@ Registro; salvo lo indicado, ninguna está implementada.
 3. **Precios (ajusta §21.3):** Partner **USD 500** y el nivel de **200** se usan en la oferta; Ignacio los llama «propuesta, así que hay que utilizarlos». Interpretación: Deluxe 200 ya era dirección suya y Partner 500 queda **aprobado como precio**; los **cupos** siguen siendo un borrador a costear y el alcance económico final sigue pendiente. *Si «el 200» se refería al nivel general de 199, hay que confirmarlo; hasta entonces el 199 general no se publica.*
 4. **Rubros del modal (resuelve §20.3 y §21.6):** se arranca con **Inmobiliarias y Ecommerce** (como dice Notion). Los demás rubros (salud y animales, restaurantes/bodegones, compliance para empresas, etc.) se suman después, cuando cada uno tenga su micrositio. Las demos ocultas siguen en standby dentro de Eclipse-Web (§20.4).
 5. **Manifiesto de 0.3:** pendiente de explicación y de aprobación; 0.3 no se da por aceptado hasta entonces.
+
+## 23. Agentes Design y Ads (26/10/2026)
+
+Se crearon **Eclipse Design** y **Eclipse Ads** a pedido de Ignacio (PR #2 de `agents`, borrador, apilada sobre #1). Ver `lote-0.2-agentes-pr1.md` §12 y `lote-0.3-skills-verificadas.md` §12. Pendiente de Ignacio: aprobar #1 y #2 y el manifiesto de 0.3, y dar el OK de 0.4.

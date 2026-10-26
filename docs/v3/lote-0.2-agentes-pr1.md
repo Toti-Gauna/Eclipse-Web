@@ -82,10 +82,12 @@ Misma alineación que 7, 10 y 13 (skills externas, Dreamina, cuatro líneas) y a
 | Alcance de lote, gates, registro de consumo | Eclipse Chief | Ejecutor Sonnet | UX/UI, Frontend |
 | Gasto, publicación, merge a `main`, deploy | **Ignacio** | Ejecutor (hace el merge tras aprobación) | Chief (registra) |
 | Precios, cupos, tarifas | **Ignacio** | Marketing (propone texto), Frontend/Backend (reflejan) | Chief |
-| Composición, jerarquía y aceptación visual | UX/UI (firma la especificación) | Frontend | Chief |
+| Flujos, estados, navegación, accesibilidad y recorrido | UX/UI (firma la especificación) | Frontend | Chief, Design |
+| Lenguaje visual: tipografía, estilo, materiales, movimiento, 3D y aceptación estética | **Eclipse Design** (firma el gate estético) | Frontend | UX/UI, Chief |
+| Concepto, guion, copy y variantes de piezas publicitarias | Eclipse Ads | Eclipse Ads | Design, Marketing, Ignacio |
 | Implementación de componentes y copy en el sitio | Frontend Architect | Ejecutor Sonnet | UX/UI |
 | Oferta comercial, guion de venta, canales | Marketing | Marketing | Chief, Ignacio |
-| Gramática audiovisual, continuidad, prompts de medios | Trailer Architect | Trailer Architect | UX/UI, Marketing |
+| Gramática audiovisual, continuidad, prompts de medios | Eclipse Design (`higgsfield-direction`) y Trailer Architect para trailers | mismo | UX/UI, Marketing, Ads |
 | Contratos de BE, auth, catálogo | Backend Architect (conserva contratos) | Ejecutor Sonnet | Seguridad, Chief |
 | Revisión de límites de seguridad y datos | Cybersecurity Architect | Cybersecurity Architect | Backend, Chief |
 | Código y repositorios | — | **Ejecutor**; Chief nunca escribe código | — |
@@ -144,3 +146,9 @@ Ignacio autorizó al ejecutor a editar la PR («vos codeá… yo luego apruebo e
 - **No tocadas** (no están en la PR): las skills `creative-direction` y `ai-video-prompt` y el alias `Claude Sonnet 4.6 (copilot)` de los agentes que ya están en `main`. Siguen abiertas para antes de 3.1 y 3.3.
 - **No hecho:** el merge de la PR #1 a `main`. La aprueba Ignacio; sigue en borrador.
 - **Sigue sin probarse** (§7): que Claude Code acepte `model: sonnet` y el encabezado antes de instalar.
+
+## 12. Agentes nuevos y arreglo (26/10/2026)
+
+- **Arreglo en la PR #1** (commit `3c3f1cd`): mi script de correcciones dejó un `\1` suelto en 4 archivos (UX/UI y Marketing, Claude Code y Codex). Quedó reemplazado por «6. Gate estético» y «- LinkedIn:». `grep '^\\1'`: 0 resultados. También actualicé el cuerpo de la PR, que todavía decía «dos intervenciones acotadas» de Opus.
+- **PR #2 (borrador, apilada sobre #1):** `feature/eclipse-v3-design-ads-agents`, commit `061639e`. Agrega **Eclipse Design** (7 skills internas) y **Eclipse Ads** (6 skills internas), con variantes Codex y README. El RACI de §4 queda actualizado: UX/UI firma flujos y accesibilidad; Design firma el lenguaje visual y la aceptación estética.
+- **Límites declarados:** las tarifas de Higgsfield, las especificaciones de plataformas y las licencias de fuentes figuran como «verificar vigente»; no son presupuesto. No se instaló ni gastó nada. La aprobación de #1 y #2 es de Ignacio.
