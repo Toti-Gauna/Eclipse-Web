@@ -8,7 +8,7 @@
 
 - **Qué cambió:** (1) la comparación **FE ↔ BE ↔ Notion** quedó medida, no supuesta: contra el catálogo del BE en `main` el guard del FE reporta **41 diferencias**, contra el del PR #10 **51**; ninguno de los dos conoce el modelo del 16/10 (Adaptación 500, Pack 700, mensual 30/75/150). Eso queda como **prueba permanente** (`tests/catalog-be-reconciliation.test.ts` + fixture del PR #10), de modo que el bloqueo de «Enviar solicitud» en vivo queda demostrado y no se puede quitar sin que falle una prueba. (2) **D15 aplicado:** el pie ya no muestra las unidades Eclipse Agency/Media/Market (`content/units.json` queda como historial). (3) Matriz **30/75/150/199** y **tres escenarios económicos** con costo horario faltante explícito (margen **indeterminado**, no 0), más el plan de conciliación del carril A para una ejecución futura autorizada.
 - **Qué quedó abierto:** la conciliación del **backend** no se ejecutó (hace falta tu autorización, D18); retirar `asesoria-economica`/`asesorias` (D12) **no se aplicó** porque el Pack 700 las incluye y su reemplazo es decisión comercial tuya (D16); el nivel **199** no se publica ni se implementa; cupos y prestaciones nuevas de Studio/Academy son **hipótesis** hasta tu aprobación; el comparador v3 es **propuesta** (§7), sin código; el margen real depende de costos internos que no tengo.
-- **Qué necesita el OK de Ignacio:** **D16** (qué pasa con el Pack lanzamiento sin asesoría financiera), **D17** (descartar o posponer el nivel 199), **D18** (autorizar un PR de conciliación en `Eclipse-be`) y la confirmación del criterio de §6.3. Siguiente lote al cerrar esto: **2.3 · EstateOS · planes y bienvenida** (Sonnet · high).
+- **Qué necesita el OK de Ignacio:** D16–D18 y §6.3 **respondidas el 26/10 (§13)**: ya no hay packs ni ofertas, el modelo es «planes mensuales + lista de piezas»; falta que apruebe la **matriz de §6** (hipótesis de Studio/Academy por plan), que define el contenido del retiro. Siguiente: **2.2b · Retiro de ofertas y comparador de planes mensuales** (§13.2), luego el PR de conciliación del backend, luego **2.3**.
 
 ## 1. Registro de entrada (G0)
 
@@ -186,3 +186,26 @@ Cambios del lote: `components/layout/Footer.tsx`, `messages/{es,en,pt}.json` (do
 ## 12. Handoff
 
 Habilita **2.3** (EstateOS · planes y bienvenida; recordá que EstateOS vive en su propio repo `roofy`, que creás vos al llegar a la Fase 3/lote 1.6), **2.4** y el **gate comercial antes de 3.9**. 2.3 debe tomar de aquí la regla «mismo importe no implica misma oferta» y no mezclar el catálogo sectorial (30/75/100/150/200) con el general (30/75/150).
+
+## 13. Decisiones resueltas (26/10/2026, segunda ronda)
+
+### 13.1 Respuestas de Ignacio
+
+| # | Respuesta | Efecto |
+|---|---|---|
+| **D16** | «No existen esos packs, ahora es todo planes mensuales.» Confirmado: se **retiran Adaptación 500 y Pack lanzamiento 700** (y la bonificación 3 × 30); se quedan el plan mensual 30/75/150 y las **piezas con su precio de implementación 50/50** como lista de precios. | `asesoria-economica` y el combo `asesorias` se retiran con ellas (D12: sin asesoría financiera). `asesoria-growth` queda como diagnóstico dentro de Studio. Los ids retirados pasan a `content/legacy.json`. **Aún no aplicado** (§13.2). |
+| **D17** | Preguntó qué es el 199: es el cuarto nivel mensual general propuesto sobre el de 150 (viene del «Escala 199» del backend antiguo); nunca se aprobó. | Sigue **sin publicarse**; recomendación de posponer, a la espera de su decisión explícita. |
+| **D18** | De acuerdo con un PR de conciliación en `Eclipse-be`; pide aviso cuando esté para aprobarlo. | Se hace **después** de 2.2b: el catálogo destino del backend ya no es el del 16/10 (con ofertas) sino el nuevo sin ofertas. |
+| **§6.3 / D12** | Lectura confirmada: marketing/crecimiento continuo = prestaciones de Studio/Academy dentro de los planes mensuales. | Sin pieza ni línea nueva. |
+
+Consecuencia sobre lo ya escrito: en §3–§5 las ofertas `adaptacion`/`pack` aparecen como «el modelo del 16/10» contra el que se midió el backend. Esa medición sigue siendo válida (el backend tampoco conoce el modelo nuevo), pero el **destino** de la conciliación cambia: el catálogo a llevar al backend es el de 2.2b.
+
+### 13.2 Alcance medido de 2.2b (no ejecutado)
+
+Retirar las ofertas toca (búsqueda en el repo del 26/10):
+- **Contenido:** `content/plans.json` (las dos ofertas, `featured`, `careCredit`), `content/items.json` (`asesoria-economica`, `asesorias`; los precios `addonUsd` pierden sentido sin ofertas), `content/verticals.json` (referencias a `adaptacion` en los proyectos de las demos), `content/legacy.json` (ids retirados).
+- **Motor:** `lib/pricing.ts` (`careCredit`, `ITEMS_ONE_OFF`, add-ons por oferta, `maintenanceSuggestion`), `lib/content.ts`, `lib/plan-request.ts` (el guard y el contrato de solicitud).
+- **Interfaz:** sección Precios (`Packages`, `BuyTabs`, `PlanRow`, `CarePanel`, `PiecesPanel`, `PricingSection`, `OffersLedger`), calculadora (`LossCalculator`), builder dormido (`rules.ts`, `StepPieces`), bloque de proyecto de las demos (`ProjectBlock`), textos `es/en/pt`.
+- **Pruebas:** `pricing`, `plan-request`, `plan-message`, `plan-url`, `builder`, `content`, `demo-experience`, `catalog-be-reconciliation`.
+
+La vista principal de Precios pasa de «dos ofertas» a **los tres planes mensuales en un ledger** (= el comparador v3 de §7), con la lista de piezas debajo. Por eso 2.2b necesita antes tu aprobación de la matriz de §6 (qué lleva cada plan en Studio/Academy). Se hace en un lote propio, con un diff revisable, y no se mezcla con este PR.
