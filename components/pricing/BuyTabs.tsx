@@ -3,10 +3,9 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { flushSync } from 'react-dom';
 import { useTranslations } from 'next-intl';
-import { items, plans } from '@/lib/content';
-import type { Billing } from '@/lib/pricing';
+import { maintenancePlans, sellableItems } from '@/lib/content';
 import { useSound } from '@/components/sound/SoundContext';
-import { Packages } from './Packages';
+import { MonthlyPlans } from './MonthlyPlans';
 import { PiecesPanel } from './PiecesPanel';
 import { PRICING_ANCHORS } from './anchors';
 import { onPiecesRequest, takePiecesRequest } from './tabRequest';
@@ -19,18 +18,18 @@ const panelId = (tab: Tab) => `pr-panel-${tab}`;
 
 /**
  * "Dos formas de comprar" as tabs (WAI-ARIA tabs, automatic activation):
- *   A · Paquetes (7)  — the packages compared field by field
- *   B · Pieza por pieza (16) — every piece by family, with its price and the builder
+ *   A · Planes mensuales (3) — the monthly plans compared field by field (lote 2.2b: no packs any more)
+ *   B · Pieza por pieza — every piece by family, with its price
  * Arrow keys / Home / End move between tabs. An in-page link to something inside
- * the hidden panel (e.g. "Incluida en: Sistema" → #plan-sistema) switches to it
+ * the hidden panel (e.g. a plan anchor, #plan-ia) switches to it
  * first, synchronously, so <SmoothAnchors> can scroll and focus the target.
  */
-export function BuyTabs({ billing, now }: { billing: Billing; now: number | null }) {
+export function BuyTabs() {
   const t = useTranslations('pricing');
   const { play } = useSound();
   const [tab, setTab] = useState<Tab>('packages');
   const tabs = useRef<Record<Tab, HTMLButtonElement | null>>({ packages: null, pieces: null });
-  const counts: Record<Tab, number> = { packages: plans.length, pieces: items.length };
+  const counts: Record<Tab, number> = { packages: maintenancePlans.length, pieces: sellableItems.length };
 
   const select = (next: Tab, focus = false) => {
     if (focus) tabs.current[next]?.focus();
@@ -122,10 +121,10 @@ export function BuyTabs({ billing, now }: { billing: Billing; now: number | null
       </div>
 
       <div id={panelId('packages')} role="tabpanel" aria-labelledby={tabId('packages')} hidden={tab !== 'packages'} className="pr-panel">
-        <Packages billing={billing} now={now} onShowPieces={() => select('pieces', true)} />
+        <MonthlyPlans />
       </div>
       <div id={panelId('pieces')} role="tabpanel" aria-labelledby={tabId('pieces')} hidden={tab !== 'pieces'} className="pr-panel">
-        <PiecesPanel onShowPackages={() => select('packages', true)} />
+        <PiecesPanel onShowPlans={() => select('packages', true)} />
       </div>
     </div>
   );

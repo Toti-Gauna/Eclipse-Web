@@ -4,7 +4,7 @@
  * Unknown ids are dropped. `m` absent = automatic suggestion; `m=none` = no maintenance.
  * `g` (goals, v2) is optional: links made before it existed decode exactly as before.
  */
-import { items, maintenancePlans, plans, verticals, type ItemId, type MaintenanceId, type PlanId, type VerticalId } from '@/lib/content';
+import { maintenancePlans, sellableItems, sellablePlans, verticals, type ItemId, type MaintenanceId, type PlanId, type VerticalId } from '@/lib/content';
 import type { Billing } from '@/lib/pricing';
 
 /** "¿Qué querés resolver?" — the goals of step 1 (ids are stable: they live in shared links). */
@@ -34,8 +34,9 @@ export const emptyPlanState: PlanState = {
 };
 
 const goalIds = new Set<string>(GOAL_IDS);
-const itemIds = new Set<string>(items.map((i) => i.id));
-const planIds = new Set<string>(plans.map((p) => p.id));
+// Links shared before the offers were retired (lote 2.2b) lose the retired plan and pieces: only what is on sale is restored.
+const itemIds = new Set<string>(sellableItems.map((i) => i.id));
+const planIds = new Set<string>(sellablePlans.map((p) => p.id));
 const maintenanceIds = new Set<string>(maintenancePlans.map((m) => m.id));
 const verticalIds = new Set<string>(verticals.map((v) => v.id));
 

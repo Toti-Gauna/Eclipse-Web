@@ -4,7 +4,7 @@ import { useId } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { InlineSelect } from '@/components/sections/problem/InlineSelect';
 import { Money } from '@/components/ui/Money';
-import { l, plans, verticals, type PlanId, type VerticalId } from '@/lib/content';
+import { l, sellablePlans as plans, verticals, type PlanId, type VerticalId } from '@/lib/content';
 import type { PlanState } from '@/lib/plan-url';
 import type { Locale } from '@/i18n/routing';
 import { GOAL_IDS, goalPieces, type GoalId } from './goals';
@@ -76,7 +76,8 @@ export function StepGoals({
         />
       </p>
 
-      <section className="pb-packages" aria-labelledby={`${uid}-packages`}>
+      {plans.length ? (
+        <section className="pb-packages" aria-labelledby={`${uid}-packages`}>
         <Sub id={`${uid}-packages`} className="pb-subhead label">
           <span>{t('fromPackage')}</span>
           <span aria-hidden className="pb-subhead-rule" />
@@ -108,6 +109,7 @@ export function StepGoals({
           })}
         </ul>
       </section>
+      ) : null}
     </>
   );
 }

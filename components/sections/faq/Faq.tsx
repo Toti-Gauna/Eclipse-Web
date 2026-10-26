@@ -50,7 +50,7 @@ export type FaqId = (typeof FAQ_IDS)[number];
  *   start       process.steps.call.body · process.steps.build.body
  *   from        pricing.how.project.title/when · pricing.notes.from
  *   currency    currency.notice · pricing.rate.note · pricing.rate.value + currency.source(Fallback)
- *   pieces      services.key.pieceText · pricing.ways.bundles.text · pricing.how.extras.text
+ *   pieces      services.key.pieceText · pricing.ways.pieces.text · pricing.how.extras.text
  *   maintenance pricing.care.label · pricing.care.text · content/maintenance.json plans
  *   voice       content/items.json whatsapp/chatbot/voz · faq.channelPrices/channelsRule/channelsDemo
  *   annual      content/offers.json annual.description · pricing.care.annualNote
@@ -109,7 +109,7 @@ export function Faq({ className = '' }: { className?: string }) {
     pieces: (
       <>
         <p>{ts('key.pieceText')}</p>
-        <p>{tp('ways.bundles.text')}</p>
+        <p>{tp('ways.pieces.text')}</p>
         <p>{tp('how.extras.text')}</p>
       </>
     ),

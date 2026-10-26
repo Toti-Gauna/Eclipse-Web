@@ -82,6 +82,8 @@ export interface Item {
   replaces?: ItemId[];
   /** Availability / feasibility subject to validation (provider, capacity). */
   validate?: boolean;
+  /** Retired from sale (lote 2.2b) but kept for historical requests and a possible return: never shown, never sold. */
+  hidden?: boolean;
   icon: string;
   name: Localized;
   description: Localized;
@@ -112,6 +114,8 @@ export interface Plan {
   validate?: boolean;
   /** Monthly plan credit: `monthlyUsd` off per month during the first `months` months after launch. */
   careCredit?: { months: number; monthlyUsd: number };
+  /** Retired from sale (lote 2.2b: no packs, only monthly plans) but kept for historical requests and a possible return. */
+  hidden?: boolean;
 }
 
 /** "+ Sumar" on an offer: the price is the piece's add-on price (items.json addonUsd). */
@@ -127,6 +131,11 @@ export interface MaintenancePlan {
   priceUsd: number;
   /** Third-party budget (hosting, data, tools, usage) already inside the monthly price. */
   thirdPartyUsd: number;
+  /** Who it is for. */
+  audience: Localized;
+  /** What it brings from Eclipse Studio / Academy (null = nothing). */
+  studio: Localized | null;
+  academy: Localized | null;
   name: Localized;
   includes: Localized<string[]>;
 }
@@ -239,6 +248,9 @@ export interface Rates {
 export const itemCategories = itemsJson.categories as ItemCategory[];
 export const items = itemsJson.items as Item[];
 export const plans = plansJson.plans as Plan[];
+/** What the visitor can see and buy (the full lists above also resolve retired ids for historical requests). */
+export const sellableItems = items.filter((i) => !i.hidden);
+export const sellablePlans = plans.filter((p) => !p.hidden);
 export const featuredPlanId = plansJson.featured as PlanId;
 export const addons = addonsJson.addons as Addon[];
 export const maintenancePlans = maintenanceJson.plans as MaintenancePlan[];

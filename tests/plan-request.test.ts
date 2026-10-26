@@ -3,7 +3,7 @@ import catalog from './fixtures/backend-catalog.v1.json';
 import type { ApiCatalog } from '@/lib/api/types';
 import { buildPlanRequestBody, catalogMismatches, checkContact, hasProblems, toApiSelection } from '@/lib/plan-request';
 import { emptyPlanState, type PlanState } from '@/lib/plan-url';
-import { items, maintenancePlans, plans } from '@/lib/content';
+import { maintenancePlans, plans, sellableItems, sellablePlans } from '@/lib/content';
 
 const api = catalog as unknown as ApiCatalog;
 const state = (over: Partial<PlanState>): PlanState => ({ ...emptyPlanState, ...over });
@@ -67,8 +67,8 @@ describe('plan request — web content vs the backend catalog', () => {
   /** A catalog built from /content, as the backend would publish it once it carries the 16/10 offer. */
   const fromContent = (): ApiCatalog => ({
     ...api,
-    items: items.map((i) => ({ id: i.id, category: i.category, name: i.name, priceCents: i.priceUsd * 100, addonCents: i.addonUsd == null ? null : i.addonUsd * 100 })),
-    plans: plans.map((p) => ({ id: p.id, name: p.name, tier: p.tier, rangeCents: { from: p.priceUsd.from * 100, to: p.priceUsd.to * 100 }, items: p.items, maintenance: p.maintenance, bonusItemId: null })),
+    items: sellableItems.map((i) => ({ id: i.id, category: i.category, name: i.name, priceCents: i.priceUsd * 100, addonCents: i.addonUsd == null ? null : i.addonUsd * 100 })),
+    plans: sellablePlans.map((p) => ({ id: p.id, name: p.name, tier: p.tier, rangeCents: { from: p.priceUsd.from * 100, to: p.priceUsd.to * 100 }, items: p.items, maintenance: p.maintenance, bonusItemId: null })),
     maintenance: maintenancePlans.map((m) => ({ id: m.id, name: m.name, monthlyCents: m.priceUsd * 100 })),
     voiceUsage: undefined,
     offers: api.offers.map((o) => ({ ...o, active: false })),
@@ -79,7 +79,10 @@ describe('plan request — web content vs the backend catalog', () => {
     // Until Eclipse-be publishes the new catalog, every request is drift: RequestAction sends
     // nothing and points to WhatsApp. Refresh the fixture when the backend is updated.
     const found = catalogMismatches(api).map((m) => `${m.area}:${m.id}`);
-    expect(found).toEqual(expect.arrayContaining(['items:whatsapp', 'plans:pack', 'maintenance:conectado', 'voice:voz-uso']));
+    expect(found).toEqual(expect.arrayContaining(['items:whatsapp', 'maintenance:conectado', 'voice:voz-uso']));
+    // Hidden offers and pieces are never sent, so the API is not asked to know them.
+    expect(found).not.toContain('plans:pack');
+    expect(found).not.toContain('items:asesorias');
   });
 
   it('a backend catalog that carries the 16/10 offer matches 1:1', () => {
@@ -90,9 +93,9 @@ describe('plan request — web content vs the backend catalog', () => {
     const changed = fromContent();
     changed.items[0].priceCents += 100;
     changed.items[1].addonCents = 1;
-    changed.plans[1].items = changed.plans[1].items.slice(1);
+    changed.plans.push({ id: 'zzz', name: plans[0].name, tier: 'starter', rangeCents: { from: 1, to: 1 }, items: [], maintenance: null, bonusItemId: null } as never);
     changed.maintenance[1].monthlyCents = 1;
     const found = catalogMismatches(changed).map((m) => `${m.area}:${m.id}`);
-    expect(found).toEqual(expect.arrayContaining(['items:landing', 'items:web-multi', 'plans:pack', 'maintenance:conectado']));
+    expect(found).toEqual(expect.arrayContaining(['items:landing', 'items:web-multi', 'plans:zzz', 'maintenance:conectado']));
   });
 });

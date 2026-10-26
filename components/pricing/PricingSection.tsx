@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { foundersRemaining, offers, type FounderOffer, type Offer, type ReferralOffer, type VoiceComboOffer } from '@/lib/content';
-import { annualFreeMonths, type Billing } from '@/lib/pricing';
+import { foundersRemaining, offers, type FounderOffer, type Offer, type VoiceComboOffer } from '@/lib/content';
+import { annualFreeMonths } from '@/lib/pricing';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { Reveal } from '@/components/motion/Reveal';
 import { Occult } from '@/components/motion/Occult';
@@ -11,7 +10,6 @@ import { SectionMark } from '@/components/ui/SectionMark';
 import { PayLedger } from './PayLedger';
 import { BuyTabs } from './BuyTabs';
 import { OffersLedger } from './OffersLedger';
-import { CarePanel } from './CarePanel';
 import { RateNote } from './RateNote';
 import { offerLive, useNow } from './useNow';
 import './pricing.css';
@@ -21,10 +19,9 @@ const offerOf = <K extends Offer['kind']>(kind: K) => offers.find((o) => o.kind 
 /**
  * 04 · Precios (v3). Everything a buyer needs stays on the surface, in this order:
  *   the currency, the rate of the day and what "≈" means (RateNote, beside the title)
- *   → two ways to buy as tabs: A · Paquetes (7) compared field by field /
- *     B · Pieza por pieza (16) with the builder
- *   → maintenance (optional, the page's only Mensual/Anual switch, voice usage, referrals)
- *   → the live offers with their real conditions
+ *   → two tabs: A · Planes mensuales (3) compared field by field (hours and budget before the action) /
+ *     B · Pieza por pieza (read-only price list)
+ *   → the live offers with their real conditions (none today)
  *   → how you pay (① project once · ② maintenance monthly · ③ extras) and the footnotes.
  * Every number comes from /content through lib/pricing; prices are shown in the active
  * currency with "≈" when converted and the USD reference beside them.
@@ -33,30 +30,14 @@ export function PricingSection() {
   const t = useTranslations('pricing');
   const tc = useTranslations('currency');
   const now = useNow();
-  const [billing, setBilling] = useState<Billing>('monthly');
-  const [announcement, setAnnouncement] = useState('');
 
   const founder = offerOf('founder');
   const combo = offerOf('voiceCombo');
   const annual = offerOf('annualMaintenance');
-  const referral = offerOf('referral');
 
   const founderOffer: FounderOffer | null = founder && offerLive(founder, now) && foundersRemaining() > 0 ? founder : null;
   const comboOffer: VoiceComboOffer | null = combo && offerLive(combo, now) ? combo : null;
-  const referralOffer: ReferralOffer | null = referral && offerLive(referral, now) ? referral : null;
   const annualOn = offerLive(annual, now);
-  // Without the annual offer there is no yearly billing at all.
-  const effectiveBilling: Billing = annualOn ? billing : 'monthly';
-
-  const changeBilling = (next: Billing) => {
-    setBilling(next);
-    setAnnouncement(
-      t('care.live', {
-        billing: t(`billing.${next}`).toLowerCase(),
-        period: t(next === 'annual' ? 'perYear' : 'perMonth'),
-      }),
-    );
-  };
 
   return (
     <section
@@ -88,13 +69,7 @@ export function PricingSection() {
 
         <Reveal className="pr-block pr-block--tabs" start="top 85%">
           <div data-reveal>
-            <BuyTabs billing={effectiveBilling} now={now} />
-          </div>
-        </Reveal>
-
-        <Reveal className="pr-block">
-          <div data-reveal>
-            <CarePanel billing={effectiveBilling} onBillingChange={changeBilling} annualOn={annualOn} referral={referralOffer} />
+            <BuyTabs />
           </div>
         </Reveal>
 
@@ -117,10 +92,6 @@ export function PricingSection() {
           <p>{tc('notice')}</p>
         </div>
       </div>
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
     </section>
   );
 }

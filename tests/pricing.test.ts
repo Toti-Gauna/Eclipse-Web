@@ -14,6 +14,7 @@ import {
   maintenanceSuggestion,
   planSavings,
   plansByTier,
+  plansIncluding,
   quote,
   resolveCombos,
   splitPayment,
@@ -71,6 +72,21 @@ describe('catalog of the 16/10 offer (content/*.json)', () => {
       ['conectado', 75, 15],
       ['ia', 150, 40],
     ]);
+  });
+  it('the offers and the financial advisory are hidden, not deleted; growth advice stays for sale (lote 2.2b)', () => {
+    expect(plans.map((p) => [p.id, !!p.hidden])).toEqual([['adaptacion', true], ['pack', true]]);
+    const hidden = items.filter((i) => i.hidden).map((i) => i.id).sort();
+    expect(hidden).toEqual(['asesoria-economica', 'asesorias']);
+    expect(items.find((i) => i.id === 'asesoria-growth')?.hidden).toBeFalsy();
+  });
+  it('monthly plans: Studio from Conectado, Academy inicial from Conectado, nothing extra in Esencial; 199 is not published', () => {
+    const by = Object.fromEntries(maintenancePlans.map((m) => [m.id, m]));
+    expect([by.esencial.studio, by.esencial.academy]).toEqual([null, null]);
+    expect(by.conectado.studio).toBeTruthy();
+    expect(by.conectado.academy?.es).toMatch(/^Academy inicial/);
+    expect(by.ia.studio).toBeTruthy();
+    expect(by.ia.academy).toBeTruthy();
+    expect(maintenancePlans.map((m) => m.priceUsd)).toEqual([30, 75, 150]);
   });
   it('historical offers (founder, voice combo, annual, referral) are all off', () => {
     expect(offers.filter((o) => isOfferActive(o, NOW))).toEqual([]);
@@ -266,8 +282,13 @@ describe('applyOffers / isOfferActive (historical engine, kept for older agreeme
 });
 
 describe('plansByTier', () => {
-  it('both offers in the "starter" group', () => {
-    expect(plansByTier().map((g) => [g.tier, g.plans.map((p) => p.id)])).toEqual([['starter', ['adaptacion', 'pack']]]);
+  it('both 16/10 offers stay in the "starter" group of the full list (kept, hidden)', () => {
+    expect(plansByTier(plans).map((g) => [g.tier, g.plans.map((p) => p.id)])).toEqual([['starter', ['adaptacion', 'pack']]]);
+  });
+  it('nothing is on sale by default: the offers are hidden (lote 2.2b), only monthly plans remain', () => {
+    expect(plans.every((p) => p.hidden)).toBe(true);
+    expect(plansByTier()).toEqual([]);
+    expect(plansIncluding('seo')).toEqual([]);
   });
 });
 
@@ -359,7 +380,7 @@ describe('services catalog (03 · Qué construimos)', () => {
   });
   it('every piece of the catalog belongs to exactly one family', () => {
     const listed = FAMILIES.flatMap((f) => familyItems(f).map((i) => i.id));
-    expect([...listed].sort()).toEqual(items.map((i) => i.id).sort());
+    expect([...listed].sort()).toEqual(items.filter((i) => !i.hidden).map((i) => i.id).sort());
   });
   it('"pieza suelta desde" is the cheapest piece of each family', () => {
     for (const family of FAMILIES) {

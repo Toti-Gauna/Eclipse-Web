@@ -14,25 +14,33 @@ describe('projectSummary (the complete project under each demo)', () => {
     }
   });
 
-  it('each demo is contracted as the product adaptation; its simulated channels are add-ons, never preselected', () => {
+  it('with the 16/10 offers hidden (lote 2.2b) no demo is contracted as an offer: its pieces keep their own price, never preselected', () => {
     for (const v of withDemo) {
       const s = projectSummary(v)!;
-      expect(s.plan?.id, v.id).toBe('adaptacion');
+      expect(planById('adaptacion')?.hidden).toBe(true);
+      expect(s.plan, v.id).toBeNull();
       expect(s.pieces.map((p) => p.id), v.id).toEqual(v.project!.items);
       // Only the channels a demo simulates, never modules sold as part of the product price.
       for (const p of s.pieces) expect(['voz', 'chatbot', 'whatsapp'], `${v.id}:${p.id}`).toContain(p.id);
-      for (const p of s.pieces) expect(p.addonUsd, p.id).toBe(items.find((i) => i.id === p.id)!.addonUsd);
-      expect(s.preset, v.id).toEqual({ planId: 'adaptacion', items: [] });
+      expect(s.preset, v.id).toEqual({ planId: null, items: [] });
       expect(Object.keys(s)).not.toContain('totalUsd');
     }
   });
 
-  it("suggested monthly plan is the offer's own (the channels are not added, so they do not raise it)", () => {
+  it('suggested monthly plan follows the pieces (no offer): WhatsApp → Conectado, chatbot or voice → Automatización e IA', () => {
     for (const v of withDemo) {
       const s = projectSummary(v)!;
-      expect(s.maintenance?.id, v.id).toBe(maintenanceSuggestion({ planId: 'adaptacion', itemIds: [] }));
-      expect(s.maintenance).toBe(maintenanceById(planById('adaptacion')!.maintenance));
+      const ids = s.pieces.map((p) => p.id);
+      expect(s.maintenance?.id, v.id).toBe(maintenanceSuggestion({ planId: null, itemIds: ids }));
+      expect(s.maintenance, v.id).toBe(maintenanceById(maintenanceSuggestion({ planId: null, itemIds: ids })));
     }
+    expect(projectSummary({ project: { plan: null, items: ['whatsapp'] } })!.maintenance?.id).toBe('conectado');
+    expect(projectSummary({ project: { plan: null, items: ['chatbot', 'whatsapp'] } })!.maintenance?.id).toBe('ia');
+  });
+
+  it('a project that names a retired offer still resolves the offer for history but does not sell it', () => {
+    expect(planById('pack')).toBeTruthy();
+    expect(projectSummary({ project: { plan: 'pack', items: [] } })!.plan).toBeNull();
   });
 
   it('no project → null', () => {

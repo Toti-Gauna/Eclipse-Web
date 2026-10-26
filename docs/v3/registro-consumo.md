@@ -109,3 +109,11 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Resultado:** `lote-2.2-precios-catalogo.md`; comparación FE↔BE medida con el guard real (41 diferencias contra el BE de `main`, 51 contra el PR #10); prueba permanente `catalog-be-reconciliation` con fixture del PR #10; D15 (pie sin unidades); matriz 30/75/150/199 y tres escenarios con margen indeterminado; 405 pruebas unitarias pasan. Sin cambios en `/content`, `lib/pricing.ts` ni backend.
 - **Reintentos / correcciones propias:** una fila del documento (precio de `landing` en FE/BE) estaba al revés y se corrigió contra los datos antes del commit; un script de conteo en Python falló por el formato del JSON y se rehízo leyendo el campo correcto. Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
+
+## 11. Lote 2.2b · Retiro de ofertas y comparador de planes mensuales (26/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high. **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** `lote-2.2b-retiro-ofertas-planes-mensuales.md`; ofertas y asesorías ocultas (no borradas), comparador de planes mensuales, demos sin oferta, enlaces `/plan` viejos tolerados, guard con lo vendible; 410 pruebas unitarias, e2e 75/75, 3 capturas de la sección y medición de alineación/desborde/objetivos táctiles en 7 combinaciones.
+- **Reintentos / correcciones propias:** (1) 11 pruebas fallaron por el cambio de modelo y se actualizaron una por una (no se relajó ninguna); (2) 3 comprobaciones e2e dependían de las ofertas (filas, precio en la demo, enlace `/plan` con pack) y se reescribieron; (3) el check «header claro sobre precios» dependía de haber hecho clic en una fila: se scrollea a la tabla; (4) una nota de CLAUDE.md afirmaba que Studio/Academy cuentan dentro de las 2 h sin que Ignacio lo hubiera dicho: se corrigió a «por confirmar». Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
+

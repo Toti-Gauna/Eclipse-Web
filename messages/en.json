@@ -220,7 +220,7 @@
   },
   "services": {
     "title": "What we build, <em>piece by piece</em>.",
-    "sub": "{families} families, {count} pieces. Each one is contracted as its own project or as an add-on on an offer, and you see it working for your business first.",
+    "sub": "{families} families, {count} pieces. Each one is contracted as its own project or as an add-on on another project, and you see it working for your business first.",
     "resultLabel": "The result",
     "key": {
       "pieceTerm": "Single piece",
@@ -233,7 +233,7 @@
     "piecesTitle": "What it includes",
     "includedIn": "Included in",
     "goToPlan": "See the {name} offer",
-    "extra": "Added as an add-on on a base",
+    "extra": "Own project or add-on",
     "preview": "Preview",
     "families": {
       "web": {
@@ -618,7 +618,7 @@
         "title": "Implementation",
         "when": "50% upfront · 50% balance",
         "text": "What we build or adapt for your business. The project starts with the upfront payment; the balance, on delivery. We confirm the final price in writing after the demo.",
-        "link": "See offers"
+        "link": "See pieces"
       },
       "care": {
         "title": "Monthly plan",
@@ -635,11 +635,11 @@
       }
     },
     "ways": {
-      "label": "Two ways to buy",
+      "label": "What you pay for",
       "bundles": {
-        "title": "Offers",
-        "text": "Adaptation of one of our products, or the pack to launch with everything.",
-        "count": "{count} offers"
+        "title": "Monthly plans",
+        "text": "One plan per project: maintenance, human hours and, from Connected, Studio and Academy.",
+        "count": "{count} plans"
       },
       "pieces": {
         "title": "Piece by piece",
@@ -647,6 +647,18 @@
         "from": "From {price}."
       },
       "options": "{count, plural, one {# option} other {# options}}"
+    },
+    "monthly": {
+      "labels": {
+        "third": "Third parties",
+        "hours": "Human hours",
+        "studio": "Eclipse Studio",
+        "academy": "Eclipse Academy"
+      },
+      "thirdValue": "Up to {budget} per month, inside the price",
+      "hoursValue": "Up to {hours} h per month, in total",
+      "none": "Not included",
+      "back": "See monthly plans"
     },
     "groups": {
       "starter": {
@@ -5452,7 +5464,7 @@
       "build": "Build this project",
       "lead": "The demo is free to try. To have it in your business we adapt the product; the channels the demo simulates are added apart, only once validated.",
       "contracted": "What you'd contract",
-      "extrasNote": "Add-on price on top of the adaptation, each for one use case. Subject to validating provider, account and scope. Not preselected: you add them.",
+      "extrasNote": "Price of each piece, for one use case. Subject to validating provider, account and scope. Not preselected: you add them.",
       "simulation": "Simulated in the browser: no real messages are sent and no real calls are made, and the data and metrics are fictional."
     },
     "loadFail": {

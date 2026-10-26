@@ -345,7 +345,8 @@
         "en": "Costs, margins and scenarios with your data. One-off.",
         "pt": "Custos, margens e cenários com seus dados. Uma vez."
       },
-      "validate": true
+      "validate": true,
+      "hidden": true
     },
     {
       "id": "asesorias",
@@ -367,7 +368,8 @@
         "asesoria-growth",
         "asesoria-economica"
       ],
-      "validate": true
+      "validate": true,
+      "hidden": true
     },
     {
       "id": "marketing",

@@ -1,5 +1,5 @@
 {
-  "$comment": "Ofertas base (16/10/2026), USD. priceUsd.from = 'desde'. 'items' = piezas que la oferta ya cubre: no se cobran de nuevo (ni como independiente ni como complemento). Sobre una oferta, las piezas extra van a su precio de complemento (items.json addonUsd). 'careCredit' = bonificación del plan mensual: durante 'months' meses desde la publicación se descuentan 'monthlyUsd' por mes (el equivalente a Esencial). 'validate' = disponibilidad sujeta a validación. depositPct = anticipo de la implementación (el resto, saldo). 'compare': false = sin línea 'por separado / ahorrás'.",
+  "$comment": "Ofertas base (16/10/2026), USD. OCULTAS desde el 26/10/2026 (lote 2.2b, decisión de Ignacio: ya no hay packs, todo son planes mensuales): 'hidden' = no se muestra ni se vende, pero se conservan para solicitudes históricas y por si vuelven. Ofertas base (16/10/2026), USD. priceUsd.from = 'desde'. 'items' = piezas que la oferta ya cubre: no se cobran de nuevo (ni como independiente ni como complemento). Sobre una oferta, las piezas extra van a su precio de complemento (items.json addonUsd). 'careCredit' = bonificación del plan mensual: durante 'months' meses desde la publicación se descuentan 'monthlyUsd' por mes (el equivalente a Esencial). 'validate' = disponibilidad sujeta a validación. depositPct = anticipo de la implementación (el resto, saldo). 'compare': false = sin línea 'por separado / ahorrás'.",
   "depositPct": 50,
   "featured": "pack",
   "plans": [
@@ -49,7 +49,8 @@
           "SEO técnico básico",
           "Funções novas: orçadas à parte"
         ]
-      }
+      },
+      "hidden": true
     },
     {
       "id": "pack",
@@ -104,7 +105,8 @@
           "Assessoria de gestão econômica",
           "3 meses de plano mensal bonificados (o equivalente ao Essencial)"
         ]
-      }
+      },
+      "hidden": true
     }
   ]
 }

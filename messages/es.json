@@ -220,7 +220,7 @@
   },
   "services": {
     "title": "Lo que construimos, <em>pieza por pieza</em>.",
-    "sub": "{families} familias, {count} piezas. Cada una se contrata como proyecto propio o como complemento sobre una oferta, y primero la ves funcionando con tu negocio.",
+    "sub": "{families} familias, {count} piezas. Cada una se contrata como proyecto propio o como complemento sobre otro proyecto, y primero la ves funcionando con tu negocio.",
     "resultLabel": "Resultado",
     "key": {
       "pieceTerm": "Pieza suelta",
@@ -233,7 +233,7 @@
     "piecesTitle": "Qué incluye",
     "includedIn": "Incluida en",
     "goToPlan": "Ver la oferta {name}",
-    "extra": "Se suma como complemento sobre una base",
+    "extra": "Proyecto propio o complemento",
     "preview": "Vista previa",
     "families": {
       "web": {
@@ -618,7 +618,7 @@
         "title": "Implementación",
         "when": "50% anticipo · 50% saldo",
         "text": "Lo que construimos o adaptamos para tu negocio. El proyecto empieza con el anticipo; el saldo, a la entrega. El precio final te lo confirmamos por escrito después de la demo.",
-        "link": "Ver ofertas"
+        "link": "Ver piezas"
       },
       "care": {
         "title": "Plan mensual",
@@ -635,11 +635,11 @@
       }
     },
     "ways": {
-      "label": "Dos formas de comprar",
+      "label": "Lo que se paga",
       "bundles": {
-        "title": "Ofertas",
-        "text": "Adaptación de uno de nuestros productos, o el pack para salir con todo.",
-        "count": "{count} ofertas"
+        "title": "Planes mensuales",
+        "text": "Un plan por proyecto: mantenimiento, horas humanas y, desde Conectado, Studio y Academy.",
+        "count": "{count} planes"
       },
       "pieces": {
         "title": "Pieza por pieza",
@@ -647,6 +647,18 @@
         "from": "Desde {price}."
       },
       "options": "{count, plural, one {# opción} other {# opciones}}"
+    },
+    "monthly": {
+      "labels": {
+        "third": "Terceros",
+        "hours": "Horas humanas",
+        "studio": "Eclipse Studio",
+        "academy": "Eclipse Academy"
+      },
+      "thirdValue": "Hasta {budget} por mes, dentro del precio",
+      "hoursValue": "Hasta {hours} h por mes, en total",
+      "none": "No incluye",
+      "back": "Ver planes mensuales"
     },
     "groups": {
       "starter": {
@@ -5452,7 +5464,7 @@
       "build": "Armá este proyecto",
       "lead": "La demo se prueba gratis. Para tenerla en tu negocio se adapta el producto; los canales que la demo simula se suman aparte, solo si se validan.",
       "contracted": "Lo que se contrata",
-      "extrasNote": "Precio de complemento sobre la adaptación, cada uno para un caso de uso. Sujeto a validar proveedor, cuenta y alcance. No vienen marcados: los sumás vos.",
+      "extrasNote": "Precio de cada pieza, para un caso de uso. Sujeto a validar proveedor, cuenta y alcance. No vienen marcados: los sumás vos.",
       "simulation": "Simulación en el navegador: no se envían mensajes ni se hacen llamadas reales, y los datos y las métricas son ficticios."
     },
     "loadFail": {

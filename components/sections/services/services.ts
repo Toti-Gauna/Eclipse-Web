@@ -1,4 +1,4 @@
-import { itemCategories, items, type Item, type ItemCategory } from '@/lib/content';
+import { itemCategories, sellableItems, type Item, type ItemCategory } from '@/lib/content';
 import { lowestItemPrice } from '@/lib/pricing';
 
 export type FamilyId = 'web' | 'ai' | 'ops' | 'sales' | 'apps' | 'strategy';
@@ -30,12 +30,12 @@ export function familyCategory(family: Family): ItemCategory | undefined {
 }
 
 /** The pieces of a family, in catalog order. */
-export function familyItems(family: Family, catalog: readonly Item[] = items): Item[] {
+export function familyItems(family: Family, catalog: readonly Item[] = sellableItems): Item[] {
   return catalog.filter((item) => item.category === family.category);
 }
 
 /** "Pieza suelta desde": the cheapest piece of the family, in USD. */
-export function familyFromUsd(family: Family, catalog: readonly Item[] = items): number | null {
+export function familyFromUsd(family: Family, catalog: readonly Item[] = sellableItems): number | null {
   return lowestItemPrice(
     familyItems(family, catalog).map((i) => i.id),
     catalog,

@@ -10,7 +10,7 @@
  * safety net: if the two ever drift, the UI says the saved estimate is the team's.
  */
 import type { ApiCatalog, ApiPlanSelection } from '@/lib/api/types';
-import { annualMonthsCharged, items, maintenancePlans, offers, plans, verticals, founders } from '@/lib/content';
+import { annualMonthsCharged, items, maintenancePlans, offers, plans, sellableItems, sellablePlans, verticals, founders } from '@/lib/content';
 import type { VoiceComboOffer, FounderOffer } from '@/lib/content';
 import { normalizeState, sortItemIds } from '@/components/plan-builder/rules';
 import { GOAL_IDS, sortGoals, type PlanState } from '@/lib/plan-url';
@@ -93,8 +93,8 @@ export function catalogMismatches(catalog: ApiCatalog): CatalogMismatch[] {
   const out: CatalogMismatch[] = [];
   const push = (area: CatalogMismatch['area'], id: string, detail: string) => out.push({ area, id, detail });
 
-  // items
-  for (const item of items) {
+  // items: what the web can send. Retired pieces (hidden) are never sent, so the API need not know them.
+  for (const item of sellableItems) {
     const api = catalog.items.find((i) => i.id === item.id);
     if (!api) push('items', item.id, 'missing in API');
     else if (api.priceCents !== cents(item.priceUsd)) push('items', item.id, `price ${cents(item.priceUsd)} vs ${api.priceCents}`);
@@ -105,8 +105,8 @@ export function catalogMismatches(catalog: ApiCatalog): CatalogMismatch[] {
   }
   for (const api of catalog.items) if (!items.some((i) => i.id === api.id)) push('items', api.id, 'missing in web');
 
-  // plans
-  for (const plan of plans) {
+  // plans: same rule (the two 16/10 offers are hidden since lote 2.2b).
+  for (const plan of sellablePlans) {
     const api = catalog.plans.find((p) => p.id === plan.id);
     if (!api) {
       push('plans', plan.id, 'missing in API');

@@ -64,7 +64,7 @@ export function ProjectBlock({
           <span className="dx-piece-name">{l(item.name, locale)}</span>
           <span aria-hidden className="dx-piece-leader leader" />
           <span className="readout dx-piece-price">
-            {tp('plan.from')} <Money usd={item.addonUsd ?? item.priceUsd} />
+            {tp('plan.from')} <Money usd={plan ? (item.addonUsd ?? item.priceUsd) : item.priceUsd} />
           </span>
         </li>
       ))}

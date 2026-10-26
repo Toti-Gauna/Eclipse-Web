@@ -83,7 +83,7 @@ reachable (folded is fine, deleted is not).
   floats once the page scrolls: a surface (`.hdr-row::before`, header.css) fades in with `data-scrolled`, fixed 10 px
   blur, opaque fallback; its reserved height (`--header-h`) never changes. Naming follows the brief: the header says
   «Servicios», the section label says «Qué ofrecemos» (same anchor `#servicios`).
-- **«Potenciar mi negocio» / selector (lote 1.3, D6):** every commercial entry (hero, header, phone menu, plan cards,
+- **«Potenciar mi negocio» / selector (lote 1.3, D6):** every commercial entry (hero, header, phone menu, monthly plans,
   «Pieza por pieza», calculator, closing block) is a REAL `<a href="#contacto">` (`components/ui/PotenciarCta.tsx`,
   `data-opens-selector` so `SmoothAnchors` leaves it alone) that opens the selector «¿Qué negocio querés potenciar?»
   (`components/demo-experience/SelectorLayer.tsx`): exactly two rows, Inmobiliarias (opens the Lumen demo) and Ecommerce
@@ -132,21 +132,26 @@ reachable (folded is fine, deleted is not).
   right — except on step 4, where the full ledger is already in the centre. Below 1024px: the bar stepper.
   Still a proposal request: no payments in the builder. **Dormant since lote 1.3** (D2): no entry point on the home; the route
   `/plan/` (shared links) and `openBuilder` keep working. Future: pay-by-link.
-- **Offer of 16/10/2026 (commercial model):** two explicit offers in `plans.json` — Adaptación de producto (500) and
-  Pack lanzamiento (700, `validate`, `careCredit` 3 months × 30) — never inferred from a total, never suggested
-  (`compare: false`). Every piece has `priceUsd` (independent) and `addonUsd` (compatible add-on, or null): alternatives
-  for the same work, never both; on an offer extras go at add-on price, without one the widest piece is the project.
-  `asesorias` replaces both advisory sessions; `migracion` is a `reviewRangeUsd` outside totals. Implementation is 50/50
-  (`depositPct`). ONE monthly plan (30/75/150, `thirdPartyUsd` 5/15/40 inside the price, 2 h in total): no voice or
-  per-channel fee. Founder/combo/annual/referral offers are inactive (historical). Demos are contracted as the
-  adaptation; their simulated channels are add-ons, never preselected. Retired ids keep their names in
-  `content/legacy.json` for historical requests. Live «Enviar solicitud» is blocked while the backend catalog differs.
+- **Commercial model (offer of 16/10/2026, simplified in lote 2.2b, 26/10/2026):** there are NO packs or offers on sale. Adaptación de producto (500)
+  and Pack lanzamiento (700, `careCredit` 3 × 30) stay in `plans.json` marked `hidden` (kept for historical requests and a possible return;
+  the engine still prices them if an id is given), and so do `asesoria-economica` and the `asesorias` combo (no financial advice, D12).
+  Anything the visitor sees or the web can send comes from `sellableItems` / `sellablePlans` (`lib/content.ts`); never iterate the full
+  `items` / `plans` for display. What is sold: ONE monthly plan per project (Esencial 30 · Conectado 75 · Automatización e IA 150, `thirdPartyUsd`
+  5/15/40 inside the price, 2 h human hours in total; whether Studio/Academy sessions count inside them is still to be confirmed with Ignacio) and the pieces as a price list. Each plan
+  carries `audience`, `studio`, `academy` in `maintenance.json` (Studio from Conectado, «Academy inicial» from Conectado, nothing extra in
+  Esencial; approved by Ignacio 26/10). Level 199 is NOT published. Every piece has `priceUsd` (independent) and `addonUsd` (compatible add-on
+  on another project, or null): alternatives for the same work, never both; the widest piece is the project. `migracion` is a `reviewRangeUsd`
+  outside totals. Implementation is 50/50 (`depositPct`). No voice or per-channel fee. Founder/combo/annual/referral offers are inactive
+  (historical). Demos show their simulated channels as pieces at their own price, never preselected. Retired ids keep their names in
+  `content/legacy.json`. Shared `/plan` links made while the offers existed drop the retired plan and pieces. Live «Enviar solicitud» is
+  blocked while the backend catalog differs.
+- **Pricing section (lote 2.2b):** tab A «Planes mensuales» (`MonthlyPlans`: a ledger, the same fields in the same place — price, para quién,
+  terceros, horas, Studio, Academy, qué incluye — rows aligned with subgrid from 900 px, hours and budget read before the action) and tab B
+  «Pieza por pieza» (read-only price list). `CarePanel`, `Packages` and `PlanRow` are dormant (no longer rendered).
 - **Footer and catalog guard (lote 2.2, 26/10/2026):** the footer no longer lists the units Eclipse Agency/Media/Market (decision of Ignacio;
   `content/units.json` stays as history). `tests/catalog-be-reconciliation.test.ts` runs `catalogMismatches` against the real backend
-  catalogs (`main` and PR #10): live «Enviar solicitud» stays blocked until the backend carries the 16/10 model — never disable the guard.
-- **Decision 26/10/2026 (lote 2.2, D16), not yet implemented:** the two offers (Adaptación 500, Pack lanzamiento 700, with `careCredit`) and
-  the financial-advisory pieces are to be retired; the model becomes the monthly plan 30/75/150 plus the piece price list (50/50). Until lote 2.2b
-  lands, the code above still describes the current behaviour. Level 199 stays unpublished.
+  catalogs (`main` and PR #10); the guard compares only what is on sale. Live «Enviar solicitud» stays blocked until the backend carries the
+  current catalog — never disable the guard.
 - **Package bonus:** `plan.bonus` (Voz, Automatiza: the premium landing) is shown only as "incluido": never in
   `plan.items`, never with a price, strikethrough or saving.
 - **Honesty:** prices, terms, discounts, founder offer, timelines and conditions stay exactly as in

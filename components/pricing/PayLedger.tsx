@@ -8,19 +8,20 @@ import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { DrawLine } from '@/components/motion/DrawLine';
 import { Occult } from '@/components/motion/Occult';
 import { PRICING_ANCHORS } from './anchors';
+import { requestPiecesTab } from './tabRequest';
 
 type Rhythm = 'once' | 'monthly' | 'extras';
 
 // Every target sits above: the ledger closes the section as its conditions.
-const ENTRIES: { key: 'project' | 'care' | 'extras'; rhythm: Rhythm; href: string }[] = [
-  { key: 'project', rhythm: 'once', href: `#${PRICING_ANCHORS.packages}` },
+const ENTRIES: { key: 'project' | 'care' | 'extras'; rhythm: Rhythm; href: string; onClick?: () => void }[] = [
+  { key: 'project', rhythm: 'once', href: '#pr-tab-pieces', onClick: requestPiecesTab },
   { key: 'care', rhythm: 'monthly', href: `#${PRICING_ANCHORS.care}` },
   { key: 'extras', rhythm: 'extras', href: `#${SECTION_IDS.services}` },
 ];
 
 /**
- * "Cómo se paga" (the section's conditions, v3: after packages, maintenance and
- * offers): the pricing model as one time axis. ① the project is paid once (one
+ * "Cómo se paga" (the section's conditions, v3: after the monthly plans, the pieces and
+ * the offers): the pricing model as one time axis. ① the project is paid once (one
  * mark), ② maintenance is a monthly, optional rhythm (ticks), ③ extras land
  * whenever you want (loose marks). On desktop the three rails join into one line.
  */
@@ -79,7 +80,7 @@ export function PayLedger({ freeMonths }: { freeMonths: number | null }) {
               <h4 className="pr-how-title">{t(`${entry.key}.title`)}</h4>
               <p className="pr-how-when">{t(`${entry.key}.when`)}</p>
               <p className="pr-how-text">{text}</p>
-              <a href={entry.href} className="pr-link">
+              <a href={entry.href} onClick={entry.onClick} className="pr-link">
                 {t(`${entry.key}.link`)}
                 <ArrowUp aria-hidden strokeWidth={1.5} />
               </a>
