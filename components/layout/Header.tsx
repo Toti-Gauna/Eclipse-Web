@@ -42,7 +42,8 @@ export function Header() {
   const { mode, projects } = chromeRoute(pathname);
   const ref = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [light, setLight] = useState(false);
+  // The portal is a light page: its header starts in the light theme (no 0.3–0.5 s of light text on cream before hydration).
+  const [light, setLight] = useState(mode === 'portal');
   // Deferred sections re-create their DOM when they hydrate: rebuild the light zones then.
   const [domVersion, setDomVersion] = useState(0);
   useEffect(() => {

@@ -128,6 +128,10 @@ export function SmoothAnchors() {
       else focusTarget(id);
     };
     document.addEventListener('click', onClick, true);
+    // A shared link (`/#precios`): the browser jumped before the deferred sections hydrated and
+    // changed size, which left the target about a screen away. Keep it on target like a click does.
+    const initialId = decodeURIComponent(window.location.hash.slice(1));
+    if (initialId && document.getElementById(initialId)) keepAligned(initialId, 'auto');
     return () => {
       document.removeEventListener('click', onClick, true);
       cancelAlign?.();

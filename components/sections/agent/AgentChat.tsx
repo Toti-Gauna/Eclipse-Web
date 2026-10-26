@@ -291,7 +291,7 @@ export function AgentChat() {
         )}
         {typing || step === 'idle' ? (
           <div aria-hidden className="agent-msg flex pr-10">
-            <span className="agent-typing inline-flex items-center gap-1 rounded-2xl rounded-bl-md bg-dawn-soft px-3.5 py-3.5">
+            <span data-still={step === 'idle' ? '' : undefined} className="agent-typing inline-flex items-center gap-1 rounded-2xl rounded-bl-md bg-dawn-soft px-3.5 py-3.5">
               <span />
               <span />
               <span />
