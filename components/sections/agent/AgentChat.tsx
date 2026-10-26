@@ -3,7 +3,7 @@
 import { useEffect, useEffectEvent, useId, useRef, useState, type FormEvent, type MouseEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { MessageCircle, RotateCcw, SendHorizontal } from 'lucide-react';
-import { l, verticalById, verticals, type Vertical } from '@/lib/content';
+import { l, showcaseVerticals, verticalById, verticals, type Vertical } from '@/lib/content';
 import type { Locale } from '@/i18n/routing';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { useExperience } from '@/components/providers/ExperienceProvider';
@@ -33,6 +33,9 @@ const ANSWERABLE: AgentStep[] = ['vertical', 'verticalOther', 'need', 'name'];
  * ends with the summary + "Seguir por WhatsApp". No network, no AI: a honest
  * sample of the agent we build in the demo. Starts when it scrolls into view.
  */
+/** Rubros offered as quick replies: the demos on show plus "Otro" (the ones in standby stay reachable by typing). */
+const suggestedVerticals = verticals.filter((v) => v.id === 'otro' || showcaseVerticals.includes(v));
+
 export function AgentChat() {
   const t = useTranslations('agent.chat');
   const tc = useTranslations('common');
@@ -301,7 +304,7 @@ export function AgentChat() {
       {accepting && (step === 'vertical' || step === 'need') ? (
         <div role="group" aria-label={t('suggestions')} className="flex flex-wrap gap-2 px-4 pb-3 sm:px-5">
           {step === 'vertical'
-            ? verticals.map((v) => (
+            ? suggestedVerticals.map((v) => (
                 <button
                   key={v.id}
                   type="button"

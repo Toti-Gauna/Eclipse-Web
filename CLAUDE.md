@@ -64,17 +64,23 @@ reachable (folded is fine, deleted is not).
 - **Goal:** a new visitor understands what Eclipse offers in ~30 s and finds a demo, an entry price,
   maintenance and the next step in < 2 min. Summarize on the surface and fold details (tabs, accordions,
   "Ver la cuenta"); never hide price, scope, maintenance or conditions behind a CTA.
-- **Page order (ids unchanged):** 01 hero `#inicio` (one action «Pedí tu demo» + the rubro keys; no repeated nav) ·
-  02 demos `#ejemplos` · 03 soluciones `#servicios` · 04 precios `#precios` · 05 calculadora `#problema` ·
-  06 cómo trabajamos `#proceso` · 07 fundadores `#fundadores` · 08 preguntas y contacto `#contacto` · footer.
-  Sky: hero void → demos/soluciones night → `<SkyTransition>` → dawn from precios on.
-  Soluciones explains what each family solves and includes — NO prices or «Sumar» there: pieces are priced and
-  added only in Precios (tab «Pieza por pieza», `requestPiecesTab`) and in the builder.
+- **Page order (ids unchanged; v3e, lote 1.2, 26/10/2026):** 01 hero `#inicio` (one action «Quiero potenciar mi negocio» — a real
+  link to `#contacto` until lote 1.3 opens the rubro selector — plus one direct key: the demo on show) · 02 qué ofrecemos
+  `#servicios` (five lines SaaS · Agency · Studio · Academy · Equipamiento + Intelligence) · 03 para tu PyME `#pyme` ·
+  04 demos `#ejemplos` · 05 precios `#precios` · 06 calculadora `#problema` · 07 cómo trabajamos `#proceso` ·
+  08 preguntas y contacto `#contacto` · footer. Numbers come from `components/ui/sectionIndex.ts`. **Fundadores was removed**
+  (decision of Ignacio; the founder offer is inactive in `content/offers.json`). Sky: hero void → qué ofrecemos / pyme / demos
+  night → `<SkyTransition>` → dawn from precios on.
+  «Qué ofrecemos» explains what each line solves and includes — NO prices or «Sumar» there: pieces are priced and
+  added only in Precios (tab «Pieza por pieza», `requestPiecesTab`). The builder is dormant (no new entry points; D6 pending).
+  Demos in `standby` (`content/verticals.json`: clinic, gym, restaurant, academy, Bruma) stay in the repo but are not shown:
+  use `showcaseVerticals` for anything the visitor sees. The hero H1 is «Potenciá y visibilizá tu negocio, y fidelizá clientes
+  con Eclipse.» («potenciá» is an exception to the v2 copy rule below, by the owner's choice).
 - **Header:** Servicios · Demos · Precios · Cómo trabajamos; "Pedí tu demo" is THE primary CTA and stays
   reachable on desktop and mobile; "Armá tu plan" is secondary; "Ingresar" is discreet and opens
   `/[locale]/portal/`. Language, currency and sound sit together behind one preferences trigger.
-  Naming follows the brief: the header says «Servicios», the shortcut and the section label say «Soluciones»
-  (an exception to the v2 copy rule below; same anchor `#servicios`).
+  Naming follows the brief: the header says «Servicios», the section label says «Qué ofrecemos»
+  (same anchor `#servicios`).
 - **One amber per viewport:** the hero's CTA wrapper carries `data-hero-cta`; a section's solid amber CTA carries
   `data-page-cta` (`<DemoCta pageCta>`). While one is on screen the header CTA turns to outline (`usePageCtaInView`).
   Mark any new solid amber CTA the same way.

@@ -79,9 +79,10 @@
   },
   "hero": {
     "eyebrow": "Development · AI · Automation",
-    "title": "Before we talk, we show you <em>your business</em> already working.",
-    "subtitle": "Websites, systems and AI agents for businesses that can't wait.",
-    "pickVertical": "Or see a demo for your industry, now",
+    "title": "Boost <em>your business</em>, get it seen and win loyal customers with Eclipse.",
+    "subtitle": "Before we talk, we show you your business working: websites, systems and AI agents for businesses that can't wait.",
+    "pickVertical": "Or see a demo now",
+    "ctaPotenciar": "I want to boost my business",
     "ctaDemo": "Get your demo",
     "ctaPlan": "Build your plan"
   },
@@ -305,7 +306,8 @@
     },
     "seePrices": "See the {family} prices",
     "add": "Add",
-    "addLabel": "Add {name} to your plan"
+    "addLabel": "Add {name} to your plan",
+    "piecesToggle": "See all {count} pieces, one by one"
   },
   "process": {
     "title": "First you see your demo. Then we talk.",
@@ -2182,7 +2184,7 @@
   },
   "examples": {
     "title": "See a business like yours, running.",
-    "sub": "{count} demo businesses, each facing the costliest problem in its industry. Pick one: watch its {seconds}-second trailer or open the demo and use it.",
+    "sub": "{count, plural, one {One demo business, facing the costliest problem in its industry: watch its {seconds}-second trailer or open the demo and use it.} other {{count} demo businesses, each facing the costliest problem in its industry. Pick one: watch its {seconds}-second trailer or open the demo and use it.}}",
     "pain": "The problem",
     "result": "In the demo",
     "openDemo": "See demo",
@@ -2436,14 +2438,13 @@
     "labels": {
       "hero": "Home",
       "problem": "Calculator",
-      "services": "Solutions",
+      "services": "What we offer",
+      "pyme": "For your business",
       "examples": "Demos",
       "process": "How we work",
       "pricing": "Pricing",
-      "founders": "Founders",
       "agent": "Questions & contact"
-    },
-    "clients": "Clients"
+    }
   },
   "prefs": {
     "title": "Language, currency and sound",
@@ -5463,5 +5464,76 @@
       "extrasNote": "Add-on price on top of the adaptation, each for one use case. Subject to validating provider, account and scope. Not preselected: you add them.",
       "simulation": "Simulated in the browser: no real messages are sent and no real calls are made, and the data and metrics are fictional."
     }
+  },
+  "offerings": {
+    "title": "Five lines, <em>one team</em>.",
+    "sub": "Software, content, training and equipment, combined around what you need. We serve any industry.",
+    "listLabel": "Eclipse lines",
+    "lines": {
+      "saas": {
+        "name": "SaaS",
+        "line": "Ready-to-use software, with your brand.",
+        "detail": "Systems that already work —appointments, orders, CRM, dashboards— adapted to your business, with your brand, your content and your setup."
+      },
+      "agency": {
+        "name": "Agency",
+        "line": "Integrations and custom development.",
+        "detail": "We connect your tools and build what doesn't exist: chatbots, AI agents and apps."
+      },
+      "studio": {
+        "name": "Studio",
+        "line": "Professional creation for your brand.",
+        "detail": "Landing pages, websites and motion graphics pieces, built on templates with the materials you give us."
+      },
+      "academy": {
+        "name": "Academy",
+        "line": "Training for your team.",
+        "detail": "Guides and training so your team can use what you hire. Quoted for your business."
+      },
+      "equipment": {
+        "name": "Equipment",
+        "line": "Equipment on request.",
+        "detail": "Hardware and installation to operate, quoted to measure, with no stock of our own."
+      }
+    },
+    "availability": {
+      "catalog": "In the catalog",
+      "quote": "Quote"
+    },
+    "examples": "For example",
+    "priceLink": "See the pieces and their prices",
+    "demoLink": "See the {rubro} demo",
+    "askLink": "Ask on WhatsApp",
+    "ask": "Hi Eclipse. I'd like to ask about the {line} line.",
+    "intelligence": {
+      "name": "Intelligence",
+      "text": "Across every line, it measures what happens so you can decide with data."
+    },
+    "piecesToggle": "See all {count} pieces, one by one",
+    "stageTag": "Preview"
+  },
+  "pyme": {
+    "title": "Start with <em>what's missing today</em>.",
+    "sub": "Three starting points. They aren't plans: they're where to begin, and they combine.",
+    "combines": "Combines",
+    "needs": {
+      "start": {
+        "name": "Start",
+        "headline": "Be found, and be messaged.",
+        "text": "A clear website with your brand and a chat that handles inquiries: the minimum for a new customer to reach you."
+      },
+      "order": {
+        "name": "Get organized",
+        "headline": "Lose nothing.",
+        "text": "Appointments, orders and inquiries in one place, connected to the tools you already use."
+      },
+      "grow": {
+        "name": "Grow",
+        "headline": "Reach more people, and get them back.",
+        "text": "Content to attract, missions and streaks so customers return, and training for your team."
+      }
+    },
+    "calcLink": "Do the math: what not having this costs you",
+    "pricesLink": "See pricing"
   }
 }

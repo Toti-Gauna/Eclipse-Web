@@ -9,6 +9,8 @@ import {
   plans,
   units,
   verticals,
+  showcaseVerticals,
+  lines,
   featuredPlanId,
   fallbackRates,
 } from '@/lib/content';
@@ -37,7 +39,7 @@ describe('content integrity', () => {
   const planIds = new Set(plans.map((p) => p.id));
 
   it('has unique ids', () => {
-    for (const list of [items, plans, addons, maintenancePlans, offers, verticals, founders.slots, units]) {
+    for (const list of [items, plans, addons, maintenancePlans, offers, verticals, lines, founders.slots, units]) {
       const ids = list.map((x) => x.id);
       expect(new Set(ids).size).toBe(ids.length);
     }
@@ -124,6 +126,21 @@ describe('content integrity', () => {
     // Every demo id is used by exactly one vertical.
     const demos = verticals.flatMap((v) => (v.demo ? [v.demo] : []));
     expect(new Set(demos).size).toBe(demos.length);
+  });
+
+  it('verticals: the standby flag only hides demos (nothing without a demo is flagged) and one demo is on show', () => {
+    for (const v of verticals) if (v.standby) expect(v.demo, v.id).toBeTruthy();
+    expect(showcaseVerticals.map((v) => v.id)).toEqual(['inmobiliarias']);
+  });
+
+  it('lines: the five lines, their examples and demos exist, and quote lines show no priced examples', () => {
+    expect(lines.map((x) => x.id)).toEqual(['saas', 'agency', 'studio', 'academy', 'equipment']);
+    const demos = new Set(verticals.flatMap((v) => (v.demo ? [v.demo] : [])));
+    for (const line of lines) {
+      for (const id of line.examples) expect(itemIds.has(id), `${line.id} → ${id}`).toBe(true);
+      if (line.demo) expect(demos.has(line.demo), line.id).toBe(true);
+      if (line.availability === 'quote') expect(line.examples, line.id).toEqual([]);
+    }
   });
 
   it('founders: slots match the total and filled slots are complete', () => {

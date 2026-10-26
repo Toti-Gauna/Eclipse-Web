@@ -1,21 +1,21 @@
 import { useTranslations } from 'next-intl';
 import { SECTION_IDS } from '@/components/layout/navLinks';
-import { DemoCta } from '@/components/ui/DemoCta';
 import { SectionMark } from '@/components/ui/SectionMark';
 import { HeroStateProvider } from './HeroState';
 import { HeroStage } from './HeroStage';
 import { HeroCopy } from './HeroCopy';
+import { HeroCta } from './HeroCta';
 import { VerticalChips } from './VerticalChips';
 import { DemoExperienceHost } from '@/components/demo-experience/DemoExperienceHost';
 import './hero.css';
 
 /**
- * Hero (v3d). One message, one concrete line and two ways to see it, nothing else:
- * "Pedí tu demo" (THE primary action, `data-hero-cta` — the header quiets its own CTA
- * while this one is on screen: a demo of YOUR business, by WhatsApp) and, right under it,
- * the rubro keys ("o mirá una demo de tu rubro, ahora": they open that rubro's demo in the
- * "Ver demo" layer). "Armá tu plan" and the section links live in the header (and the
- * phone menu): repeating them here only added controls to the first screen.
+ * Hero (v3e). One message, one concrete line and two ways in, nothing else:
+ * «Quiero potenciar mi negocio» (THE primary action, `data-hero-cta` — the header quiets its
+ * own CTA while this one is on screen; a real link to the contact block until lote 1.3 makes
+ * it open the rubro selector) and, right under it, the direct key of the demo that is on show
+ * (`showcaseVerticals`: the others are in standby, content/verticals.json) which opens it in
+ * the "Ver demo" layer. The section links live in the header (and the phone menu).
  *
  * The H1 is server-rendered and visible from the first paint (it is the LCP
  * element): no entrance animation ever hides it.
@@ -62,7 +62,7 @@ export function Hero() {
 
                 <div className="hero-ctas mt-6">
                   <div data-hero-enter data-hero-cta className="flex">
-                    <DemoCta origin="hero" className="btn btn-primary w-full sm:w-auto" />
+                    <HeroCta className="btn btn-primary w-full sm:w-auto" />
                   </div>
                 </div>
 

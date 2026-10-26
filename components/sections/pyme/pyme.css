@@ -1,0 +1,108 @@
+/*
+ * 03 · Para tu PyME (components/sections/pyme). Dark, same night as the sections around it,
+ * separated by hairlines (not cards). Static: the entrance is the page's usual <Reveal>.
+ */
+.pyme-title {
+  max-width: 18ch;
+  font-size: clamp(2.5rem, 9vw, 4.75rem);
+  line-height: 0.96;
+}
+.pyme-sub {
+  max-width: 34rem;
+  margin-top: 22px;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+
+.pyme-needs {
+  display: grid;
+  gap: 0;
+  margin: 44px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-strong);
+}
+.pyme-need {
+  padding: 26px 0 28px;
+  border-bottom: 1px solid var(--line);
+}
+.pyme-need-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.pyme-headline {
+  max-width: 14ch;
+  margin: 18px 0 0;
+  font-size: clamp(2rem, 7vw, 2.75rem);
+  line-height: 1;
+  color: var(--fg);
+}
+.pyme-text {
+  max-width: 28rem;
+  margin: 14px 0 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+.pyme-combines {
+  margin: 18px 0 0;
+  font-size: 0.9375rem;
+  color: var(--fg);
+}
+.pyme-combines span {
+  margin-right: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+@media (min-width: 900px) {
+  .pyme-needs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 56px;
+  }
+  .pyme-need {
+    padding: 30px 32px 34px 0;
+    border-bottom: 0;
+  }
+  .pyme-need + .pyme-need {
+    padding-left: 32px;
+    border-left: 1px solid var(--line);
+  }
+}
+
+.pyme-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 28px;
+  margin: 28px 0 0;
+}
+.pyme-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: rgb(245 185 66 / 0.4);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.25s ease;
+}
+.pyme-link svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+.pyme-link:hover {
+  text-decoration-color: currentColor;
+}

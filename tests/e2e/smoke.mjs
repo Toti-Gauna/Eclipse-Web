@@ -45,8 +45,16 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const ctaBox = await page.locator('[data-hero-cta]').first().boundingBox();
   const ctaBottom = ctaBox ? Math.round(ctaBox.y + ctaBox.height) : NaN;
   check('hero CTAs on the first screen at 360×780', ctaBottom <= 780, `${ctaBottom}px`);
-  // v3d: one action plus the rubro keys; no repeated "Armá tu plan" or section shortcuts.
-  check('hero: one action and the rubro keys', (await page.locator('#inicio .hero-ctas a, #inicio .hero-ctas button').count()) === 1 && (await page.locator('#inicio [data-hero-chip]').count()) >= 6);
+  // v3e: one action (a REAL link to the contact block until lote 1.3 opens the selector) plus the
+  // direct key of the only demo on show (the others are in standby); no "Otro", no "Armá tu plan".
+  check(
+    'hero: one action (a real link) and the one demo key',
+    (await page.locator('#inicio .hero-ctas a, #inicio .hero-ctas button').count()) === 1 &&
+      (await page.locator('#inicio .hero-ctas a[href="#contacto"]').count()) === 1 &&
+      (await page.locator('#inicio [data-hero-chip]').count()) === 1 &&
+      (await page.locator('#inicio [data-hero-chip="inmobiliarias"]').count()) === 1,
+  );
+  check('hero H1 is the marketing line', /Potenciá y visibilizá/.test(await page.locator('h1#hero-title').innerText()));
 
   // Sections hydrate lazily: the calculator reacts once it is reached.
   await page.evaluate(() => document.getElementById('problema')?.scrollIntoView());
@@ -122,6 +130,11 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   check('Soluciones lists no prices', (await page.locator('#servicios .svc-piece .readout, #servicios .svc-add').count()) === 0);
   await page.evaluate(() => document.getElementById('servicios')?.scrollIntoView());
   await page.waitForTimeout(1200);
+  // «Qué ofrecemos»: five lines, SaaS open by default; the six families and 20 pieces are folded below.
+  check('Qué ofrecemos: five lines, SaaS open', (await page.locator('#servicios .off-row').count()) === 5 && (await page.locator('#servicios .off-row[data-open] .off-name').innerText()) === 'SaaS');
+  check('pieces index starts folded', (await page.locator('#servicios details.off-pieces').evaluate((d) => d.open)) === false);
+  await page.locator('#servicios details.off-pieces summary').click();
+  await page.waitForTimeout(1200);
   await page.locator('#servicios .svc-prices-link').first().click();
   await page.waitForTimeout(2500);
   check('family link opens Precios → Pieza por pieza', (await page.locator('#pr-tab-pieces').getAttribute('aria-selected')) === 'true' && (await page.locator('#pr-panel-pieces').isVisible()));
@@ -133,20 +146,20 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   // A wheel is user input: it ends the anchor re-aim from the jump above (it never fights the visitor).
   await page.mouse.wheel(0, -30000);
   await page.waitForTimeout(800);
-  const chip = page.locator('#inicio [data-hero-chip="clinicas"]');
+  const chip = page.locator('#inicio [data-hero-chip="inmobiliarias"]');
   await chip.scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
   const yBefore = await page.evaluate(() => window.scrollY);
   await chip.click();
   await page.waitForSelector('dialog[data-demo-layer][open]');
-  check('hero chip opens the demo layer', await page.locator('dialog[data-demo-layer] h2', { hasText: 'Clínica Aurora' }).isVisible());
+  check('hero chip opens the demo layer', await page.locator('dialog[data-demo-layer] h2', { hasText: 'Lumen Propiedades' }).isVisible());
   check('opening a demo does not scroll the page', (await page.evaluate(() => window.scrollY)) === yBefore);
   await page.waitForTimeout(1200);
   check('demo layer shows the complete project with its price', (await page.locator('[data-dx-project] [data-dx-price]').count()) > 0);
   await page.keyboard.press('Escape');
   await page.waitForSelector('dialog[data-demo-layer]', { state: 'detached' });
   check('layer closes, scroll kept', (await page.evaluate(() => window.scrollY)) === yBefore);
-  check('focus returns to the opener', await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener') === 'hero:clinic'));
+  check('focus returns to the opener', await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener') === 'hero:realEstate'));
   // Sound is opt-in; the preferences popover explains the currency.
   await page.getByRole('banner').getByRole('button', { name: /Idioma, moneda/ }).first().click();
   await page.waitForTimeout(600);
@@ -160,7 +173,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   // Sala de demos: one tab per business with a demo.
   await page.evaluate(() => document.getElementById('ejemplos')?.scrollIntoView());
   await page.waitForTimeout(1500);
-  check('demo room lists every business', (await page.locator('#ejemplos [role="tab"]').count()) >= 6);
+  check('demo room lists the demo on show (the other five are in standby)', (await page.locator('#ejemplos [role="tab"]').count()) === 1);
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(500);
 
@@ -218,13 +231,13 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.goto(`${BASE}/pt/`);
   await page.waitForTimeout(1500);
   const focusedInside = await page.evaluate(async () => {
-    const section = document.getElementById('fundadores');
+    const section = document.getElementById('contacto');
     const link = section?.querySelector('a[href], button');
     (link)?.focus();
     await new Promise((r) => setTimeout(r, 1200));
     const active = document.activeElement;
     // The section's DOM is re-created on hydration: query it again.
-    const fresh = document.getElementById('fundadores');
+    const fresh = document.getElementById('contacto');
     return !!fresh && !!active && fresh.contains(active) && active !== document.body;
   });
   check('focus survives lazy hydration', focusedInside);

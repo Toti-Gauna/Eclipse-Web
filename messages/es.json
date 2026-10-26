@@ -79,9 +79,10 @@
   },
   "hero": {
     "eyebrow": "Desarrollo · IA · Automatización",
-    "title": "Antes de hablar, te mostramos <em>tu negocio</em> funcionando.",
-    "subtitle": "Webs, sistemas y agentes de IA para negocios que no pueden esperar.",
-    "pickVertical": "O mirá una demo de tu rubro, ahora",
+    "title": "Potenciá y visibilizá <em>tu negocio</em>, y fidelizá clientes con Eclipse.",
+    "subtitle": "Antes de hablar, te mostramos tu negocio funcionando: webs, sistemas y agentes de IA para negocios que no pueden esperar.",
+    "pickVertical": "O mirá una demo ahora",
+    "ctaPotenciar": "Quiero potenciar mi negocio",
     "ctaDemo": "Pedí tu demo",
     "ctaPlan": "Armá tu plan"
   },
@@ -305,7 +306,8 @@
     },
     "seePrices": "Ver los precios de {family}",
     "add": "Sumar",
-    "addLabel": "Sumar {name} a tu plan"
+    "addLabel": "Sumar {name} a tu plan",
+    "piecesToggle": "Ver las {count} piezas, una por una"
   },
   "process": {
     "title": "Primero ves tu demo. Después hablamos.",
@@ -2182,7 +2184,7 @@
   },
   "examples": {
     "title": "Mirá un negocio como el tuyo funcionando.",
-    "sub": "{count} negocios de demo, cada uno con el problema más caro de su rubro. Elegí uno: mirá su trailer de {seconds} s o abrí la demo y usala.",
+    "sub": "{count, plural, one {Un negocio de demo, con el problema más caro de su rubro: mirá su trailer de {seconds} s o abrí la demo y usala.} other {{count} negocios de demo, cada uno con el problema más caro de su rubro. Elegí uno: mirá su trailer de {seconds} s o abrí la demo y usala.}}",
     "pain": "El problema",
     "result": "En la demo",
     "openDemo": "Ver demo",
@@ -2436,14 +2438,13 @@
     "labels": {
       "hero": "Inicio",
       "problem": "Calculadora",
-      "services": "Soluciones",
+      "services": "Qué ofrecemos",
+      "pyme": "Para tu PyME",
       "examples": "Demos",
       "process": "Cómo trabajamos",
       "pricing": "Precios",
-      "founders": "Fundadores",
       "agent": "Preguntas y contacto"
-    },
-    "clients": "Clientes"
+    }
   },
   "prefs": {
     "title": "Idioma, moneda y sonido",
@@ -5463,5 +5464,76 @@
       "extrasNote": "Precio de complemento sobre la adaptación, cada uno para un caso de uso. Sujeto a validar proveedor, cuenta y alcance. No vienen marcados: los sumás vos.",
       "simulation": "Simulación en el navegador: no se envían mensajes ni se hacen llamadas reales, y los datos y las métricas son ficticios."
     }
+  },
+  "offerings": {
+    "title": "Cinco líneas, <em>un solo equipo</em>.",
+    "sub": "Software, contenido, formación y equipamiento, combinados según lo que necesitás. Servimos a cualquier rubro.",
+    "listLabel": "Líneas de Eclipse",
+    "lines": {
+      "saas": {
+        "name": "SaaS",
+        "line": "Software listo para usar, con tu marca.",
+        "detail": "Sistemas que ya funcionan —turnos, pedidos, CRM, paneles— adaptados a tu negocio, con tu marca, tu contenido y tu configuración."
+      },
+      "agency": {
+        "name": "Agency",
+        "line": "Integraciones y desarrollo a medida.",
+        "detail": "Conectamos tus herramientas y construimos lo que no existe: chatbots, agentes de IA y apps."
+      },
+      "studio": {
+        "name": "Studio",
+        "line": "Creación profesional para tu marca.",
+        "detail": "Landing, webs y piezas en motion graphics, hechas sobre plantilla con los materiales que nos pases."
+      },
+      "academy": {
+        "name": "Academy",
+        "line": "Formación para tu equipo.",
+        "detail": "Guías y capacitación para que tu equipo use lo que contratás. Se cotiza según tu negocio."
+      },
+      "equipment": {
+        "name": "Equipamiento",
+        "line": "Equipos por pedido.",
+        "detail": "Hardware e instalación para operar, cotizado a medida y sin stock propio."
+      }
+    },
+    "availability": {
+      "catalog": "En catálogo",
+      "quote": "A cotizar"
+    },
+    "examples": "Por ejemplo",
+    "priceLink": "Ver las piezas y sus precios",
+    "demoLink": "Ver la demo de {rubro}",
+    "askLink": "Consultar por WhatsApp",
+    "ask": "Hola Eclipse. Quiero consultar por la línea {line}.",
+    "intelligence": {
+      "name": "Intelligence",
+      "text": "En todas las líneas, mide lo que pasa para que decidas con datos."
+    },
+    "piecesToggle": "Ver las {count} piezas, una por una",
+    "stageTag": "Vista previa"
+  },
+  "pyme": {
+    "title": "Empezá por lo que <em>hoy te falta</em>.",
+    "sub": "Tres puntos de partida. No son planes: son por dónde empezar, y se combinan.",
+    "combines": "Combina",
+    "needs": {
+      "start": {
+        "name": "Empezar",
+        "headline": "Que te encuentren y te escriban.",
+        "text": "Una web clara con tu marca y un chat que atiende consultas: lo mínimo para que un cliente nuevo te contacte."
+      },
+      "order": {
+        "name": "Ordenar",
+        "headline": "Que no se te pierda nada.",
+        "text": "Turnos, pedidos y consultas en un solo lugar, conectados con las herramientas que ya usás."
+      },
+      "grow": {
+        "name": "Crecer",
+        "headline": "Que más gente te conozca y vuelva.",
+        "text": "Contenido para atraer, misiones y rachas para que tus clientes vuelvan, y formación para tu equipo."
+      }
+    },
+    "calcLink": "Hacé la cuenta: cuánto te cuesta no tenerlo",
+    "pricesLink": "Ver los precios"
   }
 }

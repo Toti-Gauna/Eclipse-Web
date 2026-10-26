@@ -5,14 +5,17 @@ import { SECTION_IDS } from '@/components/layout/navLinks';
  * the eclipse, from totality in the hero (1) to the full sun at the last section
  * (0). Plain module: safe in server and client components.
  *
- *   01 hero · 02 demos · 03 soluciones · 04 precios · 05 calculadora ·
- *   06 cómo trabajamos · 07 fundadores · 08 preguntas y contacto
+ *   01 hero · 02 qué ofrecemos · 03 para tu PyME · 04 demos · 05 precios ·
+ *   06 calculadora · 07 cómo trabajamos · 08 preguntas y contacto
+ *   (v3e, 26/10/2026: «Qué ofrecemos» y «Para tu PyME» van antes de las demos y fundadores salió.
+ *   Las demos quedan antes del amanecer porque son una zona de noche: moverlas a las zonas de
+ *   día pide rediseñar su escenario.)
  *
  * The order here IS the page order (app/[locale]/page.tsx renders them the same
  * way): <SectionMark> numbers and <EphemerisRail> ticks are derived from it.
  * Labels live in messages under `sections.labels.<key>`.
  */
-export const SECTION_KEYS = ['hero', 'examples', 'services', 'pricing', 'problem', 'process', 'founders', 'agent'] as const;
+export const SECTION_KEYS = ['hero', 'services', 'pyme', 'examples', 'pricing', 'problem', 'process', 'agent'] as const;
 export type SectionKey = (typeof SECTION_KEYS)[number];
 
 /** 1-based position on the page (hero = 1 … agent = 8). */
