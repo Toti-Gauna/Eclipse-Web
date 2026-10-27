@@ -177,3 +177,6 @@ Reglas: un solo estado de espera visible a la vez; los tiempos varían (no robó
 acciones (`select`, `success`) si el visitante lo activó; **movimiento reducido** = los mismos estados sin pulso ni
 desplazamiento (texto «Pensando…» quieto, respuesta completa al terminar la demora); el asistente y el agente siempre
 llevan su sello («Demostración guionada», «Llamada simulada»); ninguna demora bloquea salir, volver o cambiar de área.
+
+**Implementación (lote 3.5b):** kit en `roofy/components/demos/kit` (`pace.ts`, `pacer.ts`, `interaction.tsx`), con su guía
+`roofy/docs/kit-interaccion.md`. Los valores exactos viven en `PACE` (`pace.ts`); si cambian, cambia esta tabla.
