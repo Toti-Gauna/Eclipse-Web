@@ -1,0 +1,514 @@
+{
+  "packsVersion": "estateos-packs-2026-10-27-v2",
+  "supersedes": "estateos-packs-2026-10-26-v1",
+  "date": "2026-10-27",
+  "catalogVersion": "estateos-2026-10-27-v2",
+  "decisions": [
+    "D24: equivalencias packs↔cupos aceptadas; cuando exista un paquete completo se calculará su valor total + margen y se sumará al plan correspondiente",
+    "D25: Branding y puesta en marcha son cosas separadas",
+    "D26: el cliente aporta el plano o las medidas del 2D; Eclipse no mide"
+  ],
+  "scope": "Packs de Studio opcionales y compatibles con los seis planes EstateOS. Ninguno es obligatorio para usar EstateOS. Todo precio queda A cotizar hasta que exista tarifa validada y gasto aprobado.",
+  "planningAssumptions": {
+    "attemptFactor": {
+      "valor": 3,
+      "rango": [
+        2,
+        5
+      ],
+      "estado": "supuesto de planificación; medir en el primer cliente"
+    },
+    "note": "El factor de intentos multiplica lo ENTREGADO para estimar lo GENERADO (video/audio). No es una medición."
+  },
+  "sharedRules": [
+    "Cada pack especifica brief, insumos, entregables, cantidades, revisiones, formatos, uso/licencia, costo directo, trabajo humano y exclusiones",
+    "Una revisión consolidada por pieza; corregir un error imputable a Eclipse no consume otra pieza",
+    "Si el plan ya cubre la unidad con su cupo mensual, se descuenta del cupo y no se cobra dos veces",
+    "Costo de reintentos y de mano de obra incluidos en la cotización; presupuesto publicitario y gastos de terceros explícitos y aparte",
+    "Los textos, botones, mapas y planos viven en HTML/SVG, nunca dentro de un video generado",
+    "Sin material de propiedades ajenas ni fuentes sin permiso"
+  ],
+  "packs": [
+    {
+      "id": "panorama",
+      "name": "Panorama Inmobiliario",
+      "summary": "Una pieza breve que presenta una zona o un proyecto inmobiliario con entorno conceptual.",
+      "brief": "Una pieza de 15–20 s, versión 16:9 y adaptación 9:16 del mismo concepto, con entorno conceptual si no hay fuentes autorizadas del lugar.",
+      "inputs": [
+        "Zona o proyecto, público y objetivo (un párrafo)",
+        "Logo y paleta de la inmobiliaria",
+        "Referencias autorizadas del lugar, si existen (fotos, mapas con licencia)",
+        "Frase o CTA"
+      ],
+      "deliverables": [
+        "1 video 16:9 de 15–20 s",
+        "1 adaptación 9:16 del mismo concepto",
+        "Póster (un cuadro) y subtítulos",
+        "Manifest del asset (fuente, licencia, estado sintético)"
+      ],
+      "quantities": {
+        "piezas": 1,
+        "segundosEntregados": "15–20",
+        "relacionesDeAspecto": 2,
+        "conceptos": 1
+      },
+      "revisions": "1 ronda editorial consolidada",
+      "formats": [
+        "16:9 1920×1080",
+        "9:16 1080×1920"
+      ],
+      "license": "Uso comercial del cliente según los términos del proveedor de generación vigentes al producir; sin exclusividad; música solo con licencia verificada",
+      "synthetic": "Entorno conceptual generado: rotulado «recreación IA / concepto»; no acredita vistas, terminaciones ni geografía real",
+      "planEquivalence": {
+        "unit": "campaña (2 piezas 16:9 + 9:16, mismo concepto)",
+        "covers": "hasta 15 s",
+        "beyond": "16–20 s: diferencia A cotizar"
+      },
+      "drivers": {
+        "segundosGenerados": "segundos entregados × factor de intentos",
+        "imagenesDeReferencia": "las listadas en el brief",
+        "modeloDeVideo": "por confirmar en la cuenta (G4)",
+        "edicion": "montaje, tipografía y subtítulos",
+        "revision": "1 ronda",
+        "almacenamiento": "master + adaptación + póster"
+      },
+      "humanWork": [
+        "Guion y storyboard de una escena",
+        "Selección de tomas y montaje",
+        "Revisión y entrega"
+      ],
+      "exclusions": [
+        "Vuelo de dron real ni filmación",
+        "Música sin licencia verificada",
+        "Más de un concepto"
+      ],
+      "exclusionsExtra": [
+        "Publicación en redes o portales",
+        "Pauta o presupuesto publicitario",
+        "Exclusividad o propiedad perpetua de los modelos o del código",
+        "Material de propiedades ajenas o sin permiso",
+        "Entrega «ilimitada por mes»"
+      ],
+      "price": "A cotizar",
+      "gates": [
+        "G1 alcance y cantidades",
+        "G2 costo/tarifa validada",
+        "G3 derechos y material autorizado",
+        "G4 cantidad/modelo/techo antes de producir",
+        "G5 revisión de calidad",
+        "G6 autorización para publicar"
+      ],
+      "optional": true,
+      "assetRecord": [
+        "fuente",
+        "licencia",
+        "estadoSintetico",
+        "autorizacion",
+        "versionDelCatalogo"
+      ]
+    },
+    {
+      "id": "video_propiedad",
+      "name": "Video de Propiedad",
+      "summary": "Un recorrido corto de un inmueble hecho con el material que aporta la inmobiliaria.",
+      "brief": "Un inmueble y un recorrido de 15–30 s a partir de fotos o video aportados y autorizados.",
+      "inputs": [
+        "Fotos nítidas y consistentes del inmueble, con autorización del titular",
+        "Datos verificables del inmueble (superficie, ambientes, zona)",
+        "Logo y CTA"
+      ],
+      "deliverables": [
+        "1 video de 15–30 s en una relación de aspecto",
+        "Póster y subtítulos",
+        "Manifest con la fuente de cada toma"
+      ],
+      "quantities": {
+        "inmuebles": 1,
+        "segundosEntregados": "15–30",
+        "tomasMaximas": 3,
+        "relacionesDeAspecto": 1
+      },
+      "revisions": "1 ronda consolidada; corregir un error imputable a Eclipse no cuenta",
+      "formats": [
+        "16:9 1920×1080 o 9:16 1080×1920 (se elige una)"
+      ],
+      "license": "Material del cliente: el cliente garantiza derechos y autorización; salidas generadas según términos del proveedor; sin exclusividad",
+      "synthetic": "Si hay recreación IA se rotula; no se inventan vistas, terminaciones ni dimensiones; sin continuidad espacial comprobable se hace presentación animada de fotos rotulada",
+      "planEquivalence": {
+        "unit": "tour (15 s, máx. 3 tomas, un master, una relación de aspecto)",
+        "covers": "hasta 15 s",
+        "beyond": "16–30 s: 2 tours o diferencia A cotizar"
+      },
+      "drivers": {
+        "segundosGenerados": "segundos entregados × factor de intentos",
+        "imagenesDeReferencia": "las fotos aportadas y autorizadas",
+        "modeloDeVideo": "por confirmar en la cuenta (G4)",
+        "edicion": "montaje y rotulado",
+        "revision": "1 ronda",
+        "almacenamiento": "fotos originales + master + póster"
+      },
+      "humanWork": [
+        "Revisión de fotos y consistencia",
+        "Guion corto y montaje",
+        "Control de rotulado y revisión"
+      ],
+      "exclusions": [
+        "360°, escaneo, recorrido libre o levantamiento",
+        "Inventar ambientes, vistas o terminaciones",
+        "Más de un inmueble"
+      ],
+      "exclusionsExtra": [
+        "Publicación en redes o portales",
+        "Pauta o presupuesto publicitario",
+        "Exclusividad o propiedad perpetua de los modelos o del código",
+        "Material de propiedades ajenas o sin permiso",
+        "Entrega «ilimitada por mes»"
+      ],
+      "price": "A cotizar",
+      "gates": [
+        "G1 alcance y cantidades",
+        "G2 costo/tarifa validada",
+        "G3 derechos y material autorizado",
+        "G4 cantidad/modelo/techo antes de producir",
+        "G5 revisión de calidad",
+        "G6 autorización para publicar"
+      ],
+      "optional": true,
+      "assetRecord": [
+        "fuente",
+        "licencia",
+        "estadoSintetico",
+        "autorizacion",
+        "versionDelCatalogo"
+      ]
+    },
+    {
+      "id": "voz_comercial",
+      "name": "Voz Comercial",
+      "summary": "La locución de una pieza con una voz licenciada.",
+      "brief": "Un guion aprobado de hasta 80 palabras, una voz con licencia y una ronda de pronunciación.",
+      "inputs": [
+        "Guion o texto base (se ajusta a 80 palabras)",
+        "Pronunciaciones difíciles (nombres de zonas, calles, marca)",
+        "Pieza o video donde se usa"
+      ],
+      "deliverables": [
+        "1 archivo de audio de la locución (hasta ≈ 32 s)",
+        "Transcript y versión sin música",
+        "Manifest (voz, licencia, fecha, condiciones)"
+      ],
+      "quantities": {
+        "guiones": 1,
+        "palabrasMaximas": 80,
+        "voces": 1,
+        "rondasDePronunciacion": 1
+      },
+      "revisions": "1 ronda de pronunciación",
+      "formats": [
+        "WAV o MP3 + transcript"
+      ],
+      "license": "Voz de catálogo con licencia comercial verificada del proveedor; la clonación o la voz de una persona real exige consentimiento específico y NO está incluida",
+      "synthetic": "Voz sintética: rotulada en el manifest; no se imita a personas reales",
+      "planEquivalence": {
+        "unit": "sin cupo en los planes (no son minutos del agente de voz)",
+        "covers": "ninguno",
+        "beyond": "siempre A cotizar"
+      },
+      "drivers": {
+        "audioGenerado": "≈ 32 s por toma × factor de intentos",
+        "modeloDeVoz": "por confirmar en la cuenta (G4)",
+        "edicion": "ajuste de ritmo y mezcla",
+        "revision": "1 ronda",
+        "almacenamiento": "tomas + mezcla final"
+      },
+      "humanWork": [
+        "Ajuste del guion a 80 palabras",
+        "Control de pronunciación y mezcla",
+        "Revisión y entrega"
+      ],
+      "exclusions": [
+        "Clonación de voz",
+        "Más de una voz o idioma",
+        "Locución de más de 80 palabras (se cotiza aparte)"
+      ],
+      "exclusionsExtra": [
+        "Publicación en redes o portales",
+        "Pauta o presupuesto publicitario",
+        "Exclusividad o propiedad perpetua de los modelos o del código",
+        "Material de propiedades ajenas o sin permiso",
+        "Entrega «ilimitada por mes»"
+      ],
+      "price": "A cotizar",
+      "gates": [
+        "G1 alcance y cantidades",
+        "G2 costo/tarifa validada",
+        "G3 derechos y material autorizado",
+        "G4 cantidad/modelo/techo antes de producir",
+        "G5 revisión de calidad",
+        "G6 autorización para publicar"
+      ],
+      "optional": true,
+      "assetRecord": [
+        "fuente",
+        "licencia",
+        "estadoSintetico",
+        "autorizacion",
+        "versionDelCatalogo"
+      ]
+    },
+    {
+      "id": "branding",
+      "name": "Branding Inmobiliario",
+      "summary": "Los materiales comerciales de la inmobiliaria con su identidad ya definida.",
+      "brief": "Adaptación de la marca existente a un cartel, una ficha y tres plantillas editables.",
+      "inputs": [
+        "Identidad existente (logo, paleta, tipografías) o la definida en la puesta en marcha",
+        "Texto y datos de la ficha tipo",
+        "Fotos autorizadas"
+      ],
+      "deliverables": [
+        "1 cartel (un formato)",
+        "1 ficha de propiedad tipo",
+        "3 plantillas editables de comunicación",
+        "Archivos fuente y exportables",
+        "Manifest"
+      ],
+      "quantities": {
+        "carteles": 1,
+        "fichas": 1,
+        "plantillas": 3
+      },
+      "revisions": "1 ronda consolidada",
+      "formats": [
+        "Cartel: formato a elegir (p. ej. A3/vertical)",
+        "Ficha: A4",
+        "Plantillas: editables + exportables"
+      ],
+      "license": "Archivos editables de uso del cliente; tipografías y recursos solo con licencia comprobada",
+      "synthetic": "Sin imágenes sintéticas por defecto; si se usan, rotuladas",
+      "planEquivalence": {
+        "unit": "imagen final (un formato por concepto)",
+        "covers": "5 imágenes (cartel + ficha + 3 plantillas) — interpretación propuesta",
+        "beyond": "diferencia A cotizar"
+      },
+      "drivers": {
+        "imagenesFinales": 5,
+        "edicion": "diagramación",
+        "revision": "1 ronda",
+        "almacenamiento": "fuentes y exportables"
+      },
+      "humanWork": [
+        "Diagramación y adaptación",
+        "Revisión de legibilidad y accesibilidad",
+        "Entrega de editables"
+      ],
+      "exclusions": [
+        "Identidad completa nueva (se cotiza aparte)",
+        "Sesión fotográfica",
+        "Impresión o producción física"
+      ],
+      "exclusionsExtra": [
+        "Publicación en redes o portales",
+        "Pauta o presupuesto publicitario",
+        "Exclusividad o propiedad perpetua de los modelos o del código",
+        "Material de propiedades ajenas o sin permiso",
+        "Entrega «ilimitada por mes»"
+      ],
+      "price": "A cotizar",
+      "gates": [
+        "G1 alcance y cantidades",
+        "G2 costo/tarifa validada",
+        "G3 derechos y material autorizado",
+        "G4 cantidad/modelo/techo antes de producir",
+        "G5 revisión de calidad",
+        "G6 autorización para publicar"
+      ],
+      "optional": true,
+      "assetRecord": [
+        "fuente",
+        "licencia",
+        "estadoSintetico",
+        "autorizacion",
+        "versionDelCatalogo"
+      ]
+    },
+    {
+      "id": "redes",
+      "name": "Kit de Redes",
+      "summary": "Un mismo concepto adaptado a los cuatro canales principales, listo para que lo publique la inmobiliaria.",
+      "brief": "Un concepto adaptado a Instagram, Facebook, TikTok y LinkedIn, con formato, CTA y archivo editable por canal.",
+      "inputs": [
+        "Concepto o mensaje y público",
+        "Identidad de la inmobiliaria",
+        "Imágenes o video autorizados",
+        "CTA y destino (enlace o contacto)"
+      ],
+      "deliverables": [
+        "4 piezas adaptadas (una por canal)",
+        "1 archivo editable por canal",
+        "Textos de apoyo y CTA por canal",
+        "Manifest"
+      ],
+      "quantities": {
+        "conceptos": 1,
+        "canales": 4,
+        "piezasPorCanal": 1
+      },
+      "channels": [
+        {
+          "canal": "Instagram",
+          "formatoReferencia": "4:5 1080×1350 (feed) y 9:16 1080×1920 (reels/stories)",
+          "cta": "botón o enlace en bio / mensaje directo"
+        },
+        {
+          "canal": "Facebook",
+          "formatoReferencia": "4:5 1080×1350 o 1:1 1080×1080",
+          "cta": "botón de WhatsApp o enlace"
+        },
+        {
+          "canal": "TikTok",
+          "formatoReferencia": "9:16 1080×1920",
+          "cta": "enlace en perfil o comentario fijado"
+        },
+        {
+          "canal": "LinkedIn",
+          "formatoReferencia": "1.91:1 1200×627 o 1:1 1080×1080",
+          "cta": "enlace o mensaje"
+        }
+      ],
+      "revisions": "1 ronda consolidada para el conjunto",
+      "formats": [
+        "Ver canales: los formatos son referencia y se revalidan al producir"
+      ],
+      "license": "Uso del cliente en sus cuentas; recursos de terceros solo con licencia",
+      "synthetic": "Rotulado si hay recreación IA",
+      "planEquivalence": {
+        "unit": "imagen final",
+        "covers": "4 imágenes (una por canal)",
+        "beyond": "diferencia A cotizar"
+      },
+      "drivers": {
+        "imagenesFinales": 4,
+        "edicion": "adaptación de encuadre y texto por canal",
+        "revision": "1 ronda",
+        "almacenamiento": "editables por canal"
+      },
+      "humanWork": [
+        "Adaptación por canal",
+        "Revisión de CTA y legibilidad",
+        "Entrega de editables"
+      ],
+      "exclusions": [
+        "Publicación, programación o gestión de las cuentas",
+        "Pauta o presupuesto publicitario",
+        "Calendario editorial continuo"
+      ],
+      "exclusionsExtra": [
+        "Publicación en redes o portales",
+        "Pauta o presupuesto publicitario",
+        "Exclusividad o propiedad perpetua de los modelos o del código",
+        "Material de propiedades ajenas o sin permiso",
+        "Entrega «ilimitada por mes»"
+      ],
+      "price": "A cotizar",
+      "gates": [
+        "G1 alcance y cantidades",
+        "G2 costo/tarifa validada",
+        "G3 derechos y material autorizado",
+        "G4 cantidad/modelo/techo antes de producir",
+        "G5 revisión de calidad",
+        "G6 autorización para publicar"
+      ],
+      "optional": true,
+      "assetRecord": [
+        "fuente",
+        "licencia",
+        "estadoSintetico",
+        "autorizacion",
+        "versionDelCatalogo"
+      ]
+    },
+    {
+      "id": "plano_2d",
+      "name": "Presentación 2D",
+      "summary": "Una planta ilustrativa dibujada a partir de datos validados del inmueble.",
+      "brief": "Una planta basada en datos validados, con leyenda de escala y etiqueta «ilustrativo» cuando corresponda; vive en HTML/SVG.",
+      "inputs": [
+        "Plano base autorizado del inmueble, o medidas completas de cada ambiente y espesores relevantes",
+        "Autorización del titular para mostrarlo",
+        "Etiquetas de ambientes y datos a mostrar"
+      ],
+      "deliverables": [
+        "1 planta en SVG/HTML accesible (textos y leyenda reales)",
+        "Exportable para impresión",
+        "Registro de la fuente de geometría y de las validaciones",
+        "Manifest"
+      ],
+      "quantities": {
+        "plantas": 1,
+        "inmuebles": 1
+      },
+      "revisions": "1 ronda consolidada, solo sobre datos aprobados",
+      "formats": [
+        "SVG/HTML responsive + exportación imprimible"
+      ],
+      "license": "Los datos y el plano base pertenecen al cliente/titular; Eclipse dibuja la presentación",
+      "synthetic": "No hay generación libre de geometría: si faltan datos, no se dibuja",
+      "geometryRule": {
+        "requiere": "plano base autorizado O medidas completas por ambiente (largo × ancho de cada ambiente, ubicación de aberturas relevantes y espesor de muros cuando afecte la superficie)",
+        "noAlcanza": "una foto, un video o una descripción; una foto no determina una distribución",
+        "validaciones": [
+          "La suma de superficies coincide con la superficie declarada dentro de una tolerancia acordada",
+          "Cada ambiente cierra (polígono cerrado)",
+          "Hay escala y orientación declaradas"
+        ],
+        "etiqueta": "Ilustrativo: no es un plano técnico ni un documento habilitante"
+      },
+      "planEquivalence": {
+        "unit": "sin cupo en los planes",
+        "covers": "ninguno",
+        "beyond": "siempre A cotizar"
+      },
+      "drivers": {
+        "horasDeDibujo": "según complejidad del plano",
+        "revision": "1 ronda",
+        "almacenamiento": "fuentes del plano + SVG"
+      },
+      "humanWork": [
+        "Validación de la geometría",
+        "Dibujo en SVG y leyenda",
+        "Revisión con el titular"
+      ],
+      "exclusions": [
+        "Relevamiento o medición en el inmueble",
+        "Plano técnico, de obra o habilitante",
+        "Deducir una distribución desde una foto"
+      ],
+      "exclusionsExtra": [
+        "Publicación en redes o portales",
+        "Pauta o presupuesto publicitario",
+        "Exclusividad o propiedad perpetua de los modelos o del código",
+        "Material de propiedades ajenas o sin permiso",
+        "Entrega «ilimitada por mes»"
+      ],
+      "price": "A cotizar",
+      "gates": [
+        "G1 alcance y cantidades",
+        "G2 costo/tarifa validada",
+        "G3 derechos y material autorizado",
+        "G4 cantidad/modelo/techo antes de producir",
+        "G5 revisión de calidad",
+        "G6 autorización para publicar"
+      ],
+      "optional": true,
+      "assetRecord": [
+        "fuente",
+        "licencia",
+        "estadoSintetico",
+        "autorizacion",
+        "versionDelCatalogo"
+      ]
+    }
+  ],
+  "digestSha256": "7729c60679150469cd0464d00ee38d61c20f66ba747763975170b0e06e09e630"
+}

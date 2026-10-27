@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import catalog from '../docs/v3/estateos/catalogo-estateos.v1.json';
+import v1 from '../docs/v3/estateos/catalogo-estateos.v1.json';
+import catalog from '../docs/v3/estateos/catalogo-estateos.v2.json';
 
 /**
  * Lote 2.3 · the EstateOS catalog is a versioned DOCUMENT (docs/v3/estateos), not product content: it states the
@@ -87,9 +88,28 @@ describe('EstateOS catalog v1 (documental)', () => {
     expect(catalog.capabilities.find((c) => c.id === 'crm_chatbot')!.fromPlan).toBe('deluxe');
   });
 
-  it('the setup is a one-off with a quote, not a hidden monthly inclusion', () => {
-    expect(plans.every((p) => p.setupUsd === 'A cotizar')).toBe(true);
+  it('the bounded setup is included in the price (D19, 27/10); what exceeds it stays a quoted extra', () => {
+    expect(plans.every((p) => p.setup.status === 'incluida_en_el_precio' && p.setup.extras === 'A cotizar')).toBe(true);
     expect(catalog.setupExcludes).toContain('Rediseño integral de identidad');
+    expect(catalog.setupNote).toMatch(/incluida en el precio/);
+  });
+
+  it('Contact has no human support hours except a critical bug (D21); the other levels wait for measurement', () => {
+    expect(plans[0].humanSupport).toMatchObject({ hoursIncluded: 0 });
+    expect((plans[0].humanSupport as { exception: string }).exception).toMatch(/bug crítico/);
+    for (const p of plans.slice(1)) expect(p.humanSupport.hoursIncluded, p.id).toBe('a definir tras medir');
+  });
+
+  it('a campaign is two 15 s pieces: one concept in two formats or two concepts, same cost (D23)', () => {
+    const def = (catalog.quotaDefinitions as Record<string, string>).campana;
+    expect(def).toMatch(/dos conceptos distintos/);
+    expect(def).toMatch(/16:9 y 9:16/);
+  });
+
+  it('keeps the history: v2 supersedes v1 and v1 still exists unchanged as the earlier version', () => {
+    expect(catalog.supersedes).toBe(v1.catalogVersion);
+    expect(v1.catalogVersion).toBe('estateos-2026-10-26-v1');
+    expect(catalog.decisionLog.map((d) => d.id)).toEqual(expect.arrayContaining(['D17', 'D19', 'D21', 'D23', 'D24', 'cobros', 'D22']));
   });
 
   it('the digest matches the content (sorted keys, compact JSON)', () => {

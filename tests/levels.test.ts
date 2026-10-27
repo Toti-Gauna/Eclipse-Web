@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import catalog from '../docs/v3/estateos/catalogo-estateos.v1.json';
+import catalog from '../docs/v3/estateos/catalogo-estateos.v2.json';
 import { levels, levelsCatalogVersion, lowestLevelUsd } from '@/lib/content';
 import { routing, type Locale } from '@/i18n/routing';
 
