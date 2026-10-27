@@ -138,3 +138,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Reintentos / correcciones propias:** dos cifras que había puesto sin respaldo («hasta 6 imágenes de referencia» y «hasta 10 fotos») se quitaron antes del commit porque el prompt no las fija. Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
 
+## 15. Lote 2.5 · Conversión y seguimiento (27/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · medium (según el prompt del lote). **Opus:** 0. **Gasto externo:** USD 0.
+- **Resultado:** `lote-2.5-conversion-seguimiento.md` (documental): embudo atado a registros reales del CRM, pitch de 90–120 s medido, propuesta desglosada, eventos mínimos, convención de registro, cadencia, prueba y atribución; catálogo y packs v2 con las decisiones del 27/10; aviso de «Precios» actualizado (es/en/pt). 437 pruebas unitarias.
+- **Reintentos / correcciones propias:** (1) el catálogo ya tenía pruebas atadas a «puesta en marcha A cotizar» y a la versión: se versionó (v2, v1 se conserva) en lugar de pisar; (2) una duda de si había un script de analítica instalado se verificó (no hay ninguno). Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
+

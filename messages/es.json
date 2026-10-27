@@ -671,7 +671,7 @@
       "whatsapp": "Hola Eclipse. Quiero la propuesta del plan {plan} (USD {price} por mes). ¿Me la pasan?",
       "notes": {
         "example": "Ejemplo con inmobiliarias (EstateOS), el primer rubro. Cada rubro llena estos niveles con lo suyo; lo que trae el tuyo se confirma en la propuesta.",
-        "pay": "Precios mensuales objetivo, en USD. La puesta en marcha y los consumos externos se definen en tu propuesta. Partner y los cupos son propuesta. La forma de pago se acuerda con la propuesta."
+        "pay": "Precios mensuales objetivo, en USD. La puesta en marcha acotada va incluida en el precio; los extras y los consumos externos se definen en tu propuesta. Partner y los cupos son propuesta. La forma de pago se acuerda con la propuesta."
       },
       "asideLabel": "Planes mensuales",
       "asideTitle": "Seis niveles",

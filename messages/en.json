@@ -671,7 +671,7 @@
       "whatsapp": "Hi Eclipse. I'd like the proposal for the {plan} plan (USD {price} per month). Can you send it?",
       "notes": {
         "example": "Example with real estate agencies (EstateOS), the first rubro. Each rubro fills these levels with its own features; what yours gets is confirmed in the proposal.",
-        "pay": "Target monthly prices, in USD. Setup and external usage are defined in your proposal. Partner and quotas are a proposal. The payment method is agreed with the proposal."
+        "pay": "Target monthly prices, in USD. The bounded setup is included in the price; extras and external usage are defined in your proposal. Partner and quotas are a proposal. The payment method is agreed with the proposal."
       },
       "asideLabel": "Monthly plans",
       "asideTitle": "Six levels",

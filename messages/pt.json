@@ -671,7 +671,7 @@
       "whatsapp": "Olá, Eclipse. Quero a proposta do plano {plan} (USD {price} por mês). Podem me enviar?",
       "notes": {
         "example": "Exemplo com imobiliárias (EstateOS), o primeiro segmento. Cada segmento preenche esses níveis com o que é seu; o que o seu traz se confirma na proposta.",
-        "pay": "Preços mensais alvo, em USD. A implantação e os consumos externos são definidos na sua proposta. Partner e as cotas são proposta. A forma de pagamento é combinada com a proposta."
+        "pay": "Preços mensais alvo, em USD. A implantação limitada está incluída no preço; os extras e os consumos externos são definidos na sua proposta. Partner e as cotas são proposta. A forma de pagamento é combinada com a proposta."
       },
       "asideLabel": "Planos mensais",
       "asideTitle": "Seis níveis",
