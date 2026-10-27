@@ -104,8 +104,8 @@ Campos comunes a todas las fichas, salvo que la ficha diga otra cosa:
 | 3 | 0:12–0:18 | CRM: Consultas | La consulta aparece con lo que respondió | «La consulta cae en el CRM, completa.» |
 | 4 | 0:18–0:24 | Pipeline | La tarjeta pasa de Nuevo a Calificado | «Cada consulta tiene estado y próximo paso.» |
 | 5 | 0:24–0:29 | Visitas | El turno del viernes 18:30 aparece en la agenda | Lectura: `VIE 9 · 18:30 · Olmos 1420` |
-| 6 | 0:29–0:32 | Marca | La web y una ficha toman la marca de la inmobiliaria (preset de Lumen) | «Con tu marca, desde la puesta en marcha.» |
-| 7 | 0:32–0:35 | Cierre | Fase `1/6`, nombre del plan y tres renglones | «Contact · web · CRM · chat guiado» |
+| 6 | 0:29–0:33 | Marca | La web y una ficha toman la marca de la inmobiliaria (preset de Lumen) | «Con tu marca, desde la puesta en marcha.» |
+| 7 | 0:33–0:36 | Cierre | Fase `1/6`, nombre del plan y tres renglones | «Contact · web · CRM · chat guiado» |
 
 ### P2 · Growth — «Tu inmueble, mejor contado» · lote V2
 

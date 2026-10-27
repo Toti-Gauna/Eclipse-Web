@@ -89,7 +89,7 @@ Curvas (las del sitio, sin inventar otras): `EXPO_OUT` `cubic-bezier(0.16, 1, 0.
 |---|---|---|
 | Master | 1920×1080, PNG por cuadro (sin pérdida) | 1080×1920, ídem |
 | Entrega web | H.264 High, yuv420p, `+faststart`, CRF ≈ 20 | 720×1280, mismo códec |
-| Cuadros por segundo | 30 de base; **V1 mide si 60 hace falta** (temblor en paneos) y fija el valor | igual |
+| Cuadros por segundo | **30** (V1 lo midió: la cámara se mueve ≤ 0,3 px por cuadro, lejos del temblor; 60 duplicaba render y peso) | igual |
 | Peso objetivo | plan ≤ 6 MB, general ≤ 10 MB | plan ≤ 3 MB, general ≤ 5 MB |
 | Poster | WebP ≤ 200 KB (último cuadro del cierre) | ídem |
 | Subtítulos y transcripción | WebVTT por idioma + transcripción que describe también lo que se ve | ídem |
@@ -107,10 +107,12 @@ origen y `approvedAt`. Los prompts, el modelo y el costo de lo generado van en e
 Todo con herramientas que ya están en el entorno (Chromium y Playwright preinstalados, `ffmpeg` y `ffprobe`);
 **ninguna dependencia nueva**.
 
-1. **Página de render** en `roofy` (solo desarrollo, nunca en el export): monta la pieza con su línea de tiempo GSAP
-   en pausa, en un idioma y una relación.
-2. **Cuadro por cuadro:** Playwright avanza la línea de tiempo (`seek`) a cada cuadro y captura un PNG. No se graba la
-   pantalla en tiempo real: así no hay cuadros perdidos y el resultado es idéntico cada vez.
+1. **Página de render** en `roofy` (solo desarrollo, nunca en el export): monta la pieza en un idioma y una relación.
+   Desde V1 la capa del video es una función pura del tiempo (las curvas de §2, sin línea de tiempo en reproducción) y
+   cada plano es una toma de Lumen montada de cero (`roofy/docs/video-factory.md`).
+2. **Cuadro por cuadro:** Playwright simula el reloj de la página y lo avanza un cuadro por vez; las animaciones CSS se
+   fijan a ese reloj. No se graba la pantalla en tiempo real: así no hay cuadros perdidos y el resultado es idéntico cada
+   vez (V1: dos renders, cuadros iguales byte a byte).
 3. **Material generado** (el tour del inmueble, el local) se compone con `ffmpeg` en tiempos fijos, dentro de la ventana
    que deja la página.
 4. **Audio:** el motor de sonido del sitio ya puede renderizar sin conexión (`OfflineAudioContext` + `pump()`,
