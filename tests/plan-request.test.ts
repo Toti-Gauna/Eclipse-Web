@@ -3,7 +3,7 @@ import catalog from './fixtures/backend-catalog.v1.json';
 import type { ApiCatalog } from '@/lib/api/types';
 import { buildPlanRequestBody, catalogMismatches, checkContact, hasProblems, toApiSelection } from '@/lib/plan-request';
 import { emptyPlanState, type PlanState } from '@/lib/plan-url';
-import { maintenancePlans, plans, sellableItems, sellablePlans } from '@/lib/content';
+import { levels, maintenancePlans, plans, sellableItems, sellablePlans } from '@/lib/content';
 
 const api = catalog as unknown as ApiCatalog;
 const state = (over: Partial<PlanState>): PlanState => ({ ...emptyPlanState, ...over });
@@ -70,6 +70,7 @@ describe('plan request — web content vs the backend catalog', () => {
     items: sellableItems.map((i) => ({ id: i.id, category: i.category, name: i.name, priceCents: i.priceUsd * 100, addonCents: i.addonUsd == null ? null : i.addonUsd * 100 })),
     plans: sellablePlans.map((p) => ({ id: p.id, name: p.name, tier: p.tier, rangeCents: { from: p.priceUsd.from * 100, to: p.priceUsd.to * 100 }, items: p.items, maintenance: p.maintenance, bonusItemId: null })),
     maintenance: maintenancePlans.map((m) => ({ id: m.id, name: m.name, monthlyCents: m.priceUsd * 100 })),
+    levels: levels.map((lv) => ({ id: lv.id, name: lv.name, monthlyCents: lv.priceUsd * 100, priceStatus: lv.priceStatus })),
     voiceUsage: undefined,
     offers: api.offers.map((o) => ({ ...o, active: false })),
   });
@@ -95,7 +96,8 @@ describe('plan request — web content vs the backend catalog', () => {
     changed.items[1].addonCents = 1;
     changed.plans.push({ id: 'zzz', name: plans[0].name, tier: 'starter', rangeCents: { from: 1, to: 1 }, items: [], maintenance: null, bonusItemId: null } as never);
     changed.maintenance[1].monthlyCents = 1;
+    changed.levels![1].monthlyCents = 1;
     const found = catalogMismatches(changed).map((m) => `${m.area}:${m.id}`);
-    expect(found).toEqual(expect.arrayContaining(['items:landing', 'items:web-multi', 'plans:zzz', 'maintenance:conectado']));
+    expect(found).toEqual(expect.arrayContaining(['items:landing', 'items:web-multi', 'plans:zzz', 'maintenance:conectado', 'levels:growth']));
   });
 });

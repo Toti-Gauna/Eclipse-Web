@@ -140,7 +140,7 @@ export interface ApiCatalog {
   currency: 'USD';
   provisional: true;
   /** addonCents: add-on price (16/10 catalog); absent on catalogs older than that offer. */
-  items: { id: string; category: string; name: Localized3; priceCents: number; addonCents?: number | null }[];
+  items: { id: string; category: string; name: Localized3; priceCents: number; addonCents?: number | null; reviewRangeCents?: { from: number; to: number } }[];
   plans: {
     id: string;
     name: Localized3;
@@ -151,6 +151,8 @@ export interface ApiCatalog {
     bonusItemId: string | null;
   }[];
   maintenance: { id: string; name: Localized3; monthlyCents: number }[];
+  /** The ladder of six monthly levels (read-only; absent on backends older than 27/10/2026). */
+  levels?: { id: string; name: Localized3; monthlyCents: number; priceStatus: 'owner' | 'proposal' }[];
   annualMonthsCharged: number;
   /** Historical automatic voice fee; absent or 0 since the 16/10 offer. */
   voiceUsage?: { id: string; itemId: string; monthlyCents: number };

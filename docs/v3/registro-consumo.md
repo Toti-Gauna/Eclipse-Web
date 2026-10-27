@@ -145,3 +145,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Reintentos / correcciones propias:** (1) el catálogo ya tenía pruebas atadas a «puesta en marcha A cotizar» y a la versión: se versionó (v2, v1 se conserva) en lugar de pisar; (2) una duda de si había un script de analítica instalado se verificó (no hay ninguno). Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
 
+## 16. D18 · Conciliación del backend (27/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high. **Opus:** 0. **Gasto externo:** USD 0. Se instalaron las dependencias fijadas de `Eclipse-be` (`npm ci`, sin tocar `package.json`) para poder probar.
+- **Resultado:** `Eclipse-be` PR #11 (snapshot, estimador, OpenAPI 0.8.0, 779 pruebas) y cambios en Eclipse-Web (guard con `levels`, fixtures, catálogo v3); guard sin diferencias contra el catálogo real del backend nuevo.
+- **Reintentos / correcciones propias:** (1) `git push --force-with-lease` falló porque la rama remota no existía (referencia local vieja): se empujó como rama nueva; (2) el fixture de paridad salió en una sola línea y `prettier` lo rechazó: se formateó; (3) se reescribió `tests/plan-catalog.test.ts` entero porque codificaba el catálogo viejo. Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
+

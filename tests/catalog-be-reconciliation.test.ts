@@ -3,6 +3,7 @@ import { catalogMismatches } from '@/lib/plan-request';
 import type { ApiCatalog } from '@/lib/api/types';
 import v1 from './fixtures/backend-catalog.v1.json';
 import reto from './fixtures/backend-catalog.reto-2026-10-13-v2.json';
+import reconciled from './fixtures/backend-catalog.2026-10-27.json';
 
 /**
  * Lote 2.2 · lane A: the web's divergence guard against the two REAL backend snapshots that exist
@@ -52,5 +53,34 @@ describe('FE guard vs the real backend snapshots (blocker kept, not bypassed)', 
   it('the guard never reports an empty list for a backend that predates the offer', () => {
     expect(find(v1)).not.toEqual([]);
     expect(find(reto)).not.toEqual([]);
+  });
+});
+
+/**
+ * Lote D18 (27/10/2026): the backend reconciled with the web in Eclipse-be (branch claude/eclipse-v3-inventory-audit-2ukttn,
+ * `GET /catalog/plans` snapshot saved as tests/fixtures/backend-catalog.2026-10-27.json). The guard must find NOTHING:
+ * the same 18 pieces with their independent and add-on prices, the three builder maintenance plans, no offer on sale,
+ * no voice fee and the ladder of six levels. It stays blocking for the two older catalogs above.
+ */
+describe('the reconciled backend (27/10/2026) matches the web 1:1', () => {
+  it('the guard returns no difference', () => {
+    expect(find(reconciled)).toEqual([]);
+  });
+
+  it('a single changed price, add-on or level on the backend would block again', () => {
+    const changed = JSON.parse(JSON.stringify(reconciled)) as typeof reconciled;
+    changed.items[0].priceCents += 100;
+    changed.items[1].addonCents = 1;
+    changed.levels[2].monthlyCents = 1;
+    changed.offers[0].active = true;
+    expect(find(changed)).toEqual(
+      expect.arrayContaining(['items:landing:price 50000 vs 50100', 'items:web-multi:addon price', 'levels:escalar:price', 'offers:founder:active']),
+    );
+  });
+
+  it('carries the current version format and every old plan is gone (nothing is sold as a package)', () => {
+    expect(reconciled.version).toMatch(/^v1-[a-f0-9]{64}$/);
+    expect(reconciled.plans).toEqual([]);
+    expect(reconciled.levels.map((lv) => lv.id)).toEqual(['contact', 'growth', 'escalar', 'hipergrowth', 'deluxe', 'partner']);
   });
 });

@@ -10,7 +10,7 @@
  * safety net: if the two ever drift, the UI says the saved estimate is the team's.
  */
 import type { ApiCatalog, ApiPlanSelection } from '@/lib/api/types';
-import { annualMonthsCharged, items, maintenancePlans, offers, plans, sellableItems, sellablePlans, verticals, founders } from '@/lib/content';
+import { annualMonthsCharged, items, levels, maintenancePlans, offers, plans, sellableItems, sellablePlans, verticals, founders } from '@/lib/content';
 import type { VoiceComboOffer, FounderOffer } from '@/lib/content';
 import { normalizeState, sortItemIds } from '@/components/plan-builder/rules';
 import { GOAL_IDS, sortGoals, type PlanState } from '@/lib/plan-url';
@@ -75,7 +75,7 @@ export function buildPlanRequestBody(state: PlanState, contact: ContactInput, ca
 // ---------------------------------------------------------------------------
 
 export interface CatalogMismatch {
-  area: 'items' | 'plans' | 'maintenance' | 'voice' | 'offers' | 'founders' | 'goals' | 'verticals';
+  area: 'items' | 'plans' | 'maintenance' | 'levels' | 'voice' | 'offers' | 'founders' | 'goals' | 'verticals';
   id: string;
   /** What differs, for logs/tests. */
   detail: string;
@@ -127,6 +127,17 @@ export function catalogMismatches(catalog: ApiCatalog): CatalogMismatch[] {
   }
   for (const api of catalog.maintenance) if (!maintenancePlans.some((m) => m.id === api.id)) push('maintenance', api.id, 'missing in web');
   if (catalog.annualMonthsCharged !== annualMonthsCharged) push('maintenance', 'annualMonthsCharged', 'months');
+
+  // levels: the ladder of six monthly levels (read-only on the backend; compared id by id, price and proposal status).
+  for (const lv of levels) {
+    const api = catalog.levels?.find((x) => x.id === lv.id);
+    if (!api) push('levels', lv.id, 'missing in API');
+    else {
+      if (api.monthlyCents !== cents(lv.priceUsd)) push('levels', lv.id, 'price');
+      if ((api.priceStatus === 'proposal') !== (lv.priceStatus === 'proposal')) push('levels', lv.id, 'status');
+    }
+  }
+  for (const api of catalog.levels ?? []) if (!levels.some((lv) => lv.id === api.id)) push('levels', api.id, 'missing in web');
 
   // voice usage: since 16/10 there is no automatic monthly voice fee (it runs inside the one plan).
   if (catalog.voiceUsage && catalog.voiceUsage.monthlyCents !== 0) push('voice', catalog.voiceUsage.id, 'usage fee');
