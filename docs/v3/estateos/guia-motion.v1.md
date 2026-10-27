@@ -44,9 +44,16 @@ El primer corte de V1 filmaba la demo achicada dentro de una ventana y contaba u
      que no incluye.
    - Antes de cada render completo, un cuadro por segundo en los dos formatos, revisado en hojas de contacto.
 
+3c. **El precio, al cierre** (Ignacio, 27/10/2026: «el precio en pesos con el dólar abajo al final»).
+   - El cierre de cada video muestra el precio del plan en la moneda del idioma (pesos en español), con el dólar abajo y la
+     fecha de la cotización usada.
+   - El monto sale del catálogo y la cotización de un archivo fijo y fechado (`roofy/content/video-rates.json`).
+   - Si la cotización se actualiza, se vuelve a renderizar.
+   - Ningún otro precio ni cupo dentro del video.
+
 Los puntos de §1, §4 y §5 que dicen «interfaz real de la demo, movida por sus beats», «sin marco de teléfono» y «se
 filma la demo» quedan reemplazados por esto. Siguen vigentes:
-- Las reglas de honestidad: «Demo · datos ficticios» en cada cuadro, sin precios ni cupos dentro del video.
+- Las reglas de honestidad: «Demo · datos ficticios» en cada cuadro y ningún cupo dentro del video.
 - La legibilidad: 1,2 s por línea de ≤ 6 palabras, ≤ 2,2 palabras/s.
 - El render determinista (§7).
 

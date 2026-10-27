@@ -219,3 +219,14 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Ajustes medidos:**
   - Los efectos habían quedado 26 dB por debajo de la música; quedaron en ≈ 9 dB.
   - Los graves estaban 11–12 dB por encima de los medios, lo que en un parlante de teléfono hunde la melodía. Se bajaron el bajo y la batería, se subieron piano, voz y cuerdas, y se sumó un estante de agudos (+3 dB desde 5 kHz).
+
+## 25. Lote V1 · Precio al cierre del tráiler + paquete de 3.2 (27/10/2026)
+
+- **Pedido de Ignacio:** «el precio en pesos con el dólar abajo al final» y generar las fotos con GPT (él, en ChatGPT; matriz, fila 18).
+- **Modelo / esfuerzo:** `claude-opus-5-5` · high. **Gasto externo:** USD 0.
+- **Precio:** $ 47.000/mes (USD 30 × MEP de cierre del 27/10/2026 = 1.558,55, redondeado a 1.000 como el sitio).
+  - dolarapi.com, la fuente del sitio, está bloqueada desde el contenedor; la cotización se tomó de la prensa (El Litoral) y quedó fechada en `roofy/content/video-rates.json`.
+  - El cierre suma un compás: 58 s.
+  - Re-render de los dos cortes: 16:9 5,70 MB y 9:16 2,85 MB, −16 LUFS.
+- **3.2:** `estateos/fotos-gpt-3.2.md`, con los 7 prompts de Notion y de la biblia v2 §7, el orden (anclas primero), formato 3:2, la lista de aprobación por foto y cómo entregarlas. No se generó ninguna imagen desde acá.
+- **Push:** un `push --force` fue rechazado por el clasificador; no hacía falta (la rama avanzaba en línea recta sobre `main`).
