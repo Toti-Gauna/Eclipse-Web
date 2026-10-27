@@ -205,3 +205,17 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Resultado:** guía de motion §0 (las reglas nuevas, que mandan sobre el resto), biblia P1 reescrita, informe `lote-V1-video-contact.md` (segundo corte); en `roofy`, el kit de tráiler, las piezas de EstateOS reconstruidas, la película de Contact (56 s, 120 BPM) en 16:9 y 9:16 y la fábrica adaptada.
 - **Correcciones propias en la revisión cuadro a cuadro (hojas de contacto, un cuadro por segundo en los dos formatos):** (1) el golpe inicial reaparecía de los 6 a los 18 s (su reinicio con `autoAlpha` pisaba la visibilidad de la escena); (2) las tarjetas lupa se encogían a su palabra más larga (contenedor de 0 × 0); (3) la interfaz se leía a ≈ 12 px en 720p: zoom ×1,3 en la ventana y ×1,2 en el celular; (4) la reserva quedaba cortada por el borde de la ventana; (5) el reset `.tr p` anulaba el relleno de las burbujas del chat; (6) ventanas vacías entre módulos del CRM; (7) el pipeline: columnas angostas y la tarjeta de Carolina mal ubicada (ahora se mide de la primera tarjeta de cada columna); (8) la agenda no llegaba a las 18:30; (9) la auditoría y la guía operativa fuera de cuadro; (10) el 9:16 cargado arriba. Renders completos: 2 (uno por formato), sin descartes.
 - **Uso de la sesión:** `get_session` informa el modelo y el esfuerzo; el consumo por lote no está desagregado.
+
+## 24. Lote V1 · Música del tráiler de Contact (27/10/2026)
+
+- **Por qué:** Ignacio: «le falta música, no tiene alma». El audio existía, pero era percusión y campanitas (los estilos de Kinetic), sin melodía en los versos.
+- **Modelo / esfuerzo:** `claude-opus-5-5` · high. **Gasto externo:** USD 0. Sin dependencias nuevas, sin pistas descargadas.
+- **Resultado (en `roofy`):**
+  - Orquesta propia en Web Audio (`components/video/score/orquesta.ts`) y arreglador (`arreglo.ts`).
+  - Partitura de Contact reescrita.
+  - Kinetic queda solo para la interfaz.
+  - Prueba de «es música».
+  - Re-render de los dos cortes, subtítulos y manifest.
+- **Ajustes medidos:**
+  - Los efectos habían quedado 26 dB por debajo de la música; quedaron en ≈ 9 dB.
+  - Los graves estaban 11–12 dB por encima de los medios, lo que en un parlante de teléfono hunde la melodía. Se bajaron el bajo y la batería, se subieron piano, voz y cuerdas, y se sumó un estante de agudos (+3 dB desde 5 kHz).

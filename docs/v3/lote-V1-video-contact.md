@@ -4,6 +4,17 @@
 
 **Por qué hay un segundo corte:** Ignacio rechazó el primero (27/10/2026). Era una demo filmada con un reloj simulado: «una presentación bastante pobre», sin los componentes reconstruidos de Kinetic Studio y sin explicar lo que el cliente recibe (la web profesional, el CRM completo, el rebranding). Confirmó la fuente: **según Notion**, Contact = web, CRM completo, chat guiado y rebranding; el WhatsApp automático va en el video de Growth y el agente de voz en el de Escalar. Las reglas para que esto no se repita en V2–V5 están en la **guía de motion §0**, que manda sobre el resto de la guía.
 
+> **Música (27/10/2026, después del segundo corte).** Ignacio: «le falta música, no tiene alma». Medido: el audio
+> existía, pero los versos (24 de 56 s) no tenían melodía y el colchón sonaba al 0,9 %; era percusión y campanitas.
+>
+> Ahora hay una partitura propia, tocada por una orquesta propia en `roofy` (`components/video/score/`): piano eléctrico,
+> cuerdas, voz solista con vibrato y eco, bajo, arpegio, glockenspiel y batería.
+> - Re mayor, I–V–vi–IV, con el motivo de seis notas de la marca como gancho.
+> - Cada golpe de palabra cae en un bombo.
+> - Los efectos de interfaz van ≈ 9 dB por debajo.
+> - Una prueba nueva exige melodía en cada sección con imágenes, armonía bajo cada segundo y silencio al final.
+> - Re-render: 16:9 5,61 MB y 9:16 2,79 MB, los dos a −16 LUFS. 102 pruebas.
+
 ## 0. Informe en tres líneas
 
 - **Qué cambió:**

@@ -30,6 +30,14 @@ El primer corte de V1 filmaba la demo achicada dentro de una ventana y contaba u
      agente de voz en Escalar).
    - Nada de historias de un lead que dejen afuera la mitad de lo que se compra.
 3. La demo interactiva sigue siendo la prueba; el video **vende y explica**.
+3b. **La música tiene que tener alma** (Ignacio, mismo día, sobre el segundo corte: «no tiene música, no tiene alma»).
+   - Es una composición por película: melodía, armonía, bajo y batería, con un gancho que se recuerda. El de EstateOS es el
+     motivo de seis notas, una por fase.
+   - Tiene arco: un arranque tenso, la marca, versos con voz, subidas, un estribillo, un quiebre y un cierre que calla
+     antes del último cuadro.
+   - La toca la orquesta propia de `roofy` (`components/video/score/`). Los estilos de Kinetic sonaban a percusión y
+     campanitas sin melodía.
+   - Los sonidos de interfaz van por debajo de la música; el golpe de cada palabra lo da la música.
 4. **Cómo se controla** (en `roofy`):
    - Cada película declara qué áreas muestra cada capítulo (`films/<plan>/script.ts`, `COVERS`).
    - `tests/video.test.ts` la compara con la lente del plan: falla si falta un área que el plan abre o si aparece una
