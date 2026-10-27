@@ -89,11 +89,11 @@ Campos comunes a todas las fichas, salvo que la ficha diga otra cosa:
 | Campo | Definición |
 |---|---|
 | Objetivo | Que quien contrata Contact **entienda todo lo que recibe**: su web profesional, el chat guiado, el CRM completo módulo por módulo y la puesta en marcha con su marca |
-| Duración | 56 s, 120 BPM (un compás = 2 s) |
+| Duración | 58 s, 120 BPM (un compás = 2 s) |
 | Fase | `1/6` |
 | Qué muestra | Web pública (`web`), chat guiado con botones (`guided_chat`, sin IA ni WhatsApp, D20), CRM completo (`crm_core`: consultas, contactos, pipeline, agenda, tareas, propiedades, equipo y roles), puesta en marcha con rebranding (`setup_brand`: kit, de plantilla a la marca, auditoría de perfiles, hooks, videos de ejemplo, guía operativa) |
 | Qué NO muestra | El WhatsApp automático (va en el video de Growth), el agente de voz (va en el de Escalar), asistente con IA, propietario, mapas, Intelligence |
-| Inicio / final | Inicio: golpe «¿Consultas por todos lados? ¿Planillas que nadie sigue?». Final: noche, glifo `1/6`, «EstateOS · Contact · Producto base completo» (el poster) |
+| Inicio / final | Inicio: golpe «¿Consultas por todos lados? ¿Planillas que nadie sigue?». Final: noche, glifo `1/6`, «EstateOS · Contact · Producto base completo» y el precio en pesos con el dólar abajo (el poster) |
 | Generación | **Ninguna.** Componentes reconstruidos con los datos y textos reales de Lumen, una línea de tiempo GSAP, el motor de sonido de Kinetic |
 | Locución | Ninguna por ahora (lote 3.4); los subtítulos repiten las palabras de pantalla |
 | Costo | USD 0 externo |
@@ -110,7 +110,7 @@ Campos comunes a todas las fichas, salvo que la ficha diga otra cosa:
 | 0:34–0:36 | Golpe | | «Y lo ponemos en marcha.» |
 | 0:36–0:48 | 4 · Puesta en marcha | El kit de marca; la web pasa de plantilla a la marca; la auditoría de perfiles se tilda; hooks, videos y guía en abanico | «Tu marca, en todo.» · «De plantilla a tu marca.» · «Revisamos tus redes.» · «Hooks, videos y una guía.» |
 | 0:48–0:52 | Resumen | Una palabra por segundo | «Tu web.» · «Tu CRM.» · «Chat guiado.» · «Tu marca.» |
-| 0:52–0:56 | Cierre | Fase `1/6`, «Contact», «Producto base completo». El precio está al lado, en HTML | |
+| 0:52–0:58 | Cierre | Fase `1/6`, «Contact», «Producto base completo»; a 0:55 entra el precio (Ignacio, 27/10/2026). También sigue en el HTML, al lado del reproductor | «$ 47.000/mes» · «USD 30/mes» · «Dólar MEP del 27/10/2026» |
 
 ### P2 · Growth — «Tu inmueble, mejor contado» · lote V2
 
