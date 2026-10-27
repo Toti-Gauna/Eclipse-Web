@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import v1 from '../docs/v3/estateos/catalogo-estateos.v1.json';
-import catalog from '../docs/v3/estateos/catalogo-estateos.v2.json';
+import v2 from '../docs/v3/estateos/catalogo-estateos.v2.json';
+import catalog from '../docs/v3/estateos/catalogo-estateos.v3.json';
 
 /**
  * Lote 2.3 · the EstateOS catalog is a versioned DOCUMENT (docs/v3/estateos), not product content: it states the
@@ -106,10 +107,20 @@ describe('EstateOS catalog v1 (documental)', () => {
     expect(def).toMatch(/16:9 y 9:16/);
   });
 
-  it('keeps the history: v2 supersedes v1 and v1 still exists unchanged as the earlier version', () => {
-    expect(catalog.supersedes).toBe(v1.catalogVersion);
+  it('keeps the history: v3 supersedes v2, which superseded v1; the earlier files still exist unchanged', () => {
+    expect(catalog.supersedes).toBe(v2.catalogVersion);
+    expect(v2.supersedes).toBe(v1.catalogVersion);
     expect(v1.catalogVersion).toBe('estateos-2026-10-26-v1');
-    expect(catalog.decisionLog.map((d) => d.id)).toEqual(expect.arrayContaining(['D17', 'D19', 'D21', 'D23', 'D24', 'cobros', 'D22']));
+    expect(catalog.decisionLog.map((d) => d.id)).toEqual(expect.arrayContaining(['D17', 'D19', 'D20', 'D21', 'D23', 'D24', 'D27', 'cobros', 'D22']));
+  });
+
+  it('the guided chat is part of Contact (D20) and there is no deposit on the monthly plans (D27)', () => {
+    const chat = catalog.capabilities.find((c) => c.id === 'guided_chat')!;
+    expect(chat.fromPlan).toBe('contact');
+    expect(chat.availability).toBe('demo_simulated');
+    expect(plans[0].capabilityIds).toContain('guided_chat');
+    expect(catalog.paymentTerms.deposit).toBe('ninguna');
+    expect(catalog.paymentTerms.firstMonth).toMatch(/antes de empezar/);
   });
 
   it('the digest matches the content (sorted keys, compact JSON)', () => {

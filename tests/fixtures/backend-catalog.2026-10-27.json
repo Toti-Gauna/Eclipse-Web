@@ -1,0 +1,514 @@
+{
+  "version": "v1-5c5abe3102afe34b7724147b091de5a749d8c1afd29058a5f850c25d9f10ab88",
+  "currency": "USD",
+  "provisional": true,
+  "categories": [
+    {
+      "id": "presencia",
+      "name": {
+        "es": "Web y marca",
+        "en": "Web & brand",
+        "pt": "Web e marca"
+      }
+    },
+    {
+      "id": "sistemas",
+      "name": {
+        "es": "Gestión y operación",
+        "en": "Operations",
+        "pt": "Gestão e operação"
+      }
+    },
+    {
+      "id": "comercio",
+      "name": {
+        "es": "Venta online",
+        "en": "Online sales",
+        "pt": "Venda online"
+      }
+    },
+    {
+      "id": "plataformas",
+      "name": {
+        "es": "Apps a medida",
+        "en": "Custom apps",
+        "pt": "Apps sob medida"
+      }
+    },
+    {
+      "id": "ia",
+      "name": {
+        "es": "IA y agentes",
+        "en": "AI & agents",
+        "pt": "IA e agentes"
+      }
+    },
+    {
+      "id": "estrategia",
+      "name": {
+        "es": "Estrategia y crecimiento",
+        "en": "Strategy & growth",
+        "pt": "Estratégia e crescimento"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "landing",
+      "category": "presencia",
+      "name": {
+        "es": "Landing premium con motion graphics",
+        "en": "Premium landing page with motion graphics",
+        "pt": "Landing page premium com motion graphics"
+      },
+      "priceCents": 50000,
+      "addonCents": 20000
+    },
+    {
+      "id": "web-multi",
+      "category": "presencia",
+      "name": {
+        "es": "Web multipágina",
+        "en": "Multi-page website",
+        "pt": "Site com várias páginas"
+      },
+      "priceCents": 50000,
+      "addonCents": 15000
+    },
+    {
+      "id": "seo",
+      "category": "presencia",
+      "name": {
+        "es": "SEO técnico básico + analytics",
+        "en": "Basic technical SEO + analytics",
+        "pt": "SEO técnico básico + analytics"
+      },
+      "priceCents": 50000,
+      "addonCents": 10000
+    },
+    {
+      "id": "trailer",
+      "category": "presencia",
+      "name": {
+        "es": "Trailer en motion graphics",
+        "en": "Motion graphics trailer",
+        "pt": "Trailer em motion graphics"
+      },
+      "priceCents": 50000,
+      "addonCents": 10000
+    },
+    {
+      "id": "turnos",
+      "category": "sistemas",
+      "name": {
+        "es": "Turnos administrativos",
+        "en": "Booking admin",
+        "pt": "Agendamentos"
+      },
+      "priceCents": 75000,
+      "addonCents": 25000
+    },
+    {
+      "id": "pedidos",
+      "category": "sistemas",
+      "name": {
+        "es": "Sistema de pedidos",
+        "en": "Ordering system",
+        "pt": "Sistema de pedidos"
+      },
+      "priceCents": 75000,
+      "addonCents": 25000
+    },
+    {
+      "id": "whatsapp",
+      "category": "sistemas",
+      "name": {
+        "es": "WhatsApp estándar (sin IA)",
+        "en": "Standard WhatsApp (no AI)",
+        "pt": "WhatsApp padrão (sem IA)"
+      },
+      "priceCents": 50000,
+      "addonCents": 10000
+    },
+    {
+      "id": "dashboard",
+      "category": "sistemas",
+      "name": {
+        "es": "Dashboard interno",
+        "en": "Internal dashboard",
+        "pt": "Dashboard interno"
+      },
+      "priceCents": 75000,
+      "addonCents": 25000
+    },
+    {
+      "id": "crm",
+      "category": "sistemas",
+      "name": {
+        "es": "CRM y documentación básica",
+        "en": "Basic CRM and docs",
+        "pt": "CRM e documentação básica"
+      },
+      "priceCents": 75000,
+      "addonCents": 25000
+    },
+    {
+      "id": "gamificacion",
+      "category": "sistemas",
+      "name": {
+        "es": "Gamificación y misiones",
+        "en": "Gamification and missions",
+        "pt": "Gamificação e missões"
+      },
+      "priceCents": 50000,
+      "addonCents": 15000
+    },
+    {
+      "id": "migracion",
+      "category": "sistemas",
+      "name": {
+        "es": "Migración de Excel/PDF",
+        "en": "Excel/PDF migration",
+        "pt": "Migração de Excel/PDF"
+      },
+      "priceCents": 10000,
+      "addonCents": null,
+      "reviewRangeCents": {
+        "from": 10000,
+        "to": 30000
+      }
+    },
+    {
+      "id": "catalogo",
+      "category": "comercio",
+      "name": {
+        "es": "Catálogo y consultas",
+        "en": "Catalog and enquiries",
+        "pt": "Catálogo e consultas"
+      },
+      "priceCents": 50000,
+      "addonCents": null
+    },
+    {
+      "id": "app-fase",
+      "category": "plataformas",
+      "name": {
+        "es": "App on-demand: primera fase",
+        "en": "On-demand app: first phase",
+        "pt": "App on-demand: primeira fase"
+      },
+      "priceCents": 100000,
+      "addonCents": null
+    },
+    {
+      "id": "chatbot",
+      "category": "ia",
+      "name": {
+        "es": "Chatbot IA (WhatsApp o web)",
+        "en": "AI chatbot (WhatsApp or web)",
+        "pt": "Chatbot IA (WhatsApp ou web)"
+      },
+      "priceCents": 75000,
+      "addonCents": 25000
+    },
+    {
+      "id": "voz",
+      "category": "ia",
+      "name": {
+        "es": "Agente de voz con IA",
+        "en": "AI voice agent",
+        "pt": "Agente de voz com IA"
+      },
+      "priceCents": 75000,
+      "addonCents": 25000
+    },
+    {
+      "id": "asesoria-growth",
+      "category": "estrategia",
+      "name": {
+        "es": "Asesoría growth, marketing y marca",
+        "en": "Growth, marketing & brand advice",
+        "pt": "Assessoria de growth, marketing e marca"
+      },
+      "priceCents": 15000,
+      "addonCents": 15000
+    },
+    {
+      "id": "marketing",
+      "category": "estrategia",
+      "name": {
+        "es": "Estudio de mercado",
+        "en": "Market research",
+        "pt": "Estudo de mercado"
+      },
+      "priceCents": 50000,
+      "addonCents": 15000
+    },
+    {
+      "id": "auditoria",
+      "category": "estrategia",
+      "name": {
+        "es": "Auditoría digital",
+        "en": "Digital audit",
+        "pt": "Auditoria digital"
+      },
+      "priceCents": 50000,
+      "addonCents": 10000
+    }
+  ],
+  "plans": [],
+  "maintenance": [
+    {
+      "id": "esencial",
+      "name": {
+        "es": "Esencial",
+        "en": "Essential",
+        "pt": "Essencial"
+      },
+      "monthlyCents": 3000
+    },
+    {
+      "id": "conectado",
+      "name": {
+        "es": "Conectado",
+        "en": "Connected",
+        "pt": "Conectado"
+      },
+      "monthlyCents": 7500
+    },
+    {
+      "id": "ia",
+      "name": {
+        "es": "Automatización e IA",
+        "en": "Automation & AI",
+        "pt": "Automação e IA"
+      },
+      "monthlyCents": 15000
+    }
+  ],
+  "levels": [
+    {
+      "id": "contact",
+      "name": {
+        "es": "Contact",
+        "en": "Contact",
+        "pt": "Contact"
+      },
+      "monthlyCents": 3000,
+      "priceStatus": "owner"
+    },
+    {
+      "id": "growth",
+      "name": {
+        "es": "Growth",
+        "en": "Growth",
+        "pt": "Growth"
+      },
+      "monthlyCents": 7500,
+      "priceStatus": "owner"
+    },
+    {
+      "id": "escalar",
+      "name": {
+        "es": "Escalar",
+        "en": "Escalar",
+        "pt": "Escalar"
+      },
+      "monthlyCents": 10000,
+      "priceStatus": "owner"
+    },
+    {
+      "id": "hipergrowth",
+      "name": {
+        "es": "Hípergrowth",
+        "en": "Hípergrowth",
+        "pt": "Hípergrowth"
+      },
+      "monthlyCents": 15000,
+      "priceStatus": "owner"
+    },
+    {
+      "id": "deluxe",
+      "name": {
+        "es": "Deluxe",
+        "en": "Deluxe",
+        "pt": "Deluxe"
+      },
+      "monthlyCents": 20000,
+      "priceStatus": "owner"
+    },
+    {
+      "id": "partner",
+      "name": {
+        "es": "Partner",
+        "en": "Partner",
+        "pt": "Partner"
+      },
+      "monthlyCents": 50000,
+      "priceStatus": "proposal"
+    }
+  ],
+  "annualMonthsCharged": 10,
+  "voiceUsage": {
+    "id": "voz-uso",
+    "itemId": "voz",
+    "monthlyCents": 0,
+    "name": {
+      "es": "Agente de voz",
+      "en": "Voice agent",
+      "pt": "Agente de voz"
+    },
+    "note": {
+      "es": "Sin cargo por minuto ni por canal",
+      "en": "No per-minute or per-channel fee",
+      "pt": "Sem cobrança por minuto nem por canal"
+    }
+  },
+  "goals": [
+    "encontrar",
+    "atender",
+    "ordenar",
+    "vender",
+    "fidelizar",
+    "app",
+    "diagnostico"
+  ],
+  "verticals": [
+    {
+      "id": "clinicas",
+      "name": {
+        "es": "Clínicas",
+        "en": "Clinics",
+        "pt": "Clínicas"
+      }
+    },
+    {
+      "id": "inmobiliarias",
+      "name": {
+        "es": "Inmobiliarias",
+        "en": "Real estate",
+        "pt": "Imobiliárias"
+      }
+    },
+    {
+      "id": "gimnasios",
+      "name": {
+        "es": "Gimnasios",
+        "en": "Gyms",
+        "pt": "Academias"
+      }
+    },
+    {
+      "id": "tiendas",
+      "name": {
+        "es": "Tiendas online",
+        "en": "Online stores",
+        "pt": "Lojas online"
+      }
+    },
+    {
+      "id": "restaurantes",
+      "name": {
+        "es": "Restaurantes",
+        "en": "Restaurants",
+        "pt": "Restaurantes"
+      }
+    },
+    {
+      "id": "academias",
+      "name": {
+        "es": "Academias y cursos",
+        "en": "Schools & courses",
+        "pt": "Escolas e cursos"
+      }
+    },
+    {
+      "id": "otro",
+      "name": {
+        "es": "Otro",
+        "en": "Other",
+        "pt": "Outro"
+      }
+    }
+  ],
+  "founders": {
+    "total": 5,
+    "remainingSnapshot": 5,
+    "reservesSlots": false
+  },
+  "offers": [
+    {
+      "id": "founder",
+      "kind": "founder",
+      "active": false,
+      "endsAt": null,
+      "label": {
+        "es": "Precio fundador −20%",
+        "en": "Founder price −20%",
+        "pt": "Preço de fundador −20%"
+      },
+      "description": {
+        "es": "Para los primeros 5 negocios. Incluye el primer mes de mantenimiento bonificado y prioridad en la cola.",
+        "en": "For the first 5 businesses. Includes the first month of maintenance free and priority in the queue.",
+        "pt": "Para os 5 primeiros negócios. Inclui o primeiro mês de manutenção grátis e prioridade na fila."
+      },
+      "percentOff": 20
+    },
+    {
+      "id": "combo-voz",
+      "kind": "voiceCombo",
+      "active": false,
+      "endsAt": null,
+      "label": {
+        "es": "Combo voz",
+        "en": "Voice combo",
+        "pt": "Combo voz"
+      },
+      "description": {
+        "es": "Agente de voz con IA a USD 300 en planes desde Sistema.",
+        "en": "AI voice agent for USD 300 on plans from System up.",
+        "pt": "Agente de voz com IA por USD 300 nos planos a partir do Sistema."
+      },
+      "itemId": "voz",
+      "plans": [
+        "sistema",
+        "comercio",
+        "plataforma"
+      ],
+      "priceCents": 30000,
+      "minSubtotalCents": 100000
+    },
+    {
+      "id": "annual",
+      "kind": "annualMaintenance",
+      "active": false,
+      "endsAt": null,
+      "label": {
+        "es": "Pago anual: 2 meses gratis",
+        "en": "Pay yearly: 2 months free",
+        "pt": "Pagamento anual: 2 meses grátis"
+      },
+      "description": {
+        "es": "Pagás el mantenimiento anual y te bonificamos 2 meses.",
+        "en": "Pay for maintenance yearly and get 2 months free.",
+        "pt": "Pague a manutenção anual e ganhe 2 meses grátis."
+      }
+    },
+    {
+      "id": "referral",
+      "kind": "referral",
+      "active": false,
+      "endsAt": null,
+      "label": {
+        "es": "Referidos",
+        "en": "Referrals",
+        "pt": "Indicações"
+      },
+      "description": {
+        "es": "1 mes de mantenimiento gratis por cada cliente referido que cierre.",
+        "en": "1 free month of maintenance for every referred client who signs.",
+        "pt": "1 mês de manutenção grátis para cada cliente indicado que fechar."
+      }
+    }
+  ]
+}

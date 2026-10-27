@@ -141,7 +141,7 @@ reachable (folded is fine, deleted is not).
   outside totals. Implementation is 50/50 (`depositPct`). No voice or per-channel fee. Founder/combo/annual/referral offers are inactive
   (historical). Demos show their simulated channels as pieces at their own price, never preselected. Retired ids keep their names in
   `content/legacy.json`. Shared `/plan` links made while the offers existed drop the retired plan and pieces. Live «Enviar solicitud» is
-  blocked while the backend catalog differs.
+  blocked while the backend catalog differs (27/10/2026: `Eclipse-be` PR #11 reconciles it; the guard returns no difference against its real catalog, see `docs/v3/conciliacion-backend-d18.md`).
 - **Pricing section (lote 2.3b):** tab A «Planes» (`Levels`: a ledger of the six levels, price visible, «Ver la demo» first and «Pedir este plan» second; Partner marked «Propuesta») and tab B «Pieza por pieza» (read-only price list). `MonthlyPlans`, `CarePanel`, `Packages` and `PlanRow` are dormant (no longer rendered). The demo layer's project block shows «Seis niveles, desde USD 30» instead of a suggested monthly plan.
 - **Footer and catalog guard (lote 2.2, 26/10/2026):** the footer no longer lists the units Eclipse Agency/Media/Market (decision of Ignacio;
   `content/units.json` stays as history). `tests/catalog-be-reconciliation.test.ts` runs `catalogMismatches` against the real backend
