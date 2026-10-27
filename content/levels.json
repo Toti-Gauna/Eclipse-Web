@@ -1,6 +1,6 @@
 {
   "$comment": "Escalera de seis niveles (decisión de Ignacio 26/10/2026, lote 2.3b): vale para todos los rubros; cada rubro llena cada nivel con lo suyo y el primero es EstateOS (inmobiliarias). priceStatus: owner = dirección del propietario; proposal = propuesta (Partner). Los cupos mensuales y la puesta en marcha NO viven acá: son propuesta y se definen en cada propuesta comercial (docs/v3/estateos/catalogo-estateos.v1.json, versión estateos-2026-10-26-v1). Una prueba compara estos precios con ese catálogo.",
-  "catalogVersion": "estateos-2026-10-27-v2",
+  "catalogVersion": "estateos-2026-10-27-v3",
   "example": "estateos",
   "levels": [
     {

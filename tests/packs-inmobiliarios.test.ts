@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import packsDoc from '../docs/v3/estateos/packs-inmobiliarios.v2.json';
-import catalog from '../docs/v3/estateos/catalogo-estateos.v2.json';
+import packsDoc from '../docs/v3/estateos/packs-inmobiliarios.v3.json';
+import catalog from '../docs/v3/estateos/catalogo-estateos.v3.json';
 
 /**
  * Lote 2.4 · the six real-estate Studio packs are a versioned DOCUMENT. These checks keep it honest: every price
