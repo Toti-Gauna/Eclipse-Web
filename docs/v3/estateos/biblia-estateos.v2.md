@@ -80,32 +80,37 @@ Campos comunes a todas las fichas, salvo que la ficha diga otra cosa:
 - **Desktop:** 16:9 con la interfaz de escritorio. **Móvil:** 9:16 compuesto aparte con las vistas de celular.
 - **Aprobación:** Ignacio aprueba el video completo; Opus redacta y revisa en el lote V.
 
-### P1 · Contact — «Ninguna consulta se pierde» · lote V1 (piloto)
+### P1 · Contact — «Todo lo que recibís con Contact» · lote V1 (piloto)
+
+> **Segundo corte (27/10/2026).** Ignacio rechazó el primero (una demo filmada, 36 s: pobre como presentación y sin explicar
+> todo lo que el cliente recibe). Este corte sigue la guía de motion §0: método Kinetic Studio y un capítulo por entrega.
+> Storyboard completo: `roofy/components/video/films/contact/STORYBOARD.md`.
 
 | Campo | Definición |
 |---|---|
-| Objetivo | Que el dueño vea que con el producto base **ninguna consulta queda sin respuesta ni sin próximo paso**, aunque la oficina esté cerrada |
-| Duración | 35 s (± 5) |
+| Objetivo | Que quien contrata Contact **entienda todo lo que recibe**: su web profesional, el chat guiado, el CRM completo módulo por módulo y la puesta en marcha con su marca |
+| Duración | 56 s, 120 BPM (un compás = 2 s) |
 | Fase | `1/6` |
-| Qué muestra | Web pública (`web`), CRM completo (`crm_core`), chat guiado con botones (`guided_chat`, sin IA ni WhatsApp, D20), puesta en marcha de marca (`setup_brand`) |
-| Qué NO muestra | Seguimientos automáticos por WhatsApp (Growth), asistente con IA (Deluxe), propietario, mapas |
-| Inicio / final | Inicio: «Hoy» de Lumen a oscuras, 23:40. Final: tarjeta de Carolina en «Visita» y la agenda del viernes con su turno; cierre con la fase `1/6` |
-| Generación | **Ninguna.** Todo es render de la interfaz real |
-| Locución opcional | «Son las 23:40 y la oficina está cerrada. Igual, la consulta entra, se ordena y termina con una visita en la agenda.» (22 palabras, ≈ 10 s) |
-| Transición | Corte al cierre; del cierre, el visitante sigue a la demo de Contact |
+| Qué muestra | Web pública (`web`), chat guiado con botones (`guided_chat`, sin IA ni WhatsApp, D20), CRM completo (`crm_core`: consultas, contactos, pipeline, agenda, tareas, propiedades, equipo y roles), puesta en marcha con rebranding (`setup_brand`: kit, de plantilla a la marca, auditoría de perfiles, hooks, videos de ejemplo, guía operativa) |
+| Qué NO muestra | El WhatsApp automático (va en el video de Growth), el agente de voz (va en el de Escalar), asistente con IA, propietario, mapas, Intelligence |
+| Inicio / final | Inicio: golpe «¿Consultas por todos lados? ¿Planillas que nadie sigue?». Final: noche, glifo `1/6`, «EstateOS · Contact · Producto base completo» (el poster) |
+| Generación | **Ninguna.** Componentes reconstruidos con los datos y textos reales de Lumen, una línea de tiempo GSAP, el motor de sonido de Kinetic |
+| Locución | Ninguna por ahora (lote 3.4); los subtítulos repiten las palabras de pantalla |
 | Costo | USD 0 externo |
-| Depende de | 3.5 (Lumen en `roofy`, lente por plan, copy de chat guiado), guía de motion |
 | Aprobación especial | **Es el piloto:** si Ignacio no lo aprueba como premium, no se hacen V2–V5 ni se gasta en 3.2–3.4 |
 
-| # | Tiempo | Plano | Acción en la interfaz | Texto en pantalla (es) |
-|---|---|---|---|---|
-| 1 | 0:00–0:04 | «Hoy» a oscuras; lectura mono arriba a la izquierda | La oficina figura cerrada; se enciende el panel | `JUE 8 OCT · 23:40` / titular: «Oficina cerrada.» |
-| 2 | 0:04–0:12 | Celular: el sitio, ficha de Olmos 1420 | Carolina abre el chat; responde con botones: compra · crédito · USD 150–200k | «Chat guiado: responde con botones, a cualquier hora.» |
-| 3 | 0:12–0:18 | CRM: Consultas | La consulta aparece con lo que respondió | «La consulta cae en el CRM, completa.» |
-| 4 | 0:18–0:24 | Pipeline | La tarjeta pasa de Nuevo a Calificado | «Cada consulta tiene estado y próximo paso.» |
-| 5 | 0:24–0:29 | Visitas | El turno del viernes 18:30 aparece en la agenda | Lectura: `VIE 9 · 18:30 · Olmos 1420` |
-| 6 | 0:29–0:33 | Marca | La web y una ficha toman la marca de la inmobiliaria (preset de Lumen) | «Con tu marca, desde la puesta en marcha.» |
-| 7 | 0:33–0:36 | Cierre | Fase `1/6`, nombre del plan y tres renglones | «Contact · web · CRM · chat guiado» |
+| Tiempo | Escena | Qué pasa | Texto en pantalla (es) |
+|---|---|---|---|
+| 0:00–0:04 | Golpe | Paneles de color que barren, una palabra por tiempo | «¿Consultas por todos lados?» · «¿Planillas que nadie sigue?» |
+| 0:04–0:06 | Marca | Noche, el glifo en fase 1/6 se descubre | «EstateOS · Contact» |
+| 0:06–0:14 | 1 · Tu web | La web de Lumen; tres propiedades salen grandes; la ficha de Olmos 1420; el dedo agenda Vie 9 · 18:30 | «Una web profesional.» · «Cada propiedad, con su ficha.» · «Te piden visitas desde ahí.» |
+| 0:14–0:18 | 2 · Chat guiado | El chat de Carolina con botones; toca «Con crédito hipotecario»; la consulta sale del teléfono | «Un chat guiado, siempre.» · «La consulta llega completa.» |
+| 0:18–0:20 | Golpe | | «Y del otro lado, tu CRM.» |
+| 0:20–0:34 | 3 · CRM completo | Siete módulos, 2 s cada uno: consultas por canal, contacto con historial, Carolina pasa a Calificado, la visita cae en la agenda, tareas tildadas, la cartera, dos roles con permisos | «Todas tus consultas, juntas.» · «Cada contacto, su historia.» · «Cada oportunidad, su estado.» · «La agenda del equipo.» · «Tareas y recordatorios.» · «Tu cartera, ordenada.» · «Roles para tu equipo.» |
+| 0:34–0:36 | Golpe | | «Y lo ponemos en marcha.» |
+| 0:36–0:48 | 4 · Puesta en marcha | El kit de marca; la web pasa de plantilla a la marca; la auditoría de perfiles se tilda; hooks, videos y guía en abanico | «Tu marca, en todo.» · «De plantilla a tu marca.» · «Revisamos tus redes.» · «Hooks, videos y una guía.» |
+| 0:48–0:52 | Resumen | Una palabra por segundo | «Tu web.» · «Tu CRM.» · «Chat guiado.» · «Tu marca.» |
+| 0:52–0:56 | Cierre | Fase `1/6`, «Contact», «Producto base completo». El precio está al lado, en HTML | |
 
 ### P2 · Growth — «Tu inmueble, mejor contado» · lote V2
 

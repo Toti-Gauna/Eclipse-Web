@@ -6,6 +6,42 @@ plan) y de cómo se producen. La siguen V1–V5 y la revisa la O2 de 3.9. Manda 
 
 Las fichas de cada pieza están en `biblia-estateos.v2.md`; el porqué, en `../lote-3.1-direccion-estateos.md`.
 
+## 0. Corrección de Ignacio sobre V1 (27/10/2026) — manda sobre todo lo de abajo
+
+El primer corte de V1 filmaba la demo achicada dentro de una ventana y contaba una anécdota («Carolina escribe a las
+23:40»). Ignacio lo rechazó: **presentación pobre** y **no explica lo que el cliente recibe**. Desde ahora, en V1–V5:
+
+1. **Método Kinetic Studio** (`Toti-Gauna/kinetic-studio`, tráileres de Handy y Velmar):
+   - Cada pieza de interfaz se **reconstruye como un componente propio del tráiler**: teléfono, ventana, tarjetas,
+     agenda, desglose y dedo, a tamaño de lectura, con los datos y el diseño reales de Lumen.
+     - No se filma la demo achicada.
+     - No se inventa ninguna función.
+   - Lo importante **sale del dispositivo** como tarjeta grande (la «lupa»).
+   - **Golpes de palabras** a pantalla completa entre capítulos.
+   - **Partitura a tempo** (120 BPM, 1 compás = 2 s): cada corte cae en el compás.
+   - Titular corto en una columna y el dispositivo al lado.
+   - Destellos en los cambios grandes.
+   - Un resumen en golpes y una placa final.
+   - Antes de animar, un **storyboard escrito** (escenas, tiempos, textos, música, reglas de contenido).
+2. **Explicar todo lo que el plan entrega**, sin vaguedades:
+   - Un capítulo por entregable del catálogo, con qué es y qué hace (por ejemplo, en Contact: la web profesional, el
+     CRM completo módulo por módulo, el chat guiado y la puesta en marcha con rebranding).
+   - Lo que el plan no incluye no aparece; va en el video del plan que lo incluye (WhatsApp automático en Growth,
+     agente de voz en Escalar).
+   - Nada de historias de un lead que dejen afuera la mitad de lo que se compra.
+3. La demo interactiva sigue siendo la prueba; el video **vende y explica**.
+4. **Cómo se controla** (en `roofy`):
+   - Cada película declara qué áreas muestra cada capítulo (`films/<plan>/script.ts`, `COVERS`).
+   - `tests/video.test.ts` la compara con la lente del plan: falla si falta un área que el plan abre o si aparece una
+     que no incluye.
+   - Antes de cada render completo, un cuadro por segundo en los dos formatos, revisado en hojas de contacto.
+
+Los puntos de §1, §4 y §5 que dicen «interfaz real de la demo, movida por sus beats», «sin marco de teléfono» y «se
+filma la demo» quedan reemplazados por esto. Siguen vigentes:
+- Las reglas de honestidad: «Demo · datos ficticios» en cada cuadro, sin precios ni cupos dentro del video.
+- La legibilidad: 1,2 s por línea de ≤ 6 palabras, ≤ 2,2 palabras/s.
+- El render determinista (§7).
+
 ## 1. Tesis: instrumento y ventana
 
 Eclipse es el **instrumento** que lee el negocio (noche, filetes de 1 px, lecturas en mono, el glifo de fase) y la
