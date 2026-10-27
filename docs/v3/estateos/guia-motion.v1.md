@@ -156,3 +156,24 @@ Precios o cupos dentro del video · interfaz generada por IA · mapas o planos g
 direcciones, barrios o edificios reales identificables · logos de terceros · métricas de redes inventadas · rebotes,
 zooms continuos, giros de cámara, *speed ramps* · música sin licencia · arranque automático con sonido · texto
 horneado que no salga de los mensajes del sitio.
+
+## 12. Estándar de interacción premium en las demos (D34)
+
+Las demos se sienten como un producto real, no como una maqueta. Lo construye el lote 3.5b como un kit y lo usan las seis
+demos. Todo responde a una acción del visitante: **nada arranca solo**.
+
+| Estado | Cómo se ve | Tiempo |
+|---|---|---|
+| **Pensando** (chat, asistente, agente) | «Pensando la respuesta…» con un pulso suave (escala 0,96–1 y opacidad, nunca rebote) junto al avatar o al campo | Demora variable 1,2–2,5 s según el largo de la respuesta; nunca idéntica dos veces seguidas |
+| **Escribiendo** | Tres puntos con ritmo, o el texto apareciendo de a poco | Texto progresivo a 30–45 caracteres/s; se puede tocar para verlo completo |
+| **Cargando** | Esqueleto con la forma final (no un spinner genérico) | Hasta 600 ms; si una vista carga más, el esqueleto se queda |
+| **Acción optimista** | La tarjeta se mueve, el turno aparece, el estado cambia al instante; se confirma después | Respuesta 160 ms; confirmación 400–700 ms |
+| **Confirmación** | Aviso breve abajo («Visita agendada · Vie 18:30») con su acción de deshacer cuando corresponde | Visible 3–4 s |
+| **Éxito importante** | El destello (*glint*) del sitio, una sola vez | 600–900 ms |
+| **Error simulado** | Mensaje claro con cómo seguir («No hay lugar a las 18:30. Probá 19:00.»), nunca un error técnico | — |
+| **Vacío** | Una línea que dice qué hacer, con la acción a mano | — |
+
+Reglas: un solo estado de espera visible a la vez; los tiempos varían (no robóticos) pero tienen techo; el sonido solo en
+acciones (`select`, `success`) si el visitante lo activó; **movimiento reducido** = los mismos estados sin pulso ni
+desplazamiento (texto «Pensando…» quieto, respuesta completa al terminar la demora); el asistente y el agente siempre
+llevan su sello («Demostración guionada», «Llamada simulada»); ninguna demora bloquea salir, volver o cambiar de área.

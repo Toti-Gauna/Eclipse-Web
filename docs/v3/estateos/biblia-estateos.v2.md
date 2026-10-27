@@ -28,6 +28,11 @@ Eclipse (selector «Inmobiliarias») ──▶ roofy.eclipse-business.com/<idiom
 ```
 
 - La demo de un plan muestra **lo que ese plan suma**, con un acceso «Incluye lo de <plan anterior>».
+- **Pantalla completa (D35):** Lumen ocupa toda la pantalla en cada demo. La vista de celular se abre con un botón abajo a la
+  derecha de la barra inferior y es interactiva, con el mismo estado; en un teléfono se invierte (se ve el celular y el
+  botón muestra el escritorio). Reemplaza, para EstateOS, la regla de dos vistas lado a lado.
+- **Todo completo (D33):** cada área de cada plan existe y funciona con datos ficticios; nada queda como «Próximamente».
+- **Interacción premium (D34):** el estándar de `guia-motion.v1.md` §12 (el chat piensa, escribe y confirma).
 - Áreas: Administración (CRM), Ventas y propiedad, Marketing, Branding, Intelligence, Academy, y las nuevas de 3.8b/3.8c
   (Propietario, Equipo, Llamadas, Documentación, Asistente del CRM, Administración de consorcios, Sedes).
 - **Nuevo en el contrato de enlace (para 3.5):** un parámetro `plan=contact|growth|escalar|hipergrowth|deluxe|partner`
@@ -38,7 +43,7 @@ Eclipse (selector «Inmobiliarias») ──▶ roofy.eclipse-business.com/<idiom
 | Escena v1 | Pieza que la usa | Cómo |
 |---|---|---|
 | 00 Eclipse | General | Apertura: el reveal existente (`motion.ts`), sin un segundo eclipse |
-| 01 Descenso costero, 02 Fachada, 03 Umbral, 04 Recepción | **Growth** (recreación del local) y General (apertura) | Es exactamente lo que vende «Recreación del local» (`local_recreation`, Growth). Con fotos fijas por defecto; clips solo con gate (D32) |
+| 01 Descenso costero, 02 Fachada, 03 Umbral, 04 Recepción | **Growth** (recreación del local) y General (apertura) | Es exactamente lo que vende «Recreación del local» (`local_recreation`, Growth). **Fotos creadas con GPT y animadas con Higgsfield** (D32): la llegada (01) y el cruce del umbral (03) como clips, la fachada y la recepción como fotos |
 | 05 Administración | Contact | El CRM de Lumen haciendo su trabajo: consulta → calificación → visita |
 | 06 Ventas y propiedad | Contact (ficha web) y **Growth** (tour de 15 s del inmueble) | La ficha es Contact; el tour generado es la producción mensual de Growth |
 | 07 Marketing | Growth (imágenes, motion) y **Escalar** (campaña 2 × 15 s) | Mismo material del inmueble, adaptado |
@@ -102,7 +107,7 @@ Campos comunes a todas las fichas, salvo que la ficha diga otra cosa:
 | 6 | 0:29–0:32 | Marca | La web y una ficha toman la marca de la inmobiliaria (preset de Lumen) | «Con tu marca, desde la puesta en marcha.» |
 | 7 | 0:32–0:35 | Cierre | Fase `1/6`, nombre del plan y tres renglones | «Contact · web · CRM · chat guiado» |
 
-### P2 · Growth — «Tu inmueble, mejor contado» · lote V3
+### P2 · Growth — «Tu inmueble, mejor contado» · lote V2
 
 | Campo | Definición |
 |---|---|
@@ -111,7 +116,7 @@ Campos comunes a todas las fichas, salvo que la ficha diga otra cosa:
 | Fase | `2/6` |
 | Caso | Los Aromos 88 (Colinas): casa de 5 ambientes, 210 m², jardín, pileta, cochera, USD 320.000, **41 días publicada**, 6 consultas, 2 visitas (todo de `data.ts`) |
 | Inicio / final | Inicio: ficha de Los Aromos 88 con la lectura «41 días publicada». Final: el propietario ve su inmueble con el tour nuevo y las consultas de la semana |
-| Generación | **Sí (gate):** tour de 15 s del inmueble (3 tomas de 5 s, desde 3 fotos fijas) y 4 imágenes finales (3.2/3.3). Recreación del local: fotos fijas por defecto; clips opcionales (D32) |
+| Generación | **Sí (gate):** fotos creadas con GPT (3.2) y animadas con Higgsfield (3.3): tour de 15 s del inmueble (3 tomas de 5 s) y la recreación del local (llegada 6 s y umbral 5 s, D32) |
 | Locución opcional | «Una propiedad publicada hace 41 días. Este mes recibe su tour, imágenes nuevas y un seguimiento que su propietario ve en tiempo real.» (23 palabras) |
 | Costo | Ver §8 (tour 15 s y 4 imágenes) |
 | Depende de | V1 aprobado, 3.2, 3.3, 3.7 (ficha), 3.8 (mapa o tabla), 3.8b (panel del propietario) |
@@ -126,10 +131,11 @@ Campos comunes a todas las fichas, salvo que la ficha diga otra cosa:
 | 6 | 0:34–0:37 | Seguimientos | Mensaje automático programado (simulado) | «Seguimientos automáticos por WhatsApp» |
 | 7 | 0:37–0:40 | Cierre | Fase `2/6` | «Growth · producción mensual · propietario · datos» |
 
-Variante extendida (opcional, D32): 8 s de **recreación del local** con las fotos fijas KEY-FACADE → KEY-RECEPTION
-(o los clips 01 y 03 de la v1 si se aprueban) antes del cierre: «Al empezar, recreamos tu local».
+La demo de Growth abre con la **recreación inmersiva del local** (D32): llegada a la ciudad costera, fachada, cruce del umbral
+y recepción, con los clips 01 y 03 animados con Higgsfield desde fotos de GPT. En el video, 6–8 s antes del cierre: «Al
+empezar, recreamos tu local».
 
-### P3 · Escalar — «Tu equipo coordinado, tu campaña afuera» · lote V4
+### P3 · Escalar — «Tu equipo coordinado, tu campaña afuera» · lote V3
 
 | Campo | Definición |
 |---|---|
@@ -151,7 +157,7 @@ Variante extendida (opcional, D32): 8 s de **recreación del local** con las fot
 | 5 | 0:34–0:37 | Academy: kit de tours | Guía para vender tours a propietarios | «Kit para vender tours a tus propietarios.» |
 | 6 | 0:37–0:40 | Cierre | Fase `3/6` | «Escalar · equipo · campañas · voz» |
 
-### P4 · Hípergrowth — «Decidir con datos» · lote V2
+### P4 · Hípergrowth — «Decidir con datos» · lote V4
 
 | Campo | Definición |
 |---|---|
@@ -172,7 +178,7 @@ Variante extendida (opcional, D32): 8 s de **recreación del local** con las fot
 | 5 | 0:26–0:32 | Documentación (3.8c) | Operación con un faltante y un vencimiento | «Faltantes y vencimientos de cada operación.» |
 | 6 | 0:32–0:35 | Cierre | Fase `4/6` | «Hípergrowth · Intelligence · documentación» |
 
-### P5 · Deluxe — «Nuevos servicios, con tu marca» · lote V2
+### P5 · Deluxe — «Nuevos servicios, con tu marca» · lote V4
 
 | Campo | Definición |
 |---|---|
@@ -193,7 +199,7 @@ Variante extendida (opcional, D32): 8 s de **recreación del local** con las fot
 | 5 | 0:29–0:32 | Marca | La administración lleva la marca de la inmobiliaria | «Con tu marca.» |
 | 6 | 0:32–0:35 | Cierre | Fase `5/6` | «Deluxe · asistente · administración» |
 
-### P6 · Partner — «Varias sedes, una visión» · lote V2 (propuesta)
+### P6 · Partner — «Varias sedes, una visión» · lote V4 (propuesta)
 
 | Campo | Definición |
 |---|---|
@@ -220,15 +226,15 @@ Variante extendida (opcional, D32): 8 s de **recreación del local** con las fot
 | Duración | 65 s (± 10) |
 | Disparador | «Ver con guía» en la entrada general → «Ver el video» (opcional; se puede ir directo al recorrido) |
 | Inicio / final | Inicio: el eclipse (reveal existente). Final: las dos opciones de la entrada |
-| Generación | Reusa lo de V1–V4: no genera nada propio. La apertura usa la recreación del local (fotos fijas o clips, D32) |
+| Generación | Reusa lo de V1–V4: no genera nada propio. La apertura usa la recreación del local de Growth (D32) |
 | Locución opcional | «Esto es EstateOS: tu inmobiliaria, de la primera consulta a la operación. Empieza simple y crece con vos, nivel por nivel.» (21 palabras) |
 | Costo | USD 0 externo propio |
-| Depende de | V2, V3, V4 |
+| Depende de | V2, V3, V4 (los videos de cada plan) |
 
 | # | Tiempo | Plano | Contenido |
 |---|---|---|---|
 | 1 | 0:00–0:03 | Eclipse | Reveal existente; un solo eclipse |
-| 2 | 0:03–0:11 | Llegada | Fachada → recepción de Lumen (fotos fijas con deriva 2–4 %, o clips 01/03 si D32 los aprueba) |
+| 2 | 0:03–0:11 | Llegada | Los clips de llegada y umbral del local de Lumen (D32), hasta la recepción |
 | 3 | 0:11–0:15 | Recepción | Índice de áreas en HTML; aparece la escalera de fases |
 | 4 | 0:15–0:57 | Escalera | Seis tramos de ≈ 7 s, el plano estrella de cada video (P1 → P6); la fase sube en cada tramo |
 | 5 | 0:57–1:05 | Cierre | «¿Cómo la querés ver?» · Ver con guía · Ver por mi cuenta · sello «Demo · datos ficticios» |
@@ -261,7 +267,7 @@ Preámbulo común de la v1, sin cambios, para la inmobiliaria Lumen. Para el inm
 > right; gentle green hills behind. Daylight from camera-left, soft shadows. Straight verticals, realistic materials,
 > calm editorial composition. No people, no text, no logos, no house numbers, no identifiable real location.
 
-**Fotos fijas (3.2), una por toma, máximo 2 intentos cada una:**
+**Fotos fijas (3.2, generadas con GPT, D32), una por toma, máximo 2 intentos cada una:**
 
 1. `KEY-COLINAS-EXT` — preámbulo + «Three-quarter view from the garden, the pool in the foreground, the full facade
    visible, eye-level 35 mm look.»
@@ -280,13 +286,15 @@ Preámbulo común de la v1, sin cambios, para la inmobiliaria Lumen. Para el inm
 3. Desde `KEY-COLINAS-POOL`: «A slow push-in over the water toward the house facade; preserve geometry and light;
    settle for the last second. No reflections that invent architecture, no people, no text.»
 
-**Recreación del local (opcional, D32):** los prompts de las escenas 01 (descenso, 6 s) y 03 (umbral, 5 s) de la v1, sin
-cambios, con sus anclas KEY-AERIAL, KEY-FACADE, KEY-THRESHOLD y KEY-RECEPTION.
+**Recreación del local (D32):** las fotos ancla KEY-AERIAL, KEY-FACADE, KEY-THRESHOLD y KEY-RECEPTION se crean con GPT
+con los prompts de imagen de las escenas 01–04 de la v1, y se animan con Higgsfield con los prompts de video de las
+escenas 01 (descenso, 6 s) y 03 (umbral, 5 s), sin cambios.
 
 **Campaña de Escalar:** no se pide video nuevo; se monta con las tres tomas del tour, en 16:9 y 9:16, más tipografía y
 motion del sitio. Si el 9:16 recortado pierde la casa, se cotiza **una** toma vertical extra (no automática).
 
-Antes de generar, 3.3 lista los modelos disponibles en la cuenta y exporta el esquema real del elegido; un *negative
+Antes de generar, 3.3 (con Ignacio presente, D36) resuelve el acceso a Higgsfield (conector MCP si existe, skill oficial o
+API con su clave), lista los modelos disponibles en la cuenta y exporta el esquema real del elegido; un *negative
 prompt* va como campo solo si el esquema lo admite. El prompt de cámara es dirección visual, no una garantía.
 
 ## 8. Costos a cotizar (nada autorizado)
@@ -297,12 +305,12 @@ lista. Son ilustrativas: manda la cotización real de la cuenta.
 | Pieza generada | Segundos | 1 intento (0,144 · 0,2057) | 2 intentos |
 |---|---|---|---|
 | Tour de Los Aromos 88 (3 tomas) | 15 s | USD 2,16 · 3,09 | USD 4,32 · 6,17 |
-| Recreación del local, opcional (01 + 03) | 11 s | USD 1,58 · 2,26 | USD 3,17 · 4,53 |
+| Recreación del local (01 + 03, D32) | 11 s | USD 1,58 · 2,26 | USD 3,17 · 4,53 |
 | Toma vertical extra para la campaña, solo si hace falta | 5 s | USD 0,72 · 1,03 | USD 1,44 · 2,06 |
-| Fotos fijas: 3 del inmueble (+ 4 del local si D32) | — | a cotizar por modelo, aspecto y resolución | máx. 2 por foto |
+| Fotos con GPT: 3 del inmueble y 4 del local (D32) | — | según la cuenta de Ignacio (ChatGPT o API), a cotizar | máx. 2 por foto |
 | Voz (3.4): llamada de Escalar y locuciones opcionales | ≈ 60 s + opcionales | plan de voz a validar (la v1 registró ElevenLabs Starter USD 6/mes, no verificado hoy) | — |
 
-Peor caso de video con todo lo opcional y dos intentos (62 s): ≈ USD 8,93 en promoción o 12,75 de lista, más fotos y voz.
+Peor caso de video con todo y dos intentos (62 s): ≈ USD 8,93 en promoción o 12,75 de lista, más fotos y voz.
 **Nada de esto se gasta sin el gate de gasto de 3.2, 3.3 y 3.4.**
 
 ## 9. Voz (brief para 3.4)
