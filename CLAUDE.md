@@ -97,6 +97,7 @@ reachable (folded is fine, deleted is not).
   kept, never in `/portal`). A direct load opens with no film and closing it cleans the URL (never `history.back()`);
   Forward onto our entry reopens the layer. Only the Lumen demo exists behind it: `vista=entrada|branding|…` and `area`
   open the same demo until the gateway (3.x) exists. Any new `pushState` for the showroom goes through this module.
+- **EstateOS has its own repo and subdomain (D11, lote 1.6):** repo `roofy`, `roofy.eclipse-business.com` (the visitor sees «EstateOS»; «roofy» is the technical name). Eclipse and EstateOS are different origins, so the visitor's language and currency travel in the URL: language in the path, `?moneda=ARS|BRL|USD`, `?vista=` and `?area=` (the showroom's lists) and `utm_*`, all against closed allow-lists. The builder is `lib/estateos-link.ts` (`estateosUrl`, `currencyFromEstateos`) and is **dormant**: the selector's «Inmobiliarias» row keeps opening the Lumen demo until EstateOS is published (lotes 3.5–3.9). `tests/fixtures/handoff-cases.json` is the SAME file, byte for byte, in both repos; any change to the contract goes to both in the same cycle (spec: `roofy/docs/contrato-enlace.md`, report: `docs/v3/lote-1.6-repo-subdominio-estateos.md`).
 - **One amber per viewport:** the hero's CTA wrapper carries `data-hero-cta`; a section's solid amber CTA carries
   `data-page-cta` (`<DemoCta pageCta>`). While one is on screen the header CTA turns to outline (`usePageCtaInView`).
   Mark any new solid amber CTA the same way.

@@ -152,3 +152,10 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Reintentos / correcciones propias:** (1) `git push --force-with-lease` falló porque la rama remota no existía (referencia local vieja): se empujó como rama nueva; (2) el fixture de paridad salió en una sola línea y `prettier` lo rechazó: se formateó; (3) se reescribió `tests/plan-catalog.test.ts` entero porque codificaba el catálogo viejo. Regeneraciones completas: 0.
 - **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
 
+
+## 17. Lote 1.6 · Repo y subdominio EstateOS (27/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high. **Opus:** 0. **Gasto externo:** USD 0. Se instalaron dependencias de npm en el repo nuevo `roofy` (mismas versiones fijadas de Eclipse-Web, `npm ci`/`npm install` desde su lockfile) para poder construir y probar; no se usó ningún servicio de pago.
+- **Resultado:** repo `roofy` con el esqueleto (rama `claude/eclipse-v3-inventory-audit-2ukttn`, commit `509edae`), contrato de enlace probado en los dos repos con un fixture compartido, publicación de prueba preparada y apagada; en Eclipse-Web `lib/estateos-link.ts` (inactivo), su prueba y `lote-1.6-repo-subdominio-estateos.md`.
+- **Reintentos / correcciones propias:** (1) mi propio chequeo de navegador esperaba un orden de parámetros distinto del contrato (los ajenos van primero): se corrigió el chequeo, no el código; (2) el chequeo de errores de consola contaba el 404 que la prueba provoca a propósito: se excluyó solo esa ruta; (3) `npm audit` marcó `next`, `vite` y `zod` en el lockfile heredado: se aplicó `npm audit fix` (solo lockfile) en `roofy`. Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
