@@ -1,45 +1,126 @@
 {
   "name": "estateos-handoff-cases",
   "version": 1,
-  "digest": "144cfcafffb37a6faeca82db70695495799bf36542dcd9abde44eca092182597",
+  "digest": "f66d6ee102d306fef6e9cc6222edf8abec3a5d628764c6470803086692e05665",
   "cases": {
     "toEstateos": [
-      { "name": "language only", "input": { "locale": "es" }, "url": "https://roofy.eclipse-business.com/es/" },
-      { "name": "currency", "input": { "locale": "es", "currency": "ARS" }, "url": "https://roofy.eclipse-business.com/es/?moneda=ARS" },
+      {
+        "name": "language only",
+        "input": {
+          "locale": "es"
+        },
+        "url": "https://roofy.eclipse-business.com/es/"
+      },
+      {
+        "name": "currency",
+        "input": {
+          "locale": "es",
+          "currency": "ARS"
+        },
+        "url": "https://roofy.eclipse-business.com/es/?moneda=ARS"
+      },
       {
         "name": "guided view of one area",
-        "input": { "locale": "pt", "currency": "BRL", "vista": "guia", "area": "recepcion" },
+        "input": {
+          "locale": "pt",
+          "currency": "BRL",
+          "vista": "guia",
+          "area": "recepcion"
+        },
         "url": "https://roofy.eclipse-business.com/pt/?moneda=BRL&vista=guia&area=recepcion"
       },
       {
         "name": "area outside the guide is left out",
-        "input": { "locale": "en", "currency": "USD", "vista": "branding", "area": "ventas" },
+        "input": {
+          "locale": "en",
+          "currency": "USD",
+          "vista": "branding",
+          "area": "ventas"
+        },
         "url": "https://roofy.eclipse-business.com/en/?moneda=USD&vista=branding"
       },
       {
         "name": "area without a view is left out",
-        "input": { "locale": "es", "area": "ventas" },
+        "input": {
+          "locale": "es",
+          "area": "ventas"
+        },
         "url": "https://roofy.eclipse-business.com/es/"
       },
       {
         "name": "utm in the fixed order",
-        "input": { "locale": "es", "currency": "ARS", "vista": "entrada", "utm": { "utm_campaign": "inmobiliarias", "utm_source": "eclipse-web", "utm_medium": "selector" } },
+        "input": {
+          "locale": "es",
+          "currency": "ARS",
+          "vista": "entrada",
+          "utm": {
+            "utm_campaign": "inmobiliarias",
+            "utm_source": "eclipse-web",
+            "utm_medium": "selector"
+          }
+        },
         "url": "https://roofy.eclipse-business.com/es/?moneda=ARS&vista=entrada&utm_source=eclipse-web&utm_medium=selector&utm_campaign=inmobiliarias"
       },
       {
         "name": "a utm value with characters outside the allow-list is dropped",
-        "input": { "locale": "es", "utm": { "utm_source": "a b", "utm_term": "ok.1", "utm_content": "x&moneda=USD" } },
+        "input": {
+          "locale": "es",
+          "utm": {
+            "utm_source": "a b",
+            "utm_term": "ok.1",
+            "utm_content": "x&moneda=USD"
+          }
+        },
         "url": "https://roofy.eclipse-business.com/es/?utm_term=ok.1"
       },
       {
         "name": "values outside the allow-lists are dropped",
-        "input": { "locale": "es", "currency": "EUR", "vista": "admin", "area": "lobby" },
+        "input": {
+          "locale": "es",
+          "currency": "EUR",
+          "vista": "admin",
+          "area": "lobby"
+        },
         "url": "https://roofy.eclipse-business.com/es/"
       },
       {
         "name": "an area outside its list inside the guide is left out",
-        "input": { "locale": "es", "vista": "guia", "area": "lobby" },
+        "input": {
+          "locale": "es",
+          "vista": "guia",
+          "area": "lobby"
+        },
         "url": "https://roofy.eclipse-business.com/es/?vista=guia"
+      },
+      {
+        "name": "the plan whose demo opens",
+        "input": {
+          "locale": "es",
+          "plan": "growth"
+        },
+        "url": "https://roofy.eclipse-business.com/es/?plan=growth"
+      },
+      {
+        "name": "plan after currency, view and area, before utm",
+        "input": {
+          "locale": "en",
+          "currency": "USD",
+          "vista": "guia",
+          "area": "ventas",
+          "plan": "escalar",
+          "utm": {
+            "utm_source": "eclipse-web"
+          }
+        },
+        "url": "https://roofy.eclipse-business.com/en/?moneda=USD&vista=guia&area=ventas&plan=escalar&utm_source=eclipse-web"
+      },
+      {
+        "name": "a plan outside the six is left out",
+        "input": {
+          "locale": "pt",
+          "plan": "platinum"
+        },
+        "url": "https://roofy.eclipse-business.com/pt/"
       }
     ],
     "parseEstateos": [
@@ -47,102 +128,326 @@
         "name": "no query: the locale's default currency",
         "locale": "es",
         "search": "",
-        "expected": { "currency": "ARS", "currencyExplicit": false, "vista": "entrada", "area": null, "utm": {}, "clean": true },
+        "expected": {
+          "currency": "ARS",
+          "currencyExplicit": false,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": true
+        },
         "cleanSearch": ""
       },
       {
         "name": "currency for each language default",
         "locale": "pt",
         "search": "?vista=guia",
-        "expected": { "currency": "BRL", "currencyExplicit": false, "vista": "guia", "area": null, "utm": {}, "clean": true },
+        "expected": {
+          "currency": "BRL",
+          "currencyExplicit": false,
+          "vista": "guia",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": true
+        },
         "cleanSearch": "?vista=guia"
       },
       {
         "name": "english default is USD",
         "locale": "en",
         "search": "",
-        "expected": { "currency": "USD", "currencyExplicit": false, "vista": "entrada", "area": null, "utm": {}, "clean": true },
+        "expected": {
+          "currency": "USD",
+          "currencyExplicit": false,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": true
+        },
         "cleanSearch": ""
       },
       {
         "name": "explicit currency",
         "locale": "es",
         "search": "?moneda=USD",
-        "expected": { "currency": "USD", "currencyExplicit": true, "vista": "entrada", "area": null, "utm": {}, "clean": true },
+        "expected": {
+          "currency": "USD",
+          "currencyExplicit": true,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": true
+        },
         "cleanSearch": "?moneda=USD"
       },
       {
         "name": "without the question mark",
         "locale": "pt",
         "search": "moneda=BRL&vista=guia&area=ventas",
-        "expected": { "currency": "BRL", "currencyExplicit": true, "vista": "guia", "area": "ventas", "utm": {}, "clean": true },
+        "expected": {
+          "currency": "BRL",
+          "currencyExplicit": true,
+          "vista": "guia",
+          "area": "ventas",
+          "plan": null,
+          "utm": {},
+          "clean": true
+        },
         "cleanSearch": "?moneda=BRL&vista=guia&area=ventas"
       },
       {
         "name": "unknown currency falls back to the default and is cleaned",
         "locale": "en",
         "search": "?moneda=EUR",
-        "expected": { "currency": "USD", "currencyExplicit": false, "vista": "entrada", "area": null, "utm": {}, "clean": false },
+        "expected": {
+          "currency": "USD",
+          "currencyExplicit": false,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": false
+        },
         "cleanSearch": ""
       },
       {
         "name": "lowercase currency is not accepted",
         "locale": "es",
         "search": "?moneda=ars",
-        "expected": { "currency": "ARS", "currencyExplicit": false, "vista": "entrada", "area": null, "utm": {}, "clean": false },
+        "expected": {
+          "currency": "ARS",
+          "currencyExplicit": false,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": false
+        },
         "cleanSearch": ""
       },
       {
         "name": "area without the guide is dropped",
         "locale": "es",
         "search": "?area=ventas",
-        "expected": { "currency": "ARS", "currencyExplicit": false, "vista": "entrada", "area": null, "utm": {}, "clean": false },
+        "expected": {
+          "currency": "ARS",
+          "currencyExplicit": false,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": false
+        },
         "cleanSearch": ""
       },
       {
         "name": "markup in a value is never echoed",
         "locale": "es",
         "search": "?vista=%3Cscript%3Ealert(1)%3C%2Fscript%3E&moneda=USD",
-        "expected": { "currency": "USD", "currencyExplicit": true, "vista": "entrada", "area": null, "utm": {}, "clean": false },
+        "expected": {
+          "currency": "USD",
+          "currencyExplicit": true,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": false
+        },
         "cleanSearch": "?moneda=USD"
       },
       {
         "name": "the first value wins when a parameter repeats",
         "locale": "es",
         "search": "?moneda=USD&moneda=BRL",
-        "expected": { "currency": "USD", "currencyExplicit": true, "vista": "entrada", "area": null, "utm": {}, "clean": true },
+        "expected": {
+          "currency": "USD",
+          "currencyExplicit": true,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": true
+        },
         "cleanSearch": "?moneda=USD"
       },
       {
         "name": "foreign parameters are kept first and untouched",
         "locale": "es",
         "search": "?fbclid=abc&moneda=USD&vista=nope",
-        "expected": { "currency": "USD", "currencyExplicit": true, "vista": "entrada", "area": null, "utm": {}, "clean": false },
+        "expected": {
+          "currency": "USD",
+          "currencyExplicit": true,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": false
+        },
         "cleanSearch": "?fbclid=abc&moneda=USD"
       },
       {
         "name": "valid utm travel, invalid utm are dropped",
         "locale": "es",
         "search": "?utm_source=eclipse-web&utm_medium=bad%20value&moneda=USD",
-        "expected": { "currency": "USD", "currencyExplicit": true, "vista": "entrada", "area": null, "utm": { "utm_source": "eclipse-web" }, "clean": false },
+        "expected": {
+          "currency": "USD",
+          "currencyExplicit": true,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {
+            "utm_source": "eclipse-web"
+          },
+          "clean": false
+        },
         "cleanSearch": "?moneda=USD&utm_source=eclipse-web"
+      },
+      {
+        "name": "a valid plan is read",
+        "locale": "es",
+        "search": "?plan=deluxe",
+        "expected": {
+          "currency": "ARS",
+          "currencyExplicit": false,
+          "vista": "entrada",
+          "area": null,
+          "plan": "deluxe",
+          "utm": {},
+          "clean": true
+        },
+        "cleanSearch": "?plan=deluxe"
+      },
+      {
+        "name": "an unknown plan is dropped and cleaned",
+        "locale": "es",
+        "search": "?plan=platinum&moneda=USD",
+        "expected": {
+          "currency": "USD",
+          "currencyExplicit": true,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": false
+        },
+        "cleanSearch": "?moneda=USD"
+      },
+      {
+        "name": "the plan keeps its place among foreign parameters",
+        "locale": "pt",
+        "search": "?fbclid=abc&plan=partner&moneda=BRL",
+        "expected": {
+          "currency": "BRL",
+          "currencyExplicit": true,
+          "vista": "entrada",
+          "area": null,
+          "plan": "partner",
+          "utm": {},
+          "clean": true
+        },
+        "cleanSearch": "?fbclid=abc&moneda=BRL&plan=partner"
+      },
+      {
+        "name": "plans are lowercase ids only",
+        "locale": "es",
+        "search": "?plan=Growth",
+        "expected": {
+          "currency": "ARS",
+          "currencyExplicit": false,
+          "vista": "entrada",
+          "area": null,
+          "plan": null,
+          "utm": {},
+          "clean": false
+        },
+        "cleanSearch": ""
       }
     ],
     "toEclipse": [
-      { "name": "language only", "input": { "locale": "es" }, "url": "https://eclipse-business.com/es/" },
-      { "name": "currency", "input": { "locale": "pt", "currency": "BRL" }, "url": "https://eclipse-business.com/pt/?moneda=BRL" },
-      { "name": "section and currency", "input": { "locale": "en", "currency": "USD", "section": "precios" }, "url": "https://eclipse-business.com/en/?moneda=USD#precios" },
-      { "name": "section only", "input": { "locale": "es", "section": "contacto" }, "url": "https://eclipse-business.com/es/#contacto" },
-      { "name": "a section outside the list is left out", "input": { "locale": "es", "section": "admin" }, "url": "https://eclipse-business.com/es/" },
-      { "name": "a currency outside the list is left out", "input": { "locale": "es", "currency": "EUR" }, "url": "https://eclipse-business.com/es/" }
+      {
+        "name": "language only",
+        "input": {
+          "locale": "es"
+        },
+        "url": "https://eclipse-business.com/es/"
+      },
+      {
+        "name": "currency",
+        "input": {
+          "locale": "pt",
+          "currency": "BRL"
+        },
+        "url": "https://eclipse-business.com/pt/?moneda=BRL"
+      },
+      {
+        "name": "section and currency",
+        "input": {
+          "locale": "en",
+          "currency": "USD",
+          "section": "precios"
+        },
+        "url": "https://eclipse-business.com/en/?moneda=USD#precios"
+      },
+      {
+        "name": "section only",
+        "input": {
+          "locale": "es",
+          "section": "contacto"
+        },
+        "url": "https://eclipse-business.com/es/#contacto"
+      },
+      {
+        "name": "a section outside the list is left out",
+        "input": {
+          "locale": "es",
+          "section": "admin"
+        },
+        "url": "https://eclipse-business.com/es/"
+      },
+      {
+        "name": "a currency outside the list is left out",
+        "input": {
+          "locale": "es",
+          "currency": "EUR"
+        },
+        "url": "https://eclipse-business.com/es/"
+      }
     ],
     "fromEstateos": [
-      { "name": "currency chosen in EstateOS", "search": "?moneda=ARS", "currency": "ARS" },
-      { "name": "no currency", "search": "", "currency": null },
-      { "name": "lowercase is not accepted", "search": "?moneda=ars", "currency": null },
-      { "name": "first value wins", "search": "?moneda=USD&moneda=BRL", "currency": "USD" },
-      { "name": "markup is not accepted", "search": "?moneda=%3Cb%3E", "currency": null },
-      { "name": "other parameters are ignored", "search": "?vista=guia&utm_source=x", "currency": null }
+      {
+        "name": "currency chosen in EstateOS",
+        "search": "?moneda=ARS",
+        "currency": "ARS"
+      },
+      {
+        "name": "no currency",
+        "search": "",
+        "currency": null
+      },
+      {
+        "name": "lowercase is not accepted",
+        "search": "?moneda=ars",
+        "currency": null
+      },
+      {
+        "name": "first value wins",
+        "search": "?moneda=USD&moneda=BRL",
+        "currency": "USD"
+      },
+      {
+        "name": "markup is not accepted",
+        "search": "?moneda=%3Cb%3E",
+        "currency": null
+      },
+      {
+        "name": "other parameters are ignored",
+        "search": "?vista=guia&utm_source=x",
+        "currency": null
+      }
     ]
   }
 }

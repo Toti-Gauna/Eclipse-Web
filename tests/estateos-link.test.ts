@@ -3,8 +3,9 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { SECTION_IDS } from '@/components/layout/navLinks';
 import { CURRENCIES, defaultCurrencyFor } from '@/lib/currency';
-import { ESTATEOS_UTM_KEYS, currencyFromEstateos, estateosUrl, type EstateosLinkInput } from '@/lib/estateos-link';
+import { ESTATEOS_PLANS, ESTATEOS_UTM_KEYS, currencyFromEstateos, estateosUrl, type EstateosLinkInput } from '@/lib/estateos-link';
 import { routing } from '@/i18n/routing';
+import { levels } from '@/lib/content';
 import { SHOWROOM_AREAS, SHOWROOM_VISTAS } from '@/lib/showroom';
 
 interface Fixture {
@@ -23,7 +24,7 @@ describe('EstateOS link contract (lote 1.6, shared fixture with the `roofy` repo
   // here differ, the two sites no longer agree on the link.
   it('carries the digest of its own cases', () => {
     expect(fixture.digest).toBe(createHash('sha256').update(JSON.stringify(fixture.cases)).digest('hex'));
-    expect(fixture.digest).toBe('144cfcafffb37a6faeca82db70695495799bf36542dcd9abde44eca092182597');
+    expect(fixture.digest).toBe('f66d6ee102d306fef6e9cc6222edf8abec3a5d628764c6470803086692e05665');
   });
 
   describe('Eclipse → EstateOS', () => {
@@ -41,7 +42,7 @@ describe('EstateOS link contract (lote 1.6, shared fixture with the `roofy` repo
     });
 
     it('never builds a URL from something that is not on a list', () => {
-      const url = estateosUrl({ locale: 'es', currency: '<b>' as never, vista: '<i>' as never, area: '<u>' as never, utm: { utm_source: '<s>' } });
+      const url = estateosUrl({ locale: 'es', currency: '<b>' as never, vista: '<i>' as never, area: '<u>' as never, plan: '<p>' as never, utm: { utm_source: '<s>' } });
       expect(url).toBe('https://roofy.eclipse-business.com/es/');
     });
   });
@@ -57,6 +58,7 @@ describe('EstateOS link contract (lote 1.6, shared fixture with the `roofy` repo
       expect(CURRENCIES).toEqual(['ARS', 'BRL', 'USD']);
       expect(SHOWROOM_VISTAS).toEqual(['entrada', 'guia', 'branding', 'intelligence', 'academy']);
       expect(SHOWROOM_AREAS).toEqual(['recepcion', 'administracion', 'ventas', 'marketing']);
+      expect(ESTATEOS_PLANS).toEqual(levels.map((lv) => lv.id));
       expect(ESTATEOS_UTM_KEYS).toEqual(['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']);
     });
 

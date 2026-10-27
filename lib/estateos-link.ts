@@ -23,6 +23,10 @@ export const ESTATEOS_ORIGIN = 'https://roofy.eclipse-business.com';
 export const ESTATEOS_UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
 export type EstateosUtmKey = (typeof ESTATEOS_UTM_KEYS)[number];
 
+/** The six EstateOS plans (same ids as `content/levels.json` and the versioned catalog; `tests/estateos-link.test.ts` checks it). */
+export const ESTATEOS_PLANS = ['contact', 'growth', 'escalar', 'hipergrowth', 'deluxe', 'partner'] as const;
+export type EstateosPlan = (typeof ESTATEOS_PLANS)[number];
+
 const UTM_VALUE = /^[A-Za-z0-9_.-]{1,100}$/;
 
 const pick = <T extends string>(list: readonly T[], value: string | null | undefined): T | null => list.find((item) => item === value) ?? null;
@@ -33,12 +37,14 @@ export interface EstateosLinkInput {
   vista?: ShowroomVista;
   /** Only valid inside the guide (`vista: 'guia'`); anywhere else it is left out. */
   area?: ShowroomArea;
+  /** The plan whose demo opens (lote 3.5: «Ver demo de <plan>»). */
+  plan?: EstateosPlan;
   utm?: Partial<Record<EstateosUtmKey, string>>;
 }
 
 /**
  * URL of EstateOS for a visitor of this site. Parameters, in this order: `moneda`, `vista`,
- * `area`, `utm_*`. A value outside its allow-list is left out instead of failing: the link
+ * `area`, `plan`, `utm_*`. A value outside its allow-list is left out instead of failing: the link
  * still works, only without that detail.
  */
 export function estateosUrl(input: EstateosLinkInput, origin: string = ESTATEOS_ORIGIN): string {
@@ -49,6 +55,8 @@ export function estateosUrl(input: EstateosLinkInput, origin: string = ESTATEOS_
   if (vista) p.set('vista', vista);
   const area = vista === 'guia' ? pick(SHOWROOM_AREAS, input.area ?? null) : null;
   if (area) p.set('area', area);
+  const plan = pick(ESTATEOS_PLANS, input.plan ?? null);
+  if (plan) p.set('plan', plan);
   for (const key of ESTATEOS_UTM_KEYS) {
     const value = input.utm?.[key];
     if (value !== undefined && UTM_VALUE.test(value)) p.set(key, value);

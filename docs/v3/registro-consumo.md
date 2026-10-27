@@ -167,3 +167,11 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
 - **Reintentos / correcciones propias:** (1) la escalera de niveles la había escrito como fases de la luna; `PhaseGlyph` dibuja fases del eclipse (0 → totalidad): se corrigió; (2) el copy de los videos mostraba cupos («1 por mes», «300 por mes», «20 unidades», «3 sedes»), que son propuestas y no se publican: se quitaron y quedó la regla en la guía; (3) recuentos de palabras de tres locuciones y el total de costo de lista (12,75, no 12,76) corregidos; (4) el orden que le había mostrado a Ignacio ponía V1 antes de 3.5, pero el piloto necesita Lumen dentro de `roofy`: se ajustó y se informa. Regeneraciones completas: 0.
 - **Uso de la sesión:** `get_session` informa el modelo y el esfuerzo; el consumo por lote no está desagregado.
 - **Ajuste del mismo día (D32–D36):** Ignacio resolvió D32 (fotos con GPT animadas con Higgsfield) y sumó D33 (pantallas completas), D34 (interacción premium), D35 (pantalla completa con la vista de celular en un botón) y D36 (Higgsfield con él presente). Se actualizaron el informe, la biblia, la guía (§12) y la matriz (41 filas, 65 dependencias, 0 violaciones). La búsqueda en el directorio de conectores no encontró uno de Higgsfield.
+
+
+## 19. Lote 3.5 · Base en `roofy` (27/10/2026)
+
+- **Modelo / esfuerzo:** `claude-sonnet-5-5` · high. **Opus:** 0. **Gasto externo:** USD 0. Se agregaron `gsap`, `@gsap/react` y `lucide-react` (mismas versiones que Eclipse-Web) a `roofy`; `npm audit` 0.
+- **Resultado:** `lote-3.5-base-roofy.md`; en `roofy`, escenario de pantalla completa con barra inferior, entrada, lente por plan, guía, reproductor y 58 pruebas; en Eclipse-Web, `plan` en `lib/estateos-link.ts`, fixture compartido nuevo (digest `f66d6ee1…5665`) y la prueba que fija la copia del catálogo; 467 pruebas.
+- **Reintentos / correcciones propias:** (1) el lint de React rechazó un `setState` dentro de un efecto y una memoización manual: se derivó el plan de la URL y se ajustó la dependencia; (2) mi aserción de QA buscaba el progreso de la simulación solo en español: se corrigió la aserción, no la demo; (3) copié un `showcase.css` que no se usa y lo quité del repo y del manifiesto. Regeneraciones completas: 0.
+- **Uso de la sesión:** no se leyó `get_session` al cierre; consumo por lote: no disponible.
