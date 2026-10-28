@@ -3,7 +3,6 @@ import { ArrowUpRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { pagedProducts, productById, type ProductId } from '@/lib/content';
 import { productPath, PRODUCTS_HREF } from '@/components/layout/navLinks';
-import { SkyTransition } from '@/components/sections/SkyTransition';
 import { DemoExperienceHost } from '@/components/demo-experience/DemoExperienceHost';
 import { UnitLedger, UnitNote } from '@/components/units/UnitBlocks';
 import { UnitAsk } from '@/components/units/UnitAsk';
@@ -17,7 +16,8 @@ import './product-page.css';
 
 /**
  * /productos/<id>/ — where «Conocer <producto>» leads while the product has no site of its own
- * (content/products.json `site`). The name as the page's one big moment, what it is for, its
+ * (content/products.json `site`). All in dawn light (decision of Ignacio, 28/10/2026: «Conocer X» opens like the
+ * Lumen demo, into the light — PageTransition's light screen). The name as the page's one big moment, what it is for, its
  * status (the only price is Roofy's «desde», from content/levels.json), what it includes, what is
  * still being designed (marked «En diseño», never as included) and how to start.
  *
@@ -36,8 +36,13 @@ export function ProductPage({ id, locale }: { id: ProductId; locale: Locale }) {
   const available = product.status === 'available' && product.vertical;
 
   return (
-    <main id="main" className="bg-night">
-      <section aria-labelledby="pp-title" className="u-hero pp-hero theme-dark grain relative isolate overflow-clip bg-void" data-product={id}>
+    <main id="main" className="bg-dawn">
+      <section
+        aria-labelledby="pp-title"
+        data-header-theme="light"
+        className="u-hero pp-hero theme-light relative isolate overflow-clip bg-dawn"
+        data-product={id}
+      >
         <div aria-hidden className="u-hero-light" />
         <div className="container-x u-hero-grid">
           <div className="u-hero-copy">
@@ -76,12 +81,14 @@ export function ProductPage({ id, locale }: { id: ProductId; locale: Locale }) {
       </section>
 
       <UnitLedger
+        light
         id="included"
         title={t('page.included')}
         rows={product.features.map((key) => ({ key, name: t(`items.${id}.features.${key}.name`), text: t(`items.${id}.features.${key}.text`) }))}
       />
       {product.later.length ? (
         <UnitLedger
+          light
           id="later"
           title={t('page.later')}
           rows={product.later.map((key) => ({
@@ -94,26 +101,19 @@ export function ProductPage({ id, locale }: { id: ProductId; locale: Locale }) {
       ) : null}
 
       {available && product.vertical ? (
-        <>
-          <SkyTransition from="night" to="dawn" />
-          <section data-header-theme="light" aria-label={t('page.start')} className="pp-levels theme-light bg-dawn">
-            <div className="container-x">
-              <p className="pp-start">{t(`items.${id}.start`)}</p>
-              <ProductLevels vertical={product.vertical} />
-            </div>
-          </section>
-        </>
+        <section data-header-theme="light" aria-label={t('page.start')} className="pp-levels theme-light bg-dawn">
+          <div className="container-x">
+            <p className="pp-start">{t(`items.${id}.start`)}</p>
+            <ProductLevels vertical={product.vertical} />
+          </div>
+        </section>
       ) : (
-        <UnitNote title={t('page.start')}>
+        <UnitNote light title={t('page.start')}>
           <p>{t(`items.${id}.start`, { date })}</p>
         </UnitNote>
       )}
 
-      <nav
-        aria-labelledby="pp-others-title"
-        data-header-theme={available ? 'light' : undefined}
-        className={`u-band u-others ${available ? 'theme-light bg-dawn' : 'theme-dark bg-night'}`}
-      >
+      <nav aria-labelledby="pp-others-title" data-header-theme="light" className="u-band u-others theme-light bg-dawn">
         <div className="container-x">
           <h2 id="pp-others-title" className="label u-others-title">
             {t('page.others')}
@@ -121,7 +121,7 @@ export function ProductPage({ id, locale }: { id: ProductId; locale: Locale }) {
           <ul className="u-others-list">
             {others.map((p) => (
               <li key={p.id}>
-                <Link href={productPath(p.id)} className="u-other">
+                <Link href={productPath(p.id)} className="u-other" data-transition="light" data-transition-label={t(`items.${p.id}.name`)}>
                   <span className="display u-other-name">{t(`items.${p.id}.name`)}</span>
                   <span className="u-other-short">{t(`items.${p.id}.line`)}</span>
                   <ArrowUpRight aria-hidden className="u-other-arrow" strokeWidth={1.5} />
@@ -136,7 +136,6 @@ export function ProductPage({ id, locale }: { id: ProductId; locale: Locale }) {
           </p>
         </div>
       </nav>
-      {available ? null : <SkyTransition from="night" to="dawn" />}
       {available ? <DemoExperienceHost /> : null}
     </main>
   );

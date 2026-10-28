@@ -250,3 +250,9 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
   - «Potenciar mi negocio» flota abajo a la derecha.
   - Gimnasios, DentalOS, Clínicas y VetOS «Próximamente», con SVG propios y sin precio.
   - 478 pruebas y e2e 99/99. Gasto externo: USD 0.
+- **Tercera vuelta (mismo día):**
+  - Comercial «Eclipse en 40 segundos» después de la pantalla de carga, en cada carga de la home, con música propia y
+    «Activar Eclipse».
+  - Pantallas de carga entre páginas; «Conocer X» con la luz de la demo de Lumen y páginas de producto claras.
+  - Movimiento continuo en todas las láminas, con personajes y objetos que viajan (solo en pantalla).
+  - 488 pruebas y e2e 118/118. Gasto externo: USD 0 (sin dependencias nuevas; MotionPath ya viene con `gsap`).

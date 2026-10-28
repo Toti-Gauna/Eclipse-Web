@@ -9,7 +9,7 @@ import { observeEnter } from '@/components/motion/observeEnter';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { SectionMark } from '@/components/ui/SectionMark';
 import { SECTION_IDS } from '@/components/layout/navLinks';
-import { artEntrance } from '@/components/sections/products/artMotion';
+import { plateLife } from '@/components/sections/products/artIdle';
 import { MEDIA_FRAMES, MediaFrame } from './MediaFrames';
 import '@/components/sections/products/products.css';
 import './media.css';
@@ -24,7 +24,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
  * two screens or more above.
  *
  * Motion: the first time the sheet reaches the reading line, a playhead crosses it and each
- * frame is exposed in turn (artEntrance, 120 ms apart). Reduced motion: the sheet is just there.
+ * frame is exposed in turn (artEntrance, 90 ms apart); then every frame keeps playing its piece
+ * while the sheet is on screen (artIdle). Reduced motion: the sheet is just there, still.
  */
 export function MediaSection() {
   const t = useTranslations('media');
@@ -38,9 +39,14 @@ export function MediaSection() {
       const plates = gsap.utils.toArray<HTMLElement>('[data-media-plate]', root);
       const head = root.querySelector('[data-media-head]');
       const master = gsap.timeline({ paused: true });
-      if (head) master.fromTo(head, { xPercent: 0, opacity: 1 }, { xPercent: 100, duration: 1.6, ease: 'expo.inOut' }, 0).to(head, { opacity: 0, duration: 0.3 }, 1.45);
-      plates.forEach((plate, i) => master.add(artEntrance(plate, { duration: 0.9 }).paused(false), 0.12 + i * 0.12));
-      return observeEnter(root, 'top 75%', () => void master.play());
+      if (head) master.fromTo(head, { xPercent: 0, opacity: 1 }, { xPercent: 100, duration: 1.3, ease: 'expo.inOut' }, 0).to(head, { opacity: 0, duration: 0.3 }, 1.15);
+      const lives = plates.map((plate) => plateLife(plate, { duration: 0.8 }));
+      lives.forEach((life, i) => master.add(life.entrance.paused(false), 0.08 + i * 0.09));
+      const cancel = observeEnter(root, 'top 92%', () => void master.play());
+      return () => {
+        cancel();
+        lives.forEach((life) => life.dispose());
+      };
     },
     { scope: sheet },
   );

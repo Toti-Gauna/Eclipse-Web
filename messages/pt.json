@@ -6031,5 +6031,55 @@
       "contact": "Conte o seu projeto",
       "ask": "Olá, Eclipse. Quero contar um projeto para a Eclipse Agency."
     }
+  },
+  "intro": {
+    "label": "Eclipse em 40 segundos",
+    "skip": "Pular",
+    "soundOn": "Ativar som",
+    "soundOff": "Silenciar",
+    "soundLoading": "Carregando som…",
+    "activate": "Ativar Eclipse",
+    "activateHint": "Entre para ver o seu negócio em plena luz.",
+    "tagline": "Desenvolvimento · IA · Automação · Conteúdo",
+    "golpes": {
+      "g1": "Sites.",
+      "g2": "Sistemas.",
+      "g3": "Conteúdo.",
+      "g4": "Tudo conectado."
+    },
+    "eco": {
+      "title": "Um ecossistema para o seu <em>negócio</em>.",
+      "core": "Eclipse",
+      "products": "Produtos",
+      "units": "Unidades"
+    },
+    "includes": "O que inclui",
+    "soon": {
+      "title": "E o que vem por aí."
+    },
+    "units": {
+      "title": "Tudo conversa com tudo."
+    },
+    "plans": {
+      "title": "Seis planos. Escolha o seu.",
+      "note": "Preços do Roofy (imobiliárias), por mês. Partner é uma proposta.",
+      "proposal": "Proposta"
+    },
+    "end": {
+      "title": "Seu negócio, em plena <em>luz</em>."
+    },
+    "static": {
+      "title": "Eclipse: um ecossistema para o seu negócio.",
+      "products": "Produtos",
+      "units": "Unidades"
+    },
+    "equipment": "Displays, QR e embalagens com a sua marca.",
+    "perMonth": "/mês",
+    "progress": "Andamento do filme",
+    "usd": "USD {n}"
+  },
+  "transition": {
+    "loading": "Carregando",
+    "light": "Acendendo a luz"
   }
 }

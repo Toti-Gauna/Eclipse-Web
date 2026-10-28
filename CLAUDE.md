@@ -117,10 +117,36 @@ reachable (folded is fine, deleted is not).
 - **One amber per viewport:** the hero's CTA wrapper carries `data-hero-cta`; a section's solid amber CTA carries
   `data-page-cta` (`<DemoCta pageCta>`). While one is on screen the header CTA turns to outline (`usePageCtaInView`).
   Mark any new solid amber CTA the same way.
-- **Motion (overrides the v2 art direction where they conflict):** no permanent decorative animation; big
-  motion only in the hero or one transition; everything pauses off-screen; no heavy work per scroll event;
-  reduced motion = static. The hero pins only with a mouse/trackpad. Any performance claim needs a before/after
-  measurement (method and baseline in `docs/v3/rendimiento.md`).
+- **Motion (overrides the v2 art direction where they conflict):** big motion only in the hero, the intro film and
+  the page transitions; everything pauses off-screen; no heavy work per scroll event; reduced motion = static. The hero
+  pins only with a mouse/trackpad. Any performance claim needs a before/after measurement (method and baseline in
+  `docs/v3/rendimiento.md`).
+  **Exception, decision of Ignacio 28/10/2026 («todo en movimiento, cada uno por área»):** every plate keeps moving once
+  it is drawn — the product plates, the Media frames, the Equipment kit, the unit emblems — each with its own small
+  story (Roofy's visitor walks to the door, Handy's specialist carries his toolbox, the cloche lifts, the pulse runs…).
+  Loops live in `components/sections/products/artIdle.ts` (`plateLife` = draw once, then loop; `startPlateLoop`;
+  `walkLoop` for `<Walker>`), keyed by `data-i` hooks in the SVG; travellers carry `.pd-mover` (hidden until a loop
+  moves them, so the still drawing never shows them). They play ONLY while on screen and the tab is visible
+  (`whileVisible`, one pooled IntersectionObserver, `components/motion/idle.ts`) and never under reduced motion.
+  Entrances start as soon as a plate comes into view (`top 92%`). transform / opacity / clip-path only.
+- **Intro film «Eclipse en 40 segundos» (decision of Ignacio, 28/10/2026; `components/intro/`):** on EVERY full load of
+  the home, right after the loading screen: what Eclipse offers and how it all connects (ignition → four word slams →
+  the ecosystem's two orbits → a camera zoom into each product with what it includes → «Próximamente» → the units →
+  the six plans priced from `content/levels.json` in the visitor's currency → «Tu negocio, a plena luz» and «Activar
+  Eclipse», which hands the film's eclipse over to the hero's). Kinetic Studio method: one paused GSAP timeline on a
+  120 BPM grid (`score/jingle.ts`), built from the site's own pieces, never a recording. Its own music (`score/
+  orquesta.ts`, a copy of roofy's orchestra), rendered offline only when the visitor turns the sound on (off by default);
+  then the music's clock drives the film. A modal `<dialog>`: «Saltar», Escape, `?intro=0` / localStorage
+  `eclipse:intro`=off (QA, e2e). Never over a link to a section (`#…`) or the showroom (`?rubro=`…), never on other pages
+  or client navigations (inline `introScript`, before paint; the veil hides the hero until the film opens). Landscape
+  stage 1600 × 900, portrait 540 × 1080, scaled to fit. Reduced motion: a still card with the same content.
+- **Page transitions (decision of Ignacio, 28/10/2026; `components/layout/PageTransition.tsx`):** a click on a link to
+  another page of the site shows a loading screen — the night closes from the click, the eclipse and the destination's
+  name hold while the page loads, the night opens onto it. «Conocer <producto>» (and every product link) carries
+  `data-transition="light"`: the Lumen demo's opening in short (moon slides, diamond ring, the light floods) and the
+  product page (now all dawn: `theme-light`) comes out of the light. Capture-phase click + `router.push` under the cover;
+  same-page anchors (SmoothAnchors), modifiers, `target`, `data-opens-selector` are left alone; reduced motion: plain
+  navigation.
 - **Hydration must not change heights:** a deferred section's server HTML must measure the same as the hydrated
   section (otherwise anchor jumps land off and there is layout shift). Media-query defaults go in CSS too — e.g.
   `ServicesIndex` marks its desktop-default family `data-default` (Tailwind's preflight makes `[hidden]` !important,
@@ -286,6 +312,8 @@ agents, gamification, e-commerce, dashboards, automations, apps.
   Once-only entrances (Reveal, DrawLine, Occult, LightSweep, CountUp) are CSS transitions started by one pooled
   IntersectionObserver (`components/motion/observeEnter.ts`) — don't add a ScrollTrigger per entrance. The WebGL
   corona draws on demand: call `bus.current.wake?.(ms)` (HeroState) when something should move it.
+  Plates: `plateLife(frame)` (artEntrance + its loop), `startPlateLoop`, `walkLoop` + `<Walker>`, `whileVisible(el, tl)`
+  for any loop (plays only on screen). MotionPath is registered in `@/components/motion/gsap` (travellers on routes).
 - Money: `useCurrency()` → `{ currency, rates, format(usd), convert(usd) }`; `<Money usd>`,
   `<AnimatedMoney usd>` (rolls on change). Pricing logic: `lib/pricing.ts` (`quote`,
   `addonsForPlan`, `detectPlans`, `planSavings`, `maintenanceSuggestion`, `annualize`,

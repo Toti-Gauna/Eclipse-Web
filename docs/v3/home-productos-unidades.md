@@ -96,6 +96,79 @@ mouse/trackpad (la misma regla que el hero); movimiento reducido = todo quieto y
     hero y el banner.
   - Capturas: `1440-dentalos`, `1440-vetos`, `1440-boton-flotante` y `360-boton-flotante`.
 
+## Tercera vuelta (28/10/2026, pedido de Ignacio)
+
+**Pedido:** «más animaciones, que aparezcan más rápido, todo en movimiento, cada uno por área; pantallas de carga entre
+páginas; que "Conocer X" se ponga todo blanco, como la demo de Lumen; una publicidad de lo que Eclipse ofrece y de cómo
+es un ecosistema, con Kinetic Studio, después de la pantalla de carga, en cada refresh, con música divertida, para celu y
+escritorio, con zoom, con SVG de lo que incluye cada uno y los planes con precio, y al final un botón "Activar Eclipse"
+que lleve a la home; personajes, objetos que se mueven y transiciones, sin perder la estética minimalista».
+
+### El comercial «Eclipse en 40 segundos» (`components/intro/`)
+
+Sale después de la pantalla de carga en **cada carga de la home** (no se recuerda nada) y termina en «Activar Eclipse».
+Capturas: `capturas/comercial/1440-comercial.jpg` y `390-comercial.jpg`.
+
+| Segundo | Escena | Qué pasa |
+|---|---|---|
+| 0–4 | Encendido | El eclipse sale de la pantalla de carga, la luna se desliza, el anillo de diamante, «ECLIPSE» letra por letra y las cuatro cosas que hacemos. |
+| 4–8 | Golpes | «Webs.» «Sistemas.» «Contenido.» «Todo conectado.»: una palabra cada dos tiempos, cada una en su panel (claro, oscuro con corona, ceniza, claro). |
+| 8–12 | Ecosistema | Eclipse en el centro, los ocho productos en una órbita y las cinco unidades en otra; giran y los datos viajan al centro. Gente caminando por la calle de abajo. |
+| 12–24 | Zoom | La cámara entra en Roofy y después cada producto tiene su pantalla: la lámina que se dibuja y se mueve (el visitante, el especialista, la campana…), qué incluye con un ícono por punto y su estado real (solo Roofy con precio). |
+| 24–28 | Lo que viene | Gimnasios, DentalOS, Clínicas y VetOS con su lámina y «Próximamente». |
+| 28–32 | Unidades | Media, Academy, Intelligence, Agency y Equipamiento, conectados por una línea con paquetes que viajan. |
+| 32–38 | Planes | Los seis niveles crecen como barras y cada precio sube como un instrumento, en la moneda del visitante (de `content/levels.json`); Partner dice «Propuesta». |
+| 38–40 | Cierre | La luna se va del sol, «Tu negocio, a plena luz.» y «Activar Eclipse». Al tocarlo, el eclipse del comercial vuela y aterriza sobre el del hero. |
+
+- **Método Kinetic Studio:** una línea de tiempo de GSAP en una grilla de 120 BPM, armada con las piezas del sitio (el
+  eclipse, las láminas, los textos y los precios del catálogo); no hay video ni imágenes.
+- **Música:** una composición propia (melodía, armonía, bajo; do mayor, I–V–vi–IV) tocada por la orquesta de los tráileres
+  de roofy. Se genera en el navegador recién cuando el visitante toca «Activar sonido» (el sonido arranca apagado, como en
+  todo el sitio) y desde ahí la música marca el reloj de la película. Al final queda un loop suave de dos compases.
+- **Celular y escritorio:** escenario de 1600 × 900 en pantallas apaisadas y de 540 × 1080 en verticales, cada uno con su
+  composición; se escala a la pantalla y, si se gira el teléfono, se rearma en el mismo segundo.
+- **Control:** «Saltar» y Escape en todo momento; la regla de abajo muestra el avance.
+- **Cuándo no sale:** con un enlace a una sección (`/es/#productos`, también los viejos `/#precios`) o a la vitrina
+  (`?rubro=`), en las otras páginas y al volver a la home navegando dentro del sitio. Con movimiento reducido es una
+  tarjeta quieta con lo mismo (productos, unidades, los seis planes con precio) y «Activar Eclipse».
+
+### Pantallas de carga entre páginas (`components/layout/PageTransition.tsx`)
+
+- **Todas las páginas:** al tocar un enlace a otra página, la noche se cierra desde el punto del toque, el eclipse y el
+  nombre del destino ocupan la pantalla mientras carga y la noche se abre sobre la página nueva.
+- **«Conocer X» (y todo enlace a un producto):** la apertura de la demo de Lumen en corto: la luna se corre, el anillo de
+  diamante y la luz inunda la pantalla. La página del producto sale de esa luz y ahora es toda clara.
+- Captura: `capturas/comercial/1440-transiciones.jpg`, `1440-pagina-roofy-clara.jpg`, `360-pagina-roofy-clara.jpg`.
+
+### Todo en movimiento
+
+- Cada lámina, después de dibujarse, sigue contando su historia en bucle:
+  - **Roofy:** un visitante camina hasta la puerta, sale humo de la chimenea, la consulta viaja de la ventana a la
+    ficha y llena su barra, la visita late en la agenda.
+  - **Foody:** la campana se levanta y sale el vapor; se escanea el QR de la carta.
+  - **Markyt:** la etiqueta se balancea, el paquete viaja a la caja y aparece el ✓; cambia la variante elegida.
+  - **Handy:** el especialista camina con su caja de herramientas, el alfiler flota y marca su zona, la llave gira.
+  - **Gimnasios:** la barra sube, el anillo de la racha gira, la clase se mueve en la grilla.
+  - **DentalOS:** el turno viaja a su nuevo lugar, aparece el mensaje y brilla la muela.
+  - **Clínicas:** el pulso recorre la línea, suena la campana y el recordatorio llega a la agenda.
+  - **VetOS:** las huellas caminan hasta la visita a domicilio y la llamada del tutor llega al paciente.
+- También los seis cuadros de Media, el despiece de Equipamiento (flota y sus partes trabajan) y los emblemas de cada
+  unidad (un alumno sube los niveles de Academy, la aguja de Intelligence mide, los paquetes llegan al centro de Agency).
+- Aparecen antes: cada lámina empieza a dibujarse apenas asoma en la pantalla.
+- Reglas que se mantienen: solo `transform`, `opacity` y `clip-path`; cada bucle corre solo mientras se ve y con la
+  pestaña visible; con movimiento reducido todo queda quieto. Esto es una excepción a la regla de v3 «sin animación
+  decorativa permanente», por decisión de Ignacio (anotada en `CLAUDE.md`).
+
+### Verificación de esta vuelta
+
+- `vitest`: 488 pruebas (nueva `tests/intro.test.ts`: tiempos sobre la grilla, música completa con melodía/armonía/bajo,
+  escenario dentro de la pantalla, planes del catálogo, cuándo sale y cuándo no).
+- e2e: **118/118**. Suma el comercial (sale después del loader, sonido apagado, cuatro productos + cuatro que vienen +
+  cinco unidades + seis precios, «Saltar» y Escape devuelven la home con el foco en el H1, vuelve a salir al refrescar,
+  nunca con un enlace a sección ni en otras páginas, tarjeta quieta con movimiento reducido), las pantallas de carga
+  (noche hacia Media, luz hacia Roofy y página clara) y que las láminas se muevan.
+- Navegador: sin errores de consola y sin scroll horizontal a 390 px; el sonido arranca y el comercial sigue su reloj.
+
 ## Decisiones que quedan para Ignacio
 
 1. **Nombre visible: «Roofy» o «EstateOS».** D11 decía que el visitante ve «EstateOS». En esta web ahora dice «Roofy»
@@ -105,6 +178,10 @@ mouse/trackpad (la misma regla que el hero); movimiento reducido = todo quieto y
 3. **Destino de «Conocer X».** Hoy cada uno abre su página dentro de Eclipse. Cuando Roofy o Handy publiquen su sitio, se
    carga el `site` en `content/products.json` y el botón pasa a llevar ahí.
 4. **El selector de rubro** quedó solo en `/agency/`: desde la home, el banner de productos cumple su función.
+5. **El comercial en cada refresh.** Hoy sale en cada carga de la home (como pediste); si querés que salga una vez por
+   visita, es un cambio de una línea en `components/intro/introScript.ts`.
+6. **La música del comercial.** Para escucharla: abrir la home y tocar «Activar sonido». Si querés otro carácter (más
+   rápida, otro instrumento al frente), se cambia en `components/intro/score/jingle.ts`.
 
 ## Verificación
 

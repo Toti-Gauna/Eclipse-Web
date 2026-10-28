@@ -6,7 +6,8 @@
  * Motion hooks (EquipmentSection): `[data-eq-part]` groups fly out from the middle of the kit
  * to their place (the "despiece"), `[data-eq-callout]` pop in after them, `[data-art-light]`
  * lights up last; `data-active` on a part (hovered in the list) lights it in the accent.
- * The markup is the final state.
+ * Once assembled, the exploded kit floats and its parts keep working (artIdle: the QR is
+ * scanned, a key is pressed, the keychain swings). The markup is the final state.
  */
 export const EQUIPMENT_PARTS = ['qr', 'displays', 'packaging', 'cards', 'keychains', 'hardware'] as const;
 export type EquipmentPart = (typeof EQUIPMENT_PARTS)[number];
@@ -33,7 +34,7 @@ const CALLOUTS: Record<EquipmentPart, { at: [number, number]; to: [number, numbe
 
 export function EquipmentSheet({ active }: { active: EquipmentPart | null }) {
   return (
-    <svg viewBox="0 0 640 400" aria-hidden focusable="false" className="pd-art-svg eq-svg">
+    <svg viewBox="0 0 640 400" aria-hidden focusable="false" className="pd-art-svg eq-svg" data-eq-art>
       <g className="pd-dim">
         <path d="M24 196H616" className="pd-dotted" />
         <path d="M320 24V376" className="pd-dotted" />
@@ -46,6 +47,7 @@ export function EquipmentSheet({ active }: { active: EquipmentPart | null }) {
         <path d="M94 88H100V94H94ZM120 88H126V94H120ZM94 114H100V120H94Z" className="pd-fill" />
         <path d="M110 104H114V108H110ZM118 112H124V118H118ZM110 118H114V124H110ZM124 106H130V110H124Z" className="pd-fill pd-soft-fill" />
         <path d="M92 138H128M98 148H122" className="pd-soft" />
+        <path data-i="qr-scan" d="M86 82H134" className="pd-mover" />
       </g>
 
       <g data-eq-part data-part="displays" data-active={active === 'displays' || undefined}>
@@ -75,9 +77,11 @@ export function EquipmentSheet({ active }: { active: EquipmentPart | null }) {
       <g data-eq-part data-part="keychains" data-active={active === 'keychains' || undefined}>
         <circle cx="300" cy="286" r="15" />
         <circle cx="300" cy="286" r="9" className="pd-soft" />
-        <path d="M309 297L344 312C350 314 352 320 350 326L342 344C340 350 334 352 328 350L294 336C288 334 286 328 288 322L296 304" />
-        <circle cx="304" cy="312" r="3" className="pd-soft" />
-        <path d="M312 324L334 333" className="pd-soft" />
+        <g data-i="tag">
+          <path d="M309 297L344 312C350 314 352 320 350 326L342 344C340 350 334 352 328 350L294 336C288 334 286 328 288 322L296 304" />
+          <circle cx="304" cy="312" r="3" className="pd-soft" />
+          <path d="M312 324L334 333" className="pd-soft" />
+        </g>
       </g>
 
       <g data-eq-part data-part="hardware" data-active={active === 'hardware' || undefined}>
@@ -90,7 +94,7 @@ export function EquipmentSheet({ active }: { active: EquipmentPart | null }) {
           <rect x="503" y="300" width="14" height="9" rx="1.5" />
           <rect x="524" y="300" width="14" height="9" rx="1.5" />
           <rect x="482" y="316" width="14" height="9" rx="1.5" />
-          <rect x="503" y="316" width="14" height="9" rx="1.5" />
+          <rect data-i="key" x="503" y="316" width="14" height="9" rx="1.5" />
           <rect x="524" y="316" width="14" height="9" rx="1.5" />
           <rect x="482" y="332" width="56" height="7" rx="1.5" />
         </g>

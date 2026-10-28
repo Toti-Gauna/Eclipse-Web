@@ -1,0 +1,1025 @@
+/*
+ * The intro film (components/intro): «Eclipse en 40 segundos». Everything on the stage is in stage units
+ * (1600 × 900, or 540 × 1080 with [data-layout='port']); IntroFilm scales the stage to fit the screen.
+ * Only transform / opacity / clip-path are animated (introTimeline.ts).
+ */
+
+/* ---- The veil: covers the home from the first paint while the film is on (introScript.ts). ---- */
+.intro-veil {
+  display: none;
+}
+html[data-intro='on'] {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+html[data-intro='on'] .intro-veil {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 95; /* under the loader (100), over the header and the floating CTA */
+  background: var(--void);
+}
+
+/* ---- The dialog -------------------------------------------------------------------------- */
+.it {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  /* clip, not hidden: the stage's oversize layers (a golpe's colour reaches 2000px past it) must never make the
+     dialog a scroll container that a focus or a touch could scroll. */
+  overflow: clip;
+  background: transparent;
+  color: var(--dawn);
+}
+.it::backdrop {
+  background: transparent;
+}
+.it-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 60% at 50% 42%, rgb(245 185 66 / 0.06), transparent 70%),
+    var(--void);
+}
+.it-bg::after {
+  /* A few stars, still. */
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  box-shadow:
+    -41vmin -27vmin 0 0 rgb(244 239 230 / 0.4),
+    -24vmin -39vmin 0 -0.4px rgb(244 239 230 / 0.28),
+    31vmin -33vmin 0 0 rgb(244 239 230 / 0.34),
+    44vmin -12vmin 0 -0.4px rgb(244 239 230 / 0.26),
+    -47vmin 8vmin 0 -0.4px rgb(244 239 230 / 0.24),
+    39vmin 21vmin 0 0 rgb(244 239 230 / 0.28),
+    -33vmin 36vmin 0 -0.4px rgb(244 239 230 / 0.2),
+    18vmin 43vmin 0 -0.4px rgb(244 239 230 / 0.2),
+    9vmin -47vmin 0 -0.4px rgb(255 232 176 / 0.32);
+}
+
+/* ---- The stage ---------------------------------------------------------------------------- */
+.it-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: 50% 50%;
+  color: var(--fg);
+  font-family: var(--font-sans);
+}
+.it-stage > * {
+  position: absolute;
+}
+.it-scene {
+  inset: 0;
+}
+.it-title {
+  position: absolute;
+  left: 110px;
+  top: 96px;
+  max-width: 900px;
+  font-size: 84px;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+}
+.it-title em,
+.it-end-title em {
+  font-style: italic;
+  color: var(--flare);
+}
+.it-soft {
+  opacity: 0.45;
+}
+
+/* World / ecosystem */
+.it-world {
+  inset: 0;
+  z-index: 1;
+}
+.it-ring {
+  position: absolute;
+  overflow: visible;
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 2 7;
+}
+.it-orbit {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.it-spoke {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, rgb(244 239 230 / 0.02), var(--line-strong));
+}
+.it-spoke-far {
+  background: linear-gradient(90deg, rgb(244 239 230 / 0.02), rgb(244 239 230 / 0.12));
+}
+.it-spoke i {
+  position: absolute;
+  left: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--flare);
+  box-shadow: 0 0 10px 2px rgb(255 232 176 / 0.45);
+}
+.it-node {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--night);
+  color: var(--dawn);
+}
+.it-node svg {
+  width: 44%;
+  height: 44%;
+}
+.it-node[data-soon] {
+  border-style: dashed;
+  color: var(--mist);
+}
+.it-node-unit {
+  border-radius: 30%;
+}
+.it-node-name {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.it-eco-copy .it-title {
+  max-width: 540px;
+  font-size: 80px;
+}
+.it-kicker {
+  position: absolute;
+  left: 110px;
+  top: 300px;
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--mist);
+}
+
+/* Ignition */
+.it-ignite {
+  z-index: 2;
+}
+.it-word {
+  left: 0;
+  right: 0;
+  top: 590px;
+  display: flex;
+  justify-content: center;
+  padding-left: 0.5em;
+  overflow: hidden;
+  font-size: 46px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.5em;
+  color: var(--dawn);
+}
+.it-word span {
+  display: inline-block;
+}
+.it-tagline {
+  left: 0;
+  right: 0;
+  top: 680px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.it-ignite > * {
+  position: absolute;
+}
+
+/* The travelling eclipse and its diamond ring */
+.it-eclipse {
+  left: 0;
+  top: 0;
+  z-index: 11;
+}
+.it-glint {
+  position: absolute;
+  left: 64%;
+  top: 33%;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle, rgb(255 255 255) 0 3px, rgb(255 232 176 / 0.85) 6px, transparent 26px),
+    linear-gradient(90deg, transparent 0 40%, rgb(255 240 210 / 0.9) 50%, transparent 60% 100%) center / 100% 2px no-repeat,
+    linear-gradient(0deg, transparent 0 40%, rgb(255 240 210 / 0.9) 50%, transparent 60% 100%) center / 2px 100% no-repeat;
+}
+
+/* Golpes */
+.it-golpes {
+  z-index: 14;
+}
+.it-golpe {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 26px;
+  padding: 0 60px;
+  text-align: center;
+}
+/* The panel's colour reaches past the stage (the letterbox), its clip-path decides how much shows. */
+.it-golpe::before {
+  content: '';
+  position: absolute;
+  inset: -2000px;
+  z-index: -1;
+  background: inherit;
+}
+.it-golpe {
+  isolation: isolate;
+}
+.it-golpe[data-golpe='0'],
+.it-golpe[data-golpe='3'] {
+  background: var(--dawn);
+  color: var(--ink);
+}
+.it-golpe[data-golpe='1'] {
+  background:
+    radial-gradient(60% 80% at 0% 50%, rgb(245 185 66 / 0.2), transparent 70%),
+    var(--void);
+  color: var(--flare);
+}
+.it-golpe[data-golpe='2'] {
+  background: var(--ash);
+  color: var(--dawn);
+}
+.it-golpe-word {
+  font-size: 230px;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+.it-golpe-n {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.22em;
+  opacity: 0.6;
+}
+.it-golpe-mark {
+  width: 150px;
+  height: 120px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.it-golpe-mark * {
+  vector-effect: non-scaling-stroke;
+}
+
+/* Eco copy */
+.it-eco-copy {
+  z-index: 4;
+}
+
+/* Product panels */
+.it-panels {
+  z-index: 7;
+}
+.it-panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 660px 1fr;
+  align-items: center;
+  gap: 80px;
+  padding: 80px 110px;
+  background:
+    radial-gradient(45% 60% at 26% 52%, rgb(245 185 66 / 0.07), transparent 70%),
+    var(--void);
+}
+.it-plate {
+  position: relative;
+  width: 660px;
+  aspect-ratio: 480 / 400;
+  padding: 16px;
+  color: var(--fg);
+  overflow: clip;
+}
+.it-copy-n {
+  display: flex;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  color: var(--mist);
+}
+.it-copy-rubro {
+  text-transform: uppercase;
+}
+.it-name {
+  margin-top: 6px;
+  font-size: 156px;
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+}
+.it-line {
+  max-width: 32ch;
+  margin-top: 14px;
+  font-size: 25px;
+  line-height: 1.35;
+  color: var(--mist);
+}
+.it-includes {
+  margin-top: 30px;
+  font-size: 13px;
+  color: var(--mist);
+}
+.it-points {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 28px;
+  margin-top: 14px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+.it-points li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.it-point-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  color: var(--flare);
+}
+.it-point-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.it-status {
+  margin-top: 28px;
+  font-size: 15px;
+}
+
+/* Coming soon */
+.it-soon,
+.it-units,
+.it-plans {
+  background: var(--void);
+}
+.it-soon {
+  z-index: 8;
+}
+.it-soon-list {
+  position: absolute;
+  left: 110px;
+  right: 110px;
+  top: 250px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+.it-soon-card {
+  border-top: 1px solid var(--line-strong);
+  padding-top: 18px;
+}
+.it-soon-plate {
+  position: relative;
+  aspect-ratio: 480 / 400;
+  color: var(--fg);
+  overflow: clip;
+}
+.it-soon-name {
+  margin-top: 10px;
+  font-size: 46px;
+  line-height: 1;
+}
+.it-soon-rubro {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.it-soon-points {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 15px;
+  color: var(--mist);
+}
+.it-soon-points li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.it-soon-points svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  color: var(--dawn);
+}
+.it-soon-pill {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 7px 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* Units */
+.it-units {
+  z-index: 9;
+}
+.it-units-row {
+  position: absolute;
+  left: 110px;
+  right: 110px;
+  top: 300px;
+}
+.it-units-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px;
+}
+.it-unit-plate {
+  position: relative;
+  aspect-ratio: 480 / 400;
+  color: var(--fg);
+  overflow: clip;
+}
+.it-unit-plate .eq-svg {
+  width: 100%;
+  height: 100%;
+}
+.it-unit-name {
+  margin-top: 14px;
+  font-size: 32px;
+  line-height: 1.02;
+}
+.it-unit-short {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--mist);
+}
+.it-bus {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -34px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong) 8% 92%, transparent);
+}
+.it-bus i {
+  position: absolute;
+  left: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--flare);
+  box-shadow: 0 0 10px 2px rgb(255 232 176 / 0.45);
+}
+
+/* Plans */
+.it-plans {
+  z-index: 10;
+}
+.it-plans-list {
+  position: absolute;
+  left: 110px;
+  right: 110px;
+  top: 230px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 26px;
+}
+.it-plan-top {
+  display: flex;
+  height: 380px;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  border-bottom: 1px solid var(--line-strong);
+}
+.it-plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.it-plan-per {
+  font-size: 14px;
+  color: var(--mist);
+}
+.it-plan-bar {
+  position: relative;
+  display: block;
+  height: calc(var(--h) * 290px);
+  border: 1px solid var(--line-strong);
+  border-bottom: 0;
+  background: linear-gradient(to top, rgb(255 232 176 / 0.28), rgb(255 232 176 / 0.06));
+  overflow: hidden;
+}
+.it-plan-bar i {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(to top, rgb(255 232 176 / 0.45), transparent);
+}
+.it-plan-name {
+  margin-top: 16px;
+  font-size: 38px;
+  line-height: 1;
+}
+.it-plan-tag {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--flare);
+}
+.it-plan-lead {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--dawn);
+}
+.it-plan-includes {
+  display: grid;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--mist);
+}
+.it-plans-note {
+  position: absolute;
+  left: 110px;
+  bottom: 70px;
+  font-size: 15px;
+  color: var(--mist);
+}
+
+/* The scene change */
+.it-wipe {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 15;
+  width: 2px;
+  background: var(--flare);
+  box-shadow:
+    0 0 2px 1px rgb(255 255 255 / 0.9),
+    0 0 34px 8px rgb(245 185 66 / 0.45);
+}
+
+/* End card */
+.it-end {
+  z-index: 12;
+}
+.it-end > * {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.it-end-title {
+  top: 500px;
+  font-size: 108px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.it-end-cta {
+  top: 668px;
+  display: flex;
+  justify-content: center;
+}
+.it-end-hint {
+  top: 770px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--mist);
+}
+.it-activate {
+  min-height: 66px;
+  padding: 0 44px;
+  font-size: 22px;
+  overflow: hidden;
+}
+/* The vamp: a slow light across «Activar Eclipse» while the end card waits (on screen only; the film is a modal). */
+.it-activate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.55) 50%, transparent 65%);
+  transform: translateX(-120%);
+}
+.it-stage[data-vamp] .it-activate::after {
+  animation: it-sheen 2.4s var(--ease-expo, cubic-bezier(0.16, 1, 0.3, 1)) infinite;
+}
+@keyframes it-sheen {
+  0% {
+    transform: translateX(-120%);
+  }
+  55%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* The street */
+.it-ground {
+  left: 0;
+  z-index: 13;
+  height: 120px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--dawn);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.it-ground-line {
+  stroke: var(--line-strong);
+}
+
+/* ---- Chrome (real screen pixels, outside the stage) ------------------------------------------- */
+.it-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+}
+.it-label {
+  font-size: 11px;
+  color: var(--mist);
+}
+.it-actions {
+  display: flex;
+  gap: 8px;
+}
+.it-ctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgb(5 5 10 / 0.55);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dawn);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.it-ctl svg {
+  width: 16px;
+  height: 16px;
+}
+.it-ctl[aria-pressed='true'] {
+  border-color: rgb(255 232 176 / 0.55);
+}
+.it-ctl:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+@media (hover: hover) and (pointer: fine) {
+  .it-ctl:hover {
+    border-color: rgb(244 239 230 / 0.45);
+  }
+}
+@media (max-width: 420px) {
+  .it-label {
+    display: none;
+  }
+}
+.it-ruler {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+  height: 1px;
+  background: var(--line-strong);
+}
+.it-ruler-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--flare);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+.it-ruler-tick {
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background: rgb(244 239 230 / 0.35);
+}
+
+/* ---- Portrait stage (540 × 1080) ------------------------------------------------------------ */
+[data-layout='port'] .it-title {
+  left: 32px;
+  right: 32px;
+  top: 96px;
+  font-size: 54px;
+}
+[data-layout='port'] .it-eco-copy .it-title {
+  max-width: none;
+  font-size: 52px;
+}
+[data-layout='port'] .it-kicker {
+  left: 32px;
+  top: 236px;
+  font-size: 12px;
+}
+[data-layout='port'] .it-node-name {
+  font-size: 10px;
+  top: calc(100% + 5px);
+}
+[data-layout='port'] .it-word {
+  top: 620px;
+  font-size: 34px;
+}
+[data-layout='port'] .it-tagline {
+  top: 700px;
+  padding: 0 40px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+[data-layout='port'] .it-golpe-word {
+  font-size: 104px;
+}
+[data-layout='port'] .it-golpe-mark {
+  width: 110px;
+  height: 88px;
+}
+[data-layout='port'] .it-panel {
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 18px;
+  padding: 84px 36px 50px;
+  background:
+    radial-gradient(70% 30% at 50% 22%, rgb(245 185 66 / 0.08), transparent 70%),
+    var(--void);
+}
+[data-layout='port'] .it-plate {
+  width: 468px;
+}
+[data-layout='port'] .it-name {
+  font-size: 96px;
+}
+[data-layout='port'] .it-line {
+  font-size: 21px;
+}
+[data-layout='port'] .it-includes {
+  margin-top: 18px;
+}
+[data-layout='port'] .it-points {
+  grid-template-columns: 1fr;
+  gap: 10px;
+  font-size: 18px;
+}
+[data-layout='port'] .it-point-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+[data-layout='port'] .it-status {
+  margin-top: 18px;
+}
+[data-layout='port'] .it-soon-list {
+  left: 32px;
+  right: 32px;
+  top: 200px;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px 20px;
+}
+[data-layout='port'] .it-soon-name {
+  font-size: 34px;
+}
+[data-layout='port'] .it-soon-points {
+  display: none;
+}
+[data-layout='port'] .it-soon-pill {
+  margin-top: 10px;
+}
+[data-layout='port'] .it-units-row {
+  left: 32px;
+  right: 32px;
+  top: 220px;
+}
+[data-layout='port'] .it-units-list {
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+[data-layout='port'] .it-unit {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: 20px;
+  align-items: start;
+}
+[data-layout='port'] .it-unit-plate {
+  grid-row: 1 / 3;
+}
+[data-layout='port'] .it-unit-name {
+  margin-top: 18px;
+  font-size: 28px;
+}
+[data-layout='port'] .it-unit-short {
+  font-size: 16px;
+}
+[data-layout='port'] .it-bus {
+  left: 74px;
+  right: auto;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  height: auto;
+  background: linear-gradient(180deg, transparent, var(--line-strong) 6% 94%, transparent);
+}
+[data-layout='port'] .it-plans-list {
+  left: 32px;
+  right: 32px;
+  top: 220px;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+[data-layout='port'] .it-plan {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'name price'
+    'bar bar'
+    'lead lead';
+  align-items: baseline;
+  column-gap: 12px;
+}
+[data-layout='port'] .it-plan-top {
+  display: contents;
+}
+[data-layout='port'] .it-plan-price {
+  grid-area: price;
+  font-size: 22px;
+}
+[data-layout='port'] .it-plan-bar {
+  grid-area: bar;
+  width: calc(var(--h) * 100%);
+  height: 8px;
+  margin-top: 8px;
+  border-bottom: 1px solid var(--line-strong);
+}
+[data-layout='port'] .it-plan-name {
+  grid-area: name;
+  margin-top: 0;
+  font-size: 32px;
+}
+[data-layout='port'] .it-plan-tag {
+  display: none;
+}
+[data-layout='port'] .it-plan-lead {
+  grid-area: lead;
+  font-size: 15px;
+}
+[data-layout='port'] .it-plan-includes {
+  display: none;
+}
+[data-layout='port'] .it-plans-note {
+  left: 32px;
+  right: 32px;
+  bottom: 56px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+[data-layout='port'] .it-end-title {
+  top: 510px;
+  padding: 0 30px;
+  font-size: 66px;
+}
+[data-layout='port'] .it-end-cta {
+  top: 740px;
+}
+[data-layout='port'] .it-end-hint {
+  top: 840px;
+  padding: 0 40px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+[data-layout='port'] .it-activate {
+  min-height: 72px;
+  font-size: 24px;
+}
+
+/* ---- Reduced motion: the still card -------------------------------------------------------- */
+.it-still {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  padding: 76px 16px 40px;
+  color: var(--fg);
+}
+.it-still > * {
+  max-width: 1100px;
+  margin-inline: auto;
+}
+.it-still-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 1.02;
+}
+.it-still-cols {
+  display: grid;
+  gap: 28px;
+  margin-top: 28px;
+}
+@media (min-width: 900px) {
+  .it-still-cols {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.it-still-cols h3 {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--mist);
+}
+.it-still-cols li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.it-still-name {
+  font-weight: 500;
+}
+.it-still-sub {
+  text-align: right;
+  color: var(--mist);
+}
+.it-still-note {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--mist);
+}
+.it-still-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+.it:focus {
+  outline: none; /* the dialog holds the focus for Tab and Escape; its controls show the ring */
+}

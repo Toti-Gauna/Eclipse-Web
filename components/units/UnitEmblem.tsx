@@ -2,25 +2,35 @@
 
 import { useRef } from 'react';
 import type { UnitId } from '@/components/layout/navLinks';
+import { Walker } from '@/components/sections/products/Walker';
 import { useMountEntrance } from './useMountEntrance';
 
 /**
  * The plate at the top of each unit's page, drawn like the products' (hairlines, one amber point,
  * no text): Media is a strip of frames over a timeline, Academy a staircase of six levels with
  * the current step lit, Intelligence a dial and a reading traced back to its source, Agency the
- * core every tool connects to. Decorative (the page's H1 says what it is).
+ * core every tool connects to. Decorative (the page's H1 says what it is). Once drawn, each keeps
+ * going (artIdle): the playhead runs, a student climbs the levels, the needle reads, the tools
+ * send their packets to the core.
  */
 export function UnitEmblem({ id }: { id: UnitId }) {
   const ref = useRef<HTMLDivElement>(null);
   useMountEntrance(ref);
-  const Art = EMBLEMS[id];
   return (
     <div ref={ref} className="u-emblem ticks">
-      <svg viewBox="0 0 480 400" aria-hidden focusable="false" className="pd-art-svg">
-        <Art />
-      </svg>
+      <UnitArt id={id} />
       <span aria-hidden className="pd-scan" data-art-scan />
     </div>
+  );
+}
+
+/** The emblem's drawing alone (the intro film shows the four of them). */
+export function UnitArt({ id, className = '' }: { id: UnitId; className?: string }) {
+  const Art = EMBLEMS[id];
+  return (
+    <svg viewBox="0 0 480 400" aria-hidden focusable="false" className={`pd-art-svg ${className}`} data-unit-art={id}>
+      <Art />
+    </svg>
   );
 }
 
@@ -37,8 +47,8 @@ function MediaEmblem() {
   return (
     <>
       <g data-art className="pd-dim">
-        <rect x="108" y="58" width="340" height="190" rx="4" />
-        <rect x="84" y="84" width="340" height="190" rx="4" />
+        <rect data-i="back" x="108" y="58" width="340" height="190" rx="4" />
+        <rect data-i="back" x="84" y="84" width="340" height="190" rx="4" />
       </g>
       <g data-art>
         <rect x="60" y="110" width="340" height="190" rx="4" />
@@ -60,10 +70,12 @@ function MediaEmblem() {
         ))}
       </g>
       <g data-art-light>
-        <path d="M60 350H232" className="pd-light-stroke" />
-        <path d="M232 330V368" className="pd-light-stroke" />
-        <circle cx="232" cy="328" r="4" className="pd-light-fill" />
-        <circle cx="232" cy="328" r="18" className="pd-glow" />
+        <path data-i="progress" d="M60 350H232" className="pd-light-stroke" />
+        <g data-i="playhead">
+          <path d="M232 330V368" className="pd-light-stroke" />
+          <circle cx="232" cy="328" r="4" className="pd-light-fill" />
+          <circle data-i="glow" cx="232" cy="328" r="18" className="pd-glow" />
+        </g>
       </g>
     </>
   );
@@ -93,12 +105,13 @@ function AcademyEmblem() {
         <circle cx="76" cy="108" r="6" />
         <circle cx="76" cy="128" r="6" />
         <circle cx="76" cy="148" r="6" />
-        <circle cx="76" cy="128" r="2.6" className="pd-fill" />
+        <circle data-i="answer" cx="76" cy="128" r="2.6" className="pd-fill" />
         <path d="M92 108H170M92 128H156M92 148H164" className="pd-soft" />
       </g>
+      <Walker x={72} y={290} hook="student" />
       <g data-art-light>
         <circle cx={nodes[2].x} cy={nodes[2].y} r="4" className="pd-light-fill" />
-        <circle cx={nodes[2].x} cy={nodes[2].y} r="20" className="pd-glow" />
+        <circle data-i="glow" cx={nodes[2].x} cy={nodes[2].y} r="20" className="pd-glow" />
       </g>
     </>
   );
@@ -132,12 +145,12 @@ function IntelligenceEmblem() {
         <path d={`M${cx - 120} ${cy}H${cx + 120}`} className="pd-dim" />
       </g>
       <g data-art>
-        <path d={`M${cx} ${cy}L${needle[0]} ${needle[1]}`} />
+        <path data-i="needle" d={`M${cx} ${cy}L${needle[0]} ${needle[1]}`} />
         <circle cx={cx} cy={cy} r="7" />
       </g>
       <g data-art>
         <path d="M296 304H460M296 304V196" className="pd-soft" />
-        <path d={`M${points.map(([x, y]) => `${x} ${y}`).join('L')}`} />
+        <path data-i="trace" d={`M${points.map(([x, y]) => `${x} ${y}`).join('L')}`} />
         {points.map(([x, y]) => (
           <circle key={x} cx={x} cy={y} r="2.4" className="pd-fill" />
         ))}
@@ -145,13 +158,15 @@ function IntelligenceEmblem() {
       <g data-art>
         <rect x="318" y="70" width="128" height="74" rx="5" />
         <path d="M334 92H404M334 106H418M334 120H392" className="pd-soft" />
-        <path d="M428 204C428 180 404 168 404 144" className="pd-dotted" />
+        <path data-i="source-path" d="M428 204C428 180 404 168 404 144" className="pd-dotted" />
         <circle cx="428" cy="216" r="13" />
         <path d="M428 196V203M428 229V236M408 216H415M441 216H448" />
       </g>
+      <circle data-i="reader" r="3.4" className="pd-fill pd-mover" />
+      <circle data-i="source" r="2.6" className="pd-fill pd-mover" />
       <g data-art-light>
         <circle cx="428" cy="216" r="4" className="pd-light-fill" />
-        <circle cx="428" cy="216" r="20" className="pd-glow" />
+        <circle data-i="glow" cx="428" cy="216" r="20" className="pd-glow" />
       </g>
     </>
   );
@@ -170,7 +185,7 @@ function AgencyEmblem() {
     <>
       <g data-art className="pd-soft">
         {spokes.map(([x, y]) => (
-          <path key={`${x}-${y}`} d={`M${core.x} ${core.y}L${x} ${y}`} className="pd-dotted" />
+          <path key={`${x}-${y}`} data-i="spoke" data-to={`M${x} ${y}L${core.x} ${core.y}`} d={`M${core.x} ${core.y}L${x} ${y}`} className="pd-dotted" />
         ))}
       </g>
       <g data-art>
@@ -182,17 +197,19 @@ function AgencyEmblem() {
         <path d="M84 104H128M84 116H114" className="pd-soft" />
       </g>
       <g data-art>
-        <circle cx="384" cy="100" r="22" />
-        {Array.from({ length: 8 }, (_, k) => {
-          const a = (Math.PI * 2 * k) / 8;
-          return <path key={k} d={`M${(384 + 22 * Math.cos(a)).toFixed(1)} ${(100 + 22 * Math.sin(a)).toFixed(1)}L${(384 + 30 * Math.cos(a)).toFixed(1)} ${(100 + 30 * Math.sin(a)).toFixed(1)}`} />;
-        })}
-        <circle cx="384" cy="100" r="8" className="pd-soft" />
+        <g data-i="gear">
+          <circle cx="384" cy="100" r="22" />
+          {Array.from({ length: 8 }, (_, k) => {
+            const a = (Math.PI * 2 * k) / 8;
+            return <path key={k} d={`M${(384 + 22 * Math.cos(a)).toFixed(1)} ${(100 + 22 * Math.sin(a)).toFixed(1)}L${(384 + 30 * Math.cos(a)).toFixed(1)} ${(100 + 30 * Math.sin(a)).toFixed(1)}`} />;
+          })}
+          <circle cx="384" cy="100" r="8" className="pd-soft" />
+        </g>
       </g>
       <g data-art>
         {[0, 1, 2, 3, 4, 5, 6].map((k) => {
           const h = [10, 22, 34, 18, 28, 12, 20][k];
-          return <path key={k} d={`M${398 + k * 7} ${262 - h / 2}V${262 + h / 2}`} />;
+          return <path key={k} data-i="bar" d={`M${398 + k * 7} ${262 - h / 2}V${262 + h / 2}`} />;
         })}
       </g>
       <g data-art>
@@ -201,9 +218,12 @@ function AgencyEmblem() {
         <rect x="228" y="338" width="48" height="30" rx="5" />
         <path d="M240 353H264" className="pd-soft" />
       </g>
+      {spokes.map(([x, y]) => (
+        <circle key={`p-${x}-${y}`} data-i="packet" r="3" className="pd-fill pd-mover" />
+      ))}
       <g data-art-light>
         <circle cx={core.x} cy={core.y} r="6" className="pd-light-fill" />
-        <circle cx={core.x} cy={core.y} r="30" className="pd-glow" />
+        <circle data-i="glow" cx={core.x} cy={core.y} r="30" className="pd-glow" />
       </g>
     </>
   );
