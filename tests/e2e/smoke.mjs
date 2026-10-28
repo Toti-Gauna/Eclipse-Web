@@ -178,8 +178,16 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
       /Inmobiliarias[\s\S]*Handy[\s\S]*VetOS[\s\S]*Partner/.test(film),
   );
   await page.waitForTimeout(1500);
+  await page.evaluate(() => {
+    window.__closeLt = [];
+    new PerformanceObserver((l) => l.getEntries().forEach((e) => window.__closeLt.push(Math.round(e.duration)))).observe({ type: 'longtask' });
+  });
   await page.getByRole('button', { name: 'Saltar' }).click();
   await page.waitForTimeout(1700);
+  const closeLt = await page.evaluate(() => Math.max(0, ...window.__closeLt));
+  // Closing used to clear GSAP props on every node of the stage: ~430 ms here, ~2 s on a tablet, and the home under it
+  // stayed unpainted and frozen right as it appeared.
+  check('intro: closing the film never freezes the page (no task over 200 ms)', closeLt < 200, `${closeLt} ms`);
   const after = await page.evaluate(() => ({ open: !!document.querySelector('dialog.it[open]'), intro: document.documentElement.dataset.intro, focus: document.activeElement?.id, y: scrollY }));
   check('«Saltar» hands over to the home: film closed, page free, focus on the H1', !after.open && after.intro === 'done' && after.focus === 'hero-title' && after.y === 0, JSON.stringify(after));
   await page.reload({ waitUntil: 'domcontentloaded' });
