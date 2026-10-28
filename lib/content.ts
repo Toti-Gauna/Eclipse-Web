@@ -253,9 +253,12 @@ export interface Unit {
   tagline: Localized | null;
 }
 
-export type ProductId = 'roofy' | 'foody' | 'markyt' | 'handy';
-/** available: sold today (price from levels.json) · planned: in the works, no price · launch: has its own launch date. */
-export type ProductStatus = 'available' | 'planned' | 'launch';
+export type ProductId = 'roofy' | 'foody' | 'markyt' | 'handy' | 'gym' | 'dental' | 'clinic' | 'vet';
+/**
+ * available: sold today (price from levels.json) · planned: in the works, no price · launch: has its own launch date ·
+ * soon: «Próximamente», no price and no page of its own yet.
+ */
+export type ProductStatus = 'available' | 'planned' | 'launch' | 'soon';
 /** A product of Eclipse (content/products.json). Its copy lives in messages under `products.items.<id>`. */
 export interface Product {
   id: ProductId;
@@ -311,6 +314,10 @@ export const units = unitsJson.units as Unit[];
 export const lines = linesJson.lines as Line[];
 export const products = productsJson.products as Product[];
 export const productById = (id: string | null | undefined) => products.find((p) => p.id === id);
+/** Whether «Conocer» has a page to open (the «Próximamente» ones only offer a heads-up). */
+export const productHasPage = (p: Product) => p.status !== 'soon';
+/** The products with a page of their own (/productos/<id>/). */
+export const pagedProducts = products.filter(productHasPage);
 export const levelById = (id: string | null | undefined) => levels.find((lv) => lv.id === id);
 export const lineNeeds = linesJson.needs as LineNeed[];
 export const fallbackRates: Rates = {

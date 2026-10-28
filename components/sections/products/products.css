@@ -392,3 +392,37 @@
 .pd-rail-btn[aria-current='true'] .pd-rail-index {
   color: var(--accent);
 }
+
+/* «Próximamente» (gimnasios, DentalOS, clínicas, VetOS): the place of «Conocer» says it, quietly. */
+.pd-soon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0 1.25rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.pd-notify {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.3em;
+  transition:
+    color 0.25s ease,
+    text-decoration-color 0.25s ease;
+}
+.pd-notify:hover {
+  color: var(--fg);
+  text-decoration-color: var(--accent);
+}

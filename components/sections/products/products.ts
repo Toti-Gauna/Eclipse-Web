@@ -1,11 +1,12 @@
 import { levelById, type Product } from '@/lib/content';
 import { localeTags, type Locale } from '@/i18n/routing';
 
-/** How lit a product's status glyph is: ready = full sun, launching = a sliver left, in the works = mostly dark. */
+/** How lit a product's status glyph is: ready = full sun, launching = a sliver left, in the works = mostly dark, coming = almost all dark. */
 export const STATUS_PHASE: Record<Product['status'], number> = {
   available: 0,
   launch: 0.3,
   planned: 0.72,
+  soon: 0.9,
 };
 
 /** A product's public launch date, written out for the locale ("10 de noviembre de 2026"). */

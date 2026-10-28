@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { levelById, levels, products } from '@/lib/content';
+import { levelById, levels, pagedProducts, products, productHasPage } from '@/lib/content';
 import { fromUsd, launchDate } from '@/components/sections/products/products';
 import { PAGE_SECTIONS, phaseAt, sectionDomId, sectionIndexLabel, sectionPhase } from '@/components/ui/sectionIndex';
 import { NAV_LINKS, SECTION_IDS, AGENCY_TOC, currentUnit } from '@/components/layout/navLinks';
@@ -19,8 +19,19 @@ const get = (tree: Tree, key: string) => key.split('.').reduce<string | Tree | u
  * from content/levels.json, never written in the copy.
  */
 describe('products (content/products.json)', () => {
-  it('lists the four products the home shows, in order', () => {
-    expect(products.map((p) => p.id)).toEqual(['roofy', 'foody', 'markyt', 'handy']);
+  it('lists the products the home shows, in order: the four first, then the ones coming soon', () => {
+    expect(products.map((p) => p.id)).toEqual(['roofy', 'foody', 'markyt', 'handy', 'gym', 'dental', 'clinic', 'vet']);
+    expect(products.filter((p) => p.status === 'soon').map((p) => p.id)).toEqual(['gym', 'dental', 'clinic', 'vet']);
+  });
+
+  it('«Próximamente» has no page, no price and nothing listed as included', () => {
+    for (const p of products.filter((x) => x.status === 'soon')) {
+      expect(productHasPage(p), p.id).toBe(false);
+      expect(fromUsd(p), p.id).toBeNull();
+      expect(p.features, p.id).toEqual([]);
+      expect(p.points.length, p.id).toBe(4);
+    }
+    expect(pagedProducts.map((p) => p.id)).toEqual(['roofy', 'foody', 'markyt', 'handy']);
   });
 
   it('only what is on sale has a «desde», and it comes from the levels', () => {
@@ -50,7 +61,8 @@ describe('products (content/products.json)', () => {
     for (const l of LOCALES) {
       for (const p of products) {
         const base = `products.items.${p.id}`;
-        for (const k of ['name', 'rubro', 'line', 'lead', 'start', 'ask']) expect(typeof get(messages[l], `${base}.${k}`), `${l} ${base}.${k}`).toBe('string');
+        const keys = productHasPage(p) ? ['name', 'rubro', 'line', 'lead', 'start', 'ask'] : ['name', 'rubro', 'line', 'ask'];
+        for (const k of keys) expect(typeof get(messages[l], `${base}.${k}`), `${l} ${base}.${k}`).toBe('string');
         for (const k of p.points) expect(typeof get(messages[l], `${base}.points.${k}`), `${l} ${base}.points.${k}`).toBe('string');
         for (const k of p.features) expect(typeof get(messages[l], `${base}.features.${k}.name`), `${l} ${base}.features.${k}`).toBe('string');
         for (const k of p.later) expect(typeof get(messages[l], `${base}.later.${k}.name`), `${l} ${base}.later.${k}`).toBe('string');

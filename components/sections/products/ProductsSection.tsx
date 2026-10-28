@@ -7,6 +7,9 @@ import { Link } from '@/i18n/navigation';
 import { useSound } from '@/components/sound/SoundContext';
 import { SectionMark } from '@/components/ui/SectionMark';
 import { ProductStatus } from '@/components/products/ProductStatus';
+import { UnitAsk } from '@/components/units/UnitAsk';
+import { PhaseGlyph } from '@/components/ui/PhaseGlyph';
+import { STATUS_PHASE } from './products';
 import { SECTION_IDS, productPath } from '@/components/layout/navLinks';
 import { products, type Product } from '@/lib/content';
 import { ProductArt } from './ProductArt';
@@ -18,7 +21,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 /**
  * 02 · Productos (#productos, decision of Ignacio 28/10/2026): Roofy, Foody, Markyt and Handy,
  * one screen each — what it is for, what it does (four points), whether it is on sale today and
- * «Conocer <producto>», which opens its page. Products and their status come from
+ * «Conocer <producto>», which opens its page — then the ones coming next (gimnasios, DentalOS,
+ * clínicas, VetOS), which say «Próximamente» and offer a heads-up over WhatsApp instead. Products and their status come from
  * content/products.json; the only price is Roofy's «desde», read from content/levels.json.
  *
  * With a mouse or a trackpad on a wide screen the screens are a horizontal track pinned to the
@@ -133,6 +137,19 @@ function ProductScreen({ product, index, total }: { product: Product; index: num
               </li>
             ))}
           </ul>
+          {product.status === 'soon' ? (
+            // «Próximamente»: no page and no price yet; a heads-up over WhatsApp instead of «Conocer».
+            <div className="pd-foot" data-soon>
+              <p className="pd-soon">
+                <PhaseGlyph phase={STATUS_PHASE.soon} size={16} className="pd-status-glyph" />
+                <span>{t('status.soon')}</span>
+                <span className="sr-only"> · {t('soonNote')}</span>
+              </p>
+              <UnitAsk unit={id} origin="product" message={t(`items.${id}.ask`)} className="pd-notify">
+                {t('page.notify')}
+              </UnitAsk>
+            </div>
+          ) : (
           <div className="pd-foot">
             <ProductStatus id={id} />
             {product.site ? (
@@ -145,6 +162,7 @@ function ProductScreen({ product, index, total }: { product: Product; index: num
               </Link>
             )}
           </div>
+          )}
         </div>
         <div className="pd-art ticks" data-pd-art>
           <ProductArt id={id} />

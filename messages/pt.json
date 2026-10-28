@@ -5613,14 +5613,15 @@
   },
   "products": {
     "title": "Um produto para cada <em>setor</em>.",
-    "sub": "Quatro produtos da Eclipse, cada um feito para um tipo de negócio. Passe de tela em tela e veja o que cada um resolve.",
+    "sub": "Um produto da Eclipse para cada tipo de negócio. Passe de tela em tela: veja o que cada um resolve e quais chegam em breve.",
     "listLabel": "Produtos da Eclipse",
     "count": "{n} de {total}",
     "know": "Conhecer {name}",
     "status": {
       "available": "Disponível",
       "planned": "Em preparação",
-      "launch": "Lança em {date}"
+      "launch": "Lança em {date}",
+      "soon": "Em breve"
     },
     "fromPrice": "a partir de {price}/mês",
     "noPrice": "Ainda sem preço publicado",
@@ -5798,8 +5799,57 @@
         },
         "start": "O Handy lança em {date}. Se quiser saber mais, fale com a gente.",
         "ask": "Olá, Eclipse. Quero saber mais sobre o Handy."
+      },
+      "gym": {
+        "name": "Academias",
+        "rubro": "fitness",
+        "line": "Sua academia com um app para os alunos: aulas, sequências e desafios que fazem voltar.",
+        "points": {
+          "classes": "Aulas e reservas pelo celular",
+          "streaks": "Sequências, missões e ranking para os alunos",
+          "churn": "Painel dos alunos que param de vir",
+          "winback": "Mensagens para trazê-los de volta"
+        },
+        "ask": "Olá, Eclipse. Tenho uma academia e quero ser avisado quando estiver pronto."
+      },
+      "dental": {
+        "name": "DentalOS",
+        "rubro": "saúde · odontologia",
+        "line": "Cada consulta tem um próximo passo: agenda, retornos e recepção em ordem.",
+        "points": {
+          "booking": "Pedido de consulta por especialidade e profissional",
+          "reschedule": "Remarcar pelo WhatsApp sem perder o retorno",
+          "reception": "Recepção com a agenda do dia e as solicitações",
+          "patients": "Pacientes, orçamentos e caixa"
+        },
+        "ask": "Olá, Eclipse. Tenho um consultório odontológico e quero ser avisado quando o DentalOS estiver pronto."
+      },
+      "clinic": {
+        "name": "Clínicas",
+        "rubro": "saúde",
+        "line": "Agendamento online, lembretes pelo WhatsApp e menos pacientes que faltam.",
+        "points": {
+          "booking": "Agendamento pelo site",
+          "reminders": "Lembretes pelo WhatsApp",
+          "noshow": "Painel de faltas",
+          "reception": "Agenda da recepção por profissional"
+        },
+        "ask": "Olá, Eclipse. Tenho uma clínica e quero ser avisado quando estiver pronto."
+      },
+      "vet": {
+        "name": "VetOS",
+        "rubro": "animais · veterinárias",
+        "line": "A história de cada pet junto com o tutor, no consultório e em domicílio.",
+        "points": {
+          "record": "Tutor, pet e recepção numa mesma ficha",
+          "visits": "Consultas no consultório e visitas em domicílio",
+          "zones": "Rotas por região para as visitas",
+          "reminders": "Avisos e lembretes para os tutores"
+        },
+        "ask": "Olá, Eclipse. Tenho uma clínica veterinária e quero ser avisado quando o VetOS estiver pronto."
       }
-    }
+    },
+    "soonNote": "Ainda sem preço nem data"
   },
   "media": {
     "title": "Seu negócio, <em>em movimento</em>.",

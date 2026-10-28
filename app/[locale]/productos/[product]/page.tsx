@@ -5,19 +5,20 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing, type Locale } from '@/i18n/routing';
 import { baseMetadata } from '@/lib/seo';
-import { productById, products, type ProductId } from '@/lib/content';
+import { pagedProducts, productById, productHasPage, type ProductId } from '@/lib/content';
 import { ProductPage } from '@/components/products/ProductPage';
 
 export const dynamicParams = false;
 
-/** One page per product and locale (static export). */
+/** One page per product and locale (static export); the «Próximamente» ones have none yet. */
 export function generateStaticParams() {
-  return products.map((p) => ({ product: p.id }));
+  return pagedProducts.map((p) => ({ product: p.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; product: string }> }): Promise<Metadata> {
   const { locale, product } = await params;
-  if (!hasLocale(routing.locales, locale) || !productById(product)) return {};
+  const p = productById(product);
+  if (!hasLocale(routing.locales, locale) || !p || !productHasPage(p)) return {};
   const meta = await getTranslations({ locale, namespace: 'meta' });
   const t = await getTranslations({ locale, namespace: 'products' });
   return baseMetadata({
@@ -33,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default function ProductRoute({ params }: { params: Promise<{ locale: string; product: string }> }) {
   const { locale, product } = use(params);
   setRequestLocale(locale);
-  if (!productById(product)) notFound();
+  const p = productById(product);
+  if (!p || !productHasPage(p)) notFound();
   return <ProductPage id={product as ProductId} locale={locale as Locale} />;
 }

@@ -73,13 +73,38 @@ mouse/trackpad (la misma regla que el hero); movimiento reducido = todo quieto y
 - **`/productos/<id>/`:** el producto en grande, qué incluye, lo que está en diseño, cómo empezar y los otros productos.
   En Roofy, «Ver la demo» abre Lumen directo y siguen los seis niveles.
 
+## Segunda vuelta (28/10/2026, pedido de Ignacio)
+
+- **«Potenciar mi negocio» abajo a la derecha.** Salió del header y flota abajo a la derecha en todas las páginas
+  comerciales, en celular y en escritorio (`components/layout/FloatingCta.tsx`).
+  - Se corre (baja y sale del orden de tabulación) mientras se ve el botón del hero, el banner de productos (adonde
+    lleva) u otro botón ámbar de la página, como el del pie: nunca hay dos ámbar sólidos en pantalla.
+  - En el menú del celular sigue estando.
+  - El pie tiene más aire abajo para que el botón no tape el ©.
+- **Gimnasios, DentalOS, Clínicas y VetOS, «Próximamente».** Cuatro pantallas más en el banner, cada una con su SVG
+  (pesas y la racha del socio; la muela con el turno reprogramado; el pulso, la campana y la agenda con una ausencia;
+  la huella, la ficha del tutor y la visita a domicilio).
+  - En lugar de «Conocer» dicen «Próximamente» y ofrecen «Avisame cuando esté» por WhatsApp.
+  - Sin precio y sin página propia.
+  - Los puntos salen de la investigación de Notion (DentalOS 16/10, vetOs/VetCare 17/10, sin implementación) y, para
+    gimnasios y clínicas, de lo que muestran las demos Órbita y Aurora (en standby).
+  - El banner pasa de cuatro a ocho pantallas; el riel de abajo salta a cualquiera.
+- **Verificación de esta vuelta:**
+  - `vitest`: 478 pruebas.
+  - e2e: **99/99**. Comprueba las ocho pantallas, los cuatro «Próximamente» sin precio y con aviso por WhatsApp, que el
+    header ya no tiene el botón, y que el flotante aparece abajo a la derecha donde no hay otro botón y se corre sobre el
+    hero y el banner.
+  - Capturas: `1440-dentalos`, `1440-vetos`, `1440-boton-flotante` y `360-boton-flotante`.
+
 ## Decisiones que quedan para Ignacio
 
 1. **Nombre visible: «Roofy» o «EstateOS».** D11 decía que el visitante ve «EstateOS». En esta web ahora dice «Roofy»
    (lo pediste así). El repo `roofy` y la demo todavía dicen EstateOS.
-2. **Destino de «Conocer X».** Hoy cada uno abre su página dentro de Eclipse. Cuando Roofy o Handy publiquen su sitio, se
+2. **Nombres de gimnasios y clínicas.** Hoy se muestran con el nombre del rubro («Gimnasios», «Clínicas»; «Academias» en
+   portugués). Si van a tener nombre propio (como DentalOS y VetOS), es un cambio de una línea por idioma.
+3. **Destino de «Conocer X».** Hoy cada uno abre su página dentro de Eclipse. Cuando Roofy o Handy publiquen su sitio, se
    carga el `site` en `content/products.json` y el botón pasa a llevar ahí.
-3. **El selector de rubro** quedó solo en `/agency/`: desde la home, el banner de productos cumple su función.
+4. **El selector de rubro** quedó solo en `/agency/`: desde la home, el banner de productos cumple su función.
 
 ## Verificación
 

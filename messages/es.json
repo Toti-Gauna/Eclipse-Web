@@ -5613,14 +5613,15 @@
   },
   "products": {
     "title": "Un producto para cada <em>rubro</em>.",
-    "sub": "Cuatro productos de Eclipse, cada uno hecho para un tipo de negocio. Pasá de pantalla en pantalla y mirá qué resuelve cada uno.",
+    "sub": "Un producto de Eclipse para cada tipo de negocio. Pasá de pantalla en pantalla: mirá qué resuelve cada uno y cuáles llegan pronto.",
     "listLabel": "Productos de Eclipse",
     "count": "{n} de {total}",
     "know": "Conocer {name}",
     "status": {
       "available": "Disponible",
       "planned": "En preparación",
-      "launch": "Lanza el {date}"
+      "launch": "Lanza el {date}",
+      "soon": "Próximamente"
     },
     "fromPrice": "desde {price}/mes",
     "noPrice": "Sin precio publicado todavía",
@@ -5798,8 +5799,57 @@
         },
         "start": "Handy lanza el {date}. Si querés saber más, escribinos.",
         "ask": "Hola Eclipse. Quiero saber más de Handy."
+      },
+      "gym": {
+        "name": "Gimnasios",
+        "rubro": "fitness",
+        "line": "Tu gimnasio con una app para los socios: clases, rachas y desafíos que hacen volver.",
+        "points": {
+          "classes": "Clases y reservas desde el celular",
+          "streaks": "Rachas, misiones y ranking para los socios",
+          "churn": "Panel de los socios que dejan de venir",
+          "winback": "Mensajes para recuperarlos"
+        },
+        "ask": "Hola Eclipse. Tengo un gimnasio y quiero que me avisen cuando esté listo."
+      },
+      "dental": {
+        "name": "DentalOS",
+        "rubro": "salud · odontología",
+        "line": "Cada consulta tiene un próximo paso: turnos, controles y recepción en orden.",
+        "points": {
+          "booking": "Pedido de turno por especialidad y profesional",
+          "reschedule": "Reprogramar por WhatsApp sin perder el control",
+          "reception": "Recepción con la agenda del día y las solicitudes",
+          "patients": "Pacientes, presupuestos y caja"
+        },
+        "ask": "Hola Eclipse. Tengo un consultorio odontológico y quiero que me avisen cuando esté DentalOS."
+      },
+      "clinic": {
+        "name": "Clínicas",
+        "rubro": "salud",
+        "line": "Turnos online, recordatorios por WhatsApp y menos pacientes que faltan.",
+        "points": {
+          "booking": "Reserva de turnos desde la web",
+          "reminders": "Recordatorios por WhatsApp",
+          "noshow": "Panel de ausencias",
+          "reception": "Agenda de recepción por profesional"
+        },
+        "ask": "Hola Eclipse. Tengo una clínica y quiero que me avisen cuando esté lista."
+      },
+      "vet": {
+        "name": "VetOS",
+        "rubro": "animales · veterinarias",
+        "line": "La historia de cada mascota junto a su tutor, en el consultorio y a domicilio.",
+        "points": {
+          "record": "Tutor, mascota y recepción en una misma ficha",
+          "visits": "Turnos en el consultorio y visitas a domicilio",
+          "zones": "Recorridos por zona para las visitas",
+          "reminders": "Avisos y recordatorios para los tutores"
+        },
+        "ask": "Hola Eclipse. Tengo una veterinaria y quiero que me avisen cuando esté VetOS."
       }
-    }
+    },
+    "soonNote": "Sin precio ni fecha todavía"
   },
   "media": {
     "title": "Tu negocio, <em>en movimiento</em>.",

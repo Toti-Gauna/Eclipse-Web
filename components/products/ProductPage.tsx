@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import { productById, products, type ProductId } from '@/lib/content';
+import { pagedProducts, productById, type ProductId } from '@/lib/content';
 import { productPath, PRODUCTS_HREF } from '@/components/layout/navLinks';
 import { SkyTransition } from '@/components/sections/SkyTransition';
 import { DemoExperienceHost } from '@/components/demo-experience/DemoExperienceHost';
@@ -32,7 +32,7 @@ export function ProductPage({ id, locale }: { id: ProductId; locale: Locale }) {
   if (!product) return null;
   const name = t(`items.${id}.name`);
   const date = launchDate(product, locale) ?? '';
-  const others = products.filter((p) => p.id !== id);
+  const others = pagedProducts.filter((p) => p.id !== id);
   const available = product.status === 'available' && product.vertical;
 
   return (

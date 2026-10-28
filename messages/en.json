@@ -5613,14 +5613,15 @@
   },
   "products": {
     "title": "One product for each <em>industry</em>.",
-    "sub": "Four Eclipse products, each one built for one kind of business. Move from screen to screen and see what each one solves.",
+    "sub": "An Eclipse product for each kind of business. Move from screen to screen: see what each one solves and which ones are coming soon.",
     "listLabel": "Eclipse products",
     "count": "{n} of {total}",
     "know": "Discover {name}",
     "status": {
       "available": "Available",
       "planned": "In the works",
-      "launch": "Launches {date}"
+      "launch": "Launches {date}",
+      "soon": "Coming soon"
     },
     "fromPrice": "from {price}/mo",
     "noPrice": "No published price yet",
@@ -5798,8 +5799,57 @@
         },
         "start": "Handy launches {date}. Write to us if you'd like to know more.",
         "ask": "Hi Eclipse. I'd like to know more about Handy."
+      },
+      "gym": {
+        "name": "Gyms",
+        "rubro": "fitness",
+        "line": "Your gym with an app for members: classes, streaks and challenges that bring them back.",
+        "points": {
+          "classes": "Classes and bookings from the phone",
+          "streaks": "Streaks, missions and a ranking for members",
+          "churn": "A panel of members who stop coming",
+          "winback": "Messages to win them back"
+        },
+        "ask": "Hi Eclipse. I run a gym and I'd like to hear when it's ready."
+      },
+      "dental": {
+        "name": "DentalOS",
+        "rubro": "health · dental",
+        "line": "Every visit has a next step: appointments, check-ups and the front desk in order.",
+        "points": {
+          "booking": "Appointment requests by specialty and dentist",
+          "reschedule": "Rescheduling over WhatsApp without losing the check-up",
+          "reception": "A front desk with the day's schedule and requests",
+          "patients": "Patients, estimates and payments"
+        },
+        "ask": "Hi Eclipse. I run a dental practice and I'd like to hear when DentalOS is ready."
+      },
+      "clinic": {
+        "name": "Clinics",
+        "rubro": "health",
+        "line": "Online appointments, WhatsApp reminders and fewer patients who miss them.",
+        "points": {
+          "booking": "Appointment booking from the website",
+          "reminders": "WhatsApp reminders",
+          "noshow": "A no-show panel",
+          "reception": "A front-desk schedule per practitioner"
+        },
+        "ask": "Hi Eclipse. I run a clinic and I'd like to hear when it's ready."
+      },
+      "vet": {
+        "name": "VetOS",
+        "rubro": "pets · veterinary",
+        "line": "Each pet's history together with its owner, at the practice and at home.",
+        "points": {
+          "record": "Owner, pet and front desk in one record",
+          "visits": "Appointments at the practice and home visits",
+          "zones": "Routes by area for home visits",
+          "reminders": "Notices and reminders for owners"
+        },
+        "ask": "Hi Eclipse. I run a veterinary practice and I'd like to hear when VetOS is ready."
       }
-    }
+    },
+    "soonNote": "No price or date yet"
   },
   "media": {
     "title": "Your business, <em>in motion</em>.",

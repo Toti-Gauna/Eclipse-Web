@@ -69,7 +69,10 @@ reachable (folded is fine, deleted is not).
   nothing else. The hero keeps its H1 and its one action «Quiero potenciar mi negocio», now a real link to `#productos`
   (`<HeroCta>`), plus the direct key of the demo on show. **Productos:** Roofy, Foody, Markyt and Handy, one screen each
   (`components/sections/products/`): what it is for, four points, its status and «Conocer <producto>» → its page
-  `/[locale]/productos/<id>/` (until `content/products.json` gives it a `site`). Status is honest: only Roofy is on sale
+  `/[locale]/productos/<id>/` (until `content/products.json` gives it a `site`); then Gimnasios, DentalOS, Clínicas and
+  VetOS with status `soon`: «Próximamente» where «Conocer» would be, «Avisame cuando esté» over WhatsApp, no price and no
+  page (DentalOS/VetOS from their Notion research; gyms and clinics from the Órbita/Aurora demos; «Gimnasios» and
+  «Clínicas» are rubro names until Ignacio names them). Status is honest: only Roofy is on sale
   and carries a price («desde», read from `content/levels.json`); Foody and Markyt are «En preparación» with no price
   (EstateOS prices are only a hypothesis there; «Foody» is a provisional name); Handy shows its launch date; what is still
   being designed goes in `later` («En diseño», never as included). With a mouse/trackpad on wide screens the four screens
@@ -86,9 +89,11 @@ reachable (folded is fine, deleted is not).
   roofy repo and the Lumen demo still say EstateOS until he settles it. «Qué ofrecemos» explains each line with NO prices
   (pieces are priced only in Precios → «Pieza por pieza»). The builder is dormant (no entry point; `/plan/` and its tests
   stay). Demos in `standby` stay in the repo but are not shown: use `showcaseVerticals`.
-- **Header:** Media · Academy · Intelligence · Agency (pages; `aria-current` on the current one); «Potenciar mi negocio»
-  is THE primary CTA (`/#productos`, «Potenciar» below 430 px) and stays reachable on desktop and mobile; there is NO
-  "Armá tu plan"; "Ingresar" is discreet and opens `/[locale]/portal/`. Language, currency and sound sit together behind
+- **Header:** Media · Academy · Intelligence · Agency (pages; `aria-current` on the current one). «Potenciar mi negocio»
+  is THE primary CTA (`/#productos`) and floats bottom right on every landing page (`<FloatingCta>`, rendered by the
+  header; decision of Ignacio 28/10/2026): it steps aside (slides out, leaves the tab order) while the hero's CTA, a
+  `data-page-cta` or the products banner is on screen, so there is never a second solid amber; the phone menu keeps it
+  too. There is NO "Armá tu plan"; "Ingresar" is discreet and opens `/[locale]/portal/`. Language, currency and sound sit together behind
   one preferences trigger. On `/plan` the CTA stays WhatsApp «Pedí tu demo». The header floats once the page scrolls: a
   surface (`.hdr-row::before`, header.css) fades in with `data-scrolled`, fixed 10 px blur, opaque fallback; its reserved
   height (`--header-h`) never changes. A client navigation onto another page's anchor is kept on target by

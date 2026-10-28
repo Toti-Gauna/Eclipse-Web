@@ -246,3 +246,7 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
   - Landing v3 entera en `/agency/`, con redirección de los enlaces viejos.
   - 477 pruebas y e2e 97/97.
 - **Pendiente de Ignacio:** nombre visible «Roofy» o «EstateOS» (D11); el `site` de cada producto cuando exista.
+- **Segunda vuelta (mismo día):**
+  - «Potenciar mi negocio» flota abajo a la derecha.
+  - Gimnasios, DentalOS, Clínicas y VetOS «Próximamente», con SVG propios y sin precio.
+  - 478 pruebas y e2e 99/99. Gasto externo: USD 0.

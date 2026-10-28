@@ -7,13 +7,13 @@ import { DemoCta } from '@/components/ui/DemoCta';
 import { LandingOnly } from './LandingOnly';
 import { PrefsDisclosure } from './PrefsDisclosure';
 import { NAV_LINKS, PORTAL_ROUTES, SECTION_IDS, productPath } from './navLinks';
-import { products } from '@/lib/content';
+import { pagedProducts } from '@/lib/content';
 import { IS_LIVE } from '@/lib/env';
 
 const BUILD_YEAR = new Date().getFullYear();
 
 /**
- * Footer (dawn): the demo CTA, the products and the units (each its own page, 28/10/2026), contact, preferences folded in
+ * Footer (dawn; its bottom padding leaves room for the floating «Potenciar mi negocio»): the demo CTA, the products and the units (each its own page, 28/10/2026), contact, preferences folded in
  * one row (<PrefsDisclosure>: every option is still one tap away) and the legal / demo
  * notices. The "Eclipse Agency / Media / Market" units were taken out of the footer (lote 2.2,
  * decision of Ignacio 26/10/2026: they collided with the Agency line); content/units.json stays as history.
@@ -28,7 +28,7 @@ export function Footer() {
   const link = 'inline-flex min-h-11 items-center gap-2 transition-colors hover:text-[color:var(--accent)]';
 
   return (
-    <footer data-header-theme="light" className="theme-light relative overflow-hidden bg-dawn pb-10 pt-16 md:pt-24">
+    <footer data-header-theme="light" className="theme-light relative overflow-hidden bg-dawn pb-28 pt-16 md:pt-24 lg:pb-32">
       <div className="container-x">
         <div className="grid gap-x-10 gap-y-12 pb-12 md:pb-16 lg:grid-cols-[1.4fr_2fr]">
           <div className="max-w-sm">
@@ -59,7 +59,7 @@ export function Footer() {
                     {t('footer.products')}
                   </h2>
                   <ul>
-                    {products.map((p) => (
+                    {pagedProducts.map((p) => (
                       <li key={p.id}>
                         <Link href={productPath(p.id)} className={link}>
                           {t(`products.items.${p.id}.name`)}

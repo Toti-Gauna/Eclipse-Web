@@ -63,7 +63,13 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
       JSON.stringify(['inicio', 'productos', 'media', 'equipamiento']),
   );
   const screens = page.locator('#productos [data-pd-screen]');
-  check('products banner: Roofy, Foody, Markyt, Handy', (await screens.count()) === 4 && /Roofy[\s\S]*Foody[\s\S]*Markyt[\s\S]*Handy/.test(await page.locator('#productos').innerText()));
+  check('products banner: Roofy, Foody, Markyt, Handy, then gimnasios, DentalOS, clínicas and VetOS', (await screens.count()) === 8 && /Roofy[\s\S]*Foody[\s\S]*Markyt[\s\S]*Handy[\s\S]*Gimnasios[\s\S]*DentalOS[\s\S]*Clínicas[\s\S]*VetOS/.test(await page.locator('#productos').innerText()));
+  check(
+    'the coming ones say «Próximamente», with no price and no page, and offer a heads-up on WhatsApp',
+    (await page.locator('#productos [data-soon] .pd-soon', { hasText: 'Próximamente' }).count()) === 4 &&
+      (await page.locator('#productos [data-soon] .pd-notify[href*="wa.me"]').count()) === 4 &&
+      !/US\$|\$\s?\d/.test(await page.locator('#pd-gym, #pd-dental, #pd-clinic, #pd-vet').allInnerTexts().then((x) => x.join(' '))),
+  );
   check(
     'each product says «Conocer <producto>» and leads to its page',
     (await page.locator('#productos .pd-know', { hasText: /^Conocer (Roofy|Foody|Markyt|Handy)/ }).count()) === 4 &&
@@ -119,18 +125,28 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await ctx.close();
 }
 
-// 3. Desktop: nav link scrolls to section + focus moves, the header CTA opens the rubro selector.
+// 3. Desktop: the floating «Potenciar mi negocio», the products track, the unit pages, the selector on /agency/.
 {
   const { ctx, page, errors } = await newPage(1440, 900);
   await page.goto(`${BASE}/es/`);
   await page.waitForTimeout(1800);
-  // One solid amber button per viewport: the header's CTA is quiet while the hero's is on screen.
-  const hdrCta = page.getByRole('banner').locator('.hdr-cta').first();
-  check('header CTA quiet next to the hero CTA', /hdr-cta-quiet/.test((await hdrCta.getAttribute('class')) ?? ''));
+  // «Potenciar mi negocio» floats bottom right (28/10/2026); one solid amber per viewport: it steps aside
+  // while the hero's CTA, the banner it leads to or another page-level solid CTA is on screen.
+  const floating = page.locator('.fcta');
+  // (The closed phone menu inside the header keeps its own link: only what is visible counts.)
+  check('no «Potenciar» in the header any more', (await page.getByRole('banner').locator('a[href$="#productos"]:visible').count()) === 0);
+  check('floating CTA hidden next to the hero CTA', (await floating.getAttribute('data-off')) !== null);
+  await page.evaluate(() => document.getElementById('equipamiento')?.scrollIntoView());
+  await page.waitForTimeout(1200);
+  const fbox = await floating.locator('a').boundingBox();
+  check(
+    'floating CTA shows bottom right where no other CTA is, and leads to the products banner',
+    (await floating.getAttribute('data-off')) === null && !!fbox && fbox.x + fbox.width > 1300 && fbox.y + fbox.height > 820 && (await floating.locator('a').getAttribute('href')) === '/Eclipse-Web/es/#productos',
+    `${fbox && Math.round(fbox.x)},${fbox && Math.round(fbox.y)}`,
+  );
   await page.evaluate(() => document.getElementById('productos')?.scrollIntoView());
   await page.waitForTimeout(1200);
-  check('header CTA solid when no page CTA is on screen', /btn-primary/.test((await hdrCta.getAttribute('class')) ?? ''));
-  check('header CTA «Potenciar mi negocio» leads to the products banner', (await hdrCta.getAttribute('href')) === '/Eclipse-Web/es/#productos');
+  check('floating CTA steps aside over the banner it leads to', (await floating.getAttribute('data-off')) !== null);
   // Wide screen with a mouse: the four products are a pinned horizontal track; the rail jumps.
   check('desktop: the products are a pinned track', (await page.locator('#productos[data-mode="track"]').count()) === 1);
   await page.locator('.pd-rail-btn', { hasText: 'Handy' }).click();

@@ -24,6 +24,10 @@ const ART: Record<ProductId, () => React.ReactElement> = {
   foody: Foody,
   markyt: Markyt,
   handy: Handy,
+  gym: Gym,
+  dental: Dental,
+  clinic: Clinic,
+  vet: Vet,
 };
 
 /** Roofy: the agency's elevation (the roof) with one window lit, wired to a contact card and the visits calendar. */
@@ -215,6 +219,160 @@ function Handy() {
       <g data-art-light>
         <circle cx="300" cy="162" r="8" className="pd-light-fill" />
         <circle cx="300" cy="162" r="26" className="pd-glow" />
+      </g>
+    </>
+  );
+}
+
+/** Gimnasios: the barbell, the class grid and the member's streak ring (lit where today's session closes it). */
+function Gym() {
+  return (
+    <>
+      <g data-art className="pd-dim">
+        <path d="M24 330H456" />
+      </g>
+      <g data-art>
+        <circle cx="170" cy="150" r="64" className="pd-soft" />
+        <circle cx="170" cy="150" r="44" className="pd-dotted pd-soft" />
+        <path d="M160 150L168 158L182 140" />
+      </g>
+      <g data-art>
+        <rect x="290" y="70" width="150" height="110" rx="6" />
+        <path d="M290 92H440" />
+        <g className="pd-soft">
+          {[0, 1, 2, 3].flatMap((c) => [0, 1, 2].map((r) => <rect key={`${c}-${r}`} x={302 + c * 34} y={102 + r * 24} width="24" height="16" rx="2" />))}
+        </g>
+        <rect x="336" y="126" width="24" height="16" rx="2" className="pd-fill pd-soft-fill" />
+      </g>
+      <g data-art className="pd-soft">
+        <path d="M300 200H420M300 212H392M300 224H360" />
+      </g>
+      <g data-art>
+        <path d="M96 282H376" />
+        <rect x="112" y="242" width="16" height="80" rx="3" />
+        <rect x="132" y="252" width="12" height="60" rx="3" />
+        <rect x="344" y="242" width="16" height="80" rx="3" />
+        <rect x="328" y="252" width="12" height="60" rx="3" />
+        <path d="M150 276V288M322 276V288" />
+      </g>
+      <g data-art-light>
+        <path d="M170 86A64 64 0 1 1 121 191.1" className="pd-light-stroke" />
+        <circle cx="121" cy="191.1" r="4" className="pd-light-fill" />
+        <circle cx="121" cy="191.1" r="18" className="pd-glow" />
+      </g>
+    </>
+  );
+}
+
+/** DentalOS: the tooth, a WhatsApp message and the check-up moved to its new slot (the one lit point). */
+function Dental() {
+  const slots = [304, 350, 396].flatMap((x) => [136, 164, 192, 220].map((y) => ({ x, y })));
+  return (
+    <>
+      <g data-art className="pd-dim">
+        <path d="M24 330H456" />
+      </g>
+      <g data-art>
+        <path d="M150 110C120 110 108 142 116 176C122 202 126 240 136 284C140 300 154 300 158 284L166 236C168 226 176 226 178 236L186 284C190 300 204 300 208 284C218 240 222 202 228 176C236 142 224 110 194 110C182 110 176 118 172 118C168 118 162 110 150 110Z" />
+        <path d="M134 140C132 158 136 170 140 182" className="pd-soft" />
+      </g>
+      <g data-art>
+        <rect x="290" y="96" width="150" height="150" rx="6" />
+        <path d="M290 120H440" />
+        <g className="pd-soft">
+          {slots.map(({ x, y }) => (
+            <rect key={`${x}-${y}`} x={x} y={y} width="30" height="16" rx="2" />
+          ))}
+        </g>
+        <path d="M304 180L334 164" />
+      </g>
+      <g data-art>
+        <path d="M334 172C370 172 380 228 394 228" className="pd-dotted" />
+        <path d="M388 222L394 228L388 234" />
+      </g>
+      <g data-art>
+        <path d="M232 280H300V312H258L246 324V312H232Z" />
+        <path d="M244 292H286M244 302H272" className="pd-soft" />
+      </g>
+      <g data-art-light>
+        <rect x="396" y="220" width="30" height="16" rx="2" className="pd-light-fill" />
+        <circle cx="411" cy="228" r="24" className="pd-glow" />
+      </g>
+    </>
+  );
+}
+
+/** Clínicas: the pulse, the reminder bell and the front desk's day — one no-show crossed out, one visit confirmed (lit). */
+function Clinic() {
+  const rows = [128, 156, 184, 212, 240];
+  return (
+    <>
+      <g data-art className="pd-dim">
+        <path d="M24 330H456" />
+      </g>
+      <g data-art>
+        <path d="M24 250H118L134 220L150 280L168 186L184 262L196 250H268" />
+      </g>
+      <g data-art>
+        <path d="M76 140C76 116 80 104 90 104C100 104 104 116 104 140L110 146H70Z" />
+        <path d="M86 150C86 156 94 156 94 150" />
+        <path d="M60 112C56 118 56 126 60 132M120 112C124 118 124 126 120 132" className="pd-soft" />
+      </g>
+      <g data-art>
+        <rect x="290" y="80" width="150" height="190" rx="6" />
+        <path d="M290 104H440" />
+        {rows.map((y) => (
+          <path key={y} d={`M320 ${y}H${y === 184 ? 380 : 420}`} className="pd-soft" />
+        ))}
+        {rows.slice(0, 4).map((y) => (
+          <circle key={y} cx="306" cy={y} r="5" className={y === 184 ? 'pd-soft' : undefined} />
+        ))}
+        <path d="M303 128L305.5 130.5L309.5 125.5M303 156L305.5 158.5L309.5 153.5" />
+        <path d="M386 180L394 188M394 180L386 188" />
+      </g>
+      <g data-art>
+        <path d="M112 146C180 156 232 240 296 240" className="pd-dotted" />
+      </g>
+      <g data-art-light>
+        <circle cx="306" cy="240" r="5" className="pd-light-fill" />
+        <circle cx="306" cy="240" r="20" className="pd-glow" />
+      </g>
+    </>
+  );
+}
+
+/** VetOS: the paw, the owner's tag and the home visit inside its zone (the visit lit). */
+function Vet() {
+  return (
+    <>
+      <g data-art className="pd-dim">
+        <path d="M24 340H456" />
+      </g>
+      <g data-art>
+        <path d="M160 246C136 246 120 268 126 286C132 302 148 296 160 298C172 296 188 302 194 286C200 268 184 246 160 246Z" />
+        <ellipse cx="118" cy="214" rx="12" ry="16" transform="rotate(-22 118 214)" />
+        <ellipse cx="146" cy="190" rx="12" ry="17" />
+        <ellipse cx="176" cy="190" rx="12" ry="17" />
+        <ellipse cx="203" cy="214" rx="12" ry="16" transform="rotate(22 203 214)" />
+      </g>
+      <g data-art>
+        <rect x="296" y="76" width="144" height="86" rx="6" />
+        <circle cx="328" cy="120" r="17" />
+        <circle cx="328" cy="98" r="4" className="pd-soft" />
+        <path d="M356 108H422M356 122H408M356 136H414" className="pd-soft" />
+        <path d="M296 120C252 122 232 168 214 196" className="pd-dotted" />
+      </g>
+      <g data-art className="pd-soft">
+        <circle cx="392" cy="304" r="52" className="pd-dotted" />
+      </g>
+      <g data-art>
+        <path d="M360 304L392 276L424 304V340H360Z" />
+        <path d="M386 340V318H398V340" className="pd-soft" />
+        <path d="M212 300C262 330 316 332 356 320" className="pd-dotted" />
+      </g>
+      <g data-art-light>
+        <circle cx="392" cy="252" r="5" className="pd-light-fill" />
+        <circle cx="392" cy="252" r="20" className="pd-glow" />
       </g>
     </>
   );

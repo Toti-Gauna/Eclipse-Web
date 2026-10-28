@@ -1,5 +1,5 @@
 {
-  "$comment": "Productos de Eclipse que la home muestra pantalla por pantalla (pedido de Ignacio del 28/10/2026: Roofy, Foody, Markyt y Handy). status: available = se vende hoy (precio desde content/levels.json); planned = en preparación, sin precio publicado (los precios de EstateOS son solo hipótesis para estos rubros); launch = tiene fecha de lanzamiento propia. points = lo que la pantalla del banner resume; features = lo que lista su página; later = lo que está en diseño para niveles superiores (se muestra como «En diseño», nunca como incluido). El texto de cada id está en messages (products.items.<id>). site = la web propia del producto cuando esté publicada (null: «Conocer» lleva a su página dentro de Eclipse). Fuentes: Notion «Mapa de versiones V3–V6» (27/10/2026), «V5 · Ecommerce», «V6 · Gastronomía» y «Contexto Handy».",
+  "$comment": "Productos de Eclipse que la home muestra pantalla por pantalla (pedido de Ignacio del 28/10/2026: Roofy, Foody, Markyt y Handy). status: available = se vende hoy (precio desde content/levels.json); planned = en preparación, sin precio publicado (los precios de EstateOS son solo hipótesis para estos rubros); launch = tiene fecha de lanzamiento propia; soon = «Próximamente» (pedido de Ignacio del 28/10/2026: gimnasios, DentalOS, clínicas y VetOS), sin precio y sin página propia: su pantalla ofrece «Avisame cuando esté». points = lo que la pantalla del banner resume; features = lo que lista su página; later = lo que está en diseño para niveles superiores (se muestra como «En diseño», nunca como incluido). El texto de cada id está en messages (products.items.<id>). site = la web propia del producto cuando esté publicada (null: «Conocer» lleva a su página dentro de Eclipse). Fuentes: Notion «Mapa de versiones V3–V6» (27/10/2026), «V5 · Ecommerce», «V6 · Gastronomía» y «Contexto Handy». DentalOS y VetOS: investigación y brief de Notion (16–17/10/2026, sin implementación); gimnasios y clínicas: lo que muestran las demos Órbita y Aurora (en standby).",
   "products": [
     {
       "id": "roofy",
@@ -89,6 +89,66 @@
         "city",
         "verified"
       ],
+      "later": []
+    },
+    {
+      "id": "gym",
+      "status": "soon",
+      "fromLevel": null,
+      "vertical": null,
+      "site": null,
+      "points": [
+        "classes",
+        "streaks",
+        "churn",
+        "winback"
+      ],
+      "features": [],
+      "later": []
+    },
+    {
+      "id": "dental",
+      "status": "soon",
+      "fromLevel": null,
+      "vertical": null,
+      "site": null,
+      "points": [
+        "booking",
+        "reschedule",
+        "reception",
+        "patients"
+      ],
+      "features": [],
+      "later": []
+    },
+    {
+      "id": "clinic",
+      "status": "soon",
+      "fromLevel": null,
+      "vertical": null,
+      "site": null,
+      "points": [
+        "booking",
+        "reminders",
+        "noshow",
+        "reception"
+      ],
+      "features": [],
+      "later": []
+    },
+    {
+      "id": "vet",
+      "status": "soon",
+      "fromLevel": null,
+      "vertical": null,
+      "site": null,
+      "points": [
+        "record",
+        "visits",
+        "zones",
+        "reminders"
+      ],
+      "features": [],
       "later": []
     }
   ]

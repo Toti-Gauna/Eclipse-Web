@@ -20,7 +20,9 @@ export function ProductStatus({ id, className = 'pd-status' }: { id: ProductId; 
       ? `${t('status.available')}${usd !== null ? ` · ${t('fromPrice', { price: format(usd) })}` : ''}`
       : product.status === 'launch'
         ? t('status.launch', { date: launchDate(product, locale) ?? '' })
-        : `${t('status.planned')} · ${t('noPrice')}`;
+        : product.status === 'soon'
+          ? t('status.soon')
+          : `${t('status.planned')} · ${t('noPrice')}`;
   return (
     <p className={className} data-status={product.status}>
       <PhaseGlyph phase={STATUS_PHASE[product.status]} size={15} className="pd-status-glyph" />
