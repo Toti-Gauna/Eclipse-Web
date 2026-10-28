@@ -135,10 +135,15 @@ reachable (folded is fine, deleted is not).
   the ecosystem's two orbits → a camera zoom into each product with what it includes → «Próximamente» → the units →
   the six plans priced from `content/levels.json` in the visitor's currency → «Tu negocio, a plena luz» and «Activar
   Eclipse», which hands the film's eclipse over to the hero's). Kinetic Studio method: one paused GSAP timeline on a
-  120 BPM grid (`score/jingle.ts`), built from the site's own pieces, never a recording. It opens on a start screen with a
-  centred «Activar Eclipse» (a tap: it starts the film AND the music; the end card's button says «Entrar»). Its own music (`score/
-  orquesta.ts`, a copy of roofy's orchestra), rendered offline while the start screen is up;
-  then the music's clock drives the film. A modal `<dialog>`: «Saltar», Escape, `?intro=0` / localStorage
+  120 BPM grid (`score/jingle.ts`), built from the site's own pieces, never a recording. The loading screen IS its start screen
+  (28/10/2026): with the film on, the loader holds its last frame (eclipse, wordmark, end line; intro.css, `data-intro`
+  on → film → done, or «leave» when skipped from there) and the dialog only adds «Activar Eclipse» under it (a night pill
+  with an orbiting amber rim); the tap dissolves the loader in place into the film's ignition (no second moon slide) and
+  starts the film AND the music; the end card's button says «Entrar». The stage is built at idle after the start screen
+  shows. Its own music (`score/orquesta.ts`, a copy of roofy's orchestra) is rendered ONCE at build time to
+  `public/audio/intro-score.m4a` (`node scripts/render-intro-music.mjs`; `content/intro-music.json` + `tests/intro-music.test.ts`
+  fail when the score changes and the file wasn't re-rendered) and only fetched on the phone: synthesizing it on the
+  device (~5,000 Web Audio nodes) froze iPhones. Then the music's clock drives the film. A modal `<dialog>`: «Saltar», Escape, `?intro=0` / localStorage
   `eclipse:intro`=off (QA, e2e). Never over a link to a section (`#…`) or the showroom (`?rubro=`…), never on other pages
   or client navigations (inline `introScript`, before paint; the veil hides the hero until the film opens). Landscape
   stage 1600 × 900, portrait 540 × 1080, scaled to fit. Reduced motion: a still card with the same content.

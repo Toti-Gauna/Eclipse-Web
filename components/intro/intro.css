@@ -8,16 +8,54 @@
 .intro-veil {
   display: none;
 }
-html[data-intro='on'] {
+html[data-intro='on'],
+html[data-intro='film'] {
   overflow: hidden;
   scrollbar-gutter: stable;
 }
-html[data-intro='on'] .intro-veil {
+html[data-intro='on'] .intro-veil,
+html[data-intro='film'] .intro-veil {
   display: block;
   position: fixed;
   inset: 0;
   z-index: 95; /* under the loader (100), over the header and the floating CTA */
   background: var(--void);
+}
+
+/*
+ * The loading screen IS the start screen (Ignacio, 28/10/2026: «que no salte de una pantalla a otra»). While the film
+ * waits for «Activar Eclipse» (data-intro="on") the loader never dissolves: it holds its last frame — the eclipse, the
+ * wordmark, the end line — whatever data-loader says, and the film's dialog only adds the button under it. On the tap
+ * (data-intro="film") it dissolves in place, as it would onto the page, while the film's ignition rises from the same
+ * night. Taps go to the dialog, never to this layer. (`body` outranks loader.css's skip/done rules, whatever the order.)
+ */
+html[data-intro='on'] body .loader,
+html[data-intro='film'] body .loader,
+html[data-intro='leave'] body .loader {
+  --e: clamp(150px, 44vmin, 250px);
+  --cy: 42%;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: block;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  animation: none;
+  transition: none;
+}
+html[data-intro='on'] body .loader-sky,
+html[data-intro='on'] body .loader-scene {
+  animation: none;
+}
+html[data-intro='film'] body .loader-sky,
+html[data-intro='leave'] body .loader-sky {
+  animation: loader-dissolve 0.9s ease-in-out forwards;
+}
+html[data-intro='film'] body .loader-scene,
+html[data-intro='leave'] body .loader-scene {
+  animation: loader-scene-out 0.8s ease-in forwards;
 }
 
 /* ---- The dialog -------------------------------------------------------------------------- */
@@ -1041,14 +1079,136 @@ html[data-intro='on'] .intro-veil {
   padding: 72px 16px;
   text-align: center;
 }
-.it-start-btn {
-  min-height: 60px;
-  padding: 0 40px;
-  font-size: 1.15rem;
+/* Standing on the loader's last frame: only the button and its hint, right under the end line. */
+.it-start[data-on-loader] {
+  justify-content: flex-start;
+  padding: calc(var(--it-start-top) + clamp(22px, 4vh, 40px)) 16px 0;
+}
+.it-start-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: it-start-in 0.9s var(--ease-expo) 0.05s both;
 }
 .it-start-hint {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: var(--mist);
+  animation: it-start-in 0.9s var(--ease-expo) 0.2s both;
+}
+@keyframes it-start-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/*
+ * «Activar Eclipse»: a night pill whose rim carries the light — an amber arc that orbits the rim (the corona), a small
+ * eclipse mark that catches it, the label in dawn. transform / opacity only; the orbit stops under reduced motion.
+ */
+.it-start-btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 0 34px 0 24px;
+  border: 0;
+  border-radius: 999px;
+  overflow: hidden;
+  background: transparent;
+  color: var(--dawn);
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    0 0 0 1px rgb(255 232 176 / 0.16),
+    0 18px 60px -18px rgb(245 185 66 / 0.55);
+  transition: transform 0.35s var(--ease-expo);
+}
+/* The orbiting light: a conic sweep behind the pill, larger than it, turning. */
+.it-start-ring {
+  position: absolute;
+  z-index: -2;
+  left: 50%;
+  top: 50%;
+  width: 150%;
+  aspect-ratio: 1;
+  margin: -75% 0 0 -75%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgb(245 185 66 / 0.08) 120deg,
+    rgb(245 185 66 / 0.9) 200deg,
+    rgb(255 248 230 / 1) 214deg,
+    rgb(245 185 66 / 0.25) 236deg,
+    transparent 300deg
+  );
+  animation: it-orbit 3.6s linear infinite;
+}
+/* The night inside the rim. */
+.it-start-btn::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 1.5px;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 160% at 50% -40%, rgb(255 232 176 / 0.14), transparent 60%),
+    rgb(9 9 15 / 0.96);
+}
+.it-start-mark {
+  position: relative;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--void);
+  box-shadow:
+    0 0 0 1.5px var(--flare),
+    0 0 10px 2px rgb(245 185 66 / 0.7);
+}
+.it-start-label {
+  position: relative;
+}
+@keyframes it-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .it-start-btn:hover {
+    transform: scale(1.03);
+  }
+}
+.it-start-btn:active {
+  transform: scale(0.97);
+}
+.it-start-btn:focus-visible {
+  outline: 2px solid var(--corona);
+  outline-offset: 4px;
+}
+/* While the film waits, the dialog is see-through: the loader's last frame is the start screen. */
+.it .it-bg {
+  transition: opacity 0.7s ease;
+}
+.it[data-waiting] .it-bg {
+  opacity: 0;
+}
+.it[data-waiting] .it-bar {
+  animation: it-start-in 0.9s var(--ease-expo) 0.3s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .it-start-ring,
+  .it-start-cta,
+  .it-start-hint {
+    animation: none;
+  }
 }

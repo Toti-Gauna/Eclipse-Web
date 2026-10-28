@@ -27,7 +27,12 @@ const LEAD = 0.45;
  * artEntrance, then alive with their loops), the products' copy and the catalog's prices — never a recording.
  * transform / opacity / clip-path only.
  */
-export function buildIntro(root: HTMLElement, layout: Layout, format: (usd: number) => string): { tl: gsap.core.Timeline; loops: LoopWindow[] } {
+export function buildIntro(
+  root: HTMLElement,
+  layout: Layout,
+  format: (usd: number) => string,
+  { total = false }: { total?: boolean } = {},
+): { tl: gsap.core.Timeline; loops: LoopWindow[] } {
   const q = gsap.utils.selector(root);
   const one = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel);
   const geo = GEO[layout];
@@ -68,7 +73,8 @@ export function buildIntro(root: HTMLElement, layout: Layout, format: (usd: numb
     gsap.set(wrap, { ...place(geo.ignite), autoAlpha: 0 });
     tl.to(wrap, { autoAlpha: 1, duration: 0.6, ease: 'power2.out' }, t0).fromTo(wrap, { scale: place(geo.ignite).scale * 0.86 }, { scale: place(geo.ignite).scale, duration: 2.4 }, t0);
   }
-  if (moon) tl.fromTo(moon, { xPercent: -46 }, { xPercent: 0, duration: 1.5, ease: 'expo.inOut' }, t0);
+  // Coming out of the loading screen (already in totality, `total`), the moon is already over the sun: no second slide.
+  if (moon && !total) tl.fromTo(moon, { xPercent: -46 }, { xPercent: 0, duration: 1.5, ease: 'expo.inOut' }, t0);
   if (glint) {
     tl.fromTo(glint, { scale: 0, rotation: -30, opacity: 0 }, { scale: 1.3, rotation: 15, opacity: 1, duration: 0.35, ease: 'power3.out' }, t0 + 1.35).to(glint, { scale: 0, rotation: 45, opacity: 0, duration: 0.6, ease: 'power2.in' }, t0 + 1.7);
     // The glockenspiel's three notes (bar 2, beats 3–4).

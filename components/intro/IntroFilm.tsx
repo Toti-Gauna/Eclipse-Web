@@ -57,6 +57,13 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
   const [atEnd, setAtEnd] = useState(false);
   // The film waits on «Activar Eclipse» (a tap is also what lets the browser play the music).
   const [started, setStarted] = useState(false);
+  // The stage (the whole film's DOM and its timeline) is built once the phone is idle after the start screen shows,
+  // never in the same frame: the button answers at once (a tap before then builds it right away).
+  const [stageOn, setStageOn] = useState(false);
+  // Where «Activar Eclipse» sits: under the loading screen's wordmark (the loader holds its last frame as the start
+  // screen), or centred under its own eclipse when there is no loader to stand on.
+  const [onLoader, setOnLoader] = useState<number | null>(null);
+  const fromLoader = useRef(false);
 
   // The film's clock (seconds), shared by every rebuild.
   const clock = useRef({ started: false, wall0: 0, t: 0, hiddenAt: 0 });
@@ -82,11 +89,34 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
     d.showModal();
     // «Activar Eclipse» (the start button) takes the focus; Tab reaches the sound and «Saltar» controls.
     (d.querySelector<HTMLElement>('[data-start]') ?? d).focus({ preventScroll: true });
-    // The score is rendered while the visitor reads the start screen, so the music is ready at their tap.
+    // The score (a file rendered at build time) is fetched while the visitor reads the start screen.
     let prep = 0;
-    if (!reduced && IntroMusic.supported()) prep = window.setTimeout(() => void prepareMusic().catch(() => {}), 700);
-    return () => window.clearTimeout(prep);
+    if (!reduced && IntroMusic.supported()) prep = window.setTimeout(() => void prepareMusic().catch(() => {}), 300);
+    // The stage waits for an idle moment (at most 1.2 s).
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 400));
+    const cancelIdle = window.cancelIdleCallback ?? window.clearTimeout;
+    const job = reduced ? 0 : idle(() => setStageOn(true), { timeout: 1200 });
+    return () => {
+      window.clearTimeout(prep);
+      cancelIdle(job);
+    };
   }, [shown, reduced]);
+
+  // The start screen stands on the loader's last frame: the button goes right under its wordmark and end line.
+  useLayoutEffect(() => {
+    if (!shown || reduced || started) return;
+    const place = () => {
+      const loader = document.querySelector<HTMLElement>('.loader');
+      const scene = loader?.querySelector<HTMLElement>('.loader-scene');
+      const r = scene?.getBoundingClientRect();
+      const held = !!loader && getComputedStyle(loader).display !== 'none' && !!r && r.height > 0;
+      fromLoader.current = held;
+      setOnLoader(held && r ? Math.round(r.bottom) : null);
+    };
+    place();
+    window.addEventListener('resize', place);
+    return () => window.removeEventListener('resize', place);
+  }, [shown, reduced, started]);
 
   // Fit the stage to the screen; switch composition when the screen turns.
   useLayoutEffect(() => {
@@ -115,8 +145,8 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
   // Build the film for this layout and drive it from the clock.
   useLayoutEffect(() => {
     const root = stage.current;
-    if (!shown || reduced || !root) return;
-    const built = buildIntro(root, layout, format);
+    if (!shown || reduced || !stageOn || !root) return;
+    const built = buildIntro(root, layout, format, { total: fromLoader.current });
     const state = { ...built, running: new Map<LoopWindow, () => void>() };
     film.current = state;
     state.tl.time(Math.min(clock.current.t, FILM_END), true);
@@ -149,7 +179,7 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
       gsap.set(root.querySelectorAll('*'), { clearProps: 'transform,opacity,visibility,clipPath' });
       film.current = null;
     };
-  }, [shown, reduced, layout, format, now]);
+  }, [shown, reduced, stageOn, layout, format, now]);
 
   // A hidden tab pauses the film and the music.
   useEffect(() => {
@@ -209,8 +239,11 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
       music.current?.close(0.9);
       film.current?.running.forEach((stop) => stop());
       window.scrollTo(0, 0);
-      introDone();
+      // From the start screen the loader is still what shows: it dissolves in place onto the page («leave»).
+      if (clock.current.started) introDone();
+      else document.documentElement.setAttribute('data-intro', 'leave');
       const finish = () => {
+        introDone();
         if (d?.open) d.close();
         const h1 = document.getElementById('hero-title');
         if (h1) {
@@ -265,6 +298,9 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
     if (clock.current.started) return;
     clock.current.started = true;
     clock.current.wall0 = performance.now();
+    // The loading screen dissolves in place while the film's ignition rises from the same night.
+    document.documentElement.setAttribute('data-intro', 'film');
+    setStageOn(true);
     setStarted(true);
     startMusic();
     track('intro_started', {});
@@ -277,22 +313,38 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
   );
 
   return (
-    <dialog ref={dialog} className="it" aria-label={t('label')} onCancel={onCancel} tabIndex={-1} data-reduced={reduced || undefined}>
+    <dialog
+      ref={dialog}
+      className="it"
+      aria-label={t('label')}
+      onCancel={onCancel}
+      tabIndex={-1}
+      data-reduced={reduced || undefined}
+      data-waiting={!reduced && !started ? '' : undefined}
+    >
       <div className="it-bg" data-bg aria-hidden />
       {reduced ? (
         <StillCard activate={activate} />
       ) : (
         <>
           <div className="it-stage theme-dark" data-layout={layout} data-hold={started ? undefined : ''} ref={stage} style={{ width: STAGE[layout].w, height: STAGE[layout].h }}>
-            <IntroScenes layout={layout} activate={activate} />
+            {stageOn ? <IntroScenes layout={layout} activate={activate} /> : null}
           </div>
           {started ? null : (
-            <div className="it-start theme-dark">
-              <Eclipse size="var(--it-start-eclipse)" />
-              <button type="button" className="btn btn-primary it-start-btn" data-start onClick={begin}>
-                {t('start')}
-              </button>
-              <p className="it-start-hint">{t('startHint')}</p>
+            <div
+              className="it-start theme-dark"
+              data-on-loader={onLoader === null ? undefined : ''}
+              style={onLoader === null ? undefined : { ['--it-start-top' as string]: `${onLoader}px` }}
+            >
+              {onLoader === null ? <Eclipse size="var(--it-start-eclipse)" /> : null}
+              <div className="it-start-cta">
+                <button type="button" className="it-start-btn" data-start onClick={begin}>
+                  <span aria-hidden className="it-start-ring" />
+                  <span aria-hidden className="it-start-mark" />
+                  <span className="it-start-label">{t('start')}</span>
+                </button>
+                <p className="it-start-hint">{t('startHint')}</p>
+              </div>
             </div>
           )}
         </>

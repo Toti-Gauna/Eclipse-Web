@@ -1,30 +1,38 @@
 'use client';
 
-import { renderScore } from './score/orquesta';
-import { FILM_END, VAMP_LOOP, filmNotes, vampNotes } from './score/jingle';
+import { asset } from '@/lib/env';
+import music from '@/content/intro-music.json';
 
-/** The film's tail: the last chord rings past the end of the film. */
-const TAIL = 2.5;
-/** 32 kHz is plenty for this mix and renders a third faster than 48 kHz. */
-const SAMPLE_RATE = 32_000;
+let loaded: Promise<AudioBuffer> | null = null;
 
-let rendered: Promise<{ film: AudioBuffer; vamp: AudioBuffer }> | null = null;
-
-/** Renders the score once per page view (Web Audio, offline; nothing is downloaded). Needs no gesture. */
-export function prepareMusic() {
-  return renderMusic().then(() => undefined);
+/**
+ * Fetches and decodes the score (public/audio/intro-score.m4a, rendered at build time by scripts/render-intro-music.mjs:
+ * the film, then the end card's vamp, faded). Nothing is synthesized on the phone: the old offline render built ~5,000
+ * Web Audio nodes and kept an iPhone busy for seconds. Called while the start screen is up; needs no gesture. A
+ * throwaway context decodes it (decoding runs off the main thread); the playing context is made inside the tap.
+ */
+export function prepareMusic(): Promise<void> {
+  return loadMusic().then(() => undefined);
 }
 
-function renderMusic() {
-  rendered ??= Promise.all([
-    renderScore(filmNotes(), FILM_END + TAIL, { sampleRate: SAMPLE_RATE }),
-    renderScore(vampNotes(), VAMP_LOOP.end, { sampleRate: SAMPLE_RATE }),
-  ]).then(([film, vamp]) => ({ film, vamp }));
-  return rendered;
+function loadMusic(): Promise<AudioBuffer> {
+  loaded ??= fetch(asset(`/${music.file}`))
+    .then((r) => {
+      if (!r.ok) throw new Error(`intro music: ${r.status}`);
+      return r.arrayBuffer();
+    })
+    .then((data) => {
+      const Ctx = window.OfflineAudioContext ?? (window as unknown as { webkitOfflineAudioContext: typeof OfflineAudioContext }).webkitOfflineAudioContext;
+      return new Ctx(2, 1, 44_100).decodeAudioData(data);
+    });
+  loaded.catch(() => {
+    loaded = null;
+  });
+  return loaded;
 }
 
 /**
- * The intro's music: the 40-second score on the film's clock, then the vamp looping under «Activar Eclipse».
+ * The intro's music: the 40-second score on the film's clock, then the vamp under «Entrar» (one rendered track).
  * The AudioContext is created inside the visitor's gesture (the sound button), so browsers let it play. While it plays,
  * its clock IS the film's clock (`time()`), so every cut lands on the beat.
  */
@@ -47,12 +55,12 @@ export class IntroMusic {
   }
 
   static supported(): boolean {
-    return typeof window !== 'undefined' && (typeof window.AudioContext === 'function' || 'webkitAudioContext' in window) && typeof OfflineAudioContext === 'function';
+    return typeof window !== 'undefined' && (typeof window.AudioContext === 'function' || 'webkitAudioContext' in window) && typeof fetch === 'function';
   }
 
   /** Starts the music at film time `t` (seconds). Resolves once it sounds. */
   async start(getT: () => number): Promise<void> {
-    const { film, vamp } = await renderMusic();
+    const track = await loadMusic();
     if (this.ctx.state === 'closed') return;
     await this.ctx.resume();
     this.stopSources();
@@ -60,23 +68,13 @@ export class IntroMusic {
     const t = getT() + lead;
     const now = this.ctx.currentTime + lead;
     this.zero = now - t;
-    if (t < FILM_END) {
+    if (t < track.duration) {
       const s = this.ctx.createBufferSource();
-      s.buffer = film;
+      s.buffer = track;
       s.connect(this.out);
       s.start(now, t);
       this.sources.push(s);
     }
-    const v = this.ctx.createBufferSource();
-    v.buffer = vamp;
-    v.loop = true;
-    v.loopStart = VAMP_LOOP.start;
-    v.loopEnd = VAMP_LOOP.end;
-    v.connect(this.out);
-    const intoVamp = t - FILM_END;
-    if (intoVamp < 0) v.start(this.zero + FILM_END, 0);
-    else v.start(now, intoVamp < VAMP_LOOP.start ? intoVamp : VAMP_LOOP.start + ((intoVamp - VAMP_LOOP.start) % (VAMP_LOOP.end - VAMP_LOOP.start)));
-    this.sources.push(v);
     this.out.gain.cancelScheduledValues(now);
     this.out.gain.setValueAtTime(0, now);
     this.out.gain.linearRampToValueAtTime(0.9, now + 0.25);
