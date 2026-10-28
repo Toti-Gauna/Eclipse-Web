@@ -5679,7 +5679,8 @@
           }
         },
         "start": "See the demo and pick your level. There are six, starting with Contact; all of them start from the full website and CRM.",
-        "ask": "Hi Eclipse. I'd like to know more about Roofy for my real estate agency."
+        "ask": "Hi Eclipse. I'd like to know more about Roofy for my real estate agency.",
+        "title": "Real estate"
       },
       "foody": {
         "name": "Foody",
@@ -5721,7 +5722,8 @@
           }
         },
         "start": "Foody is in the works: the menu with QR ordering and bookings come first. If you run a place, write to us and we'll let you know when it's ready.",
-        "ask": "Hi Eclipse. I run a restaurant and I'd like to hear when Foody is ready."
+        "ask": "Hi Eclipse. I run a restaurant and I'd like to hear when Foody is ready.",
+        "title": "Food businesses"
       },
       "markyt": {
         "name": "Markyt",
@@ -5763,7 +5765,8 @@
           }
         },
         "start": "Markyt is in the works. If you sell products, write to us and we'll let you know when it's ready.",
-        "ask": "Hi Eclipse. I run a store and I'd like to hear when Markyt is ready."
+        "ask": "Hi Eclipse. I run a store and I'd like to hear when Markyt is ready.",
+        "title": "Ecommerce"
       },
       "handy": {
         "name": "Handy",
@@ -6085,5 +6088,9 @@
   "transition": {
     "loading": "Loading",
     "light": "Turning the light on"
+  },
+  "autoTour": {
+    "resume": "Continue the automatic tour",
+    "stop": "End the tour"
   }
 }

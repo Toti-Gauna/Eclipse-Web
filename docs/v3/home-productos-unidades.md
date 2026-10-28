@@ -185,6 +185,22 @@ Capturas: `capturas/comercial/1440-comercial.jpg` y `390-comercial.jpg`.
   prepara recién 0,7 s después de que se ve el botón de inicio, para no trabar un teléfono lento mientras carga.
   Si vuelve a pasar en el iPhone, decime en qué momento (antes o después del comercial) y qué versión de iOS.
 
+### Quinta vuelta (mismo día): tour automático y botones
+
+- **«Descubrí los productos»** es ahora tan grande como «Quiero potenciar mi negocio», transparente, con borde gris suave.
+- **Tour automático** (`components/tour/`): al tocarlo, la página baja sola por Roofy, Foody, Markyt, Handy, Gimnasios, DentalOS,
+  Clínicas, VetOS, Eclipse Media y Equipamiento, deteniéndose unos segundos en cada uno. Con mouse en pantallas anchas desliza
+  el recorrido horizontal pantalla por pantalla.
+- **Si el usuario toma el control** (rueda, toque, teclas de navegación, clic en la página o arrastrar la barra), se pausa al
+  instante y aparece abajo al centro el botón flotante **«Seguir con el tour automático»** (con una × para terminarlo). Al
+  tocarlo sigue desde el próximo punto. Con movimiento reducido el botón es un enlace común.
+- **«Conocer X»** pasó a ser un botón grande (56 px) con borde marcado y flecha, no un enlace discreto.
+- **Títulos:** Roofy, Foody y Markyt abren con «Inmobiliarias», «Locales de comida» y «Ecommerce» (en en/pt: «Real estate»,
+  «Food businesses», «Ecommerce»; «Imobiliárias», «Locais de comida», «E-commerce»); el nombre del producto queda en la
+  etiqueta de arriba y en «Conocer Roofy».
+- Verificación: e2e 128/128 (suma el tamaño del botón, los títulos, que el tour avance solo, que pause con la rueda, que muestre
+  el botón y que continúe).
+
 ## Decisiones que quedan para Ignacio
 
 1. **Nombre visible: «Roofy» o «EstateOS».** D11 decía que el visitante ve «EstateOS». En esta web ahora dice «Roofy»

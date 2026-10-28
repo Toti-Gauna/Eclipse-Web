@@ -11,6 +11,7 @@ import { EphemerisRail } from '@/components/ui/EphemerisRail';
 import { ContentVisibilitySync } from '@/components/motion/ContentVisibilitySync';
 import { legacyAnchorsScript } from '@/components/layout/legacyAnchors';
 import { IntroGate } from '@/components/intro/IntroGate';
+import { AutoTourButton } from '@/components/tour/AutoTourButton';
 import { introScript } from '@/components/intro/introScript';
 
 /**
@@ -48,6 +49,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <EquipmentSection />
       </LazyHydrate>
       <EphemerisRail page="home" />
+      <AutoTourButton />
       <ContentVisibilitySync />
     </main>
   );

@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { ArrowDown } from 'lucide-react';
 import { PRODUCTS_HREF } from '@/components/layout/navLinks';
+import { startTour } from '@/components/tour/autoTour';
 
 /**
  * The hero's second way in, under the primary CTA: «Descubrí los productos», a real link to the products banner
@@ -20,7 +21,17 @@ export function VerticalChips() {
       <div className="hero-chips-scroller no-scrollbar">
         <ul className="hero-chips">
           <li data-hero-enter>
-            <a href={PRODUCTS_HREF.replace('/#', '#')} data-hero-chip="productos" className="hero-chip">
+            <a
+              href={PRODUCTS_HREF.replace('/#', '#')}
+              data-hero-chip="productos"
+              data-tour-start
+              className="hero-chip"
+              onClick={(e) => {
+                // Starts the automatic tour through the products; without motion it is the plain link.
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                if (startTour()) e.preventDefault();
+              }}
+            >
               <span className="hero-chip-name">{t('discover')}</span>
               <ArrowDown aria-hidden className="size-4" strokeWidth={1.5} />
             </a>

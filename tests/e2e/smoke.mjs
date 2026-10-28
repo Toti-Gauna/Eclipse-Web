@@ -228,6 +228,38 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await ctx.close();
 }
 
+// 2d. Hero «Descubrí los productos»: the automatic tour, and «Seguir con el tour automático» once the visitor takes over.
+{
+  const { ctx, page, errors } = await newPage(1440, 900);
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(2400);
+  const startBtn = page.locator('#inicio a[data-tour-start]');
+  const box = await startBtn.boundingBox();
+  check('«Descubrí los productos» is as big as the primary action (a full button)', !!box && box.height >= 48 && box.width >= 220, JSON.stringify(box));
+  check(
+    'products lead with who they are for: Inmobiliarias · Locales de comida · Ecommerce',
+    /Inmobiliarias/.test(await page.locator('#pd-roofy h3').innerText()) && /Locales de comida/.test(await page.locator('#pd-foody h3').innerText()) && /Ecommerce/.test(await page.locator('#pd-markyt h3').innerText()),
+  );
+  await startBtn.click();
+  await page.waitForTimeout(4500);
+  const y1 = await page.evaluate(() => scrollY);
+  await page.waitForTimeout(4200);
+  const y2 = await page.evaluate(() => scrollY);
+  check('the tour scrolls the page by itself through the products', y1 > 600 && y2 > y1, `${y1} → ${y2}`);
+  check('… with no resume button while it runs', (await page.locator('.atb[data-shown]').count()) === 0);
+  await page.mouse.wheel(0, 200);
+  await page.waitForTimeout(500);
+  const y3 = await page.evaluate(() => scrollY);
+  check('taking over (wheel) pauses it and shows «Seguir con el tour automático»', (await page.locator('.atb[data-shown]').count()) === 1 && (await page.getByRole('button', { name: 'Seguir con el tour automático' }).isVisible()));
+  await page.waitForTimeout(3000);
+  check('paused: the page stays where the visitor left it', Math.abs((await page.evaluate(() => scrollY)) - y3) < 5);
+  await page.getByRole('button', { name: 'Seguir con el tour automático' }).click();
+  await page.waitForTimeout(5200);
+  check('resuming continues the tour and hides the button', (await page.evaluate(() => scrollY)) > y3 + 100 && (await page.locator('.atb[data-shown]').count()) === 0);
+  check('no page errors (tour)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  await ctx.close();
+}
+
 // 3. Desktop: the floating «Potenciar mi negocio», the products track, the unit pages, the selector on /agency/.
 {
   const { ctx, page, errors } = await newPage(1440, 900);

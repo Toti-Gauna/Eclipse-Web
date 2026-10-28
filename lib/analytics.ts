@@ -16,6 +16,8 @@ export type AnalyticsEvent =
   | 'product_opened'
   | 'intro_closed'
   | 'intro_started'
+  | 'tour_started'
+  | 'tour_resumed'
   | 'selector_opened'
   | 'selector_chosen'
   | 'whatsapp_opened'

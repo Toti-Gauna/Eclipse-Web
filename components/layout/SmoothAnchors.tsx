@@ -104,7 +104,7 @@ export function SmoothAnchors() {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const link = (e.target as Element | null)?.closest?.('a[href*="#"]') as HTMLAnchorElement | null;
       // «Potenciar mi negocio» is a real link to #contacto that opens the selector instead (PotenciarCta).
-      if (!link || link.target === '_blank' || link.hasAttribute('data-opens-selector')) return;
+      if (!link || link.target === '_blank' || link.hasAttribute('data-opens-selector') || link.hasAttribute('data-tour-start')) return;
       const url = new URL(link.href, window.location.href);
       if (url.origin !== window.location.origin || url.pathname !== window.location.pathname || !url.hash) return;
       const id = decodeURIComponent(url.hash.slice(1));

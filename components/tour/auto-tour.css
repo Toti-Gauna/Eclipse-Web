@@ -1,0 +1,64 @@
+/* «Seguir con el tour automático»: a floating pill, bottom centre (the floating «Potenciar» lives at the right). */
+.atb {
+  position: fixed;
+  left: 50%;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 46;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem;
+  border: 1px solid rgb(244 239 230 / 0.28);
+  border-radius: 999px;
+  background: rgb(12 12 20 / 0.92);
+  box-shadow: 0 14px 40px -12px rgb(0 0 0 / 0.7);
+  color: var(--dawn);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 24px);
+  transition:
+    opacity 0.35s var(--ease-expo),
+    transform 0.5s var(--ease-expo),
+    visibility 0s linear 0.5s;
+}
+.atb[data-shown] {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition-delay: 0s;
+}
+.atb-main,
+.atb-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.atb-main {
+  gap: 0.6rem;
+  padding: 0 1.25rem 0 1.1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  background: rgb(244 239 230 / 0.1);
+}
+.atb-close {
+  width: 48px;
+  color: var(--mist);
+}
+@media (hover: hover) and (pointer: fine) {
+  .atb-main:hover {
+    background: rgb(244 239 230 / 0.18);
+  }
+  .atb-close:hover {
+    color: var(--dawn);
+  }
+}
+@media (max-width: 420px) {
+  .atb-main {
+    font-size: 0.875rem;
+    padding: 0 1rem 0 0.9rem;
+  }
+}
