@@ -134,8 +134,9 @@ reachable (folded is fine, deleted is not).
   the ecosystem's two orbits → a camera zoom into each product with what it includes → «Próximamente» → the units →
   the six plans priced from `content/levels.json` in the visitor's currency → «Tu negocio, a plena luz» and «Activar
   Eclipse», which hands the film's eclipse over to the hero's). Kinetic Studio method: one paused GSAP timeline on a
-  120 BPM grid (`score/jingle.ts`), built from the site's own pieces, never a recording. Its own music (`score/
-  orquesta.ts`, a copy of roofy's orchestra), rendered offline only when the visitor turns the sound on (off by default);
+  120 BPM grid (`score/jingle.ts`), built from the site's own pieces, never a recording. It opens on a start screen with a
+  centred «Activar Eclipse» (a tap: it starts the film AND the music; the end card's button says «Entrar»). Its own music (`score/
+  orquesta.ts`, a copy of roofy's orchestra), rendered offline while the start screen is up;
   then the music's clock drives the film. A modal `<dialog>`: «Saltar», Escape, `?intro=0` / localStorage
   `eclipse:intro`=off (QA, e2e). Never over a link to a section (`#…`) or the showroom (`?rubro=`…), never on other pages
   or client navigations (inline `introScript`, before paint; the veil hides the hero until the film opens). Landscape

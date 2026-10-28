@@ -169,6 +169,22 @@ Capturas: `capturas/comercial/1440-comercial.jpg` y `390-comercial.jpg`.
   (noche hacia Media, luz hacia Roofy y página clara) y que las láminas se muevan.
 - Navegador: sin errores de consola y sin scroll horizontal a 390 px; el sonido arranca y el comercial sigue su reloj.
 
+## Cuarta vuelta (28/10/2026, revisión de Ignacio desde el celular)
+
+- **Comercial con botón de inicio:** después de la pantalla de carga aparece un «Activar Eclipse» en el medio; recién al
+  tocarlo arranca toda la animación **con la música** (el toque es lo que permite sonar en el celular). El botón del final
+  pasó a decir «Entrar» y lleva a la home. Se puede silenciar y «Saltar» está siempre.
+- **Barra vertical a la derecha del comercial:** era la línea de luz de los cambios de escena, que quedaba dibujada en el
+  borde desde el primer cuadro. Ahora está oculta hasta que le toca y hay una prueba que lo verifica.
+- **Hero más chico en celular** (el eclipse pasa de 260 a 190 px como máximo) y **sin la escala** alrededor del eclipse (en
+  todos los tamaños).
+- **El segundo botón del hero** ya no abre la demo: dice «Descubrí los productos» y baja al banner de productos. La demo de
+  Roofy se abre desde su página.
+- **Pantalla negra:** no pude reproducirla en Chromium (se recorrió la home entera en 390 px sin huecos). Para que nunca
+  quede negra: el velo del comercial se levanta solo a los 15 s si el comercial no llegó a abrirse, y la música se
+  prepara recién 0,7 s después de que se ve el botón de inicio, para no trabar un teléfono lento mientras carga.
+  Si vuelve a pasar en el iPhone, decime en qué momento (antes o después del comercial) y qué versión de iOS.
+
 ## Decisiones que quedan para Ignacio
 
 1. **Nombre visible: «Roofy» o «EstateOS».** D11 decía que el visitante ve «EstateOS». En esta web ahora dice «Roofy»

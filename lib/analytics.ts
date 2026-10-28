@@ -15,6 +15,7 @@ export type AnalyticsEvent =
   | 'hero_cta_clicked'
   | 'product_opened'
   | 'intro_closed'
+  | 'intro_started'
   | 'selector_opened'
   | 'selector_chosen'
   | 'whatsapp_opened'

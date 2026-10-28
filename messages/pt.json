@@ -101,10 +101,11 @@
     "eyebrow": "Desenvolvimento · IA · Automação",
     "title": "Potencialize e divulgue <em>seu negócio</em> e fidelize clientes com a Eclipse.",
     "subtitle": "Antes de conversar, mostramos o seu negócio funcionando: sites, sistemas e agentes de IA para negócios que não podem esperar.",
-    "pickVertical": "Ou veja uma demo agora",
+    "pickVertical": "Ou veja o que fazemos",
     "ctaPotenciar": "Quero potencializar meu negócio",
     "ctaDemo": "Peça sua demo",
-    "noscript": "A demo interativa precisa de JavaScript. Você pode falar com a gente pelo WhatsApp do mesmo jeito: o link está no rodapé desta página."
+    "noscript": "A demo interativa precisa de JavaScript. Você pode falar com a gente pelo WhatsApp do mesmo jeito: o link está no rodapé desta página.",
+    "discover": "Descubra os produtos"
   },
   "whatsapp": {
     "greeting": "Olá, Eclipse.",
@@ -6076,7 +6077,10 @@
     "equipment": "Displays, QR e embalagens com a sua marca.",
     "perMonth": "/mês",
     "progress": "Andamento do filme",
-    "usd": "USD {n}"
+    "usd": "USD {n}",
+    "enter": "Entrar",
+    "start": "Ativar Eclipse",
+    "startHint": "Com música. São 40 segundos."
   },
   "transition": {
     "loading": "Carregando",

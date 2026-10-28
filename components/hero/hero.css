@@ -157,7 +157,7 @@
 /* everything from 1024px — the copy column ends before the dial.       */
 /* ------------------------------------------------------------------ */
 .hero {
-  --hero-eclipse-size: min(48vw, 25svh, 260px);
+  --hero-eclipse-size: min(38vw, 19svh, 190px);
   /* One cell; minmax(0, …) so wide content (the rubro scroller) never widens the page. */
   grid-template-columns: minmax(0, 1fr);
 }
@@ -532,3 +532,8 @@
   }
 }
 
+
+/* No instrument scale around the eclipse (Ignacio, 28/10/2026: the eclipse alone). */
+.hero-dial {
+  display: none;
+}

@@ -605,6 +605,7 @@ html[data-intro='on'] .intro-veil {
 
 /* The scene change */
 .it-wipe {
+  visibility: hidden; /* shown only by its own tweens (autoAlpha) */
   top: 0;
   bottom: 0;
   left: 0;
@@ -1022,4 +1023,32 @@ html[data-intro='on'] .intro-veil {
 }
 .it:focus {
   outline: none; /* the dialog holds the focus for Tab and Escape; its controls show the ring */
+}
+
+/* The start screen: the eclipse and «Activar Eclipse», before anything plays. */
+.it-stage[data-hold] {
+  visibility: hidden;
+}
+.it-start {
+  --it-start-eclipse: clamp(150px, 38vmin, 300px);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 72px 16px;
+  text-align: center;
+}
+.it-start-btn {
+  min-height: 60px;
+  padding: 0 40px;
+  font-size: 1.15rem;
+}
+.it-start-hint {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--mist);
 }
