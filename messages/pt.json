@@ -8,7 +8,28 @@
     "organizationDescription": "Estúdio de desenvolvimento, IA e automação. Sites, sistemas, agentes de IA, e-commerce e apps.",
     "notFoundTitle": "Esta página ficou no escuro",
     "notFoundBody": "Não encontramos o que você procurava.",
-    "notFoundCta": "Voltar ao início"
+    "notFoundCta": "Voltar ao início",
+    "pages": {
+      "media": {
+        "title": "Eclipse Media — Trailers, motion e conteúdo",
+        "description": "Trailers de produto, motion graphics, imagens de produto, peças para redes e modelos 3D, sob encomenda e em qualquer plano."
+      },
+      "academy": {
+        "title": "Eclipse Academy — Formação por setor e por nível",
+        "description": "Guias de uso do que você contrata, marketing digital para o seu setor e prática com exercícios, jogos e testes."
+      },
+      "intelligence": {
+        "title": "Eclipse Intelligence — Decida com dados",
+        "description": "Vendas, contatos, ocupação e fidelização numa mesma leitura, com a fonte de cada número."
+      },
+      "agency": {
+        "title": "Eclipse Agency — Desenvolvimento, IA e automação",
+        "description": "Chatbots, agentes de IA, integrações e apps sob medida. Veja as demos, os preços e como trabalhamos."
+      },
+      "product": {
+        "title": "{name} para {rubro} — Eclipse"
+      }
+    }
   },
   "common": {
     "demo": "Demo",
@@ -33,10 +54,10 @@
     "sections": "seções"
   },
   "nav": {
-    "services": "Serviços",
-    "examples": "Demos",
-    "pricing": "Preços",
-    "process": "Como trabalhamos"
+    "media": "Media",
+    "academy": "Academy",
+    "intelligence": "Intelligence",
+    "agency": "Agency"
   },
   "header": {
     "home": "Eclipse, ir para o início",
@@ -83,7 +104,7 @@
     "pickVertical": "Ou veja uma demo agora",
     "ctaPotenciar": "Quero potencializar meu negócio",
     "ctaDemo": "Peça sua demo",
-    "noscript": "A demo interativa precisa de JavaScript. Você pode falar com a gente do mesmo jeito: o contato está mais abaixo, nesta mesma página."
+    "noscript": "A demo interativa precisa de JavaScript. Você pode falar com a gente pelo WhatsApp do mesmo jeito: o link está no rodapé desta página."
   },
   "whatsapp": {
     "greeting": "Olá, Eclipse.",
@@ -96,7 +117,10 @@
     "explore": "Explorar",
     "contact": "Contato",
     "rights": "© {year} Eclipse. Todos os direitos reservados.",
-    "demoNotice": "Os negócios que aparecem nas demos são fictícios."
+    "demoNotice": "Os negócios que aparecem nas demos são fictícios.",
+    "products": "Produtos",
+    "eclipse": "Eclipse",
+    "equipment": "Equipamentos"
   },
   "planMessage": {
     "introCard": "Olá Eclipse. Quero esta oferta:",
@@ -2464,7 +2488,11 @@
       "examples": "Demos",
       "process": "Como trabalhamos",
       "pricing": "Preços",
-      "agent": "Perguntas e contato"
+      "agent": "Perguntas e contato",
+      "products": "Produtos",
+      "media": "Eclipse Media",
+      "equipment": "Equipamentos",
+      "agency": "Eclipse Agency"
     }
   },
   "prefs": {
@@ -5582,5 +5610,376 @@
     "notListed": "Não encontrou seu setor?",
     "notListedAction": "Fale com a gente e a gente vê",
     "whatsapp": "Olá, Eclipse. Meu setor não estava na lista e quero potencializar meu negócio."
+  },
+  "products": {
+    "title": "Um produto para cada <em>setor</em>.",
+    "sub": "Quatro produtos da Eclipse, cada um feito para um tipo de negócio. Passe de tela em tela e veja o que cada um resolve.",
+    "listLabel": "Produtos da Eclipse",
+    "count": "{n} de {total}",
+    "know": "Conhecer {name}",
+    "status": {
+      "available": "Disponível",
+      "planned": "Em preparação",
+      "launch": "Lança em {date}"
+    },
+    "fromPrice": "a partir de {price}/mês",
+    "noPrice": "Ainda sem preço publicado",
+    "railLabel": "Escolha um produto",
+    "page": {
+      "eyebrow": "Produto da Eclipse",
+      "included": "O que inclui",
+      "later": "Em desenho",
+      "laterText": "Para os níveis superiores. Não faz parte da primeira versão.",
+      "start": "Como começar",
+      "others": "Os outros produtos",
+      "all": "Ver todos na página inicial",
+      "demo": "Ver a demo",
+      "ask": "Pedir informações",
+      "notify": "Quero ser avisado",
+      "demoNote": "A demo usa a Lumen Propiedades, um negócio fictício."
+    },
+    "items": {
+      "roofy": {
+        "name": "Roofy",
+        "rubro": "imobiliárias",
+        "line": "Sua imobiliária numa tela só: o site, os contatos e as visitas.",
+        "lead": "O site dos seus imóveis e o CRM da sua equipe, juntos. Cada contato entra, se organiza e termina numa visita agendada.",
+        "points": {
+          "web": "Site com seus imóveis e sua marca",
+          "crm": "CRM completo: contatos, consultas e oportunidades",
+          "visits": "Agenda de visitas, tarefas e histórico",
+          "chat": "Chat guiado que recebe cada consulta"
+        },
+        "features": {
+          "web": {
+            "name": "Site imobiliário",
+            "text": "Seus imóveis com fichas completas, fotos e consulta direta, com a sua marca."
+          },
+          "crm": {
+            "name": "CRM completo",
+            "text": "Contatos com histórico, consultas e oportunidades com a sua etapa, numa lista só."
+          },
+          "visits": {
+            "name": "Visitas e tarefas",
+            "text": "A agenda de visitas e as tarefas da equipe, com o que aconteceu em cada uma."
+          },
+          "chat": {
+            "name": "Chat guiado",
+            "text": "Responde com botões e um roteiro fixo, pega os dados e propõe uma visita."
+          },
+          "team": {
+            "name": "Equipe com papéis",
+            "text": "Papéis básicos: cada pessoa vê o que é dela."
+          },
+          "brand": {
+            "name": "Implantação com a sua marca",
+            "text": "Carregamos sua marca, seus imóveis e sua equipe. A implantação limitada já está incluída no preço."
+          }
+        },
+        "start": "Veja a demo e escolha seu nível. São seis, a partir do Contact; todos partem do site e do CRM completos.",
+        "ask": "Olá, Eclipse. Quero saber mais sobre o Roofy para a minha imobiliária."
+      },
+      "foody": {
+        "name": "Foody",
+        "rubro": "gastronomia",
+        "line": "Seu restaurante também no celular: o cardápio, o pedido na mesa e as reservas.",
+        "lead": "Para restaurantes, bares, cafés e sorveterias. Quem chega pelas redes vê o seu site; quem está na mesa lê o QR e pede.",
+        "points": {
+          "web": "Site do restaurante com a sua identidade",
+          "menu": "Cardápio digital e pedido na mesa por QR",
+          "bookings": "Reservas por dia, horário e número de pessoas",
+          "panel": "Painel de pedidos, pagamentos, reservas e clientes"
+        },
+        "features": {
+          "web": {
+            "name": "Site do restaurante",
+            "text": "Ambiente, pratos, história, horários e localização, com a sua identidade."
+          },
+          "menu": {
+            "name": "Cardápio e pedido por QR",
+            "text": "Variações e adicionais, revisão e envio do pedido, aceite no salão e entrega."
+          },
+          "bookings": {
+            "name": "Reservas",
+            "text": "Dia, horário e pessoas, com confirmação e agenda."
+          },
+          "panel": {
+            "name": "Painel do restaurante",
+            "text": "Cardápio, pedidos, preparo, pagamentos, reservas e clientes num só lugar."
+          }
+        },
+        "later": {
+          "loyalty": {
+            "name": "Jogos, brindes e passaportes",
+            "text": "Motivos para voltar: passaportes por visitas e jogos para a mesa."
+          },
+          "dishes": {
+            "name": "Pratos em 3D",
+            "text": "Um visualizador 3D para alguns pratos escolhidos."
+          }
+        },
+        "start": "O Foody está em preparação: primeiro chegam o cardápio com pedido por QR e as reservas. Se você tem um restaurante, fale com a gente e avisamos quando estiver pronto.",
+        "ask": "Olá, Eclipse. Tenho um restaurante e quero ser avisado quando o Foody estiver pronto."
+      },
+      "markyt": {
+        "name": "Markyt",
+        "rubro": "e-commerce",
+        "line": "Sua loja online com tudo o que vem por trás: pedidos, estoque e clientes.",
+        "lead": "Para marcas com um produto só, uma coleção pequena ou um catálogo grande. E se você não vende online, mostra seus produtos e recebe consultas do mesmo jeito.",
+        "points": {
+          "store": "Loja com a sua identidade e os seus produtos",
+          "catalog": "Catálogo com variações, carrinho e checkout",
+          "orders": "Pedidos, pagamentos e estoque",
+          "crm": "Clientes, histórico e pós-venda"
+        },
+        "features": {
+          "store": {
+            "name": "Loja com a sua marca",
+            "text": "Modelos que se adaptam à sua identidade, e cadastro de produtos por conta própria."
+          },
+          "catalog": {
+            "name": "Catálogo e checkout",
+            "text": "Variações, carrinho e um checkout sem rodeios."
+          },
+          "orders": {
+            "name": "Pedidos, pagamentos e estoque",
+            "text": "Cada pedido com o seu pagamento, e o estoque em dia."
+          },
+          "crm": {
+            "name": "Clientes e pós-venda",
+            "text": "O histórico de cada cliente, tarefas e acompanhamento depois da compra."
+          }
+        },
+        "later": {
+          "gifts": {
+            "name": "Brindes e gamificação",
+            "text": "Prêmios e desafios para os seus clientes voltarem."
+          },
+          "content": {
+            "name": "Estúdio de conteúdo",
+            "text": "Uma ferramenta para montar suas peças por conta própria."
+          }
+        },
+        "start": "O Markyt está em preparação. Se você vende produtos, fale com a gente e avisamos quando estiver pronto.",
+        "ask": "Olá, Eclipse. Tenho uma loja e quero ser avisado quando o Markyt estiver pronto."
+      },
+      "handy": {
+        "name": "Handy",
+        "rubro": "serviços para casa",
+        "line": "Especialistas para a sua casa em Mar del Plata, pelo celular.",
+        "lead": "O Handy conecta quem precisa de um conserto a especialistas da cidade. Tem equipe e sistema próprios.",
+        "points": {
+          "trades": "Elétrica, encanamento, gás, chaveiro, alvenaria e ar-condicionado",
+          "choose": "Você escolhe o especialista; ele define ou aceita o preço",
+          "app": "Um web app que se instala no celular",
+          "city": "Primeiro em Mar del Plata"
+        },
+        "features": {
+          "trades": {
+            "name": "Seis áreas previstas",
+            "text": "Elétrica, encanamento, gás, chaveiro, alvenaria e ar-condicionado. Cada área abre quando há especialistas verificados."
+          },
+          "choose": {
+            "name": "Você escolhe",
+            "text": "O Handy mostra opções; o especialista define ou aceita o preço e decide a sua disponibilidade."
+          },
+          "app": {
+            "name": "No navegador",
+            "text": "Um web app com uma visão para cada papel, que se instala quando o celular permite."
+          },
+          "city": {
+            "name": "Mar del Plata primeiro",
+            "text": "Começa na cidade, com foco inicial em encanamento e elétrica."
+          },
+          "verified": {
+            "name": "Especialistas verificados",
+            "text": "Cada especialista é verificado antes de atender."
+          }
+        },
+        "start": "O Handy lança em {date}. Se quiser saber mais, fale com a gente.",
+        "ask": "Olá, Eclipse. Quero saber mais sobre o Handy."
+      }
+    }
+  },
+  "media": {
+    "title": "Seu negócio, <em>em movimento</em>.",
+    "lead": "Trailers, motion graphics, imagens de produto e peças para redes que mostram o seu negócio funcionando.",
+    "sheetLabel": "Folha de contato: o que a Eclipse Media produz",
+    "frame": "Quadro {n}",
+    "frames": {
+      "trailer": "Trailers de produto",
+      "motion": "Motion graphics",
+      "photos": "Imagens de produto",
+      "social": "Peças para redes",
+      "launch": "Lançamentos e temporadas",
+      "models": "Modelos 3D"
+    },
+    "note": "Sob encomenda, em qualquer plano. Cada peça é orçada à parte e não muda a sua mensalidade.",
+    "cta": "Conhecer a Eclipse Media",
+    "page": {
+      "title": "Conteúdo que mostra <em>o seu produto de verdade</em>.",
+      "lead": "A unidade de conteúdo da Eclipse: do trailer do seu produto às peças de cada temporada.",
+      "offerTitle": "O que produzimos",
+      "offer": {
+        "trailer": {
+          "name": "Trailers de produto",
+          "text": "Seu produto explicado em menos de um minuto, na horizontal e na vertical."
+        },
+        "motion": {
+          "name": "Motion graphics",
+          "text": "Animação para apresentar uma ideia, um serviço ou um número."
+        },
+        "photos": {
+          "name": "Imagens de produto",
+          "text": "Fotos e renders para o seu site, a sua loja e o seu catálogo."
+        },
+        "social": {
+          "name": "Peças para redes",
+          "text": "Vídeos curtos e cards nos formatos de cada rede."
+        },
+        "launch": {
+          "name": "Lançamentos e temporadas",
+          "text": "A campanha de um lançamento ou de uma data, peça por peça."
+        },
+        "models": {
+          "name": "Modelos 3D",
+          "text": "Um objeto ou um prato em 3D, para ver de todos os ângulos."
+        }
+      },
+      "methodTitle": "Como trabalhamos",
+      "method": {
+        "brief": {
+          "name": "Briefing",
+          "text": "Você conta o que quer mostrar e onde a peça vai aparecer."
+        },
+        "script": {
+          "name": "Roteiro e quadros",
+          "text": "Mostramos o roteiro e os quadros-chave antes de produzir."
+        },
+        "make": {
+          "name": "Produção",
+          "text": "Fazemos a peça com a sua marca e os seus materiais."
+        },
+        "review": {
+          "name": "Revisão e aprovação",
+          "text": "Você revisa, pede ajustes e aprova."
+        },
+        "delivery": {
+          "name": "Entrega",
+          "text": "Você recebe os arquivos nos formatos de cada rede."
+        }
+      },
+      "craftTitle": "Como fazemos os nossos trailers",
+      "craft": "Nada é filmado: reconstruímos a interface e animamos quadro a quadro, com música composta para cada peça. Assim o vídeo mostra o produto de verdade.",
+      "aiNote": "Quando uma peça usa ferramentas de IA, respeitamos as condições de cada fornecedor e os direitos de terceiros.",
+      "cta": "Pedir uma peça",
+      "ask": "Olá, Eclipse. Quero pedir um orçamento de uma peça da Eclipse Media."
+    }
+  },
+  "equipment": {
+    "title": "O que o seu negócio usa <em>na mão</em>.",
+    "lead": "Displays de QR, expositores, embalagens e materiais com a sua marca, para o digital aparecer também na loja.",
+    "sheetLabel": "Vista explodida do kit de Equipamentos",
+    "parts": {
+      "qr": "Suportes e displays de QR",
+      "displays": "Expositores",
+      "packaging": "Embalagens e unboxing",
+      "cards": "Cartões, cupons e passaportes",
+      "keychains": "Chaveiros e materiais de marca",
+      "hardware": "Hardware compatível"
+    },
+    "quote": "Sob orçamento",
+    "note": "Sob encomenda, com orçamento e sinal. Custos e disponibilidade se confirmam em cada orçamento. Sem estoque próprio.",
+    "cta": "Pedir um orçamento",
+    "ask": "Olá, Eclipse. Quero um orçamento de equipamentos para o meu negócio."
+  },
+  "units": {
+    "others": "As outras unidades",
+    "ask": "Perguntar pelo WhatsApp",
+    "statusTitle": "Status",
+    "plansTitle": "Nos planos",
+    "academy": {
+      "name": "Eclipse Academy",
+      "short": "Formação por setor e por nível.",
+      "title": "Sua equipe usa o que você contrata <em>e vende mais</em>.",
+      "lead": "Formação por setor e por nível: guias de uso do que você contrata, marketing digital com exemplos do seu setor e prática com exercícios e testes.",
+      "offerTitle": "O que você vai encontrar",
+      "offer": {
+        "guides": {
+          "name": "Guias de uso",
+          "text": "Como usar cada coisa que você contratou, passo a passo."
+        },
+        "marketing": {
+          "name": "Marketing digital por setor",
+          "text": "Hooks, roteiros e exemplos pensados para o seu tipo de negócio, e como medi-los."
+        },
+        "routes": {
+          "name": "Trilhas por nível e por papel",
+          "text": "O que o dono precisa não é o que precisa quem atende: cada um tem a sua trilha."
+        },
+        "practice": {
+          "name": "Prática",
+          "text": "Exercícios, jogos de prática e testes para fixar o que aprendeu."
+        },
+        "physical": {
+          "name": "Marketing físico",
+          "text": "Cupons, cartões e chaveiros: cada aula pode ser feita por conta própria ou com materiais de Equipamentos."
+        },
+        "progress": {
+          "name": "Seu progresso",
+          "text": "O que você já fez e o que vem a seguir, aula por aula."
+        }
+      },
+      "plans": "Todo plano vem com a sua central de ajuda. No Roofy, a Academy chega com o {level}, a partir de {price}/mês.",
+      "status": "A biblioteca de cursos está em produção: entra por etapas, começando pelos guias de uso.",
+      "ask": "Olá, Eclipse. Quero saber mais sobre a Eclipse Academy."
+    },
+    "intelligence": {
+      "name": "Eclipse Intelligence",
+      "short": "O que acontece no seu negócio, medido.",
+      "title": "Decida com dados, <em>não no olho</em>.",
+      "lead": "A Intelligence mede o que acontece no seu negócio, em todas as linhas da Eclipse, e diz de onde vem cada número.",
+      "offerTitle": "O que mede",
+      "offer": {
+        "sales": {
+          "name": "Vendas e pedidos",
+          "text": "O que vende, quando e por qual canal."
+        },
+        "leads": {
+          "name": "Consultas e oportunidades",
+          "text": "De onde chegam, em que etapa estão e quais estão esfriando."
+        },
+        "ops": {
+          "name": "Ocupação e atrasos",
+          "text": "Num restaurante: mesas, reservas e tempos de cozinha."
+        },
+        "loyalty": {
+          "name": "Resgates e fidelização",
+          "text": "Quais prêmios são usados e quem volta."
+        },
+        "branches": {
+          "name": "Unidades e marcas",
+          "text": "Todas as suas unidades numa mesma leitura, nos níveis mais altos."
+        }
+      },
+      "principleTitle": "Cada número com a sua fonte",
+      "principle": "Uma recomendação sem fonte não serve. Cada leitura diz de quais dados vem.",
+      "plans": "No Roofy, a Intelligence chega com o {level}, a partir de {price}/mês: análises e recomendações com fonte.",
+      "status": "Nos outros produtos chega com os seus níveis superiores, à medida que cada um for lançado.",
+      "ask": "Olá, Eclipse. Quero saber mais sobre a Eclipse Intelligence."
+    },
+    "media": {
+      "name": "Eclipse Media",
+      "short": "Trailers, motion e conteúdo."
+    },
+    "agency": {
+      "name": "Eclipse Agency",
+      "short": "Desenvolvimento, IA e automação.",
+      "title": "O que não existe, <em>a gente constrói</em>.",
+      "lead": "Conectamos as suas ferramentas e construímos o que ainda não existe: chatbots, agentes de IA e apps. Cada projeto começa com um levantamento e um orçamento.",
+      "tocLabel": "Nesta página",
+      "contact": "Conte o seu projeto",
+      "ask": "Olá, Eclipse. Quero contar um projeto para a Eclipse Agency."
+    }
   }
 }

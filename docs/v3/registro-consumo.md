@@ -230,3 +230,19 @@ Segunda lectura de `get_session`. **Diferencia contra la lectura de §3 (13:33 U
   - Re-render de los dos cortes: 16:9 5,70 MB y 9:16 2,85 MB, −16 LUFS.
 - **3.2:** `estateos/fotos-gpt-3.2.md`, con los 7 prompts de Notion y de la biblia v2 §7, el orden (anclas primero), formato 3:2, la lista de aprobación por foto y cómo entregarlas. No se generó ninguna imagen desde acá.
 - **Push:** un `push --force` fue rechazado por el clasificador; no hacía falta (la rama avanzaba en línea recta sobre `main`).
+
+## 26. Home de productos y páginas por unidad (28/10/2026)
+
+- **Pedido de Ignacio:**
+  - Hero y un banner con Roofy, Foody, Markyt y Handy, una pantalla cada uno, con SVG propios y «Conocer X».
+  - Después, Eclipse Media y Equipamiento, y nada más.
+  - Header a Media, Academy, Intelligence y Agency, cada una su página.
+  - GSAP, premium.
+- **Gasto externo:** USD 0. Sin dependencias nuevas, sin imágenes generadas ni descargadas: todas las láminas son SVG
+  dibujados a mano en el repo.
+- **Resultado:** `docs/v3/home-productos-unidades.md`.
+  - Home nueva (banner horizontal fijado con mouse, apilado en táctil).
+  - Ocho páginas nuevas por idioma: cuatro de unidad (Media, Academy, Intelligence, Agency) y cuatro de producto.
+  - Landing v3 entera en `/agency/`, con redirección de los enlaces viejos.
+  - 477 pruebas y e2e 97/97.
+- **Pendiente de Ignacio:** nombre visible «Roofy» o «EstateOS» (D11); el `site` de cada producto cuando exista.

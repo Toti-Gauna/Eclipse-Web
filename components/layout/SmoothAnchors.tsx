@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { usePathname } from '@/i18n/navigation';
 import { CV_OFF_CLASS } from '@/components/motion/ContentVisibilitySync';
 import { ScrollTrigger } from '@/components/motion/gsap';
 import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
@@ -137,5 +138,17 @@ export function SmoothAnchors() {
       cancelAlign?.();
     };
   }, []);
+
+  // A client navigation onto another page's anchor (the header's «Potenciar mi negocio» →
+  // /#productos from a unit page): the router jumps before the new page's pins and deferred
+  // sections exist, which left the target a screen or more away. Same cure as a shared link.
+  const pathname = usePathname();
+  const lastPath = useRef(pathname);
+  useEffect(() => {
+    if (lastPath.current === pathname) return;
+    lastPath.current = pathname;
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (id && document.getElementById(id)) keepAligned(id, 'auto');
+  }, [pathname]);
   return null;
 }

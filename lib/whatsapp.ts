@@ -20,7 +20,11 @@ export type WhatsAppOrigin =
   | 'final_cta'
   | 'process'
   | 'footer'
-  | 'portal';
+  | 'portal'
+  | 'media'
+  | 'equipment'
+  | 'product'
+  | 'unit';
 
 /** wa.me link with a prefilled, URL-encoded message. */
 export function whatsappUrl(text?: string, number: string = WHATSAPP_NUMBER): string {

@@ -1,0 +1,122 @@
+/* 03 · Eclipse Media — copy on one side, the contact sheet on the other (MediaSection).
+   The plates reuse the products' drawing styles (products.css: .pd-art-svg, .pd-soft…). */
+
+.md {
+  padding-block: clamp(5rem, 11vw, 9rem);
+  border-top: 1px solid var(--line);
+}
+.md-light {
+  position: absolute;
+  inset: 0 0 auto auto;
+  z-index: -1;
+  width: min(60rem, 100%);
+  height: 40rem;
+  pointer-events: none;
+  background: radial-gradient(45% 60% at 100% 0%, rgb(245 185 66 / 0.09), transparent 70%);
+}
+.md-grid {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+}
+.md-copy {
+  display: grid;
+  align-content: start;
+  gap: 1.4rem;
+}
+.md-title {
+  max-width: 11ch;
+  font-size: clamp(2.75rem, 8.5vw, 5.75rem);
+  color: var(--fg);
+}
+.md-lead {
+  max-width: 38ch;
+  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--fg);
+}
+.md-note {
+  max-width: 40ch;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.md-cta {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+/* ---- The contact sheet ---------------------------------------------------- */
+.md-sheet {
+  margin: 0;
+  min-width: 0;
+}
+.md-sheet-inner {
+  position: relative;
+  overflow: clip;
+}
+/* The playhead that crosses the sheet once (a full-width box whose left edge is the line). */
+.md-head {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+.md-head::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: var(--flare);
+  box-shadow: 0 0 20px 2px rgb(245 185 66 / 0.5);
+}
+.md-frames {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.md-frame {
+  display: grid;
+  gap: 0.6rem;
+  min-width: 0;
+}
+.md-plate {
+  --tick: 9px;
+  --tick-c: var(--line-strong);
+  aspect-ratio: 16 / 10;
+  padding: 0.6rem;
+  color: var(--fg);
+  background-color: rgb(26 26 36 / 0.35);
+  border-radius: 2px;
+}
+.md-cap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  min-width: 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--fg);
+}
+.md-cap-n {
+  flex: none;
+  font-size: 0.6875rem;
+  color: var(--accent);
+}
+
+@media (min-width: 640px) {
+  .md-frames {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .md-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+  }
+}

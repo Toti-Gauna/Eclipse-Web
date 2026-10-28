@@ -8,7 +8,9 @@ import { useSound } from '@/components/sound/SoundContext';
 import { track } from '@/lib/analytics';
 
 /**
- * «Potenciar mi negocio»: the one way into the showroom. A REAL link to the contact block
+ * «Potenciar mi negocio» inside /agency/ (the levels' «Ver la demo», the calculator, the closing
+ * block; since 28/10/2026 the header and the hero lead to the home's products banner instead).
+ * A REAL link to the contact block
  * (`#contacto`, where WhatsApp lives), upgraded by JS to open the rubro selector: without
  * JavaScript, or if the selector's chunk can't be fetched, it simply goes to the contact — it
  * never dead-ends. A modified click (new tab, ctrl/cmd, middle button) keeps the link's own

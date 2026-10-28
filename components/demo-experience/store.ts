@@ -6,7 +6,7 @@ import { demoLoaders } from '@/components/demos/registry';
 import { track } from '@/lib/analytics';
 
 /** Where a demo was opened from (analytics `origin`, builder source, focus return). */
-export type DemoOrigin = 'hero' | 'examples' | 'offerings' | 'selector' | 'url';
+export type DemoOrigin = 'hero' | 'examples' | 'offerings' | 'selector' | 'url' | 'product';
 
 /**
  * How the layer relates to the history stack (lote 1.3, showroomHistory.ts):

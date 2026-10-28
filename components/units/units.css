@@ -1,0 +1,350 @@
+/* The units' pages (Media, Academy, Intelligence, Agency): UnitHero, UnitLedger, UnitPhases,
+   UnitNote, UnitOthers. The plates reuse the products' drawing styles (products.css). */
+
+/* ---- Hero ----------------------------------------------------------------- */
+.u-hero {
+  padding-top: calc(var(--header-h) + clamp(2.5rem, 7vw, 5rem));
+  padding-bottom: clamp(3.5rem, 8vw, 6rem);
+}
+.u-hero-light {
+  position: absolute;
+  inset: 0 auto auto 0;
+  z-index: -1;
+  width: min(70rem, 100%);
+  height: 44rem;
+  pointer-events: none;
+  background: radial-gradient(45% 60% at 0% 10%, rgb(245 185 66 / 0.12), transparent 70%);
+}
+.theme-light .u-hero-light {
+  background: radial-gradient(45% 60% at 0% 10%, rgb(245 185 66 / 0.22), transparent 70%);
+}
+.u-hero-grid {
+  display: grid;
+  gap: clamp(2rem, 6vw, 4rem);
+  align-items: center;
+}
+.u-hero-copy {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+.u-h1 {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+}
+.u-h1-pre {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.u-h1-name {
+  font-size: clamp(4.25rem, 19vw, 11rem);
+  line-height: 0.84;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+}
+.u-statement {
+  max-width: 21ch;
+  font-size: clamp(1.75rem, 4.4vw, 2.75rem);
+  line-height: 1.05;
+  color: var(--fg);
+}
+.u-lead {
+  max-width: 44ch;
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+.u-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.u-emblem {
+  --tick: 12px;
+  --tick-c: var(--line-strong);
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  aspect-ratio: 480 / 400;
+  padding: 1.25rem;
+  color: var(--fg);
+  overflow: clip;
+  justify-self: center;
+}
+
+/* ---- Bands ---------------------------------------------------------------- */
+.u-band {
+  padding-block: clamp(4rem, 9vw, 7rem);
+  border-top: 1px solid var(--line);
+}
+.u-band-grid {
+  display: grid;
+  gap: 2rem;
+}
+.u-band-title {
+  max-width: 14ch;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  color: var(--fg);
+}
+
+.u-ledger {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.u-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 0.25rem 0.75rem;
+  padding-block: 1.25rem;
+}
+.u-row-rule {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--line-strong);
+}
+.u-row-n {
+  padding-top: 0.45rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+.u-row-art {
+  --tick: 8px;
+  --tick-c: var(--line-strong);
+  grid-column: 2;
+  width: 9.5rem;
+  aspect-ratio: 16 / 10;
+  padding: 0.45rem;
+  color: var(--fg);
+}
+.u-row-body {
+  grid-column: 2;
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.u-row-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.75rem;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.u-row-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+}
+.u-row-text {
+  max-width: 52ch;
+  font-size: 0.975rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* Phases (Media): a ruler of glyphs, new moon → full sun. */
+.u-phases {
+  display: grid;
+  gap: 1.75rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.u-phase {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-strong);
+}
+.u-phase-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.u-phase-n {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+.u-phase-glyph {
+  color: var(--accent);
+}
+.u-phase-name {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.05;
+  color: var(--fg);
+}
+.u-phase-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* A statement band. */
+.u-note-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.u-note-title {
+  max-width: 16ch;
+  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  color: var(--fg);
+}
+.u-note-body {
+  display: grid;
+  gap: 1rem;
+  max-width: 52ch;
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--fg);
+}
+.u-note-body .u-muted {
+  color: var(--fg-muted);
+  font-size: 0.95rem;
+}
+
+/* The other units. */
+.u-others-title {
+  margin-bottom: 1.25rem;
+}
+.u-others-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-strong);
+}
+.u-other {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  min-height: 44px;
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+}
+.u-other-name {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1;
+}
+.u-other-short {
+  grid-row: 2;
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+}
+.u-other-arrow {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  align-self: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--fg-muted);
+  transition:
+    transform 0.35s var(--ease-expo),
+    color 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .u-other:hover .u-other-arrow {
+    transform: translate(3px, -3px);
+    color: var(--accent);
+  }
+}
+
+@media (min-width: 768px) {
+  .u-phases {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .u-row {
+    grid-template-columns: 3rem minmax(0, 1fr);
+  }
+  .u-row[data-has-art] {
+    grid-template-columns: 3rem 11rem minmax(0, 1fr);
+    align-items: start;
+  }
+  .u-row[data-has-art] .u-row-art {
+    grid-column: 2;
+    width: 100%;
+  }
+  .u-row[data-has-art] .u-row-body {
+    grid-column: 3;
+  }
+  .u-others-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .u-hero-grid {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  }
+  .u-emblem {
+    justify-self: end;
+  }
+  .u-band-grid {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    align-items: start;
+  }
+  .u-band-grid .u-band-title {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+  }
+  .u-note-grid {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    align-items: start;
+  }
+}
+
+/* Agency: the short index of the page under the intro. */
+.u-toc {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.u-toc-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.u-toc-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.95rem;
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color 0.25s ease;
+}
+.u-toc-link:hover {
+  text-decoration-color: var(--accent);
+}

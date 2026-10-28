@@ -1,0 +1,132 @@
+/* 04 · Equipamiento — exploded-view sheet + parts list, in the dawn (EquipmentSection).
+   The drawing reuses the products' plate styles (products.css). */
+
+.eq {
+  padding-block: clamp(5rem, 11vw, 9rem) clamp(4rem, 9vw, 7rem);
+}
+.eq-head {
+  display: grid;
+  gap: 1.4rem;
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+.eq-title {
+  max-width: 13ch;
+  font-size: clamp(2.75rem, 8.5vw, 5.75rem);
+  color: var(--fg);
+}
+.eq-lead {
+  max-width: 44ch;
+  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--fg);
+}
+.eq-body {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.eq-sheet {
+  --tick: 14px;
+  --tick-c: var(--line-strong);
+  margin: 0;
+  padding: clamp(0.75rem, 2.5vw, 1.75rem);
+  min-width: 0;
+}
+.eq-sheet-inner {
+  color: var(--fg);
+}
+.eq-svg {
+  aspect-ratio: 640 / 400;
+  height: auto;
+}
+.eq-svg [data-eq-part] {
+  transition: color 0.3s ease;
+}
+.eq-svg [data-eq-part][data-active] {
+  color: var(--accent);
+}
+.eq-callout-disc {
+  fill: var(--dawn);
+}
+.eq-callout[data-active] .eq-callout-disc {
+  stroke: var(--accent);
+}
+.eq-num {
+  fill: currentColor;
+  stroke: none;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.eq-ledger {
+  display: grid;
+  align-content: start;
+  gap: 1.5rem;
+  min-width: 0;
+}
+.eq-parts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-strong);
+}
+.eq-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-height: 44px;
+  padding-block: 0.7rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.975rem;
+  line-height: 1.35;
+  color: var(--fg);
+  transition: color 0.25s ease;
+}
+.eq-row-n {
+  flex: none;
+  width: 1.6rem;
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+.eq-row-name {
+  min-width: 0;
+}
+.eq-row-quote {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.eq-row[data-active] .eq-row-n {
+  color: var(--accent);
+}
+.eq-note {
+  max-width: 44ch;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.eq-cta {
+  justify-self: start;
+}
+
+@media (min-width: 768px) {
+  .eq-head {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: end;
+    column-gap: 3rem;
+  }
+  .eq-head > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 1024px) {
+  .eq-body {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: center;
+  }
+}

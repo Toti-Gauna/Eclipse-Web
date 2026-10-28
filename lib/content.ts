@@ -15,6 +15,7 @@ import linesJson from '@/content/lines.json';
 import ratesFallbackJson from '@/content/rates.fallback.json';
 import legacyJson from '@/content/legacy.json';
 import levelsJson from '@/content/levels.json';
+import productsJson from '@/content/products.json';
 
 export type Localized<T = string> = Record<Locale, T>;
 
@@ -252,6 +253,29 @@ export interface Unit {
   tagline: Localized | null;
 }
 
+export type ProductId = 'roofy' | 'foody' | 'markyt' | 'handy';
+/** available: sold today (price from levels.json) · planned: in the works, no price · launch: has its own launch date. */
+export type ProductStatus = 'available' | 'planned' | 'launch';
+/** A product of Eclipse (content/products.json). Its copy lives in messages under `products.items.<id>`. */
+export interface Product {
+  id: ProductId;
+  status: ProductStatus;
+  /** The level its «desde» price comes from (available products only). */
+  fromLevel: LevelId | null;
+  /** The rubro whose demo it opens (showroom), when it has one. */
+  vertical: VerticalId | null;
+  /** ISO date of the public launch (status `launch`). */
+  launchDate?: string;
+  /** The product's own website once published; null = «Conocer» opens its page inside Eclipse. */
+  site: string | null;
+  /** What its screen on the home sums up (message keys under `points`). */
+  points: string[];
+  /** What its page lists as included (message keys under `features`). */
+  features: string[];
+  /** What is being designed for higher levels: shown as «En diseño», never as included. */
+  later: string[];
+}
+
 export interface Rates {
   ARS: number;
   BRL: number;
@@ -285,6 +309,9 @@ export const showcaseVerticals = verticals.filter((v) => v.demo && !v.standby);
 export const founders = foundersJson as { total: number; slots: FounderSlot[] };
 export const units = unitsJson.units as Unit[];
 export const lines = linesJson.lines as Line[];
+export const products = productsJson.products as Product[];
+export const productById = (id: string | null | undefined) => products.find((p) => p.id === id);
+export const levelById = (id: string | null | undefined) => levels.find((lv) => lv.id === id);
 export const lineNeeds = linesJson.needs as LineNeed[];
 export const fallbackRates: Rates = {
   ARS: ratesFallbackJson.ARS,

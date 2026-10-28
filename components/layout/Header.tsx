@@ -7,11 +7,10 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { ScrollTrigger, useGSAP } from '@/components/motion/gsap';
 import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
 import { DemoCta } from '@/components/ui/DemoCta';
-import { PotenciarCta } from '@/components/ui/PotenciarCta';
 import { MiniEclipse } from './MiniEclipse';
 import { PrefsMenu } from './PrefsMenu';
 import { MobileMenu } from './MobileMenu';
-import { NAV_LINKS, PORTAL_ROUTES, chromeRoute } from './navLinks';
+import { NAV_LINKS, PORTAL_ROUTES, PRODUCTS_HREF, chromeRoute, currentUnit } from './navLinks';
 import { usePageCtaInView } from './usePageCtaInView';
 import { IS_LIVE } from '@/lib/env';
 import { livePaths } from '@/lib/portal/live';
@@ -21,12 +20,12 @@ import './header.css';
  * Fixed header. Transparent over the hero, glass once scrolled, and it flips to the
  * light theme while it sits over any element marked [data-header-theme="light"].
  *
- * Desktop (≥ 1024px): logo · Servicios · Demos · Precios · Cómo trabajamos · one
- * preferences trigger (language, currency, sound) · "Ingresar" (portal mockup) ·
- * «Potenciar mi negocio» (THE primary CTA: opens the rubro selector).
+ * Desktop (≥ 1024px): logo · Media · Academy · Intelligence · Agency (each unit is its own page,
+ * 28/10/2026) · one preferences trigger (language, currency, sound) · "Ingresar" (portal mockup) ·
+ * «Potenciar mi negocio» (THE primary CTA: the products banner of the home, /#productos).
  * Phones and tablets: logo · a compact «Potenciar» · the menu button.
  * There is no "Armá tu plan" (the builder is dormant, lote 1.3); on /plan the CTA stays the
- * WhatsApp "Pedí tu demo" (the selector lives on the home).
+ * WhatsApp "Pedí tu demo".
  *
  * One solid amber button per viewport: the CTA is quiet (outline) while the hero's own CTA
  * — or another page-level primary CTA — is on screen, and on /plan; otherwise it is the
@@ -94,6 +93,7 @@ export function Header() {
   );
 
   const projectsList = pathname.replace(/\/$/, '') === '/portal/proyectos';
+  const unit = currentUnit(pathname);
 
   return (
     <>
@@ -167,7 +167,7 @@ export function Header() {
                 <ul className="flex items-center">
                   {NAV_LINKS.map((link) => (
                     <li key={link.id}>
-                      <Link href={`/#${link.hash}`} className="hdr-link inline-flex">
+                      <Link href={link.href} aria-current={unit === link.id ? 'page' : undefined} className="hdr-link inline-flex">
                         {t(`nav.${link.id}`)}
                       </Link>
                     </li>
@@ -184,16 +184,17 @@ export function Header() {
                 </Link>
                 <span aria-hidden className="hdr-rule mx-1 hidden lg:block" />
                 {mode === 'landing' ? (
-                  <PotenciarCta
-                    origin="header"
-                    label={t('selector.cta')}
+                  <Link
+                    href={PRODUCTS_HREF}
+                    aria-label={t('selector.cta')}
+                    data-cta-origin="header"
                     className={`btn hdr-cta ${ctaSolid ? 'btn-primary' : 'hdr-cta-quiet'}`}
                   >
                     <span className="hdr-cta-long">{t('selector.cta')}</span>
                     <span aria-hidden className="hdr-cta-short">
                       {t('selector.ctaShort')}
                     </span>
-                  </PotenciarCta>
+                  </Link>
                 ) : (
                   <DemoCta origin="header" className={`btn hdr-cta ${ctaSolid ? 'btn-primary' : 'hdr-cta-quiet'}`} />
                 )}

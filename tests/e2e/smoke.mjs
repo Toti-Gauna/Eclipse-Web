@@ -45,16 +45,37 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const ctaBox = await page.locator('[data-hero-cta]').first().boundingBox();
   const ctaBottom = ctaBox ? Math.round(ctaBox.y + ctaBox.height) : NaN;
   check('hero CTAs on the first screen at 360×780', ctaBottom <= 780, `${ctaBottom}px`);
-  // v3e: one action (a REAL link to the contact block until lote 1.3 opens the selector) plus the
-  // direct key of the only demo on show (the others are in standby); no "Otro", no "Armá tu plan".
+  // 28/10/2026: one action (a REAL link to the products banner right below) plus the direct key of
+  // the only demo on show (the others are in standby); no "Otro", no "Armá tu plan".
   check(
     'hero: one action (a real link) and the one demo key',
     (await page.locator('#inicio .hero-ctas a, #inicio .hero-ctas button').count()) === 1 &&
-      (await page.locator('#inicio .hero-ctas a[href="#contacto"]').count()) === 1 &&
+      (await page.locator('#inicio .hero-ctas a[href="#productos"]').count()) === 1 &&
       (await page.locator('#inicio [data-hero-chip]').count()) === 1 &&
       (await page.locator('#inicio [data-hero-chip="inmobiliarias"]').count()) === 1,
   );
   check('hero H1 is the marketing line', /Potenciá y visibilizá/.test(await page.locator('h1#hero-title').innerText()));
+
+  // The home is the hero, the four products, Eclipse Media and Equipamiento — nothing else.
+  check(
+    'home sections: hero · productos · media · equipamiento',
+    JSON.stringify(await page.evaluate(() => [...document.querySelectorAll('main section[id]')].map((s) => s.id))) ===
+      JSON.stringify(['inicio', 'productos', 'media', 'equipamiento']),
+  );
+  const screens = page.locator('#productos [data-pd-screen]');
+  check('products banner: Roofy, Foody, Markyt, Handy', (await screens.count()) === 4 && /Roofy[\s\S]*Foody[\s\S]*Markyt[\s\S]*Handy/.test(await page.locator('#productos').innerText()));
+  check(
+    'each product says «Conocer <producto>» and leads to its page',
+    (await page.locator('#productos .pd-know', { hasText: /^Conocer (Roofy|Foody|Markyt|Handy)/ }).count()) === 4 &&
+      (await page.locator('#productos .pd-know').first().getAttribute('href')) === '/Eclipse-Web/es/productos/roofy/',
+  );
+  check('only Roofy carries a price; Foody/Markyt in preparation; Handy with its launch date', /Disponible · desde/.test(await page.locator('#pd-roofy').innerText()) && /En preparación/.test(await page.locator('#pd-foody').innerText()) && /Lanza el 10 de noviembre de 2026/.test(await page.locator('#pd-handy').innerText()));
+  check('phones: the products stack (no pinned track)', (await page.locator('#productos[data-mode]').count()) === 0);
+  check('no sales sections of v3 on the home', (await page.locator('#precios, #ejemplos, #servicios, #contacto').count()) === 0);
+
+  // The v3 landing lives on /agency/ now, with its ids.
+  await page.goto(`${BASE}/es/agency/`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(2400);
 
   // Sections hydrate lazily: the calculator reacts once it is reached.
   await page.evaluate(() => document.getElementById('problema')?.scrollIntoView());
@@ -94,7 +115,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.waitForTimeout(1200);
   const usdText = await page.locator('#precios').innerText();
   check('prices in USD after switching currency', /US\$|\$\s?1[.,]000/.test(usdText) && !/≈ \$ 1\.450\.000/.test(usdText));
-  check('no page errors (mobile home)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  check('no page errors (mobile home + agency)', errors.length === 0, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }
 
@@ -106,12 +127,22 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   // One solid amber button per viewport: the header's CTA is quiet while the hero's is on screen.
   const hdrCta = page.getByRole('banner').locator('.hdr-cta').first();
   check('header CTA quiet next to the hero CTA', /hdr-cta-quiet/.test((await hdrCta.getAttribute('class')) ?? ''));
-  await page.evaluate(() => document.getElementById('servicios')?.scrollIntoView());
+  await page.evaluate(() => document.getElementById('productos')?.scrollIntoView());
   await page.waitForTimeout(1200);
   check('header CTA solid when no page CTA is on screen', /btn-primary/.test((await hdrCta.getAttribute('class')) ?? ''));
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.waitForTimeout(800);
-  await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('link', { name: 'Precios' }).first().click();
+  check('header CTA «Potenciar mi negocio» leads to the products banner', (await hdrCta.getAttribute('href')) === '/Eclipse-Web/es/#productos');
+  // Wide screen with a mouse: the four products are a pinned horizontal track; the rail jumps.
+  check('desktop: the products are a pinned track', (await page.locator('#productos[data-mode="track"]').count()) === 1);
+  await page.locator('.pd-rail-btn', { hasText: 'Handy' }).click();
+  await page.waitForTimeout(2500);
+  check('the rail jumps to Handy', /Handy/i.test(await page.locator('.pd-rail-btn[aria-current="true"]').innerText()));
+  const nav = page.getByRole('navigation', { name: 'Navegación principal' });
+  check('header: Media · Academy · Intelligence · Agency', (await nav.getByRole('link').allInnerTexts()).join(' · ') === 'Media · Academy · Intelligence · Agency');
+  await nav.getByRole('link', { name: 'Agency' }).click();
+  await page.waitForURL(/\/es\/agency\/$/);
+  await page.waitForTimeout(1800);
+  check('Agency link marks the current page', (await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('link', { name: 'Agency' }).getAttribute('aria-current')) === 'page');
+  await page.getByRole('navigation', { name: 'En esta página' }).getByRole('link', { name: 'Precios' }).click();
   // Smooth scroll: wait until the position settles (up to 6 s) before measuring.
   let top = 9999;
   for (let i = 0, last = NaN; i < 30; i++) {
@@ -125,7 +156,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
 
   // Soluciones has no prices (v3d): each family links to Precios → Pieza por pieza, also
   // when Precios hasn't hydrated yet.
-  await page.goto(`${BASE}/es/`);
+  await page.goto(`${BASE}/es/agency/`);
   await page.waitForTimeout(1800);
   check('Soluciones lists no prices', (await page.locator('#servicios .svc-piece .readout, #servicios .svc-add').count()) === 0);
   await page.evaluate(() => document.getElementById('servicios')?.scrollIntoView());
@@ -144,8 +175,8 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   // "Ver demo" opens one light layer (the eclipse takes the center, the light floods it): the page never scrolls,
   // and closing restores the exact position and focus.
   // A wheel is user input: it ends the anchor re-aim from the jump above (it never fights the visitor).
-  await page.mouse.wheel(0, -30000);
-  await page.waitForTimeout(800);
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(1800);
   const chip = page.locator('#inicio [data-hero-chip="inmobiliarias"]');
   await chip.scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
@@ -172,23 +203,27 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.waitForTimeout(400);
 
   // Sala de demos: one tab per business with a demo.
+  await page.goto(`${BASE}/es/agency/`);
+  await page.waitForTimeout(1500);
   await page.evaluate(() => document.getElementById('ejemplos')?.scrollIntoView());
   await page.waitForTimeout(1500);
   check('demo room lists the demo on show (the other five are in standby)', (await page.locator('#ejemplos [role="tab"]').count()) === 1);
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(500);
 
-  // v3e (lote 1.3): no "Armá tu plan" anywhere on the home (the builder is dormant); the header's
-  // CTA is «Potenciar mi negocio» and opens the rubro selector; Escape hands focus back to it.
-  check('no «Armá tu plan» entry point on the home', (await page.getByRole('button', { name: /Armá tu plan/ }).count()) === 0 && (await page.getByRole('link', { name: /Armá tu plan/ }).count()) === 0);
-  await hdrCta.click();
-  await page.waitForSelector('dialog[data-selector-layer][open]');
+  // No "Armá tu plan" anywhere (the builder is dormant). On /agency/ the levels' «Ver la demo» opens
+  // the rubro selector (lote 1.3); Escape hands focus back to it.
+  check('no «Armá tu plan» entry point', (await page.getByRole('button', { name: /Armá tu plan/ }).count()) === 0 && (await page.getByRole('link', { name: /Armá tu plan/ }).count()) === 0);
+  await page.evaluate(() => document.getElementById('precios')?.scrollIntoView());
+  await page.waitForTimeout(1500);
+  await page.locator('#precios .pr-lv-demo').first().click();
+  await page.locator('dialog[data-selector-layer][open]').waitFor();
   await page.waitForTimeout(500);
-  check('header CTA opens the selector with exactly two rows', (await page.locator('dialog[data-selector-layer] [data-sx-row]').count()) === 2 && (await page.locator('dialog[data-selector-layer] h2').innerText()) === '¿Qué negocio querés potenciar?');
+  check('a level\'s «Ver la demo» opens the selector with exactly two rows', (await page.locator('dialog[data-selector-layer] [data-sx-row]').count()) === 2 && (await page.locator('dialog[data-selector-layer] h2').innerText()) === '¿Qué negocio querés potenciar?');
   check('Ecommerce row is aria-disabled and says «Próximamente»', (await page.locator('[data-sx-row="ecommerce"]').getAttribute('aria-disabled')) === 'true' && /próximamente/i.test(await page.locator('[data-sx-row="ecommerce"]').innerText()));
   await page.keyboard.press('Escape');
   await page.waitForTimeout(500);
-  check('Escape closes the selector and focus returns to the header CTA', (await page.locator('dialog[data-selector-layer]').count()) === 0 && (await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener'))) === 'selector:header');
+  check('Escape closes the selector and focus returns to its opener', (await page.locator('dialog[data-selector-layer]').count()) === 0 && (await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener'))) === 'selector:plan_card');
   check('no page errors (desktop home)', errors.length === 0, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }
@@ -196,14 +231,18 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
 // 3b. Showroom (lote 1.3): selector → demo, History, direct entries, fallbacks.
 {
   const { ctx, page, errors } = await newPage(1440, 900);
-  await page.goto(`${BASE}/es/`);
-  await page.waitForTimeout(2500);
+  // The selector lives on /agency/ now (the levels, the calculator and the closing block open it).
+  await page.goto(`${BASE}/es/agency/`);
+  await page.waitForTimeout(1500);
+  await page.evaluate(() => document.getElementById('precios')?.scrollIntoView());
+  await page.waitForTimeout(2000);
+  const opener = page.locator('#precios .pr-lv-demo').first();
   const state = () => page.evaluate(() => ({ path: location.pathname + location.search, len: history.length, sel: !!document.querySelector('dialog[data-selector-layer][open]'), demo: !!document.querySelector('dialog[data-demo-layer][open]'), lock: document.documentElement.style.overflow }));
   const start = await state();
-  await page.locator('[data-hero-cta] a').click();
-  await page.waitForSelector('dialog[data-selector-layer][open]');
+  await opener.click();
+  await page.locator('dialog[data-selector-layer][open]').waitFor();
   let st = await state();
-  check('hero CTA opens the selector, one history entry, same URL', st.sel && st.len === start.len + 1 && st.path === start.path, `${start.len}→${st.len}`);
+  check('«Ver la demo» opens the selector, one history entry, same URL', st.sel && st.len === start.len + 1 && st.path === start.path, `${start.len}→${st.len}`);
   await page.goBack();
   await page.waitForTimeout(500);
   st = await state();
@@ -213,8 +252,8 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   check('Forward brings the selector back', (await state()).sel);
   await page.keyboard.press('Escape');
   await page.waitForTimeout(500);
-  await page.locator('[data-hero-cta] a').click();
-  await page.waitForSelector('dialog[data-selector-layer][open]');
+  await opener.click();
+  await page.locator('dialog[data-selector-layer][open]').waitFor();
   await page.locator('[data-sx-row="inmobiliarias"]').click();
   await page.waitForSelector('dialog[data-demo-layer][open]');
   await page.waitForTimeout(3200);
@@ -223,7 +262,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.keyboard.press('Escape');
   await page.waitForTimeout(2600);
   st = await state();
-  check('closing the demo cleans the URL and restores the hero CTA focus', !st.demo && st.path === start.path && (await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener'))) === 'selector:hero');
+  check('closing the demo cleans the URL and restores the opener\'s focus', !st.demo && st.path === start.path && (await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener'))) === 'selector:plan_card');
 
   // Direct entry: opens without the film, keeps foreign params, closing never leaves the site.
   await page.goto(`${BASE}/es/?rubro=inmobiliarias&vista=guia&utm_source=ad`);
@@ -246,10 +285,12 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   check('no page errors (showroom)', errors.length === 0, errors.slice(0, 3).join(' | '));
 
   // The selector's chunk can't be fetched: the CTA does what the link says (goes to the contact).
-  await page.goto(`${BASE}/es/`);
+  await page.goto(`${BASE}/es/agency/`);
+  await page.waitForTimeout(1500);
+  await page.evaluate(() => document.getElementById('precios')?.scrollIntoView());
   await page.waitForTimeout(2500);
   await page.route('**/_next/static/chunks/**', (r) => r.abort());
-  await page.locator('[data-hero-cta] a').click();
+  await page.locator('#precios .pr-lv-demo').first().click();
   await page.waitForTimeout(1500);
   st = await state();
   check('selector chunk fails: no dialog, page not locked, falls to #contacto', !st.sel && st.lock === '' && page.url().endsWith('#contacto'));
@@ -272,7 +313,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
 // 5. Keyboard: tabbing into a dormant section keeps focus after it hydrates.
 {
   const { ctx, page } = await newPage(1440, 900);
-  await page.goto(`${BASE}/pt/`);
+  await page.goto(`${BASE}/pt/agency/`);
   await page.waitForTimeout(1500);
   const focusedInside = await page.evaluate(async () => {
     const section = document.getElementById('contacto');
@@ -313,6 +354,42 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.waitForTimeout(1500);
   check('reduced motion: no pin spacer', (await page.locator('.pin-spacer').count()) === 0);
   check('no page errors (reduced motion)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  await ctx.close();
+}
+
+// 6b. The units' and products' pages (28/10/2026), and the old home anchors.
+{
+  const { ctx, page, errors } = await newPage(1440, 900);
+  for (const [path, name] of [['media', 'Eclipse Media'], ['academy', 'Eclipse Academy'], ['intelligence', 'Eclipse Intelligence'], ['agency', 'Eclipse Agency']]) {
+    await page.goto(`${BASE}/es/${path}/`);
+    await page.waitForTimeout(900);
+    check(`/${path}/: one h1, «${name}»`, (await page.locator('h1').count()) === 1 && ((await page.locator('h1').textContent()) ?? '').replace(/\s+/g, ' ').trim() === name);
+  }
+  await page.goto(`${BASE}/es/productos/roofy/`);
+  await page.waitForTimeout(1200);
+  check('Roofy page: price from the levels and the six levels', /desde/.test(await page.locator('main').innerText()) && (await page.locator('.pr-lv-row').count()) === 6);
+  await page.locator('main .u-cta button').first().click();
+  await page.locator('dialog[data-demo-layer][open]').waitFor();
+  check('Roofy page: «Ver la demo» opens Lumen', await page.locator('dialog[data-demo-layer] h2', { hasText: 'Lumen Propiedades' }).isVisible());
+  await page.waitForTimeout(2800);
+  await page.keyboard.press('Escape');
+  await page.locator('dialog[data-demo-layer]').waitFor({ state: 'detached' });
+  for (const id of ['foody', 'markyt']) {
+    await page.goto(`${BASE}/es/productos/${id}/`);
+    await page.waitForTimeout(900);
+    const text = await page.locator('main').innerText();
+    check(`/productos/${id}/: in preparation, no price, «En diseño» never as included`, /En preparación/.test(text) && !/US\$|USD\s?\d|\$\s?\d/.test(text) && /En diseño/.test(text));
+  }
+  await page.goto(`${BASE}/es/productos/handy/`);
+  await page.waitForTimeout(900);
+  check('/productos/handy/: launch date', /Lanza el 10 de noviembre de 2026/.test(await page.locator('main').innerText()));
+  // A link shared before 28/10 (`/es/#precios`) lands on the same section, now on /agency/.
+  await page.goto(`${BASE}/es/#precios`);
+  await page.waitForURL(/\/es\/agency\/#precios$/);
+  await page.waitForTimeout(3000);
+  const top = await page.evaluate(() => document.getElementById('precios')?.getBoundingClientRect().top ?? 9999);
+  check('old /es/#precios → /es/agency/#precios, on target', Math.abs(top) < 200, `${Math.round(top)}px`);
+  check('no page errors (units and products)', errors.length === 0, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }
 
