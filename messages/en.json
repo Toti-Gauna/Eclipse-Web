@@ -101,10 +101,11 @@
     "eyebrow": "Development · AI · Automation",
     "title": "Boost <em>your business</em>, get it seen and win loyal customers with Eclipse.",
     "subtitle": "Before we talk, we show you your business working: websites, systems and AI agents for businesses that can't wait.",
-    "pickVertical": "Or see a demo now",
+    "pickVertical": "Or see what we make",
     "ctaPotenciar": "I want to boost my business",
     "ctaDemo": "Get your demo",
-    "noscript": "The interactive demo needs JavaScript. You can still reach us on WhatsApp: the link is at the bottom of this page."
+    "noscript": "The interactive demo needs JavaScript. You can still reach us on WhatsApp: the link is at the bottom of this page.",
+    "discover": "Discover the products"
   },
   "whatsapp": {
     "greeting": "Hi Eclipse.",
@@ -5678,7 +5679,8 @@
           }
         },
         "start": "See the demo and pick your level. There are six, starting with Contact; all of them start from the full website and CRM.",
-        "ask": "Hi Eclipse. I'd like to know more about Roofy for my real estate agency."
+        "ask": "Hi Eclipse. I'd like to know more about Roofy for my real estate agency.",
+        "title": "Real estate"
       },
       "foody": {
         "name": "Foody",
@@ -5720,7 +5722,8 @@
           }
         },
         "start": "Foody is in the works: the menu with QR ordering and bookings come first. If you run a place, write to us and we'll let you know when it's ready.",
-        "ask": "Hi Eclipse. I run a restaurant and I'd like to hear when Foody is ready."
+        "ask": "Hi Eclipse. I run a restaurant and I'd like to hear when Foody is ready.",
+        "title": "Food businesses"
       },
       "markyt": {
         "name": "Markyt",
@@ -5762,7 +5765,8 @@
           }
         },
         "start": "Markyt is in the works. If you sell products, write to us and we'll let you know when it's ready.",
-        "ask": "Hi Eclipse. I run a store and I'd like to hear when Markyt is ready."
+        "ask": "Hi Eclipse. I run a store and I'd like to hear when Markyt is ready.",
+        "title": "Ecommerce"
       },
       "handy": {
         "name": "Handy",
@@ -6076,10 +6080,17 @@
     "equipment": "QR stands, displays and packaging with your brand.",
     "perMonth": "/mo",
     "progress": "Film progress",
-    "usd": "USD {n}"
+    "usd": "USD {n}",
+    "enter": "Enter",
+    "start": "Activate Eclipse",
+    "startHint": "With music. It takes 40 seconds."
   },
   "transition": {
     "loading": "Loading",
     "light": "Turning the light on"
+  },
+  "autoTour": {
+    "resume": "Continue the automatic tour",
+    "stop": "End the tour"
   }
 }

@@ -6,6 +6,7 @@ import { ChevronsRight, Volume2, VolumeX } from 'lucide-react';
 import { gsap } from '@/components/motion/gsap';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { LOADER_DONE_EVENT, loaderRemainingMs } from '@/components/loader/loaderState';
+import { Eclipse } from '@/components/hero/Eclipse';
 import { useCurrency } from '@/components/providers/CurrencyProvider';
 import { useSound } from '@/components/sound/SoundContext';
 import { track } from '@/lib/analytics';
@@ -54,6 +55,8 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
   const [shown, setShown] = useState(false);
   const [soundState, setSoundState] = useState<SoundState>('off');
   const [atEnd, setAtEnd] = useState(false);
+  // The film waits on «Activar Eclipse» (a tap is also what lets the browser play the music).
+  const [started, setStarted] = useState(false);
 
   // The film's clock (seconds), shared by every rebuild.
   const clock = useRef({ started: false, wall0: 0, t: 0, hiddenAt: 0 });
@@ -77,13 +80,13 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
     const d = dialog.current;
     if (!shown || !d || d.open) return;
     d.showModal();
-    // The dialog itself takes the focus (no ring on a control nobody chose); Tab reaches «Activar sonido» and «Saltar».
-    d.focus({ preventScroll: true });
-    if (!clock.current.started) {
-      clock.current.started = true;
-      clock.current.wall0 = performance.now();
-    }
-  }, [shown]);
+    // «Activar Eclipse» (the start button) takes the focus; Tab reaches the sound and «Saltar» controls.
+    (d.querySelector<HTMLElement>('[data-start]') ?? d).focus({ preventScroll: true });
+    // The score is rendered while the visitor reads the start screen, so the music is ready at their tap.
+    let prep = 0;
+    if (!reduced && IntroMusic.supported()) prep = window.setTimeout(() => void prepareMusic().catch(() => {}), 700);
+    return () => window.clearTimeout(prep);
+  }, [shown, reduced]);
 
   // Fit the stage to the screen; switch composition when the screen turns.
   useLayoutEffect(() => {
@@ -119,7 +122,7 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
     state.tl.time(Math.min(clock.current.t, FILM_END), true);
 
     const tick = () => {
-      if (closing.current) return;
+      if (closing.current || !clock.current.started) return;
       const c = clock.current;
       const t = Math.max(c.t, now());
       c.t = t;
@@ -196,24 +199,6 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
     }
   };
 
-  // The visitor had the site's sound on: the score is rendered ahead, and the first click or key in the film brings the
-  // music (browsers need a gesture to play).
-  useEffect(() => {
-    const d = dialog.current;
-    if (!shown || !d || !sound.enabled || reduced) return;
-    if (IntroMusic.supported()) void prepareMusic();
-    const go = (e: Event) => {
-      if ((e.target as Element | null)?.closest('[data-sound]')) return;
-      startMusic();
-    };
-    d.addEventListener('pointerdown', go, { once: true });
-    d.addEventListener('keydown', go, { once: true });
-    return () => {
-      d.removeEventListener('pointerdown', go);
-      d.removeEventListener('keydown', go);
-    };
-  }, [shown, sound.enabled, reduced, startMusic]);
-
   const close = useCallback(
     (how: How) => {
       if (closing.current) return;
@@ -276,9 +261,18 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
 
   useEffect(() => () => music.current?.close(0.1), []);
 
+  const begin = () => {
+    if (clock.current.started) return;
+    clock.current.started = true;
+    clock.current.wall0 = performance.now();
+    setStarted(true);
+    startMusic();
+    track('intro_started', {});
+  };
+
   const activate: ReactNode = (
     <button type="button" className="btn btn-primary it-activate" data-activate onClick={() => close('activate')}>
-      {t('activate')}
+      {reduced ? t('activate') : t('enter')}
     </button>
   );
 
@@ -288,15 +282,26 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
       {reduced ? (
         <StillCard activate={activate} />
       ) : (
-        <div className="it-stage theme-dark" data-layout={layout} ref={stage} style={{ width: STAGE[layout].w, height: STAGE[layout].h }}>
-          <IntroScenes layout={layout} activate={activate} />
-        </div>
+        <>
+          <div className="it-stage theme-dark" data-layout={layout} data-hold={started ? undefined : ''} ref={stage} style={{ width: STAGE[layout].w, height: STAGE[layout].h }}>
+            <IntroScenes layout={layout} activate={activate} />
+          </div>
+          {started ? null : (
+            <div className="it-start theme-dark">
+              <Eclipse size="var(--it-start-eclipse)" />
+              <button type="button" className="btn btn-primary it-start-btn" data-start onClick={begin}>
+                {t('start')}
+              </button>
+              <p className="it-start-hint">{t('startHint')}</p>
+            </div>
+          )}
+        </>
       )}
 
       <div className="it-bar" data-chrome>
         <p className="it-label label">{t('label')}</p>
         <div className="it-actions">
-          {reduced ? null : (
+          {reduced || !started ? null : (
             <button
               type="button"
               className="it-ctl"
@@ -316,7 +321,7 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
           </button>
         </div>
       </div>
-      {reduced ? null : (
+      {reduced || !started ? null : (
         <div className="it-ruler" data-chrome role="progressbar" aria-label={t('progress')} aria-valuemin={0} aria-valuemax={FILM_END} aria-valuenow={atEnd ? FILM_END : undefined}>
           <span className="it-ruler-fill" ref={fill} />
           {Object.values(SCENE).map((s) => (

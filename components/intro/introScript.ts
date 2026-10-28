@@ -7,13 +7,14 @@
  * for something specific — a link to a section (`#…`, including the old `/#precios` links that legacyAnchors redirects) or
  * to the showroom (`?rubro=`, `?vista=`, `?area=`) — and with `?intro=0` or localStorage `eclipse:intro` = "off" (QA and
  * the e2e suite). Without JS there is no intro. Client navigations to the home never run it (React does not execute
- * inline scripts it inserts), so the film only follows a real load.
+ * inline scripts it inserts), so the film only follows a real load. A watchdog lifts the veil after 15 s if the film never
+ * opened (a chunk that did not load, a slow phone): the page is never left black.
  */
 export const INTRO_STORAGE_KEY = 'eclipse:intro';
 export const INTRO_ATTR = 'data-intro';
 
 export const introScript = (): string =>
-  `(function(){try{var d=document.documentElement,s=location.search;if(location.hash.length>1)return;if(/[?&](?:rubro|vista|area)=/.test(s)||/[?&]intro=0(?:&|$)/.test(s))return;try{if(localStorage.getItem('${INTRO_STORAGE_KEY}')==='off')return;}catch(e){}d.setAttribute('${INTRO_ATTR}','on');}catch(e){}})();`;
+  `(function(){try{var d=document.documentElement,s=location.search;if(location.hash.length>1)return;if(/[?&](?:rubro|vista|area)=/.test(s)||/[?&]intro=0(?:&|$)/.test(s))return;try{if(localStorage.getItem('${INTRO_STORAGE_KEY}')==='off')return;}catch(e){}d.setAttribute('${INTRO_ATTR}','on');setTimeout(function(){if(d.getAttribute('${INTRO_ATTR}')==='on'&&!document.querySelector('dialog.it[open]'))d.setAttribute('${INTRO_ATTR}','done');},15000);}catch(e){}})();`;
 
 /** Is the film on for this load (and not finished yet)? */
 export function introOn(): boolean {

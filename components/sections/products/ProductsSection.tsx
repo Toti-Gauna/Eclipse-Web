@@ -106,6 +106,9 @@ function ProductScreen({ product, index, total }: { product: Product; index: num
   const t = useTranslations('products');
   const id = product.id;
   const name = t(`items.${id}.name`);
+  // Roofy, Foody and Markyt lead with who they are for («Inmobiliarias», «Locales de comida», «Ecommerce»); the
+  // product's name rides in the label above (decision of Ignacio, 28/10/2026). Handy and the coming ones keep their name.
+  const title = t.has(`items.${id}.title`) ? t(`items.${id}.title`) : name;
   const nameId = `pd-${id}-name`;
   const knowClass = 'btn btn-ghost pd-know';
   const know = (
@@ -123,10 +126,10 @@ function ProductScreen({ product, index, total }: { product: Product; index: num
             <span aria-hidden className="pd-count readout">
               {pad(index + 1)} / {pad(total)}
             </span>
-            <span className="pd-rubro">{t(`items.${id}.rubro`)}</span>
+            <span className="pd-rubro">{title === name ? t(`items.${id}.rubro`) : name}</span>
           </p>
           <h3 id={nameId} className="display pd-name">
-            {name}
+            {title}
           </h3>
           <p className="pd-line">{t(`items.${id}.line`)}</p>
           <ul className="pd-points">

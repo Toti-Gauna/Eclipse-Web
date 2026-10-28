@@ -55,7 +55,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
     (await page.locator('#inicio .hero-ctas a, #inicio .hero-ctas button').count()) === 1 &&
       (await page.locator('#inicio .hero-ctas a[href="#productos"]').count()) === 1 &&
       (await page.locator('#inicio [data-hero-chip]').count()) === 1 &&
-      (await page.locator('#inicio [data-hero-chip="inmobiliarias"]').count()) === 1,
+      (await page.locator('#inicio a[data-hero-chip][href="#productos"]').count()) === 1,
   );
   check('hero H1 is the marketing line', /Potenciá y visibilizá/.test(await page.locator('h1#hero-title').innerText()));
 
@@ -137,9 +137,14 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.locator('dialog.it[open]').waitFor({ timeout: 15000 });
   check('intro: the film opens once the loader is over', (await page.getAttribute('html', 'data-loader')) === 'done');
   check(
-    'intro: sound is off until asked; «Activar sonido» and «Saltar» are there',
-    (await page.locator('dialog.it [data-sound]').getAttribute('aria-pressed')) === 'false' && (await page.getByRole('button', { name: 'Saltar' }).count()) === 1,
+    'intro: it waits on a centred «Activar Eclipse»; nothing plays and «Saltar» is there',
+    (await page.locator('dialog.it [data-start]').isVisible()) && (await page.locator('dialog.it [data-sound]').count()) === 0 && (await page.getByRole('button', { name: 'Saltar' }).count()) === 1,
   );
+  await page.locator('dialog.it [data-start]').click();
+  await page.waitForTimeout(600);
+  check('intro: «Activar Eclipse» starts the film (sound control and progress appear, the start screen is gone)', (await page.locator('dialog.it [data-start]').count()) === 0 && (await page.locator('dialog.it [data-sound]').count()) === 1 && (await page.locator('dialog.it .it-ruler').count()) === 1);
+  const wipeVisible = await page.locator('dialog.it [data-wipe]').evaluate((el) => getComputedStyle(el).visibility);
+  check('intro: no stray light bar at the edge before a scene change', wipeVisible === 'hidden', wipeVisible);
   // textContent: the scenes still to come are hidden (autoAlpha), but they are all in the film from the start.
   const film = (await page.locator('dialog.it').textContent()) ?? '';
   check(
@@ -195,7 +200,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.waitForTimeout(2200);
   await page.getByRole('banner').getByRole('link', { name: 'Media', exact: true }).click();
   await page.waitForTimeout(350);
-  check('page change: a loading screen covers the page and names the destination', (await page.locator('.pt[data-state="on"][data-tone="night"]').count()) === 1 && /Media/.test(await page.locator('.pt-name').innerText()));
+  check('page change: a loading screen covers the page and names the destination', (await page.locator('.pt[data-state="on"][data-tone="night"]').count()) === 1 && /Media/.test((await page.locator('.pt-name').textContent()) ?? ''));
   await page.waitForURL(/\/es\/media\/$/, { timeout: 8000 });
   await page.locator('.pt[data-state="off"]').waitFor({ state: 'attached', timeout: 5000 }).catch(() => {});
   check('… and opens onto the new page', (await page.locator('.pt[data-state="off"]').count()) === 1 && /Media/.test((await page.locator('h1').textContent()) ?? ''));
@@ -220,6 +225,38 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const t2 = await walker.evaluate((el) => getComputedStyle(el).transform);
   check('plates keep moving: Roofy\'s visitor walks to the door', t1 !== t2, `${t1} → ${t2}`);
   check('no page errors (transitions)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  await ctx.close();
+}
+
+// 2d. Hero «Descubrí los productos»: the automatic tour, and «Seguir con el tour automático» once the visitor takes over.
+{
+  const { ctx, page, errors } = await newPage(1440, 900);
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(2400);
+  const startBtn = page.locator('#inicio a[data-tour-start]');
+  const box = await startBtn.boundingBox();
+  check('«Descubrí los productos» is as big as the primary action (a full button)', !!box && box.height >= 48 && box.width >= 220, JSON.stringify(box));
+  check(
+    'products lead with who they are for: Inmobiliarias · Locales de comida · Ecommerce',
+    /Inmobiliarias/.test(await page.locator('#pd-roofy h3').innerText()) && /Locales de comida/.test(await page.locator('#pd-foody h3').innerText()) && /Ecommerce/.test(await page.locator('#pd-markyt h3').innerText()),
+  );
+  await startBtn.click();
+  await page.waitForTimeout(4500);
+  const y1 = await page.evaluate(() => scrollY);
+  await page.waitForTimeout(4200);
+  const y2 = await page.evaluate(() => scrollY);
+  check('the tour scrolls the page by itself through the products', y1 > 600 && y2 > y1, `${y1} → ${y2}`);
+  check('… with no resume button while it runs', (await page.locator('.atb[data-shown]').count()) === 0);
+  await page.mouse.wheel(0, 200);
+  await page.waitForTimeout(500);
+  const y3 = await page.evaluate(() => scrollY);
+  check('taking over (wheel) pauses it and shows «Seguir con el tour automático»', (await page.locator('.atb[data-shown]').count()) === 1 && (await page.getByRole('button', { name: 'Seguir con el tour automático' }).isVisible()));
+  await page.waitForTimeout(3000);
+  check('paused: the page stays where the visitor left it', Math.abs((await page.evaluate(() => scrollY)) - y3) < 5);
+  await page.getByRole('button', { name: 'Seguir con el tour automático' }).click();
+  await page.waitForTimeout(5200);
+  check('resuming continues the tour and hides the button', (await page.evaluate(() => scrollY)) > y3 + 100 && (await page.locator('.atb[data-shown]').count()) === 0);
+  check('no page errors (tour)', errors.length === 0, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }
 
@@ -289,15 +326,16 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   // "Ver demo" opens one light layer (the eclipse takes the center, the light floods it): the page never scrolls,
   // and closing restores the exact position and focus.
   // A wheel is user input: it ends the anchor re-aim from the jump above (it never fights the visitor).
-  await page.goto(`${BASE}/es/`);
+  // (The hero's second key now leads to the products; the demo opens from Roofy's page.)
+  await page.goto(`${BASE}/es/productos/roofy/`);
   await page.waitForTimeout(1800);
-  const chip = page.locator('#inicio [data-hero-chip="inmobiliarias"]');
+  const chip = page.locator('main button[data-demo-opener="product:realEstate"]').first();
   await chip.scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
   const yBefore = await page.evaluate(() => window.scrollY);
   await chip.click();
   await page.waitForSelector('dialog[data-demo-layer][open]');
-  check('hero chip opens the demo layer', await page.locator('dialog[data-demo-layer] h2', { hasText: 'Lumen Propiedades' }).isVisible());
+  check('Roofy\'s «Ver la demo» opens the demo layer', await page.locator('dialog[data-demo-layer] h2', { hasText: 'Lumen Propiedades' }).isVisible());
   check('opening a demo does not scroll the page', (await page.evaluate(() => window.scrollY)) === yBefore);
   await page.waitForTimeout(1200);
   // Lote 2.2b: no offer is on sale, so the demo's simulated channels show at their own price.
@@ -305,7 +343,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.keyboard.press('Escape');
   await page.waitForSelector('dialog[data-demo-layer]', { state: 'detached' });
   check('layer closes, scroll kept', (await page.evaluate(() => window.scrollY)) === yBefore);
-  check('focus returns to the opener', await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener') === 'hero:realEstate'));
+  check('focus returns to the opener', await page.evaluate(() => document.activeElement?.getAttribute('data-demo-opener') === 'product:realEstate'));
   // Sound is opt-in; the preferences popover explains the currency.
   await page.getByRole('banner').getByRole('button', { name: /Idioma, moneda/ }).first().click();
   await page.waitForTimeout(600);

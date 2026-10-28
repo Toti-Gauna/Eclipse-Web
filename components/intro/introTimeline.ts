@@ -55,7 +55,7 @@ export function buildIntro(root: HTMLElement, layout: Layout, format: (usd: numb
     if (!el) return;
     tl.set(el, { autoAlpha: 1 }, at)
       .fromTo(el, { clipPath: 'inset(0% 0% 0% 100%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: WIPE, ease: 'expo.inOut' }, at);
-    if (wipe) tl.fromTo(wipe, { x: W, autoAlpha: 1 }, { x: 0, duration: WIPE, ease: 'expo.inOut' }, at).set(wipe, { autoAlpha: 0 }, at + WIPE);
+    if (wipe) tl.fromTo(wipe, { x: W, autoAlpha: 1 }, { x: 0, duration: WIPE, ease: 'expo.inOut', immediateRender: false }, at).set(wipe, { autoAlpha: 0 }, at + WIPE);
   };
   const rise = (els: Element[] | Element | null, at: number, vars: gsap.TweenVars = {}, dy = 28) => {
     if (!els || (Array.isArray(els) && !els.length)) return;
@@ -166,7 +166,7 @@ export function buildIntro(root: HTMLElement, layout: Layout, format: (usd: numb
     if (i === 0) tl.fromTo(panel, { clipPath: 'circle(0% at 50% 50%)' }, { clipPath: 'circle(80% at 50% 50%)', duration: 0.9 }, at - 0.05);
     else {
       tl.fromTo(panel, { clipPath: 'inset(0% 0% 0% 100%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: WIPE, ease: 'expo.inOut' }, at - LEAD);
-      if (wipe) tl.fromTo(wipe, { x: W, autoAlpha: 1 }, { x: 0, duration: WIPE, ease: 'expo.inOut' }, at - LEAD).set(wipe, { autoAlpha: 0 }, at - LEAD + WIPE);
+      if (wipe) tl.fromTo(wipe, { x: W, autoAlpha: 1 }, { x: 0, duration: WIPE, ease: 'expo.inOut', immediateRender: false }, at - LEAD).set(wipe, { autoAlpha: 0 }, at - LEAD + WIPE);
       const prev = panels[i - 1];
       tl.to(prev.querySelectorAll('[data-plate], .it-copy'), { xPercent: -8, duration: WIPE, ease: 'expo.inOut' }, at - LEAD);
     }
