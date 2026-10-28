@@ -591,3 +591,20 @@
     width: 100%;
   }
 }
+
+/* Phones and portrait tablets (decision of Ignacio, 28/10/2026): the hero sits high — the eclipse right under the header,
+   the copy and both buttons right under the eclipse — instead of the copy pushed to the bottom of a full screen. */
+@media (max-width: 767.98px), (max-width: 1023.98px) and (orientation: portrait) {
+  .hero {
+    min-height: 0;
+  }
+  .hero-eclipse-anchor {
+    top: calc(var(--header-h) + 0.5rem);
+  }
+  .hero-copy-cell {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: calc(var(--header-h) + 0.5rem + var(--hero-eclipse-size) * 1.02 + 1.25rem);
+    padding-bottom: 3rem;
+  }
+}
