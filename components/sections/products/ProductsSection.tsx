@@ -157,7 +157,7 @@ function ProductScreen({ product, index, total }: { product: Product; index: num
                 {know}
               </a>
             ) : (
-              <Link href={productPath(id)} className={knowClass}>
+              <Link href={productPath(id)} className={knowClass} data-transition="light" data-transition-label={name}>
                 {know}
               </Link>
             )}

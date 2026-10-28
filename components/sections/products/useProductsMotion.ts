@@ -3,7 +3,7 @@
 import { useRef, type RefObject } from 'react';
 import { gsap, ScrollTrigger, useGSAP } from '@/components/motion/gsap';
 import { observeEnter } from '@/components/motion/observeEnter';
-import { artEntrance } from './artMotion';
+import { plateLife } from './artIdle';
 
 /**
  * Where the products banner becomes a horizontal track: wide screens with a mouse or a trackpad
@@ -24,11 +24,12 @@ export interface ProductsMotion {
  * - Track (TRACK_QUERY): the stage is pinned for (n − 1) screens of scroll with its own spacer
  *   ([data-pd-pin-spacer], so ScrollTrigger never re-parents the stage); scrubbed, the track
  *   slides one product per screen, each plate drifts against its copy (depth), the disc behind
- *   passes across (the occultation) and the rail's playhead follows. Each plate is drawn the first
- *   time its screen comes in (artEntrance).
+ *   passes across (the occultation) and the rail's playhead follows. Each plate is drawn as soon as
+ *   its screen starts coming in (artEntrance) and then keeps telling its story while it is on
+ *   screen (artIdle).
  * - Touch screens, narrow or short screens: no pin. The screens stack and each plate is drawn
- *   once when it reaches the reading line (one pooled IntersectionObserver, no ScrollTrigger).
- * - Reduced motion: nothing; every plate is already drawn.
+ *   as it comes into view (one pooled IntersectionObserver, no ScrollTrigger), then loops.
+ * - Reduced motion: nothing; every plate is already drawn, still.
  * `onIndex` (a state setter: stable) fires only when the current product changes (the rail re-renders 4 times per pass).
  */
 export function useProductsMotion(root: RefObject<HTMLElement | null>, onIndex: (index: number) => void): ProductsMotion {
@@ -49,11 +50,16 @@ export function useProductsMotion(root: RefObject<HTMLElement | null>, onIndex: 
         const conditions = ctx.conditions as { track: boolean; motion: boolean };
         if (!conditions.motion) return;
         const plates = screens.map((s) => s.querySelector<HTMLElement>('[data-pd-art]'));
-        const entrances = plates.map((p) => (p ? artEntrance(p) : null));
+        const lives = plates.map((p) => (p ? plateLife(p, { duration: 1.15 }) : null));
+        const entrances = lives.map((life) => life?.entrance ?? null);
+        const disposeAll = () => lives.forEach((life) => life?.dispose());
 
         if (!conditions.track) {
-          const cancels = screens.map((screen, i) => observeEnter(screen, 'top 70%', () => void entrances[i]?.play()));
-          return () => cancels.forEach((cancel) => cancel());
+          const cancels = screens.map((screen, i) => observeEnter(screen, 'top 92%', () => void entrances[i]?.play()));
+          return () => {
+            cancels.forEach((cancel) => cancel());
+            disposeAll();
+          };
         }
 
         section.dataset.mode = 'track';
@@ -93,8 +99,8 @@ export function useProductsMotion(root: RefObject<HTMLElement | null>, onIndex: 
           if (copy)
             gsap.fromTo(copy, { xPercent: 6 }, { xPercent: -6, ease: 'none', scrollTrigger: { trigger: screen, containerAnimation: slide, start: 'left right', end: 'right left', scrub: true } });
           const play = () => entrances[i]?.play();
-          if (i === 0) ScrollTrigger.create({ trigger: stage, start: 'top 75%', once: true, onEnter: play });
-          else ScrollTrigger.create({ trigger: screen, containerAnimation: slide, start: 'left 65%', once: true, onEnter: play });
+          if (i === 0) ScrollTrigger.create({ trigger: stage, start: 'top 92%', once: true, onEnter: play });
+          else ScrollTrigger.create({ trigger: screen, containerAnimation: slide, start: 'left 92%', once: true, onEnter: play });
         });
 
         api.current.goTo = (index: number) => {
@@ -109,6 +115,7 @@ export function useProductsMotion(root: RefObject<HTMLElement | null>, onIndex: 
         };
         stage.addEventListener('focusin', onFocus);
         return () => {
+          disposeAll();
           stage.removeEventListener('focusin', onFocus);
           api.current.goTo = () => {};
           delete section.dataset.mode;

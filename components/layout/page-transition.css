@@ -1,0 +1,70 @@
+/* The loading screen between pages (PageTransition.tsx). Only transform / opacity / clip-path animate. */
+.pt {
+  --pt-eclipse: clamp(120px, 26vmin, 200px);
+  position: fixed;
+  inset: 0;
+  z-index: 90; /* over the header (60) and the floating CTA (45); under the intro (95) and the loader (100) */
+  display: none;
+  pointer-events: none;
+}
+.pt[data-state='on'] {
+  display: block;
+  pointer-events: auto; /* nothing under the cover can be clicked twice */
+}
+.pt-dark,
+.pt-light {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+}
+.pt-dark {
+  background:
+    radial-gradient(50% 50% at 50% 46%, rgb(245 185 66 / 0.07), transparent 70%),
+    var(--void);
+}
+.pt-light {
+  background:
+    radial-gradient(60% 60% at 50% 46%, rgb(255 255 255 / 0.95), transparent 70%),
+    var(--dawn);
+}
+.pt-stage {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: var(--pt-eclipse);
+  height: var(--pt-eclipse);
+  margin: calc(var(--pt-eclipse) / -2) 0 0 calc(var(--pt-eclipse) / -2);
+  visibility: hidden;
+}
+.pt-glint {
+  position: absolute;
+  left: 64%;
+  top: 33%;
+  width: 90px;
+  height: 90px;
+  margin: -45px 0 0 -45px;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle, rgb(255 255 255) 0 3px, rgb(255 232 176 / 0.85) 6px, transparent 22px),
+    linear-gradient(90deg, transparent 0 40%, rgb(255 240 210 / 0.9) 50%, transparent 60% 100%) center / 100% 2px no-repeat,
+    linear-gradient(0deg, transparent 0 40%, rgb(255 240 210 / 0.9) 50%, transparent 60% 100%) center / 2px 100% no-repeat;
+}
+.pt-copy {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: calc(46% + var(--pt-eclipse) / 2 + 18px);
+  text-align: center;
+  visibility: hidden;
+  color: var(--dawn);
+}
+.pt-name {
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  line-height: 1;
+}
+.pt-state {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--mist);
+}

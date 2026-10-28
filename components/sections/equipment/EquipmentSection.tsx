@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { MessageCircle } from 'lucide-react';
 import { gsap, useGSAP } from '@/components/motion/gsap';
 import { observeEnter } from '@/components/motion/observeEnter';
+import { startPlateLoop } from '@/components/sections/products/artIdle';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { SectionMark } from '@/components/ui/SectionMark';
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink';
@@ -26,7 +27,8 @@ const KIT_CENTER = { x: 320, y: 200 };
  *
  * Motion: the first time the sheet reaches the reading line the kit comes apart — each part flies
  * out from the middle to its place — then the callouts pop in and the display lights up.
- * Pointing at a row of the list lights its part. Reduced motion: the sheet is just there.
+ * Then the exploded kit floats and its parts keep working while it is on screen (artIdle).
+ * Pointing at a row of the list lights its part. Reduced motion: the sheet is just there, still.
  */
 export function EquipmentSection() {
   const t = useTranslations('equipment');
@@ -42,11 +44,19 @@ export function EquipmentSection() {
       const tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' } });
       q('[data-eq-part]').forEach((part, i) => {
         const [cx, cy] = PART_CENTERS[(part as unknown as SVGElement).dataset.part as EquipmentPart] ?? [KIT_CENTER.x, KIT_CENTER.y];
-        tl.fromTo(part, { x: (KIT_CENTER.x - cx) * 0.6, y: (KIT_CENTER.y - cy) * 0.6, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 1.2 }, i * 0.07);
+        tl.fromTo(part, { x: (KIT_CENTER.x - cx) * 0.6, y: (KIT_CENTER.y - cy) * 0.6, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 1.1 }, i * 0.06);
       });
       tl.fromTo(q('[data-eq-callout]'), { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.6, stagger: 0.06, ease: 'back.out(2)' }, 0.75);
-      tl.fromTo(q('[data-art-light]'), { opacity: 0, scale: 0.5, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(2.5)' }, 1.2);
-      return observeEnter(root, 'top 72%', () => void tl.play());
+      tl.fromTo(q('[data-art-light]'), { opacity: 0, scale: 0.5, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(2.5)' }, 1.1);
+      let stop: (() => void) | null = null;
+      tl.call(() => {
+        stop ??= startPlateLoop(root);
+      });
+      const cancel = observeEnter(root, 'top 90%', () => void tl.play());
+      return () => {
+        cancel();
+        stop?.();
+      };
     },
     { scope: sheet },
   );

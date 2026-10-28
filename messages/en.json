@@ -6031,5 +6031,55 @@
       "contact": "Tell us about your project",
       "ask": "Hi Eclipse. I'd like to tell you about a project for Eclipse Agency."
     }
+  },
+  "intro": {
+    "label": "Eclipse in 40 seconds",
+    "skip": "Skip",
+    "soundOn": "Turn sound on",
+    "soundOff": "Mute",
+    "soundLoading": "Loading sound…",
+    "activate": "Activate Eclipse",
+    "activateHint": "Come in and see your business in full light.",
+    "tagline": "Development · AI · Automation · Content",
+    "golpes": {
+      "g1": "Websites.",
+      "g2": "Systems.",
+      "g3": "Content.",
+      "g4": "All connected."
+    },
+    "eco": {
+      "title": "An ecosystem for your <em>business</em>.",
+      "core": "Eclipse",
+      "products": "Products",
+      "units": "Units"
+    },
+    "includes": "What's included",
+    "soon": {
+      "title": "And what comes next."
+    },
+    "units": {
+      "title": "Everything talks to everything."
+    },
+    "plans": {
+      "title": "Six plans. Pick yours.",
+      "note": "Roofy prices (real estate), per month. Partner is a proposal.",
+      "proposal": "Proposal"
+    },
+    "end": {
+      "title": "Your business, in full <em>light</em>."
+    },
+    "static": {
+      "title": "Eclipse: an ecosystem for your business.",
+      "products": "Products",
+      "units": "Units"
+    },
+    "equipment": "QR stands, displays and packaging with your brand.",
+    "perMonth": "/mo",
+    "progress": "Film progress",
+    "usd": "USD {n}"
+  },
+  "transition": {
+    "loading": "Loading",
+    "light": "Turning the light on"
   }
 }

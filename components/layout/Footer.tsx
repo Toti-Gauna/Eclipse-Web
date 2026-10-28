@@ -61,7 +61,7 @@ export function Footer() {
                   <ul>
                     {pagedProducts.map((p) => (
                       <li key={p.id}>
-                        <Link href={productPath(p.id)} className={link}>
+                        <Link href={productPath(p.id)} className={link} data-transition="light">
                           {t(`products.items.${p.id}.name`)}
                         </Link>
                       </li>

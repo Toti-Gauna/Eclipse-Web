@@ -426,3 +426,8 @@
   color: var(--fg);
   text-decoration-color: var(--accent);
 }
+/* The plates' travellers (a lead, a parcel, a pulse): they sit at the plate's origin until a loop
+   moves them (artIdle), so the still drawing — no JS, reduced motion — never shows them. */
+.pd-mover {
+  opacity: 0;
+}

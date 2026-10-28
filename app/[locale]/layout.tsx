@@ -9,6 +9,7 @@ import { fontMono, fontSans, fontSerif } from '../fonts';
 import { baseMetadata } from '@/lib/seo';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { Header } from '@/components/layout/Header';
+import { PageTransition } from '@/components/layout/PageTransition';
 import { DEMO_NAMESPACES } from '@/components/demos/namespaces';
 import { PORTAL_NAMESPACES } from '@/lib/portal/namespaces';
 import { Footer } from '@/components/layout/Footer';
@@ -68,6 +69,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={clientMessages}>
           <AppProviders locale={locale as Locale}>
             <Header />
+            <PageTransition />
             {children}
             <LazyHydrate>
               <Footer />

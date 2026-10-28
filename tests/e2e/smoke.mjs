@@ -12,7 +12,10 @@ const check = (name, ok, extra = '') => {
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? '/opt/pw-browsers/chromium' });
 
 async function newPage(width = 390, height = 844, opts = {}) {
-  const ctx = await browser.newContext({ viewport: { width, height }, isMobile: width < 768, hasTouch: width < 768, ...opts });
+  // The intro film plays on every load of the home (28/10/2026): the checks that are not about it switch it off.
+  const { intro = false, ...rest } = opts;
+  const ctx = await browser.newContext({ viewport: { width, height }, isMobile: width < 768, hasTouch: width < 768, ...rest });
+  if (!intro) await ctx.addInitScript(() => localStorage.setItem('eclipse:intro', 'off'));
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -122,6 +125,101 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   const usdText = await page.locator('#precios').innerText();
   check('prices in USD after switching currency', /US\$|\$\s?1[.,]000/.test(usdText) && !/≈ \$ 1\.450\.000/.test(usdText));
   check('no page errors (mobile home + agency)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  await ctx.close();
+}
+
+// 2b. The intro film «Eclipse en 40 segundos»: after the loader on every load of the home, «Saltar», Escape,
+// «Activar Eclipse»; never over a shared link to a section; a still card with reduced motion.
+{
+  const { ctx, page, errors } = await newPage(1440, 900, { intro: true });
+  await page.goto(`${BASE}/es/`, { waitUntil: 'domcontentloaded' });
+  check('intro: the veil covers the home from the first paint', (await page.getAttribute('html', 'data-intro')) === 'on');
+  await page.locator('dialog.it[open]').waitFor({ timeout: 15000 });
+  check('intro: the film opens once the loader is over', (await page.getAttribute('html', 'data-loader')) === 'done');
+  check(
+    'intro: sound is off until asked; «Activar sonido» and «Saltar» are there',
+    (await page.locator('dialog.it [data-sound]').getAttribute('aria-pressed')) === 'false' && (await page.getByRole('button', { name: 'Saltar' }).count()) === 1,
+  );
+  // textContent: the scenes still to come are hidden (autoAlpha), but they are all in the film from the start.
+  const film = (await page.locator('dialog.it').textContent()) ?? '';
+  check(
+    'intro: the four products, the four coming, the units and the six plans priced from the catalog',
+    (await page.locator('dialog.it [data-panel]').count()) === 4 &&
+      (await page.locator('dialog.it [data-soon-card]').count()) === 4 &&
+      (await page.locator('dialog.it [data-unit]').count()) === 5 &&
+      (await page.locator('dialog.it [data-plan] [data-price]').count()) === 6 &&
+      /Roofy[\s\S]*Handy[\s\S]*VetOS[\s\S]*Partner/.test(film),
+  );
+  await page.waitForTimeout(1500);
+  await page.getByRole('button', { name: 'Saltar' }).click();
+  await page.waitForTimeout(1700);
+  const after = await page.evaluate(() => ({ open: !!document.querySelector('dialog.it[open]'), intro: document.documentElement.dataset.intro, focus: document.activeElement?.id, y: scrollY }));
+  check('«Saltar» hands over to the home: film closed, page free, focus on the H1', !after.open && after.intro === 'done' && after.focus === 'hero-title' && after.y === 0, JSON.stringify(after));
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  check('intro: plays again on refresh (nothing is remembered)', (await page.getAttribute('html', 'data-intro')) === 'on');
+  await page.locator('dialog.it[open]').waitFor({ timeout: 15000 });
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(1700);
+  check('intro: Escape skips it', (await page.locator('dialog.it[open]').count()) === 0);
+  await page.goto(`${BASE}/es/media/`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(2600);
+  check('intro: only on the home', (await page.locator('dialog.it').count()) === 0);
+  // A fresh load (from another page, not a same-document hash change).
+  await page.goto(`${BASE}/es/#productos`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(3200);
+  check('intro: never over a shared link to a section', (await page.locator('dialog.it[open]').count()) === 0 && (await page.getAttribute('html', 'data-intro')) === null);
+  check('no page errors (intro)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  await ctx.close();
+}
+{
+  const { ctx, page, errors } = await newPage(390, 844, { intro: true, reducedMotion: 'reduce' });
+  await page.goto(`${BASE}/es/`, { waitUntil: 'domcontentloaded' });
+  await page.locator('dialog.it[open]').waitFor({ timeout: 15000 });
+  const still = page.locator('dialog.it .it-still');
+  check(
+    'intro with reduced motion: a still card (products, units, six plans priced) and «Activar Eclipse»',
+    (await still.count()) === 1 && (await page.locator('dialog.it .it-stage').count()) === 0 && /Contact[\s\S]*Partner/.test(await still.innerText()) && (await page.getByRole('button', { name: 'Activar Eclipse' }).isVisible()),
+  );
+  const fits = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
+  await page.getByRole('button', { name: 'Activar Eclipse' }).click();
+  await page.waitForTimeout(700);
+  check('«Activar Eclipse» opens the home (phone, reduced motion), no horizontal scroll', (await page.locator('dialog.it[open]').count()) === 0 && fits);
+  check('no page errors (intro, reduced)', errors.length === 0, errors.slice(0, 3).join(' | '));
+  await ctx.close();
+}
+
+// 2c. Loading screens between pages, «Conocer X» into the light, plates that keep moving.
+{
+  const { ctx, page, errors } = await newPage(1440, 900);
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(2200);
+  await page.getByRole('banner').getByRole('link', { name: 'Media', exact: true }).click();
+  await page.waitForTimeout(350);
+  check('page change: a loading screen covers the page and names the destination', (await page.locator('.pt[data-state="on"][data-tone="night"]').count()) === 1 && /Media/.test(await page.locator('.pt-name').innerText()));
+  await page.waitForURL(/\/es\/media\/$/, { timeout: 8000 });
+  await page.locator('.pt[data-state="off"]').waitFor({ state: 'attached', timeout: 5000 }).catch(() => {});
+  check('… and opens onto the new page', (await page.locator('.pt[data-state="off"]').count()) === 1 && /Media/.test((await page.locator('h1').textContent()) ?? ''));
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(2200);
+  await page.locator('#pd-roofy .pd-know').click();
+  await page.waitForTimeout(500);
+  check('«Conocer Roofy»: the screen goes to light (the demo\'s opening)', (await page.locator('.pt[data-state="on"][data-tone="light"]').count()) === 1);
+  await page.waitForURL(/\/es\/productos\/roofy\/$/, { timeout: 8000 });
+  await page.locator('.pt[data-state="off"]').waitFor({ state: 'attached', timeout: 6000 }).catch(() => {});
+  check(
+    '… and the product page is all in daylight',
+    (await page.locator('.pt[data-state="off"]').count()) === 1 && (await page.locator('main .pp-hero.theme-light').count()) === 1 && (await page.locator('main .bg-void, main .theme-dark').count()) === 0,
+  );
+  await page.goto(`${BASE}/es/`);
+  await page.waitForTimeout(2000);
+  await page.locator('#pd-roofy').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(3200);
+  const walker = page.locator('#pd-roofy [data-i="visitor"]');
+  const t1 = await walker.evaluate((el) => getComputedStyle(el).transform);
+  await page.waitForTimeout(700);
+  const t2 = await walker.evaluate((el) => getComputedStyle(el).transform);
+  check('plates keep moving: Roofy\'s visitor walks to the door', t1 !== t2, `${t1} → ${t2}`);
+  check('no page errors (transitions)', errors.length === 0, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }
 

@@ -1,4 +1,5 @@
 import type { ProductId } from '@/lib/content';
+import { Walker } from './Walker';
 
 /**
  * The four products drawn as instrument plates (v2 "Efemérides"): 1px hairlines in the section's
@@ -9,6 +10,11 @@ import type { ProductId } from '@/lib/content';
  * (opacity + a short rise), `[data-art-light]` lights up last, and Foody's cloche
  * (`[data-art-lift]`) rises off the plate like the moon leaving the disc. The markup is the
  * final state: without JS or with reduced motion the plate is simply there.
+ *
+ * Loop hooks (artIdle, once the plate is drawn): `data-i` names what keeps moving — the visitor
+ * walking up to the door, the lead travelling to the card, the cloche lifting, the tag swinging,
+ * the specialist on his way, the pulse running along the line. `.pd-mover` travellers are hidden
+ * until a loop moves them (they sit at the origin of the plate), so the still plate never shows them.
  */
 export function ProductArt({ id, className = '' }: { id: ProductId; className?: string }) {
   const Art = ART[id];
@@ -57,14 +63,21 @@ function Roofy() {
       <g data-art className="pd-soft">
         <path d="M106 340H290M126 350H270" />
       </g>
+      <g className="pd-soft">
+        <circle data-i="smoke" cx="267" cy="104" r="3" className="pd-mover" />
+        <circle data-i="smoke" cx="269" cy="104" r="4" className="pd-mover" />
+        <circle data-i="smoke" cx="265" cy="104" r="3.5" className="pd-mover" />
+      </g>
+      <Walker x={28} y={330} hook="visitor" />
       <g data-art>
-        <path d="M218 215C262 215 290 162 328 162" className="pd-dotted" />
+        <path data-i="lead-path" d="M218 215C262 215 290 162 328 162" className="pd-dotted" />
         <rect x="330" y="118" width="126" height="86" rx="6" />
         <circle cx="353" cy="145" r="11" />
         <path d="M372 139H436M372 152H418" className="pd-soft" />
         <path d="M344 184H442" className="pd-soft" />
-        <path d="M344 184H404" className="pd-bar" />
+        <path data-i="bar" d="M344 184H404" className="pd-bar" />
       </g>
+      <circle data-i="lead" r="3.2" className="pd-fill pd-mover" />
       <g data-art>
         <rect x="330" y="222" width="126" height="96" rx="6" />
         <path d="M330 244H456" />
@@ -83,11 +96,11 @@ function Roofy() {
           <circle cx="374" cy="302" r="2" />
           <circle cx="396" cy="302" r="2" />
         </g>
-        <circle cx="396" cy="282" r="8" />
+        <circle data-i="ring" cx="396" cy="282" r="8" />
       </g>
       <g data-art-light>
         <rect x="178" y="194" width="40" height="42" className="pd-light-fill" />
-        <circle cx="198" cy="215" r="46" className="pd-glow" />
+        <circle data-i="glow" cx="198" cy="215" r="46" className="pd-glow" />
         <circle cx="396" cy="282" r="3" className="pd-light-fill" />
       </g>
     </>
@@ -111,7 +124,12 @@ function Foody() {
         <path d="M330 132C344 162 344 196 330 214V316" />
         <path d="M330 214H336" className="pd-soft" />
       </g>
-      <g data-art data-art-lift>
+      <g className="pd-soft">
+        <path data-i="steam" d="M170 190C164 180 176 172 170 160" className="pd-mover" />
+        <path data-i="steam" d="M196 186C190 174 202 166 196 152" className="pd-mover" />
+        <path data-i="steam" d="M222 190C216 180 228 172 222 160" className="pd-mover" />
+      </g>
+      <g data-art data-art-lift data-i="cloche">
         <path d="M126 198A70 70 0 0 1 266 198" />
         <path d="M114 198H278" />
         <path d="M150 182A52 52 0 0 1 186 150" className="pd-soft" />
@@ -127,11 +145,12 @@ function Foody() {
           <path d="M379 197H387V205H379ZM429 197H437V205H429ZM379 229H387V237H379Z" className="pd-fill" />
           <path d="M400 194H408V202H400ZM412 210H420V218H412ZM400 222H406V228H400ZM414 230H424V240H414ZM430 222H442V228H430ZM404 234H410V242H404Z" className="pd-fill pd-soft-fill" />
         </g>
+        <path data-i="scan" d="M368 188H448" className="pd-mover" />
       </g>
       <g data-art-light>
         <path d="M118 282A96 96 0 0 0 274 282" className="pd-light-stroke" />
         <circle cx="274" cy="282" r="3.5" className="pd-light-fill" />
-        <circle cx="274" cy="282" r="18" className="pd-glow" />
+        <circle data-i="glow" cx="274" cy="282" r="18" className="pd-glow" />
       </g>
     </>
   );
@@ -150,7 +169,7 @@ function Markyt() {
         <path d="M80 118H100M80 130H96" className="pd-soft" />
         <circle cx="46" cy="150" r="3" />
         <circle cx="58" cy="150" r="3" />
-        <circle cx="70" cy="150" r="3" className="pd-fill" />
+        <circle data-i="variant" cx="70" cy="150" r="3" className="pd-fill" />
         <rect x="28" y="176" width="84" height="66" rx="5" />
         <path d="M44 220L58 196L72 220ZM62 220L76 202L90 220Z" className="pd-soft" />
         <rect x="28" y="256" width="84" height="66" rx="5" />
@@ -163,23 +182,28 @@ function Markyt() {
         <path d="M198 172C198 118 272 118 272 172" />
         <path d="M210 172C210 132 260 132 260 172" className="pd-soft" />
       </g>
-      <g data-art>
-        <path d="M292 140L334 154L322 190L280 176Z" />
-        <path d="M290 160L316 169M286 170L306 177" className="pd-soft" />
-        <path d="M272 146C280 142 288 142 296 148" className="pd-soft" />
+      <g data-i="tag">
+        <g data-art>
+          <path d="M292 140L334 154L322 190L280 176Z" />
+          <path d="M290 160L316 169M286 170L306 177" className="pd-soft" />
+          <path d="M272 146C280 142 288 142 296 148" className="pd-soft" />
+        </g>
+        <g data-art-light>
+          <circle cx="300" cy="151" r="4" className="pd-light-fill" />
+          <circle data-i="glow" cx="300" cy="151" r="20" className="pd-glow" />
+        </g>
       </g>
       <g data-art>
-        <path d="M332 300C350 300 352 286 362 282" className="pd-dotted" />
+        <path data-i="route" d="M332 300C350 300 352 286 362 282" className="pd-dotted" />
         <path d="M364 262L412 242L460 262L412 282Z" />
         <path d="M364 262V314L412 334V282M460 262V314L412 334" />
         <path d="M388 252L436 272" className="pd-soft" />
-        <circle cx="436" cy="214" r="13" />
-        <path d="M430 214L435 219L443 209" />
+        <g data-i="check">
+          <circle cx="436" cy="214" r="13" />
+          <path d="M430 214L435 219L443 209" />
+        </g>
       </g>
-      <g data-art-light>
-        <circle cx="300" cy="151" r="4" className="pd-light-fill" />
-        <circle cx="300" cy="151" r="20" className="pd-glow" />
-      </g>
+      <rect data-i="parcel" x="-6" y="-6" width="12" height="12" rx="2" className="pd-mover" />
     </>
   );
 }
@@ -195,7 +219,7 @@ function Handy() {
       </g>
       <g data-art>
         <path d="M388 40C356 140 428 220 380 360" />
-        <path d="M408 92C400 104 404 116 412 126M418 176C410 190 414 204 424 214M420 268C412 282 416 296 426 306" className="pd-soft" />
+        <path data-i="waves" d="M408 92C400 104 404 116 412 126M418 176C410 190 414 204 424 214M420 268C412 282 416 296 426 306" className="pd-soft" />
       </g>
       <g data-art>
         <path d="M160 262L190 236L220 262V302H160Z" />
@@ -203,22 +227,30 @@ function Handy() {
         <path d="M172 268H182V278H172Z" className="pd-soft" />
       </g>
       <g data-art className="pd-soft">
-        <circle cx="300" cy="214" r="70" className="pd-dotted" />
+        <circle data-i="zone" cx="300" cy="214" r="70" className="pd-dotted" />
         <circle cx="300" cy="214" r="112" className="pd-dotted pd-faint" />
       </g>
+      <circle data-i="ping" cx="300" cy="214" r="30" className="pd-soft pd-mover" />
       <g data-art>
         <path d="M224 266C250 254 274 236 300 214" className="pd-dotted" />
-        <path d="M300 214C282 190 274 178 274 162A26 26 0 0 1 326 162C326 178 318 190 300 214Z" />
       </g>
       <g data-art>
-        <path d="M352 236L338 262H350L340 286" />
+        <path data-i="bolt" d="M352 236L338 262H350L340 286" />
         <path d="M86 150C76 166 74 172 74 178A12 12 0 0 0 98 178C98 172 96 166 86 150Z" />
-        <circle cx="220" cy="140" r="8" />
-        <path d="M226 146L244 164M236 156L242 150M240 160L246 154" />
+        <g data-i="wrench">
+          <circle cx="220" cy="140" r="8" />
+          <path d="M226 146L244 164M236 156L242 150M240 160L246 154" />
+        </g>
       </g>
-      <g data-art-light>
-        <circle cx="300" cy="162" r="8" className="pd-light-fill" />
-        <circle cx="300" cy="162" r="26" className="pd-glow" />
+      <Walker x={34} y={300} hook="specialist" carry="toolbox" />
+      <g data-i="pin">
+        <g data-art>
+          <path d="M300 214C282 190 274 178 274 162A26 26 0 0 1 326 162C326 178 318 190 300 214Z" />
+        </g>
+        <g data-art-light>
+          <circle cx="300" cy="162" r="8" className="pd-light-fill" />
+          <circle data-i="glow" cx="300" cy="162" r="26" className="pd-glow" />
+        </g>
       </g>
     </>
   );
@@ -233,7 +265,7 @@ function Gym() {
       </g>
       <g data-art>
         <circle cx="170" cy="150" r="64" className="pd-soft" />
-        <circle cx="170" cy="150" r="44" className="pd-dotted pd-soft" />
+        <circle data-i="spin" cx="170" cy="150" r="44" className="pd-dotted pd-soft" />
         <path d="M160 150L168 158L182 140" />
       </g>
       <g data-art>
@@ -242,12 +274,12 @@ function Gym() {
         <g className="pd-soft">
           {[0, 1, 2, 3].flatMap((c) => [0, 1, 2].map((r) => <rect key={`${c}-${r}`} x={302 + c * 34} y={102 + r * 24} width="24" height="16" rx="2" />))}
         </g>
-        <rect x="336" y="126" width="24" height="16" rx="2" className="pd-fill pd-soft-fill" />
+        <rect data-i="cell" x="336" y="126" width="24" height="16" rx="2" className="pd-fill pd-soft-fill" />
       </g>
       <g data-art className="pd-soft">
         <path d="M300 200H420M300 212H392M300 224H360" />
       </g>
-      <g data-art>
+      <g data-art data-i="barbell">
         <path d="M96 282H376" />
         <rect x="112" y="242" width="16" height="80" rx="3" />
         <rect x="132" y="252" width="12" height="60" rx="3" />
@@ -258,7 +290,7 @@ function Gym() {
       <g data-art-light>
         <path d="M170 86A64 64 0 1 1 121 191.1" className="pd-light-stroke" />
         <circle cx="121" cy="191.1" r="4" className="pd-light-fill" />
-        <circle cx="121" cy="191.1" r="18" className="pd-glow" />
+        <circle data-i="glow" cx="121" cy="191.1" r="18" className="pd-glow" />
       </g>
     </>
   );
@@ -276,6 +308,7 @@ function Dental() {
         <path d="M150 110C120 110 108 142 116 176C122 202 126 240 136 284C140 300 154 300 158 284L166 236C168 226 176 226 178 236L186 284C190 300 204 300 208 284C218 240 222 202 228 176C236 142 224 110 194 110C182 110 176 118 172 118C168 118 162 110 150 110Z" />
         <path d="M134 140C132 158 136 170 140 182" className="pd-soft" />
       </g>
+      <path data-i="sparkle" d="M244 98V118M234 108H254" className="pd-mover" />
       <g data-art>
         <rect x="290" y="96" width="150" height="150" rx="6" />
         <path d="M290 120H440" />
@@ -287,16 +320,17 @@ function Dental() {
         <path d="M304 180L334 164" />
       </g>
       <g data-art>
-        <path d="M334 172C370 172 380 228 394 228" className="pd-dotted" />
+        <path data-i="move-path" d="M334 172C370 172 380 228 394 228" className="pd-dotted" />
         <path d="M388 222L394 228L388 234" />
       </g>
-      <g data-art>
+      <g data-art data-i="bubble">
         <path d="M232 280H300V312H258L246 324V312H232Z" />
         <path d="M244 292H286M244 302H272" className="pd-soft" />
       </g>
+      <circle data-i="mover" r="3.2" className="pd-fill pd-mover" />
       <g data-art-light>
-        <rect x="396" y="220" width="30" height="16" rx="2" className="pd-light-fill" />
-        <circle cx="411" cy="228" r="24" className="pd-glow" />
+        <rect data-i="slot" x="396" y="220" width="30" height="16" rx="2" className="pd-light-fill" />
+        <circle data-i="glow" cx="411" cy="228" r="24" className="pd-glow" />
       </g>
     </>
   );
@@ -311,9 +345,10 @@ function Clinic() {
         <path d="M24 330H456" />
       </g>
       <g data-art>
-        <path d="M24 250H118L134 220L150 280L168 186L184 262L196 250H268" />
+        <path data-i="ecg" d="M24 250H118L134 220L150 280L168 186L184 262L196 250H268" />
       </g>
-      <g data-art>
+      <circle data-i="beat" r="3.4" className="pd-fill pd-mover" />
+      <g data-art data-i="bell">
         <path d="M76 140C76 116 80 104 90 104C100 104 104 116 104 140L110 146H70Z" />
         <path d="M86 150C86 156 94 156 94 150" />
         <path d="M60 112C56 118 56 126 60 132M120 112C124 118 124 126 120 132" className="pd-soft" />
@@ -331,11 +366,12 @@ function Clinic() {
         <path d="M386 180L394 188M394 180L386 188" />
       </g>
       <g data-art>
-        <path d="M112 146C180 156 232 240 296 240" className="pd-dotted" />
+        <path data-i="remind-path" d="M112 146C180 156 232 240 296 240" className="pd-dotted" />
       </g>
+      <circle data-i="remind" r="3" className="pd-fill pd-mover" />
       <g data-art-light>
         <circle cx="306" cy="240" r="5" className="pd-light-fill" />
-        <circle cx="306" cy="240" r="20" className="pd-glow" />
+        <circle data-i="glow" cx="306" cy="240" r="20" className="pd-glow" />
       </g>
     </>
   );
@@ -360,19 +396,35 @@ function Vet() {
         <circle cx="328" cy="120" r="17" />
         <circle cx="328" cy="98" r="4" className="pd-soft" />
         <path d="M356 108H422M356 122H408M356 136H414" className="pd-soft" />
-        <path d="M296 120C252 122 232 168 214 196" className="pd-dotted" />
+        <path data-i="call-path" d="M296 120C252 122 232 168 214 196" className="pd-dotted" />
       </g>
       <g data-art className="pd-soft">
-        <circle cx="392" cy="304" r="52" className="pd-dotted" />
+        <circle data-i="zone" cx="392" cy="304" r="52" className="pd-dotted" />
       </g>
       <g data-art>
         <path d="M360 304L392 276L424 304V340H360Z" />
         <path d="M386 340V318H398V340" className="pd-soft" />
         <path d="M212 300C262 330 316 332 356 320" className="pd-dotted" />
       </g>
+      <circle data-i="call" r="3" className="pd-fill pd-mover" />
+      <g>
+        {[
+          [238, 300, -18],
+          [270, 318, 10],
+          [304, 312, -8],
+          [334, 324, 14],
+        ].map(([x, y, a]) => (
+          <g key={x} data-i="print" transform={`translate(${x} ${y}) rotate(${a})`} className="pd-mover">
+            <ellipse cx="0" cy="2" rx="3.4" ry="2.8" className="pd-fill" />
+            <circle cx="-3.4" cy="-2.6" r="1.2" className="pd-fill" />
+            <circle cx="0" cy="-4" r="1.2" className="pd-fill" />
+            <circle cx="3.4" cy="-2.6" r="1.2" className="pd-fill" />
+          </g>
+        ))}
+      </g>
       <g data-art-light>
         <circle cx="392" cy="252" r="5" className="pd-light-fill" />
-        <circle cx="392" cy="252" r="20" className="pd-glow" />
+        <circle data-i="glow" cx="392" cy="252" r="20" className="pd-glow" />
       </g>
     </>
   );
