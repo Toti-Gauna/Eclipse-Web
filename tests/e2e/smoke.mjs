@@ -148,7 +148,21 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
     'intro: it waits on a centred «Activar Eclipse»; nothing plays and «Saltar» is there',
     (await page.locator('dialog.it [data-start]').isVisible()) && (await page.locator('dialog.it [data-sound]').count()) === 0 && (await page.getByRole('button', { name: 'Saltar' }).count()) === 1,
   );
+  check(
+    'intro: the start screen stands on the loader\'s last frame (no second eclipse, the button under the wordmark)',
+    await page.evaluate(() => {
+      const loader = document.querySelector('.loader');
+      const scene = loader?.querySelector('.loader-scene')?.getBoundingClientRect();
+      const btn = document.querySelector('dialog.it [data-start]')?.getBoundingClientRect();
+      return !!loader && getComputedStyle(loader).display !== 'none' && !!document.querySelector('.it-start[data-on-loader]') && !document.querySelector('.it-start .eclipse') && !!scene && !!btn && btn.top > scene.bottom;
+    }),
+  );
   await page.locator('dialog.it [data-start]').click();
+  check(
+    'intro: the music is a rendered file, fetched while the start screen is up (never synthesized on the device)',
+    await page.evaluate(() => performance.getEntriesByType('resource').some((e) => e.name.endsWith('/audio/intro-score.m4a'))),
+  );
+  check('intro: on the tap the loading screen dissolves into the film', (await page.getAttribute('html', 'data-intro')) === 'film');
   await page.waitForTimeout(600);
   check('intro: «Activar Eclipse» starts the film (sound control and progress appear, the start screen is gone)', (await page.locator('dialog.it [data-start]').count()) === 0 && (await page.locator('dialog.it [data-sound]').count()) === 1 && (await page.locator('dialog.it .it-ruler').count()) === 1);
   const wipeVisible = await page.locator('dialog.it [data-wipe]').evaluate((el) => getComputedStyle(el).visibility);
@@ -174,6 +188,20 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   await page.keyboard.press('Escape');
   await page.waitForTimeout(1700);
   check('intro: Escape skips it', (await page.locator('dialog.it[open]').count()) === 0);
+  // «Saltar» right on the start screen: the loader dissolves onto the page, which scrolls and answers taps.
+  await page.goto(`${BASE}/es/`, { waitUntil: 'domcontentloaded' });
+  await page.locator('dialog.it[open] [data-start]').waitFor({ timeout: 15000 });
+  await page.getByRole('button', { name: 'Saltar' }).click();
+  await page.waitForTimeout(1500);
+  const free = await page.evaluate(() => {
+    const loader = document.querySelector('.loader');
+    scrollTo(0, 600);
+    const y = scrollY;
+    scrollTo(0, 0);
+    const hit = document.elementFromPoint(innerWidth / 2, innerHeight / 2);
+    return { intro: document.documentElement.dataset.intro, loader: loader ? getComputedStyle(loader).display : 'none', y, hitInHero: !!hit?.closest('#inicio') };
+  });
+  check('«Saltar» from the start screen: loader gone, page scrolls and the hero takes the taps', free.intro === 'done' && free.loader === 'none' && free.y === 600 && free.hitInHero, JSON.stringify(free));
   await page.goto(`${BASE}/es/media/`, { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(2600);
   check('intro: only on the home', (await page.locator('dialog.it').count()) === 0);

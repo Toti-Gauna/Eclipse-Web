@@ -176,3 +176,24 @@ difuminan en el lugar (blur de la escena chica + opacity + un leve scale). Medic
 Lectura: sin diferencia fuera del ruido (los frames largos son la hidratación del hero debajo, no la salida). No se
 afirma ninguna mejora; el blur se aplica solo a la escena (≈ 250 px de eclipse y el texto), no al cielo de pantalla
 completa. Movimiento reducido: sin cambios (fotograma final + fundido corto). Mismos límites: Chromium sin GPU.
+
+## Fase 5 — película de entrada en el teléfono (28/10/2026, antes/después)
+
+Reporte de Ignacio desde el iPhone: tras la pantalla de carga la página tardaba, no respondía a los toques y se veía en
+negro al scrollear (el header ni siquiera tomaba su fondo de «scrolleado»: el hilo principal estaba ocupado).
+
+Método: export servido local, Chromium móvil 414 × 800, CPU ×4 (`Emulation.setCPUThrottlingRate`), tareas largas con
+`PerformanceObserver('longtask')` durante 8 s desde que aparece «Activar Eclipse»; nodos de audio contados envolviendo
+`BaseAudioContext.create*`.
+
+| | antes (main 76767ea) | después |
+|---|---|---|
+| Música | sintetizada en el teléfono: 5.254 nodos Web Audio + render offline de 3,9 s (PC) | archivo de 597 KB (`intro-score.m4a`), solo descarga y decodificación |
+| Tarea larga más grande al mostrar el inicio | 532 ms + 313 ms seguidas | una de ~550–650 ms (armar el escenario), en un momento ocioso |
+| Bloqueo total (> 50 ms) con la película | 1.128 ms | 930–1.020 ms |
+| Bloqueo total sin la película | 348 ms | 344 ms |
+| Grano en pantallas táctiles | una capa del alto de cada sección oscura | ninguna |
+
+La ganancia grande no está en el número de Chromium, que renderiza el audio en otro hilo. Está en el iPhone: ahí la
+síntesis competía con la página. Y la película ya no arranca de una pantalla distinta: la pantalla de carga queda quieta
+como pantalla de inicio (sin salto).

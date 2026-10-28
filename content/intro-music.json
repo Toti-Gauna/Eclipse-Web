@@ -1,0 +1,8 @@
+{
+  "$comment": "Written by scripts/render-intro-music.mjs. Re-render when the score changes (tests/intro-music.test.ts).",
+  "file": "audio/intro-score.m4a",
+  "seconds": 64,
+  "kbps": 72,
+  "bytes": 596620,
+  "sourceHash": "5a8800a42ddcda1c"
+}

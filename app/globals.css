@@ -296,11 +296,11 @@
   }
   /* Touch screens (iOS Safari above all): no blend. An overlay blend over a section thousands of pixels tall (the stacked
      products banner) is one isolated group bigger than the GPU texture Safari can composite, and it left the whole
-     section — and everything after it — painted black. Plain, fainter grain looks the same at phone sizes. */
+     section — and everything after it — painted black. Even unblended it is one layer as tall as the section, and at
+     phone sizes it doesn't show: phones get no grain (28/10/2026). */
   @media (hover: none), (pointer: coarse) {
     .grain::after {
-      mix-blend-mode: normal;
-      opacity: 0.035;
+      display: none;
     }
   }
 
