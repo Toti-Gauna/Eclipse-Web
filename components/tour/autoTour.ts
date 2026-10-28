@@ -18,9 +18,14 @@ import { track } from '@/lib/analytics';
  */
 export type TourState = 'idle' | 'running' | 'paused';
 
-/** How long each stop is held (s), and the pace of a hop (px per second, clamped). */
-const HOLD = 3.6;
-const HOLD_LAST = 2.4;
+/** How long each stop is held (s), and the pace of a hop (px per second, clamped to MIN–MAX s); faster since 28/10/2026. */
+const HOLD = 2.6;
+const HOLD_LAST = 1.8;
+const PACE = 1400;
+const HOP_MIN = 0.8;
+const HOP_MAX = 2;
+/** Air between the floating header and the top of what a stop shows (px). */
+const AIR = 16;
 
 let state: TourState = 'idle';
 let tween: gsap.core.Tween | null = null;
@@ -59,7 +64,13 @@ function stops(): (() => number)[] {
       screens.forEach((_, i) => out.push(() => pin.start + ((pin.end - pin.start) * i) / (screens.length - 1)));
     } else {
       out.push(() => Math.max(0, topOf(products) - headerH() * 0.5));
-      screens.forEach((screen) => out.push(() => Math.max(0, topOf(screen) - headerH() - 8)));
+      // Stacked (phones, touch): each stop opens on its category's head, the plate's frame (its ticks) right
+      // under the header — the plate leads the screen there — not on the hairline above it.
+      screens.forEach((screen) => {
+        const parts = [...screen.querySelectorAll('[data-pd-art], [data-pd-copy]')];
+        const head = () => (parts.length ? Math.min(...parts.map(topOf)) : topOf(screen));
+        out.push(() => Math.max(0, head() - headerH() - AIR));
+      });
     }
   }
   for (const id of [SECTION_IDS.media, SECTION_IDS.equipment]) {
@@ -106,7 +117,7 @@ function go(i: number, list: (() => number)[]) {
   const p = { v: 0 };
   tween = gsap.to(p, {
     v: 1,
-    duration: dist < 4 ? 0.01 : Math.min(3.2, Math.max(1.3, dist / 900)),
+    duration: dist < 4 ? 0.01 : Math.min(HOP_MAX, Math.max(HOP_MIN, dist / PACE)),
     ease: 'power2.inOut',
     onUpdate: () => {
       const y = from + (list[i]() - from) * p.v;
@@ -114,6 +125,9 @@ function go(i: number, list: (() => number)[]) {
       window.scrollTo(0, y);
     },
     onComplete: () => {
+      // Land exactly on the stop even if something above changed height during the hop.
+      lastSet = list[i]();
+      window.scrollTo(0, lastSet);
       holdTimer = window.setTimeout(() => go(i + 1, list), (i === list.length - 1 ? HOLD_LAST : HOLD) * 1000);
     },
   });

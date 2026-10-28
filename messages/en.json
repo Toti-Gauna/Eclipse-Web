@@ -5642,7 +5642,7 @@
     },
     "items": {
       "roofy": {
-        "name": "Roofy",
+        "name": "Eclipse for real estate",
         "rubro": "real estate",
         "line": "Your agency on one screen: the website, the contacts and the viewings.",
         "lead": "Your listings website and your team's CRM, together. Every inquiry comes in, gets sorted and ends in a booked viewing.",
@@ -5679,11 +5679,11 @@
           }
         },
         "start": "See the demo and pick your level. There are six, starting with Contact; all of them start from the full website and CRM.",
-        "ask": "Hi Eclipse. I'd like to know more about Roofy for my real estate agency.",
+        "ask": "Hi Eclipse. I run a real estate agency and I'd like to know more about Eclipse for real estate.",
         "title": "Real estate"
       },
       "foody": {
-        "name": "Foody",
+        "name": "Eclipse for food businesses",
         "rubro": "restaurants",
         "line": "Your place on every phone too: the menu, ordering from the table and bookings.",
         "lead": "For restaurants, bars, cafés and ice cream shops. People coming from social media see your website; people at the table scan the QR code and order.",
@@ -5721,12 +5721,12 @@
             "text": "A 3D viewer for a few selected dishes."
           }
         },
-        "start": "Foody is in the works: the menu with QR ordering and bookings come first. If you run a place, write to us and we'll let you know when it's ready.",
-        "ask": "Hi Eclipse. I run a restaurant and I'd like to hear when Foody is ready.",
+        "start": "Eclipse for food businesses is in the works: the menu with QR ordering and bookings come first. If you run a place, write to us and we'll let you know when it's ready.",
+        "ask": "Hi Eclipse. I run a restaurant and I'd like to hear when Eclipse for food businesses is ready.",
         "title": "Food businesses"
       },
       "markyt": {
-        "name": "Markyt",
+        "name": "Eclipse for ecommerce",
         "rubro": "ecommerce",
         "line": "Your online store with everything behind it: orders, stock and customers.",
         "lead": "For brands with one product, a small collection or a large catalog. And if you don't sell online, you can still show your products and take inquiries.",
@@ -5764,8 +5764,8 @@
             "text": "A tool to make your own pieces."
           }
         },
-        "start": "Markyt is in the works. If you sell products, write to us and we'll let you know when it's ready.",
-        "ask": "Hi Eclipse. I run a store and I'd like to hear when Markyt is ready.",
+        "start": "Eclipse for ecommerce is in the works. If you sell products, write to us and we'll let you know when it's ready.",
+        "ask": "Hi Eclipse. I run a store and I'd like to hear when Eclipse for ecommerce is ready.",
         "title": "Ecommerce"
       },
       "handy": {
@@ -5853,7 +5853,10 @@
         "ask": "Hi Eclipse. I run a veterinary practice and I'd like to hear when VetOS is ready."
       }
     },
-    "soonNote": "No price or date yet"
+    "soonNote": "No price or date yet",
+    "forLabel": "Eclipse for",
+    "knowMore": "Learn more",
+    "knowMoreAbout": "Learn more about {name}"
   },
   "media": {
     "title": "Your business, <em>in motion</em>.",
@@ -5984,7 +5987,7 @@
           "text": "What you've done and what's next, class by class."
         }
       },
-      "plans": "Every plan comes with its help center. In Roofy, Academy arrives with {level}, from {price}/mo.",
+      "plans": "Every plan comes with its help center. In Eclipse for real estate, Academy arrives with {level}, from {price}/mo.",
       "status": "The course library is in production: it grows in stages, starting with the how-to guides.",
       "ask": "Hi Eclipse. I'd like to ask about Eclipse Academy."
     },
@@ -6018,7 +6021,7 @@
       },
       "principleTitle": "Every number with its source",
       "principle": "A recommendation without a source is useless. Every reading says which data it comes from.",
-      "plans": "In Roofy, Intelligence arrives with {level}, from {price}/mo: analysis and recommendations with sources.",
+      "plans": "In Eclipse for real estate, Intelligence arrives with {level}, from {price}/mo: analysis and recommendations with sources.",
       "status": "In the other products it arrives with their higher levels, as each one launches.",
       "ask": "Hi Eclipse. I'd like to ask about Eclipse Intelligence."
     },
@@ -6066,7 +6069,7 @@
     },
     "plans": {
       "title": "Six plans. Pick yours.",
-      "note": "Roofy prices (real estate), per month. Partner is a proposal.",
+      "note": "Eclipse for real estate prices, per month. Partner is a proposal.",
       "proposal": "Proposal"
     },
     "end": {
@@ -6092,5 +6095,10 @@
   "autoTour": {
     "resume": "Continue the automatic tour",
     "stop": "End the tour"
+  },
+  "contactFloat": {
+    "label": "Contact us",
+    "aria": "Contact us on WhatsApp (opens in a new tab)",
+    "message": "Hi Eclipse. I have a question."
   }
 }

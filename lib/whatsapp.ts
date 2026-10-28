@@ -24,7 +24,8 @@ export type WhatsAppOrigin =
   | 'media'
   | 'equipment'
   | 'product'
-  | 'unit';
+  | 'unit'
+  | 'floating_contact';
 
 /** wa.me link with a prefilled, URL-encoded message. */
 export function whatsappUrl(text?: string, number: string = WHATSAPP_NUMBER): string {

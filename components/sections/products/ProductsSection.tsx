@@ -90,7 +90,7 @@ export function ProductsSection() {
                     <span aria-hidden className="pd-rail-index readout">
                       {pad(i + 1)}
                     </span>
-                    <span>{t(`items.${p.id}.name`)}</span>
+                    <span>{t.has(`items.${p.id}.title`) ? t(`items.${p.id}.title`) : t(`items.${p.id}.name`)}</span>
                   </button>
                 </li>
               ))}
@@ -106,14 +106,17 @@ function ProductScreen({ product, index, total }: { product: Product; index: num
   const t = useTranslations('products');
   const id = product.id;
   const name = t(`items.${id}.name`);
-  // Roofy, Foody and Markyt lead with who they are for («Inmobiliarias», «Locales de comida», «Ecommerce»); the
-  // product's name rides in the label above (decision of Ignacio, 28/10/2026). Handy and the coming ones keep their name.
-  const title = t.has(`items.${id}.title`) ? t(`items.${id}.title`) : name;
+  // «Eclipse para inmobiliarias / locales de comida / ecommerce» (decision of Ignacio, 28/10/2026): the screen leads with
+  // who it is for and «Eclipse para» rides in the label above; Handy and the coming ones keep their own name.
+  const titled = t.has(`items.${id}.title`);
+  const title = titled ? t(`items.${id}.title`) : name;
   const nameId = `pd-${id}-name`;
   const knowClass = 'btn btn-ghost pd-know';
+  // «Conocer Eclipse para locales de comida» doesn't fit a phone: those say «Conocer más», named in full for AT.
+  const knowLabel = titled ? t('knowMoreAbout', { name }) : undefined;
   const know = (
     <>
-      {t('know', { name })}
+      {titled ? t('knowMore') : t('know', { name })}
       <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.6} />
     </>
   );
@@ -126,7 +129,7 @@ function ProductScreen({ product, index, total }: { product: Product; index: num
             <span aria-hidden className="pd-count readout">
               {pad(index + 1)} / {pad(total)}
             </span>
-            <span className="pd-rubro">{title === name ? t(`items.${id}.rubro`) : name}</span>
+            <span className="pd-rubro">{titled ? t('forLabel') : t(`items.${id}.rubro`)}</span>
           </p>
           <h3 id={nameId} className="display pd-name">
             {title}
@@ -156,11 +159,11 @@ function ProductScreen({ product, index, total }: { product: Product; index: num
           <div className="pd-foot">
             <ProductStatus id={id} />
             {product.site ? (
-              <a href={product.site} className={knowClass}>
+              <a href={product.site} className={knowClass} aria-label={knowLabel}>
                 {know}
               </a>
             ) : (
-              <Link href={productPath(id)} className={knowClass} data-transition="light" data-transition-label={name}>
+              <Link href={productPath(id)} className={knowClass} aria-label={knowLabel} data-transition="light" data-transition-label={name}>
                 {know}
               </Link>
             )}
