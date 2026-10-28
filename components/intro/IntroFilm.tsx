@@ -350,7 +350,7 @@ function StillCard({ activate }: { activate: ReactNode }) {
           <ul>
             {[...ZOOMED, ...COMING].map((id) => (
               <li key={id}>
-                <span className="it-still-name">{tp(`items.${id}.name`)}</span>
+                <span className="it-still-name">{tp.has(`items.${id}.title`) ? tp(`items.${id}.title`) : tp(`items.${id}.name`)}</span>
                 <span className="it-still-sub">{productById(id)?.status === 'soon' ? tp('status.soon') : tp(`items.${id}.rubro`)}</span>
               </li>
             ))}

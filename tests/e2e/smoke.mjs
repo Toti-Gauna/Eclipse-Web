@@ -66,7 +66,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
       JSON.stringify(['inicio', 'productos', 'media', 'equipamiento']),
   );
   const screens = page.locator('#productos [data-pd-screen]');
-  check('products banner: Roofy, Foody, Markyt, Handy, then gimnasios, DentalOS, clínicas and VetOS', (await screens.count()) === 8 && /Roofy[\s\S]*Foody[\s\S]*Markyt[\s\S]*Handy[\s\S]*Gimnasios[\s\S]*DentalOS[\s\S]*Clínicas[\s\S]*VetOS/.test(await page.locator('#productos').innerText()));
+  check('products banner: Eclipse para inmobiliarias / locales de comida / ecommerce, Handy, then gimnasios, DentalOS, clínicas and VetOS', (await screens.count()) === 8 && /Inmobiliarias[\s\S]*Locales de comida[\s\S]*Ecommerce[\s\S]*Handy[\s\S]*Gimnasios[\s\S]*DentalOS[\s\S]*Clínicas[\s\S]*VetOS/.test(await page.locator('#productos').innerText()));
   check(
     'the coming ones say «Próximamente», with no price and no page, and offer a heads-up on WhatsApp',
     (await page.locator('#productos [data-soon] .pd-soon', { hasText: 'Próximamente' }).count()) === 4 &&
@@ -75,8 +75,16 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
   );
   check(
     'each product says «Conocer <producto>» and leads to its page',
-    (await page.locator('#productos .pd-know', { hasText: /^Conocer (Roofy|Foody|Markyt|Handy)/ }).count()) === 4 &&
+    (await page.locator('#productos .pd-know', { hasText: /^Conocer (más|Handy)/ }).count()) === 4 &&
       (await page.locator('#productos .pd-know').first().getAttribute('href')) === '/Eclipse-Web/es/productos/roofy/',
+  );
+  check(
+    'floating «Contactanos» bottom left: WhatsApp, named in full, ≥ 44 px',
+    await (async () => {
+      const a = page.locator('.fcontact-btn');
+      const box = await a.boundingBox();
+      return /wa\.me/.test((await a.getAttribute('href')) ?? '') && /Contactanos por WhatsApp/.test((await a.getAttribute('aria-label')) ?? '') && !!box && box.height >= 44 && box.x < 100;
+    })(),
   );
   check('only Roofy carries a price; Foody/Markyt in preparation; Handy with its launch date', /Disponible · desde/.test(await page.locator('#pd-roofy').innerText()) && /En preparación/.test(await page.locator('#pd-foody').innerText()) && /Lanza el 10 de noviembre de 2026/.test(await page.locator('#pd-handy').innerText()));
   check('phones: the products stack (no pinned track)', (await page.locator('#productos[data-mode]').count()) === 0);
@@ -153,7 +161,7 @@ for (const [lang, expected] of [['pt-BR', '/pt/'], ['en-US', '/en/'], ['es-AR', 
       (await page.locator('dialog.it [data-soon-card]').count()) === 4 &&
       (await page.locator('dialog.it [data-unit]').count()) === 5 &&
       (await page.locator('dialog.it [data-plan] [data-price]').count()) === 6 &&
-      /Roofy[\s\S]*Handy[\s\S]*VetOS[\s\S]*Partner/.test(film),
+      /Inmobiliarias[\s\S]*Handy[\s\S]*VetOS[\s\S]*Partner/.test(film),
   );
   await page.waitForTimeout(1500);
   await page.getByRole('button', { name: 'Saltar' }).click();

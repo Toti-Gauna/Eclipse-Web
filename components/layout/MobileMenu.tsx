@@ -127,9 +127,9 @@ export function MobileMenu({
           setOpen(true);
           play('open');
         }}
-        className={`relative grid size-11 shrink-0 place-items-center rounded-full border border-line text-fg transition-colors hover:border-[color:var(--accent)] ${className}`}
+        className={`relative grid size-12 shrink-0 place-items-center rounded-full border border-line text-fg transition-colors hover:border-[color:var(--accent)] ${className}`}
       >
-        <Menu aria-hidden className="size-5" strokeWidth={1.6} />
+        <Menu aria-hidden className="size-6" strokeWidth={1.5} />
         <SoundBadge />
       </button>
 
@@ -142,7 +142,7 @@ export function MobileMenu({
       >
         <div ref={panel} className="grain flex min-h-dvh flex-col bg-void">
           <div className="container-x flex h-[var(--header-h)] shrink-0 items-center justify-between">
-            <span aria-hidden className="text-[0.8rem] font-medium tracking-[0.32em]">
+            <span aria-hidden className="hdr-wordmark font-medium">
               ECLIPSE
             </span>
             <div className="flex items-center gap-2">

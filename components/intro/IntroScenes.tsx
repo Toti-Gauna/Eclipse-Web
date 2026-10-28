@@ -255,7 +255,7 @@ function Ecosystem({ layout }: { layout: Layout }) {
               </span>
               <div className="it-node" data-node={id} data-soon={soon || undefined} style={{ ...at(p.x - node / 2, p.y - node / 2), width: node, height: node }}>
                 <Icon aria-hidden strokeWidth={1.5} />
-                <span className="it-node-name">{tp(`${id}.name`)}</span>
+                <span className="it-node-name">{tp.has(`${id}.title`) ? tp(`${id}.title`) : tp(`${id}.name`)}</span>
               </div>
             </div>
           );
@@ -326,8 +326,11 @@ function GolpeMark({ i }: { i: number }) {
 function ProductPanel({ id, index }: { id: ProductId; index: number }) {
   const t = useTranslations('intro');
   const tp = useTranslations('products.items');
+  const tf = useTranslations('products');
   const product = productById(id);
   if (!product) return null;
+  // «Inmobiliarias», «Locales de comida», «Ecommerce»: what Eclipse offers, by rubro (Ignacio, 28/10/2026).
+  const titled = tp.has(`${id}.title`);
   return (
     <section className="it-panel" data-panel={index} aria-label={tp(`${id}.name`)}>
       <div className="it-plate" data-plate>
@@ -337,10 +340,10 @@ function ProductPanel({ id, index }: { id: ProductId; index: number }) {
       <div className="it-copy">
         <p className="it-copy-n readout" data-copy-in>
           <span>{pad(index + 1)} / 04</span>
-          <span className="it-copy-rubro">{tp(`${id}.rubro`)}</span>
+          <span className="it-copy-rubro">{titled ? tf('forLabel') : tp(`${id}.rubro`)}</span>
         </p>
         <p className="it-name display" data-name>
-          {tp(`${id}.name`)}
+          {titled ? tp(`${id}.title`) : tp(`${id}.name`)}
         </p>
         <p className="it-line" data-copy-in>
           {tp(`${id}.line`)}

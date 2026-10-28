@@ -33,7 +33,7 @@
   --focus: var(--corona);
   --fg-inverse: var(--void);
 
-  --header-h: 64px;
+  --header-h: 72px;
   --gutter: 16px;
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);

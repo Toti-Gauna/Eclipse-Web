@@ -67,7 +67,7 @@ reachable (folded is fine, deleted is not).
 - **Home and pages (decision of Ignacio, 28/10/2026; report: `docs/v3/home-productos-unidades.md`):** the home is
   01 hero `#inicio` · 02 productos `#productos` · 03 Eclipse Media `#media` · 04 equipamiento `#equipamiento` · footer,
   nothing else. The hero keeps its H1 and its one action «Quiero potenciar mi negocio», now a real link to `#productos`
-  (`<HeroCta>`), plus the direct key of the demo on show. **Productos:** Roofy, Foody, Markyt and Handy, one screen each
+  (`<HeroCta>`), plus the direct key of the demo on show. **Productos:** Roofy, Foody and Markyt — shown since 28/10/2026 as «Eclipse para inmobiliarias / locales de comida / ecommerce» (`products.items.<id>.name`; the screen's h3 is the rubro `title` under the label «Eclipse para», its button «Conocer más» named in full for AT; the intro film shows the rubros) — and Handy, one screen each
   (`components/sections/products/`): what it is for, four points, its status and «Conocer <producto>» → its page
   `/[locale]/productos/<id>/` (until `content/products.json` gives it a `site`); then Gimnasios, DentalOS, Clínicas and
   VetOS with status `soon`: «Próximamente» where «Conocer» would be, «Avisame cuando esté» over WhatsApp, no price and no
@@ -93,7 +93,8 @@ reachable (folded is fine, deleted is not).
   is THE primary CTA (`/#productos`) and floats bottom right on every landing page (`<FloatingCta>`, rendered by the
   header; decision of Ignacio 28/10/2026): it steps aside (slides out, leaves the tab order) while the hero's CTA, a
   `data-page-cta` or the products banner is on screen, so there is never a second solid amber; the phone menu keeps it
-  too. There is NO "Armá tu plan"; "Ingresar" is discreet and opens `/[locale]/portal/`. Language, currency and sound sit together behind
+  too. «Contactanos» (WhatsApp, quiet pill, icon only below 520 px) floats bottom left (`<FloatingContact>`) and steps aside
+  while the auto tour's «Seguir con el tour» pill is up. The header is 72 px at every width (30 px logo below 1024 px). There is NO "Armá tu plan"; "Ingresar" is discreet and opens `/[locale]/portal/`. Language, currency and sound sit together behind
   one preferences trigger. On `/plan` the CTA stays WhatsApp «Pedí tu demo». The header floats once the page scrolls: a
   surface (`.hdr-row::before`, header.css) fades in with `data-scrolled`, fixed 10 px blur, opaque fallback; its reserved
   height (`--header-h`) never changes. A client navigation onto another page's anchor is kept on target by

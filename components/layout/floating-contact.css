@@ -1,0 +1,70 @@
+/* «Contactanos», bottom left (FloatingContact): the quiet partner of the floating «Potenciar» (bottom right).
+   Glass-free: a night pill with a hairline, readable over the dark sections and the dawn ones. */
+.fcontact {
+  position: fixed;
+  left: max(var(--gutter), env(safe-area-inset-left));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 45;
+  pointer-events: none;
+}
+.fcontact-btn {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 48px;
+  padding: 0 1.1rem 0 0.95rem;
+  border: 1px solid rgb(244 239 230 / 0.3);
+  border-radius: 999px;
+  background: rgb(12 12 20 / 0.9);
+  box-shadow: 0 14px 40px -14px rgb(0 0 0 / 0.65);
+  color: var(--dawn);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition:
+    transform 0.55s var(--ease-expo),
+    opacity 0.35s ease,
+    border-color 0.25s ease,
+    visibility 0s linear 0s;
+}
+.fcontact-btn svg {
+  color: var(--corona);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fcontact-btn:hover {
+    border-color: var(--corona);
+  }
+}
+.fcontact-btn:active {
+  transform: scale(0.97);
+}
+.fcontact[data-off] .fcontact-btn {
+  transform: translateY(calc(100% + 2rem));
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform 0.45s var(--ease-expo),
+    opacity 0.3s ease,
+    visibility 0s linear 0.45s;
+}
+/* Narrow phones: the icon alone, so it never meets «Potenciar mi negocio» (the name stays in aria-label). */
+@media (max-width: 519.98px) {
+  .fcontact-btn {
+    width: 48px;
+    padding: 0;
+    justify-content: center;
+  }
+  .fcontact-btn span {
+    display: none;
+  }
+}
+@media (min-width: 1024px) {
+  .fcontact {
+    bottom: 2rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fcontact[data-off] .fcontact-btn {
+    transform: none;
+  }
+}

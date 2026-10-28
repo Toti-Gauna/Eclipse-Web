@@ -258,3 +258,27 @@
 .hdr-back:hover svg {
   transform: translateX(-2px);
 }
+
+/* The logo (decision of Ignacio, 28/10/2026: the phone header was too small). Phones and tablets: the logo is
+   the header's only content next to the menu, so it reads at 30px with a 1rem wordmark; from 1024px the nav
+   shares the row and it goes back to 22px / 0.8rem. The eclipse's inline size is MiniEclipse's own. */
+.hdr-wordmark {
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+}
+.hdr-logo .mini-eclipse,
+.hdr-logo .mini-eclipse svg {
+  width: 30px !important;
+  height: 30px !important;
+}
+@media (min-width: 1024px) {
+  .hdr-wordmark {
+    font-size: 0.8rem;
+    letter-spacing: 0.32em;
+  }
+  .hdr-logo .mini-eclipse,
+  .hdr-logo .mini-eclipse svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+}

@@ -12,6 +12,7 @@ import { PrefsMenu } from './PrefsMenu';
 import { MobileMenu } from './MobileMenu';
 import { NAV_LINKS, PORTAL_ROUTES, chromeRoute, currentUnit } from './navLinks';
 import { FloatingCta } from './FloatingCta';
+import { FloatingContact } from './FloatingContact';
 import { usePageCtaInView } from './usePageCtaInView';
 import { IS_LIVE } from '@/lib/env';
 import { livePaths } from '@/lib/portal/live';
@@ -109,9 +110,9 @@ export function Header() {
       >
         {/* `relative`: the preferences popover anchors to this row. */}
         <div className="hdr-row container-x relative flex h-[var(--header-h)] items-center gap-1.5 min-[360px]:gap-2 xl:gap-3">
-          <Link href="/" aria-label={t('header.home')} className="-ml-1 flex min-h-11 shrink-0 items-center gap-2.5 rounded-full px-1">
+          <Link href="/" aria-label={t('header.home')} className="hdr-logo -ml-1 flex min-h-11 shrink-0 items-center gap-3 rounded-full px-1 lg:gap-2.5">
             <MiniEclipse />
-            <span className="text-[0.8rem] font-medium tracking-[0.32em] text-fg">ECLIPSE</span>
+            <span className="hdr-wordmark font-medium text-fg">ECLIPSE</span>
           </Link>
 
           {mode === 'portal' ? (
@@ -190,6 +191,7 @@ export function Header() {
         </div>
       </header>
       {mode === 'landing' ? <FloatingCta hidden={pageCtaInView} query={`${pathname}#${domVersion}`} /> : null}
+      {mode === 'landing' ? <FloatingContact /> : null}
     </>
   );
 }
