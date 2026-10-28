@@ -176,7 +176,10 @@ export default function IntroFilm({ onClose }: { onClose: () => void }) {
       state.running.forEach((stop) => stop());
       state.running.clear();
       state.tl.kill();
-      gsap.set(root.querySelectorAll('*'), { clearProps: 'transform,opacity,visibility,clipPath' });
+      // Only a rebuild (the screen turned) needs the stage clean. On close the whole stage is about to be removed:
+      // clearing thousands of SVG nodes there (GSAP measures each one) froze the page for ~2 s on a tablet right when
+      // the home appeared.
+      if (!closing.current) gsap.set(root.querySelectorAll('*'), { clearProps: 'transform,opacity,visibility,clipPath' });
       film.current = null;
     };
   }, [shown, reduced, stageOn, layout, format, now]);

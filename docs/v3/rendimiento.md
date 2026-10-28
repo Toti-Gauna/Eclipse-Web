@@ -197,3 +197,21 @@ Método: export servido local, Chromium móvil 414 × 800, CPU ×4 (`Emulation.s
 La ganancia grande no está en el número de Chromium, que renderiza el audio en otro hilo. Está en el iPhone: ahí la
 síntesis competía con la página. Y la película ya no arranca de una pantalla distinta: la pantalla de carga queda quieta
 como pantalla de inicio (sin salto).
+
+## Fase 6 — después de la película (28/10/2026, antes/después)
+
+Reporte de Ignacio desde el iPad: al terminar la película y entrar a la página, la mitad de abajo quedaba negra y no
+cargaba nada. Causa: al cerrar, la limpieza del escenario aplicaba `gsap.set(…, { clearProps })` a cada nodo del
+escenario (miles de SVG, con `getBBox`), justo antes de quitarlo. Era una sola tarea que congelaba la página en el momento
+en que aparecía. Ahora la limpieza solo corre cuando el escenario se rearma (al girar la pantalla), nunca al cerrar.
+
+Método: Chromium 1180 × 820 táctil, CPU ×4 desde el cierre, tareas largas durante 6 s + scroll.
+
+| | antes (main 6a76e6b) | después |
+|---|---|---|
+| Tarea más larga tras «Saltar» (a los 3 s) | 1.936 ms | 56 ms |
+| Bloqueo total tras cerrar (a los 3 s / al final) | 1.909 ms | 7 / 24 ms |
+| Sin throttling (e2e, 1440 × 900) | ~430 ms | < 200 ms (guardado por e2e) |
+
+También: sin grano en cualquier Safari de iPhone/iPad (`@supports (-webkit-touch-callout: none)`), porque un iPad con
+trackpad se presenta como puntero fino y la regla táctil no lo alcanzaba.

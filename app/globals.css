@@ -303,6 +303,13 @@
       display: none;
     }
   }
+  /* iPadOS with a trackpad reports a fine pointer that hovers, so the query above misses it: any iOS/iPadOS WebKit
+     (the only engine with -webkit-touch-callout) gets no grain either. */
+  @supports (-webkit-touch-callout: none) {
+    .grain::after {
+      display: none;
+    }
+  }
 
   .sr-only-focusable:not(:focus):not(:focus-within) {
     position: absolute;
