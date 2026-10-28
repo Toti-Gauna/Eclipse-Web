@@ -1,0 +1,39 @@
+/* A product's page (ProductPage): the unit pages' blocks (units.css) plus a few of its own. */
+
+.pp-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.pp-kicker-rule {
+  width: 1.5rem;
+  height: 1px;
+  background: var(--line-strong);
+}
+.pp-name {
+  margin: 0;
+}
+.pp-note {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+.pp-levels {
+  padding-block: clamp(3rem, 7vw, 5rem) clamp(4rem, 9vw, 7rem);
+}
+.pp-start {
+  max-width: 52ch;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--fg);
+}
+.pp-all {
+  margin-top: 1.5rem;
+}

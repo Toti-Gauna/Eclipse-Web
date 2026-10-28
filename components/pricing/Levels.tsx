@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import { l, levels } from '@/lib/content';
@@ -22,7 +23,12 @@ import './levels.css';
  * transfer or the cash are agreed after the proposal. Quotas and the setup are not shown because they are still a
  * proposal; each proposal states them. Everything comes from content/levels.json.
  */
-export function Levels() {
+export function Levels({
+  demo,
+}: {
+  /** How «Ver la demo» opens it; by default the rubro selector (<PotenciarCta>). The Roofy page opens Lumen directly. */
+  demo?: (opts: { label: string; className: string; children: ReactNode }) => ReactNode;
+} = {}) {
   const t = useTranslations('pricing');
   const tl = useTranslations('pricing.levels');
   const locale = useLocale() as Locale;
@@ -75,10 +81,23 @@ export function Levels() {
                 </ul>
               </div>
               <div className="pr-lv-actions">
-                <PotenciarCta origin="plan_card" label={tl('seeDemoLabel', { name })} className="btn btn-sm pr-btn-ghost pr-lv-demo">
-                  {tl('seeDemo')}
-                  <ArrowRight aria-hidden className="size-4" strokeWidth={1.5} />
-                </PotenciarCta>
+                {demo ? (
+                  demo({
+                    label: tl('seeDemoLabel', { name }),
+                    className: 'btn btn-sm pr-btn-ghost pr-lv-demo',
+                    children: (
+                      <>
+                        {tl('seeDemo')}
+                        <ArrowRight aria-hidden className="size-4" strokeWidth={1.5} />
+                      </>
+                    ),
+                  })
+                ) : (
+                  <PotenciarCta origin="plan_card" label={tl('seeDemoLabel', { name })} className="btn btn-sm pr-btn-ghost pr-lv-demo">
+                    {tl('seeDemo')}
+                    <ArrowRight aria-hidden className="size-4" strokeWidth={1.5} />
+                  </PotenciarCta>
+                )}
                 <WhatsAppLink
                   origin="plan_card"
                   message={tl('whatsapp', { plan: name, price: lv.priceUsd })}

@@ -4,56 +4,44 @@ import type { Locale } from '@/i18n/routing';
 import { LazyHydrate } from '@/components/motion/LazyHydrate';
 import { Hero } from '@/components/hero/Hero';
 import { SkyTransition } from '@/components/sections/SkyTransition';
-import { ExamplesSection } from '@/components/sections/examples/ExamplesSection';
-import { ServicesSection } from '@/components/sections/services/ServicesSection';
-import { PymeSection } from '@/components/sections/pyme/PymeSection';
-import { PricingSection } from '@/components/pricing/PricingSection';
-import { ProblemSection } from '@/components/sections/problem/ProblemSection';
-import { ProcessSection } from '@/components/sections/process/ProcessSection';
-import { AgentSection } from '@/components/sections/agent/AgentSection';
+import { ProductsSection } from '@/components/sections/products/ProductsSection';
+import { MediaSection } from '@/components/sections/media/MediaSection';
+import { EquipmentSection } from '@/components/sections/equipment/EquipmentSection';
 import { EphemerisRail } from '@/components/ui/EphemerisRail';
 import { ContentVisibilitySync } from '@/components/motion/ContentVisibilitySync';
+import { legacyAnchorsScript } from '@/components/layout/legacyAnchors';
 
+/**
+ * The home (decision of Ignacio, 28/10/2026): the hero, the four products screen by screen
+ * (Roofy, Foody, Markyt, Handy), Eclipse Media and Equipamiento — nothing else. The units have
+ * their own pages (header: Media · Academy · Intelligence · Agency); the v3 landing (qué
+ * ofrecemos, para tu PyME, demos, precios, calculadora, cómo trabajamos, preguntas y contacto)
+ * moved whole to /agency/ with its ids, and a shared `/#precios` is sent there (legacyAnchors).
+ */
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'meta' });
   // Organization + one Service per plan (schema.org). '<' escaped as recommended by Next.
   const structuredData = JSON.stringify(jsonLd(locale as Locale, t('organizationDescription'))).replace(/</g, '\\u003c');
-  // Below the fold, each section hydrates only when it gets close to the viewport
-  // (or receives focus / a tap): its server HTML is visible and usable before that.
-  // The page index rail (≥1280px) lives outside them and loads once the page is idle.
+  // The products banner hydrates with the page (it is the next screen and pins on desktop: its
+  // trigger must exist before the visitor scrolls into it). Media and Equipamiento hydrate when
+  // they get close (their server HTML is visible and usable before that).
   return (
     <main id="main">
+      <script dangerouslySetInnerHTML={{ __html: legacyAnchorsScript(locale) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
       <Hero />
       <SkyTransition from="void" to="night" />
-      {/* v3e order (ids unchanged; components/ui/sectionIndex.ts numbers them 01–08):
-          qué ofrecemos → para tu PyME → demos → [sunrise] → precios → calculadora →
-          cómo trabajamos → preguntas y contacto (fundadores salió el 26/10/2026: decisión de Ignacio). */}
+      <ProductsSection />
       <LazyHydrate className="cv-section">
-        <ServicesSection />
-      </LazyHydrate>
-      <LazyHydrate className="cv-section">
-        <PymeSection />
-      </LazyHydrate>
-      <LazyHydrate className="cv-section">
-        <ExamplesSection />
+        <MediaSection />
       </LazyHydrate>
       <SkyTransition from="night" to="dawn" />
       <LazyHydrate className="cv-section">
-        <PricingSection />
+        <EquipmentSection />
       </LazyHydrate>
-      <LazyHydrate className="cv-section">
-        <ProblemSection />
-      </LazyHydrate>
-      <LazyHydrate className="cv-section">
-        <ProcessSection />
-      </LazyHydrate>
-      <LazyHydrate className="cv-section">
-        <AgentSection />
-      </LazyHydrate>
-      <EphemerisRail />
+      <EphemerisRail page="home" />
       <ContentVisibilitySync />
     </main>
   );

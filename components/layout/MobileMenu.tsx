@@ -7,11 +7,10 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { gsap } from '@/components/motion/gsap';
 import { prefersReducedMotion } from '@/components/motion/useReducedMotion';
 import { DemoCta } from '@/components/ui/DemoCta';
-import { PotenciarCta } from '@/components/ui/PotenciarCta';
 import { useSound } from '@/components/sound/SoundContext';
 import { SoundBadge, SoundToggle } from '@/components/sound/SoundToggle';
 import { PrefsDisclosure } from './PrefsDisclosure';
-import { NAV_LINKS, PORTAL_ROUTES, type ChromeMode } from './navLinks';
+import { NAV_LINKS, PORTAL_ROUTES, PRODUCTS_HREF, currentUnit, type ChromeMode } from './navLinks';
 import { lockScroll } from '@/lib/scroll-lock';
 import { IS_LIVE } from '@/lib/env';
 import { livePaths } from '@/lib/portal/live';
@@ -20,7 +19,8 @@ import './header.css';
 /**
  * Phones and tablets (< 1024px): a full-screen menu that opens as a quick iris from the
  * menu button. Short by design — everything fits the first screen of a 360×640 phone:
- * - landing / plan: the four section links, "Pedí tu demo" + "Armá tu plan", "Ingresar";
+ * - landing / plan: the four units (Media, Academy, Intelligence, Agency: each its own page),
+ *   «Potenciar mi negocio» (the products banner of the home; "Pedí tu demo" on /plan), "Ingresar";
  * - portal: "Mis proyectos" and "Salir de la demo" (inside /portal/proyectos), "Volver al sitio";
  * then language / currency / sound folded in one row (<PrefsDisclosure>). The sound
  * master switch sits next to the close button. Esc, the close button or any link closes it.
@@ -204,7 +204,12 @@ export function MobileMenu({
                 <ul>
                   {NAV_LINKS.map((link, i) => (
                     <li key={link.id} data-menu-item>
-                      <Link href={`/#${link.hash}`} onClick={close} className="menu-section-link group">
+                      <Link
+                        href={link.href}
+                        onClick={closeNow}
+                        aria-current={currentUnit(pathname) === link.id ? 'page' : undefined}
+                        className="menu-section-link group"
+                      >
                         <span aria-hidden className="menu-index">
                           0{i + 1}
                         </span>
@@ -218,9 +223,10 @@ export function MobileMenu({
               <div className="container-x pt-7">
                 <div data-menu-item className={`grid gap-3 sm:max-w-md`}>
                   {mode === 'landing' ? (
-                    // Closes the menu at once (no 'close' sound: the selector opening is the moment);
-                    // focus comes back to the menu button, which is marked as this CTA's opener.
-                    <PotenciarCta origin="menu" markOpener={false} onActivate={closeNow} className="btn btn-primary !px-4" />
+                    // Closes the menu at once (no iris): the page moves to the products banner.
+                    <Link href={PRODUCTS_HREF} onClick={closeNow} className="btn btn-primary !px-4">
+                      {t('selector.cta')}
+                    </Link>
                   ) : (
                     <DemoCta origin="header" className="btn btn-primary !px-4" />
                   )}

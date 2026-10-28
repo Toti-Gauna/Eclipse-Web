@@ -1,19 +1,40 @@
 import { IS_LIVE } from '@/lib/env';
 
 /**
- * Section anchors shown in the header, the phone menu and the footer, in the order the
- * v3 header lists them (Servicios · Demos · Precios · Cómo trabajamos). Labels: `nav.<id>`.
+ * The header, the phone menu and the footer lead to the units, each its own page (decision of
+ * Ignacio, 28/10/2026): Media · Academy · Intelligence · Agency. Locale-less paths for the
+ * next-intl Link; labels: `nav.<id>`. The v3 sections (qué ofrecemos, demos, precios, cómo
+ * trabajamos, contacto) live on /agency/ now, under their old ids.
  */
 export const NAV_LINKS = [
-  { id: 'services', hash: 'servicios' },
-  { id: 'examples', hash: 'ejemplos' },
-  { id: 'pricing', hash: 'precios' },
-  { id: 'process', hash: 'proceso' },
+  { id: 'media', href: '/media/' },
+  { id: 'academy', href: '/academy/' },
+  { id: 'intelligence', href: '/intelligence/' },
+  { id: 'agency', href: '/agency/' },
 ] as const;
+export type UnitId = (typeof NAV_LINKS)[number]['id'];
 
-/** DOM ids of every landing section (unchanged since v2: anchors and shared links depend on them). */
+/** «Potenciar mi negocio» everywhere outside the Agency page: the products banner of the home. */
+export const PRODUCTS_HREF = '/#productos';
+
+/** A product's page inside Eclipse (until its own site is published). */
+export const productPath = (id: string) => `/productos/${id}/`;
+
+/**
+ * The Agency page's own short index, under its intro (the header no longer lists these sections).
+ * Keys of the page index (sectionIndex.ts); labels: `sections.labels.<key>`, targets: SECTION_IDS.
+ */
+export const AGENCY_TOC = ['services', 'examples', 'pricing', 'process', 'agent'] as const;
+
+/** DOM ids of every indexed section (home and Agency). */
 export const SECTION_IDS = {
+  // Home
   hero: 'inicio',
+  products: 'productos',
+  media: 'media',
+  equipment: 'equipamiento',
+  // Agency (the v3 landing, moved on 28/10/2026)
+  agency: 'agency',
   problem: 'problema',
   services: 'servicios',
   pyme: 'pyme',
@@ -23,6 +44,21 @@ export const SECTION_IDS = {
   founders: 'fundadores',
   agent: 'contacto',
 } as const;
+
+/** Old home anchors that now live on /agency/ (a shared `/#precios` is sent there, LegacyAnchors). */
+export const AGENCY_HASHES: readonly string[] = [
+  SECTION_IDS.services,
+  SECTION_IDS.pyme,
+  SECTION_IDS.examples,
+  SECTION_IDS.pricing,
+  SECTION_IDS.problem,
+  SECTION_IDS.process,
+  SECTION_IDS.agent,
+  SECTION_IDS.founders,
+  'paquetes',
+  'ofertas',
+  'mantenimiento',
+];
 
 /** Client portal mockup routes (locale-less paths for the next-intl Link); defined in lib/portal/routes. */
 export { portalPaths as PORTAL_ROUTES } from '@/lib/portal/routes';
@@ -45,4 +81,10 @@ export function chromeRoute(pathname: string | null): { mode: ChromeMode; projec
     return { mode: 'portal', projects: IS_LIVE ? liveArea : demoArea };
   }
   return { mode: path === '/plan' ? 'plan' : 'landing', projects: false };
+}
+
+/** The unit whose page this is (aria-current in the header), from the locale-less pathname. */
+export function currentUnit(pathname: string | null): UnitId | null {
+  const path = (pathname ?? '/').replace(/\/+$/, '') + '/';
+  return NAV_LINKS.find((link) => path === link.href)?.id ?? null;
 }

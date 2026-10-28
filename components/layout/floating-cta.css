@@ -1,0 +1,47 @@
+/* «Potenciar mi negocio», bottom right (FloatingCta). It slides down and out while it would
+   only repeat a CTA on screen; `visibility` leaves the tab order once it has gone. */
+.fcta {
+  position: fixed;
+  right: max(var(--gutter), env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 45;
+  pointer-events: none;
+}
+.fcta-btn {
+  pointer-events: auto;
+  box-shadow:
+    0 14px 44px -12px rgb(245 185 66 / 0.75),
+    0 0 0 1px rgb(255 232 176 / 0.35);
+  transition:
+    transform 0.55s var(--ease-expo),
+    opacity 0.35s ease,
+    box-shadow 0.35s var(--ease-expo),
+    visibility 0s linear 0s;
+}
+.fcta[data-off] .fcta-btn {
+  transform: translateY(calc(100% + 2rem));
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform 0.45s var(--ease-expo),
+    opacity 0.3s ease,
+    visibility 0s linear 0.45s;
+}
+.fcta-btn svg {
+  transition: transform 0.35s var(--ease-expo);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fcta-btn:hover svg {
+    transform: translate(2px, 2px);
+  }
+}
+@media (min-width: 1024px) {
+  .fcta {
+    bottom: 2rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fcta[data-off] .fcta-btn {
+    transform: none;
+  }
+}

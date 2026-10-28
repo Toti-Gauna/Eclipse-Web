@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { ScrollTrigger } from '@/components/motion/gsap';
 import { HYDRATED_EVENT } from '@/components/motion/LazyHydrate';
 import { LIGHT_ZONES_EVENT } from './EphemerisRail';
-import { SECTION_KEYS, phaseAt, sectionDomId, type SectionKey } from './sectionIndex';
+import { PAGE_SECTIONS, phaseAt, sectionDomId, type IndexedPage, type SectionKey } from './sectionIndex';
 import './ephemeris-rail.css';
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -32,7 +32,8 @@ const PHASE_STEPS = 120;
  *   zone (the same zones that flip the header) or a [data-rail-theme="light"] one
  *   (bright areas the header doesn't care about, e.g. the end of the sunrise).
  */
-export default function EphemerisRailView() {
+export default function EphemerisRailView({ page }: { page: IndexedPage }) {
+  const keys: readonly SectionKey[] = PAGE_SECTIONS[page];
   const t = useTranslations('sections');
   const [current, setCurrent] = useState(0);
   const [light, setLight] = useState(false);
@@ -64,7 +65,7 @@ export default function EphemerisRailView() {
       const line = scroll + vh * READING_LINE;
       let i = 0;
       for (let k = 0; k < tops.length; k++) if (tops[k] <= line) i = k;
-      const last = SECTION_KEYS.length - 1;
+      const last = keys.length - 1;
       const from = tops[i] ?? 0;
       const to = i < last && Number.isFinite(tops[i + 1]) ? tops[i + 1] : end;
       const within = to > from ? Math.min(1, Math.max(0, (line - from) / (to - from))) : 1;
@@ -75,7 +76,7 @@ export default function EphemerisRailView() {
         lastHead = y;
         head.current.style.transform = `translate3d(0, ${y}px, 0)`;
       }
-      const phase = Math.round(phaseAt(position) * PHASE_STEPS) / PHASE_STEPS;
+      const phase = Math.round(phaseAt(position, keys.length) * PHASE_STEPS) / PHASE_STEPS;
       if (phase !== lastPhase) {
         lastPhase = phase;
         moon.current?.setAttribute('cx', (12 + (1 - phase) * 16.8).toFixed(2));
@@ -103,7 +104,7 @@ export default function EphemerisRailView() {
     const measure = () => {
       vh = window.innerHeight;
       scroll = window.scrollY;
-      tops = SECTION_KEYS.map((key, k) => {
+      tops = keys.map((key, k) => {
         if (k === 0) return 0;
         const el = document.getElementById(sectionDomId(key));
         return el ? el.getBoundingClientRect().top + scroll : Number.POSITIVE_INFINITY;
@@ -154,7 +155,7 @@ export default function EphemerisRailView() {
       ScrollTrigger.removeEventListener('refresh', remeasure);
       ro.disconnect();
     };
-  }, []);
+  }, [keys]);
 
   const shown = hover ?? current;
 
@@ -186,7 +187,7 @@ export default function EphemerisRailView() {
           </svg>
         </span>
         <ol className="eph-ticks">
-          {SECTION_KEYS.map((key, i) => (
+          {keys.map((key, i) => (
             <li key={key}>
               <a
                 href={`#${sectionDomId(key)}`}
@@ -212,7 +213,7 @@ export default function EphemerisRailView() {
       <p aria-hidden className="eph-label" data-hover={hover !== null ? '' : undefined}>
         <span className="eph-label-index">{pad(shown + 1)}</span>
         <span className="eph-label-rule" />
-        <span>{label(SECTION_KEYS[shown])}</span>
+        <span>{label(keys[shown])}</span>
       </p>
     </nav>
   );

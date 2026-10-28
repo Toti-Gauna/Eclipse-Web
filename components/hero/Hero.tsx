@@ -4,7 +4,7 @@ import { SectionMark } from '@/components/ui/SectionMark';
 import { HeroStateProvider } from './HeroState';
 import { HeroStage } from './HeroStage';
 import { HeroCopy } from './HeroCopy';
-import { PotenciarCta } from '@/components/ui/PotenciarCta';
+import { HeroCta } from './HeroCta';
 import { VerticalChips } from './VerticalChips';
 import { DemoExperienceHost } from '@/components/demo-experience/DemoExperienceHost';
 import './hero.css';
@@ -12,8 +12,8 @@ import './hero.css';
 /**
  * Hero (v3e). One message, one concrete line and two ways in, nothing else:
  * «Quiero potenciar mi negocio» (THE primary action, `data-hero-cta` — the header quiets its
- * own CTA while this one is on screen; a real link to the contact block that opens the rubro
- * selector, <PotenciarCta>) and, right under it, the direct key of the demo that is on show
+ * own CTA while this one is on screen; a real link to the products banner right below, <HeroCta>,
+ * 28/10/2026) and, right under it, the direct key of the demo that is on show
  * (`showcaseVerticals`: the others are in standby, content/verticals.json) which opens it in
  * the "Ver demo" layer. The section links live in the header (and the phone menu).
  *
@@ -62,9 +62,7 @@ export function Hero() {
 
                 <div className="hero-ctas mt-6">
                   <div data-hero-enter data-hero-cta className="flex">
-                    <PotenciarCta origin="hero" className="btn btn-primary w-full sm:w-auto">
-                      {t('ctaPotenciar')}
-                    </PotenciarCta>
+                    <HeroCta className="btn btn-primary w-full sm:w-auto">{t('ctaPotenciar')}</HeroCta>
                   </div>
                 </div>
 

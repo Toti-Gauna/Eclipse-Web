@@ -1,0 +1,428 @@
+/* 02 · Productos — four screens (ProductsSection). Stacked by default (server HTML, touch,
+   reduced motion); a pinned horizontal track with a mouse/trackpad on wide screens
+   ([data-mode='track'], set by useProductsMotion). transform / opacity / clip-path only. */
+
+.pd {
+  --pd-n: 4;
+  /* One screen per product where the track exists (the same query as TRACK_QUERY). */
+  --pd-h: auto;
+  padding-top: clamp(5rem, 11vw, 9rem);
+  overflow-x: clip;
+}
+
+/* The side light of a dark section: one corona glow from the left, never a blob. */
+.pd-light {
+  position: absolute;
+  inset: 0 auto auto 0;
+  z-index: -1;
+  width: min(70rem, 100%);
+  height: 48rem;
+  pointer-events: none;
+  background: radial-gradient(45% 55% at 0% 20%, rgb(245 185 66 / 0.1), transparent 70%);
+}
+
+.pd-head {
+  display: grid;
+  gap: 1.5rem;
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+.pd-title {
+  max-width: 13ch;
+  font-size: clamp(2.75rem, 9vw, 6.25rem);
+  color: var(--fg);
+}
+.pd-sub {
+  max-width: 44ch;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+
+.pd-stage {
+  position: relative;
+}
+.pd-track {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pd-screen {
+  position: relative;
+  box-sizing: border-box;
+  border-top: 1px solid var(--line);
+  padding-block: 3rem 3.75rem;
+}
+.pd-screen-inner {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+/* ---- Copy ---------------------------------------------------------------- */
+.pd-copy {
+  display: grid;
+  gap: 1.1rem;
+  min-width: 0;
+}
+.pd-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.pd-count {
+  color: var(--fg);
+}
+.pd-rubro {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.pd-rubro::before {
+  content: '';
+  width: 1.5rem;
+  height: 1px;
+  background: var(--line-strong);
+}
+.pd-name {
+  font-size: clamp(4rem, 18vw, 9.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.035em;
+  color: var(--fg);
+}
+.pd-line {
+  max-width: 30ch;
+  font-size: clamp(1.125rem, 2.2vw, 1.375rem);
+  line-height: 1.4;
+  color: var(--fg);
+}
+.pd-points {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+  max-width: 34rem;
+}
+.pd-points li {
+  display: grid;
+  grid-template-columns: 1.4rem 1fr;
+  align-items: baseline;
+  padding-block: 0.62rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+.pd-tick {
+  display: block;
+  width: 0.7rem;
+  height: 1px;
+  translate: 0 -0.3em;
+  background: var(--accent);
+}
+.pd-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-top: 0.75rem;
+  max-width: 34rem;
+}
+.pd-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
+.pd-status[data-status='planned'] {
+  color: var(--fg-muted);
+}
+.pd-status-glyph {
+  flex: none;
+  color: var(--accent);
+}
+.pd-know svg {
+  transition: transform 0.35s var(--ease-expo);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pd-know:hover svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* ---- Plate ---------------------------------------------------------------- */
+.pd-art {
+  --tick: 12px;
+  --tick-c: var(--line-strong);
+  position: relative;
+  order: -1;
+  width: 100%;
+  max-width: 34rem;
+  aspect-ratio: 480 / 400;
+  padding: 1.25rem;
+  color: var(--fg);
+  overflow: clip;
+}
+.pd-art-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+.pd-art-svg :where(path, circle, rect) {
+  vector-effect: non-scaling-stroke;
+}
+.pd-soft {
+  opacity: 0.45;
+}
+.pd-dim {
+  opacity: 0.26;
+}
+.pd-faint {
+  opacity: 0.55;
+}
+.pd-dotted {
+  stroke-dasharray: 1.5 5;
+}
+.pd-fill {
+  fill: currentColor;
+  stroke: none;
+}
+.pd-soft-fill {
+  opacity: 0.55;
+}
+.pd-bar {
+  stroke-width: 3;
+}
+.pd-light-fill {
+  fill: var(--corona);
+  stroke: none;
+}
+.pd-light-stroke {
+  stroke: var(--corona);
+  stroke-width: 2;
+}
+.pd-glow {
+  fill: var(--corona);
+  stroke: none;
+  opacity: 0.12;
+}
+/* The instrument's scan: a hairline that crosses the plate while it is drawn (artEntrance). */
+.pd-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.pd-scan::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: var(--flare);
+  box-shadow: 0 0 18px 2px rgb(245 185 66 / 0.55);
+}
+
+/* ---- The disc behind the track (track mode) and the rail ------------------ */
+.pd-orb-wrap {
+  display: none;
+}
+.pd-rail {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .pd-head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: end;
+    column-gap: 3rem;
+  }
+  .pd-head > :first-child {
+    grid-column: 1 / -1;
+  }
+  .pd-sub {
+    justify-self: end;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pd-screen-inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+  .pd-art {
+    order: 0;
+    justify-self: end;
+    max-width: 40rem;
+  }
+}
+
+/* Where the track will exist: one screen per product, already in the server HTML. */
+@media (min-width: 1024px) and (min-height: 600px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .pd {
+    --pd-h: max(100svh, 640px);
+  }
+  .pd-screen {
+    display: flex;
+    align-items: center;
+    min-height: var(--pd-h);
+    padding-block: calc(var(--header-h) + 1rem) 5.5rem;
+  }
+  .pd-screen-inner {
+    width: 100%;
+  }
+  .pd-name {
+    font-size: clamp(5rem, 11vw, 10rem);
+  }
+  .pd-art {
+    /* Never taller than the screen leaves (the plate is 480 × 400). */
+    max-width: min(40rem, calc((var(--pd-h) - var(--header-h) - 8rem) * 1.2));
+  }
+}
+
+.pd[data-mode='track'] .pd-stage {
+  height: var(--pd-h);
+  overflow: clip;
+}
+.pd[data-mode='track'] .pd-track {
+  display: flex;
+  width: calc(var(--pd-n) * 100%);
+  height: 100%;
+  will-change: transform;
+}
+.pd[data-mode='track'] .pd-screen {
+  flex: 0 0 calc(100% / var(--pd-n));
+  height: 100%;
+  min-height: 0;
+  border-top: 0;
+}
+.pd[data-mode='track'] .pd-screen + .pd-screen {
+  border-left: 1px solid var(--line);
+}
+.pd[data-mode='track'] .pd-copy,
+.pd[data-mode='track'] .pd-art {
+  will-change: transform;
+}
+
+/* A dark disc with a corona rim that passes behind the products as you go (the occultation). */
+.pd[data-mode='track'] .pd-orb-wrap {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+}
+.pd-orb {
+  position: absolute;
+  top: 18%;
+  left: 58%;
+  width: min(62vh, 36rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--void);
+  box-shadow:
+    0 0 90px 18px rgb(245 185 66 / 0.14),
+    0 0 0 1px rgb(255 232 176 / 0.22),
+    inset 0 0 50px rgb(245 185 66 / 0.06);
+  will-change: transform;
+}
+
+.pd[data-mode='track'] .pd-rail {
+  display: grid;
+  gap: 0.6rem;
+  position: absolute;
+  inset: auto 0 1.5rem;
+}
+.pd-rail-line {
+  position: relative;
+  height: 1px;
+  background: var(--line-strong);
+}
+.pd-rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+.pd-rail-list {
+  display: grid;
+  grid-template-columns: repeat(var(--pd-n), minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pd-rail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding-inline: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  transition: color 0.25s ease;
+}
+.pd-rail-btn:hover,
+.pd-rail-btn[aria-current='true'] {
+  color: var(--fg);
+}
+.pd-rail-index {
+  color: var(--fg-muted);
+}
+.pd-rail-btn[aria-current='true'] .pd-rail-index {
+  color: var(--accent);
+}
+
+/* «Próximamente» (gimnasios, DentalOS, clínicas, VetOS): the place of «Conocer» says it, quietly. */
+.pd-soon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0 1.25rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.pd-notify {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.3em;
+  transition:
+    color 0.25s ease,
+    text-decoration-color 0.25s ease;
+}
+.pd-notify:hover {
+  color: var(--fg);
+  text-decoration-color: var(--accent);
+}
