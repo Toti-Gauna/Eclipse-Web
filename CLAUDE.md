@@ -360,11 +360,15 @@ agents, gamification, e-commerce, dashboards, automations, apps.
 - `npm run test:e2e` (after `NEXT_PUBLIC_BASE_PATH=/Eclipse-Web npm run build` and serving `out/`
   under `/Eclipse-Web`) must stay green.
 
-## Project skills (`.claude/skills`, installed 26/10/2026)
+## Project skills (`.claude/skills`, installed 26/10/2026 and 31/10/2026)
 
 Nine advisory skills, copied byte for byte from pinned upstream SHAs (manifest, hashes and rollback in
 `docs/v3/skills-instaladas.md`): `frontend-design`, `gsap-core`, `gsap-react`, `gsap-timeline`, `gsap-performance`,
 `gsap-scrolltrigger`, `emil-design-eng`, `animate`, `animation-performance`.
+
+Second install session (31/10/2026, manifest in the same file): `impeccable` (SKILL.md + references only: no scripts, no hook, no
+subagents), `make-interfaces-feel-better`, Emil's `break-ui` and `mobile-native`, and Eclipse's own `ui-polish-pass`,
+`commerce-signature-patterns`, `isometric-scenes` and `product-configurator-3d` (from the agents repo). Same precedence and rules.
 
 - **Precedence:** this file → the v3 visual contract (lote 1.4) and `components/demo-experience/motion.ts` → decisions of the
   owner → the skills. Skills advise; they never decide. If a skill conflicts with a rule here, this file wins.
